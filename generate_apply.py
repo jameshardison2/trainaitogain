@@ -66,6 +66,7 @@ html = f"""<!DOCTYPE html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Global Opportunities Index — TrainAIToGain</title>
+  <meta name="description" content="Browse live pipelines for Software, Medical, and Finance AI training roles. Bypass the Mercor waitlist with direct referral applications.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
