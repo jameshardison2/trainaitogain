@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercor applications, explained honestly — TrainAIToGain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+<link rel="canonical" href="https://trainaitogain.com/">
+<meta property="og:title" content="Mercor applications, explained honestly — TrainAIToGain">
+<meta property="og:description" content="">
+<meta property="og:url" content="https://trainaitogain.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mercor applications, explained honestly — TrainAIToGain">
+<meta name="twitter:description" content="">
+  <meta name="keywords" content="Mercor AI interview, Mercor interview questions, Mercor SWE evaluator, Mercor jobs, Mercor referral, train AI models, RLHF jobs, Mercor $150 hr, Mercor medical evaluator">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7Z54KYTV6B');
+  </script>
+</head>
+<body>
+
+  <!-- ─── Nav ─────────────────────────────────────────── -->
+  <header class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; align-items:center; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+        </a>
+        <ul class="nav-links">
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="is-it-worth-it.html">Expectations</a></li>
+          <li><a href="ai-interview.html">Interview Prep</a></li>
+          <li><a href="post-hire.html">Post-Hire Guide</a></li>
+        </ul>
+        <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-nav-primary">Apply via Mercor</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Hero ─────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner" style="grid-template-columns: 1fr; text-align:center;">
+        <div class="hero-left" style="max-width: 800px; margin: 0 auto;">
+          <div class="hero-eyebrow">For people mid-application</div>
+          <h1 class="hero-heading">
+            Straight answers about applying to <span class="orange">Mercor.</span>
+          </h1>
+          <p class="hero-sub" style="max-width: 600px; margin: 0 auto 36px; color:var(--gray-700);">
+            Get hired for specialized AI training roles paying up to $150/hr.
+          </p>
+          <div class="hero-actions" style="justify-content:center; margin-bottom:16px;">
+            <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary">Apply via Mercor</a>
+            <a href="#eligibility" class="btn-secondary">Check Eligibility</a>
+          </div>
+          <div style="font-size:12px; color:var(--gray-500); text-align:center; max-width:400px; margin:0 auto;">
+            <strong>The "Anti-Bait-and-Switch" Guarantee:</strong> I am an independent referral partner. Applying through my links takes you directly to the real Mercor application portal, no data harvesting.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Niche Matcher Quiz & Opportunities ─────────────────────────────────────────── -->
+  <section class="section" style="padding-top:20px; padding-bottom:60px;" id="opportunities">
+    <div class="container">
+      
+      <!-- Quiz UI -->
+      <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:32px; margin-bottom:48px;">
+        <div style="text-align:center; max-width:600px; margin:0 auto;">
+          <h2 style="font-size:24px; font-weight:700; color:var(--black); margin-bottom:8px;">Find Your Pipeline</h2>
+          <p style="color:var(--gray-500); font-size:16px; margin-bottom:24px;">Don't apply as a Generalist. Answer 2 questions to find the specialized roles Mercor is actually hiring for right now.</p>
+          
+          <div id="quiz-step-1" style="display:block;">
+            <p style="font-weight:600; margin-bottom:16px;">What is your strongest background?</p>
+            <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+              <button onclick="quizStep(1, 'software', this)" class="btn-quiz">💻 Software / Coding</button>
+              <button onclick="quizStep(1, 'medical', this)" class="btn-quiz">🩺 Medical / Clinical</button>
+              <button onclick="quizStep(1, 'finance', this)" class="btn-quiz">📈 Finance / Math</button>
+              <button onclick="quizStep(1, 'language', this)" class="btn-quiz">🌍 Bilingual / Translation</button>
+              <button onclick="quizStep(1, 'other', this)" class="btn-quiz">📋 Other / General</button>
+            </div>
+          </div>
+          
+          <div id="quiz-step-2" style="display:none;">
+            <p style="font-weight:600; margin-bottom:16px;">Are you looking for high-complexity work or high-volume tasks?</p>
+            <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+              <button onclick="quizStep(2, 'complex', this)" class="btn-quiz">High-Complexity (Higher Pay)</button>
+              <button onclick="quizStep(2, 'volume', this)" class="btn-quiz">High-Volume (Easier Entry)</button>
+            </div>
+          </div>
+
+          <div id="quiz-result" style="display:none; margin-top:24px;">
+            <p style="font-weight:700; color:var(--primary); font-size:18px;">✅ We found your best match below.</p>
+            <button onclick="resetQuiz()" style="background:none; border:none; color:var(--gray-400); text-decoration:underline; cursor:pointer; font-size:14px; margin-top:8px;">Reset Filter</button>
+          </div>
+        </div>
+      </div>
+      
+      <style>
+        .btn-quiz {
+          background: var(--white);
+          border: 1.5px solid var(--gray-200);
+          padding: 12px 20px;
+          border-radius: var(--radius-sm);
+          font-family: inherit;
+          font-size: 15px;
+          font-weight: 600;
+          color: var(--black);
+          cursor: pointer;
+          transition: all 0.2s;
+          box-shadow: var(--shadow-sm);
+        }
+        .btn-quiz:hover, .btn-quiz.active {
+          border-color: var(--primary);
+          color: var(--primary-dark);
+          background: var(--primary-light);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(16,185,129,0.15);
+        }
+      </style>
+
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
+        <h2 style="font-size:24px; font-weight:700; color:var(--black);">Explore High-Paying Opportunities</h2>
+      </div>
+      
+      <div id="opportunities-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+        
+        <div class="feature-card opp-card" data-category="software complex" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:700;">$150/hr</div>
+          </div>
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Senior SWE Evaluators</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Evaluate complex code for advanced AI models.</p>
+          <a href="role-software.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to get this role <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+        <div class="feature-card opp-card" data-category="medical complex" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:700;">$100/hr</div>
+          </div>
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">MDs & Clinicians</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Help train clinical diagnostic AI models.</p>
+          <a href="role-medical.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to get this role <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+        <div class="feature-card opp-card" data-category="finance complex" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:700;">$120/hr</div>
+          </div>
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Quant & Math Experts</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Verify complex financial models and logic.</p>
+          <a href="role-finance.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to get this role <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+        <div class="feature-card opp-card" data-category="software complex other volume" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">RLHF PIPELINES</div>
+            <div style="color:var(--primary); font-weight:700;">Up to $100/hr</div>
+          </div>
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Model Alignment</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Train models on human preference and safety guardrails.</p>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+        <div class="feature-card opp-card" data-category="other volume" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">DATA ANNOTATION</div>
+            <div style="color:var(--primary); font-weight:700;">Up to $40/hr</div>
+          </div>
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Quality Assurance</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">High-volume, detail-oriented labeling for early-stage models.</p>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+        <div class="feature-card opp-card" data-category="other complex" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">SYNTHETIC DATA</div>
+            <div style="color:var(--primary); font-weight:700;">Up to $80/hr</div>
+          </div>
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Creative Prompting</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Craft complex edge-case prompts and evaluate AI outputs.</p>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+        <div class="feature-card opp-card" data-category="language complex volume" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">MULTILINGUAL</div>
+            <div style="color:var(--primary); font-weight:700;">Up to $60/hr</div>
+          </div>
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Language Ops</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Verify translation accuracy and localized cultural context.</p>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    let userCategory = '';
+    
+    function quizStep(step, answer, btnElement) {
+      if(btnElement) {
+        btnElement.classList.add('active');
+      }
+      
+      if(step === 1) {
+        userCategory = answer;
+        setTimeout(() => {
+          document.getElementById('quiz-step-1').style.display = 'none';
+          document.getElementById('quiz-step-2').style.display = 'block';
+        }, 300);
+      } else if (step === 2) {
+        let finalFilter = userCategory + ' ' + answer;
+        setTimeout(() => {
+          document.getElementById('quiz-step-2').style.display = 'none';
+          document.getElementById('quiz-result').style.display = 'block';
+          filterCards(userCategory, answer);
+        }, 300);
+      }
+    }
+
+    function filterCards(cat1, cat2) {
+      const cards = document.querySelectorAll('.opp-card');
+      cards.forEach(card => {
+        const categories = card.getAttribute('data-category');
+        if(categories.includes(cat1) || categories.includes(cat2)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      // Scroll to grid smoothly
+      document.getElementById('opportunities-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetQuiz() {
+      userCategory = '';
+      document.getElementById('quiz-result').style.display = 'none';
+      document.getElementById('quiz-step-1').style.display = 'block';
+      const btns = document.querySelectorAll('.btn-quiz');
+      btns.forEach(btn => btn.classList.remove('active'));
+      const cards = document.querySelectorAll('.opp-card');
+      cards.forEach(card => {
+        card.style.display = 'flex';
+      });
+    }
+  </script>
+
+  <!-- ─── Traps Section ─────────────────────────────────────────── -->
+  <section class="section" style="padding-top:20px; padding-bottom:60px;">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
+        <h2 style="font-size:24px; font-weight:700; color:var(--black);">The 3 Biggest Traps That Cause Ghosting</h2>
+      </div>
+      <p style="color:var(--gray-500); max-width:800px; margin-bottom: 32px; font-size:16px;">Over 80% of candidates fail Mercor's application process because of structural traps, not a lack of talent. Crossing Hurdles ignores these. We solve them.</p>
+      
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+        
+        <div class="feature-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">1. The Graphic Resume Trap</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Mercor's ATS cannot read Canva or highly-formatted PDFs. It will instantly lock you out.</p>
+          <a href="resume-ats-guide.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to fix your resume <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+        <div class="feature-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">2. The Generalist Trap</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Applying to broad roles deposits you in a 300,000+ person pool. Silence means you're stuck in the pool.</p>
+          <a href="no-response.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to escape the pool <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+        <div class="feature-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">3. The AI Communication Trap</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Rambling causes the AI to fail parsing your complex answers. You must use the "Headline First" strategy.</p>
+          <a href="ai-interview.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">Learn to speak to the AI <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Resources ───────────────────────────────────── -->
+  <section class="section" style="background:var(--gray-50);">
+    <div class="container">
+      <div class="fade-up" style="text-align:center;max-width:520px;margin:0 auto 48px;">
+        <div class="section-eyebrow">Resources</div>
+        <h2 class="section-heading">Answers to your questions.</h2>
+      </div>
+      
+      <div class="feature-grid" style="grid-template-columns: 1fr 1fr;">
+        
+        <a href="no-response.html" class="feature-card" style="text-decoration:none;">
+          <div class="feature-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <div class="feature-card-title">I applied and never heard back</div>
+          <div class="feature-card-body">Silence usually isn't rejection. Here's what it means and the two things worth checking.</div>
+        </a>
+
+        <a href="ai-interview.html" class="feature-card" style="text-decoration:none;">
+          <div class="feature-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </div>
+          <div class="feature-card-title">How the AI interview actually works</div>
+          <div class="feature-card-body">What it asks, how retakes work, and the setup mistakes that look like failure.</div>
+        </a>
+
+        <a href="what-mercor-looks-for.html" class="feature-card" style="text-decoration:none;">
+          <div class="feature-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+          </div>
+          <div class="feature-card-title">What Mercor actually looks for</div>
+          <div class="feature-card-body">The signals Mercor publishes but almost no applicant reads.</div>
+        </a>
+
+        <a href="is-it-worth-it.html" class="feature-card" style="text-decoration:none;">
+          <div class="feature-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <div class="feature-card-title">Is Mercor actually worth your time?</div>
+          <div class="feature-card-body">Real pay ranges, what the work involves, and who it doesn't suit.</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Anti-Bait-and-Switch & Lead Capture ─────────────────────────────────────────── -->
+  <section id="eligibility" class="section" style="background:var(--white); border-top:1px solid var(--gray-200);">
+    <div class="container">
+      <div class="fade-up" style="text-align:center;max-width:600px;margin:0 auto 40px;">
+        <div class="section-eyebrow" style="background:var(--accent); color:var(--primary);">The "Anti-Bait-and-Switch" Guarantee</div>
+        <h2 class="section-heading">My Radical Transparency Promise.</h2>
+        <p class="section-sub" style="margin-top:12px; margin-bottom: 24px;">
+          Unlike other agencies that post fake jobs to harvest your data, I am 100% upfront: <strong>I am an independent referral partner.</strong> I cannot hand you a job. Applying through my links takes you to the exact same Mercor portal as everyone else.
+        </p>
+        <p class="section-sub" style="margin-top:12px; font-weight: 500; color:var(--black);">
+          My value is telling you how to actually pass their AI screen, and giving you straight answers about what they are actually hiring for right now.
+        </p>
+      </div>
+
+      <div class="fade-up" style="text-align:center;max-width:520px;margin:0 auto 30px;">
+        <h3 style="font-size:22px; font-weight:700;">Want to know if your background actually fits?</h3>
+        <p class="section-sub" style="margin-top:8px;">Send me your background. I'll look at the active pipeline and tell you straight whether it's worth your time.</p>
+      </div>
+
+      <div class="fade-up" style="background:var(--black); border:1.5px solid var(--black); border-radius:var(--radius-lg); padding:40px 36px; max-width: 600px; margin:0 auto; position:relative; overflow:hidden;">
+        <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(16,185,129,0.18) 0%,transparent 70%);pointer-events:none;"></div>
+        
+        <form name="eligibility" style="display:flex; flex-direction:column; gap:20px; position:relative; z-index:1;">
+          
+          <div>
+            <label for="email" style="display:block; margin-bottom:8px; font-weight:700; font-size:14px; color:var(--white);">Email Address *</label>
+            <input id="email" type="email" name="email" required style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:15px; outline:none;" placeholder="you@example.com">
+          </div>
+
+          <div>
+            <label for="phone" style="display:block; margin-bottom:8px; font-weight:700; font-size:14px; color:var(--white);">Phone Number (Optional - for quick calls)</label>
+            <input id="phone" type="tel" name="phone" style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:15px; outline:none;" placeholder="(555) 123-4567">
+          </div>
+
+          <div>
+            <label for="field" style="display:block; margin-bottom:8px; font-weight:700; font-size:14px; color:var(--white);">Your Field / Background</label>
+            <input id="field" type="text" name="field" required style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:15px; outline:none;" placeholder="e.g. Data Scientist, Aerospace Engineer">
+          </div>
+
+          <button type="submit" style="display:inline-flex; align-items:center; justify-content:center; gap:10px; font-size:15px; font-weight:700; color:var(--white); background:var(--primary); padding:16px 20px; border-radius:var(--radius); margin-top:10px; transition:all 0.18s; border:none; cursor:pointer; width:100%;">
+            Check My Eligibility
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── B2B Companies Section ───────────────────────────────────── -->
+  <section id="companies" class="section" style="background:var(--gray-50); border-top:1px solid var(--gray-200);">
+    <div class="container">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:64px; align-items:center;">
+        
+        <div class="fade-up">
+          <div class="section-eyebrow" style="background:var(--black); color:var(--white);">For Companies</div>
+          <h2 class="section-heading" style="font-size:36px; line-height:1.1; margin-bottom:20px;">Need to source elite AI contributors?</h2>
+          <p class="section-sub" style="margin-bottom:32px; font-size:18px;">
+            Stop sifting through massive generic candidate pools. I have direct access to a highly vetted pipeline of domain experts—from MDs to Quant Devs—ready to train your models.
+          </p>
+          <ul style="list-style:none; padding:0; margin:0 0 32px 0; display:flex; flex-direction:column; gap:12px;">
+            <li style="display:flex; align-items:center; gap:12px; font-weight:600; color:var(--black);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Pre-vetted domain experts
+            </li>
+            <li style="display:flex; align-items:center; gap:12px; font-weight:600; color:var(--black);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Zero upfront sourcing fees
+            </li>
+            <li style="display:flex; align-items:center; gap:12px; font-weight:600; color:var(--black);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Rapid scale-up for RLHF
+            </li>
+          </ul>
+        </div>
+
+        <div class="fade-up" style="background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:40px; box-shadow:0 20px 40px rgba(0,0,0,0.04);">
+          <form name="b2b-leads" style="display:flex; flex-direction:column; gap:20px;">
+            
+            <h3 style="font-size:22px; font-weight:700; margin-bottom:8px;">Partnership Inquiries</h3>
+            
+            <div>
+              <input type="text" name="company" required style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:var(--gray-50); color:var(--black); font-family:inherit; font-size:15px; outline:none;" placeholder="Company Name">
+            </div>
+            <div>
+              <input type="email" name="email" required style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:var(--gray-50); color:var(--black); font-family:inherit; font-size:15px; outline:none;" placeholder="Work Email">
+            </div>
+            <div>
+              <textarea name="needs" rows="3" required style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:var(--gray-50); color:var(--black); font-family:inherit; font-size:15px; outline:none; resize:none;" placeholder="What kind of talent are you looking for?"></textarea>
+            </div>
+            <button type="submit" style="display:inline-flex; align-items:center; justify-content:center; gap:10px; font-size:15px; font-weight:700; color:var(--white); background:var(--black); padding:16px 20px; border-radius:var(--radius); transition:all 0.18s; border:none; cursor:pointer; width:100%;">
+              Request Talent Pool Access
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────────── -->
+  <footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px;">
+          <p style="color:var(--white); font-weight:700; font-size:16px; margin-bottom:8px;">James Hardison II</p>
+          <small style="color:rgba(255,255,255,0.6); font-size:13px; line-height:1.7; display:block;">
+            Independent referral partner. I earn a referral credit when someone I refer is hired. Saying so up front.<br><br>
+            Independent resource. Not affiliated with, authorized by, sponsored by, or endorsed by Mercor.
+          </small>
+        </div>
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s; margin-right:16px;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const myForm = e.target;
+        const formData = new FormData(myForm);
+        const submitBtn = myForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = 'Submitting...';
+        submitBtn.style.opacity = '0.7';
+        submitBtn.disabled = true;
+
+        fetch('/', {
+          method: 'POST',
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(formData).toString()
+        })
+        .then(() => {
+          submitBtn.innerHTML = 'Submitted! ✓';
+          submitBtn.style.background = '#059669'; 
+          submitBtn.style.opacity = '1';
+          myForm.reset();
+          setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+          }, 3000);
+        })
+        .catch((error) => {
+          alert('There was an error submitting the form. Please try again.');
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.opacity = '1';
+          submitBtn.disabled = false;
+        });
+      });
+    });
+  </script>
+</body>
+</html>

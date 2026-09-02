@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Community Wait-Time Database — TrainAIToGain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .data-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); }
+    .data-table th { background: var(--gray-50); padding: 16px 24px; text-align: left; font-size: 13px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--gray-200); }
+    .data-table td { padding: 20px 24px; border-bottom: 1px solid var(--gray-200); font-size: 15px; color: var(--black); font-weight: 500; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tbody tr:hover { background: var(--gray-50); }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+    .dot-fast { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .dot-med { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+    .dot-slow { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+  </style>
+</head>
+<body style="background:var(--gray-50);">
+
+<header class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; align-items:center; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+        </a>
+        <ul class="nav-links">
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="is-it-worth-it.html">Expectations</a></li>
+          <li><a href="ai-interview.html">Interview Prep</a></li>
+          <li><a href="post-hire.html">Post-Hire Guide</a></li>
+        </ul>
+        <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-nav-primary">Apply via Mercor</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<section style="padding: 64px 0 24px;">
+  <div class="container" style="text-align:center; max-width:800px;">
+    <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Community Wait-Time Database</h1>
+    <p style="font-size:16px; color:var(--gray-500);">Applied but haven't heard back? Check the crowdsourced queue velocity below to see if they are actively hiring for your pipeline.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:24px; padding-bottom:64px;">
+  <div class="container">
+    
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Role / Pipeline</th>
+            <th>Pay Rate</th>
+            <th>Current Wait Time</th>
+            <th>Queue Velocity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--black);">Senior Python/ML Evaluator</strong></td>
+            <td>$150/hr</td>
+            <td><strong>2 - 5 days</strong></td>
+            <td><span class="status-dot dot-fast"></span> Extremely Fast</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--black);">Quant Developer / Math</strong></td>
+            <td>$120 - $150/hr</td>
+            <td><strong>3 - 7 days</strong></td>
+            <td><span class="status-dot dot-fast"></span> Fast</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--black);">General Medical Practitioner</strong></td>
+            <td>$80 - $100/hr</td>
+            <td><strong>1 - 2 weeks</strong></td>
+            <td><span class="status-dot dot-med"></span> Moderate</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--black);">Frontend / Full Stack Web</strong></td>
+            <td>$70 - $100/hr</td>
+            <td><strong>2 - 3 weeks</strong></td>
+            <td><span class="status-dot dot-med"></span> Moderate</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--black);">Translation & Linguistics</strong></td>
+            <td>$40 - $50/hr</td>
+            <td><strong>3 - 5 weeks</strong></td>
+            <td><span class="status-dot dot-slow"></span> Slow</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--black);">Generalist (No Specialty)</strong></td>
+            <td>$20 - $40/hr</td>
+            <td><strong>45+ days</strong></td>
+            <td><span class="status-dot dot-slow"></span> Paused / Overcrowded</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius-lg); padding:32px; margin-top:48px;">
+      <h3 style="color:#92400e; font-size:20px; font-weight:700; margin-bottom:12px;">Stuck in the Generalist Queue?</h3>
+      <p style="color:#92400e; font-size:15px; margin-bottom:16px;">If you've been waiting over 30 days, your resume likely got routed to the lowest-priority queue. You need to re-format your resume to trigger a specialized pipeline (like Tech, Medical, or Finance) and re-apply.</p>
+      <a href="resume-ats-guide.html" style="color:#b45309; font-weight:700; text-decoration:underline;">See the Resume Formatter &rarr;</a>
+    </div>
+
+  </div>
+</section>
+
+<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px;">
+          <p style="color:var(--white); font-weight:700; font-size:16px; margin-bottom:8px;">James Hardison II</p>
+          <small style="color:rgba(255,255,255,0.6); font-size:13px; line-height:1.7; display:block;">
+            Independent referral partner. I earn a referral credit when someone I refer is hired. Saying so up front.<br><br>
+            Independent resource. Not affiliated with, authorized by, sponsored by, or endorsed by Mercor.
+          </small>
+        </div>
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s; margin-right:16px;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

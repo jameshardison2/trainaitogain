@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Global Opportunities Index — TrainAIToGain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .ticker-wrap { width: 100%; overflow: hidden; background: #064e3b; padding: 8px 0; border-bottom: 2px solid var(--primary); }
+    .ticker-content { white-space: nowrap; font-size: 13px; font-weight: 600; color: #a7f3d0; animation: ticker 25s linear infinite; display: inline-block; }
+    @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .ticker-item { display: inline-flex; align-items: center; gap: 8px; margin-right: 48px; }
+    .pulse-dot { width: 6px; height: 6px; background: #34d399; border-radius: 50%; box-shadow: 0 0 8px #34d399; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+  </style>
+</head>
+<body style="background:var(--gray-50);">
+
+<header class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; align-items:center; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+        </a>
+        <ul class="nav-links">
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="is-it-worth-it.html">Expectations</a></li>
+          <li><a href="ai-interview.html">Interview Prep</a></li>
+          <li><a href="post-hire.html">Post-Hire Guide</a></li>
+        </ul>
+        <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-nav-primary">Apply via Mercor</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<div class="ticker-wrap">
+  <div class="ticker-content" id="live-ticker">
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Sarah T.</span> matched as <span style="color:var(--primary-light);">Medical Annotator</span> 2 mins ago</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">David K.</span> matched as <span style="color:var(--primary-light);">Python SWE</span> 5 mins ago</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Elena M.</span> matched as <span style="color:var(--primary-light);">Data Analyst</span> 12 mins ago</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Raj P.</span> matched as <span style="color:var(--primary-light);">Quant Dev</span> 18 mins ago</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">James L.</span> matched as <span style="color:var(--primary-light);">C++ Systems Engineer</span> 22 mins ago</div>
+  </div>
+</div>
+
+<section style="padding: 48px 0 24px;">
+  <div class="container" style="text-align:center; max-width:800px;">
+    <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Global Opportunities Index</h1>
+    <p style="font-size:16px; color:var(--gray-500);">Browse all available pipelines. Select a domain below to see granular, niche-specific job postings and bypass the generic applicant pool.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:24px; padding-bottom:64px;">
+  <div class="container">
+    
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:24px;">
+      
+      <!-- Domain Card -->
+      <a href="role-software.html" class="feature-card opp-card" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; display:flex; flex-direction:column; text-decoration:none; color:inherit; border-radius:var(--radius-lg); transition:all 0.2s; box-shadow:var(--shadow-sm);">
+        <div style="width:48px; height:48px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:12px; margin-bottom:20px; font-size:24px;">💻</div>
+        <h3 style="font-size:24px; font-weight:800; margin-bottom:8px;">Software & Tech</h3>
+        <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px;">Python, React, C++, Rust, Data Engineering, and Cybersecurity.</p>
+        <div style="margin-top:auto; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:space-between;">
+          <span>6 Open Roles</span>
+          <span>Up to $150/hr &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Domain Card -->
+      <a href="role-medical.html" class="feature-card opp-card" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; display:flex; flex-direction:column; text-decoration:none; color:inherit; border-radius:var(--radius-lg); transition:all 0.2s; box-shadow:var(--shadow-sm);">
+        <div style="width:48px; height:48px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:12px; margin-bottom:20px; font-size:24px;">🩺</div>
+        <h3 style="font-size:24px; font-weight:800; margin-bottom:8px;">Medical & Clinical</h3>
+        <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px;">Oncology, Neurology, Primary Care, and Pharmacology.</p>
+        <div style="margin-top:auto; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:space-between;">
+          <span>5 Open Roles</span>
+          <span>Up to $150/hr &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Domain Card -->
+      <a href="role-finance.html" class="feature-card opp-card" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; display:flex; flex-direction:column; text-decoration:none; color:inherit; border-radius:var(--radius-lg); transition:all 0.2s; box-shadow:var(--shadow-sm);">
+        <div style="width:48px; height:48px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:12px; margin-bottom:20px; font-size:24px;">📈</div>
+        <h3 style="font-size:24px; font-weight:800; margin-bottom:8px;">Finance & Quant</h3>
+        <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px;">Algorithmic Trading, Actuarial Science, M&A, Mathematics.</p>
+        <div style="margin-top:auto; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:space-between;">
+          <span>5 Open Roles</span>
+          <span>Up to $150/hr &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Domain Card -->
+      <a href="https://t.mercor.com/wbPMF" target="_blank" class="feature-card opp-card" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; display:flex; flex-direction:column; text-decoration:none; color:inherit; border-radius:var(--radius-lg); transition:all 0.2s; box-shadow:var(--shadow-sm);">
+        <div style="width:48px; height:48px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:12px; margin-bottom:20px; font-size:24px;">🌍</div>
+        <h3 style="font-size:24px; font-weight:800; margin-bottom:8px;">Translation & Law</h3>
+        <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px;">Legal Review, Multilingual Annotation, Humanities Experts.</p>
+        <div style="margin-top:auto; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:space-between;">
+          <span>10+ Open Roles</span>
+          <span>View on Mercor &rarr;</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px;">
+          <p style="color:var(--white); font-weight:700; font-size:16px; margin-bottom:8px;">James Hardison II</p>
+          <small style="color:rgba(255,255,255,0.6); font-size:13px; line-height:1.7; display:block;">
+            Independent referral partner. I earn a referral credit when someone I refer is hired. Saying so up front.<br><br>
+            Independent resource. Not affiliated with, authorized by, sponsored by, or endorsed by Mercor.
+          </small>
+        </div>
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s; margin-right:16px;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
