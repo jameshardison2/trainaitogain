@@ -119,7 +119,12 @@ html = f"""<!DOCTYPE html>
 <section style="padding: 48px 0 24px;">
   <div class="container" style="text-align:center; max-width:800px;">
     <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Global Opportunities Index</h1>
-    <p style="font-size:16px; color:var(--gray-500);">Browse all {sum(len(v) for v in roles_data.values())} active pipelines. Select a domain below to see granular, niche-specific job postings and bypass the generic applicant pool.</p>
+    <p style="font-size:16px; color:var(--gray-500); margin-bottom: 32px;">Browse all {sum(len(v) for v in roles_data.values())} active pipelines. Select a domain below to see granular, niche-specific job postings and bypass the generic applicant pool.</p>
+    
+    <div style="background: var(--primary-light); color: var(--primary-dark); padding: 16px 20px; border-radius: var(--radius); font-size: 14px; display: flex; gap: 12px; align-items: flex-start; text-align: left; line-height: 1.5; border: 1px solid rgba(52, 211, 153, 0.3);">
+      <div style="font-size: 20px; line-height: 1;">💡</div>
+      <div><strong>Partner Application Notice:</strong> All applications are processed through the Mercor Universal Talent Network. By applying via our partner referral links, your profile will be prioritized and automatically evaluated for your selected pipeline as well as all other open roles.</div>
+    </div>
   </div>
 </section>
 
