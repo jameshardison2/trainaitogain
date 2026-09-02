@@ -1,4 +1,5 @@
 import re
+import json
 
 with open("index.html", "r") as f:
     index_content = f.read()
@@ -93,41 +94,21 @@ def generate_job_board(title, desc, jobs):
 </html>
 """
 
-# SOFTWARE
-software_jobs = [
-    {"title": "Senior Python / ML Evaluator", "pay": "$150/hr", "tag": "SOFTWARE", "hot": True, "desc": "Evaluate complex ML infrastructure code and Python algorithms for next-gen models.", "skills": ["Python", "PyTorch", "System Design"]},
-    {"title": "C++ Systems & Performance", "pay": "$130/hr", "tag": "SOFTWARE", "desc": "Review high-performance C++ code, memory management, and concurrency models.", "skills": ["C++", "Memory Profiling", "Algorithms"]},
-    {"title": "Frontend / React Architecture", "pay": "$100/hr", "tag": "SOFTWARE", "desc": "Assess complex React applications, state management, and modern TS patterns.", "skills": ["React", "TypeScript", "Next.js"]},
-    {"title": "Data Engineering / SQL Architect", "pay": "$120/hr", "tag": "SOFTWARE", "hot": True, "desc": "Evaluate distributed database queries, ETL pipelines, and warehouse structures.", "skills": ["SQL", "Snowflake", "Spark"]},
-    {"title": "Security & Cryptography", "pay": "$140/hr", "tag": "SOFTWARE", "desc": "Review codebase vulnerabilities, cryptographic implementations, and secure design.", "skills": ["Cybersecurity", "Rust", "Cryptography"]},
-    {"title": "General SWE / Leetcode Master", "pay": "$90/hr", "tag": "SOFTWARE", "desc": "Solve and evaluate advanced algorithmic challenges (competitive programming).", "skills": ["Algorithms", "Data Structures", "Java"]}
-]
+# Load jobs from JSON
+with open('roles.json', 'r') as f:
+    roles_data = json.load(f)
 
+# SOFTWARE
 with open("role-software.html", "w") as f:
-    f.write(generate_job_board("Software & Engineering Roles", "Mercor is actively seeking Senior SWEs to evaluate advanced code and train LLMs. Don't apply as a generalist—target your specific stack below.", software_jobs))
+    f.write(generate_job_board("Software & Engineering Roles", "Mercor is actively seeking Senior SWEs to evaluate advanced code and train LLMs. Don't apply as a generalist—target your specific stack below.", roles_data.get("software", [])))
 
 # MEDICAL
-medical_jobs = [
-    {"title": "Oncology AI Reviewer", "pay": "$120/hr", "tag": "MEDICAL", "hot": True, "desc": "Train models on diagnosing and creating treatment plans for complex oncology cases.", "skills": ["MD", "Oncology", "Diagnostics"]},
-    {"title": "Neurology / BCI Annotator", "pay": "$150/hr", "tag": "MEDICAL", "desc": "Evaluate neuro-imaging and diagnostic criteria for Brain-Computer Interface models.", "skills": ["Neurology", "MRI/CT", "Clinical Research"]},
-    {"title": "General Practitioner Evaluator", "pay": "$80/hr", "tag": "MEDICAL", "desc": "Assess primary care diagnostic models and patient interaction logic.", "skills": ["MD/DO", "Primary Care", "Triage"]},
-    {"title": "Pharmacology Expert", "pay": "$100/hr", "tag": "MEDICAL", "desc": "Review drug interaction models, dosing algorithms, and contraindications.", "skills": ["PharmD", "Pharmacokinetics", "Chemistry"]},
-    {"title": "Surgical Methodology", "pay": "$130/hr", "tag": "MEDICAL", "hot": True, "desc": "Evaluate procedural steps and risk assessment models for robotic surgery AI.", "skills": ["Surgeon", "Anatomy", "Risk Models"]}
-]
-
 with open("role-medical.html", "w") as f:
-    f.write(generate_job_board("Medical & Clinical Roles", "Mercor needs verified MDs, DOs, and clinical specialists to align healthcare AI models safely and accurately.", medical_jobs))
+    f.write(generate_job_board("Medical & Clinical Roles", "Mercor needs verified MDs, DOs, and clinical specialists to align healthcare AI models safely and accurately.", roles_data.get("medical", [])))
 
 # FINANCE
-finance_jobs = [
-    {"title": "Quant Dev / Algo Trader", "pay": "$150/hr", "tag": "FINANCE", "hot": True, "desc": "Evaluate complex trading algorithms and quantitative pricing models.", "skills": ["Quantitative Finance", "Python", "Stochastic Calculus"]},
-    {"title": "Actuarial Science Reviewer", "pay": "$100/hr", "tag": "FINANCE", "desc": "Assess risk models, life tables, and insurance underwriting logic for AI systems.", "skills": ["FSA/FCAS", "Risk Modeling", "Statistics"]},
-    {"title": "Corporate Finance / M&A", "pay": "$80/hr", "tag": "FINANCE", "desc": "Evaluate financial statement analysis and valuation models (DCF, LBO).", "skills": ["M&A", "Financial Modeling", "Accounting"]},
-    {"title": "PhD Level Mathematician", "pay": "$120/hr", "tag": "FINANCE", "desc": "Review core mathematical logic, proofs, and theoretical framework generations.", "skills": ["PhD Mathematics", "Proofs", "Logic"]},
-    {"title": "Tax Strategy & Compliance", "pay": "$90/hr", "tag": "FINANCE", "desc": "Train models on complex international tax codes and corporate compliance structures.", "skills": ["CPA", "Tax Law", "Auditing"]}
-]
-
 with open("role-finance.html", "w") as f:
-    f.write(generate_job_board("Finance & Quantitative Roles", "Mercor is recruiting Quants, Actuaries, and Math PhDs to ensure financial AI models are mathematically flawless.", finance_jobs))
+    f.write(generate_job_board("Finance & Quantitative Roles", "Mercor is recruiting Quants, Actuaries, and Math PhDs to ensure financial AI models are mathematically flawless.", roles_data.get("finance", [])))
 
 print("Successfully generated robust job boards for Software, Medical, and Finance.")
+
