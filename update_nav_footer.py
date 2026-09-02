@@ -20,7 +20,7 @@ def replace_block(filepath, start_tag, end_tag, new_block):
         f.write(new_content)
 
 index_file = 'index.html'
-nav_block = get_block(index_file, '<header class="nav">', '</header>')
+nav_block = get_block(index_file, '<nav class="nav"', '</nav>')
 footer_block = get_block(index_file, '<footer', '</footer>')
 
 html_files = glob.glob('*.html')
@@ -31,6 +31,8 @@ if 'ai-interview_1.html' in html_files:
 
 for hf in html_files:
     if nav_block:
+        replace_block(hf, '<nav class="nav"', '</nav>', nav_block)
+        # Fallback for old header tag in case it hasn't been updated yet
         replace_block(hf, '<header class="nav">', '</header>', nav_block)
         print(f"Updated nav in {hf}")
     if footer_block:

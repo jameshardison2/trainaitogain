@@ -3,7 +3,7 @@ import re
 with open("index.html", "r") as f:
     index_content = f.read()
 
-header = re.search(r"(<header.*?</header>)", index_content, re.DOTALL).group(1)
+header = re.search(r'(<nav class="nav".*?</nav>)', index_content, re.DOTALL).group(1)
 footer = re.search(r"(<footer.*?</footer>)", index_content, re.DOTALL).group(1)
 
 def generate_job_board(title, desc, jobs):
@@ -13,7 +13,7 @@ def generate_job_board(title, desc, jobs):
         <div class="feature-card opp-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative;">
           {f'<div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>' if job.get('hot') else ''}
           <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
-            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">{job['tag']}</div>
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;" title="Industry Domain Tag">{job['tag']}</div>
             <div style="color:var(--primary); font-weight:800; font-size:18px;">{job['pay']}</div>
           </div>
           <h3 style="font-size:20px; margin-bottom:8px; color:var(--black); line-height:1.2;">{job['title']}</h3>
@@ -55,11 +55,38 @@ def generate_job_board(title, desc, jobs):
     </div>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:24px;">
       {cards_html}
+    <div id="load-more-container" style="display:none;">
+      <button class="btn-load-more" onclick="loadMore()">Load More Opportunities</button>
     </div>
   </div>
 </section>
 
 {footer}
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {{
+    const cards = document.querySelectorAll('.opp-card');
+    const loadMoreContainer = document.getElementById('load-more-container');
+    let visibleCount = 4;
+    
+    if(cards.length > visibleCount) {{
+      loadMoreContainer.style.display = 'block';
+      for(let i = visibleCount; i < cards.length; i++) {{
+        cards[i].style.display = 'none';
+      }}
+    }}
+    
+    window.loadMore = function() {{
+      const hiddenCards = Array.from(cards).filter(c => c.style.display === 'none');
+      for(let i = 0; i < Math.min(4, hiddenCards.length); i++) {{
+        hiddenCards[i].style.display = 'flex';
+      }}
+      if(hiddenCards.length <= 4) {{
+        loadMoreContainer.style.display = 'none';
+      }}
+    }};
+  }});
+</script>
 
 </body>
 </html>

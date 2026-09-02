@@ -18,20 +18,25 @@
 <meta name="twitter:description" content="">
   <meta name="keywords" content="Mercor AI interview, Mercor interview questions, Mercor SWE evaluator, Mercor jobs, Mercor referral, train AI models, RLHF jobs, Mercor $150 hr, Mercor medical evaluator">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <!-- Google tag (gtag.js) - Deferred for Consent -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-7Z54KYTV6B');
+    function loadGA() {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+      document.head.appendChild(script);
+      
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7Z54KYTV6B');
+    }
   </script>
 </head>
 <body>
 
   <!-- ─── Nav ─────────────────────────────────────────── -->
-  <header class="nav">
+  <nav class="nav" aria-label="Primary Navigation">
     <div class="container">
       <div class="nav-inner">
         <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
@@ -47,8 +52,8 @@
           <li><a href="post-hire.html">Post-Hire Guide</a></li>
         </ul>
         <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
-          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <a href="https://www.linkedin.com/company/trainaitogain/" aria-label="LinkedIn" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
             </svg>
           </a>
@@ -56,14 +61,17 @@
         </div>
       </div>
     </div>
-  </header>
+  </nav>
 
   <!-- ─── Hero ─────────────────────────────────────────── -->
   <section class="hero">
     <div class="container">
       <div class="hero-inner" style="grid-template-columns: 1fr; text-align:center;">
         <div class="hero-left" style="max-width: 800px; margin: 0 auto;">
-          <div class="hero-eyebrow">For people mid-application</div>
+          <div class="hero-eyebrow" style="display:inline-flex; align-items:center; gap:8px; background:var(--primary-light); color:var(--primary-dark); padding:6px 12px; border-radius:100px; margin-bottom:24px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            Official Mercor Referral Partner
+          </div>
           <h1 class="hero-heading">
             Straight answers about applying to <span class="orange">Mercor.</span>
           </h1>
@@ -111,9 +119,12 @@
             </div>
           </div>
 
-          <div id="quiz-result" style="display:none; margin-top:24px;">
-            <p style="font-weight:700; color:var(--primary); font-size:18px;">✅ We found your best match below.</p>
-            <button onclick="resetQuiz()" style="background:none; border:none; color:var(--gray-400); text-decoration:underline; cursor:pointer; font-size:14px; margin-top:8px;">Reset Filter</button>
+          <div id="quiz-result" style="display:none; margin-top:24px; text-align:left; max-width:400px; margin-left:auto; margin-right:auto;">
+            <p style="font-weight:700; color:var(--black); font-size:15px; margin-bottom:12px;">Active Filters:</p>
+            <div id="active-filters" style="display:flex; flex-wrap:wrap; gap:8px;">
+              <!-- Chips inserted by JS -->
+            </div>
+            <button onclick="resetQuiz()" style="background:none; border:none; color:var(--gray-400); text-decoration:underline; cursor:pointer; font-size:13px; margin-top:16px;">Clear all filters</button>
           </div>
         </div>
       </div>
@@ -223,6 +234,7 @@
 
   <script>
     let userCategory = '';
+    let userLevel = '';
     
     function quizStep(step, answer, btnElement) {
       if(btnElement) {
@@ -236,12 +248,27 @@
           document.getElementById('quiz-step-2').style.display = 'block';
         }, 300);
       } else if (step === 2) {
-        let finalFilter = userCategory + ' ' + answer;
+        userLevel = answer;
         setTimeout(() => {
           document.getElementById('quiz-step-2').style.display = 'none';
           document.getElementById('quiz-result').style.display = 'block';
+          updateChips();
           filterCards(userCategory, answer);
         }, 300);
+      }
+    }
+
+    function updateChips() {
+      const container = document.getElementById('active-filters');
+      container.innerHTML = '';
+      
+      if(userCategory) {
+        const catMap = {'software': 'Software', 'medical': 'Medical', 'finance': 'Finance', 'language': 'Bilingual', 'other': 'General'};
+        container.innerHTML += `<div class="filter-chip">${catMap[userCategory]} <button onclick="resetQuiz()" aria-label="Remove filter">&times;</button></div>`;
+      }
+      if(userLevel) {
+        const lvlMap = {'complex': 'High-Complexity', 'volume': 'High-Volume'};
+        container.innerHTML += `<div class="filter-chip">${lvlMap[userLevel]} <button onclick="resetQuiz()" aria-label="Remove filter">&times;</button></div>`;
       }
     }
 
@@ -255,14 +282,15 @@
           card.style.display = 'none';
         }
       });
-      // Scroll to grid smoothly
       document.getElementById('opportunities-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function resetQuiz() {
       userCategory = '';
+      userLevel = '';
       document.getElementById('quiz-result').style.display = 'none';
       document.getElementById('quiz-step-1').style.display = 'block';
+      document.getElementById('quiz-step-2').style.display = 'none';
       const btns = document.querySelectorAll('.btn-quiz');
       btns.forEach(btn => btn.classList.remove('active'));
       const cards = document.querySelectorAll('.opp-card');
@@ -505,6 +533,41 @@
         });
       });
     });
+
+    // Consent Logic
+    document.addEventListener("DOMContentLoaded", () => {
+      if(!localStorage.getItem('cookieConsent')) {
+        setTimeout(() => {
+          document.getElementById('consent-banner').classList.add('show');
+        }, 1000);
+      } else if(localStorage.getItem('cookieConsent') === 'accepted') {
+        loadGA();
+      }
+    });
+
+    function acceptConsent() {
+      localStorage.setItem('cookieConsent', 'accepted');
+      document.getElementById('consent-banner').classList.remove('show');
+      loadGA();
+    }
+
+    function declineConsent() {
+      localStorage.setItem('cookieConsent', 'declined');
+      document.getElementById('consent-banner').classList.remove('show');
+    }
   </script>
+
+  <!-- Consent Banner HTML -->
+  <div id="consent-banner">
+    <div class="consent-text">
+      <strong>We value your privacy.</strong> We use minimal cookies to analyze traffic and improve our onboarding resources. 
+      You can accept all cookies or decline non-essential ones.
+    </div>
+    <div class="consent-actions">
+      <button class="btn-secondary" style="padding: 10px 16px; font-size: 13px;" onclick="declineConsent()">Decline</button>
+      <button class="btn-primary" style="padding: 10px 16px; font-size: 13px;" onclick="acceptConsent()">Accept All</button>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -3,7 +3,7 @@ import re
 with open("index.html", "r") as f:
     index_content = f.read()
 
-header = re.search(r"(<header.*?</header>)", index_content, re.DOTALL).group(1)
+header = re.search(r'(<nav class="nav".*?</nav>)', index_content, re.DOTALL).group(1)
 footer = re.search(r"(<footer.*?</footer>)", index_content, re.DOTALL).group(1)
 
 html = f"""<!DOCTYPE html>
