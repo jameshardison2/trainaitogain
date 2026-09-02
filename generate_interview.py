@@ -1,12 +1,4 @@
-import re
-
-with open("index.html", "r") as f:
-    index_content = f.read()
-
-header = re.search(r'(<nav class="nav".*?</nav>)', index_content, re.DOTALL).group(1)
-footer = re.search(r"(<footer.*?</footer>)", index_content, re.DOTALL).group(1)
-
-html = f"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -17,57 +9,86 @@ html = f"""<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <style>
-    body {{ background: var(--black); color: var(--white); }}
+    body { background: var(--black); color: var(--white); }
     
-    .prep-hub {{ max-width: 1000px; margin: 0 auto; padding: 64px 24px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 48px; align-items: start; }}
+    .prep-hub { max-width: 1000px; margin: 0 auto; padding: 64px 24px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 48px; align-items: start; }
     
-    @media (max-width: 800px) {{
-        .prep-hub {{ grid-template-columns: 1fr; }}
-    }}
+    @media (max-width: 800px) {
+        .prep-hub { grid-template-columns: 1fr; }
+    }
     
-    .cheat-sheet {{ background: rgba(255,255,255,0.05); padding: 32px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1); }}
-    .cheat-sheet h3 {{ font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }}
-    .cheat-sheet ul {{ list-style: none; padding: 0; margin: 0; }}
-    .cheat-sheet li {{ margin-bottom: 20px; font-size: 14px; color: #ccc; line-height: 1.6; position: relative; padding-left: 24px; }}
-    .cheat-sheet li::before {{ content: '✓'; position: absolute; left: 0; color: var(--primary); font-weight: 800; }}
-    .cheat-sheet li strong {{ color: var(--white); }}
+    .cheat-sheet { background: rgba(255,255,255,0.05); padding: 32px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1); }
+    .cheat-sheet h3 { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+    .cheat-sheet ul { list-style: none; padding: 0; margin: 0; }
+    .cheat-sheet li { margin-bottom: 20px; font-size: 14px; color: #ccc; line-height: 1.6; position: relative; padding-left: 24px; }
+    .cheat-sheet li::before { content: '✓'; position: absolute; left: 0; color: var(--primary); font-weight: 800; }
+    .cheat-sheet li strong { color: var(--white); }
     
-    .sim-container {{ background: rgba(0,0,0,0.5); border-radius: var(--radius-lg); padding: 48px 32px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 48px rgba(0,0,0,0.4); text-align: center; position: relative; overflow: hidden; }}
+    .sim-container { background: rgba(0,0,0,0.5); border-radius: var(--radius-lg); padding: 48px 32px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 48px rgba(0,0,0,0.4); text-align: center; position: relative; overflow: hidden; }
     
-    .avatar-ring {{ width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 32px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.3s; }}
-    .avatar-ring.speaking {{ animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1); border: 2px solid var(--primary); }}
-    .avatar-ring.listening {{ animation: pulse-ring-blue 1.5s infinite; border: 2px solid #3b82f6; }}
+    .avatar-ring { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 32px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.3s; }
+    .avatar-ring.speaking { animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1); border: 2px solid var(--primary); }
+    .avatar-ring.listening { animation: pulse-ring-blue 1.5s infinite; border: 2px solid #3b82f6; }
     
-    .avatar-icon {{ font-size: 48px; }}
+    .avatar-icon { font-size: 48px; }
     
-    @keyframes pulse-ring {{
-      0% {{ box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }}
-      70% {{ box-shadow: 0 0 0 30px rgba(16, 185, 129, 0); }}
-      100% {{ box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }}
-    }}
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 30px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
     
-    @keyframes pulse-ring-blue {{
-      0% {{ box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }}
-      70% {{ box-shadow: 0 0 0 30px rgba(59, 130, 246, 0); }}
-      100% {{ box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }}
-    }}
+    @keyframes pulse-ring-blue {
+      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+      70% { box-shadow: 0 0 0 30px rgba(59, 130, 246, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
     
-    .sim-status {{ font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 16px; transition: color 0.3s; }}
-    .sim-status.speaking {{ color: var(--primary); }}
-    .sim-status.listening {{ color: #3b82f6; }}
+    .sim-status { font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 16px; transition: color 0.3s; }
+    .sim-status.speaking { color: var(--primary); }
+    .sim-status.listening { color: #3b82f6; }
     
-    .sim-text {{ font-size: 22px; font-weight: 500; line-height: 1.5; margin-bottom: 32px; min-height: 100px; color: var(--white); }}
-    .user-transcript {{ font-size: 16px; color: #aaa; font-style: italic; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 8px; margin-bottom: 24px; min-height: 60px; text-align: left; display: none; border-left: 3px solid #3b82f6; }}
+    .sim-text { font-size: 22px; font-weight: 500; line-height: 1.5; margin-bottom: 32px; min-height: 100px; color: var(--white); }
+    .user-transcript { font-size: 16px; color: #aaa; font-style: italic; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 8px; margin-bottom: 24px; min-height: 60px; text-align: left; display: none; border-left: 3px solid #3b82f6; }
     
-    .btn-sim {{ background: var(--primary); color: var(--white); border: none; padding: 16px 32px; font-size: 16px; font-weight: 800; border-radius: 100px; cursor: pointer; transition: all 0.2s; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3); display: inline-flex; align-items: center; gap: 12px; }}
-    .btn-sim:hover {{ transform: translateY(-2px); box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5); }}
-    .btn-sim svg {{ width: 20px; height: 20px; fill: currentColor; }}
-    .btn-sim:disabled {{ opacity: 0.5; cursor: not-allowed; transform: none; }}
+    .btn-sim { background: var(--primary); color: var(--white); border: none; padding: 16px 32px; font-size: 16px; font-weight: 800; border-radius: 100px; cursor: pointer; transition: all 0.2s; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3); display: inline-flex; align-items: center; gap: 12px; }
+    .btn-sim:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5); }
+    .btn-sim svg { width: 20px; height: 20px; fill: currentColor; }
+    .btn-sim:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    
+    .domain-selector { width: 100%; max-width: 300px; padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: var(--white); font-family: inherit; font-size: 16px; margin-bottom: 24px; appearance: none; cursor: pointer; }
+    .domain-selector:focus { outline: none; border-color: var(--primary); }
+    .domain-selector option { background: var(--black); color: var(--white); }
   </style>
 </head>
 <body>
 
-{header}
+<nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; align-items:center; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+        </a>
+        <ul class="nav-links">
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="is-it-worth-it.html">Expectations</a></li>
+          <li><a href="ai-interview.html">Interview Prep</a></li>
+          <li><a href="post-hire.html">Post-Hire Guide</a></li>
+        </ul>
+        <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
+          <a href="https://www.linkedin.com/company/trainaitogain/" aria-label="LinkedIn" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-nav-primary" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'nav_cta'});">Apply via Mercor</a>
+        </div>
+      </div>
+    </div>
+  </nav>
 
 <div class="prep-hub">
   
@@ -90,7 +111,15 @@ html = f"""<!DOCTYPE html>
         <div class="avatar-icon">🎙️</div>
       </div>
       <h2 style="font-size:28px; margin-bottom:16px;">Voice AI Simulator</h2>
-      <p style="color:#aaa; margin-bottom:32px; font-size:15px; line-height:1.6;">This simulator uses your microphone to conduct a real, high-pressure audio interview. The AI will speak the questions out loud. You must answer out loud. The AI will analyze your voice and give you immediate coaching feedback.</p>
+      <p style="color:#aaa; margin-bottom:24px; font-size:15px; line-height:1.6;">This simulator uses your microphone to conduct a real, high-pressure audio interview. The AI will speak the questions out loud and analyze your voice for immediate coaching feedback.</p>
+      
+      <select id="domain-selector" class="domain-selector">
+        <option value="software">Role: Software & Tech</option>
+        <option value="medical">Role: Medical & Clinical</option>
+        <option value="finance">Role: Finance & Quant</option>
+      </select>
+      
+      <br>
       <button class="btn-sim" id="start-btn">
         <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
         Start Voice Interview
@@ -100,7 +129,7 @@ html = f"""<!DOCTYPE html>
 
     <div id="active-view" style="display:none;">
       <div class="avatar-ring" id="avatar-ring">
-        <div class="avatar-icon" id="avatar-emoji">🤖</div>
+        <div class="avatar-icon" id="avatar-emoji">👩‍💻</div>
       </div>
       
       <div class="sim-status" id="sim-status">Connecting...</div>
@@ -114,7 +143,26 @@ html = f"""<!DOCTYPE html>
   </div>
 </div>
 
-{footer}
+<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px;">
+          <p style="color:var(--white); font-weight:700; font-size:16px; margin-bottom:8px;">James Hardison II</p>
+          <small style="color:rgba(255,255,255,0.6); font-size:13px; line-height:1.7; display:block;">
+            Independent referral partner. I earn a referral credit when someone I refer is hired. Saying so up front.<br><br>
+            Independent resource. Not affiliated with, authorized by, sponsored by, or endorsed by Mercor.
+          </small>
+        </div>
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s; margin-right:16px;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 <script>
   // Browser Speech APIs
@@ -122,39 +170,84 @@ html = f"""<!DOCTYPE html>
   const synth = window.speechSynthesis;
   let recognition;
   
-  if (SpeechRecognition) {{
+  if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.continuous = false;
     recognition.interimResults = true;
-  }}
+  }
 
-  const questions = [
-    {{
-      q: "Explain how a Transformer architecture works to a non-technical manager.",
-      keywords: ["read", "all at once", "attention", "parallel", "context", "relationship"],
-      feedbackMiss: "You missed the core concept for a non-technical person. You need to emphasize that unlike older models that read word-by-word, Transformers look at the whole sentence at once to understand context.",
-      feedbackHit: "Great answer! You clearly explained the parallel processing aspect without getting bogged down in math."
-    }},
-    {{
-      q: "What is the difference between supervised fine-tuning and RLHF?",
-      keywords: ["facts", "behavior", "human", "reward", "alignment", "preferences", "manners"],
-      feedbackMiss: "I didn't hear a clear distinction. Remember the headline: SFT teaches the model facts and capabilities, while RLHF teaches it manners and alignment with human preferences.",
-      feedbackHit: "Spot on! You nailed the distinction between teaching capabilities versus teaching alignment."
-    }},
-    {{
-      q: "How would you design a prompt to ensure an LLM outputs valid JSON?",
-      keywords: ["few-shot", "examples", "system", "schema", "retry", "validation", "constrain"],
-      feedbackMiss: "You missed the most reliable techniques. You should always mention providing explicit few-shot examples and enforcing a strict JSON schema in the system prompt.",
-      feedbackHit: "Excellent. You understand that prompt engineering requires structural constraints and examples."
-    }}
-  ];
+  const domainData = {
+    "software": [
+      {
+        q: "Explain how a Transformer architecture works to a non-technical manager.",
+        keywords: ["read", "all at once", "attention", "parallel", "context", "relationship"],
+        feedbackMiss: "You missed the core concept for a non-technical person. You need to emphasize that unlike older models that read word-by-word, Transformers look at the whole sentence at once to understand context.",
+        feedbackHit: "Great answer! You clearly explained the parallel processing aspect without getting bogged down in math."
+      },
+      {
+        q: "What is the difference between supervised fine-tuning and RLHF?",
+        keywords: ["facts", "behavior", "human", "reward", "alignment", "preferences", "manners"],
+        feedbackMiss: "I didn't hear a clear distinction. Remember the headline: SFT teaches the model facts and capabilities, while RLHF teaches it manners and alignment with human preferences.",
+        feedbackHit: "Spot on! You nailed the distinction between teaching capabilities versus teaching alignment."
+      },
+      {
+        q: "How would you design a prompt to ensure an LLM outputs valid JSON?",
+        keywords: ["few-shot", "examples", "system", "schema", "retry", "validation", "constrain"],
+        feedbackMiss: "You missed the most reliable techniques. You should always mention providing explicit few-shot examples and enforcing a strict JSON schema in the system prompt.",
+        feedbackHit: "Excellent. You understand that prompt engineering requires structural constraints and examples."
+      }
+    ],
+    "medical": [
+      {
+        q: "How would you evaluate an AI model's differential diagnosis if it missed a rare edge case?",
+        keywords: ["prevalence", "base rate", "severity", "safety", "false negative", "human in the loop"],
+        feedbackMiss: "You missed the safety aspect. In medical AI, false negatives for severe conditions are critical. You must mention adjusting the model's sensitivity or enforcing human-in-the-loop protocols.",
+        feedbackHit: "Excellent. You focused on patient safety and the statistical base rate of the edge case."
+      },
+      {
+        q: "Explain why hallucination in a pharmacology model is dangerous and how you would prevent it.",
+        keywords: ["contraindication", "dosage", "fatal", "grounding", "RAG", "retrieval", "citations"],
+        feedbackMiss: "You need to explicitly mention RAG (Retrieval-Augmented Generation) or grounding the model in verified clinical texts. You cannot rely on the model's internal memory for drug dosages.",
+        feedbackHit: "Spot on. Grounding the model in verified medical literature via RAG is the correct approach."
+      },
+      {
+        q: "If an AI generates a treatment plan that contradicts standard clinical guidelines, what is your first step?",
+        keywords: ["guidelines", "flag", "penalize", "RLHF", "reward", "override"],
+        feedbackMiss: "You didn't mention the RLHF mechanism. You need to explain that you would heavily penalize the output in the reward model to align the AI with standard clinical guidelines.",
+        feedbackHit: "Great answer! Penalizing the model to align with strict clinical guidelines is exactly what they want to hear."
+      }
+    ],
+    "finance": [
+      {
+        q: "How do you evaluate an AI model generating code for a high-frequency trading algorithm?",
+        keywords: ["latency", "complexity", "memory", "C++", "execution speed", "optimization"],
+        feedbackMiss: "You missed the core constraint of HFT: latency. You must evaluate the code primarily on algorithmic time complexity and memory optimization, not just correctness.",
+        feedbackHit: "Perfect. Recognizing latency and execution speed as the primary constraints shows you understand HFT."
+      },
+      {
+        q: "An AI model summarizes a 10-K report but hallucinates a key financial metric. How do you fix this?",
+        keywords: ["extraction", "grounding", "RAG", "citations", "verify", "exact match"],
+        feedbackMiss: "You missed the extraction constraint. You need to constrain the prompt to strictly extract and quote exact figures, rather than allowing the model to summarize or generate text freely.",
+        feedbackHit: "Spot on. Forcing strict extraction and exact match citations is the right way to prevent financial hallucinations."
+      },
+      {
+        q: "Explain the importance of temporal data leakage when training financial time-series models.",
+        keywords: ["future", "past", "leakage", "predict", "overfit", "validation", "chronological"],
+        feedbackMiss: "You didn't explain the chronological constraint clearly. You must emphasize that training data must be strictly separated chronologically to prevent the model from 'seeing the future'.",
+        feedbackHit: "Excellent. You clearly explained the necessity of strict chronological separation in validation sets."
+      }
+    ]
+  };
 
+  let currentDomain = "software";
+  let currentQuestions = domainData[currentDomain];
   let currentQ = 0;
   
   const startBtn = document.getElementById('start-btn');
   const nextBtn = document.getElementById('next-btn');
   const setupView = document.getElementById('setup-view');
   const activeView = document.getElementById('active-view');
+  const domainSelector = document.getElementById('domain-selector');
   
   const avatarRing = document.getElementById('avatar-ring');
   const avatarEmoji = document.getElementById('avatar-emoji');
@@ -162,160 +255,179 @@ html = f"""<!DOCTYPE html>
   const simText = document.getElementById('sim-text');
   const userTranscript = document.getElementById('user-transcript');
 
-  function setUIState(state, text) {{
+  function setUIState(state, text) {
     simText.innerText = text;
     avatarRing.className = 'avatar-ring';
     simStatus.className = 'sim-status';
     
-    if (state === 'speaking') {{
+    if (state === 'speaking') {
       avatarRing.classList.add('speaking');
       simStatus.classList.add('speaking');
-      simStatus.innerText = 'AI is Speaking...';
-      avatarEmoji.innerText = '🤖';
+      simStatus.innerText = 'AI Interviewer is Speaking...';
       userTranscript.style.display = 'none';
       nextBtn.style.display = 'none';
-    }} else if (state === 'listening') {{
+    } else if (state === 'listening') {
       avatarRing.classList.add('listening');
       simStatus.classList.add('listening');
       simStatus.innerText = 'Listening to you...';
-      avatarEmoji.innerText = '🎙️';
       userTranscript.style.display = 'block';
       userTranscript.innerText = '...';
       nextBtn.style.display = 'none';
-    }} else if (state === 'analyzing') {{
+    } else if (state === 'analyzing') {
       simStatus.innerText = 'Analyzing Answer...';
       avatarEmoji.innerText = '⚙️';
       nextBtn.style.display = 'none';
-    }} else if (state === 'feedback') {{
+    } else if (state === 'feedback') {
       avatarRing.classList.add('speaking');
       simStatus.classList.add('speaking');
       simStatus.innerText = 'Coaching Feedback';
       avatarEmoji.innerText = '🧠';
       nextBtn.style.display = 'inline-flex';
-    }}
-  }}
+    }
+  }
 
-  function speakText(text, callback) {{
-    if (synth.speaking) {{
+  function speakText(text, callback) {
+    if (synth.speaking) {
         synth.cancel();
-    }}
+    }
     const utterance = new SpeechSynthesisUtterance(text);
     
+    // Select a premium, human-like female voice
     const voices = synth.getVoices();
-    const goodVoice = voices.find(v => v.lang.includes('en-') && (v.name.includes('Google') || v.name.includes('Siri') || v.name.includes('Samantha')));
+    const goodVoice = voices.find(v => 
+        (v.name.includes('Google') && v.name.includes('Female')) || 
+        v.name.includes('Google US English') || 
+        v.name.includes('Samantha') || 
+        v.name.includes('Karen') || 
+        v.name.includes('Victoria') ||
+        v.name.includes('Moira') ||
+        (v.lang.includes('en-') && v.name.includes('Zira')) // Windows fallback
+    ) || voices.find(v => v.lang.includes('en-')); // Ultimate fallback
+    
     if (goodVoice) utterance.voice = goodVoice;
     
     utterance.rate = 1.05;
-    utterance.pitch = 1.0;
+    utterance.pitch = 1.1; // Slightly higher pitch for female voice
     
-    utterance.onend = () => {{
+    utterance.onend = () => {
       if (callback) callback();
-    }};
+    };
     
     synth.speak(utterance);
-  }}
+  }
 
-  function processAnswer(transcript) {{
+  function processAnswer(transcript) {
     setUIState('analyzing', 'Analyzing your transcript...');
     
-    setTimeout(() => {{
+    setTimeout(() => {
       const text = transcript.toLowerCase();
-      const qData = questions[currentQ];
+      const qData = currentQuestions[currentQ];
       
       let matches = 0;
-      qData.keywords.forEach(kw => {{
+      qData.keywords.forEach(kw => {
         if (text.includes(kw.toLowerCase())) matches++;
-      }});
+      });
       
       let feedback = "";
-      if (text.split(' ').length < 10) {{
+      if (text.split(' ').length < 10) {
          feedback = "Your answer was way too short. You need to elaborate more to prove your expertise. " + qData.feedbackMiss;
-      }} else if (matches >= 2) {{
+      } else if (matches >= 2) {
          feedback = qData.feedbackHit;
-      }} else {{
+      } else {
          feedback = qData.feedbackMiss;
-      }}
+      }
       
       setUIState('feedback', feedback);
-      speakText(feedback, () => {{
+      speakText(feedback, () => {
          avatarRing.classList.remove('speaking');
          simStatus.classList.remove('speaking');
          simStatus.innerText = 'Feedback Complete';
-      }});
+         avatarEmoji.innerText = '👩‍💻';
+      });
       
-    }}, 1000);
-  }}
+    }, 1000);
+  }
 
-  function askQuestion() {{
-    const qText = questions[currentQ].q;
+  function askQuestion() {
+    const qText = currentQuestions[currentQ].q;
     setUIState('speaking', qText);
+    avatarEmoji.innerText = '👩‍💻';
     
-    speakText(qText, () => {{
-      if (!recognition) {{
-         setUIState('feedback', 'Speech Recognition is not supported on this browser. Please use Google Chrome.');
+    speakText(qText, () => {
+      if (!recognition) {
+         setUIState('feedback', 'Speech Recognition is not supported on this browser. Please use Google Chrome or Safari.');
          return;
-      }}
+      }
       
       setUIState('listening', 'Waiting for your answer...');
       let finalTranscript = '';
       
-      recognition.onresult = (event) => {{
+      recognition.onresult = (event) => {
         let interim = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {{
+        for (let i = event.resultIndex; i < event.results.length; i++) {
           const t = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {{
+          if (event.results[i].isFinal) {
             finalTranscript += t + ' ';
-          }} else {{
+          } else {
             interim += t;
-          }}
-        }}
+          }
+        }
         userTranscript.innerText = finalTranscript + interim;
-      }};
+      };
       
-      recognition.onerror = (e) => {{
-         if (e.error === 'no-speech') {{
+      recognition.onerror = (e) => {
+         if (e.error === 'no-speech') {
              processAnswer(finalTranscript);
-         }}
-      }};
+         }
+      };
       
-      recognition.onend = () => {{
-        if (finalTranscript.trim() === '') {{
+      recognition.onend = () => {
+        if (finalTranscript.trim() === '') {
             processAnswer(userTranscript.innerText || "I don't know");
-        }} else {{
+        } else {
             processAnswer(finalTranscript);
-        }}
-      }};
+        }
+      };
       
       recognition.start();
-    }});
-  }}
+    });
+  }
 
-  startBtn.addEventListener('click', () => {{
+  startBtn.addEventListener('click', () => {
+    currentDomain = domainSelector.value;
+    currentQuestions = domainData[currentDomain];
+    currentQ = 0;
+    
     setupView.style.display = 'none';
     activeView.style.display = 'block';
     
-    synth.getVoices();
+    synth.getVoices(); // Ensure voices are loaded
     
-    speakText("Welcome to the Train AI to Gain simulator. I will ask you a question. Please speak your answer out loud when prompted.", () => {{
+    const domainNames = {
+        "software": "Software Engineering",
+        "medical": "Medical and Clinical",
+        "finance": "Finance and Quantitative"
+    };
+    
+    const greeting = 'Welcome to the ' + domainNames[currentDomain] + ' pipeline interview. I will ask you a question. Please speak your answer out loud when prompted.';
+    
+    setUIState('speaking', "Initializing...");
+    
+    speakText(greeting, () => {
        askQuestion();
-    }});
-  }});
+    });
+  });
 
-  nextBtn.addEventListener('click', () => {{
+  nextBtn.addEventListener('click', () => {
     if (synth.speaking) synth.cancel();
-    currentQ = (currentQ + 1) % questions.length;
+    currentQ = (currentQ + 1) % currentQuestions.length;
     askQuestion();
-  }});
+  });
   
-  if (speechSynthesis.onvoiceschanged !== undefined) {{
+  if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = () => synth.getVoices();
-  }}
+  }
 </script>
 
 </body>
 </html>
-"""
-
-with open("ai-interview.html", "w") as f:
-    f.write(html)
-print("Created ai-interview.html with Voice AI Simulator")

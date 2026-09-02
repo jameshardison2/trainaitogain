@@ -1,10 +1,58 @@
 import re
+import json
 
 with open("index.html", "r") as f:
     index_content = f.read()
 
 header = re.search(r'(<nav class="nav".*?</nav>)', index_content, re.DOTALL).group(1)
 footer = re.search(r"(<footer.*?</footer>)", index_content, re.DOTALL).group(1)
+
+with open("roles.json", "r") as f:
+    roles_data = json.load(f)
+
+carousel_html = ""
+domain_icons = {"software": "💻", "medical": "🩺", "finance": "📈", "translation": "🌍", "general": "📋"}
+domain_titles = {"software": "Software & Tech", "medical": "Medical & Clinical", "finance": "Finance & Quant", "translation": "Translation & Law", "general": "Generalist & Content"}
+
+for domain, roles in roles_data.items():
+    icon = domain_icons.get(domain, "✨")
+    title = domain_titles.get(domain, domain.capitalize())
+    
+    carousel_html += f"""
+    <div style="margin-bottom: 48px;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+        <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">{icon}</div>
+        <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">{title} Pipelines</h2>
+      </div>
+      
+      <div style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding-bottom:16px; -webkit-overflow-scrolling:touch;">
+        <style>
+          /* Hide scrollbar for a cleaner look */
+          div::-webkit-scrollbar {{ display: none; }}
+        </style>
+    """
+    for job in roles:
+        label = f"job_board_{job['tag']}"
+        carousel_html += f"""
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          {f'<div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>' if job.get('hot') else ''}
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">{job['tag']}</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">{job['pay']}</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">{job['title']}</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">{job['desc']}</p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            {''.join([f'<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">{skill}</span>' for skill in job['skills']])}
+          </div>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" style="display:block; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {{'event_category':'referral', 'event_label':'{label}'}});">Apply via Mercor</a>
+        </div>
+        """
+    
+    carousel_html += """
+      </div>
+    </div>
+    """
 
 html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -42,60 +90,13 @@ html = f"""<!DOCTYPE html>
 <section style="padding: 48px 0 24px;">
   <div class="container" style="text-align:center; max-width:800px;">
     <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Global Opportunities Index</h1>
-    <p style="font-size:16px; color:var(--gray-500);">Browse all available pipelines. Select a domain below to see granular, niche-specific job postings and bypass the generic applicant pool.</p>
+    <p style="font-size:16px; color:var(--gray-500);">Browse all {sum(len(v) for v in roles_data.values())} active pipelines. Select a domain below to see granular, niche-specific job postings and bypass the generic applicant pool.</p>
   </div>
 </section>
 
 <section class="section" style="padding-top:24px; padding-bottom:64px;">
   <div class="container">
-    
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:24px;">
-      
-      <!-- Domain Card -->
-      <a href="role-software.html" class="feature-card opp-card" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; display:flex; flex-direction:column; text-decoration:none; color:inherit; border-radius:var(--radius-lg); transition:all 0.2s; box-shadow:var(--shadow-sm);">
-        <div style="width:48px; height:48px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:12px; margin-bottom:20px; font-size:24px;">💻</div>
-        <h3 style="font-size:24px; font-weight:800; margin-bottom:8px;">Software & Tech</h3>
-        <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px;">Python, React, C++, Rust, Data Engineering, and Cybersecurity.</p>
-        <div style="margin-top:auto; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:space-between;">
-          <span>6 Open Roles</span>
-          <span>Up to $150/hr &rarr;</span>
-        </div>
-      </a>
-
-      <!-- Domain Card -->
-      <a href="role-medical.html" class="feature-card opp-card" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; display:flex; flex-direction:column; text-decoration:none; color:inherit; border-radius:var(--radius-lg); transition:all 0.2s; box-shadow:var(--shadow-sm);">
-        <div style="width:48px; height:48px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:12px; margin-bottom:20px; font-size:24px;">🩺</div>
-        <h3 style="font-size:24px; font-weight:800; margin-bottom:8px;">Medical & Clinical</h3>
-        <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px;">Oncology, Neurology, Primary Care, and Pharmacology.</p>
-        <div style="margin-top:auto; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:space-between;">
-          <span>5 Open Roles</span>
-          <span>Up to $150/hr &rarr;</span>
-        </div>
-      </a>
-
-      <!-- Domain Card -->
-      <a href="role-finance.html" class="feature-card opp-card" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; display:flex; flex-direction:column; text-decoration:none; color:inherit; border-radius:var(--radius-lg); transition:all 0.2s; box-shadow:var(--shadow-sm);">
-        <div style="width:48px; height:48px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:12px; margin-bottom:20px; font-size:24px;">📈</div>
-        <h3 style="font-size:24px; font-weight:800; margin-bottom:8px;">Finance & Quant</h3>
-        <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px;">Algorithmic Trading, Actuarial Science, M&A, Mathematics.</p>
-        <div style="margin-top:auto; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:space-between;">
-          <span>5 Open Roles</span>
-          <span>Up to $150/hr &rarr;</span>
-        </div>
-      </a>
-
-      <!-- Domain Card -->
-      <a href="https://t.mercor.com/wbPMF" target="_blank" class="feature-card opp-card" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; display:flex; flex-direction:column; text-decoration:none; color:inherit; border-radius:var(--radius-lg); transition:all 0.2s; box-shadow:var(--shadow-sm);">
-        <div style="width:48px; height:48px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:12px; margin-bottom:20px; font-size:24px;">🌍</div>
-        <h3 style="font-size:24px; font-weight:800; margin-bottom:8px;">Translation & Law</h3>
-        <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px;">Legal Review, Multilingual Annotation, Humanities Experts.</p>
-        <div style="margin-top:auto; color:var(--primary); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:space-between;">
-          <span>10+ Open Roles</span>
-          <span>View on Mercor &rarr;</span>
-        </div>
-      </a>
-
-    </div>
+    {carousel_html}
   </div>
 </section>
 
@@ -107,4 +108,4 @@ html = f"""<!DOCTYPE html>
 
 with open("apply.html", "w") as f:
     f.write(html)
-print("Created apply.html")
+print("Created apply.html with carousels")
