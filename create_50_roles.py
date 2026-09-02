@@ -36,12 +36,20 @@ def generate_role(title, domain, tag):
     if domain == "translation" or domain == "general":
         pay = random.choice([40, 50, 60, 80])
     
+    desc_templates = [
+        f"Evaluate reasoning chains and logic paths for frontier models using {title.lower()} expertise.",
+        f"Design complex prompting scenarios and analyze model outputs for accuracy in {title.lower()}.",
+        f"Audit LLM hallucinations and enforce strict safety constraints within {title.lower()} domains.",
+        f"Curate high-quality, expert-level training datasets specifically for {title.lower()}.",
+        f"Review AI-generated code/text against domain-specific rubrics for {title.lower()} tasks."
+    ]
+    
     return {
         "title": title,
         "pay": f"${pay}/hr",
         "tag": tag,
         "hot": random.random() > 0.7,
-        "desc": f"Evaluate and train advanced AI models focusing on {title.lower()} expertise.",
+        "desc": random.choice(desc_templates),
         "skills": [domain.capitalize(), "AI Evaluation", "Critical Thinking"]
     }
 

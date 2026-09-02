@@ -2,10 +2,10 @@
   "software": [
     {
       "title": "Senior Python / ML Evaluator",
-      "pay": "$100/hr",
+      "pay": "$150/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on senior python / ml evaluator expertise.",
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within senior python / ml evaluator domains.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -14,10 +14,10 @@
     },
     {
       "title": "C++ Systems & Performance",
-      "pay": "$150/hr",
+      "pay": "$130/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on c++ systems & performance expertise.",
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within c++ systems & performance domains.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -26,10 +26,10 @@
     },
     {
       "title": "Frontend / React Architecture",
-      "pay": "$100/hr",
+      "pay": "$120/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on frontend / react architecture expertise.",
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within frontend / react architecture domains.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -38,10 +38,10 @@
     },
     {
       "title": "Data Engineering / SQL Architect",
-      "pay": "$90/hr",
+      "pay": "$150/hr",
       "tag": "SOFTWARE",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on data engineering / sql architect expertise.",
+      "hot": false,
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in data engineering / sql architect.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -52,8 +52,8 @@
       "title": "Security & Cryptography",
       "pay": "$100/hr",
       "tag": "SOFTWARE",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on security & cryptography expertise.",
+      "hot": false,
+      "desc": "Curate high-quality, expert-level training datasets specifically for security & cryptography.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -62,10 +62,10 @@
     },
     {
       "title": "General SWE / Leetcode Master",
-      "pay": "$120/hr",
+      "pay": "$100/hr",
       "tag": "SOFTWARE",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on general swe / leetcode master expertise.",
+      "hot": false,
+      "desc": "Curate high-quality, expert-level training datasets specifically for general swe / leetcode master.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -74,10 +74,10 @@
     },
     {
       "title": "Rust Backend Engineer",
-      "pay": "$80/hr",
+      "pay": "$130/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on rust backend engineer expertise.",
+      "desc": "Curate high-quality, expert-level training datasets specifically for rust backend engineer.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -86,10 +86,10 @@
     },
     {
       "title": "Go Cloud Infrastructure",
-      "pay": "$150/hr",
+      "pay": "$90/hr",
       "tag": "SOFTWARE",
       "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on go cloud infrastructure expertise.",
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using go cloud infrastructure expertise.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -98,10 +98,10 @@
     },
     {
       "title": "AI Research Scientist",
-      "pay": "$90/hr",
+      "pay": "$150/hr",
       "tag": "SOFTWARE",
       "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on ai research scientist expertise.",
+      "desc": "Review AI-generated code/text against domain-specific rubrics for ai research scientist tasks.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -110,10 +110,10 @@
     },
     {
       "title": "DevOps / SRE Architect",
-      "pay": "$100/hr",
+      "pay": "$90/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on devops / sre architect expertise.",
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within devops / sre architect domains.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -122,10 +122,10 @@
     },
     {
       "title": "Blockchain / Web3 Developer",
-      "pay": "$80/hr",
+      "pay": "$90/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on blockchain / web3 developer expertise.",
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using blockchain / web3 developer expertise.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -134,10 +134,10 @@
     },
     {
       "title": "iOS / Swift Engineer",
-      "pay": "$90/hr",
+      "pay": "$150/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on ios / swift engineer expertise.",
+      "desc": "Review AI-generated code/text against domain-specific rubrics for ios / swift engineer tasks.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -146,10 +146,10 @@
     },
     {
       "title": "Android / Kotlin Expert",
-      "pay": "$150/hr",
+      "pay": "$80/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on android / kotlin expert expertise.",
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within android / kotlin expert domains.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -161,7 +161,7 @@
       "pay": "$80/hr",
       "tag": "SOFTWARE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on embedded systems c/c++ expertise.",
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using embedded systems c/c++ expertise.",
       "skills": [
         "Software",
         "AI Evaluation",
@@ -172,10 +172,10 @@
   "medical": [
     {
       "title": "Oncology AI Reviewer",
-      "pay": "$80/hr",
+      "pay": "$90/hr",
       "tag": "MEDICAL",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on oncology ai reviewer expertise.",
+      "hot": false,
+      "desc": "Curate high-quality, expert-level training datasets specifically for oncology ai reviewer.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -184,10 +184,10 @@
     },
     {
       "title": "Neurology / BCI Annotator",
-      "pay": "$150/hr",
+      "pay": "$90/hr",
       "tag": "MEDICAL",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on neurology / bci annotator expertise.",
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in neurology / bci annotator.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -199,7 +199,7 @@
       "pay": "$80/hr",
       "tag": "MEDICAL",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on general practitioner evaluator expertise.",
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using general practitioner evaluator expertise.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -208,10 +208,10 @@
     },
     {
       "title": "Pharmacology Expert",
-      "pay": "$120/hr",
+      "pay": "$90/hr",
       "tag": "MEDICAL",
       "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on pharmacology expert expertise.",
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using pharmacology expert expertise.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -220,10 +220,10 @@
     },
     {
       "title": "Surgical Methodology",
-      "pay": "$120/hr",
+      "pay": "$100/hr",
       "tag": "MEDICAL",
       "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on surgical methodology expertise.",
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within surgical methodology domains.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -232,10 +232,10 @@
     },
     {
       "title": "Radiology / MRI Annotator",
-      "pay": "$130/hr",
+      "pay": "$100/hr",
       "tag": "MEDICAL",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on radiology / mri annotator expertise.",
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in radiology / mri annotator.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -244,10 +244,10 @@
     },
     {
       "title": "Cardiology Diagnostic Reviewer",
-      "pay": "$80/hr",
+      "pay": "$120/hr",
       "tag": "MEDICAL",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on cardiology diagnostic reviewer expertise.",
+      "desc": "Curate high-quality, expert-level training datasets specifically for cardiology diagnostic reviewer.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -256,10 +256,10 @@
     },
     {
       "title": "Pediatrics Case Specialist",
-      "pay": "$100/hr",
+      "pay": "$150/hr",
       "tag": "MEDICAL",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on pediatrics case specialist expertise.",
+      "hot": false,
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in pediatrics case specialist.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -268,10 +268,10 @@
     },
     {
       "title": "Psychiatry / Therapy AI Analyst",
-      "pay": "$130/hr",
+      "pay": "$80/hr",
       "tag": "MEDICAL",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on psychiatry / therapy ai analyst expertise.",
+      "hot": false,
+      "desc": "Curate high-quality, expert-level training datasets specifically for psychiatry / therapy ai analyst.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -280,10 +280,10 @@
     },
     {
       "title": "Dermatology Vision Model Expert",
-      "pay": "$120/hr",
+      "pay": "$150/hr",
       "tag": "MEDICAL",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on dermatology vision model expert expertise.",
+      "hot": false,
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in dermatology vision model expert.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -292,10 +292,10 @@
     },
     {
       "title": "Pathology Slide Reviewer",
-      "pay": "$130/hr",
+      "pay": "$100/hr",
       "tag": "MEDICAL",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on pathology slide reviewer expertise.",
+      "hot": false,
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using pathology slide reviewer expertise.",
       "skills": [
         "Medical",
         "AI Evaluation",
@@ -306,10 +306,10 @@
   "finance": [
     {
       "title": "Quant Dev / Algo Trader",
-      "pay": "$100/hr",
+      "pay": "$130/hr",
       "tag": "FINANCE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on quant dev / algo trader expertise.",
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in quant dev / algo trader.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -320,8 +320,8 @@
       "title": "Actuarial Science Reviewer",
       "pay": "$120/hr",
       "tag": "FINANCE",
-      "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on actuarial science reviewer expertise.",
+      "hot": true,
+      "desc": "Review AI-generated code/text against domain-specific rubrics for actuarial science reviewer tasks.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -330,10 +330,10 @@
     },
     {
       "title": "Corporate Finance / M&A",
-      "pay": "$130/hr",
+      "pay": "$90/hr",
       "tag": "FINANCE",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on corporate finance / m&a expertise.",
+      "hot": false,
+      "desc": "Curate high-quality, expert-level training datasets specifically for corporate finance / m&a.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -342,10 +342,10 @@
     },
     {
       "title": "PhD Level Mathematician",
-      "pay": "$100/hr",
+      "pay": "$120/hr",
       "tag": "FINANCE",
-      "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on phd level mathematician expertise.",
+      "hot": true,
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in phd level mathematician.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -354,10 +354,10 @@
     },
     {
       "title": "Tax Strategy & Compliance",
-      "pay": "$120/hr",
+      "pay": "$100/hr",
       "tag": "FINANCE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on tax strategy & compliance expertise.",
+      "desc": "Review AI-generated code/text against domain-specific rubrics for tax strategy & compliance tasks.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -366,10 +366,10 @@
     },
     {
       "title": "Hedge Fund Risk Analyst",
-      "pay": "$90/hr",
+      "pay": "$100/hr",
       "tag": "FINANCE",
-      "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on hedge fund risk analyst expertise.",
+      "hot": true,
+      "desc": "Curate high-quality, expert-level training datasets specifically for hedge fund risk analyst.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -378,10 +378,10 @@
     },
     {
       "title": "Derivatives Pricing Expert",
-      "pay": "$150/hr",
+      "pay": "$130/hr",
       "tag": "FINANCE",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on derivatives pricing expert expertise.",
+      "hot": false,
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within derivatives pricing expert domains.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -393,7 +393,7 @@
       "pay": "$150/hr",
       "tag": "FINANCE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on crypto economics researcher expertise.",
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using crypto economics researcher expertise.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -404,8 +404,8 @@
       "title": "Venture Capital Analyst",
       "pay": "$130/hr",
       "tag": "FINANCE",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on venture capital analyst expertise.",
+      "hot": false,
+      "desc": "Review AI-generated code/text against domain-specific rubrics for venture capital analyst tasks.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -414,10 +414,10 @@
     },
     {
       "title": "Macroeconomics Forecaster",
-      "pay": "$120/hr",
+      "pay": "$80/hr",
       "tag": "FINANCE",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on macroeconomics forecaster expertise.",
+      "desc": "Review AI-generated code/text against domain-specific rubrics for macroeconomics forecaster tasks.",
       "skills": [
         "Finance",
         "AI Evaluation",
@@ -428,10 +428,10 @@
   "translation": [
     {
       "title": "Legal Document Reviewer (Bilingual)",
-      "pay": "$60/hr",
+      "pay": "$40/hr",
       "tag": "TRANSLATION",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on legal document reviewer (bilingual) expertise.",
+      "hot": false,
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in legal document reviewer (bilingual).",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -442,8 +442,8 @@
       "title": "Japanese/English Cultural Context",
       "pay": "$50/hr",
       "tag": "TRANSLATION",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on japanese/english cultural context expertise.",
+      "hot": false,
+      "desc": "Review AI-generated code/text against domain-specific rubrics for japanese/english cultural context tasks.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -455,7 +455,7 @@
       "pay": "$50/hr",
       "tag": "TRANSLATION",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on arabic natural language processing expertise.",
+      "desc": "Curate high-quality, expert-level training datasets specifically for arabic natural language processing.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -464,10 +464,10 @@
     },
     {
       "title": "Spanish / English Localization",
-      "pay": "$40/hr",
+      "pay": "$80/hr",
       "tag": "TRANSLATION",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on spanish / english localization expertise.",
+      "hot": false,
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within spanish / english localization domains.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -476,10 +476,10 @@
     },
     {
       "title": "Mandarin Tone & Nuance Evaluator",
-      "pay": "$60/hr",
+      "pay": "$40/hr",
       "tag": "TRANSLATION",
-      "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on mandarin tone & nuance evaluator expertise.",
+      "hot": true,
+      "desc": "Review AI-generated code/text against domain-specific rubrics for mandarin tone & nuance evaluator tasks.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -488,10 +488,10 @@
     },
     {
       "title": "French Medical Translation",
-      "pay": "$40/hr",
+      "pay": "$60/hr",
       "tag": "TRANSLATION",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on french medical translation expertise.",
+      "desc": "Curate high-quality, expert-level training datasets specifically for french medical translation.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -500,10 +500,10 @@
     },
     {
       "title": "German Financial Documentation",
-      "pay": "$40/hr",
+      "pay": "$60/hr",
       "tag": "TRANSLATION",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on german financial documentation expertise.",
+      "desc": "Review AI-generated code/text against domain-specific rubrics for german financial documentation tasks.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -512,10 +512,10 @@
     },
     {
       "title": "Hindi Speech-to-Text Annotator",
-      "pay": "$50/hr",
+      "pay": "$60/hr",
       "tag": "TRANSLATION",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on hindi speech-to-text annotator expertise.",
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in hindi speech-to-text annotator.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -524,10 +524,10 @@
     },
     {
       "title": "Korean Sentiment Analysis",
-      "pay": "$60/hr",
+      "pay": "$40/hr",
       "tag": "TRANSLATION",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on korean sentiment analysis expertise.",
+      "desc": "Curate high-quality, expert-level training datasets specifically for korean sentiment analysis.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -536,10 +536,10 @@
     },
     {
       "title": "Russian Political Context Reviewer",
-      "pay": "$50/hr",
+      "pay": "$60/hr",
       "tag": "TRANSLATION",
-      "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on russian political context reviewer expertise.",
+      "hot": true,
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using russian political context reviewer expertise.",
       "skills": [
         "Translation",
         "AI Evaluation",
@@ -553,7 +553,7 @@
       "pay": "$60/hr",
       "tag": "GENERAL",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on creative writer / fiction author expertise.",
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in creative writer / fiction author.",
       "skills": [
         "General",
         "AI Evaluation",
@@ -562,10 +562,10 @@
     },
     {
       "title": "Journalism Fact Checker",
-      "pay": "$80/hr",
+      "pay": "$40/hr",
       "tag": "GENERAL",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on journalism fact checker expertise.",
+      "hot": false,
+      "desc": "Review AI-generated code/text against domain-specific rubrics for journalism fact checker tasks.",
       "skills": [
         "General",
         "AI Evaluation",
@@ -574,10 +574,10 @@
     },
     {
       "title": "History / Humanities Expert",
-      "pay": "$60/hr",
+      "pay": "$80/hr",
       "tag": "GENERAL",
-      "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on history / humanities expert expertise.",
+      "hot": false,
+      "desc": "Audit LLM hallucinations and enforce strict safety constraints within history / humanities expert domains.",
       "skills": [
         "General",
         "AI Evaluation",
@@ -586,10 +586,10 @@
     },
     {
       "title": "Instruction Following Evaluator",
-      "pay": "$40/hr",
+      "pay": "$60/hr",
       "tag": "GENERAL",
       "hot": false,
-      "desc": "Evaluate and train advanced AI models focusing on instruction following evaluator expertise.",
+      "desc": "Evaluate reasoning chains and logic paths for frontier models using instruction following evaluator expertise.",
       "skills": [
         "General",
         "AI Evaluation",
@@ -598,10 +598,10 @@
     },
     {
       "title": "Prompt Engineering Specialist",
-      "pay": "$80/hr",
+      "pay": "$50/hr",
       "tag": "GENERAL",
       "hot": true,
-      "desc": "Evaluate and train advanced AI models focusing on prompt engineering specialist expertise.",
+      "desc": "Design complex prompting scenarios and analyze model outputs for accuracy in prompt engineering specialist.",
       "skills": [
         "General",
         "AI Evaluation",

@@ -175,9 +175,13 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
   font-weight: 600;
   color: var(--gray-700);
   padding: 9px 18px;
+  min-height: 44px;
   border-radius: var(--radius);
   border: 1.5px solid var(--gray-200);
   transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-nav-login:hover {
@@ -191,9 +195,13 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
   color: var(--white);
   background: var(--primary);
   padding: 9px 20px;
+  min-height: 44px;
   border-radius: var(--radius);
   border: 1.5px solid var(--primary);
   transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-nav-primary:hover {
@@ -263,12 +271,14 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
 .btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 15px;
   font-weight: 700;
   color: var(--white);
   background: var(--primary);
   padding: 13px 26px;
+  min-height: 44px;
   border-radius: var(--radius);
   border: 2px solid var(--primary);
   transition: all 0.18s;
@@ -286,12 +296,14 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
 .btn-secondary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 15px;
   font-weight: 600;
   color: var(--black);
   background: var(--white);
   padding: 13px 26px;
+  min-height: 44px;
   border-radius: var(--radius);
   border: 2px solid var(--gray-200);
   transition: all 0.18s;
@@ -1967,4 +1979,53 @@ html { scroll-behavior: smooth; }
 .consent-actions {
   display: flex;
   gap: 12px;
+}
+
+/* ============================================================
+   MOBILE NAV TOGGLE
+   ============================================================ */
+.nav-toggle-label {
+  display: none;
+  cursor: pointer;
+  padding: 8px;
+}
+.nav-toggle-icon, .nav-toggle-icon::before, .nav-toggle-icon::after {
+  display: block;
+  background: var(--black);
+  height: 2px;
+  width: 24px;
+  border-radius: 2px;
+  position: relative;
+  transition: all 0.2s ease-out;
+}
+.nav-toggle-icon::before, .nav-toggle-icon::after {
+  content: '';
+  position: absolute;
+}
+.nav-toggle-icon::before { top: 6px; }
+.nav-toggle-icon::after { top: -6px; }
+
+#nav-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-toggle-label { display: block; }
+  .nav-links, .nav-cta {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    background: var(--white);
+    padding: 16px 0;
+  }
+  .nav-inner { flex-wrap: wrap; }
+  #nav-toggle:checked ~ .nav-links,
+  #nav-toggle:checked ~ .nav-cta {
+    display: flex;
+  }
+  #nav-toggle:checked ~ .nav-toggle-label .nav-toggle-icon { background: transparent; }
+  #nav-toggle:checked ~ .nav-toggle-label .nav-toggle-icon::before { transform: rotate(45deg); top: 0; }
+  #nav-toggle:checked ~ .nav-toggle-label .nav-toggle-icon::after { transform: rotate(-45deg); top: 0; }
+  .nav { height: auto; min-height: 70px; }
 }
