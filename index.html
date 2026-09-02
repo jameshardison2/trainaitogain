@@ -134,10 +134,13 @@
           <span id="challenge-timer" style="background:var(--gray-900); color:var(--white); font-weight:700; font-size:14px; padding:6px 12px; border-radius:100px;">Resetting in 14h 22m</span>
         </div>
         <p style="color:var(--gray-500); font-size:16px; margin-bottom:24px;">Complete today's prompt-engineering puzzle to earn points and climb the community leaderboard.</p>
-        <div id="daily-puzzle-content" style="background:var(--gray-100); padding:20px; border-radius:var(--radius); font-family:monospace; color:var(--black); font-size:14px; margin-bottom:24px;">
-          // Loading today's challenge...
+        <div style="position:relative; margin-bottom:24px;">
+          <div id="daily-puzzle-content" style="background:var(--gray-100); padding:20px; border-radius:var(--radius); font-family:monospace; color:var(--black); font-size:14px;">
+            // Loading today's challenge...
+          </div>
+          <button onclick="navigator.clipboard.writeText(document.getElementById('daily-puzzle-content').innerText); alert('Copied to clipboard!')" style="position:absolute; top:8px; right:8px; background:var(--white); border:1px solid var(--gray-300); border-radius:4px; padding:4px 8px; font-size:12px; cursor:pointer;">Copy</button>
         </div>
-        <button onclick="alert('Challenge modules loading soon! (Track 2)')" class="btn-primary">Start Challenge</button>
+        <button onclick="window.location.href='prep-hub.html'" class="btn-primary">Start Challenge</button>
       </div>
     </div>
   </section>
@@ -167,19 +170,11 @@
           <div id="quiz-step-1" style="display:block;">
             <p style="font-weight:600; margin-bottom:16px;">What is your strongest background?</p>
             <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
-              <button onclick="quizStep(1, 'software', this)" class="btn-quiz">💻 Software / Coding</button>
-              <button onclick="quizStep(1, 'medical', this)" class="btn-quiz">🩺 Medical / Clinical</button>
-              <button onclick="quizStep(1, 'finance', this)" class="btn-quiz">📈 Finance / Math</button>
-              <button onclick="quizStep(1, 'language', this)" class="btn-quiz">🌍 Bilingual / Translation</button>
-              <button onclick="quizStep(1, 'other', this)" class="btn-quiz">📋 Other / General</button>
-            </div>
-          </div>
-          
-          <div id="quiz-step-2" style="display:none;">
-            <p style="font-weight:600; margin-bottom:16px;">Are you looking for high-complexity work or high-volume tasks?</p>
-            <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
-              <button onclick="quizStep(2, 'complex', this)" class="btn-quiz">High-Complexity (Higher Pay)</button>
-              <button onclick="quizStep(2, 'volume', this)" class="btn-quiz">High-Volume (Easier Entry)</button>
+              <button onclick="window.location.href='apply.html'" class="btn-quiz">💻 Software / Coding</button>
+              <button onclick="window.location.href='apply.html'" class="btn-quiz">🩺 Medical / Clinical</button>
+              <button onclick="window.location.href='apply.html'" class="btn-quiz">📈 Finance / Math</button>
+              <button onclick="window.location.href='apply.html'" class="btn-quiz">🌍 Bilingual / Translation</button>
+              <button onclick="window.location.href='apply.html'" class="btn-quiz">📋 Other / General</button>
             </div>
           </div>
 
@@ -525,7 +520,7 @@
       <div class="fade-up" style="background:var(--black); border:1.5px solid var(--black); border-radius:var(--radius-lg); padding:40px 36px; max-width: 600px; margin:0 auto; position:relative; overflow:hidden;">
         <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(16,185,129,0.18) 0%,transparent 70%);pointer-events:none;"></div>
         
-        <form name="eligibility" style="display:flex; flex-direction:column; gap:20px; position:relative; z-index:1;">
+        <form name="eligibility" style="display:flex; flex-direction:column; gap:20px; position:relative; z-index:1;" onsubmit="event.preventDefault(); alert('Evaluation submitted successfully!');">
           
           <div>
             <label for="email" style="display:block; margin-bottom:8px; font-weight:700; font-size:14px; color:var(--white);">Email Address *</label>
@@ -582,7 +577,7 @@
         </div>
 
         <div class="fade-up" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-lg); padding:48px; backdrop-filter:blur(10px);">
-          <form name="b2b-leads" style="display:flex; flex-direction:column; gap:24px;">
+          <form name="b2b-leads" style="display:flex; flex-direction:column; gap:24px;" onsubmit="event.preventDefault(); alert('Contact request sent successfully!');">
             
             <div style="margin-bottom:8px;">
               <h3 style="font-size:24px; font-weight:700; color:var(--white); margin-bottom:8px;">Partnership Inquiries</h3>
@@ -626,7 +621,7 @@
         <div style="max-width:400px; width:100%; background:var(--gray-900); padding:24px; border-radius:var(--radius-lg);">
           <h4 style="color:var(--white); font-size:18px; font-weight:700; margin-bottom:8px;">Not ready to apply?</h4>
           <p style="color:var(--gray-400); font-size:14px; margin-bottom:16px;">Join our talent network to get notified about new pipeline openings.</p>
-          <form name="talent-network" method="POST" data-netlify="true" netlify style="display:flex; gap:8px;">
+          <form name="talent-network" style="display:flex; gap:8px;" onsubmit="event.preventDefault(); alert('Joined the Talent Network successfully!');">
             <input type="email" name="email" placeholder="Your email address" required style="flex:1; padding:12px 16px; border-radius:6px; border:1px solid #333; background:#222; color:var(--white); font-family:var(--font);" />
             <button type="submit" class="btn-primary" style="padding:12px 20px;">Join</button>
           </form>

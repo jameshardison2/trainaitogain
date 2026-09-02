@@ -2028,13 +2028,19 @@ html { scroll-behavior: smooth; }
   #nav-toggle:checked ~ .nav-toggle-label .nav-toggle-icon::before { transform: rotate(45deg); top: 0; }
   #nav-toggle:checked ~ .nav-toggle-label .nav-toggle-icon::after { transform: rotate(-45deg); top: 0; }
   .nav { height: auto; min-height: 70px; }
+  
+  .btn-primary, .btn-secondary, .btn-nav-primary, .btn-nav-login {
+    width: 100%;
+    margin-bottom: 8px;
+  }
 }
 
 /* ============================================================
    TICKER
    ============================================================ */
 .ticker-wrap { width: 100%; overflow: hidden; background: #064e3b; padding: 8px 0; border-bottom: 2px solid var(--primary); }
-.ticker-content { white-space: nowrap; font-size: 13px; font-weight: 600; color: #a7f3d0; animation: ticker 25s linear infinite; display: inline-block; }
+.ticker-content { white-space: nowrap; font-size: 13px; font-weight: 600; color: #a7f3d0; animation: ticker 25s linear infinite; display: inline-block; cursor: default; }
+.ticker-content:hover { animation-play-state: paused; }
 @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 .ticker-item { display: inline-flex; align-items: center; gap: 8px; margin-right: 48px; }
 .pulse-dot { width: 6px; height: 6px; background: #34d399; border-radius: 50%; box-shadow: 0 0 8px #34d399; animation: pulse 1.5s infinite; }

@@ -19,13 +19,16 @@ for domain, roles in roles_data.items():
     title = domain_titles.get(domain, domain.capitalize())
     
     carousel_html += f"""
-    <div style="margin-bottom: 48px;">
+    <div style="margin-bottom: 48px; position: relative;">
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
         <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">{icon}</div>
         <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">{title} Pipelines</h2>
       </div>
       
-      <div style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding-bottom:16px; -webkit-overflow-scrolling:touch;">
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-{domain}').scrollBy({{left: -320, behavior: 'smooth'}})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-{domain}').scrollBy({{left: 320, behavior: 'smooth'}})">›</button>
+      
+      <div id="carousel-{domain}" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
         <style>
           /* Hide scrollbar for a cleaner look */
           div::-webkit-scrollbar {{ display: none; }}
@@ -69,11 +72,33 @@ html = f"""<!DOCTYPE html>
   <link rel="stylesheet" href="shared.css">
   <style>
     .ticker-wrap {{ width: 100%; overflow: hidden; background: #064e3b; padding: 8px 0; border-bottom: 2px solid var(--primary); }}
-    .ticker-content {{ white-space: nowrap; font-size: 13px; font-weight: 600; color: #a7f3d0; animation: ticker 25s linear infinite; display: inline-block; }}
+    .ticker-content {{ white-space: nowrap; font-size: 13px; font-weight: 600; color: #a7f3d0; animation: ticker 25s linear infinite; display: inline-block; cursor: default; }}
+    .ticker-content:hover {{ animation-play-state: paused; }}
     @keyframes ticker {{ 0% {{ transform: translateX(100%); }} 100% {{ transform: translateX(-100%); }} }}
     .ticker-item {{ display: inline-flex; align-items: center; gap: 8px; margin-right: 48px; }}
     .pulse-dot {{ width: 6px; height: 6px; background: #34d399; border-radius: 50%; box-shadow: 0 0 8px #34d399; animation: pulse 1.5s infinite; }}
     @keyframes pulse {{ 0% {{ opacity: 1; }} 50% {{ opacity: 0.4; }} 100% {{ opacity: 1; }} }}
+    .carousel-btn {{
+        position: absolute;
+        top: 60%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        box-shadow: var(--shadow-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--black);
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+    }}
+    .carousel-btn:hover {{ background: var(--primary); color: var(--white); border-color: var(--primary); }}
+    @media (max-width: 768px) {{ .carousel-btn {{ display: none; }} }}
   </style>
 </head>
 <body style="background:var(--gray-50);">

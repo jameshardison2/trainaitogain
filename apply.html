@@ -10,11 +10,33 @@
   <link rel="stylesheet" href="shared.css">
   <style>
     .ticker-wrap { width: 100%; overflow: hidden; background: #064e3b; padding: 8px 0; border-bottom: 2px solid var(--primary); }
-    .ticker-content { white-space: nowrap; font-size: 13px; font-weight: 600; color: #a7f3d0; animation: ticker 25s linear infinite; display: inline-block; }
+    .ticker-content { white-space: nowrap; font-size: 13px; font-weight: 600; color: #a7f3d0; animation: ticker 25s linear infinite; display: inline-block; cursor: default; }
+    .ticker-content:hover { animation-play-state: paused; }
     @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     .ticker-item { display: inline-flex; align-items: center; gap: 8px; margin-right: 48px; }
     .pulse-dot { width: 6px; height: 6px; background: #34d399; border-radius: 50%; box-shadow: 0 0 8px #34d399; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+    .carousel-btn {
+        position: absolute;
+        top: 60%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        box-shadow: var(--shadow-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--black);
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+    }
+    .carousel-btn:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
+    @media (max-width: 768px) { .carousel-btn { display: none; } }
   </style>
 </head>
 <body style="background:var(--gray-50);">
@@ -70,13 +92,16 @@
 <section class="section" style="padding-top:24px; padding-bottom:64px;">
   <div class="container">
     
-    <div style="margin-bottom: 48px;">
+    <div style="margin-bottom: 48px; position: relative;">
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
         <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">💻</div>
         <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Software & Tech Pipelines</h2>
       </div>
       
-      <div style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding-bottom:16px; -webkit-overflow-scrolling:touch;">
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-software').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-software').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-software" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
         <style>
           /* Hide scrollbar for a cleaner look */
           div::-webkit-scrollbar { display: none; }
@@ -323,13 +348,16 @@
       </div>
     </div>
     
-    <div style="margin-bottom: 48px;">
+    <div style="margin-bottom: 48px; position: relative;">
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
         <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">🩺</div>
         <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Medical & Clinical Pipelines</h2>
       </div>
       
-      <div style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding-bottom:16px; -webkit-overflow-scrolling:touch;">
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-medical').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-medical').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-medical" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
         <style>
           /* Hide scrollbar for a cleaner look */
           div::-webkit-scrollbar { display: none; }
@@ -525,13 +553,16 @@
       </div>
     </div>
     
-    <div style="margin-bottom: 48px;">
+    <div style="margin-bottom: 48px; position: relative;">
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
         <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">📈</div>
         <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Finance & Quant Pipelines</h2>
       </div>
       
-      <div style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding-bottom:16px; -webkit-overflow-scrolling:touch;">
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-finance').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-finance').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-finance" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
         <style>
           /* Hide scrollbar for a cleaner look */
           div::-webkit-scrollbar { display: none; }
@@ -710,13 +741,16 @@
       </div>
     </div>
     
-    <div style="margin-bottom: 48px;">
+    <div style="margin-bottom: 48px; position: relative;">
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
         <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">🌍</div>
         <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Translation & Law Pipelines</h2>
       </div>
       
-      <div style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding-bottom:16px; -webkit-overflow-scrolling:touch;">
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-translation').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-translation').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-translation" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
         <style>
           /* Hide scrollbar for a cleaner look */
           div::-webkit-scrollbar { display: none; }
@@ -895,13 +929,16 @@
       </div>
     </div>
     
-    <div style="margin-bottom: 48px;">
+    <div style="margin-bottom: 48px; position: relative;">
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
         <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">📋</div>
         <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Generalist & Content Pipelines</h2>
       </div>
       
-      <div style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding-bottom:16px; -webkit-overflow-scrolling:touch;">
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-general').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-general').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-general" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
         <style>
           /* Hide scrollbar for a cleaner look */
           div::-webkit-scrollbar { display: none; }
@@ -1011,7 +1048,7 @@
         <div style="max-width:400px; width:100%; background:var(--gray-900); padding:24px; border-radius:var(--radius-lg);">
           <h4 style="color:var(--white); font-size:18px; font-weight:700; margin-bottom:8px;">Not ready to apply?</h4>
           <p style="color:var(--gray-400); font-size:14px; margin-bottom:16px;">Join our talent network to get notified about new pipeline openings.</p>
-          <form name="talent-network" method="POST" data-netlify="true" netlify style="display:flex; gap:8px;">
+          <form name="talent-network" style="display:flex; gap:8px;" onsubmit="event.preventDefault(); alert('Joined the Talent Network successfully!');">
             <input type="email" name="email" placeholder="Your email address" required style="flex:1; padding:12px 16px; border-radius:6px; border:1px solid #333; background:#222; color:var(--white); font-family:var(--font);" />
             <button type="submit" class="btn-primary" style="padding:12px 20px;">Join</button>
           </form>
