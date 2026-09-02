@@ -509,10 +509,26 @@
         submitBtn.style.opacity = '0.7';
         submitBtn.disabled = true;
 
-        fetch('/', {
+        let actionUrl = '';
+        const payload = new URLSearchParams();
+
+        if (myForm.name === 'eligibility') {
+            actionUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSc6lbp37P5z1btDi5ViK1YIMEat-lymRT1Qy2LjFXiUwQaxWA/formResponse';
+            payload.append('entry.538007918', formData.get('email'));
+            payload.append('entry.345095034', formData.get('phone'));
+            payload.append('entry.395257377', formData.get('field'));
+        } else if (myForm.name === 'b2b-leads') {
+            actionUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfB7UvhOW6qlNukWwnI0gVhNc5KeGdNU9Qil4Lk795xg3FibQ/formResponse';
+            payload.append('entry.1268555135', formData.get('company'));
+            payload.append('entry.123984910', formData.get('email'));
+            payload.append('entry.617516582', formData.get('needs'));
+        }
+
+        fetch(actionUrl, {
           method: 'POST',
+          mode: 'no-cors',
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(formData).toString()
+          body: payload.toString()
         })
         .then(() => {
           submitBtn.innerHTML = 'Submitted! ✓';
