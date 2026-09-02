@@ -514,11 +514,13 @@
 
         if (myForm.name === 'eligibility') {
             actionUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSc6lbp37P5z1btDi5ViK1YIMEat-lymRT1Qy2LjFXiUwQaxWA/formResponse';
+            payload.append('emailAddress', formData.get('email'));
             payload.append('entry.538007918', formData.get('email'));
             payload.append('entry.345095034', formData.get('phone'));
             payload.append('entry.395257377', formData.get('field'));
         } else if (myForm.name === 'b2b-leads') {
             actionUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfB7UvhOW6qlNukWwnI0gVhNc5KeGdNU9Qil4Lk795xg3FibQ/formResponse';
+            payload.append('emailAddress', formData.get('email'));
             payload.append('entry.1268555135', formData.get('company'));
             payload.append('entry.123984910', formData.get('email'));
             payload.append('entry.617516582', formData.get('needs'));
