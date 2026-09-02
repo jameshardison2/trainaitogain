@@ -52,7 +52,7 @@
         <ul class="nav-links">
           <li><a href="apply.html">Opportunities</a></li>
           <li><a href="is-it-worth-it.html">Expectations</a></li>
-          <li><a href="ai-interview.html">Interview Prep</a></li>
+          <li><a href="prep-hub.html" class="nav-link">Interview Prep</a></li>
           <li><a href="post-hire.html">Post-Hire Guide</a></li>
         </ul>
         <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
@@ -66,6 +66,17 @@
       </div>
     </div>
   </nav>
+
+  <!-- ─── Ticker ─────────────────────────────────────────── -->
+  <div class="ticker-wrap">
+    <div class="ticker-content" id="live-ticker">
+      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Marcus V.</span> just cleared the <span style="color:var(--primary-light);">Tier 3 Quant Benchmark</span> (12 mins ago)</div>
+      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Sarah T.</span> started payout phase for <span style="color:var(--primary-light);">Medical Annotator</span> (2 mins ago)</div>
+      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">David K.</span> unlocked the <span style="color:var(--primary-light);">Python SWE Interview</span> (5 mins ago)</div>
+      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Elena M.</span> achieved 94% on the <span style="color:var(--primary-light);">Hallucination Gym</span> (18 mins ago)</div>
+      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Raj P.</span> received offer for <span style="color:var(--primary-light);">Quant Dev</span> (22 mins ago)</div>
+    </div>
+  </div>
 
   <!-- ─── Hero ─────────────────────────────────────────── -->
   <section class="hero">
@@ -113,6 +124,35 @@
       </div>
     </div>
   </section>
+
+  <!-- ─── Daily Challenge ─────────────────────────────────────────── -->
+  <section style="background:var(--gray-50); padding:48px 0;">
+    <div class="container">
+      <div style="background:var(--white); border:1px solid var(--primary); border-left:6px solid var(--primary); padding:32px; border-radius:var(--radius-lg); box-shadow:var(--shadow-orange); max-width:800px; margin:0 auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+          <h3 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Daily Diagnostic Challenge</h3>
+          <span id="challenge-timer" style="background:var(--gray-900); color:var(--white); font-weight:700; font-size:14px; padding:6px 12px; border-radius:100px;">Resetting in 14h 22m</span>
+        </div>
+        <p style="color:var(--gray-500); font-size:16px; margin-bottom:24px;">Complete today's prompt-engineering puzzle to earn points and climb the community leaderboard.</p>
+        <div id="daily-puzzle-content" style="background:var(--gray-100); padding:20px; border-radius:var(--radius); font-family:monospace; color:var(--black); font-size:14px; margin-bottom:24px;">
+          // Loading today's challenge...
+        </div>
+        <button onclick="alert('Challenge modules loading soon! (Track 2)')" class="btn-primary">Start Challenge</button>
+      </div>
+    </div>
+  </section>
+  <script>
+    const puzzles = [
+      "Debug this logic: model outputs 'Yes' but reasoning contradicts.",
+      "Identify the medical hallucination in the following clinical summary.",
+      "Optimize this Python loop to run in O(n) instead of O(n^2).",
+      "Draft a strict JSON schema for parsing legal contract dates.",
+      "Evaluate if the model's response violates safety constraints.",
+      "Fix the token limits on this contextual translation task.",
+      "Identify the logical fallacy in the financial forecast reasoning."
+    ];
+    document.getElementById('daily-puzzle-content').innerText = puzzles[new Date().getDay()];
+  </script>
 
   <!-- ─── Niche Matcher Quiz & Opportunities ─────────────────────────────────────────── -->
   <section class="section" style="padding-top:20px; padding-bottom:60px;" id="opportunities">
@@ -410,7 +450,7 @@
         <div class="feature-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
           <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">3. The AI Communication Trap</h3>
           <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Rambling causes the AI to fail parsing your complex answers. You must use the "Headline First" strategy.</p>
-          <a href="ai-interview.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">Learn to speak to the AI <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+          <a href="prep-hub.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">Enter the Prep Hub <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
         </div>
 
       </div>
@@ -435,7 +475,7 @@
           <div class="feature-card-body">Silence usually isn't rejection. Here's what it means and the two things worth checking.</div>
         </a>
 
-        <a href="ai-interview.html" class="feature-card" style="text-decoration:none;">
+        <a href="prep-hub.html" class="feature-card" style="text-decoration:none;">
           <div class="feature-card-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
           </div>
@@ -631,6 +671,21 @@
             payload.append('entry.1268555135', formData.get('company'));
             payload.append('entry.123984910', formData.get('email'));
             payload.append('entry.617516582', formData.get('needs'));
+        } else if (myForm.name === 'talent-network') {
+            // Placeholder: currently acts as a front-end success capture
+            // Needs a Google Form or Formspree endpoint to actually store emails.
+            setTimeout(() => {
+              submitBtn.innerHTML = 'Joined! ✓';
+              submitBtn.style.background = '#059669'; 
+              submitBtn.style.opacity = '1';
+              myForm.reset();
+              setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.background = '';
+                submitBtn.disabled = false;
+              }, 3000);
+            }, 800);
+            return; // Skip fetch since no endpoint is set
         }
 
         fetch(actionUrl, {

@@ -320,7 +320,7 @@
     setUIState('analyzing', 'Analyzing your transcript...');
     
     setTimeout(() => {
-      const text = transcript.toLowerCase();
+      const text = " " + transcript.toLowerCase() + " ";
       const qData = currentQuestions[currentQ];
       
       let matches = 0;
@@ -328,8 +328,25 @@
         if (text.includes(kw.toLowerCase())) matches++;
       });
       
+      // Filler word analysis
+      const fillers = [' um ', ' uh ', ' like ', ' you know ', ' basically ', ' i mean '];
+      let fillerCount = 0;
+      fillers.forEach(fw => {
+         const fwMatches = text.match(new RegExp(fw, 'g'));
+         if (fwMatches) fillerCount += fwMatches.length;
+      });
+      
+      // Base confidence score logic
+      const wordCount = text.split(' ').filter(w => w.length > 0).length;
+      let confScore = 80; // baseline
+      if (wordCount < 10) confScore -= 30; // penalty for too short
+      confScore += (matches * 10); // bonus for keywords
+      confScore -= (fillerCount * 15); // massive penalty for fillers
+      
+      const cappedScore = Math.min(100, Math.max(10, confScore));
+
       let feedback = "";
-      if (text.split(' ').length < 10) {
+      if (wordCount < 10) {
          feedback = "Your answer was way too short. You need to elaborate more to prove your expertise. " + qData.feedbackMiss;
       } else if (matches >= 2) {
          feedback = qData.feedbackHit;
@@ -337,7 +354,9 @@
          feedback = qData.feedbackMiss;
       }
       
-      setUIState('feedback', feedback);
+      const finalFeedback = feedback + ` (Confidence Score: ${cappedScore}%. Filler words detected: ${fillerCount})`;
+      
+      setUIState('feedback', finalFeedback);
       speakText(feedback, () => {
          avatarRing.classList.remove('speaking');
          simStatus.classList.remove('speaking');

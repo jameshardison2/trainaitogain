@@ -45,7 +45,10 @@ for domain, roles in roles_data.items():
           <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
             {''.join([f'<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">{skill}</span>' for skill in job['skills']])}
           </div>
-          <a href="https://t.mercor.com/wbPMF" target="_blank" style="display:block; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {{'event_category':'referral', 'event_label':'{label}'}});">Apply via Mercor</a>
+          <div style="display:flex; gap:8px;">
+            <a href="https://t.mercor.com/wbPMF" target="_blank" style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {{'event_category':'referral', 'event_label':'{label}'}});">Apply via Mercor</a>
+            <button onclick="saveRole('{job['title']}', '{domain}', '{job['pay']}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
+          </div>
         </div>
         """
     
@@ -79,11 +82,11 @@ html = f"""<!DOCTYPE html>
 
 <div class="ticker-wrap">
   <div class="ticker-content" id="live-ticker">
-    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Sarah T.</span> matched as <span style="color:var(--primary-light);">Medical Annotator</span> 2 mins ago</div>
-    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">David K.</span> matched as <span style="color:var(--primary-light);">Python SWE</span> 5 mins ago</div>
-    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Elena M.</span> matched as <span style="color:var(--primary-light);">Data Analyst</span> 12 mins ago</div>
-    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Raj P.</span> matched as <span style="color:var(--primary-light);">Quant Dev</span> 18 mins ago</div>
-    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">James L.</span> matched as <span style="color:var(--primary-light);">C++ Systems Engineer</span> 22 mins ago</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Marcus V.</span> just cleared the <span style="color:var(--primary-light);">Tier 3 Quant Benchmark</span> (12 mins ago)</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Sarah T.</span> started payout phase for <span style="color:var(--primary-light);">Medical Annotator</span> (2 mins ago)</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">David K.</span> unlocked the <span style="color:var(--primary-light);">Python SWE Interview</span> (5 mins ago)</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Elena M.</span> achieved 94% on the <span style="color:var(--primary-light);">Hallucination Gym</span> (18 mins ago)</div>
+    <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Raj P.</span> received offer for <span style="color:var(--primary-light);">Quant Dev</span> (22 mins ago)</div>
   </div>
 </div>
 
@@ -101,6 +104,21 @@ html = f"""<!DOCTYPE html>
 </section>
 
 {footer}
+
+<script>
+function saveRole(title, domain, pay) {{
+    let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
+    const roleId = title + domain;
+    if (!saved.some(r => r.id === roleId)) {{
+        saved.push({{ id: roleId, title: title, domain: domain, pay: pay, date: new Date().toISOString() }});
+        localStorage.setItem('savedRoles', JSON.stringify(saved));
+        alert('Role saved to your Pipeline Dashboard!');
+    }} else {{
+        alert('Role is already in your Pipeline Dashboard.');
+    }}
+}}
+</script>
+
 
 </body>
 </html>

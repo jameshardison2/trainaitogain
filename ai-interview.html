@@ -55,6 +55,10 @@
     .btn-sim:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5); }
     .btn-sim svg { width: 20px; height: 20px; fill: currentColor; }
     .btn-sim:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    
+    .domain-selector { width: 100%; max-width: 300px; padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: var(--white); font-family: inherit; font-size: 16px; margin-bottom: 24px; appearance: none; cursor: pointer; }
+    .domain-selector:focus { outline: none; border-color: var(--primary); }
+    .domain-selector option { background: var(--black); color: var(--white); }
   </style>
 </head>
 <body>
@@ -75,7 +79,7 @@
         <ul class="nav-links">
           <li><a href="apply.html">Opportunities</a></li>
           <li><a href="is-it-worth-it.html">Expectations</a></li>
-          <li><a href="ai-interview.html">Interview Prep</a></li>
+          <li><a href="prep-hub.html" class="nav-link">Interview Prep</a></li>
           <li><a href="post-hire.html">Post-Hire Guide</a></li>
         </ul>
         <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
@@ -111,7 +115,15 @@
         <div class="avatar-icon">🎙️</div>
       </div>
       <h2 style="font-size:28px; margin-bottom:16px;">Voice AI Simulator</h2>
-      <p style="color:#aaa; margin-bottom:32px; font-size:15px; line-height:1.6;">This simulator uses your microphone to conduct a real, high-pressure audio interview. The AI will speak the questions out loud. You must answer out loud. The AI will analyze your voice and give you immediate coaching feedback.</p>
+      <p style="color:#aaa; margin-bottom:24px; font-size:15px; line-height:1.6;">This simulator uses your microphone to conduct a real, high-pressure audio interview. The AI will speak the questions out loud and analyze your voice for immediate coaching feedback.</p>
+      
+      <select id="domain-selector" class="domain-selector">
+        <option value="software">Role: Software & Tech</option>
+        <option value="medical">Role: Medical & Clinical</option>
+        <option value="finance">Role: Finance & Quant</option>
+      </select>
+      
+      <br>
       <button class="btn-sim" id="start-btn">
         <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
         Start Voice Interview
@@ -121,7 +133,7 @@
 
     <div id="active-view" style="display:none;">
       <div class="avatar-ring" id="avatar-ring">
-        <div class="avatar-icon" id="avatar-emoji">🤖</div>
+        <div class="avatar-icon" id="avatar-emoji">👩‍💻</div>
       </div>
       
       <div class="sim-status" id="sim-status">Connecting...</div>
@@ -177,33 +189,78 @@
     recognition.interimResults = true;
   }
 
-  const questions = [
-    {
-      q: "Explain how a Transformer architecture works to a non-technical manager.",
-      keywords: ["read", "all at once", "attention", "parallel", "context", "relationship"],
-      feedbackMiss: "You missed the core concept for a non-technical person. You need to emphasize that unlike older models that read word-by-word, Transformers look at the whole sentence at once to understand context.",
-      feedbackHit: "Great answer! You clearly explained the parallel processing aspect without getting bogged down in math."
-    },
-    {
-      q: "What is the difference between supervised fine-tuning and RLHF?",
-      keywords: ["facts", "behavior", "human", "reward", "alignment", "preferences", "manners"],
-      feedbackMiss: "I didn't hear a clear distinction. Remember the headline: SFT teaches the model facts and capabilities, while RLHF teaches it manners and alignment with human preferences.",
-      feedbackHit: "Spot on! You nailed the distinction between teaching capabilities versus teaching alignment."
-    },
-    {
-      q: "How would you design a prompt to ensure an LLM outputs valid JSON?",
-      keywords: ["few-shot", "examples", "system", "schema", "retry", "validation", "constrain"],
-      feedbackMiss: "You missed the most reliable techniques. You should always mention providing explicit few-shot examples and enforcing a strict JSON schema in the system prompt.",
-      feedbackHit: "Excellent. You understand that prompt engineering requires structural constraints and examples."
-    }
-  ];
+  const domainData = {
+    "software": [
+      {
+        q: "Explain how a Transformer architecture works to a non-technical manager.",
+        keywords: ["read", "all at once", "attention", "parallel", "context", "relationship"],
+        feedbackMiss: "You missed the core concept for a non-technical person. You need to emphasize that unlike older models that read word-by-word, Transformers look at the whole sentence at once to understand context.",
+        feedbackHit: "Great answer! You clearly explained the parallel processing aspect without getting bogged down in math."
+      },
+      {
+        q: "What is the difference between supervised fine-tuning and RLHF?",
+        keywords: ["facts", "behavior", "human", "reward", "alignment", "preferences", "manners"],
+        feedbackMiss: "I didn't hear a clear distinction. Remember the headline: SFT teaches the model facts and capabilities, while RLHF teaches it manners and alignment with human preferences.",
+        feedbackHit: "Spot on! You nailed the distinction between teaching capabilities versus teaching alignment."
+      },
+      {
+        q: "How would you design a prompt to ensure an LLM outputs valid JSON?",
+        keywords: ["few-shot", "examples", "system", "schema", "retry", "validation", "constrain"],
+        feedbackMiss: "You missed the most reliable techniques. You should always mention providing explicit few-shot examples and enforcing a strict JSON schema in the system prompt.",
+        feedbackHit: "Excellent. You understand that prompt engineering requires structural constraints and examples."
+      }
+    ],
+    "medical": [
+      {
+        q: "How would you evaluate an AI model's differential diagnosis if it missed a rare edge case?",
+        keywords: ["prevalence", "base rate", "severity", "safety", "false negative", "human in the loop"],
+        feedbackMiss: "You missed the safety aspect. In medical AI, false negatives for severe conditions are critical. You must mention adjusting the model's sensitivity or enforcing human-in-the-loop protocols.",
+        feedbackHit: "Excellent. You focused on patient safety and the statistical base rate of the edge case."
+      },
+      {
+        q: "Explain why hallucination in a pharmacology model is dangerous and how you would prevent it.",
+        keywords: ["contraindication", "dosage", "fatal", "grounding", "RAG", "retrieval", "citations"],
+        feedbackMiss: "You need to explicitly mention RAG (Retrieval-Augmented Generation) or grounding the model in verified clinical texts. You cannot rely on the model's internal memory for drug dosages.",
+        feedbackHit: "Spot on. Grounding the model in verified medical literature via RAG is the correct approach."
+      },
+      {
+        q: "If an AI generates a treatment plan that contradicts standard clinical guidelines, what is your first step?",
+        keywords: ["guidelines", "flag", "penalize", "RLHF", "reward", "override"],
+        feedbackMiss: "You didn't mention the RLHF mechanism. You need to explain that you would heavily penalize the output in the reward model to align the AI with standard clinical guidelines.",
+        feedbackHit: "Great answer! Penalizing the model to align with strict clinical guidelines is exactly what they want to hear."
+      }
+    ],
+    "finance": [
+      {
+        q: "How do you evaluate an AI model generating code for a high-frequency trading algorithm?",
+        keywords: ["latency", "complexity", "memory", "C++", "execution speed", "optimization"],
+        feedbackMiss: "You missed the core constraint of HFT: latency. You must evaluate the code primarily on algorithmic time complexity and memory optimization, not just correctness.",
+        feedbackHit: "Perfect. Recognizing latency and execution speed as the primary constraints shows you understand HFT."
+      },
+      {
+        q: "An AI model summarizes a 10-K report but hallucinates a key financial metric. How do you fix this?",
+        keywords: ["extraction", "grounding", "RAG", "citations", "verify", "exact match"],
+        feedbackMiss: "You missed the extraction constraint. You need to constrain the prompt to strictly extract and quote exact figures, rather than allowing the model to summarize or generate text freely.",
+        feedbackHit: "Spot on. Forcing strict extraction and exact match citations is the right way to prevent financial hallucinations."
+      },
+      {
+        q: "Explain the importance of temporal data leakage when training financial time-series models.",
+        keywords: ["future", "past", "leakage", "predict", "overfit", "validation", "chronological"],
+        feedbackMiss: "You didn't explain the chronological constraint clearly. You must emphasize that training data must be strictly separated chronologically to prevent the model from 'seeing the future'.",
+        feedbackHit: "Excellent. You clearly explained the necessity of strict chronological separation in validation sets."
+      }
+    ]
+  };
 
+  let currentDomain = "software";
+  let currentQuestions = domainData[currentDomain];
   let currentQ = 0;
   
   const startBtn = document.getElementById('start-btn');
   const nextBtn = document.getElementById('next-btn');
   const setupView = document.getElementById('setup-view');
   const activeView = document.getElementById('active-view');
+  const domainSelector = document.getElementById('domain-selector');
   
   const avatarRing = document.getElementById('avatar-ring');
   const avatarEmoji = document.getElementById('avatar-emoji');
@@ -219,15 +276,13 @@
     if (state === 'speaking') {
       avatarRing.classList.add('speaking');
       simStatus.classList.add('speaking');
-      simStatus.innerText = 'AI is Speaking...';
-      avatarEmoji.innerText = '🤖';
+      simStatus.innerText = 'AI Interviewer is Speaking...';
       userTranscript.style.display = 'none';
       nextBtn.style.display = 'none';
     } else if (state === 'listening') {
       avatarRing.classList.add('listening');
       simStatus.classList.add('listening');
       simStatus.innerText = 'Listening to you...';
-      avatarEmoji.innerText = '🎙️';
       userTranscript.style.display = 'block';
       userTranscript.innerText = '...';
       nextBtn.style.display = 'none';
@@ -250,12 +305,22 @@
     }
     const utterance = new SpeechSynthesisUtterance(text);
     
+    // Select a premium, human-like female voice
     const voices = synth.getVoices();
-    const goodVoice = voices.find(v => v.lang.includes('en-') && (v.name.includes('Google') || v.name.includes('Siri') || v.name.includes('Samantha')));
+    const goodVoice = voices.find(v => 
+        (v.name.includes('Google') && v.name.includes('Female')) || 
+        v.name.includes('Google US English') || 
+        v.name.includes('Samantha') || 
+        v.name.includes('Karen') || 
+        v.name.includes('Victoria') ||
+        v.name.includes('Moira') ||
+        (v.lang.includes('en-') && v.name.includes('Zira')) // Windows fallback
+    ) || voices.find(v => v.lang.includes('en-')); // Ultimate fallback
+    
     if (goodVoice) utterance.voice = goodVoice;
     
     utterance.rate = 1.05;
-    utterance.pitch = 1.0;
+    utterance.pitch = 1.1; // Slightly higher pitch for female voice
     
     utterance.onend = () => {
       if (callback) callback();
@@ -268,16 +333,33 @@
     setUIState('analyzing', 'Analyzing your transcript...');
     
     setTimeout(() => {
-      const text = transcript.toLowerCase();
-      const qData = questions[currentQ];
+      const text = " " + transcript.toLowerCase() + " ";
+      const qData = currentQuestions[currentQ];
       
       let matches = 0;
       qData.keywords.forEach(kw => {
         if (text.includes(kw.toLowerCase())) matches++;
       });
       
+      // Filler word analysis
+      const fillers = [' um ', ' uh ', ' like ', ' you know ', ' basically ', ' i mean '];
+      let fillerCount = 0;
+      fillers.forEach(fw => {
+         const fwMatches = text.match(new RegExp(fw, 'g'));
+         if (fwMatches) fillerCount += fwMatches.length;
+      });
+      
+      // Base confidence score logic
+      const wordCount = text.split(' ').filter(w => w.length > 0).length;
+      let confScore = 80; // baseline
+      if (wordCount < 10) confScore -= 30; // penalty for too short
+      confScore += (matches * 10); // bonus for keywords
+      confScore -= (fillerCount * 15); // massive penalty for fillers
+      
+      const cappedScore = Math.min(100, Math.max(10, confScore));
+
       let feedback = "";
-      if (text.split(' ').length < 10) {
+      if (wordCount < 10) {
          feedback = "Your answer was way too short. You need to elaborate more to prove your expertise. " + qData.feedbackMiss;
       } else if (matches >= 2) {
          feedback = qData.feedbackHit;
@@ -285,23 +367,27 @@
          feedback = qData.feedbackMiss;
       }
       
-      setUIState('feedback', feedback);
+      const finalFeedback = feedback + ` (Confidence Score: ${cappedScore}%. Filler words detected: ${fillerCount})`;
+      
+      setUIState('feedback', finalFeedback);
       speakText(feedback, () => {
          avatarRing.classList.remove('speaking');
          simStatus.classList.remove('speaking');
          simStatus.innerText = 'Feedback Complete';
+         avatarEmoji.innerText = '👩‍💻';
       });
       
     }, 1000);
   }
 
   function askQuestion() {
-    const qText = questions[currentQ].q;
+    const qText = currentQuestions[currentQ].q;
     setUIState('speaking', qText);
+    avatarEmoji.innerText = '👩‍💻';
     
     speakText(qText, () => {
       if (!recognition) {
-         setUIState('feedback', 'Speech Recognition is not supported on this browser. Please use Google Chrome.');
+         setUIState('feedback', 'Speech Recognition is not supported on this browser. Please use Google Chrome or Safari.');
          return;
       }
       
@@ -340,19 +426,33 @@
   }
 
   startBtn.addEventListener('click', () => {
+    currentDomain = domainSelector.value;
+    currentQuestions = domainData[currentDomain];
+    currentQ = 0;
+    
     setupView.style.display = 'none';
     activeView.style.display = 'block';
     
-    synth.getVoices();
+    synth.getVoices(); // Ensure voices are loaded
     
-    speakText("Welcome to the Train AI to Gain simulator. I will ask you a question. Please speak your answer out loud when prompted.", () => {
+    const domainNames = {
+        "software": "Software Engineering",
+        "medical": "Medical and Clinical",
+        "finance": "Finance and Quantitative"
+    };
+    
+    const greeting = 'Welcome to the ' + domainNames[currentDomain] + ' pipeline interview. I will ask you a question. Please speak your answer out loud when prompted.';
+    
+    setUIState('speaking', "Initializing...");
+    
+    speakText(greeting, () => {
        askQuestion();
     });
   });
 
   nextBtn.addEventListener('click', () => {
     if (synth.speaking) synth.cancel();
-    currentQ = (currentQ + 1) % questions.length;
+    currentQ = (currentQ + 1) % currentQuestions.length;
     askQuestion();
   });
   

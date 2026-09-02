@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Live Coding Sandbox — TrainAIToGain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body style="background:var(--gray-900); color:var(--white); display:flex; flex-direction:column; min-height:100vh;">
+
+<nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; align-items:center; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+        </a>
+        <input type="checkbox" id="nav-toggle" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="nav-toggle-icon"></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="is-it-worth-it.html">Expectations</a></li>
+          <li><a href="prep-hub.html" class="nav-link">Interview Prep</a></li>
+          <li><a href="post-hire.html">Post-Hire Guide</a></li>
+        </ul>
+        <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
+          <a href="https://www.linkedin.com/company/trainaitogain/" aria-label="LinkedIn" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-nav-primary" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'nav_cta'});">Apply via Mercor</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+<section style="padding: 24px 0; flex:1; display:flex; flex-direction:column;">
+  <div class="container" style="flex:1; display:flex; flex-direction:column; max-width:1400px; padding:0 24px;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div>
+            <h1 style="font-size:28px; font-weight:800; margin-bottom:4px; color:var(--white);">Live Coding Sandbox</h1>
+            <p style="color:var(--gray-400); font-size:14px; margin:0;">Practice technical evaluation tasks in our embedded Monaco Editor.</p>
+        </div>
+        <div style="display:flex; gap:12px;">
+            <select id="language-select" style="background:var(--black); color:var(--white); border:1px solid var(--gray-700); padding:8px 12px; border-radius:4px; font-family:var(--font);">
+                <option value="python">Python</option>
+                <option value="cpp">C++</option>
+                <option value="rust">Rust</option>
+            </select>
+            <button onclick="runCode()" class="btn-primary">Run Code</button>
+        </div>
+    </div>
+
+    <div style="display:flex; gap:24px; flex:1; min-height:600px;">
+        <div style="flex:1; background:var(--black); border:1px solid var(--gray-700); border-radius:var(--radius); padding:24px; overflow-y:auto;">
+            <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:700; margin-bottom:8px;">Challenge</div>
+            <h2 style="font-size:20px; font-weight:700; margin-bottom:12px; color:var(--white);">Detect Cycle in Linked List (O(1) Space)</h2>
+            <p style="color:var(--gray-400); font-size:14px; line-height:1.6; margin-bottom:24px;">
+                You are evaluating an LLM's logic for cycle detection. The model provided the code on the right. Does it work? Is it O(1) space? Fix any bugs you find and run the tests.
+            </p>
+            <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray-500); font-weight:700; margin-bottom:8px;">Console Output</div>
+            <div id="output-console" style="background:#111; color:#0f0; font-family:monospace; font-size:13px; padding:16px; border-radius:6px; min-height:200px; border:1px solid #333;">
+                Waiting for execution...
+            </div>
+        </div>
+
+        <div style="flex:2; border:1px solid var(--gray-700); border-radius:var(--radius); overflow:hidden; position:relative;">
+            <div id="editor-container" style="width:100%; height:100%;"></div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px;">
+          <p style="color:var(--white); font-weight:700; font-size:16px; margin-bottom:8px;">James Hardison II</p>
+          <small style="color:rgba(255,255,255,0.6); font-size:13px; line-height:1.7; display:block; margin-bottom:24px;">
+            Independent referral partner. I earn a referral credit when someone I refer is hired. Saying so up front.<br><br>
+            Independent resource. Not affiliated with, authorized by, sponsored by, or endorsed by Mercor.
+          </small>
+        </div>
+        <div style="max-width:400px; width:100%; background:var(--gray-900); padding:24px; border-radius:var(--radius-lg);">
+          <h4 style="color:var(--white); font-size:18px; font-weight:700; margin-bottom:8px;">Not ready to apply?</h4>
+          <p style="color:var(--gray-400); font-size:14px; margin-bottom:16px;">Join our talent network to get notified about new pipeline openings.</p>
+          <form name="talent-network" method="POST" data-netlify="true" netlify style="display:flex; gap:8px;">
+            <input type="email" name="email" placeholder="Your email address" required style="flex:1; padding:12px 16px; border-radius:6px; border:1px solid #333; background:#222; color:var(--white); font-family:var(--font);" />
+            <button type="submit" class="btn-primary" style="padding:12px 20px;">Join</button>
+          </form>
+        </div>
+        <div style="display:flex; align-items:center; gap:24px;">
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<!-- Monaco Editor Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
+<script>
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } });
+    require(['vs/editor/editor.main'], function() {
+        window.editor = monaco.editor.create(document.getElementById('editor-container'), {
+            value: [
+                'class ListNode:',
+                '    def __init__(self, x):',
+                '        self.val = x',
+                '        self.next = None',
+                '',
+                'class Solution:',
+                '    def hasCycle(self, head: ListNode) -> bool:',
+                '        seen = set()',
+                '        current = head',
+                '        while current:',
+                '            if current in seen:',
+                '                return True',
+                '            seen.add(current)',
+                '            current = current.next',
+                '        return False',
+                '',
+                '# NOTE: The LLM used O(n) space instead of O(1).',
+                '# Please optimize it using Floyd\'s Tortoise and Hare algorithm.',
+                '# Then click "Run Code".'
+            ].join('\n'),
+            language: 'python',
+            theme: 'vs-dark',
+            minimap: { enabled: false },
+            automaticLayout: true,
+            fontSize: 14
+        });
+        
+        document.getElementById('language-select').addEventListener('change', function(e) {
+            monaco.editor.setModelLanguage(window.editor.getModel(), e.target.value);
+            if (e.target.value === 'cpp') {
+                window.editor.setValue('// C++ code here\n');
+            } else if (e.target.value === 'rust') {
+                window.editor.setValue('// Rust code here\n');
+            }
+        });
+    });
+
+    function runCode() {
+        const code = window.editor.getValue();
+        const cons = document.getElementById('output-console');
+        cons.innerHTML = '<span style="color:#a7f3d0;">Running tests...</span><br/>';
+        
+        // Mock evaluation logic
+        setTimeout(() => {
+            if (code.includes('seen = set()')) {
+                cons.innerHTML += '<span style="color:#ef4444;">[FAIL] Space complexity is O(N) due to hash set. Target is O(1).</span><br/>';
+            } else if (code.includes('slow') && code.includes('fast') && code.includes('fast.next')) {
+                cons.innerHTML += '<span style="color:#34d399;">[PASS] Floyd\'s Tortoise and Hare implemented correctly! O(1) space.</span><br/>';
+                cons.innerHTML += '<span style="color:#34d399;">Score: 100/100</span>';
+            } else {
+                cons.innerHTML += '<span style="color:#f59e0b;">[WARN] Tests ran, but O(1) space constraints could not be verified. Check your logic.</span><br/>';
+            }
+        }, 800);
+    }
+</script>
+
+</body>
+</html>

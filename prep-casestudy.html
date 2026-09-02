@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Case Study Simulator — TrainAIToGain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+      .cs-option {
+          background: var(--white);
+          border: 1px solid var(--gray-200);
+          padding: 16px 24px;
+          border-radius: var(--radius-sm);
+          cursor: pointer;
+          transition: all 0.2s;
+          font-weight: 600;
+          color: var(--black);
+          text-align: left;
+          width: 100%;
+          margin-bottom: 12px;
+      }
+      .cs-option:hover {
+          border-color: var(--primary);
+          background: var(--primary-light);
+      }
+  </style>
+</head>
+<body style="background:var(--gray-50); display:flex; flex-direction:column; min-height:100vh;">
+
+<nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; align-items:center; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+        </a>
+        <input type="checkbox" id="nav-toggle" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="nav-toggle-icon"></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="is-it-worth-it.html">Expectations</a></li>
+          <li><a href="prep-hub.html" class="nav-link">Interview Prep</a></li>
+          <li><a href="post-hire.html">Post-Hire Guide</a></li>
+        </ul>
+        <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
+          <a href="https://www.linkedin.com/company/trainaitogain/" aria-label="LinkedIn" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-nav-primary" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'nav_cta'});">Apply via Mercor</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+<section style="padding: 64px 0; flex:1;">
+  <div class="container" style="max-width:800px;">
+    
+    <div style="background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:40px; box-shadow:var(--shadow-md);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; border-bottom:1px solid var(--gray-200); padding-bottom:16px;">
+            <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:800;">Module 03: Domain Logic</div>
+            <div style="font-size:14px; color:var(--gray-500); font-weight:700;">Score: <span id="cs-score" style="color:var(--black);">0</span>/100</div>
+        </div>
+
+        <h2 id="cs-title" style="font-size:28px; font-weight:800; margin-bottom:16px; color:var(--black);">Scenario 1: The Oncological Edge Case</h2>
+        <p id="cs-text" style="color:var(--gray-700); font-size:16px; line-height:1.6; margin-bottom:32px;">
+            You are evaluating an LLM's response to a user query about combining two aggressive chemotherapy regimens. The model confidently recommends combining them, citing a 2019 study, but fails to mention the severe hepatotoxicity risk when co-administered. What is your evaluation action?
+        </p>
+
+        <div id="cs-options">
+            <button class="cs-option" onclick="handleAnswer(false)">A) Rate 'Good' - the study cited is factually correct.</button>
+            <button class="cs-option" onclick="handleAnswer(false)">B) Rate 'Poor' - the model's tone is too confident.</button>
+            <button class="cs-option" onclick="handleAnswer(true)">C) Flag for Critical Safety Violation - failure to disclose severe medical contraindications.</button>
+            <button class="cs-option" onclick="handleAnswer(false)">D) Rewrite the prompt to ask about hepatotoxicity specifically.</button>
+        </div>
+        
+        <div id="cs-feedback" style="display:none; margin-top:24px; padding:16px; border-radius:var(--radius-sm); font-weight:600;"></div>
+        <button id="cs-next" onclick="nextScenario()" class="btn-primary" style="display:none; margin-top:16px;">Next Scenario</button>
+    </div>
+
+  </div>
+</section>
+
+<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px;">
+          <p style="color:var(--white); font-weight:700; font-size:16px; margin-bottom:8px;">James Hardison II</p>
+          <small style="color:rgba(255,255,255,0.6); font-size:13px; line-height:1.7; display:block; margin-bottom:24px;">
+            Independent referral partner. I earn a referral credit when someone I refer is hired. Saying so up front.<br><br>
+            Independent resource. Not affiliated with, authorized by, sponsored by, or endorsed by Mercor.
+          </small>
+        </div>
+        <div style="max-width:400px; width:100%; background:var(--gray-900); padding:24px; border-radius:var(--radius-lg);">
+          <h4 style="color:var(--white); font-size:18px; font-weight:700; margin-bottom:8px;">Not ready to apply?</h4>
+          <p style="color:var(--gray-400); font-size:14px; margin-bottom:16px;">Join our talent network to get notified about new pipeline openings.</p>
+          <form name="talent-network" method="POST" data-netlify="true" netlify style="display:flex; gap:8px;">
+            <input type="email" name="email" placeholder="Your email address" required style="flex:1; padding:12px 16px; border-radius:6px; border:1px solid #333; background:#222; color:var(--white); font-family:var(--font);" />
+            <button type="submit" class="btn-primary" style="padding:12px 20px;">Join</button>
+          </form>
+        </div>
+        <div style="display:flex; align-items:center; gap:24px;">
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+    let score = 0;
+    let step = 0;
+    const scenarios = [
+        {
+            title: "Scenario 2: Quantitative Finance Leak",
+            text: "A user asks the model to generate a Python script to scrape real-time options data from a specific proprietary broker's private API. The model complies and outputs the code, including the broker's hidden endpoint. What do you do?",
+            options: [
+                { text: "A) Rate 'Excellent' - the code works perfectly.", correct: false },
+                { text: "B) Flag for PII / Proprietary Data Leak.", correct: true },
+                { text: "C) Rate 'Fair' - scraping is against TOS but the code is okay.", correct: false }
+            ]
+        },
+        {
+            title: "Scenario 3: Instruction Following",
+            text: "Prompt: 'Write a 3-paragraph summary of the French Revolution. Do not use the letter 'e'.' The model writes a beautiful 3-paragraph summary, but you notice the word 'the' in the second paragraph. Evaluation?",
+            options: [
+                { text: "A) Penalize heavily for failing a negative constraint.", correct: true },
+                { text: "B) Rate 'Good' - one typo is acceptable.", correct: false },
+                { text: "C) Rewrite the output to fix the typo.", correct: false }
+            ]
+        }
+    ];
+
+    function handleAnswer(isCorrect) {
+        const feedback = document.getElementById('cs-feedback');
+        document.getElementById('cs-options').style.pointerEvents = 'none';
+        
+        if (isCorrect) {
+            score += 33;
+            document.getElementById('cs-score').innerText = score;
+            feedback.style.display = 'block';
+            feedback.style.background = '#d1fae5';
+            feedback.style.color = '#065f46';
+            feedback.innerText = "Correct! You correctly identified the primary evaluation criteria.";
+        } else {
+            feedback.style.display = 'block';
+            feedback.style.background = '#fee2e2';
+            feedback.style.color = '#991b1b';
+            feedback.innerText = "Incorrect. As an evaluator, strict adherence to safety and constraints is paramount.";
+        }
+        
+        document.getElementById('cs-next').style.display = 'inline-block';
+    }
+
+    function nextScenario() {
+        if (step >= scenarios.length) {
+            document.getElementById('cs-title').innerText = "Simulation Complete";
+            document.getElementById('cs-text').innerText = "You scored " + score + "/100. Return to the Prep Hub to try another module.";
+            document.getElementById('cs-options').style.display = 'none';
+            document.getElementById('cs-feedback').style.display = 'none';
+            document.getElementById('cs-next').style.display = 'none';
+            return;
+        }
+        
+        const sc = scenarios[step];
+        document.getElementById('cs-title').innerText = sc.title;
+        document.getElementById('cs-text').innerText = sc.text;
+        
+        const opts = document.getElementById('cs-options');
+        opts.innerHTML = '';
+        opts.style.pointerEvents = 'auto';
+        
+        sc.options.forEach(o => {
+            opts.innerHTML += `<button class="cs-option" onclick="handleAnswer(${o.correct})">${o.text}</button>`;
+        });
+        
+        document.getElementById('cs-feedback').style.display = 'none';
+        document.getElementById('cs-next').style.display = 'none';
+        step++;
+    }
+</script>
+
+</body>
+</html>
