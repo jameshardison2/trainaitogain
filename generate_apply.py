@@ -126,7 +126,7 @@ function saveRole(title, domain, pay) {{
     if (!saved.some(r => r.id === roleId)) {{
         saved.push({{ id: roleId, title: title, domain: domain, pay: pay, date: new Date().toISOString() }});
         localStorage.setItem('savedRoles', JSON.stringify(saved));
-        alert('Role saved to your Pipeline Dashboard!');
+        alert('Role saved! You can view it in the Dashboard in the top menu.');
     }} else {{
         alert('Role is already in your Pipeline Dashboard.');
     }}
