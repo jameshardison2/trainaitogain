@@ -65,10 +65,51 @@
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
             </svg>
           </a>
-          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-nav-primary" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'nav_cta'});">Apply via Mercor</a>
+          <button class="btn-nav-primary" style="cursor:pointer;" onclick="openApplyModal('nav_cta');">Apply via Mercor</button>
         </div>
       </div>
     </div>
+    
+    <!-- Application Interceptor Modal -->
+    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
+      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
+        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
+          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
+        </div>
+        <div style="padding:24px;">
+          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter our priority partner portal.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
+          </div>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource}); closeApplyModal();">Proceed to Priority Portal ➔</a>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.currentApplySource = 'unknown';
+      function openApplyModal(source) {
+        window.currentApplySource = source;
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'flex';
+      }
+      function closeApplyModal() {
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'none';
+      }
+    </script>
+    <style>
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
   </nav>
 
 <section style="padding: 64px 0 32px; text-align:center;">
