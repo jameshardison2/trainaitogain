@@ -9,6 +9,7 @@ footer = re.search(r"(<footer.*?</footer>)", index_content, re.DOTALL).group(1)
 def generate_job_board(title, desc, jobs):
     cards_html = ""
     for job in jobs:
+        label = f"job_board_{job['tag']}"
         cards_html += f"""
         <div class="feature-card opp-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative;">
           {f'<div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>' if job.get('hot') else ''}
@@ -17,11 +18,11 @@ def generate_job_board(title, desc, jobs):
             <div style="color:var(--primary); font-weight:800; font-size:18px;">{job['pay']}</div>
           </div>
           <h3 style="font-size:20px; margin-bottom:8px; color:var(--black); line-height:1.2;">{job['title']}</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:16px; flex-grow:1;">{job['desc']}</p>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">{job['desc']}</p>
           <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
             {''.join([f'<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">{skill}</span>' for skill in job['skills']])}
           </div>
-          <a href="https://t.mercor.com/wbPMF" target="_blank" style="display:block; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';">Apply via Mercor</a>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" style="display:block; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {{'event_category':'referral', 'event_label':'{label}'}});">Apply via Mercor</a>
         </div>
         """
 
