@@ -44,8 +44,8 @@
           <div class="logo-text" style="display:flex; align-items:center; line-height:1.1;">
             <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
           </div>
-        </a>
-        <input type="checkbox" id="nav-toggle" />
+          </a>
+          <input type="checkbox" id="nav-toggle" style="display:none;" />
         <label for="nav-toggle" class="nav-toggle-label">
           <span class="nav-toggle-icon"></span>
         </label>
@@ -66,17 +66,6 @@
       </div>
     </div>
   </nav>
-
-  <!-- ─── Ticker ─────────────────────────────────────────── -->
-  <div class="ticker-wrap">
-    <div class="ticker-content" id="live-ticker">
-      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Marcus V.</span> just cleared the <span style="color:var(--primary-light);">Tier 3 Quant Benchmark</span> (12 mins ago)</div>
-      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Sarah T.</span> started payout phase for <span style="color:var(--primary-light);">Medical Annotator</span> (2 mins ago)</div>
-      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">David K.</span> unlocked the <span style="color:var(--primary-light);">Python SWE Interview</span> (5 mins ago)</div>
-      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Elena M.</span> achieved 94% on the <span style="color:var(--primary-light);">Hallucination Gym</span> (18 mins ago)</div>
-      <div class="ticker-item"><div class="pulse-dot"></div> <span style="color:#fff;">Raj P.</span> received offer for <span style="color:var(--primary-light);">Quant Dev</span> (22 mins ago)</div>
-    </div>
-  </div>
 
   <!-- ─── Hero ─────────────────────────────────────────── -->
   <section class="hero">
@@ -213,16 +202,17 @@
 
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
         <h2 style="font-size:24px; font-weight:700; color:var(--black);">Explore High-Paying Opportunities</h2>
+            <a href="apply.html" class="view-all-link">View all pipelines <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
       </div>
-      
-      <div id="opportunities-grid" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:24px; padding-bottom:32px; -webkit-overflow-scrolling:touch;">
-        <style>
-          #opportunities-grid::-webkit-scrollbar { display: none; }
-          #opportunities-grid { -ms-overflow-style: none; scrollbar-width: none; }
-          .opp-card { scroll-snap-align: start; min-width: 320px; max-width: 320px; flex: 0 0 auto; }
-        </style>
+
+      <div style="position:relative;">
+        <button class="carousel-btn" style="position:absolute; top:50%; transform:translateY(-50%); left:-20px; width:44px; height:44px; border-radius:50%; background:var(--white); border:1px solid var(--gray-200); box-shadow:0 4px 12px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; z-index:10;" onclick="document.getElementById('idx-carousel').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+        <button class="carousel-btn" style="position:absolute; top:50%; transform:translateY(-50%); right:-20px; width:44px; height:44px; border-radius:50%; background:var(--white); border:1px solid var(--gray-200); box-shadow:0 4px 12px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; z-index:10;" onclick="document.getElementById('idx-carousel').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+
+        <div id="idx-carousel" style="display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding-bottom:16px; margin:0 -16px; padding-left:16px; padding-right:16px;">
+          <style>#idx-carousel::-webkit-scrollbar { display: none; }</style>
         
-        <div class="feature-card opp-card" data-category="software complex" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div class="feature-card opp-card" data-category="software complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
           <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
             <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">SOFTWARE</div>
             <div style="color:var(--primary); font-weight:700;">$150/hr</div>
@@ -232,7 +222,7 @@
           <a href="role-software.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to get this role <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
         </div>
 
-        <div class="feature-card opp-card" data-category="medical complex" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div class="feature-card opp-card" data-category="medical complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
           <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
             <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">MEDICAL</div>
             <div style="color:var(--primary); font-weight:700;">$100/hr</div>
@@ -242,7 +232,7 @@
           <a href="role-medical.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to get this role <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
         </div>
 
-        <div class="feature-card opp-card" data-category="finance complex" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div class="feature-card opp-card" data-category="finance complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
           <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
             <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">FINANCE</div>
             <div style="color:var(--primary); font-weight:700;">$120/hr</div>
@@ -272,7 +262,7 @@
           <a href="https://t.mercor.com/wbPMF" target="_blank" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'quiz_data_annotation'});">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
         </div>
 
-        <div class="feature-card opp-card" data-category="other complex" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div class="feature-card opp-card" data-category="other complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
           <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
             <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">SYNTHETIC DATA</div>
             <div style="color:var(--primary); font-weight:700;">Up to $80/hr</div>
@@ -282,7 +272,7 @@
           <a href="https://t.mercor.com/wbPMF" target="_blank" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'quiz_synthetic_data'});">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
         </div>
 
-        <div class="feature-card opp-card" data-category="language complex volume" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div class="feature-card opp-card" data-category="language complex volume" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
           <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
             <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">MULTILINGUAL</div>
             <div style="color:var(--primary); font-weight:700;">Up to $60/hr</div>
@@ -292,6 +282,7 @@
           <a href="https://t.mercor.com/wbPMF" target="_blank" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'quiz_multilingual'});">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
         </div>
 
+        </div>
       </div>
     </div>
   </section>
