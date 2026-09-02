@@ -11,160 +11,305 @@ html = f"""<!DOCTYPE html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AI Interview Simulator — TrainAIToGain</title>
+  <title>Voice AI Interview Simulator — TrainAIToGain</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <style>
-    .sim-container {{ background: var(--black); border-radius: var(--radius-lg); padding: 48px; max-width: 700px; margin: 0 auto; color: var(--white); box-shadow: 0 24px 48px rgba(0,0,0,0.4); text-align: center; position: relative; overflow: hidden; }}
-    .sim-prompt {{ font-size: 24px; font-weight: 700; line-height: 1.4; margin-bottom: 32px; min-height: 100px; display: flex; align-items: center; justify-content: center; }}
-    .sim-timer {{ font-size: 64px; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums; margin-bottom: 32px; text-shadow: 0 0 24px rgba(16, 185, 129, 0.4); }}
-    .sim-timer.warning {{ color: #ef4444; text-shadow: 0 0 24px rgba(239, 68, 68, 0.4); }}
-    .btn-sim {{ background: var(--primary); color: var(--white); border: none; padding: 16px 32px; font-size: 18px; font-weight: 800; border-radius: 100px; cursor: pointer; transition: all 0.2s; font-family: var(--font); box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4); }}
-    .btn-sim:hover {{ transform: translateY(-2px); box-shadow: 0 12px 32px rgba(16, 185, 129, 0.6); }}
-    .btn-sim:disabled {{ background: var(--gray-700); color: var(--gray-500); cursor: not-allowed; box-shadow: none; transform: none; }}
+    body {{ background: var(--black); color: var(--white); }}
     
-    .sim-camera-light {{ width: 12px; height: 12px; background: #ef4444; border-radius: 50%; position: absolute; top: 24px; right: 24px; opacity: 0; }}
-    .sim-camera-light.active {{ animation: blink 1s infinite; }}
-    @keyframes blink {{ 0% {{ opacity: 1; }} 50% {{ opacity: 0.2; }} 100% {{ opacity: 1; }} }}
+    .prep-hub {{ max-width: 1000px; margin: 0 auto; padding: 64px 24px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 48px; align-items: start; }}
     
-    .rubric {{ background: rgba(255,255,255,0.1); border-radius: var(--radius-sm); padding: 24px; text-align: left; margin-top: 32px; display: none; border: 1px solid rgba(255,255,255,0.2); }}
-    .rubric h4 {{ color: var(--primary); margin-bottom: 12px; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }}
-    .rubric ul {{ padding-left: 20px; color: #ccc; font-size: 15px; line-height: 1.6; margin-bottom: 0; }}
+    @media (max-width: 800px) {{
+        .prep-hub {{ grid-template-columns: 1fr; }}
+    }}
+    
+    .cheat-sheet {{ background: rgba(255,255,255,0.05); padding: 32px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1); }}
+    .cheat-sheet h3 {{ font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }}
+    .cheat-sheet ul {{ list-style: none; padding: 0; margin: 0; }}
+    .cheat-sheet li {{ margin-bottom: 20px; font-size: 14px; color: #ccc; line-height: 1.6; position: relative; padding-left: 24px; }}
+    .cheat-sheet li::before {{ content: '✓'; position: absolute; left: 0; color: var(--primary); font-weight: 800; }}
+    .cheat-sheet li strong {{ color: var(--white); }}
+    
+    .sim-container {{ background: rgba(0,0,0,0.5); border-radius: var(--radius-lg); padding: 48px 32px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 48px rgba(0,0,0,0.4); text-align: center; position: relative; overflow: hidden; }}
+    
+    .avatar-ring {{ width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 32px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.3s; }}
+    .avatar-ring.speaking {{ animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1); border: 2px solid var(--primary); }}
+    .avatar-ring.listening {{ animation: pulse-ring-blue 1.5s infinite; border: 2px solid #3b82f6; }}
+    
+    .avatar-icon {{ font-size: 48px; }}
+    
+    @keyframes pulse-ring {{
+      0% {{ box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }}
+      70% {{ box-shadow: 0 0 0 30px rgba(16, 185, 129, 0); }}
+      100% {{ box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }}
+    }}
+    
+    @keyframes pulse-ring-blue {{
+      0% {{ box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }}
+      70% {{ box-shadow: 0 0 0 30px rgba(59, 130, 246, 0); }}
+      100% {{ box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }}
+    }}
+    
+    .sim-status {{ font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 16px; transition: color 0.3s; }}
+    .sim-status.speaking {{ color: var(--primary); }}
+    .sim-status.listening {{ color: #3b82f6; }}
+    
+    .sim-text {{ font-size: 22px; font-weight: 500; line-height: 1.5; margin-bottom: 32px; min-height: 100px; color: var(--white); }}
+    .user-transcript {{ font-size: 16px; color: #aaa; font-style: italic; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 8px; margin-bottom: 24px; min-height: 60px; text-align: left; display: none; border-left: 3px solid #3b82f6; }}
+    
+    .btn-sim {{ background: var(--primary); color: var(--white); border: none; padding: 16px 32px; font-size: 16px; font-weight: 800; border-radius: 100px; cursor: pointer; transition: all 0.2s; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3); display: inline-flex; align-items: center; gap: 12px; }}
+    .btn-sim:hover {{ transform: translateY(-2px); box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5); }}
+    .btn-sim svg {{ width: 20px; height: 20px; fill: currentColor; }}
+    .btn-sim:disabled {{ opacity: 0.5; cursor: not-allowed; transform: none; }}
   </style>
 </head>
-<body style="background:var(--gray-50);">
+<body>
 
 {header}
 
-<section style="padding: 64px 0 24px;">
-  <div class="container" style="text-align:center; max-width:800px;">
-    <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">AI Interview Simulator</h1>
-    <p style="font-size:16px; color:var(--gray-500);">The AI will ask you a question and you have exactly 60 seconds to answer using the "Headline First" strategy. Practice speaking out loud before you take the real thing.</p>
+<div class="prep-hub">
+  
+  <!-- Cheat Sheet Sidebar -->
+  <div class="cheat-sheet">
+    <h3>Masterclass Rules</h3>
+    <ul>
+      <li><strong>The "Headline First" Rule:</strong> AI labs want direct answers. Never start with "Well, I think..." Start with your core thesis immediately.</li>
+      <li><strong>No Empty Jargon:</strong> Anyone can say "Attention Mechanism." You need to be able to explain <em>why</em> it matters in one simple sentence.</li>
+      <li><strong>RLHF Formatting:</strong> Always assume the AI model will hallucinate. Emphasize how you structurally constrain prompts to guarantee formatting.</li>
+      <li><strong>Conciseness is King:</strong> Stop rambling. If you can't explain it in 60 seconds out loud, you don't know it well enough.</li>
+    </ul>
   </div>
-</section>
 
-<section class="section" style="padding-top:24px; padding-bottom:64px;">
-  <div class="container">
+  <!-- Voice Simulator -->
+  <div class="sim-container">
     
-    <div class="sim-container">
-      <div class="sim-camera-light" id="camera-light"></div>
+    <div id="setup-view">
+      <div class="avatar-ring">
+        <div class="avatar-icon">🎙️</div>
+      </div>
+      <h2 style="font-size:28px; margin-bottom:16px;">Voice AI Simulator</h2>
+      <p style="color:#aaa; margin-bottom:32px; font-size:15px; line-height:1.6;">This simulator uses your microphone to conduct a real, high-pressure audio interview. The AI will speak the questions out loud. You must answer out loud. The AI will analyze your voice and give you immediate coaching feedback.</p>
+      <button class="btn-sim" id="start-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+        Start Voice Interview
+      </button>
+      <p style="font-size: 12px; color: #666; margin-top: 16px;">(Requires Microphone Permission on Chrome/Safari)</p>
+    </div>
+
+    <div id="active-view" style="display:none;">
+      <div class="avatar-ring" id="avatar-ring">
+        <div class="avatar-icon" id="avatar-emoji">🤖</div>
+      </div>
       
-      <div id="setup-view">
-        <h2 style="font-size:28px; margin-bottom:16px;">Ready for the hot seat?</h2>
-        <p style="color:#aaa; margin-bottom:32px;">When you click start, a real interview prompt will appear. You will have 60 seconds to respond. Speak your answer out loud.</p>
-        <button class="btn-sim" id="start-btn">Start Simulation</button>
-      </div>
-
-      <div id="active-view" style="display:none;">
-        <div class="sim-prompt" id="prompt-text">Loading question...</div>
-        <div class="sim-timer" id="timer-text">60</div>
-        
-        <div class="rubric" id="rubric-view">
-          <h4>Did you pass? (Self-Grading Rubric)</h4>
-          <ul id="rubric-points">
-            <!-- Populated by JS -->
-          </ul>
-          <button class="btn-sim" id="next-btn" style="margin-top:24px; font-size:15px; padding:12px 24px;">Next Question</button>
-        </div>
-      </div>
-
+      <div class="sim-status" id="sim-status">Connecting...</div>
+      <div class="sim-text" id="sim-text">Initializing AI...</div>
+      
+      <div class="user-transcript" id="user-transcript"></div>
+      
+      <button class="btn-sim" id="next-btn" style="display:none;">Next Question</button>
     </div>
 
   </div>
-</section>
+</div>
 
 {footer}
 
 <script>
+  // Browser Speech APIs
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const synth = window.speechSynthesis;
+  let recognition;
+  
+  if (SpeechRecognition) {{
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+  }}
+
   const questions = [
     {{
-      q: "Explain how a Transformer architecture works to a non-technical manager in 60 seconds.",
-      r: [
-        "Did you start with a clear, 1-sentence headline?",
-        "Did you avoid dense jargon (like 'attention mechanisms') or explain them simply?",
-        "Did you use an analogy? (e.g., 'It reads a sentence all at once, not word-by-word').",
-        "Did you fill the 60 seconds without rambling?"
-      ]
+      q: "Explain how a Transformer architecture works to a non-technical manager.",
+      keywords: ["read", "all at once", "attention", "parallel", "context", "relationship"],
+      feedbackMiss: "You missed the core concept for a non-technical person. You need to emphasize that unlike older models that read word-by-word, Transformers look at the whole sentence at once to understand context.",
+      feedbackHit: "Great answer! You clearly explained the parallel processing aspect without getting bogged down in math."
     }},
     {{
-      q: "What is the difference between supervised fine-tuning (SFT) and RLHF?",
-      r: [
-        "Did you state the answer immediately? (SFT is teaching it facts, RLHF is teaching it manners/alignment).",
-        "Did you explain the human reward component of RLHF clearly?",
-        "Did you maintain a confident, expert tone?"
-      ]
+      q: "What is the difference between supervised fine-tuning and RLHF?",
+      keywords: ["facts", "behavior", "human", "reward", "alignment", "preferences", "manners"],
+      feedbackMiss: "I didn't hear a clear distinction. Remember the headline: SFT teaches the model facts and capabilities, while RLHF teaches it manners and alignment with human preferences.",
+      feedbackHit: "Spot on! You nailed the distinction between teaching capabilities versus teaching alignment."
     }},
     {{
       q: "How would you design a prompt to ensure an LLM outputs valid JSON?",
-      r: [
-        "Did you mention Few-Shot prompting or providing examples?",
-        "Did you mention system instructions constraining the output?",
-        "Did you mention validation/retry logic on the application side?"
-      ]
+      keywords: ["few-shot", "examples", "system", "schema", "retry", "validation", "constrain"],
+      feedbackMiss: "You missed the most reliable techniques. You should always mention providing explicit few-shot examples and enforcing a strict JSON schema in the system prompt.",
+      feedbackHit: "Excellent. You understand that prompt engineering requires structural constraints and examples."
     }}
   ];
 
   let currentQ = 0;
-  let timerInterval;
-
+  
   const startBtn = document.getElementById('start-btn');
   const nextBtn = document.getElementById('next-btn');
   const setupView = document.getElementById('setup-view');
   const activeView = document.getElementById('active-view');
-  const promptText = document.getElementById('prompt-text');
-  const timerText = document.getElementById('timer-text');
-  const rubricView = document.getElementById('rubric-view');
-  const rubricPoints = document.getElementById('rubric-points');
-  const cameraLight = document.getElementById('camera-light');
+  
+  const avatarRing = document.getElementById('avatar-ring');
+  const avatarEmoji = document.getElementById('avatar-emoji');
+  const simStatus = document.getElementById('sim-status');
+  const simText = document.getElementById('sim-text');
+  const userTranscript = document.getElementById('user-transcript');
 
-  function startQuestion() {{
-    setupView.style.display = 'none';
-    activeView.style.display = 'block';
-    rubricView.style.display = 'none';
-    cameraLight.classList.add('active');
+  function setUIState(state, text) {{
+    simText.innerText = text;
+    avatarRing.className = 'avatar-ring';
+    simStatus.className = 'sim-status';
     
-    // Select random question
-    currentQ = Math.floor(Math.random() * questions.length);
-    promptText.innerText = questions[currentQ].q;
-    
-    let timeLeft = 60;
-    timerText.innerText = timeLeft;
-    timerText.classList.remove('warning');
+    if (state === 'speaking') {{
+      avatarRing.classList.add('speaking');
+      simStatus.classList.add('speaking');
+      simStatus.innerText = 'AI is Speaking...';
+      avatarEmoji.innerText = '🤖';
+      userTranscript.style.display = 'none';
+      nextBtn.style.display = 'none';
+    }} else if (state === 'listening') {{
+      avatarRing.classList.add('listening');
+      simStatus.classList.add('listening');
+      simStatus.innerText = 'Listening to you...';
+      avatarEmoji.innerText = '🎙️';
+      userTranscript.style.display = 'block';
+      userTranscript.innerText = '...';
+      nextBtn.style.display = 'none';
+    }} else if (state === 'analyzing') {{
+      simStatus.innerText = 'Analyzing Answer...';
+      avatarEmoji.innerText = '⚙️';
+      nextBtn.style.display = 'none';
+    }} else if (state === 'feedback') {{
+      avatarRing.classList.add('speaking');
+      simStatus.classList.add('speaking');
+      simStatus.innerText = 'Coaching Feedback';
+      avatarEmoji.innerText = '🧠';
+      nextBtn.style.display = 'inline-flex';
+    }}
+  }}
 
-    timerInterval = setInterval(() => {{
-      timeLeft--;
-      timerText.innerText = timeLeft;
+  function speakText(text, callback) {{
+    if (synth.speaking) {{
+        synth.cancel();
+    }}
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    const voices = synth.getVoices();
+    const goodVoice = voices.find(v => v.lang.includes('en-') && (v.name.includes('Google') || v.name.includes('Siri') || v.name.includes('Samantha')));
+    if (goodVoice) utterance.voice = goodVoice;
+    
+    utterance.rate = 1.05;
+    utterance.pitch = 1.0;
+    
+    utterance.onend = () => {{
+      if (callback) callback();
+    }};
+    
+    synth.speak(utterance);
+  }}
+
+  function processAnswer(transcript) {{
+    setUIState('analyzing', 'Analyzing your transcript...');
+    
+    setTimeout(() => {{
+      const text = transcript.toLowerCase();
+      const qData = questions[currentQ];
       
-      if (timeLeft <= 10) {{
-        timerText.classList.add('warning');
+      let matches = 0;
+      qData.keywords.forEach(kw => {{
+        if (text.includes(kw.toLowerCase())) matches++;
+      }});
+      
+      let feedback = "";
+      if (text.split(' ').length < 10) {{
+         feedback = "Your answer was way too short. You need to elaborate more to prove your expertise. " + qData.feedbackMiss;
+      }} else if (matches >= 2) {{
+         feedback = qData.feedbackHit;
+      }} else {{
+         feedback = qData.feedbackMiss;
       }}
-
-      if (timeLeft <= 0) {{
-        clearInterval(timerInterval);
-        endQuestion();
-      }}
+      
+      setUIState('feedback', feedback);
+      speakText(feedback, () => {{
+         avatarRing.classList.remove('speaking');
+         simStatus.classList.remove('speaking');
+         simStatus.innerText = 'Feedback Complete';
+      }});
+      
     }}, 1000);
   }}
 
-  function endQuestion() {{
-    cameraLight.classList.remove('active');
-    timerText.innerText = "Time's Up!";
+  function askQuestion() {{
+    const qText = questions[currentQ].q;
+    setUIState('speaking', qText);
     
-    // Show rubric
-    rubricPoints.innerHTML = '';
-    questions[currentQ].r.forEach(point => {{
-      const li = document.createElement('li');
-      li.innerText = point;
-      rubricPoints.appendChild(li);
+    speakText(qText, () => {{
+      if (!recognition) {{
+         setUIState('feedback', 'Speech Recognition is not supported on this browser. Please use Google Chrome.');
+         return;
+      }}
+      
+      setUIState('listening', 'Waiting for your answer...');
+      let finalTranscript = '';
+      
+      recognition.onresult = (event) => {{
+        let interim = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {{
+          const t = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {{
+            finalTranscript += t + ' ';
+          }} else {{
+            interim += t;
+          }}
+        }}
+        userTranscript.innerText = finalTranscript + interim;
+      }};
+      
+      recognition.onerror = (e) => {{
+         if (e.error === 'no-speech') {{
+             processAnswer(finalTranscript);
+         }}
+      }};
+      
+      recognition.onend = () => {{
+        if (finalTranscript.trim() === '') {{
+            processAnswer(userTranscript.innerText || "I don't know");
+        }} else {{
+            processAnswer(finalTranscript);
+        }}
+      }};
+      
+      recognition.start();
     }});
-    
-    rubricView.style.display = 'block';
   }}
 
-  startBtn.addEventListener('click', startQuestion);
-  nextBtn.addEventListener('click', startQuestion);
+  startBtn.addEventListener('click', () => {{
+    setupView.style.display = 'none';
+    activeView.style.display = 'block';
+    
+    synth.getVoices();
+    
+    speakText("Welcome to the Train AI to Gain simulator. I will ask you a question. Please speak your answer out loud when prompted.", () => {{
+       askQuestion();
+    }});
+  }});
+
+  nextBtn.addEventListener('click', () => {{
+    if (synth.speaking) synth.cancel();
+    currentQ = (currentQ + 1) % questions.length;
+    askQuestion();
+  }});
+  
+  if (speechSynthesis.onvoiceschanged !== undefined) {{
+      speechSynthesis.onvoiceschanged = () => synth.getVoices();
+  }}
 </script>
 
 </body>
@@ -173,4 +318,4 @@ html = f"""<!DOCTYPE html>
 
 with open("ai-interview.html", "w") as f:
     f.write(html)
-print("Created ai-interview.html")
+print("Created ai-interview.html with Voice AI Simulator")

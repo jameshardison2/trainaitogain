@@ -11,148 +11,185 @@ html = f"""<!DOCTYPE html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Resume Formatter & ATS Scanner — TrainAIToGain</title>
+  <title>Interactive ATS Resume Scanner — TrainAIToGain</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <style>
-    .ats-container {{ background: var(--white); border-radius: var(--radius-lg); padding: 48px; max-width: 700px; margin: 0 auto; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); }}
-    .meter-wrap {{ background: var(--gray-200); height: 24px; border-radius: 100px; overflow: hidden; margin-bottom: 8px; position: relative; }}
-    .meter-fill {{ background: #ef4444; height: 100%; width: 0%; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }}
-    .meter-text {{ text-align: center; font-weight: 800; font-size: 24px; margin-bottom: 32px; }}
-    .meter-text span {{ color: #ef4444; transition: color 0.5s; }}
+    body {{ background: var(--gray-50); }}
     
-    .check-item {{ display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--gray-100); cursor: pointer; }}
-    .check-item:last-child {{ margin-bottom: 0; padding-bottom: 0; border-bottom: none; }}
-    .check-box {{ width: 28px; height: 28px; border: 2px solid var(--gray-400); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }}
-    .check-item.active .check-box {{ background: var(--primary); border-color: var(--primary); }}
-    .check-box svg {{ width: 16px; height: 16px; fill: none; stroke: white; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: scale(0.5); transition: all 0.2s; }}
-    .check-item.active .check-box svg {{ opacity: 1; transform: scale(1); }}
+    .ats-layout {{ max-width: 1100px; margin: 64px auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }}
+    @media (max-width: 800px) {{
+        .ats-layout {{ grid-template-columns: 1fr; }}
+    }}
     
-    .check-content h3 {{ font-size: 18px; font-weight: 700; color: var(--black); margin-bottom: 4px; }}
-    .check-content p {{ font-size: 14px; color: var(--gray-500); line-height: 1.5; }}
+    .ats-panel {{ background: var(--white); border-radius: var(--radius-lg); padding: 32px; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); }}
+    
+    .ats-panel h2 {{ font-size: 24px; font-weight: 800; margin-bottom: 16px; color: var(--black); }}
+    .ats-panel p {{ font-size: 15px; color: var(--gray-500); margin-bottom: 24px; line-height: 1.6; }}
+    
+    textarea.resume-box {{ width: 100%; height: 400px; padding: 16px; border-radius: var(--radius); border: 2px solid var(--gray-200); font-family: monospace; font-size: 14px; resize: vertical; margin-bottom: 16px; transition: border-color 0.2s; }}
+    textarea.resume-box:focus {{ outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }}
+    
+    .btn-scan {{ background: var(--primary); color: var(--white); border: none; padding: 14px 28px; font-size: 16px; font-weight: 700; border-radius: var(--radius); cursor: pointer; transition: all 0.2s; width: 100%; }}
+    .btn-scan:hover {{ background: #059669; transform: translateY(-1px); }}
+    
+    .meter-wrap {{ background: var(--gray-200); height: 28px; border-radius: 100px; overflow: hidden; margin-bottom: 16px; position: relative; }}
+    .meter-fill {{ background: #ef4444; height: 100%; width: 0%; transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }}
+    .meter-text {{ font-weight: 800; font-size: 48px; margin-bottom: 8px; color: var(--black); line-height: 1; }}
+    .meter-text span {{ color: #ef4444; transition: color 0.8s; }}
+    .meter-label {{ font-size: 14px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 32px; display: block; }}
+    
+    .keyword-list {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }}
+    .kw-chip {{ padding: 6px 12px; border-radius: 100px; font-size: 13px; font-weight: 600; background: var(--gray-100); color: var(--gray-500); border: 1px solid var(--gray-200); transition: all 0.3s; }}
+    .kw-chip.found {{ background: #d1fae5; color: #047857; border-color: #34d399; }}
+    
+    .feedback-box {{ margin-top: 32px; padding: 24px; border-radius: var(--radius); background: var(--gray-50); border: 1px solid var(--gray-200); }}
+    .feedback-box h4 {{ margin-bottom: 12px; font-size: 16px; color: var(--black); }}
+    .feedback-box p {{ font-size: 14px; margin-bottom: 0; color: var(--gray-700); }}
+    
+    .btn-apply {{ display: block; text-align: center; background: var(--black); color: white; padding: 16px; border-radius: var(--radius); font-weight: 700; text-decoration: none; margin-top: 32px; opacity: 0.5; pointer-events: none; transition: all 0.3s; }}
+    .btn-apply.ready {{ opacity: 1; pointer-events: auto; background: var(--primary); }}
+    .btn-apply.ready:hover {{ background: #059669; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3); }}
   </style>
 </head>
-<body style="background:var(--gray-50);">
+<body>
 
 {header}
 
-<section style="padding: 64px 0 24px;">
+<section style="padding: 64px 0 0;">
   <div class="container" style="text-align:center; max-width:800px;">
-    <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">ATS Resume Scanner</h1>
-    <p style="font-size:16px; color:var(--gray-500);">Mercor doesn't have human recruiters reading your resume. An AI parses it instantly. Use this self-audit tool to ensure your formatting won't get you auto-rejected.</p>
+    <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Live ATS Resume Scanner</h1>
+    <p style="font-size:16px; color:var(--gray-500);">Top AI labs don't use human recruiters. An AI parses your resume instantly. Paste your resume text below to see if you have the required keywords to pass the filter.</p>
   </div>
 </section>
 
-<section class="section" style="padding-top:24px; padding-bottom:64px;">
-  <div class="container">
+<div class="ats-layout">
+  <!-- Left: Input Panel -->
+  <div class="ats-panel">
+    <h2>Paste Your Resume</h2>
+    <p>Copy and paste the plain text of your resume here. Do not worry about formatting—ATS bots only read the raw text.</p>
+    <textarea class="resume-box" id="resume-text" placeholder="John Doe\nSoftware Engineer\n\nExperience\n- Trained large language models..."></textarea>
+    <button class="btn-scan" id="scan-btn">Scan My Resume</button>
+  </div>
+
+  <!-- Right: Results Panel -->
+  <div class="ats-panel">
+    <h2>ATS Match Score</h2>
+    <div class="meter-text"><span id="score-text">0</span>%</div>
+    <span class="meter-label">Match Probability</span>
     
-    <div class="ats-container">
-      
-      <div class="meter-text">ATS Pass Probability: <span id="score-text">0%</span></div>
-      <div class="meter-wrap">
-        <div class="meter-fill" id="meter-fill"></div>
-      </div>
-      <p style="text-align:center; font-size:14px; color:var(--gray-500); margin-bottom:48px;">Check all the boxes that apply to your current resume.</p>
-
-      <div class="check-item" onclick="toggleCheck(this, 20)">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="check-content">
-          <h3>Single Column Layout</h3>
-          <p>Multi-column graphic resumes confuse parsers. Is your resume a simple top-to-bottom document?</p>
-        </div>
-      </div>
-
-      <div class="check-item" onclick="toggleCheck(this, 20)">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="check-content">
-          <h3>Standard Typography</h3>
-          <p>Did you use standard, system-safe fonts (like Arial, Times New Roman, or Calibri) instead of custom graphic fonts?</p>
-        </div>
-      </div>
-
-      <div class="check-item" onclick="toggleCheck(this, 20)">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="check-content">
-          <h3>No Photos or Graphics</h3>
-          <p>Did you remove all headshots, logos, icons, and graphic skill bars? (These can break text extraction algorithms).</p>
-        </div>
-      </div>
-
-      <div class="check-item" onclick="toggleCheck(this, 20)">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="check-content">
-          <h3>Explicit Skill Keywords</h3>
-          <p>Did you explicitly list your tech stack (e.g., Python, C++, React) rather than relying on implied experience?</p>
-        </div>
-      </div>
-
-      <div class="check-item" onclick="toggleCheck(this, 20)">
-        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <div class="check-content">
-          <h3>PDF Export</h3>
-          <p>Are you uploading your resume as a clean, text-searchable PDF (not a flat image or obscure format)?</p>
-        </div>
-      </div>
-
-      <div style="text-align:center; margin-top:48px;">
-        <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" id="apply-btn" style="opacity:0.5; pointer-events:none;">Submit Resume to Mercor</a>
-        <p style="font-size:12px; color:var(--gray-400); margin-top:12px;">You must score 100% to proceed safely.</p>
-      </div>
-
+    <div class="meter-wrap">
+      <div class="meter-fill" id="meter-fill"></div>
     </div>
-
+    
+    <h4 style="margin-top:32px; font-size:14px; color:var(--black);">Required Industry Keywords:</h4>
+    <div class="keyword-list" id="keyword-list">
+      <!-- Generated by JS -->
+    </div>
+    
+    <div class="feedback-box" id="feedback-box">
+      <h4>Awaiting Scan...</h4>
+      <p>Paste your resume on the left and click scan to see your results.</p>
+    </div>
+    
+    <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-apply" id="apply-btn">You must score 80%+ to Apply</a>
   </div>
-</section>
+</div>
 
 {footer}
 
 <script>
-  let score = 0;
+  const keywords = [
+    "Python", "Machine Learning", "LLM", "Prompt Engineering", "Data Analysis", 
+    "RLHF", "Generative AI", "SQL", "Algorithm", "Optimization", "Model", "Evaluation"
+  ];
+  
+  const kwListEl = document.getElementById('keyword-list');
+  const scanBtn = document.getElementById('scan-btn');
+  const resumeBox = document.getElementById('resume-text');
   const meterFill = document.getElementById('meter-fill');
   const scoreText = document.getElementById('score-text');
+  const feedbackBox = document.getElementById('feedback-box');
   const applyBtn = document.getElementById('apply-btn');
-
-  function toggleCheck(el, points) {{
-    if (el.classList.contains('active')) {{
-      el.classList.remove('active');
-      score -= points;
-    }} else {{
-      el.classList.add('active');
-      score += points;
+  
+  // Render chips
+  keywords.forEach(kw => {{
+    const chip = document.createElement('div');
+    chip.className = 'kw-chip';
+    chip.innerText = kw;
+    chip.id = 'kw-' + kw.replace(/\s+/g, '-').toLowerCase();
+    kwListEl.appendChild(chip);
+  }});
+  
+  scanBtn.addEventListener('click', () => {{
+    const text = resumeBox.value.toLowerCase();
+    
+    if (text.trim() === '') {{
+      alert('Please paste your resume text first.');
+      return;
     }}
     
-    updateMeter();
-  }}
-
-  function updateMeter() {{
-    meterFill.style.width = score + '%';
-    scoreText.innerText = score + '%';
+    scanBtn.innerText = 'Scanning...';
     
-    // Color logic
-    if (score < 50) {{
-      meterFill.style.background = '#ef4444';
-      scoreText.style.color = '#ef4444';
-    }} else if (score < 100) {{
-      meterFill.style.background = '#f59e0b';
-      scoreText.style.color = '#f59e0b';
-    }} else {{
-      meterFill.style.background = '#10b981';
-      scoreText.style.color = '#10b981';
-    }}
-
-    // Button state
-    if (score === 100) {{
-      applyBtn.style.opacity = '1';
-      applyBtn.style.pointerEvents = 'auto';
-      applyBtn.innerText = 'Pass: Submit Resume to Mercor';
-    }} else {{
-      applyBtn.style.opacity = '0.5';
-      applyBtn.style.pointerEvents = 'none';
-      applyBtn.innerText = 'Submit Resume to Mercor';
-    }}
-  }}
+    setTimeout(() => {{
+      let hits = 0;
+      
+      keywords.forEach(kw => {{
+        const chip = document.getElementById('kw-' + kw.replace(/\s+/g, '-').toLowerCase());
+        if (text.includes(kw.toLowerCase())) {{
+          hits++;
+          chip.classList.add('found');
+        }} else {{
+          chip.classList.remove('found');
+        }}
+      }});
+      
+      const score = Math.round((hits / keywords.length) * 100);
+      
+      // Animate score
+      meterFill.style.width = score + '%';
+      
+      let start = 0;
+      const counter = setInterval(() => {{
+        start += 5;
+        if (start > score) start = score;
+        scoreText.innerText = start;
+        
+        if (start < 50) {{
+          meterFill.style.background = '#ef4444';
+          scoreText.style.color = '#ef4444';
+        }} else if (start < 80) {{
+          meterFill.style.background = '#f59e0b';
+          scoreText.style.color = '#f59e0b';
+        }} else {{
+          meterFill.style.background = '#10b981';
+          scoreText.style.color = '#10b981';
+        }}
+        
+        if (start === score) clearInterval(counter);
+      }}, 30);
+      
+      // Update feedback
+      if (score < 50) {{
+         feedbackBox.innerHTML = '<h4>Low Match Probability 🔴</h4><p>Your resume is missing critical AI industry keywords. The automated scanner is highly likely to reject this. Please add the missing keywords highlighted above into your bullet points organically.</p>';
+         applyBtn.className = 'btn-apply';
+         applyBtn.innerText = 'You must score 80%+ to Apply';
+      }} else if (score < 80) {{
+         feedbackBox.innerHTML = '<h4>Medium Match Probability 🟡</h4><p>You have a decent foundation, but you are still missing some key terms. To guarantee your resume is flagged for review, try to incorporate a few more of the gray keywords.</p>';
+         applyBtn.className = 'btn-apply';
+         applyBtn.innerText = 'You must score 80%+ to Apply';
+      }} else {{
+         feedbackBox.innerHTML = '<h4>High Match Probability 🟢</h4><p>Excellent work. Your resume is dense with high-value AI keywords. You have a very high probability of passing the automated screening phase.</p>';
+         applyBtn.className = 'btn-apply ready';
+         applyBtn.innerText = 'Pass: Submit Resume to Mercor Now';
+      }}
+      
+      scanBtn.innerText = 'Scan Again';
+      
+    }}, 600); // Simulate processing delay
+  }});
 </script>
 
 </body>
@@ -161,4 +198,4 @@ html = f"""<!DOCTYPE html>
 
 with open("resume-ats-guide.html", "w") as f:
     f.write(html)
-print("Created resume-ats-guide.html")
+print("Created resume-ats-guide.html with Interactive Scanner")

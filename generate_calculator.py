@@ -42,26 +42,23 @@ html = f"""<!DOCTYPE html>
     
     <div class="calc-container">
       
-      <label class="calc-label">Select Your Domain/Role</label>
-      <select id="role-select" class="calc-select">
-        <option value="150">Senior Software Engineer ($150/hr)</option>
-        <option value="130">C++ / Systems Engineer ($130/hr)</option>
-        <option value="120">Quant / Mathematics ($120/hr)</option>
-        <option value="100">Medical / Clinical Specialist ($100/hr)</option>
-        <option value="80">General Practitioner / Finance ($80/hr)</option>
-        <option value="40">Generalist / Translation ($40/hr)</option>
-      </select>
+      <label class="calc-label">Hourly Pay Rate: <span id="rate-display" style="color:var(--primary);">$100</span> / hr</label>
+      <input type="range" id="rate-slider" class="calc-slider" min="30" max="150" step="5" value="100">
+      <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--gray-400); margin-top:-16px; margin-bottom:24px;">
+         <span>Generalist</span>
+         <span>Expert</span>
+      </div>
 
       <label class="calc-label">Hours Per Week: <span id="hours-display" style="color:var(--primary);">20</span></label>
       <input type="range" id="hours-slider" class="calc-slider" min="5" max="40" step="1" value="20">
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
         <div class="result-box">
-          <div class="result-val" id="weekly-pay">$3,000</div>
+          <div class="result-val" id="weekly-pay">$2,000</div>
           <div class="result-lbl">Weekly Income</div>
         </div>
         <div class="result-box">
-          <div class="result-val" id="yearly-pay">$156,000</div>
+          <div class="result-val" id="yearly-pay">$104,000</div>
           <div class="result-lbl">Yearly Projection</div>
         </div>
       </div>
@@ -77,16 +74,18 @@ html = f"""<!DOCTYPE html>
 {footer}
 
 <script>
-  const roleSelect = document.getElementById('role-select');
+  const rateSlider = document.getElementById('rate-slider');
+  const rateDisplay = document.getElementById('rate-display');
   const hoursSlider = document.getElementById('hours-slider');
   const hoursDisplay = document.getElementById('hours-display');
   const weeklyPay = document.getElementById('weekly-pay');
   const yearlyPay = document.getElementById('yearly-pay');
 
   function updateCalc() {{
-    const rate = parseInt(roleSelect.value);
+    const rate = parseInt(rateSlider.value);
     const hours = parseInt(hoursSlider.value);
     
+    rateDisplay.innerText = '$' + rate;
     hoursDisplay.innerText = hours;
     
     const weekly = rate * hours;
@@ -96,7 +95,7 @@ html = f"""<!DOCTYPE html>
     yearlyPay.innerText = '$' + yearly.toLocaleString();
   }}
 
-  roleSelect.addEventListener('change', updateCalc);
+  rateSlider.addEventListener('input', updateCalc);
   hoursSlider.addEventListener('input', updateCalc);
   updateCalc();
 </script>

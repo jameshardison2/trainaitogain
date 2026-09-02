@@ -95,8 +95,93 @@
   
   </div>
 
+</div>
+
+  <div class="article-content" style="margin-top:64px; margin-bottom:64px;">
+    <div style="background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:40px; box-shadow:var(--shadow-sm);">
+      <h3 style="font-size:24px; font-weight:800; margin-bottom:16px;">Final Readiness Quiz</h3>
+      <p style="color:var(--gray-500); margin-bottom:32px;">Before you apply, let's verify you absorbed the core principles.</p>
+      
+      <div id="quiz-container">
+        <div class="q-block" id="q1">
+          <p style="font-weight:700; margin-bottom:16px;">1. What is the "Headline First" rule?</p>
+          <button class="quiz-btn" onclick="checkAnswer(1, false)">A) Start by giving background context so they understand your thought process.</button>
+          <button class="quiz-btn" onclick="checkAnswer(1, true)">B) State your core thesis/answer immediately in the first sentence.</button>
+          <button class="quiz-btn" onclick="checkAnswer(1, false)">C) Make sure your resume has a bold header.</button>
+          <p class="feedback" id="f1"></p>
+        </div>
+        
+        <div class="q-block" id="q2" style="display:none;">
+          <p style="font-weight:700; margin-bottom:16px;">2. During the AI Interview, you should:</p>
+          <button class="quiz-btn" onclick="checkAnswer(2, false)">A) Turn off your camera so you can focus.</button>
+          <button class="quiz-btn" onclick="checkAnswer(2, true)">B) Leave your camera on (required for verification).</button>
+          <button class="quiz-btn" onclick="checkAnswer(2, false)">C) Use a VPN for security.</button>
+          <p class="feedback" id="f2"></p>
+        </div>
+        
+        <div class="q-block" id="q3" style="display:none;">
+          <p style="font-weight:700; margin-bottom:16px;">3. When writing a prompt for an LLM to output JSON, you must:</p>
+          <button class="quiz-btn" onclick="checkAnswer(3, false)">A) Ask it nicely to format it correctly.</button>
+          <button class="quiz-btn" onclick="checkAnswer(3, false)">B) Tell it to use Python.</button>
+          <button class="quiz-btn" onclick="checkAnswer(3, true)">C) Provide explicit few-shot examples and a strict schema.</button>
+          <p class="feedback" id="f3"></p>
+        </div>
+        
+        <div id="quiz-success" style="display:none; text-align:center; padding-top:24px;">
+          <div style="font-size:48px; margin-bottom:16px;">✅</div>
+          <h3 style="font-size:24px; font-weight:800; margin-bottom:16px; color:var(--primary);">You are ready.</h3>
+          <p style="color:var(--gray-500); margin-bottom:32px;">You understand the principles of high-end RLHF work.</p>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:inline-block;">Apply via Mercor</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .quiz-btn {{ display:block; width:100%; text-align:left; padding:16px; margin-bottom:12px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius); font-size:15px; cursor:pointer; transition:all 0.2s; font-family:var(--font); }}
+    .quiz-btn:hover {{ background:var(--gray-100); border-color:var(--gray-300); }}
+    .quiz-btn.correct {{ background:#d1fae5; border-color:#34d399; color:#047857; }}
+    .quiz-btn.wrong {{ background:#fee2e2; border-color:#f87171; color:#b91c1c; }}
+    .feedback {{ font-size:14px; font-weight:600; margin-top:8px; display:none; }}
+  </style>
+
+  <script>
+    function checkAnswer(qNum, isCorrect) {{
+      const block = document.getElementById('q' + qNum);
+      const btns = block.querySelectorAll('.quiz-btn');
+      const fb = document.getElementById('f' + qNum);
+      
+      // Target the clicked button (event.target)
+      const clickedBtn = event.target;
+      
+      if (isCorrect) {{
+         clickedBtn.classList.add('correct');
+         fb.style.color = '#10b981';
+         fb.innerText = 'Correct! Great job.';
+         fb.style.display = 'block';
+         
+         // Disable all buttons
+         btns.forEach(b => b.style.pointerEvents = 'none');
+         
+         setTimeout(() => {{
+            block.style.display = 'none';
+            if (qNum < 3) {{
+                document.getElementById('q' + (qNum + 1)).style.display = 'block';
+            }} else {{
+                document.getElementById('quiz-success').style.display = 'block';
+            }}
+         }}, 1000);
+         
+      }} else {{
+         clickedBtn.classList.add('wrong');
+         fb.style.color = '#ef4444';
+         fb.innerText = 'Incorrect. Try again!';
+         fb.style.display = 'block';
+      }}
+    }}
+  </script>
+
   <!-- ─── Footer ─────────────────────────────────────────── -->
-  <footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
     <div class="container">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
         <div style="max-width:600px;">
