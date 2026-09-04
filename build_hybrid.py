@@ -42,12 +42,8 @@ new_hero = """
             <label for="email" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">Email Address</label>
             <input type="email" id="email" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your best email">
           </div>
-          
           <button type="submit" id="submitIntakeBtn" class="btn-primary" style="width: 100%; padding: 16px; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            Start Your Application
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            Get Playbook & Apply ➔
           </button>
         </form>
       </div>
