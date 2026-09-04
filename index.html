@@ -124,10 +124,29 @@
         Start Your Application ➔
       </button>
 
-      <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 12px; max-width: 600px; margin-left: auto; margin-right: auto;">
-        <!-- Placeholder for real Mercor payout screenshot -->
-        <div style="width: 100%; height: 300px; background: var(--gray-200); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--gray-500); font-weight: 600;">
-          [Real Mercor Payout Screenshot Goes Here]
+      <div style="background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 12px; max-width: 480px; margin-left: auto; margin-right: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:36px; height:36px; background:#635BFF; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12.016 1.704c-1.396 0-2.61.942-2.906 2.302L8.514 6.78H4.63C3.73 6.78 3 7.51 3 8.41v10.8c0 .9.73 1.63 1.63 1.63h14.74c.9 0 1.63-.73 1.63-1.63V8.41c0-.9-.73-1.63-1.63-1.63h-3.884l-.596-2.774c-.296-1.36-1.51-2.302-2.906-2.302zM12 4.417c.365 0 .685.247.766.602l.405 1.761h-2.342l.405-1.761c.081-.355.401-.602.766-.602zm-3.81 7.231c2.106 0 3.81 1.704 3.81 3.81 0 2.105-1.704 3.81-3.81 3.81s-3.81-1.705-3.81-3.81c0-2.106 1.704-3.81 3.81-3.81zm7.62 0c2.105 0 3.81 1.704 3.81 3.81 0 2.105-1.705 3.81-3.81 3.81-2.106 0-3.81-1.705-3.81-3.81 0-2.106 1.704-3.81 3.81-3.81z"/></svg>
+            </div>
+            <div style="font-weight:700; color:#1a1f36; font-size:16px;">Stripe Payout</div>
+          </div>
+          <div style="color:#697386; font-size:14px; font-weight:500;">Just now</div>
+        </div>
+        <div style="font-size:42px; font-weight:800; color:#1a1f36; margin-bottom:4px; letter-spacing:-1px;">$2,450.00</div>
+        <div style="color:#059669; font-size:15px; margin-bottom:20px; font-weight:600; display:flex; align-items:center; gap:6px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Available in your bank account
+        </div>
+        <div style="background:#f7fafc; border-radius:10px; padding:16px; border:1px solid #e2e8f0;">
+          <div style="display:flex; justify-content:space-between; font-size:15px; margin-bottom:12px;">
+            <span style="color:#4a5568; font-weight:500;">From</span>
+            <span style="color:#1a202c; font-weight:700;">Mercor Inc.</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:15px;">
+            <span style="color:#4a5568; font-weight:500;">Description</span>
+            <span style="color:#1a202c; font-weight:700;">AI Training Services</span>
+          </div>
         </div>
       </div>
       <p style="font-size: 14px; color: var(--gray-400); font-style: italic;">Verified weekly payout deposited directly via Stripe.</p>
@@ -187,34 +206,13 @@
     </div>
   </section>
 
-  <!-- ─── Footer ─────────────────────────────────────────── -->
-  <footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+  <footer style="background:var(--black); padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
     <div class="container">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
-        <div style="max-width:600px;">
-          <p style="color:var(--white); font-weight:700; font-size:16px; margin-bottom:8px;">James Hardison II</p>
-          <small style="color:rgba(255,255,255,0.6); font-size:13px; line-height:1.7; display:block; margin-bottom:24px;">
-            Independent referral partner. I earn a referral credit when someone I refer is hired. Saying so up front.<br><br>
-            Independent resource. Not affiliated with, authorized by, sponsored by, or endorsed by Mercor.
-          </small>
-        </div>
-        <div style="max-width:400px; width:100%; background:var(--gray-900); padding:24px; border-radius:var(--radius-lg);">
-          <h4 style="color:var(--white); font-size:18px; font-weight:700; margin-bottom:8px;">Not ready to apply?</h4>
-          <p style="color:var(--gray-400); font-size:14px; margin-bottom:16px;">Join our talent network to get notified about new pipeline openings.</p>
-          <form name="talent-network" style="display:flex; gap:8px;">
-            <input type="email" name="email" placeholder="Your email address" required style="flex:1; padding:12px 16px; border-radius:6px; border:1px solid #333; background:#222; color:var(--white); font-family:var(--font);" />
-            <button type="submit" class="btn-primary" style="padding:12px 20px;">Join</button>
-          </form>
-        </div>
-        <div style="display:flex; align-items:center; gap:24px;">
-          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
-          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
+      <p style="color:rgba(255,255,255,0.6); font-size:14px; margin-bottom: 8px;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+      <small style="color:rgba(255,255,255,0.4); font-size:12px; display:block; max-width: 600px; margin: 0 auto; line-height: 1.5;">
+        Independent referral partner. I earn a referral credit when someone I refer is hired. Saying so up front.<br>
+        Independent resource. Not affiliated with, authorized by, sponsored by, or endorsed by Mercor.
+      </small>
     </div>
   </footer>
 
