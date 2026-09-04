@@ -116,7 +116,7 @@
             <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
             <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
           </div>
-          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource}); closeApplyModal();">Proceed to Priority Portal ➔</a>
+          <a id="modalApplyBtn" href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource}); closeApplyModal();">Proceed to Priority Portal ➔</a>
         </div>
       </div>
     </div>
@@ -125,6 +125,14 @@
       function openApplyModal(source) {
         window.currentApplySource = source;
         var modal = document.getElementById('applyModal');
+        var modalBtn = document.getElementById('modalApplyBtn');
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref');
+        if (ref) {
+          modalBtn.href = "https://t.mercor.com/wbPMF?ref=" + encodeURIComponent(ref);
+        } else {
+          modalBtn.href = "https://t.mercor.com/wbPMF";
+        }
         modal.style.display = 'flex';
       }
       function closeApplyModal() {
