@@ -124,6 +124,14 @@
         btn.disabled = false;
       }
     };
+
+    // Safely attach the submit listener once DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('intakeForm');
+      if (form) {
+        form.addEventListener('submit', window.handleIntake);
+      }
+    });
   </script>
 </head>
 <body>
@@ -181,7 +189,7 @@
             <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
             <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
           </div>
-          <a href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource}); closeApplyModal();">Proceed to Priority Portal ➔</a>
+          <a id="modalApplyBtn" href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource}); closeApplyModal();">Proceed to Priority Portal ➔</a>
         </div>
       </div>
     </div>
@@ -190,6 +198,14 @@
       function openApplyModal(source) {
         window.currentApplySource = source;
         var modal = document.getElementById('applyModal');
+        var modalBtn = document.getElementById('modalApplyBtn');
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref');
+        if (ref) {
+          modalBtn.href = "https://t.mercor.com/wbPMF?ref=" + encodeURIComponent(ref);
+        } else {
+          modalBtn.href = "https://t.mercor.com/wbPMF";
+        }
         modal.style.display = 'flex';
       }
       function closeApplyModal() {
@@ -231,7 +247,7 @@
         <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Unlock the Priority Partner Portal</h3>
         <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Enter your details to generate your unique referral link.</p>
         
-        <form id="intakeForm" onsubmit="handleIntake(event)">
+        <form id="intakeForm">
           <div style="margin-bottom: 16px;">
             <label for="firstName" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">First Name</label>
             <input type="text" id="firstName" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your first name">
