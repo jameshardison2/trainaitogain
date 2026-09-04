@@ -2312,5 +2312,25 @@ html { scroll-behavior: smooth; }
     </div>
   </div>
 
+
+<script>
+  // Global Affiliate Tracker
+  (function() {
+    var ref = new URLSearchParams(window.location.search).get('ref');
+    if (ref) localStorage.setItem('affiliate_ref', ref);
+    var activeRef = localStorage.getItem('affiliate_ref');
+    if (activeRef) {
+      document.addEventListener('DOMContentLoaded', function() {
+        var links = document.querySelectorAll('a[href^="https://t.mercor.com/wbPMF"]');
+        links.forEach(function(link) {
+          if (!link.href.includes('?ref=')) {
+            link.href = "https://t.mercor.com/wbPMF?ref=" + encodeURIComponent(activeRef);
+          }
+        });
+      });
+    }
+  })();
+</script>
 </body>
+
 </html>

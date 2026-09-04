@@ -73,7 +73,8 @@
         var modal = document.getElementById('applyModal');
         var modalBtn = document.getElementById('modalApplyBtn');
         var params = new URLSearchParams(window.location.search);
-        var ref = params.get('ref');
+        var ref = params.get('ref') || localStorage.getItem('affiliate_ref');
+        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
         if (ref) {
           modalBtn.href = "https://t.mercor.com/wbPMF?ref=" + encodeURIComponent(ref);
         } else {
@@ -184,5 +185,25 @@ function removeRole(id) {
 document.addEventListener('DOMContentLoaded', renderSavedRoles);
 </script>
 
+
+<script>
+  // Global Affiliate Tracker
+  (function() {
+    var ref = new URLSearchParams(window.location.search).get('ref');
+    if (ref) localStorage.setItem('affiliate_ref', ref);
+    var activeRef = localStorage.getItem('affiliate_ref');
+    if (activeRef) {
+      document.addEventListener('DOMContentLoaded', function() {
+        var links = document.querySelectorAll('a[href^="https://t.mercor.com/wbPMF"]');
+        links.forEach(function(link) {
+          if (!link.href.includes('?ref=')) {
+            link.href = "https://t.mercor.com/wbPMF?ref=" + encodeURIComponent(activeRef);
+          }
+        });
+      });
+    }
+  })();
+</script>
 </body>
+
 </html>
