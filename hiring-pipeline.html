@@ -3,60 +3,103 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Panel Cross-Examination — TrainAIToGain</title>
-  <meta name="description" content="Get your Mercor referral, master the AI model training interview, and bypass the waitlist for high-paying RLHF jobs.">
+  <title>The Hiring Pipeline — We Get You Hired</title>
+  <meta name="description" content="Follow our 3-step proven pipeline to bypass ATS filters, ace the AI interview, and secure high-paying AI consulting contracts.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <style>
-      .chat-window {
-          background: var(--white);
-          border: 1px solid var(--gray-200);
-          border-radius: var(--radius-lg);
-          height: 500px;
-          display: flex;
-          flex-direction: column;
-          box-shadow: var(--shadow-sm);
+    body { background: var(--gray-50); display: flex; flex-direction: column; min-height: 100vh; }
+    
+    .pipeline-step {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin-bottom: 32px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s;
+    }
+    
+    .pipeline-step:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .step-number {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+      flex-shrink: 0;
+      border: 4px solid var(--white);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .step-content {
+      flex-grow: 1;
+    }
+
+    .step-content h2 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .step-content p {
+      font-size: 16px;
+      color: var(--gray-500);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .btn-step {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--black);
+      color: var(--white);
+      padding: 14px 24px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-step:hover {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    @media (max-width: 768px) {
+      .pipeline-step {
+        flex-direction: column;
+        text-align: center;
+        padding: 32px 20px;
       }
-      .chat-history {
-          flex: 1;
-          padding: 24px;
-          overflow-y: auto;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
+      .step-number {
+        margin: 0 auto;
       }
-      .msg {
-          max-width: 80%;
-          padding: 12px 16px;
-          border-radius: var(--radius-sm);
-          font-size: 15px;
-          line-height: 1.5;
-      }
-      .msg-panel {
-          background: var(--gray-100);
-          color: var(--black);
-          align-self: flex-start;
-          border-bottom-left-radius: 4px;
-      }
-      .msg-user {
-          background: var(--primary);
-          color: var(--white);
-          align-self: flex-end;
-          border-bottom-right-radius: 4px;
-      }
-      .chat-input-area {
-          padding: 16px;
-          border-top: 1px solid var(--gray-200);
-          display: flex;
-          gap: 12px;
-      }
+    }
   </style>
 </head>
-<body style="background:var(--gray-50); display:flex; flex-direction:column; min-height:100vh;">
+<body>
 
-<nav class="nav" aria-label="Primary Navigation">
+  <!-- Nav Block (Will be replaced by build script) -->
+  <nav class="nav" aria-label="Primary Navigation">
     <div class="container">
       <div class="nav-inner">
         <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
@@ -135,33 +178,68 @@
     </style>
   </nav>
 
-<section style="padding: 64px 0; flex:1;">
-  <div class="container" style="max-width:800px;">
-    
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-        <div>
-            <h1 style="font-size:32px; font-weight:800; color:var(--black); margin-bottom:4px;">Cross-Examination Simulator</h1>
-            <p style="color:var(--gray-500); font-size:15px; margin:0;">Defend your methodology against a strict AI panel.</p>
-        </div>
-        <div style="background:#fee2e2; color:#991b1b; padding:6px 12px; border-radius:100px; font-weight:700; font-size:13px; letter-spacing:0.05em; text-transform:uppercase;">Stress Level: High</div>
+  <!-- Hero -->
+  <section style="background:var(--black); color:var(--white); padding:80px 0 60px; text-align:center;">
+    <div class="container" style="max-width:800px;">
+      <div style="display:inline-block; background:rgba(16,185,129,0.1); color:var(--primary); font-size:13px; font-weight:800; padding:6px 16px; border-radius:100px; margin-bottom:24px; letter-spacing:0.05em; text-transform:uppercase;">
+        We Get You Hired.
+      </div>
+      <h1 style="font-size:48px; font-weight:800; margin-bottom:24px; line-height:1.1;">The Proven Hiring Pipeline</h1>
+      <p style="font-size:18px; color:var(--gray-400); line-height:1.6; margin-bottom:0;">
+        Top AI labs do not use human recruiters. To secure a $150/hr consulting contract, you must pass automated screenings and AI-led interviews. Follow this 3-step process to secure your role.
+      </p>
     </div>
+  </section>
 
-    <div class="chat-window">
-        <div class="chat-history" id="chat-history">
-            <div class="msg msg-panel">
-                <strong>Lead Evaluator:</strong> Welcome. We are reviewing your recent evaluation on Task #9421. You flagged the model's response as 'Unsafe' because it provided instructions on synthesizing a generic chemical compound. Why did you classify this as a safety violation when the compound is legally available over the counter?
-            </div>
+  <!-- Pipeline Steps -->
+  <section class="section" style="padding: 64px 0;">
+    <div class="container" style="max-width:900px;">
+      
+      <!-- Step 1 -->
+      <div class="pipeline-step" id="step1">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h2>Bypass the ATS Recruiter</h2>
+          <p>AI labs filter out 90% of applicants instantly using Automated Tracking Systems (ATS). If you don't have the exact keyword density they are looking for, a human will never see your resume. Use our live scanner to optimize your CV for the exact role you want.</p>
+          <a href="resume-ats-guide.html" class="btn-step">Launch ATS Resume Optimizer ➔</a>
         </div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" placeholder="Type your defense here..." style="flex:1; padding:12px 16px; border-radius:6px; border:1px solid var(--gray-300); font-family:var(--font); font-size:15px;" onkeypress="if(event.key === 'Enter') sendMsg()">
-            <button onclick="sendMsg()" class="btn-primary" style="padding:12px 24px;">Submit</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="pipeline-step" id="step2">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h2>Ace the AI Interview</h2>
+          <p>Once your resume passes, you will be invited to a one-way recorded video interview evaluated entirely by an AI model. Master the "uncanny valley" of talking to a bot with our proven interview frameworks, behavioral guides, and technical prep.</p>
+          <a href="prep-hub.html" class="btn-step">Enter the Interview Prep Hub ➔</a>
         </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="pipeline-step" id="step3">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h2>Survive the "Black Box"</h2>
+          <p>Getting hired is only the beginning. These platforms use invisible, continuous quality audits to evaluate your work. Drop below the threshold, and you'll be shadowbanned without warning. Learn how to maintain high quality scores and keep the high-paying tasks flowing.</p>
+          <a href="post-hire.html" class="btn-step">Read the Post-Hire Guide ➔</a>
+        </div>
+      </div>
+
+      <!-- Bonus: FAQs -->
+      <div class="pipeline-step" style="background:#f8fafc; border-color:#e2e8f0; margin-top:64px;" id="faq">
+        <div class="step-number" style="background:#e2e8f0; color:#475569; border-color:#f8fafc; box-shadow:0 0 0 1px #cbd5e1;">?</div>
+        <div class="step-content">
+          <h2>Frequently Asked Questions</h2>
+          <p>Still have questions about how these platforms work, the payment structures, or what the expectations are? Read our comprehensive FAQ section to get clarity on everything before you apply.</p>
+          <a href="is-it-worth-it.html" class="btn-step" style="background:#475569;">View the FAQ & Expectations ➔</a>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-  </div>
-</section>
-
-<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+  <!-- Footer Block (Will be replaced by build script) -->
+  <footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
     <div class="container">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
         <div style="max-width:600px;">
@@ -183,42 +261,6 @@
       </div>
     </div>
   </footer>
-
-<script>
-    let step = 0;
-    function sendMsg() {
-        const input = document.getElementById('chat-input');
-        const text = input.value.trim();
-        if (!text) return;
-        
-        const history = document.getElementById('chat-history');
-        
-        // Add user msg
-        const uMsg = document.createElement('div');
-        uMsg.className = 'msg msg-user';
-        uMsg.innerText = text;
-        history.appendChild(uMsg);
-        input.value = '';
-        history.scrollTop = history.scrollHeight;
-        
-        // Mock panel response
-        setTimeout(() => {
-            const pMsg = document.createElement('div');
-            pMsg.className = 'msg msg-panel';
-            if (step === 0) {
-                pMsg.innerHTML = "<strong>Lead Evaluator:</strong> But the rubric explicitly states that 'general scientific knowledge readily available in textbooks' is permissible. Doesn't your strictness degrade the model's helpfulness metric?";
-            } else if (step === 1) {
-                pMsg.innerHTML = "<strong>Lead Evaluator:</strong> Interesting perspective on the dual-use threshold. If the user's prompt had specified 'for educational purposes', would you have changed your rating? Why or why not?";
-            } else {
-                pMsg.innerHTML = "<strong>Lead Evaluator:</strong> We have concluded our questioning. Your ability to defend your logic under pressure has been recorded. Score: <span style='color:#059669;'>Passed (85/100)</span>";
-                document.getElementById('chat-input').disabled = true;
-            }
-            history.appendChild(pMsg);
-            history.scrollTop = history.scrollHeight;
-            step++;
-        }, 1200);
-    }
-</script>
 
 </body>
 </html>

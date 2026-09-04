@@ -142,8 +142,9 @@
       <div class="nav-inner">
         <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
           <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
-          <div class="logo-text" style="display:flex; align-items:center; line-height:1.1;">
+          <div class="logo-text" style="display:flex; flex-direction:column; line-height:1.1;">
             <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+            <span style="color:var(--primary); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">We Get You Hired.</span>
           </div>
           </a>
           <input type="checkbox" id="nav-toggle" style="display:none;" />
@@ -152,9 +153,7 @@
         </label>
         <ul class="nav-links">
           <li><a href="apply.html">Opportunities</a></li>
-          <li><a href="is-it-worth-it.html">Expectations</a></li>
-          <li><a href="prep-hub.html" class="nav-link">Interview Prep</a></li>
-          <li><a href="post-hire.html">Post-Hire Guide</a></li>
+          <li><a href="hiring-pipeline.html" class="nav-link" style="color:var(--primary); font-weight:700; display:flex; align-items:center; gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> The Hiring Pipeline</a></li>
           <li><a href="saved-roles.html" style="display:flex; align-items:center; gap:6px;">Dashboard <span style="background:var(--primary); color:var(--white); font-size:10px; padding:2px 6px; border-radius:100px; font-weight:800;">NEW</span></a></li>
         </ul>
         <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
@@ -705,29 +704,34 @@
   <section class="section" style="background:var(--gray-50); padding:80px 0; border-top:1px solid var(--gray-200);">
     <div class="container">
       <div style="text-align:center; max-width:800px; margin:0 auto 48px;">
-        <h2 style="font-size:36px; font-weight:800; color:var(--black); margin-bottom:16px;">We Give You The Edge</h2>
-        <p style="font-size:18px; color:var(--gray-500); line-height:1.5;">Don't apply blind. Use our free tools to bypass ATS filters, ace the AI interview, and secure your $150/hr contract.</p>
+        <h2 style="font-size:36px; font-weight:800; color:var(--black); margin-bottom:16px;">The Proven Hiring Pipeline</h2>
+        <p style="font-size:18px; color:var(--gray-500); line-height:1.5;">Don't apply blind. Follow our 3-step process to bypass ATS filters, ace the AI interview, and secure your high-paying contract.</p>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; margin-bottom:64px;">
-        <!-- ATS Tool -->
-        <a href="resume-ats-guide.html" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; border-radius:12px; text-decoration:none; color:var(--black); box-shadow:var(--shadow-sm); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor='var(--gray-200)';">
-          <div style="font-size:32px; margin-bottom:16px;">📄</div>
-          <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">ATS Resume Optimizer</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; margin-bottom:64px; position:relative;">
+        <!-- Connecting Line (hidden on mobile, visible on desktop using a pseudo-element or just simple flex layout) -->
+        
+        <!-- Step 1: ATS Tool -->
+        <a href="hiring-pipeline.html#step1" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; border-radius:12px; text-decoration:none; color:var(--black); box-shadow:var(--shadow-sm); transition:all 0.2s; display:block; position:relative;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor='var(--gray-200)';">
+          <div style="position:absolute; top:-15px; left:32px; background:var(--black); color:var(--white); font-weight:800; font-size:14px; padding:6px 12px; border-radius:100px; box-shadow:0 4px 6px rgba(0,0,0,0.1);">STEP 1</div>
+          <div style="font-size:32px; margin-bottom:16px; margin-top:12px;">📄</div>
+          <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Bypass the Recruiter</h3>
           <p style="color:var(--gray-500); font-size:14px; line-height:1.5; margin:0;">Format your CV exactly how AI screeners want it so you don't get auto-rejected.</p>
         </a>
 
-        <!-- Interview Prep -->
-        <a href="prep-hub.html" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; border-radius:12px; text-decoration:none; color:var(--black); box-shadow:var(--shadow-sm); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor='var(--gray-200)';">
-          <div style="font-size:32px; margin-bottom:16px;">🤖</div>
-          <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">The AI Interview Prep Hub</h3>
+        <!-- Step 2: Interview Prep -->
+        <a href="hiring-pipeline.html#step2" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; border-radius:12px; text-decoration:none; color:var(--black); box-shadow:var(--shadow-sm); transition:all 0.2s; display:block; position:relative;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor='var(--gray-200)';">
+          <div style="position:absolute; top:-15px; left:32px; background:var(--primary); color:var(--white); font-weight:800; font-size:14px; padding:6px 12px; border-radius:100px; box-shadow:0 4px 6px rgba(16,185,129,0.2);">STEP 2</div>
+          <div style="font-size:32px; margin-bottom:16px; margin-top:12px;">🤖</div>
+          <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Ace the AI Interview</h3>
           <p style="color:var(--gray-500); font-size:14px; line-height:1.5; margin:0;">Master the uncanny valley of talking to a bot with our proven interview frameworks.</p>
         </a>
 
-        <!-- Post-Hire -->
-        <a href="post-hire.html" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; border-radius:12px; text-decoration:none; color:var(--black); box-shadow:var(--shadow-sm); transition:all 0.2s; display:block;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor='var(--gray-200)';">
-          <div style="font-size:32px; margin-bottom:16px;">💸</div>
-          <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Surviving the "Black Box"</h3>
+        <!-- Step 3: Post-Hire -->
+        <a href="hiring-pipeline.html#step3" style="background:var(--white); border:1px solid var(--gray-200); padding:32px; border-radius:12px; text-decoration:none; color:var(--black); box-shadow:var(--shadow-sm); transition:all 0.2s; display:block; position:relative;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor='var(--gray-200)';">
+          <div style="position:absolute; top:-15px; left:32px; background:var(--black); color:var(--white); font-weight:800; font-size:14px; padding:6px 12px; border-radius:100px; box-shadow:0 4px 6px rgba(0,0,0,0.1);">STEP 3</div>
+          <div style="font-size:32px; margin-bottom:16px; margin-top:12px;">💸</div>
+          <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Survive the "Black Box"</h3>
           <p style="color:var(--gray-500); font-size:14px; line-height:1.5; margin:0;">Avoid invisible quality audits and maintain a steady flow of high-paying tasks.</p>
         </a>
       </div>
