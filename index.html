@@ -114,6 +114,20 @@
           source: window.location.href
         });
         
+        // Push lead to Instantly.ai CRM Webhook
+        const instantlyWebhookUrl = "YOUR_INSTANTLY_WEBHOOK_URL";
+        if (instantlyWebhookUrl !== "YOUR_INSTANTLY_WEBHOOK_URL") {
+          try {
+            await fetch(instantlyWebhookUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: email, firstName: firstName, source: window.location.href })
+            });
+          } catch (webhookError) {
+            console.error("Error sending to Instantly:", webhookError);
+          }
+        }
+        
         // Success! Open the modal so they can proceed.
         openApplyModal('hero_intake');
       } catch (error) {
