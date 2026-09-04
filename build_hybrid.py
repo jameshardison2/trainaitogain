@@ -30,8 +30,8 @@ new_hero = """
 
       <!-- Intake Form -->
       <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 32px; max-width: 500px; margin: 0 auto 40px; text-align: left;">
-        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Start Your Application</h3>
-        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Enter your details to access the fast-tracked evaluation pipeline.</p>
+        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">The Expert's Guide to AI Consulting</h3>
+        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">How to Monetize Your Degree at $150/Hr Working Remotely for Top AI Labs. Enter your details to get the free guide and start your application.</p>
         
         <form id="intakeForm" onsubmit="handleIntake(event)">
           <div style="margin-bottom: 16px;">
@@ -43,7 +43,7 @@ new_hero = """
             <input type="email" id="email" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your best email">
           </div>
           <button type="submit" id="submitIntakeBtn" class="btn-primary" style="width: 100%; padding: 16px; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            Get Playbook & Apply ➔
+            Get Guide & Apply ➔
           </button>
         </form>
       </div>
