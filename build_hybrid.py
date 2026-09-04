@@ -30,7 +30,7 @@ new_hero = """
 
       <!-- Intake Form -->
       <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 32px; max-width: 500px; margin: 0 auto 40px; text-align: left;">
-        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Apply via Priority Partner</h3>
+        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Start Your Application</h3>
         <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Enter your details to access the fast-tracked evaluation pipeline.</p>
         
         <form id="intakeForm" onsubmit="handleIntake(event)">
@@ -51,6 +51,11 @@ new_hero = """
           </button>
         </form>
       </div>
+
+          <div class="hero-eyebrow" style="display:inline-flex; align-items:center; gap:8px; background:var(--primary-light); color:var(--primary-dark); padding:6px 12px; border-radius:100px; margin-bottom:24px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            AI Evaluator Prep Hub
+          </div>
 
       <!-- Trust Elements -->
       <div style="display:flex; flex-direction:column; gap:16px; text-align:left; max-width:600px; margin:0 auto 48px;">

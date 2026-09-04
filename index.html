@@ -163,7 +163,6 @@
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
             </svg>
           </a>
-          <button class="btn-nav-primary" style="cursor:pointer;" onclick="openApplyModal('nav_cta');">Apply via Mercor</button>
         </div>
       </div>
     </div>
@@ -179,7 +178,7 @@
           <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
           <div style="display:flex; gap:12px; margin-bottom:12px;">
             <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter our priority partner portal.</p>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official application portal.</p>
           </div>
           <div style="display:flex; gap:12px; margin-bottom:12px;">
             <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
@@ -189,7 +188,7 @@
             <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
             <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
           </div>
-          <a id="modalApplyBtn" href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource}); closeApplyModal();">Proceed to Priority Portal ➔</a>
+          <a id="modalApplyBtn" href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource}); closeApplyModal();">Proceed to Application ➔</a>
         </div>
       </div>
     </div>
@@ -244,8 +243,9 @@
 
       <!-- Intake Form -->
       <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 32px; max-width: 500px; margin: 0 auto 40px; text-align: left;">
-        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Apply via Priority Partner</h3>
-        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Enter your details to access the fast-tracked evaluation pipeline.</p>
+        <div style="display:inline-block; background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 10px; border-radius:100px; margin-bottom:12px;">FREE DOWNLOAD</div>
+        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">The Ultimate AI Evaluator Playbook</h3>
+        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Enter your details to get our free interview cheat sheet and immediately unlock the application pipeline.</p>
         
         <form id="intakeForm">
           <div style="margin-bottom: 16px;">
@@ -256,11 +256,6 @@
             <label for="email" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">Email Address</label>
             <input type="email" id="email" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your best email">
           </div>
-          
-          <button type="submit" id="submitIntakeBtn" class="btn-primary" style="width: 100%; padding: 16px; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            Start Your Application
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
         </form>
@@ -369,6 +364,10 @@
           <style>#idx-carousel::-webkit-scrollbar { display: none; }</style>
         
           <div class="feature-card opp-card" data-category="software complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
+          <div class="hero-eyebrow" style="display:inline-flex; align-items:center; gap:8px; background:var(--primary-light); color:var(--primary-dark); padding:6px 12px; border-radius:100px; margin-bottom:24px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            AI Evaluator Prep Hub
+          </div>
           <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
             <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">SOFTWARE</div>
             <div style="color:var(--primary); font-weight:700;">$150/hr</div>
