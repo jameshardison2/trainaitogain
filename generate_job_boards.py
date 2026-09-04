@@ -1,7 +1,7 @@
 import re
 import json
 
-with open("index.html", "r") as f:
+with open("ai-interview.html", "r") as f:
     index_content = f.read()
 
 header = re.search(r'(<nav class="nav".*?</nav>)', index_content, re.DOTALL).group(1)
