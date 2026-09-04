@@ -1120,11 +1120,13 @@ function saveRole(title, domain, pay) {
     var activeRef = localStorage.getItem('affiliate_ref');
     if (activeRef) {
       document.addEventListener('DOMContentLoaded', function() {
-        var links = document.querySelectorAll('a[href^="https://t.mercor.com/wbPMF"]');
+        var links = document.querySelectorAll('a[href^="https://t.mercor.com"]');
         links.forEach(function(link) {
-          if (!link.href.includes('?ref=')) {
-            link.href = "https://t.mercor.com/wbPMF?ref=" + encodeURIComponent(activeRef);
-          }
+          try {
+            var url = new URL(link.href);
+            url.searchParams.set('ref', activeRef);
+            link.href = url.toString();
+          } catch(e) {}
         });
       });
     }
