@@ -86,7 +86,7 @@ new_hero = """
 
 # Find the old hero block
 hero_start = r'<!-- ─── Hero ─────────────────────────────────────────── -->'
-job_board_start = r'<!-- ─── Job Board \(Pipeline Matcher Quiz\) ─────────────────────────────────────────── -->'
+job_board_start = r'<!-- ─── Niche Matcher Quiz & Opportunities ─────────────────────────────────────────── -->'
 
 pattern = re.compile(f'({hero_start}.*?)({job_board_start})', re.DOTALL)
 content = pattern.sub(f'{new_hero}\\n  \\2', content)
