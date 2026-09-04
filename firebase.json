@@ -1,4 +1,7 @@
 {
+  "firestore": {
+    "rules": "firestore.rules"
+  },
   "hosting": {
     "public": ".",
     "ignore": [
@@ -6,9 +9,13 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "cleanUrls": true
-  },
-  "firestore": {
-    "rules": "firestore.rules"
+    "cleanUrls": true,
+    "redirects": [
+      {
+        "source": "/wali",
+        "destination": "/?ref=wali",
+        "type": 301
+      }
+    ]
   }
 }
