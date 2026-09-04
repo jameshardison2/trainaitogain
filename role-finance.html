@@ -273,6 +273,26 @@
         </div>
       </div>
     </div>
+    <!-- Global Affiliate Tracker -->
+    <script>
+      (function() {
+        var ref = new URLSearchParams(window.location.search).get('ref');
+        if (ref) localStorage.setItem('affiliate_ref', ref);
+        var activeRef = localStorage.getItem('affiliate_ref');
+        if (activeRef) {
+          document.addEventListener('DOMContentLoaded', function() {
+            var links = document.querySelectorAll('a[href^="https://t.mercor.com"]');
+            links.forEach(function(link) {
+              try {
+                var url = new URL(link.href);
+                url.searchParams.set('ref', activeRef);
+                link.href = url.toString();
+              } catch(e) {}
+            });
+          });
+        }
+      })();
+    </script>
   </footer>
 
 <script>
