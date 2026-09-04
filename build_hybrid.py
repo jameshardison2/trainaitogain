@@ -30,8 +30,8 @@ new_hero = """
 
       <!-- Intake Form -->
       <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 32px; max-width: 500px; margin: 0 auto 40px; text-align: left;">
-        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Unlock the Priority Partner Portal</h3>
-        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Enter your details to generate your unique referral link.</p>
+        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">Apply via Priority Partner</h3>
+        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Enter your details to access the fast-tracked evaluation pipeline.</p>
         
         <form id="intakeForm" onsubmit="handleIntake(event)">
           <div style="margin-bottom: 16px;">
