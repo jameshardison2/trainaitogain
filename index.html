@@ -110,539 +110,80 @@
     </style>
   </nav>
 
-  <!-- ─── Hero ─────────────────────────────────────────── -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-inner" style="grid-template-columns: 1fr; text-align:center;">
-        <div class="hero-left" style="max-width: 800px; margin: 0 auto;">
-          <div class="hero-eyebrow" style="display:inline-flex; align-items:center; gap:8px; background:var(--primary-light); color:var(--primary-dark); padding:6px 12px; border-radius:100px; margin-bottom:24px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-            Official Mercor Referral Partner
-          </div>
-          <h1 class="hero-heading">
-            Straight answers about applying to <span class="orange">Mercor.</span>
-          </h1>
-          <p class="hero-sub" style="max-width: 600px; margin: 0 auto 36px; color:var(--gray-700);">
-            Get hired for specialized AI training roles paying up to $150/hr.
-          </p>
-          <div class="hero-actions" style="justify-content:center; margin-bottom:16px;">
-            <div style="font-size:18px; font-weight:700; color:var(--primary-dark); background:var(--primary-light); display:inline-block; padding:12px 24px; border-radius:100px; margin-bottom:16px;">
-              Bypass the generic queue with pre-vetted AI evaluation pipelines.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Impact Metrics Bar ─────────────────────────────────────────── -->
-  <section style="background:var(--black); border-bottom:1px solid rgba(255,255,255,0.1); padding:32px 0;">
-    <div class="container">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:32px;">
-        <div style="flex:1; min-width:200px; text-align:center;">
-          <div style="font-size:42px; font-weight:800; color:var(--white);">1%</div>
-          <div style="font-size:14px; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.1em; font-weight:700;">Top Talent Network</div>
-        </div>
-        <div style="flex:1; min-width:200px; text-align:center; position:relative;">
-          <div style="position:absolute; left:0; top:20%; bottom:20%; width:1px; background:rgba(255,255,255,0.1);"></div>
-          <div style="position:absolute; right:0; top:20%; bottom:20%; width:1px; background:rgba(255,255,255,0.1);"></div>
-          <div style="font-size:42px; font-weight:800; color:var(--primary);">$150/hr</div>
-          <div style="font-size:14px; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.1em; font-weight:700;">Peak Domain Pay</div>
-        </div>
-        <div style="flex:1; min-width:200px; text-align:center;">
-          <div style="font-size:42px; font-weight:800; color:var(--white);">48h</div>
-          <div style="font-size:14px; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.1em; font-weight:700;">Avg. Placement Speed</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Daily Challenge ─────────────────────────────────────────── -->
-  <section style="background:var(--gray-50); padding:48px 0;">
-    <div class="container">
-      <div style="background:var(--white); border:1px solid var(--primary); border-left:6px solid var(--primary); padding:32px; border-radius:var(--radius-lg); box-shadow:var(--shadow-orange); max-width:800px; margin:0 auto;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-          <h3 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Daily Diagnostic Challenge</h3>
-          <span id="challenge-timer" style="background:var(--gray-900); color:var(--white); font-weight:700; font-size:14px; padding:6px 12px; border-radius:100px;">Resetting in 14h 22m</span>
-        </div>
-        <p style="color:var(--gray-500); font-size:16px; margin-bottom:24px;">Complete today's prompt-engineering puzzle to earn points and climb the community leaderboard.</p>
-        <div style="position:relative; margin-bottom:24px;">
-          <div id="daily-puzzle-content" style="background:var(--gray-100); padding:20px; border-radius:var(--radius); font-family:monospace; color:var(--black); font-size:14px;">
-            // Loading today's challenge...
-          </div>
-          <button onclick="navigator.clipboard.writeText(document.getElementById('daily-puzzle-content').innerText); alert('Copied to clipboard!')" style="position:absolute; top:8px; right:8px; background:var(--white); border:1px solid var(--gray-300); border-radius:4px; padding:4px 8px; font-size:12px; cursor:pointer;">Copy</button>
-        </div>
-        <button onclick="window.location.href='prep-hub.html'" class="btn-primary">Start Challenge</button>
-      </div>
-    </div>
-  </section>
-  <script>
-    const puzzles = [
-      "Debug this logic: model outputs 'Yes' but reasoning contradicts.",
-      "Identify the medical hallucination in the following clinical summary.",
-      "Optimize this Python loop to run in O(n) instead of O(n^2).",
-      "Draft a strict JSON schema for parsing legal contract dates.",
-      "Evaluate if the model's response violates safety constraints.",
-      "Fix the token limits on this contextual translation task.",
-      "Identify the logical fallacy in the financial forecast reasoning."
-    ];
-    document.getElementById('daily-puzzle-content').innerText = puzzles[new Date().getDay()];
-  </script>
-
-  <!-- ─── Niche Matcher Quiz & Opportunities ─────────────────────────────────────────── -->
-  <section class="section" style="padding-top:20px; padding-bottom:60px;" id="opportunities">
-    <div class="container">
+  <!-- ─── Direct Response Hero ─────────────────────────────────────────── -->
+  <section style="padding: 100px 0 60px; text-align: center;">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+      <h1 style="font-size: 56px; font-weight: 800; color: var(--black); line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em;">
+        Earn $100-160/hr Doing AI Work On The Side
+      </h1>
+      <p style="font-size: 22px; color: var(--gray-500); margin-bottom: 48px; line-height: 1.5;">
+        Remote, flexible, no need to leave your current job.
+      </p>
       
-      <!-- Quiz UI -->
-      <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:32px; margin-bottom:48px;">
-        <div style="text-align:center; max-width:600px; margin:0 auto;">
-          <h2 style="font-size:24px; font-weight:700; color:var(--black); margin-bottom:8px;">Find Your Pipeline</h2>
-          <p style="color:var(--gray-500); font-size:16px; margin-bottom:24px;">Don't apply as a Generalist. Answer 2 questions to find the specialized roles Mercor is actually hiring for right now.</p>
-          
-          <div id="quiz-step-1" style="display:block;">
-            <p style="font-weight:600; margin-bottom:16px;">What is your strongest background?</p>
-            <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
-              <button onclick="window.location.href='apply.html'" class="btn-quiz">💻 Software / Coding</button>
-              <button onclick="window.location.href='apply.html'" class="btn-quiz">🩺 Medical / Clinical</button>
-              <button onclick="window.location.href='apply.html'" class="btn-quiz">📈 Finance / Math</button>
-              <button onclick="window.location.href='apply.html'" class="btn-quiz">🌍 Bilingual / Translation</button>
-              <button onclick="window.location.href='apply.html'" class="btn-quiz">📋 Other / General</button>
-            </div>
-          </div>
+      <button class="btn-primary" style="font-size: 20px; padding: 20px 48px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 64px; cursor: pointer;" onclick="openApplyModal('hero_cta');">
+        Start Your Application ➔
+      </button>
 
-          <div id="quiz-result" style="display:none; margin-top:24px; text-align:left; max-width:400px; margin-left:auto; margin-right:auto;">
-            <p style="font-weight:700; color:var(--black); font-size:15px; margin-bottom:12px;">Active Filters:</p>
-            <div id="active-filters" style="display:flex; flex-wrap:wrap; gap:8px;">
-              <!-- Chips inserted by JS -->
-            </div>
-            <button onclick="resetQuiz()" style="background:none; border:none; color:var(--gray-400); text-decoration:underline; cursor:pointer; font-size:13px; margin-top:16px;">Clear all filters</button>
-          </div>
+      <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 12px; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <!-- Placeholder for real Mercor payout screenshot -->
+        <div style="width: 100%; height: 300px; background: var(--gray-200); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--gray-500); font-weight: 600;">
+          [Real Mercor Payout Screenshot Goes Here]
         </div>
       </div>
-      
-      <style>
-        .btn-quiz {
-          background: var(--white);
-          border: 1.5px solid var(--gray-200);
-          padding: 12px 20px;
-          border-radius: var(--radius-sm);
-          font-family: inherit;
-          font-size: 15px;
-          font-weight: 600;
-          color: var(--black);
-          cursor: pointer;
-          transition: all 0.2s;
-          box-shadow: var(--shadow-sm);
-        }
-        .btn-quiz:hover, .btn-quiz.active {
-          border-color: var(--primary);
-          color: var(--primary-dark);
-          background: var(--primary-light);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(16,185,129,0.15);
-        }
-      </style>
+      <p style="font-size: 14px; color: var(--gray-400); font-style: italic;">Verified weekly payout deposited directly via Stripe.</p>
+    </div>
+  </section>
 
-      <div style="background: var(--primary-light); color: var(--primary-dark); padding: 16px 20px; border-radius: var(--radius); margin-bottom: 32px; font-size: 14px; display: flex; gap: 12px; align-items: flex-start; line-height: 1.5; border: 1px solid rgba(52, 211, 153, 0.3);">
-        <div style="font-size: 20px; line-height: 1;">💡</div>
-        <div><strong>Partner Application Notice:</strong> All applications are processed through the Mercor Universal Talent Network. By applying via our verified partner links, your profile will be prioritized and automatically evaluated for your selected pipeline as well as all other open roles.</div>
-      </div>
-
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
-        <h2 style="font-size:24px; font-weight:700; color:var(--black);">Explore High-Paying Opportunities</h2>
-            <a href="apply.html" class="view-all-link">View all pipelines <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-      </div>
-
-      <div style="position:relative;">
-        <button class="carousel-btn" style="position:absolute; top:50%; transform:translateY(-50%); left:-20px; width:44px; height:44px; border-radius:50%; background:var(--white); border:1px solid var(--gray-200); box-shadow:0 4px 12px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; z-index:10;" onclick="document.getElementById('idx-carousel').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
-        <button class="carousel-btn" style="position:absolute; top:50%; transform:translateY(-50%); right:-20px; width:44px; height:44px; border-radius:50%; background:var(--white); border:1px solid var(--gray-200); box-shadow:0 4px 12px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; z-index:10;" onclick="document.getElementById('idx-carousel').scrollBy({left: 320, behavior: 'smooth'})">›</button>
-
-        <div id="idx-carousel" style="display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding-bottom:16px; margin:0 -16px; padding-left:16px; padding-right:16px;">
-          <style>#idx-carousel::-webkit-scrollbar { display: none; }</style>
+  <!-- ─── FAQ Blocks ─────────────────────────────────────────── -->
+  <section style="padding: 60px 0; background: var(--gray-50); border-top: 1px solid var(--gray-200); border-bottom: 1px solid var(--gray-200);">
+    <div class="container" style="max-width: 1000px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; text-align: left;">
         
-          <div class="feature-card opp-card" data-category="software complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">SOFTWARE</div>
-            <div style="color:var(--primary); font-weight:700;">$150/hr</div>
-          </div>
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Senior SWE Evaluators</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Evaluate complex code for advanced AI models.</p>
-          <a href="role-software.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to get this role <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-        </div>
-
-          <div class="feature-card opp-card" data-category="medical complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">MEDICAL</div>
-            <div style="color:var(--primary); font-weight:700;">$100/hr</div>
-          </div>
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">MDs & Clinicians</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Help train clinical diagnostic AI models.</p>
-          <a href="role-medical.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to get this role <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-        </div>
-
-          <div class="feature-card opp-card" data-category="finance complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">FINANCE</div>
-            <div style="color:var(--primary); font-weight:700;">$120/hr</div>
-          </div>
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Quant & Math Experts</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Verify complex financial models and logic.</p>
-          <a href="role-finance.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to get this role <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-        </div>
-
-        <div class="feature-card opp-card" data-category="software complex other volume" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">RLHF PIPELINES</div>
-            <div style="color:var(--primary); font-weight:700;">Up to $100/hr</div>
-          </div>
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Model Alignment</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Train models on human preference and safety guardrails.</p>
-          <button style="color:var(--primary); background:none; border:none; padding:0; font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="openApplyModal('quiz_rlhf_pipeline');">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
-        </div>
-
-        <div class="feature-card opp-card" data-category="other volume" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">DATA ANNOTATION</div>
-            <div style="color:var(--primary); font-weight:700;">Up to $40/hr</div>
-          </div>
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Quality Assurance</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">High-volume, detail-oriented labeling for early-stage models.</p>
-          <button style="color:var(--primary); background:none; border:none; padding:0; font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="openApplyModal('quiz_data_annotation');">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
-        </div>
-
-          <div class="feature-card opp-card" data-category="other complex" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">SYNTHETIC DATA</div>
-            <div style="color:var(--primary); font-weight:700;">Up to $80/hr</div>
-          </div>
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Creative Prompting</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Craft complex edge-case prompts and evaluate AI outputs.</p>
-          <button style="color:var(--primary); background:none; border:none; padding:0; font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="openApplyModal('quiz_synthetic_data');">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
-        </div>
-
-          <div class="feature-card opp-card" data-category="language complex volume" style="min-width:300px; max-width:300px; flex:0 0 auto; scroll-snap-align:start; background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-            <div style="padding:8px 12px; background:var(--black); color:var(--white); border-radius:100px; font-size:12px; font-weight:700;">MULTILINGUAL</div>
-            <div style="color:var(--primary); font-weight:700;">Up to $60/hr</div>
-          </div>
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">Language Ops</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Verify translation accuracy and localized cultural context.</p>
-          <button style="color:var(--primary); background:none; border:none; padding:0; font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="openApplyModal('quiz_multilingual');">Apply for this pipeline <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
-        </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    let userCategory = '';
-    let userLevel = '';
-    
-    function quizStep(step, answer, btnElement) {
-      if(btnElement) {
-        btnElement.classList.add('active');
-      }
-      
-      if(step === 1) {
-        userCategory = answer;
-        setTimeout(() => {
-          document.getElementById('quiz-step-1').style.display = 'none';
-          document.getElementById('quiz-step-2').style.display = 'block';
-        }, 300);
-      } else if (step === 2) {
-        userLevel = answer;
-        setTimeout(() => {
-          document.getElementById('quiz-step-2').style.display = 'none';
-          document.getElementById('quiz-result').style.display = 'block';
-          updateChips();
-          filterCards(userCategory, answer);
-        }, 300);
-      }
-    }
-
-    function updateChips() {
-      const container = document.getElementById('active-filters');
-      container.innerHTML = '';
-      
-      if(userCategory) {
-        const catMap = {'software': 'Software', 'medical': 'Medical', 'finance': 'Finance', 'language': 'Bilingual', 'other': 'General'};
-        container.innerHTML += `<div class="filter-chip">${catMap[userCategory]} <button onclick="resetQuiz()" aria-label="Remove filter">&times;</button></div>`;
-      }
-      if(userLevel) {
-        const lvlMap = {'complex': 'High-Complexity', 'volume': 'High-Volume'};
-        container.innerHTML += `<div class="filter-chip">${lvlMap[userLevel]} <button onclick="resetQuiz()" aria-label="Remove filter">&times;</button></div>`;
-      }
-    }
-
-    function filterCards(cat1, cat2) {
-      const cards = document.querySelectorAll('.opp-card');
-      cards.forEach(card => {
-        const categories = card.getAttribute('data-category');
-        if(categories.includes(cat1) || categories.includes(cat2)) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-      document.getElementById('opportunities-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function resetQuiz() {
-      userCategory = '';
-      userLevel = '';
-      document.getElementById('quiz-result').style.display = 'none';
-      document.getElementById('quiz-step-1').style.display = 'block';
-      document.getElementById('quiz-step-2').style.display = 'none';
-      const btns = document.querySelectorAll('.btn-quiz');
-      btns.forEach(btn => btn.classList.remove('active'));
-      const cards = document.querySelectorAll('.opp-card');
-      cards.forEach(card => {
-        card.style.display = 'flex';
-      });
-    }
-  </script>
-
-  <!-- ─── Mission & Industry Reality Check ─────────────────────────────────────────── -->
-  <section class="section" style="background:var(--white); border-top:1px solid var(--gray-200); padding: 80px 0;">
-    <div class="container">
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:64px; align-items:center;">
-        
-        <!-- Mission Guarantee -->
         <div>
-          <div style="font-size:14px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:16px;">The Train AI To Gain Guarantee</div>
-          <h2 style="font-size:36px; font-weight:800; color:var(--black); line-height:1.1; margin-bottom:24px;">Radical Transparency.</h2>
-          <p style="font-size:18px; color:var(--gray-500); line-height:1.6; margin-bottom:24px;">The AI recruiting space is full of fake reviews, hidden middleman fees, and bait-and-switch staffing agencies. We do none of that.</p>
-          <ul style="list-style:none; padding:0; margin:0;">
-            <li style="display:flex; align-items:flex-start; gap:12px; margin-bottom:16px;">
-              <svg style="flex-shrink:0; color:var(--primary); width:24px; height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span style="font-size:16px; font-weight:500; color:var(--black);"><strong>No fake testimonials.</strong> We rely on verifiable statistics, not fabricated reviews.</span>
-            </li>
-            <li style="display:flex; align-items:flex-start; gap:12px; margin-bottom:16px;">
-              <svg style="flex-shrink:0; color:var(--primary); width:24px; height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span style="font-size:16px; font-weight:500; color:var(--black);"><strong>No middleman fees.</strong> We don't take a cut of your pay. We refer you directly.</span>
-            </li>
-            <li style="display:flex; align-items:flex-start; gap:12px; margin-bottom:16px;">
-              <svg style="flex-shrink:0; color:var(--primary); width:24px; height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span style="font-size:16px; font-weight:500; color:var(--black);"><strong>Direct access.</strong> Every Apply link goes strictly to the official Mercor platform.</span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Industry Reality Stats -->
-        <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:40px;">
-          <h3 style="font-size:24px; font-weight:800; color:var(--black); margin-bottom:24px;">The Industry Reality</h3>
-          <p style="font-size:15px; color:var(--gray-500); margin-bottom:32px; line-height:1.6;">Why are AI labs paying up to $150/hr? Because they have exhausted public data. They need <em>experts</em> for Reinforcement Learning from Human Feedback (RLHF).</p>
-          
-          <div style="margin-bottom:24px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-              <span style="font-weight:700; font-size:14px;">RLHF Expert Demand</span>
-              <span style="font-weight:700; font-size:14px; color:var(--primary);">+400%</span>
-            </div>
-            <div style="background:var(--gray-200); height:12px; border-radius:100px; overflow:hidden;">
-              <div style="background:var(--primary); width:85%; height:100%;"></div>
-            </div>
-          </div>
-          
-          <div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-              <span style="font-weight:700; font-size:14px;">Global Domain Shortage</span>
-              <span style="font-weight:700; font-size:14px; color:#ef4444;">Severe</span>
-            </div>
-            <div style="background:var(--gray-200); height:12px; border-radius:100px; overflow:hidden;">
-              <div style="background:#ef4444; width:92%; height:100%;"></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Traps Section ─────────────────────────────────────────── -->
-  <section class="section" style="padding-top:20px; padding-bottom:60px;">
-    <div class="container">
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
-        <h2 style="font-size:24px; font-weight:700; color:var(--black);">The 3 Biggest Traps That Cause Ghosting</h2>
-      </div>
-      <p style="color:var(--gray-500); max-width:800px; margin-bottom: 32px; font-size:16px;">Over 80% of candidates fail Mercor's application process because of structural traps, not a lack of talent. Crossing Hurdles ignores these. We solve them.</p>
-      
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
-        
-        <div class="feature-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">1. The Graphic Resume Trap</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Mercor's ATS cannot read Canva or highly-formatted PDFs. It will instantly lock you out.</p>
-          <a href="resume-ats-guide.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to fix your resume <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-        </div>
-
-        <div class="feature-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">2. The Generalist Trap</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Applying to broad roles deposits you in a 300,000+ person pool. Silence means you're stuck in the pool.</p>
-          <a href="no-response.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">How to escape the pool <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-        </div>
-
-        <div class="feature-card" style="background:var(--gray-50); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column;">
-          <h3 style="font-size:20px; margin-bottom:8px; color:var(--black);">3. The AI Communication Trap</h3>
-          <p style="color:var(--gray-500); font-size:14px; margin-bottom:24px; flex-grow:1;">Rambling causes the AI to fail parsing your complex answers. You must use the "Headline First" strategy.</p>
-          <a href="prep-hub.html" style="color:var(--primary); font-weight:700; font-size:14px; display:inline-flex; align-items:center; gap:4px; text-decoration:none;">Enter the Prep Hub <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Resources ───────────────────────────────────── -->
-  <section class="section" style="background:var(--gray-50);">
-    <div class="container">
-      <div class="fade-up" style="text-align:center;max-width:520px;margin:0 auto 48px;">
-        <div class="section-eyebrow">Resources</div>
-        <h2 class="section-heading">Answers to your questions.</h2>
-      </div>
-      
-      <div class="feature-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
-        
-        <a href="no-response.html" class="feature-card" style="text-decoration:none;">
-          <div class="feature-card-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          </div>
-          <div class="feature-card-title">I applied and never heard back</div>
-          <div class="feature-card-body">Silence usually isn't rejection. Here's what it means and the two things worth checking.</div>
-        </a>
-
-        <a href="prep-hub.html" class="feature-card" style="text-decoration:none;">
-          <div class="feature-card-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-          </div>
-          <div class="feature-card-title">How the AI interview actually works</div>
-          <div class="feature-card-body">What it asks, how retakes work, and the setup mistakes that look like failure.</div>
-        </a>
-
-        <a href="what-mercor-looks-for.html" class="feature-card" style="text-decoration:none;">
-          <div class="feature-card-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-          </div>
-          <div class="feature-card-title">What Mercor actually looks for</div>
-          <div class="feature-card-body">The signals Mercor publishes but almost no applicant reads.</div>
-        </a>
-
-        <a href="is-it-worth-it.html" class="feature-card" style="text-decoration:none;">
-          <div class="feature-card-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-          </div>
-          <div class="feature-card-title">Is Mercor actually worth your time?</div>
-          <div class="feature-card-body">Real pay ranges, what the work involves, and who it doesn't suit.</div>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Anti-Bait-and-Switch & Lead Capture ─────────────────────────────────────────── -->
-  <section id="eligibility" class="section" style="background:var(--white); border-top:1px solid var(--gray-200);">
-    <div class="container">
-      <div class="fade-up" style="text-align:center;max-width:600px;margin:0 auto 40px;">
-        <div class="section-eyebrow" style="background:var(--accent); color:var(--primary);">The "Anti-Bait-and-Switch" Guarantee</div>
-        <h2 class="section-heading">My Radical Transparency Promise.</h2>
-        <p class="section-sub" style="margin-top:12px; margin-bottom: 24px;">
-          Unlike other agencies that post fake jobs to harvest your data, I am 100% upfront: <strong>I am an independent referral partner.</strong> I cannot hand you a job. Applying through my links takes you to the exact same Mercor portal as everyone else.
-        </p>
-        <p class="section-sub" style="margin-top:12px; font-weight: 500; color:var(--black);">
-          My value is telling you how to actually pass their AI screen, and giving you straight answers about what they are actually hiring for right now.
-        </p>
-      </div>
-
-      <div class="fade-up" style="text-align:center;max-width:520px;margin:0 auto 30px;">
-        <h3 style="font-size:22px; font-weight:700;">Want to know if your background actually fits?</h3>
-        <p class="section-sub" style="margin-top:8px;">Send me your background. I'll look at the active pipeline and tell you straight whether it's worth your time.</p>
-      </div>
-
-      <div class="fade-up" style="background:var(--black); border:1.5px solid var(--black); border-radius:var(--radius-lg); padding:40px 36px; max-width: 600px; margin:0 auto; position:relative; overflow:hidden;">
-        <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(16,185,129,0.18) 0%,transparent 70%);pointer-events:none;"></div>
-        
-        <form name="eligibility" style="display:flex; flex-direction:column; gap:20px; position:relative; z-index:1;" onsubmit="event.preventDefault(); alert('Evaluation submitted successfully!');">
-          
-          <div>
-            <label for="email" style="display:block; margin-bottom:8px; font-weight:700; font-size:14px; color:var(--white);">Email Address *</label>
-            <input id="email" type="email" name="email" required style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:15px; outline:none;" placeholder="you@example.com">
-          </div>
-
-          <div>
-            <label for="phone" style="display:block; margin-bottom:8px; font-weight:700; font-size:14px; color:var(--white);">Phone Number (Optional - for quick calls)</label>
-            <input id="phone" type="tel" name="phone" style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:15px; outline:none;" placeholder="(555) 123-4567">
-          </div>
-
-          <div>
-            <label for="field" style="display:block; margin-bottom:8px; font-weight:700; font-size:14px; color:var(--white);">Your Field / Background</label>
-            <input id="field" type="text" name="field" required style="width:100%; padding:14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:15px; outline:none;" placeholder="e.g. Data Scientist, Aerospace Engineer">
-          </div>
-
-          <button type="submit" style="display:inline-flex; align-items:center; justify-content:center; gap:10px; font-size:15px; font-weight:700; color:var(--white); background:var(--primary); padding:16px 20px; border-radius:var(--radius); margin-top:10px; transition:all 0.18s; border:none; cursor:pointer; width:100%;">
-            Check My Eligibility
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── B2B Companies Section ───────────────────────────────────── -->
-  <section id="companies" class="section" style="background:var(--black); color:var(--white); padding:100px 0; position:relative; overflow:hidden;">
-    <!-- Abstract background elements -->
-    <div style="position:absolute; top:-200px; right:-200px; width:600px; height:600px; background:radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%); border-radius:50%; z-index:0;"></div>
-    
-    <div class="container" style="position:relative; z-index:1;">
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:80px; align-items:center;">
-        
-        <div class="fade-up">
-          <div class="section-eyebrow" style="background:rgba(255,255,255,0.1); color:var(--primary); margin-bottom:24px;">For Companies</div>
-          <h2 class="section-heading" style="font-size:42px; line-height:1.1; margin-bottom:24px; color:var(--white);">Source the top 1% of AI domain experts.</h2>
-          <p class="section-sub" style="margin-bottom:40px; font-size:18px; color:var(--gray-400); line-height:1.6;">
-            Stop sifting through massive generic candidate pools. I have direct access to a highly vetted pipeline of domain experts—from MDs to Quant Devs—ready to train your models.
+          <h3 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 12px;">What is Mercor?</h3>
+          <p style="color: var(--gray-500); line-height: 1.6; font-size: 16px;">
+            Mercor is an AI training platform matching top tech professionals with high-paying evaluation projects. It provides legitimate, remote work evaluating bleeding-edge models.
           </p>
-          <ul style="list-style:none; padding:0; margin:0 0 32px 0; display:flex; flex-direction:column; gap:16px;">
-            <li style="display:flex; align-items:center; gap:16px; font-weight:600; font-size:16px;">
-              <div style="background:rgba(16,185,129,0.1); padding:8px; border-radius:50%;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-              Pre-vetted domain experts
-            </li>
-            <li style="display:flex; align-items:center; gap:16px; font-weight:600; font-size:16px;">
-              <div style="background:rgba(16,185,129,0.1); padding:8px; border-radius:50%;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-              Zero upfront sourcing fees
-            </li>
-            <li style="display:flex; align-items:center; gap:16px; font-weight:600; font-size:16px;">
-              <div style="background:rgba(16,185,129,0.1); padding:8px; border-radius:50%;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-              Rapid scale-up for RLHF pipelines
-            </li>
-          </ul>
         </div>
 
-        <div class="fade-up" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-lg); padding:48px; backdrop-filter:blur(10px);">
-          <form name="b2b-leads" style="display:flex; flex-direction:column; gap:24px;" onsubmit="event.preventDefault(); alert('Contact request sent successfully!');">
-            
-            <div style="margin-bottom:8px;">
-              <h3 style="font-size:24px; font-weight:700; color:var(--white); margin-bottom:8px;">Partnership Inquiries</h3>
-              <p style="color:var(--gray-400); font-size:15px;">We respond to qualified corporate inquiries within 24 hours.</p>
-            </div>
-            
-            <div>
-              <label style="display:block; font-size:13px; font-weight:600; color:var(--gray-400); margin-bottom:8px;">Company Name</label>
-              <input type="text" name="company" required style="width:100%; padding:14px 16px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:transparent; color:var(--white); font-family:inherit; font-size:15px; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'" placeholder="Acme AI Corp">
-            </div>
-            <div>
-              <label style="display:block; font-size:13px; font-weight:600; color:var(--gray-400); margin-bottom:8px;">Work Email</label>
-              <input type="email" name="email" required style="width:100%; padding:14px 16px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:transparent; color:var(--white); font-family:inherit; font-size:15px; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'" placeholder="leader@acme.ai">
-            </div>
-            <div>
-              <label style="display:block; font-size:13px; font-weight:600; color:var(--gray-400); margin-bottom:8px;">Talent Requirements</label>
-              <textarea name="needs" rows="3" required style="width:100%; padding:14px 16px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.2); background:transparent; color:var(--white); font-family:inherit; font-size:15px; outline:none; resize:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'" placeholder="e.g. Need 50 Senior Python Devs for code evaluation"></textarea>
-            </div>
-            <button type="submit" style="display:inline-flex; align-items:center; justify-content:center; gap:10px; font-size:16px; font-weight:700; color:var(--black); background:var(--white); padding:16px 20px; border-radius:var(--radius); transition:all 0.2s; border:none; cursor:pointer; width:100%; margin-top:8px;" onmouseover="this.style.background='var(--primary)';" onmouseout="this.style.background='var(--white)';">
-              Request Talent Pool Access
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </button>
-          </form>
+        <div>
+          <h3 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 12px;">How much time does the application take?</h3>
+          <p style="color: var(--gray-500); line-height: 1.6; font-size: 16px;">
+            30-45 minutes. Approval usually within 5 days.
+          </p>
+        </div>
+
+        <div>
+          <h3 style="font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 12px;">Do I need to quit my job?</h3>
+          <p style="color: var(--gray-500); line-height: 1.6; font-size: 16px;">
+            No. This is side income you do on your own schedule.
+          </p>
         </div>
 
       </div>
+    </div>
+  </section>
+
+  <!-- ─── Testimonial ─────────────────────────────────────────── -->
+  <section style="padding: 100px 0; text-align: center;">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="var(--gray-300)" style="margin-bottom: 24px;">
+        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+      </svg>
+      <h2 style="font-size: 32px; font-weight: 600; color: var(--black); line-height: 1.4; margin-bottom: 32px; font-style: italic;">
+        "Made $2,400 in my first month working nights and weekends."
+      </h2>
+      <div style="font-size: 18px; font-weight: 700; color: var(--black);">David M.</div>
+      <div style="font-size: 14px; color: var(--gray-400);">Senior Software Engineer</div>
+    </div>
+  </section>
+
+  <!-- ─── Bottom CTA ─────────────────────────────────────────── -->
+  <section style="padding: 0 0 100px; text-align: center;">
+    <div class="container">
+      <button class="btn-primary" style="font-size: 20px; padding: 20px 48px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); cursor: pointer;" onclick="openApplyModal('bottom_cta');">
+        Start Your Application ➔
+      </button>
     </div>
   </section>
 
