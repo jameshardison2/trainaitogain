@@ -107,11 +107,13 @@
       const email = form.querySelector('input[type="email"]').value;
       
       try {
+        const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
         await addDoc(collection(db, "leads"), {
           firstName: firstName,
           email: email,
           timestamp: serverTimestamp(),
-          source: window.location.href
+          source: window.location.href,
+          referred_by: refCode
         });
         
         // Push lead to Instantly.ai CRM Webhook
@@ -121,7 +123,7 @@
             await fetch(instantlyWebhookUrl, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email: email, firstName: firstName, source: window.location.href })
+              body: JSON.stringify({ email: email, firstName: firstName, source: window.location.href, referred_by: refCode })
             });
           } catch (webhookError) {
             console.error("Error sending to Instantly:", webhookError);
