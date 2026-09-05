@@ -20,6 +20,11 @@
         "source": "/reed",
         "destination": "/?ref=reed",
         "type": 301
+      },
+      {
+        "source": "/reed-promo",
+        "destination": "/landing_page_v2.html?ref=reed",
+        "type": 301
       }
     ]
   }
