@@ -150,12 +150,11 @@ function updateSmartNavigator() {
     const pendingElem = document.getElementById('tg-stat-pending');
     if (pendingElem && parseInt(pendingElem.innerText) > 0 && !path.includes('interview')) {
         navStatus.innerText = 'Current Step: Finish Interviews';
-        magicBtn.innerHTML = 'Practice Pending Interviews ➔';
+        magicBtn.innerHTML = 'Go to your Interviews tab ➔';
         magicBtn.style.background = 'var(--tg-warning)';
         magicBtn.style.color = '#fff';
         magicBtn.onclick = () => {
-            showToast('Routing to Interview Practice...');
-            setTimeout(() => { window.location.href = 'https://work.mercor.com/interviews'; }, 500);
+            showToast('Please navigate to your Interviews tab on Mercor.');
         };
         return;
     } else {
@@ -181,10 +180,9 @@ function updateSmartNavigator() {
 
     // State 3: Default (Wandering) -> Guide them back to Jobs
     navStatus.innerText = 'Current Step: Explore Opportunities';
-    magicBtn.innerHTML = 'Take me to Job Board ➔';
+    magicBtn.innerHTML = 'Navigate to the Job Board ➔';
     magicBtn.onclick = () => {
-        showToast('Routing to Job Board...');
-        setTimeout(() => { window.location.href = 'https://work.mercor.com/explore'; }, 500);
+        showToast('Please click on the Jobs/Explore tab in Mercor.');
     };
 }
 
