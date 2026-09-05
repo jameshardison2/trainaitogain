@@ -617,6 +617,8 @@ function initVoiceAssistant() {
                 
                 Provide your conversational response:`;
 
+                let lastErrorMessage = "";
+
                 for (const model of modelsToTry) {
                     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
                     const response = await fetch(url, {
@@ -632,6 +634,7 @@ function initVoiceAssistant() {
                     // If it's a 404 (Model not found), try the next model
                     if (result.error && result.error.code === 404) {
                         console.warn(`Model ${model} not found. Trying next...`);
+                        lastErrorMessage = result.error.message;
                         continue; 
                     }
                     
@@ -645,7 +648,7 @@ function initVoiceAssistant() {
                 }
 
                 if (!data) {
-                    speakResponse("Error: None of the supported AI models were found for your API key.");
+                    speakResponse("Google API Error: " + lastErrorMessage);
                 } else if (data.error) {
                     speakResponse("Error contacting AI: " + data.error.message);
                 } else if (data.candidates && data.candidates.length > 0) {
