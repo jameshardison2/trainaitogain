@@ -43,114 +43,65 @@ function initializeExtension() {
 
   if (!chrome || !chrome.storage || !chrome.storage.local) return;
 
-  chrome.storage.local.get(['tgMasterProfile'], (res) => {
-    let profile = (res && res.tgMasterProfile) ? res.tgMasterProfile : { resume: '', bio: '', linkedin: '' };
-    const needsOnboarding = !profile.resume;
-
-    const panel = document.createElement('div');
-    panel.id = 'trainai-side-panel';
+  const panel = document.createElement('div');
+  panel.id = 'trainai-side-panel';
+  
+  panel.innerHTML = `
+    <div class="trainai-panel-header">
+      <h2>Get You Hired</h2>
+      <button id="trainai-panel-close">×</button>
+    </div>
     
-    panel.innerHTML = `
-      <div class="trainai-panel-header">
-        <h2>Get You Hired</h2>
-        <button id="trainai-panel-close">×</button>
-      </div>
+    <div class="trainai-dashboard-container">
       
-      <div class="trainai-dashboard-container">
-        
-        ${needsOnboarding ? '<div class="trainai-alert" style="margin-bottom:24px;"><strong>STEP 1: SETUP</strong><br>Paste your resume below to unlock the tools.</div>' : ''}
-
-        <!-- SECTION 1: Algorithm Status (App Tracker) -->
-        <div class="tg-section" data-tg-tooltip="This tracks how many applications you have submitted. You need at least 3 for high priority.">
-            <h3 class="tg-section-title">STATUS</h3>
-            <div id="trainai-tracker-stats">
-                <div class="tg-stat-box">
-                <strong id="tg-stat-number">0</strong>
-                <span>Applications</span>
-                </div>
-            </div>
-            <div id="tg-algo-status" class="tg-algo-status low">Priority: Low Visibility</div>
-            <div id="trainai-tracker-advice" class="trainai-alert">Scanning...</div>
-        </div>
-
-        <hr class="tg-divider">
-
-        <!-- SECTION 2: Master Profile Vault -->
-        <div class="tg-section" data-tg-tooltip="Save your resume and bio here. We will use this to autofill your applications instantly.">
-            <h3 class="tg-section-title">PROFILE</h3>
-            
-            <label>Raw Resume Text</label>
-            <textarea id="tg-profile-resume" placeholder="Paste your entire resume text here...">${profile.resume || ''}</textarea>
-            
-            <label>Standard Bio / Intro</label>
-            <textarea id="tg-profile-bio" placeholder="Hi, I am an expert in...">${profile.bio || ''}</textarea>
-            
-            <label>LinkedIn URL</label>
-            <input type="text" id="tg-profile-linkedin" placeholder="https://linkedin.com/in/..." value="${profile.linkedin || ''}">
-            
-            <button id="trainai-save-profile">Save Profile</button>
-        </div>
-
-      </div>
-
-      <!-- SECTION 3: Magic Navigator (Shape-Shifting Context Button) -->
-      <div class="tg-bottom-bar" data-tg-tooltip="This is the Magic Navigator. It shape-shifts to guide you to your exact next step.">
-          <div id="tg-nav-status" class="tg-nav-status">Analyzing Context...</div>
-          <div style="display:flex; gap:8px; align-items:center;">
-              <button id="tg-magic-btn" style="flex:1;">
-                Loading...
-              </button>
-              <button id="tg-voice-assistant-btn" class="tg-mic-btn" data-tg-tooltip="Click to speak! Ask 'what do I do next?' or use it to voice-type your answers.">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-              </button>
+      <!-- SECTION 1: Algorithm Status (App Tracker) -->
+      <div class="tg-section" data-tg-tooltip="This tracks how many applications you have submitted. You need at least 3 for high priority.">
+          <h3 class="tg-section-title">STATUS</h3>
+          <div id="trainai-tracker-stats">
+              <div class="tg-stat-box">
+              <strong id="tg-stat-number">0</strong>
+              <span>Applications</span>
+              </div>
           </div>
+          <div id="tg-algo-status" class="tg-algo-status low">Priority: Low Visibility</div>
+          <div id="trainai-tracker-advice" class="trainai-alert">Scanning...</div>
       </div>
-    `;
-    
-    container.appendChild(trigger);
-    container.appendChild(panel);
-    document.body.appendChild(container);
 
-    // Logic: Open/Close Panel
-    trigger.onclick = () => panel.classList.add('open');
-    const closeBtn = document.getElementById('trainai-panel-close');
-    if (closeBtn) {
-        closeBtn.onclick = () => panel.classList.remove('open');
-    }
+    </div>
 
-    // Save Profile
-    const saveBtn = document.getElementById('trainai-save-profile');
-    if (saveBtn) {
-        saveBtn.onclick = () => {
-          const resumeEl = document.getElementById('tg-profile-resume');
-          const bioEl = document.getElementById('tg-profile-bio');
-          const linkedinEl = document.getElementById('tg-profile-linkedin');
-          
-          if (!resumeEl || !bioEl || !linkedinEl) return;
+    <!-- SECTION 3: Magic Navigator (Shape-Shifting Context Button) -->
+    <div class="tg-bottom-bar" data-tg-tooltip="This is the Magic Navigator. It shape-shifts to guide you to your exact next step.">
+        <div id="tg-nav-status" class="tg-nav-status">Analyzing Context...</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+            <button id="tg-magic-btn" style="flex:1;">
+              Loading...
+            </button>
+            <button id="tg-voice-assistant-btn" class="tg-mic-btn" data-tg-tooltip="Click to speak! Ask 'what do I do next?' or use it to voice-type your answers.">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+            </button>
+        </div>
+    </div>
+  `;
+  
+  container.appendChild(trigger);
+  container.appendChild(panel);
+  document.body.appendChild(container);
 
-          chrome.storage.local.set({
-            tgMasterProfile: {
-              resume: resumeEl.value,
-              bio: bioEl.value,
-              linkedin: linkedinEl.value
-            }
-          }, () => {
-            showToast('Profile Saved Successfully!');
-            updateSmartNavigator(); 
-          });
-        };
-    }
+  // Logic: Open/Close Panel
+  trigger.onclick = () => panel.classList.add('open');
+  const closeBtn = document.getElementById('trainai-panel-close');
+  if (closeBtn) {
+      closeBtn.onclick = () => panel.classList.remove('open');
+  }
 
-    // Initialize Voice Assistant
-    initVoiceAssistant();
+  // Initialize Voice Assistant
+  initVoiceAssistant();
 
-    // Initialize Magic Navigator Loop
-    setInterval(updateSmartNavigator, 1500);
-    updateSmartNavigator();
+  // Initialize Magic Navigator Loop
+  setInterval(updateSmartNavigator, 1500);
+  updateSmartNavigator();
 
-    runTrackerScan();
-  });
-
+  runTrackerScan();
   setupSPAObserver();
 }
 
@@ -163,120 +114,51 @@ function updateSmartNavigator() {
     
     if (!magicBtn || !navStatus) return;
 
-    chrome.storage.local.get(['tgMasterProfile'], (res) => {
-        let profile = (res && res.tgMasterProfile) ? res.tgMasterProfile : null;
-        const path = window.location.href.toLowerCase();
-        
-        // State 1: Needs Profile Setup
-        if (!profile || !profile.resume || profile.resume.trim() === '') {
-            navStatus.innerText = 'Current Step: Setup Profile';
-            magicBtn.innerHTML = 'Save Profile to Unlock';
+    const path = window.location.href.toLowerCase();
+    
+    // State 1: On Job Board
+    if (path.includes('explore') || path.includes('job') || path.includes('role')) {
+        const atsBtn = document.getElementById('tg-scan-btn');
+        if (atsBtn) {
+            navStatus.innerText = 'Current Step: Scan & Apply';
+            magicBtn.innerHTML = 'Run ATS Scanner';
             magicBtn.onclick = () => {
-                const resumeInput = document.getElementById('tg-profile-resume');
-                if (resumeInput) {
-                    resumeInput.focus();
-                    resumeInput.scrollIntoView({ behavior: 'smooth' });
+                const mainContent = document.querySelector('main') || document.body;
+                if (mainContent && typeof runATSScan === 'function') {
+                    runATSScan(mainContent.textContent);
                 }
             };
-            return;
+        } else {
+            navStatus.innerText = 'Current Step: Find a Job';
+            magicBtn.innerHTML = 'Click a Job to view details';
+            magicBtn.onclick = null;
         }
+        return;
+    }
 
-        // State 2: Form Detected (Priority action is to Autofill)
-        const inputs = document.querySelectorAll('input[type="text"], input[type="url"], textarea');
-        let formNeedsFill = false;
-        if (inputs.length > 0) {
-            // Check if it's an actual application form vs just a search bar
-            inputs.forEach(input => {
-                const n = (input.name || input.id || input.placeholder || '').toLowerCase();
-                if (n.includes('experience') || n.includes('linkedin') || n.includes('bio') || n.includes('about')) {
-                    formNeedsFill = true;
-                }
-            });
-        }
-
-        if (formNeedsFill) {
-            navStatus.innerText = 'Current Step: Apply Instantly';
-            magicBtn.innerHTML = '⚡ Autofill Application Form';
-            magicBtn.onclick = () => runAutofill(profile);
-            return;
-        }
-
-        // State 3: On Job Board
-        if (path.includes('explore') || path.includes('job') || path.includes('role')) {
-            // See if ATS Scanner is injected
-            const atsBtn = document.getElementById('tg-scan-btn');
-            if (atsBtn) {
-                navStatus.innerText = 'Current Step: Scan & Apply';
-                magicBtn.innerHTML = 'Run ATS Scanner';
-                magicBtn.onclick = () => {
-                    const mainContent = document.querySelector('main') || document.body;
-                    if (mainContent && typeof runATSScan === 'function') {
-                        runATSScan(mainContent.textContent);
-                    }
-                };
-            } else {
-                navStatus.innerText = 'Current Step: Find a Job';
-                magicBtn.innerHTML = 'Click a Job to view details';
-                magicBtn.onclick = null;
-            }
-            return;
-        }
-
-        // State 4: On Interview
-        if (path.includes('interview')) {
-            navStatus.innerText = 'Current Step: Ace the Interview';
-            magicBtn.innerHTML = 'Activate Impact Coach';
-            magicBtn.onclick = () => {
-                const textareas = document.querySelectorAll('textarea');
-                if (textareas.length > 0) {
-                    textareas[0].focus();
-                    showToast('Coach is listening. Start typing!');
-                } else {
-                    showToast('No text box found yet.');
-                }
-            };
-            return;
-        }
-
-        // State 5: Default (Wandering) -> Guide them back to Jobs
-        navStatus.innerText = 'Current Step: Explore Opportunities';
-        magicBtn.innerHTML = 'Take me to Job Board ➔';
+    // State 2: On Interview
+    if (path.includes('interview')) {
+        navStatus.innerText = 'Current Step: Ace the Interview';
+        magicBtn.innerHTML = 'Activate Impact Coach';
         magicBtn.onclick = () => {
-            showToast('Routing to Job Board...');
-            setTimeout(() => { window.location.href = 'https://work.mercor.com/explore'; }, 500);
+            const textareas = document.querySelectorAll('textarea');
+            if (textareas.length > 0) {
+                textareas[0].focus();
+                showToast('Coach is listening. Start typing or use the mic!');
+            } else {
+                showToast('No text box found yet.');
+            }
         };
-    });
-}
+        return;
+    }
 
-function runAutofill(profile) {
-    if (!profile) return;
-    const inputs = document.querySelectorAll('input[type="text"], input[type="url"], textarea');
-    if (inputs.length === 0) return;
-
-    let delay = 0;
-    inputs.forEach((input) => {
-        setTimeout(() => {
-        const name = (input.name || input.id || input.placeholder || '').toLowerCase();
-        let valueToSet = null;
-        if (name.includes('linkedin') || name.includes('url')) {
-            valueToSet = profile.linkedin;
-        } else if (name.includes('bio') || name.includes('about') || name.includes('describe')) {
-            valueToSet = profile.bio;
-        } else if (name.includes('experience') || name.includes('resume')) {
-            valueToSet = profile.resume;
-        }
-
-        if (valueToSet) {
-            input.classList.add('tg-laser-scan');
-            setTimeout(() => {
-                setReactInputValue(input, valueToSet);
-                input.classList.remove('tg-laser-scan');
-            }, 300);
-        }
-        }, delay);
-        delay += 100;
-    });
-    setTimeout(() => { showToast('Autofilled successfully.'); }, delay + 300);
+    // State 3: Default (Wandering) -> Guide them back to Jobs
+    navStatus.innerText = 'Current Step: Explore Opportunities';
+    magicBtn.innerHTML = 'Take me to Job Board ➔';
+    magicBtn.onclick = () => {
+        showToast('Routing to Job Board...');
+        setTimeout(() => { window.location.href = 'https://work.mercor.com/explore'; }, 500);
+    };
 }
 
 
@@ -581,14 +463,6 @@ function initVoiceAssistant() {
             magicBtn.classList.add('tg-pulse-anim'); // Highlight it
             setTimeout(() => magicBtn.classList.remove('tg-pulse-anim'), 3000);
             speakResponse("I have highlighted the Magic Navigator button at the bottom. Click it to proceed to your exact next step.");
-        } else if (transcript.includes('autofill') || transcript.includes('fill')) {
-            const autoBtn = document.getElementById('trainai-autofill-btn');
-            if (autoBtn && !autoBtn.classList.contains('disabled')) {
-                speakResponse("Autofilling the page now.");
-                autoBtn.click();
-            } else {
-                speakResponse("I cannot autofill here. Please navigate to an application form first.");
-            }
         } else {
             speakResponse("I heard you, but I am not sure what that means. You can ask me what to do next, or click a text box to voice-type.");
         }
