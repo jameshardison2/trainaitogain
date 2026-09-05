@@ -2,27 +2,25 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     body {
       width: 300px;
       margin: 0;
       padding: 24px;
-      font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: white;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #111111; /* Brand Black */
+      color: #ffffff;
     }
     h2 {
       margin: 0 0 8px 0;
       font-size: 20px;
       font-weight: 800;
-      background: linear-gradient(135deg, #10b981, #3b82f6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #10b981; /* Brand Primary Green */
     }
     p {
-      font-size: 13px;
-      color: #94a3b8;
+      font-size: 14px;
+      color: #999999; /* Brand Gray 400 */
       line-height: 1.5;
       margin-bottom: 24px;
     }
@@ -35,12 +33,13 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 16px;
-      border-radius: 12px;
+      border-radius: 10px;
       margin-bottom: 24px;
     }
     .toggle-label {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
+      color: #ffffff;
     }
     .switch {
       position: relative;
@@ -57,7 +56,7 @@
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #334155;
+      background-color: #444444; /* Brand Gray 700 */
       transition: .3s;
       border-radius: 34px;
     }
@@ -73,8 +72,7 @@
       border-radius: 50%;
     }
     input:checked + .slider {
-      background-color: #10b981;
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+      background-color: #10b981; /* Brand Primary */
     }
     input:checked + .slider:before {
       transform: translateX(20px);
@@ -83,16 +81,16 @@
     .link {
       display: block;
       text-align: center;
-      background: rgba(255, 255, 255, 0.05);
-      color: #cbd5e1;
+      background: #10b981; /* Primary CTA style */
+      color: #ffffff;
       text-decoration: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
       transition: background 0.2s;
     }
-    .link:hover { background: rgba(255, 255, 255, 0.1); color: white; }
+    .link:hover { background: #059669; }
   </style>
 </head>
 <body>
