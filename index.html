@@ -886,6 +886,22 @@
             return; // Skip fetch since no endpoint is set
         } else if (myForm.name === 'lead-magnet') {
             submitBtn.innerHTML = 'Unlocking...';
+            
+            // Extract the correct fields (top form vs bottom form)
+            const fName = document.getElementById('firstName')?.value || document.getElementById('firstNameBottom')?.value || 'Friend';
+            const email = document.getElementById('email')?.value || document.getElementById('emailBottom')?.value || '';
+
+            // Send data to Instantly CRM (via Zapier/Make Webhook)
+            fetch('YOUR_INSTANTLY_WEBHOOK_URL_HERE', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                firstName: fName,
+                email: email,
+                source: 'Get You Hired Extension Lead Magnet'
+              })
+            }).catch(e => console.log('Webhook error', e));
+
             setTimeout(() => {
               window.location.href = 'extension-download.html';
             }, 800);
