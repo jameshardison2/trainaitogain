@@ -577,7 +577,9 @@ function initVoiceAssistant() {
             }
 
             try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro', 'gemini-pro'];
+                let data = null;
+                
                 const context = document.body.textContent.substring(0, 4000);
                 const prompt = `You are a highly intelligent, conversational AI assistant embedded directly into a Chrome extension for candidates using the Mercor platform. 
                 Your goal is to help them navigate the platform, answer interview questions, or provide strategic advice.
@@ -592,21 +594,36 @@ function initVoiceAssistant() {
                 
                 Provide your conversational response:`;
 
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }]
-                    })
-                });
+                for (const model of modelsToTry) {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }]
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    // If it's a 404 (Model not found), try the next model
+                    if (result.error && result.error.code === 404) {
+                        console.warn(`Model ${model} not found. Trying next...`);
+                        continue; 
+                    }
+                    
+                    data = result;
+                    break; // Success or fatal error (like 400 invalid key)
+                }
 
-                const data = await response.json();
                 if (magicBtn) {
                     magicBtn.classList.remove('tg-pulse-anim');
                     updateSmartNavigator();
                 }
 
-                if (data.error) {
+                if (!data) {
+                    speakResponse("Error: None of the supported AI models were found for your API key.");
+                } else if (data.error) {
                     speakResponse("Error contacting AI: " + data.error.message);
                 } else if (data.candidates && data.candidates.length > 0) {
                     const aiReply = data.candidates[0].content.parts[0].text;
