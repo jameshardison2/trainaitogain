@@ -1,4 +1,4 @@
-// TrainAIToGain - Mercor Cheat Code V2 Content Script
+// TrainAIToGain - Mercor Extension Content Script V1.0.1
 
 let isEnabled = true;
 
@@ -30,6 +30,7 @@ function initHeavyHitters() {
   
   injectNetworkTranslator();
   injectAutoCacheVault();
+  injectSOSButton();
   
   setInterval(() => {
     if (!isEnabled) return;
@@ -37,6 +38,23 @@ function initHeavyHitters() {
     
     if (url.includes('interview') || url.includes('record') || url.includes('assessment')) {
       injectContextAnchor();
+    } else {
+      const anchor = document.getElementById('trainai-context-anchor');
+      if (anchor) anchor.remove();
+    }
+    
+    if (url.includes('home')) {
+      injectDemystifier();
+    } else {
+      const demy = document.getElementById('trainai-demystifier');
+      if (demy) demy.remove();
+    }
+
+    if (url.includes('profile')) {
+      injectATSWarning();
+    } else {
+      const ats = document.getElementById('trainai-ats-warning');
+      if (ats) ats.remove();
     }
   }, 2000);
 }
@@ -45,22 +63,23 @@ function initHeavyHitters() {
 // FEATURE 1: The Auto-Cache Vault (Cures Information Loop)
 // ----------------------------------------------------
 function injectAutoCacheVault() {
-  // Listen to all inputs and save to local storage
   document.addEventListener('input', (e) => {
     if (!isEnabled) return;
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      const name = e.target.name || e.target.id || e.target.placeholder;
-      if (name) {
+      const name = e.target.name || e.target.id || e.target.placeholder || 'generic_field';
+      if (name && name !== 'generic_field') {
         chrome.storage.local.set({ [`trainai_cache_${name}`]: e.target.value });
       }
     }
   });
 
-  // Inject a glowing "Restore" button if we see empty fields
   setInterval(() => {
     if (!isEnabled) return;
+    const url = window.location.href.toLowerCase();
+    if (!url.includes('profile')) return; // Only show on profile pages where forms exist
+    
     const inputs = document.querySelectorAll('input[type="text"], textarea');
-    if (inputs.length > 2 && !document.getElementById('trainai-restore-btn')) {
+    if (inputs.length >= 1 && !document.getElementById('trainai-restore-btn')) {
       const restoreBtn = document.createElement('button');
       restoreBtn.id = 'trainai-restore-btn';
       restoreBtn.className = 'trainai-injected';
@@ -74,7 +93,6 @@ function injectAutoCacheVault() {
             chrome.storage.local.get([`trainai_cache_${name}`], (res) => {
               if (res[`trainai_cache_${name}`]) {
                 input.value = res[`trainai_cache_${name}`];
-                // Trigger react synthetic events
                 input.dispatchEvent(new Event('input', { bubbles: true }));
                 input.dispatchEvent(new Event('change', { bubbles: true }));
               }
@@ -103,7 +121,10 @@ function injectContextAnchor() {
   anchor.innerHTML = `
     <div class="anchor-header">
       📌 Resume Anchor
-      <button class="anchor-toggle" id="trainai-anchor-toggle">_</button>
+      <div>
+        <button class="anchor-toggle" id="trainai-anchor-min">_</button>
+        <button class="anchor-toggle" id="trainai-anchor-close" style="margin-left: 8px;">×</button>
+      </div>
     </div>
     <div class="anchor-body" id="trainai-anchor-body">
       <p class="anchor-desc">Paste your exact resume timeline here. If the AI interviewer gets confused about dates, read directly from here to correct it instantly.</p>
@@ -112,26 +133,25 @@ function injectContextAnchor() {
   `;
   document.body.appendChild(anchor);
   
-  // Load saved resume context
   chrome.storage.local.get(['trainai_resume_anchor'], (res) => {
     if (res.trainai_resume_anchor) {
       document.getElementById('trainai-anchor-text').value = res.trainai_resume_anchor;
     }
   });
   
-  // Save on type
   document.getElementById('trainai-anchor-text').addEventListener('input', (e) => {
     chrome.storage.local.set({ trainai_resume_anchor: e.target.value });
   });
   
-  // Toggle collapse
-  document.getElementById('trainai-anchor-toggle').onclick = () => {
+  // Minimize
+  document.getElementById('trainai-anchor-min').onclick = () => {
     const body = document.getElementById('trainai-anchor-body');
-    if (body.style.display === 'none') {
-      body.style.display = 'block';
-    } else {
-      body.style.display = 'none';
-    }
+    body.style.display = (body.style.display === 'none') ? 'block' : 'none';
+  };
+
+  // Close completely
+  document.getElementById('trainai-anchor-close').onclick = () => {
+    anchor.style.display = 'none';
   };
 }
 
@@ -175,4 +195,77 @@ function showErrorToast(status) {
     <button onclick="this.parentElement.remove()">Dismiss</button>
   `;
   document.body.appendChild(toast);
+}
+
+// ----------------------------------------------------
+// FEATURE 4: The "Next Step" Demystifier
+// ----------------------------------------------------
+function injectDemystifier() {
+  if (document.getElementById('trainai-demystifier')) return;
+  
+  // Wait for React to load dashboard content
+  const bodyText = document.body.innerText.toLowerCase();
+  
+  let advice = "💡 Your apps are in the algorithm. Apply to 3+ more Domain Expert roles to force priority.";
+  if (bodyText.includes('incomplete') || bodyText.includes('step 2') || bodyText.includes('step 3')) {
+    advice = "🚨 You have incomplete applications. Finish those first (especially Step 3 Video Interviews) before applying to new roles.";
+  }
+
+  const demystifier = document.createElement('div');
+  demystifier.id = 'trainai-demystifier';
+  demystifier.className = 'trainai-injected';
+  demystifier.innerHTML = `
+    <strong>💡 TrainAIToGain Tip:</strong> ${advice}
+    <span class="trainai-close" onclick="this.parentElement.remove()">×</span>
+  `;
+  document.body.appendChild(demystifier);
+  
+  // Auto-dismiss after 10 seconds
+  setTimeout(() => {
+    if (demystifier.parentElement) {
+      demystifier.style.opacity = '0';
+      setTimeout(() => demystifier.remove(), 300);
+    }
+  }, 10000);
+}
+
+// ----------------------------------------------------
+// FEATURE 5: The Human Support Escalator (SOS Button)
+// ----------------------------------------------------
+function injectSOSButton() {
+  if (document.getElementById('trainai-sos-btn')) return;
+  
+  const sos = document.createElement('button');
+  sos.id = 'trainai-sos-btn';
+  sos.className = 'trainai-injected';
+  sos.innerText = '🆘 Stuck?';
+  document.body.appendChild(sos);
+  
+  sos.onclick = () => {
+    const template = "ESCALATION REQUIRED: My account is experiencing a critical error preventing interview/assessment completion. Please escalate to a human agent immediately to clear the infinite loop so I can proceed.";
+    navigator.clipboard.writeText(template).then(() => {
+      alert("An aggressive escalation script has been copied to your clipboard! Paste this into an email to Mercor Support.");
+      window.location.href = "mailto:support@mercor.com?subject=ESCALATION%20REQUIRED";
+    });
+  };
+}
+
+// ----------------------------------------------------
+// FEATURE 6: The ATS Warning
+// ----------------------------------------------------
+function injectATSWarning() {
+  if (document.getElementById('trainai-ats-warning')) return;
+  
+  const fileInputs = document.querySelectorAll('input[type="file"]');
+  if (fileInputs.length === 0) return;
+  
+  const warning = document.createElement('div');
+  warning.id = 'trainai-ats-warning';
+  warning.className = 'trainai-injected';
+  warning.innerHTML = `
+    <strong>⚠️ WARNING:</strong> Mercor's ATS parser is extremely rigid. If your PDF has columns, graphics, or tables, it will fail and trap you in an infinite "parsing loop." Ensure your resume is a simple, 1-column text document before uploading.
+  `;
+  
+  const input = fileInputs[0];
+  input.parentNode.insertBefore(warning, input);
 }

@@ -1,23 +1,33 @@
 {
   "manifest_version": 3,
-  "name": "Mercor Cheat Code | TrainAIToGain",
-  "version": "1.0",
+  "name": "TrainAIToGain | The Get You Hired Extension",
+  "version": "1.0.1",
   "description": "Your ultimate advantage for passing the Mercor AI evaluation pipelines.",
   "permissions": [
     "storage"
   ],
   "host_permissions": [
-    "*://*.mercor.com/*"
+    "*://work.mercor.com/*"
   ],
+  "icons": {
+    "16": "icon.svg",
+    "48": "icon.svg",
+    "128": "icon.svg"
+  },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.svg",
+      "48": "icon.svg",
+      "128": "icon.svg"
+    }
   },
   "content_scripts": [
     {
-      "matches": ["*://*.mercor.com/*"],
+      "matches": ["*://work.mercor.com/*"],
       "css": ["styles.css"],
       "js": ["content.js"],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
   ]
 }

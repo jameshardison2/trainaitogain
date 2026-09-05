@@ -147,3 +147,65 @@
   from { top: -100px; opacity: 0; }
   to { top: 24px; opacity: 1; }
 }
+
+/* 4. Dashboard Demystifier */
+#trainai-demystifier {
+  position: fixed;
+  bottom: 80px;
+  left: 24px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  max-width: 350px;
+  z-index: 999998;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: opacity 0.3s ease;
+}
+.trainai-close {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  opacity: 0.7;
+}
+.trainai-close:hover { opacity: 1; }
+
+/* 5. ATS Warning */
+#trainai-ats-warning {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-left: 4px solid #f59e0b;
+  color: #b45309;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* 6. SOS Button */
+#trainai-sos-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 250px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-family: 'Inter', system-ui, sans-serif;
+  z-index: 999999;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  transition: transform 0.2s;
+  backdrop-filter: blur(8px);
+}
+#trainai-sos-btn:hover { transform: scale(1.05); }
