@@ -402,3 +402,20 @@
 [data-tg-tooltip]:hover::after {
   transform: translateX(-50%) translateY(0);
 }
+
+/* Blinking Transparent Pulse Animation for Trigger */
+@keyframes tgPulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); opacity: 0.7; }
+  50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); opacity: 1; }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); opacity: 0.7; }
+}
+
+#trainai-panel-trigger {
+  animation: tgPulse 2.5s infinite;
+  opacity: 0.7; /* Default slightly transparent */
+}
+
+#trainai-panel-trigger:hover {
+  animation: none; /* Stop blinking on hover */
+  opacity: 1; /* Full visibility */
+}
