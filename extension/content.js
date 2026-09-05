@@ -37,7 +37,7 @@ function injectUI() {
   trigger.innerText = 'Get You Hired';
 
   const panel = document.createElement('div');
-  panel.id = 'trainai-panel';
+  panel.id = 'trainai-side-panel';
   
   panel.innerHTML = `
     <div class="trainai-panel-header">
