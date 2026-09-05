@@ -96,9 +96,14 @@ function initializeExtension() {
       <!-- SECTION 3: Magic Navigator (Shape-Shifting Context Button) -->
       <div class="tg-bottom-bar" data-tg-tooltip="This is the Magic Navigator. It shape-shifts to guide you to your exact next step.">
           <div id="tg-nav-status" class="tg-nav-status">Analyzing Context...</div>
-          <button id="tg-magic-btn">
-            Loading...
-          </button>
+          <div style="display:flex; gap:8px; align-items:center;">
+              <button id="tg-magic-btn" style="flex:1;">
+                Loading...
+              </button>
+              <button id="tg-voice-assistant-btn" class="tg-mic-btn" data-tg-tooltip="Click to speak! Ask 'what do I do next?' or use it to voice-type your answers.">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+              </button>
+          </div>
       </div>
     `;
     
@@ -131,10 +136,13 @@ function initializeExtension() {
             }
           }, () => {
             showToast('Profile Saved Successfully!');
-            updateSmartNavigator(); // Instantly update the magic button state
+            updateSmartNavigator(); 
           });
         };
     }
+
+    // Initialize Voice Assistant
+    initVoiceAssistant();
 
     // Initialize Magic Navigator Loop
     setInterval(updateSmartNavigator, 1500);
@@ -526,3 +534,83 @@ document.addEventListener('mouseout', (e) => {
     if (window.speechSynthesis) window.speechSynthesis.cancel();
   }
 });
+
+// ----------------------------------------------------
+// Voice Assistant (Speech Recognition)
+// ----------------------------------------------------
+function initVoiceAssistant() {
+    const micBtn = document.getElementById('tg-voice-assistant-btn');
+    if (!micBtn) return;
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        micBtn.style.display = 'none';
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    micBtn.onclick = () => {
+        if (micBtn.classList.contains('listening')) {
+            recognition.stop();
+            return;
+        }
+        
+        micBtn.classList.add('listening');
+        showToast('🎙️ Listening... Speak now!');
+        recognition.start();
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        showToast(`You said: "${transcript}"`);
+        
+        // 1. Check if user has a text box focused (Voice Typing)
+        const activeElement = document.activeElement;
+        if (activeElement && (activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'INPUT')) {
+            setReactInputValue(activeElement, (activeElement.value ? activeElement.value + ' ' : '') + event.results[0][0].transcript);
+            return;
+        }
+
+        // 2. Voice Commands
+        if (transcript.includes('next') || transcript.includes('how') || transcript.includes('job') || transcript.includes('where') || transcript.includes('help')) {
+            const magicBtn = document.getElementById('tg-magic-btn');
+            magicBtn.classList.add('tg-pulse-anim'); // Highlight it
+            setTimeout(() => magicBtn.classList.remove('tg-pulse-anim'), 3000);
+            speakResponse("I have highlighted the Magic Navigator button at the bottom. Click it to proceed to your exact next step.");
+        } else if (transcript.includes('autofill') || transcript.includes('fill')) {
+            const autoBtn = document.getElementById('trainai-autofill-btn');
+            if (autoBtn && !autoBtn.classList.contains('disabled')) {
+                speakResponse("Autofilling the page now.");
+                autoBtn.click();
+            } else {
+                speakResponse("I cannot autofill here. Please navigate to an application form first.");
+            }
+        } else {
+            speakResponse("I heard you, but I am not sure what that means. You can ask me what to do next, or click a text box to voice-type.");
+        }
+    };
+
+    recognition.onend = () => {
+        micBtn.classList.remove('listening');
+    };
+    recognition.onerror = () => {
+        micBtn.classList.remove('listening');
+        showToast('Error: Could not hear your microphone.');
+    };
+}
+
+function speakResponse(text) {
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.1; 
+        const voices = window.speechSynthesis.getVoices();
+        const premiumVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google US English'));
+        if (premiumVoice) utterance.voice = premiumVoice;
+        window.speechSynthesis.speak(utterance);
+    }
+}

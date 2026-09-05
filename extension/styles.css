@@ -269,6 +269,45 @@
     box-shadow: none;
 }
 
+/* Voice Assistant Button */
+.tg-mic-btn {
+    background: var(--tg-surface);
+    border: 1px solid var(--tg-border);
+    color: var(--tg-text);
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.tg-mic-btn:hover {
+    background: var(--tg-surface-hover);
+    color: var(--tg-accent);
+}
+.tg-mic-btn.listening {
+    background: #fef2f2;
+    border-color: #fca5a5;
+    color: #ef4444;
+    animation: tgPulseMic 1.5s infinite;
+}
+@keyframes tgPulseMic {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes tgPulseAnim {
+  0% { box-shadow: 0 0 0 0 rgba(15, 23, 42, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(15, 23, 42, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(15, 23, 42, 0); }
+}
+.tg-pulse-anim {
+    animation: tgPulseAnim 1s infinite;
+}
+
 /* 8. Premium Toasts */
 .tg-toast {
   position: fixed;
