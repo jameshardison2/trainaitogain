@@ -52,9 +52,6 @@ function initializeExtension() {
         <h2>Get You Hired</h2>
       </div>
       <div class="trainai-panel-header-right">
-        <button id="tg-settings-btn" data-tg-tooltip="AI Settings (API Key)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-        </button>
         <button id="trainai-panel-close">×</button>
       </div>
     </div>
@@ -87,35 +84,6 @@ function initializeExtension() {
             <button id="tg-magic-btn" style="flex:1;">
               Loading...
             </button>
-            <button id="tg-voice-assistant-btn" class="tg-mic-btn" data-tg-tooltip="Click to speak! Ask 'what do I do next?' or use it to voice-type your answers.">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div id="tg-settings-modal">
-        <h3 style="margin-bottom: 8px; color: var(--tg-accent);">Unlock Your AI Coach</h3>
-        <p style="font-size: 12px; color: var(--tg-text-sec); margin-bottom: 16px; line-height: 1.4;">
-            To give you an unfair advantage in your Mercor interview, this extension uses Google's genius-level Gemini AI to analyze your screen and feed you the perfect answers out loud.
-        </p>
-        
-        <div style="background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 16px;">
-            <p style="font-size: 11px; color: #475569; margin: 0 0 8px 0; font-weight: 500;">🔒 100% Secure & Private</p>
-            <p style="font-size: 11px; color: #64748b; margin: 0; line-height: 1.4;">
-                We don't use central servers. You bring your own free API key. It is saved <b>locally</b> on your device and communicates directly with Google. We never see your data.
-            </p>
-        </div>
-
-        <label>Your Free Google Gemini API Key</label>
-        <input type="password" id="tg-api-key-input" placeholder="AIzaSy...">
-        <p style="font-size:11px; color:#64748b; margin-top:-8px; margin-bottom:16px;">
-            Takes 10 seconds: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--tg-accent); font-weight: 600;">Get your free key here</a>.
-        </p>
-        
-        <div style="display:flex; justify-content:flex-end;">
-            <button id="tg-settings-cancel" class="tg-btn-secondary">Cancel</button>
-            <button id="tg-settings-save" class="tg-btn-primary">Activate AI</button>
         </div>
     </div>
   `;
@@ -130,31 +98,6 @@ function initializeExtension() {
   if (closeBtn) {
       closeBtn.onclick = () => panel.classList.remove('open');
   }
-
-  // Logic: Settings Modal
-  const settingsBtn = document.getElementById('tg-settings-btn');
-  const settingsModal = document.getElementById('tg-settings-modal');
-  const cancelBtn = document.getElementById('tg-settings-cancel');
-  const saveBtn = document.getElementById('tg-settings-save');
-  const keyInput = document.getElementById('tg-api-key-input');
-
-  chrome.storage.local.get(['tgGeminiKey'], (res) => {
-      if (res.tgGeminiKey) keyInput.value = res.tgGeminiKey;
-  });
-
-  if (settingsBtn) settingsBtn.onclick = () => settingsModal.classList.add('active');
-  if (cancelBtn) cancelBtn.onclick = () => settingsModal.classList.remove('active');
-  if (saveBtn) {
-      saveBtn.onclick = () => {
-          chrome.storage.local.set({ tgGeminiKey: keyInput.value.trim() }, () => {
-              settingsModal.classList.remove('active');
-              showToast('API Key saved successfully!');
-          });
-      };
-  }
-
-  // Initialize Voice Assistant
-  initVoiceAssistant();
 
   // Initialize Magic Navigator Loop
   setInterval(updateSmartNavigator, 1500);
@@ -517,175 +460,4 @@ document.addEventListener('mouseout', (e) => {
 
 // ----------------------------------------------------
 // Voice Assistant (Speech Recognition)
-// ----------------------------------------------------
-function initVoiceAssistant() {
-    const micBtn = document.getElementById('tg-voice-assistant-btn');
-    if (!micBtn) return;
-    
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-        micBtn.style.display = 'none';
-        return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US';
-
-    micBtn.onclick = () => {
-        if (micBtn.classList.contains('listening')) {
-            recognition.stop();
-            return;
-        }
-        
-        micBtn.classList.add('listening');
-        showToast('🎙️ Listening... Speak now!');
-        recognition.start();
-    };
-
-    recognition.onresult = (event) => {
-        const transcript = Array.from(event.results)
-            .map(result => result[0])
-            .map(result => result.transcript)
-            .join('');
-        
-        console.log("Voice Transcript:", transcript);
-
-        // 1. Dictation Mode
-        const activeTextInput = document.activeElement && (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') ? document.activeElement : null;
-        if (activeTextInput) {
-            setReactInputValue(activeTextInput, activeTextInput.value + " " + transcript);
-            speakResponse("Dictated.");
-            return;
-        }
-
-        // 2. AI Conversational Mode (BYOK)
-        chrome.storage.local.get(['tgGeminiKey'], async (res) => {
-            const apiKey = res.tgGeminiKey;
-            if (!apiKey) {
-                speakResponse("Please save your Gemini API key in the settings menu first.");
-                const settingsModal = document.getElementById('tg-settings-modal');
-                if (settingsModal) settingsModal.classList.add('active');
-                return;
-            }
-
-            const magicBtn = document.getElementById('tg-magic-btn');
-            if (magicBtn) {
-                magicBtn.innerHTML = "Thinking...";
-                magicBtn.classList.add('tg-pulse-anim');
-            }
-
-            try {
-                let activeModelName = 'gemini-1.5-flash';
-                
-                // Dynamically fetch available models first to guarantee we use a valid one
-                try {
-                    const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-                    const listRes = await fetch(listUrl);
-                    const listData = await listRes.json();
-                    
-                    if (listData && listData.models) {
-                        const availableModel = listData.models.find(m => 
-                            m.supportedGenerationMethods && 
-                            m.supportedGenerationMethods.includes('generateContent') && 
-                            m.name.includes('gemini')
-                        );
-                        if (availableModel) {
-                            activeModelName = availableModel.name.replace('models/', '');
-                            console.log("Dynamically selected model:", activeModelName);
-                        }
-                    }
-                } catch (e) {
-                    console.warn("Failed to fetch model list, using defaults.");
-                }
-
-                const modelsToTry = [activeModelName, 'gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro', 'gemini-pro'];
-                let data = null;
-                
-                const context = document.body.textContent.substring(0, 4000);
-                const prompt = `You are a highly intelligent, conversational AI assistant embedded directly into a Chrome extension for candidates using the Mercor platform. 
-                Your goal is to help them navigate the platform, answer interview questions, or provide strategic advice.
-                Keep your response conversational, extremely concise, and directly actionable (maximum 2-3 sentences). Do not use markdown styling since this will be spoken out loud via Text-to-Speech.
-
-                User's spoken request: "${transcript}"
-                
-                Visible text on their current screen (for context):
-                """
-                ${context}
-                """
-                
-                Provide your conversational response:`;
-
-                let lastErrorMessage = "";
-
-                for (const model of modelsToTry) {
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }]
-                        })
-                    });
-                    
-                    const result = await response.json();
-                    
-                    // If it's a 404 (Model not found), try the next model
-                    if (result.error && result.error.code === 404) {
-                        console.warn(`Model ${model} not found. Trying next...`);
-                        lastErrorMessage = result.error.message;
-                        continue; 
-                    }
-                    
-                    data = result;
-                    break; // Success or fatal error (like 400 invalid key)
-                }
-
-                if (magicBtn) {
-                    magicBtn.classList.remove('tg-pulse-anim');
-                    updateSmartNavigator();
-                }
-
-                if (!data) {
-                    speakResponse("Google API Error: " + lastErrorMessage);
-                } else if (data.error) {
-                    speakResponse("Error contacting AI: " + data.error.message);
-                } else if (data.candidates && data.candidates.length > 0) {
-                    const aiReply = data.candidates[0].content.parts[0].text;
-                    speakResponse(aiReply);
-                } else {
-                    speakResponse("I couldn't process that.");
-                }
-
-            } catch (error) {
-                console.error("AI Error:", error);
-                if (magicBtn) {
-                    magicBtn.classList.remove('tg-pulse-anim');
-                    updateSmartNavigator();
-                }
-                speakResponse("Sorry, there was a network error contacting the AI.");
-            }
-        });
-    };
-
-    recognition.onend = () => {
-        micBtn.classList.remove('listening');
-    };
-    recognition.onerror = () => {
-        micBtn.classList.remove('listening');
-        showToast('Error: Could not hear your microphone.');
-    };
-}
-
-function speakResponse(text) {
-    if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1.1; 
-        const voices = window.speechSynthesis.getVoices();
-        const premiumVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google US English'));
-        if (premiumVoice) utterance.voice = premiumVoice;
-        window.speechSynthesis.speak(utterance);
-    }
-}
+// Clean UI code end.
