@@ -274,10 +274,10 @@
       <!-- Intake Form -->
       <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 32px; max-width: 500px; margin: 0 auto 40px; text-align: left;">
         <div style="display:inline-block; background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 10px; border-radius:100px; margin-bottom:12px;">FREE DOWNLOAD</div>
-        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">The Expert's Guide to AI Consulting</h3>
-        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">How to Monetize Your Degree at $150/Hr Working Remotely for Top AI Labs. Enter your details to get the free guide and start your application.</p>
+        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">The "Get You Hired" Extension</h3>
+        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Install our proprietary Chrome Extension to bypass the AI gatekeepers, autofill your applications, and track your pipeline. Enter your details to get it for free.</p>
         
-        <form id="intakeForm" class="leadMagnetForm">
+        <form name="lead-magnet" id="intakeForm" class="leadMagnetForm">
           <div style="margin-bottom: 16px;">
             <label for="firstName" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">First Name</label>
             <input type="text" id="firstName" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your first name">
@@ -287,7 +287,7 @@
             <input type="email" id="email" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your best email">
           </div>
           <button type="submit" id="submitIntakeBtn" class="btn-primary" style="width: 100%; padding: 16px; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            Get Guide & Apply ➔
+            Get Free Extension ➔
           </button>
         </form>
       </div>
@@ -729,10 +729,10 @@
       <!-- Bottom Lead Magnet -->
       <div style="background: #ffffff; border: 2px solid var(--primary); border-radius: 12px; padding: 48px; max-width: 600px; margin: 0 auto; text-align: center; box-shadow: 0 20px 40px -10px rgba(16,185,129,0.15);">
         <div style="display:inline-block; background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 12px; border-radius:100px; margin-bottom:16px;">FREE DOWNLOAD</div>
-        <h3 style="margin-top: 0; font-size: 28px; font-weight: 800; color: #111827; margin-bottom: 12px;">The Expert's Guide to AI Consulting</h3>
-        <p style="color: #4b5563; font-size: 16px; margin-bottom: 32px; line-height:1.5;">How to Monetize Your Degree at $150/Hr Working Remotely for Top AI Labs. Enter your details to get the free guide and start your application.</p>
+        <h3 style="margin-top: 0; font-size: 28px; font-weight: 800; color: #111827; margin-bottom: 12px;">The "Get You Hired" Extension</h3>
+        <p style="color: #4b5563; font-size: 16px; margin-bottom: 32px; line-height:1.5;">Install our proprietary Chrome Extension to bypass the AI gatekeepers, autofill your applications, and track your pipeline. Enter your details to get it for free.</p>
         
-        <form class="leadMagnetForm" style="text-align:left;">
+        <form name="lead-magnet" class="leadMagnetForm" style="text-align:left;">
           <div style="margin-bottom: 16px;">
             <label for="firstNameBottom" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">First Name</label>
             <input type="text" id="firstNameBottom" required style="width: 100%; padding: 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your first name">
@@ -742,7 +742,7 @@
             <input type="email" id="emailBottom" required style="width: 100%; padding: 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your best email">
           </div>
           <button type="submit" class="btn-primary" style="width: 100%; padding: 18px; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            Get Guide & Apply ➔
+            Get Free Extension ➔
           </button>
         </form>
       </div>
@@ -884,6 +884,12 @@
               }, 3000);
             }, 800);
             return; // Skip fetch since no endpoint is set
+        } else if (myForm.name === 'lead-magnet') {
+            submitBtn.innerHTML = 'Unlocking...';
+            setTimeout(() => {
+              window.location.href = 'extension-download.html';
+            }, 800);
+            return;
         }
 
         fetch(actionUrl, {
