@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Mercor Cheat Code | TrainAIToGain",
+  "version": "1.0",
+  "description": "Your ultimate advantage for passing the Mercor AI evaluation pipelines.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*.mercor.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.mercor.com/*"],
+      "css": ["styles.css"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
