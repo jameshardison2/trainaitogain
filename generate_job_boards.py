@@ -23,7 +23,7 @@ def generate_job_board(title, desc, jobs):
           <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
             {''.join([f'<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">{skill}</span>' for skill in job['skills']])}
           </div>
-          <a href="https://t.mercor.com/wbPMF" target="_blank" style="display:block; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {{'event_category':'referral', 'event_label':'{label}'}});">Apply via Mercor</a>
+          <a href="https://t.mercor.com/wbPMF" target="_blank" style="display:block; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {{'event_category':'referral', 'event_label':'{label}'}});">Proceed to Portal</a>
         </div>
         """
 
