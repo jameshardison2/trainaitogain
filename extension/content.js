@@ -1,148 +1,178 @@
-// TrainAIToGain - Mercor Cheat Code Extension Content Script
+// TrainAIToGain - Mercor Cheat Code V2 Content Script
 
-function init() {
-  injectSOSButton();
-  
-  // We use simple path matching, though Mercor is often a SPA (React).
-  // We will run checks periodically to handle URL changes in SPA.
-  setInterval(checkPageContext, 2000);
-  checkPageContext();
+let isEnabled = true;
+
+// 1. Initialize and sync state
+chrome.storage.local.get(['cheatCodeEnabled'], (res) => {
+  if (res.cheatCodeEnabled !== undefined) {
+    isEnabled = res.cheatCodeEnabled;
+  }
+  if (isEnabled) initHeavyHitters();
+});
+
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.action === "toggleStateChanged") {
+    isEnabled = request.enabled;
+    if (isEnabled) {
+      initHeavyHitters();
+    } else {
+      removeAllInjectedUI();
+    }
+  }
+});
+
+function removeAllInjectedUI() {
+  document.querySelectorAll('.trainai-injected').forEach(el => el.remove());
 }
 
-function checkPageContext() {
-  const url = window.location.href.toLowerCase();
+function initHeavyHitters() {
+  if (!isEnabled) return;
   
-  if (url.includes('interview') || url.includes('assessment') || url.includes('record')) {
-    injectTeleprompter();
-  } else {
-    removeTeleprompter();
-  }
+  injectNetworkTranslator();
+  injectAutoCacheVault();
   
-  if (url.includes('dashboard') || url.includes('home')) {
-    injectDemystifier();
-  }
-  
-  if (url.includes('profile') || url.includes('upload') || url.includes('resume')) {
-    injectATSWarning();
-  }
+  setInterval(() => {
+    if (!isEnabled) return;
+    const url = window.location.href.toLowerCase();
+    
+    if (url.includes('interview') || url.includes('record') || url.includes('assessment')) {
+      injectContextAnchor();
+    }
+  }, 2000);
 }
 
 // ----------------------------------------------------
-// 1. The M.E.A.T. Teleprompter (with Visual Pacing)
+// FEATURE 1: The Auto-Cache Vault (Cures Information Loop)
 // ----------------------------------------------------
-function injectTeleprompter() {
-  if (document.getElementById('trainai-teleprompter')) return;
+function injectAutoCacheVault() {
+  // Listen to all inputs and save to local storage
+  document.addEventListener('input', (e) => {
+    if (!isEnabled) return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+      const name = e.target.name || e.target.id || e.target.placeholder;
+      if (name) {
+        chrome.storage.local.set({ [`trainai_cache_${name}`]: e.target.value });
+      }
+    }
+  });
+
+  // Inject a glowing "Restore" button if we see empty fields
+  setInterval(() => {
+    if (!isEnabled) return;
+    const inputs = document.querySelectorAll('input[type="text"], textarea');
+    if (inputs.length > 2 && !document.getElementById('trainai-restore-btn')) {
+      const restoreBtn = document.createElement('button');
+      restoreBtn.id = 'trainai-restore-btn';
+      restoreBtn.className = 'trainai-injected';
+      restoreBtn.innerText = '⚡ Magic Fill (Restore Data)';
+      
+      restoreBtn.onclick = (e) => {
+        e.preventDefault();
+        inputs.forEach(input => {
+          const name = input.name || input.id || input.placeholder;
+          if (name) {
+            chrome.storage.local.get([`trainai_cache_${name}`], (res) => {
+              if (res[`trainai_cache_${name}`]) {
+                input.value = res[`trainai_cache_${name}`];
+                // Trigger react synthetic events
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+            });
+          }
+        });
+        restoreBtn.innerText = '✅ Restored!';
+        setTimeout(() => { restoreBtn.innerText = '⚡ Magic Fill (Restore Data)'; }, 2000);
+      };
+      
+      document.body.appendChild(restoreBtn);
+    }
+  }, 3000);
+}
+
+// ----------------------------------------------------
+// FEATURE 2: The Context Anchor (Cures AI Date Hallucinations)
+// ----------------------------------------------------
+function injectContextAnchor() {
+  if (document.getElementById('trainai-context-anchor')) return;
   
-  const tp = document.createElement('div');
-  tp.id = 'trainai-teleprompter';
-  tp.innerHTML = `
-    <div class="trainai-header">
-      🔥 The M.E.A.T. Framework
-      <button id="trainai-close-tp">×</button>
+  const anchor = document.createElement('div');
+  anchor.id = 'trainai-context-anchor';
+  anchor.className = 'trainai-injected';
+  
+  anchor.innerHTML = `
+    <div class="anchor-header">
+      📌 Resume Anchor
+      <button class="anchor-toggle" id="trainai-anchor-toggle">_</button>
     </div>
-    <div class="trainai-body">
-      <ul>
-        <li><strong>M</strong> - Metric-driven Intro ("3 main reasons...")</li>
-        <li><strong>E</strong> - Explicit Transitions ("Firstly, Secondly...")</li>
-        <li><strong>A</strong> - Algorithmic Logic (Explain the "Why")</li>
-        <li><strong>T</strong> - Time-boxed Conclusion ("In conclusion...")</li>
-      </ul>
-      <div class="trainai-pacing">
-        <div class="trainai-pacing-label">Pacing Monitor (2 Min Answer)</div>
-        <div class="trainai-progress-bar">
-          <div id="trainai-progress-fill"></div>
-        </div>
-        <button id="trainai-start-timer">Start Timer</button>
-      </div>
+    <div class="anchor-body" id="trainai-anchor-body">
+      <p class="anchor-desc">Paste your exact resume timeline here. If the AI interviewer gets confused about dates, read directly from here to correct it instantly.</p>
+      <textarea id="trainai-anchor-text" placeholder="e.g., 2021-2023: Senior Developer at TechCorp..."></textarea>
     </div>
   `;
-  document.body.appendChild(tp);
+  document.body.appendChild(anchor);
   
-  document.getElementById('trainai-close-tp').onclick = () => tp.remove();
+  // Load saved resume context
+  chrome.storage.local.get(['trainai_resume_anchor'], (res) => {
+    if (res.trainai_resume_anchor) {
+      document.getElementById('trainai-anchor-text').value = res.trainai_resume_anchor;
+    }
+  });
   
-  // Visual Pacer Logic
-  document.getElementById('trainai-start-timer').onclick = function() {
-    this.style.display = 'none';
-    const fill = document.getElementById('trainai-progress-fill');
-    fill.style.width = '0%';
-    fill.style.transition = 'width 120s linear, background-color 1s';
-    
-    // Force reflow
-    void fill.offsetWidth;
-    
-    // Start 2 min animation
-    fill.style.width = '100%';
-    
-    // Color changes based on time
-    setTimeout(() => { fill.style.backgroundColor = '#fbbf24'; }, 90000); // 1.5 min = yellow (wrap up)
-    setTimeout(() => { fill.style.backgroundColor = '#ef4444'; }, 110000); // 1.8 min = red (stop talking)
+  // Save on type
+  document.getElementById('trainai-anchor-text').addEventListener('input', (e) => {
+    chrome.storage.local.set({ trainai_resume_anchor: e.target.value });
+  });
+  
+  // Toggle collapse
+  document.getElementById('trainai-anchor-toggle').onclick = () => {
+    const body = document.getElementById('trainai-anchor-body');
+    if (body.style.display === 'none') {
+      body.style.display = 'block';
+    } else {
+      body.style.display = 'none';
+    }
   };
 }
 
-function removeTeleprompter() {
-  const tp = document.getElementById('trainai-teleprompter');
-  if (tp) tp.remove();
-}
-
 // ----------------------------------------------------
-// 2. The "Next Step" Demystifier
+// FEATURE 3: The Network Translator (Cures "Something went wrong")
 // ----------------------------------------------------
-function injectDemystifier() {
-  if (document.getElementById('trainai-demystifier')) return;
+function injectNetworkTranslator() {
+  if (window.trainaiNetworkInjected) return;
+  window.trainaiNetworkInjected = true;
   
-  // Look for text that says "Submitted" or "In Review"
-  const bodyText = document.body.innerText;
-  if (bodyText.includes('Submitted') || bodyText.includes('In Review')) {
-    const demystifier = document.createElement('div');
-    demystifier.id = 'trainai-demystifier';
-    demystifier.innerHTML = `
-      <strong>💡 TrainAIToGain Tip:</strong> You are currently in the algorithm. Do NOT just wait here. Manually apply to 3+ Domain Expert roles on the Job Board to force the algorithm to prioritize your profile!
-      <span class="trainai-close" onclick="this.parentElement.remove()">×</span>
-    `;
-    document.body.appendChild(demystifier);
-  }
-}
-
-// ----------------------------------------------------
-// 3. The ATS Warning
-// ----------------------------------------------------
-function injectATSWarning() {
-  if (document.getElementById('trainai-ats-warning')) return;
-  
-  // Find a file input that accepts PDF
-  const fileInputs = document.querySelectorAll('input[type="file"]');
-  if (fileInputs.length === 0) return;
-  
-  const warning = document.createElement('div');
-  warning.id = 'trainai-ats-warning';
-  warning.innerHTML = `
-    <strong>⚠️ WARNING:</strong> Mercor's ATS parser is extremely rigid. If your PDF has columns, graphics, or tables, it will fail and trap you in an infinite "parsing loop." Ensure your resume is a simple, 1-column text document before uploading.
-  `;
-  
-  // Insert warning right before the first file input
-  const input = fileInputs[0];
-  input.parentNode.insertBefore(warning, input);
-}
-
-// ----------------------------------------------------
-// 4. The Human Support Escalator
-// ----------------------------------------------------
-function injectSOSButton() {
-  if (document.getElementById('trainai-sos-btn')) return;
-  
-  const sos = document.createElement('button');
-  sos.id = 'trainai-sos-btn';
-  sos.innerText = '🆘 Stuck?';
-  document.body.appendChild(sos);
-  
-  sos.onclick = () => {
-    const template = "ESCALATION REQUIRED: My account is experiencing a critical error preventing interview/assessment completion. Please escalate to a human agent immediately to clear the infinite loop so I can proceed.";
-    navigator.clipboard.writeText(template).then(() => {
-      alert("An aggressive escalation script has been copied to your clipboard! Paste this into an email to Mercor Support.");
-      window.location.href = "mailto:support@mercor.com?subject=ESCALATION%20REQUIRED";
-    });
+  const originalFetch = window.fetch;
+  window.fetch = async function(...args) {
+    try {
+      const response = await originalFetch.apply(this, args);
+      if (!response.ok && isEnabled) {
+        showErrorToast(response.status);
+      }
+      return response;
+    } catch (err) {
+      if (isEnabled) showErrorToast("Network");
+      throw err;
+    }
   };
 }
 
-// Start the extension
-window.addEventListener('load', init);
+function showErrorToast(status) {
+  const existing = document.getElementById('trainai-error-toast');
+  if (existing) existing.remove();
+  
+  let msg = "A generic error occurred.";
+  if (status === 500) msg = "Mercor Server Error 500: Their system crashed. Do not keep clicking apply. Wait 5 minutes and refresh.";
+  if (status === 400) msg = "Mercor Error 400: Bad Request. The platform rejected your submission (likely a parsing loop). Try modifying your resume format.";
+  if (status === "Network") msg = "Network Disconnected. Your last action did not save.";
+  
+  const toast = document.createElement('div');
+  toast.id = 'trainai-error-toast';
+  toast.className = 'trainai-injected';
+  toast.innerHTML = `
+    <strong>⚠️ Translator Alert</strong>
+    <p>${msg}</p>
+    <button onclick="this.parentElement.remove()">Dismiss</button>
+  `;
+  document.body.appendChild(toast);
+}
