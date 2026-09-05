@@ -7,7 +7,11 @@
     "storage"
   ],
   "host_permissions": [
-    "*://work.mercor.com/*"
+    "*://work.mercor.com/*",
+    "*://trainaitogain.com/*",
+    "*://*.trainaitogain.com/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
   ],
   "icons": {
     "16": "icon16.png",
@@ -27,7 +31,13 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://work.mercor.com/*"],
+      "matches": [
+        "*://work.mercor.com/*",
+        "*://trainaitogain.com/*",
+        "*://*.trainaitogain.com/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*"
+      ],
       "css": ["styles.css"],
       "js": ["content.js"],
       "run_at": "document_idle"
@@ -36,7 +46,13 @@
   "web_accessible_resources": [
     {
       "resources": ["icon.svg"],
-      "matches": ["*://work.mercor.com/*"]
+      "matches": [
+        "*://work.mercor.com/*",
+        "*://trainaitogain.com/*",
+        "*://*.trainaitogain.com/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*"
+      ]
     }
   ]
 }

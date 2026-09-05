@@ -118,6 +118,14 @@ function updateSmartNavigator() {
 
     const path = window.location.href.toLowerCase();
     
+    // State 0: On TrainAIToGain Website
+    if (path.includes('trainaitogain.com')) {
+        navStatus.innerText = 'Current Step: Choose Your Path';
+        magicBtn.innerHTML = 'Explore the Pipelines below!';
+        magicBtn.onclick = null;
+        return;
+    }
+    
     // State 1: On Job Board
     if (path.includes('explore') || path.includes('job') || path.includes('role')) {
         const atsBtn = document.getElementById('tg-scan-btn');
