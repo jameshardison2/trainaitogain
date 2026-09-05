@@ -13,6 +13,21 @@ chrome.runtime.onMessage.addListener((request) => {
     isEnabled = request.enabled;
     if (isEnabled) initCoreFeatures();
     else document.querySelectorAll('.trainai-injected').forEach(el => el.remove());
+  } else if (request.action === "toggleHub") {
+    const panel = document.getElementById('trainai-side-panel');
+    if (panel) {
+      if (panel.classList.contains('open')) {
+        panel.classList.remove('open');
+      } else {
+        panel.classList.add('open');
+      }
+    } else {
+      initCoreFeatures();
+      setTimeout(() => {
+        const p = document.getElementById('trainai-side-panel');
+        if (p) p.classList.add('open');
+      }, 100);
+    }
   }
 });
 
