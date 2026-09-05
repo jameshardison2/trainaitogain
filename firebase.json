@@ -15,6 +15,11 @@
         "source": "/wali",
         "destination": "/?ref=wali",
         "type": 301
+      },
+      {
+        "source": "/reed",
+        "destination": "/?ref=reed",
+        "type": 301
       }
     ]
   }
