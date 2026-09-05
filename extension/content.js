@@ -35,24 +35,22 @@ function initializeExtension() {
 
   const container = document.createElement('div');
   
-  // The trigger button
   const trigger = document.createElement('button');
   trigger.id = 'trainai-panel-trigger';
-  trigger.className = 'tg-pulse-anim'; // Pulsing transparent icon initially
+  trigger.className = 'tg-pulse-anim';
   trigger.innerHTML = `
     <img src="${chrome.runtime.getURL('icon.svg')}" width="20" height="20" style="margin-right:8px; border-radius:4px;">
     TrainAI
   `;
   trigger.addEventListener('mouseenter', () => trigger.classList.remove('tg-pulse-anim'));
 
-  // Fetch profile to determine initial state
   chrome.storage.local.get(['tgMasterProfile'], (res) => {
     let profile = res.tgMasterProfile || { resume: '', bio: '', linkedin: '' };
-    const needsOnboarding = !profile.resume; // BUG FIX: Check if resume string actually exists
+    const needsOnboarding = !profile.resume;
 
-    // The actual panel
     const panel = document.createElement('div');
     panel.id = 'trainai-side-panel';
+    
     panel.innerHTML = `
       <div class="trainai-panel-header">
         <div style="display:flex; align-items:center;">
@@ -62,46 +60,63 @@ function initializeExtension() {
         <button id="trainai-panel-close">×</button>
       </div>
       
-      <div class="trainai-tabs">
-        <button id="tg-tab-btn-tracker" class="trainai-tab ${needsOnboarding ? '' : 'active'}" data-tab="tracker" data-tg-tooltip="A radar for the algorithm. It scans your dashboard automatically. Apply to the specific roles it highlights to trigger priority grading.">App Tracker</button>
-        <button id="tg-tab-btn-profile" class="trainai-tab ${needsOnboarding ? 'active' : ''}" data-tab="profile" data-tg-tooltip="Your personal vault. Step 1: Paste your resume and bio here. Step 2: Click Save. We will use this to auto-type your forms.">Master Profile</button>
-      </div>
-      
-      <div class="trainai-tab-content ${needsOnboarding ? '' : 'active'}" id="trainai-tab-tracker">
-        <div id="trainai-tracker-stats">
-            <div class="tg-stat-box">
-              <strong id="tg-stat-number">0</strong>
-              <span>Active Applications</span>
+      <div class="trainai-dashboard-container">
+        
+        ${needsOnboarding ? '<div class="trainai-alert" style="margin-bottom:24px; border-color:var(--tg-accent); color:var(--tg-accent); background:rgba(5, 150, 105,0.05);"><strong>👋 STEP 1: SETUP</strong><br>Paste your resume below to unlock the tools.</div>' : ''}
+
+        <!-- SECTION 1: Algorithm Status (App Tracker) -->
+        <div class="tg-section">
+            <h3 class="tg-section-title">📊 Your Algorithm Status</h3>
+            <div id="trainai-tracker-stats">
+                <div class="tg-stat-box">
+                <strong id="tg-stat-number">0</strong>
+                <span>Active Applications</span>
+                </div>
             </div>
+            <div id="tg-algo-status" class="tg-algo-status low">Priority: Low Visibility</div>
+            <div id="trainai-tracker-advice" class="trainai-alert">Scanning...</div>
         </div>
-        <div id="tg-algo-status" class="tg-algo-status low">Algorithm Priority: Low Visibility</div>
-        <div id="trainai-tracker-advice" class="trainai-alert">Scanning...</div>
-        
-        <button id="tg-play-tour">▶️ Play Interactive Voice Tour</button>
-      </div>
-      
-      <div class="trainai-tab-content ${needsOnboarding ? 'active' : ''}" id="trainai-tab-profile">
-        ${needsOnboarding ? '<div class="trainai-alert" style="margin:0 0 16px 0; border-color:#10b981; color:#059669; background:rgba(16,185,129,0.1);"><strong>👋 START HERE:</strong> Paste your resume below and click Save. This allows you to apply 10x faster!</div>' : ''}
-        <p style="font-size:12px; color:var(--tg-text-sec); margin-top:0;">Save your raw resume text and bio here. We'll use this to scan job matches and autofill your forms.</p>
-        <label>Raw Resume Text</label>
-        <textarea id="tg-profile-resume" placeholder="Paste your entire resume text here...">${profile.resume}</textarea>
-        
-        <label>Standard Bio / Intro</label>
-        <textarea id="tg-profile-bio" placeholder="Hi, I am an expert in...">${profile.bio}</textarea>
-        
-        <label>LinkedIn URL</label>
-        <input type="text" id="tg-profile-linkedin" placeholder="https://linkedin.com/in/..." value="${profile.linkedin}">
-        
-        <button id="trainai-save-profile">💾 Save Master Profile</button>
-      </div>
-      
-      <div id="tg-tools-map-container" class="tg-tools-map" style="background: var(--tg-surface-light); padding: 16px; border-radius: 16px; border: 1px solid var(--tg-border); margin: 0 28px 28px 28px;">
-        <h3 style="color:var(--tg-accent); margin:0 0 12px 0; font-size:12px; letter-spacing:1px; text-transform:uppercase;">📍 Hidden Tools Map</h3>
-        <p style="margin:0 0 10px 0; font-size:13px; line-height:1.5;"><strong>🎯 Impact Coach:</strong> A live writing assistant that tracks your metrics. <em>(Automatically appears when you type in Interview forms)</em></p>
-        <p style="margin:0; font-size:13px; line-height:1.5;"><strong>🔍 ATS Scanner:</strong> Scans job requirements to tell you which keywords you missed. <em>(Automatically appears on Job Application pages)</em></p>
+
+        <hr class="tg-divider">
+
+        <!-- SECTION 2: Master Profile Vault -->
+        <div class="tg-section">
+            <h3 class="tg-section-title">🔒 Master Profile Vault</h3>
+            <p style="font-size:12px; color:var(--tg-text-sec); margin-top:0;">Save your raw resume text and bio here. We'll use this to scan job matches and autofill your forms.</p>
+            
+            <label>Raw Resume Text</label>
+            <textarea id="tg-profile-resume" placeholder="Paste your entire resume text here...">${profile.resume}</textarea>
+            
+            <label>Standard Bio / Intro</label>
+            <textarea id="tg-profile-bio" placeholder="Hi, I am an expert in...">${profile.bio}</textarea>
+            
+            <label>LinkedIn URL</label>
+            <input type="text" id="tg-profile-linkedin" placeholder="https://linkedin.com/in/..." value="${profile.linkedin}">
+            
+            <button id="trainai-save-profile">💾 Save & Auto-Advance ➔</button>
+        </div>
+
+        <hr class="tg-divider">
+
+        <!-- SECTION 3: Action Menu (Auto-Navigation) -->
+        <div class="tg-section" style="margin-bottom: 24px;">
+            <h3 class="tg-section-title">🚀 Auto-Pilot Menu</h3>
+            <p style="font-size:12px; color:var(--tg-text-sec); margin-top:0;">Let the extension take control and drive you to the right screens.</p>
+            
+            <button id="tg-nav-jobs" class="tg-action-btn">
+                <span>1. Find Jobs to Scan</span>
+                <small>Navigates to the job board so you can use the ATS Scanner and Autofill.</small>
+            </button>
+            
+            <button id="tg-nav-interview" class="tg-action-btn">
+                <span>2. Practice AI Interview</span>
+                <small>Navigates to the portal so you can test the live Impact Coach.</small>
+            </button>
+        </div>
+
       </div>
 
-      <div id="trainai-autofill-btn" data-tg-tooltip="Step 1: Open a job application form. Step 2: Click this button to instantly auto-type your saved resume into all the empty boxes.">
+      <div id="trainai-autofill-btn" data-tg-tooltip="Click this button to instantly auto-type your saved resume into all the empty boxes.">
         ⚡ Autofill This Page
       </div>
     `;
@@ -114,20 +129,7 @@ function initializeExtension() {
     trigger.onclick = () => panel.classList.add('open');
     document.getElementById('trainai-panel-close').onclick = () => panel.classList.remove('open');
 
-    // Logic: Tabs
-    const tabs = panel.querySelectorAll('.trainai-tab');
-    const contents = panel.querySelectorAll('.trainai-tab-content');
-    tabs.forEach(tab => {
-      tab.onclick = () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        contents.forEach(c => c.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(`trainai-tab-${tab.dataset.tab}`).classList.add('active');
-        if (tab.dataset.tab === 'tracker') runTrackerScan();
-      };
-    });
-
-    // Save Profile
+    // Save Profile & Auto Advance
     document.getElementById('trainai-save-profile').onclick = () => {
       chrome.storage.local.set({
         tgMasterProfile: {
@@ -136,8 +138,22 @@ function initializeExtension() {
           linkedin: document.getElementById('tg-profile-linkedin').value
         }
       }, () => {
-        showToast('✅ Profile Saved Successfully!');
+        showToast('✅ Profile Saved! Moving to Job Board...');
+        setTimeout(() => {
+            window.location.href = '/role-software.html'; // Auto-navigate to next process
+        }, 1500);
       });
+    };
+
+    // Auto-Pilot Navigation Buttons
+    document.getElementById('tg-nav-jobs').onclick = () => {
+        showToast('🚀 Navigating to Job Board...');
+        setTimeout(() => { window.location.href = '/role-software.html'; }, 800);
+    };
+    
+    document.getElementById('tg-nav-interview').onclick = () => {
+        showToast('🚀 Navigating to Interview Portal...');
+        setTimeout(() => { window.location.href = '/ai-interview.html'; }, 800);
     };
 
     // Autofill
@@ -145,7 +161,7 @@ function initializeExtension() {
       chrome.storage.local.get(['tgMasterProfile'], (res) => {
         if (!res.tgMasterProfile || !res.tgMasterProfile.resume) {
           showToast('⚠️ Save your Master Profile first!');
-          document.querySelector('[data-tab="profile"]').click();
+          document.getElementById('tg-profile-resume').focus();
           return;
         }
         
@@ -183,12 +199,8 @@ function initializeExtension() {
       });
     };
 
-    // Voice Tour
-    document.getElementById('tg-play-tour').onclick = playVoiceTour;
-
-    if (!needsOnboarding) {
-        runTrackerScan();
-    }
+    // Always run tracker on load
+    runTrackerScan();
   });
 
   setupSPAObserver();
@@ -222,69 +234,6 @@ function animateNumber(element, finalValue) {
         element.innerText = start;
         if (start >= finalValue) clearInterval(timer);
     }, stepTime);
-}
-
-// ----------------------------------------------------
-// The Voice Guided Interactive Tour
-// ----------------------------------------------------
-async function playVoiceTour() {
-    const steps = [
-        {
-            text: "Welcome to Train AI To Gain! Let me walk you through exactly how to bypass the AI and get hired faster.",
-            element: null
-        },
-        {
-            text: "Step 1: The Master Profile. Save your resume here once, so you can apply to jobs ten times faster without retyping.",
-            element: 'tg-tab-btn-profile'
-        },
-        {
-            text: "Step 2: The App Tracker. Monitor your Algorithm Status here. You need three active applications to get prioritized for human review.",
-            element: 'tg-tab-btn-tracker'
-        },
-        {
-            text: "Step 3: The ATS Scanner. When you find a job you like, we will automatically inject a scanner on the page to tell you which keywords to add to beat the filters.",
-            element: 'tg-tools-map-container'
-        },
-        {
-            text: "Step 4: Autofill. Click this button to instantly beam your saved profile into the empty job application boxes.",
-            element: 'trainai-autofill-btn'
-        },
-        {
-            text: "Step 5: Impact Coach. During interviews, we will inject a live writing assistant to ensure you use enough metrics to impress the AI.",
-            element: 'tg-tools-map-container'
-        }
-    ];
-
-    window.speechSynthesis.cancel();
-    
-    for (let step of steps) {
-        await new Promise(resolve => {
-            if (step.element) {
-                document.getElementById(step.element)?.classList.add('tg-tour-active');
-                if (step.element === 'tg-tab-btn-profile') document.getElementById('tg-tab-btn-profile').click();
-                if (step.element === 'tg-tab-btn-tracker') document.getElementById('tg-tab-btn-tracker').click();
-            }
-
-            const utterance = new SpeechSynthesisUtterance(step.text);
-            utterance.rate = 1.05;
-            const voices = window.speechSynthesis.getVoices();
-            const premiumVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google US English'));
-            if (premiumVoice) utterance.voice = premiumVoice;
-
-            utterance.onend = () => {
-                if (step.element) document.getElementById(step.element)?.classList.remove('tg-tour-active');
-                setTimeout(resolve, 300); // slight pause between steps
-            };
-            
-            // Fallback resolve in case TTS fails to end
-            setTimeout(() => {
-                if (step.element) document.getElementById(step.element)?.classList.remove('tg-tour-active');
-                resolve();
-            }, 8000);
-
-            window.speechSynthesis.speak(utterance);
-        });
-    }
 }
 
 // ----------------------------------------------------
@@ -339,7 +288,6 @@ function runTrackerScan() {
   const text = document.body.innerText.toLowerCase();
   let apps = 0;
   
-  // BUG FIX: Added 'submitted'
   const appMatch = document.body.innerText.match(/(?:active|in progress|under review|applied|submitted).*?(\d+)/i) || document.body.innerText.match(/(\d+).*?(?:active|in progress|under review|applied|submitted)/i);
   if (appMatch) {
     apps = parseInt(appMatch[1]);

@@ -1,15 +1,15 @@
-/* TrainAIToGain - Clean Professional SaaS Design */
+/* TrainAIToGain - Clean Professional SaaS Design (Single Pane Auto-Navigation) */
 
 :root {
-  --tg-bg: #ffffff;
-  --tg-surface: rgba(255, 255, 255, 0.95);
-  --tg-surface-light: #f8fafc;
-  --tg-accent: #059669; /* Professional Emerald */
+  --tg-bg: #f8fafc;
+  --tg-surface: rgba(241, 245, 249, 0.85); /* Light Gray Transparent */
+  --tg-surface-light: rgba(255, 255, 255, 0.9);
+  --tg-accent: #059669; /* Branded Emerald */
   --tg-accent-hover: #047857;
   --tg-accent-glow: rgba(5, 150, 105, 0.15);
   --tg-text: #0f172a;
   --tg-text-sec: #475569;
-  --tg-border: #e2e8f0;
+  --tg-border: rgba(0, 0, 0, 0.1);
   --tg-danger: #ef4444;
   --tg-warning: #f59e0b;
 }
@@ -85,7 +85,7 @@
   align-items: center;
   padding: 24px 28px;
   border-bottom: 1px solid var(--tg-border);
-  background: white;
+  background: var(--tg-surface);
 }
 .trainai-panel-header h2 {
   margin: 0;
@@ -111,66 +111,49 @@
 }
 #trainai-panel-close:hover {
   color: var(--tg-text);
-  background: var(--tg-surface-light);
+  background: rgba(0,0,0,0.05);
   transform: rotate(90deg);
 }
 
-/* 4. Tabs (Soft Pill Navigation) */
-.trainai-tabs {
-  display: flex;
-  padding: 16px 28px;
-  gap: 12px;
-  background: white;
-}
-.trainai-tab {
-  flex: 1;
-  background: var(--tg-surface-light);
-  border: 1px solid transparent;
-  color: var(--tg-text-sec);
-  padding: 12px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 20px;
-  transition: all 0.3s ease;
-  font-family: 'Inter', sans-serif;
-}
-.trainai-tab:hover {
-  background: #f1f5f9;
-  color: var(--tg-text);
-}
-.trainai-tab.active {
-  background: var(--tg-accent);
-  color: white;
-  box-shadow: 0 4px 12px var(--tg-accent-glow);
-}
-
-/* 5. Tab Content */
-.trainai-tab-content {
-  display: none;
-  padding: 0 28px 28px 28px;
-  flex: 1;
-  overflow-y: auto;
-  background: white;
-}
-.trainai-tab-content.active {
+/* 4. Single Pane Dashboard Container */
+.trainai-dashboard-container {
   display: flex;
   flex-direction: column;
-  animation: tgFadeIn 0.4s ease forwards;
+  padding: 24px 28px;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--tg-surface);
 }
 
-@keyframes tgFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.tg-section {
+    display: flex;
+    flex-direction: column;
 }
 
-/* 6. Dashboard / App Tracker UI */
+.tg-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--tg-accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 16px 0;
+}
+
+.tg-divider {
+    border: 0;
+    height: 1px;
+    background: var(--tg-border);
+    margin: 24px 0;
+    width: 100%;
+}
+
+/* 5. Dashboard / App Tracker UI */
 #trainai-tracker-stats {
   font-size: 48px;
   font-weight: 800;
   color: var(--tg-accent);
   text-align: center;
-  margin: 24px 0 8px 0;
+  margin: 8px 0;
   line-height: 1;
 }
 #trainai-tracker-stats span {
@@ -189,7 +172,7 @@
   padding: 8px 16px;
   border-radius: 12px;
   display: inline-block;
-  margin: 0 auto 24px auto;
+  margin: 0 auto 16px auto;
 }
 .tg-algo-status.priority {
   background: rgba(16,185,129,0.1);
@@ -209,44 +192,53 @@
   font-size: 13px;
   line-height: 1.6;
   font-weight: 500;
-  margin-top: 16px;
 }
 
-/* Play Tour Button */
-#tg-play-tour {
-  background: var(--tg-text);
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 16px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.2s;
+/* 6. Action Menu (Auto-Nav Buttons) */
+.tg-action-btn {
+    background: var(--tg-text);
+    color: white;
+    border: none;
+    padding: 14px 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-#tg-play-tour:hover {
-  background: #334155;
-  transform: translateY(-2px);
+.tg-action-btn:hover {
+    transform: translateY(-2px);
+    background: #334155;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+.tg-action-btn span {
+    font-size: 14px;
+    font-weight: 700;
+}
+.tg-action-btn small {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 400;
+    line-height: 1.4;
 }
 
 /* 7. Master Profile Inputs */
-.trainai-tab-content label {
+.trainai-dashboard-container label {
   font-size: 12px;
   font-weight: 600;
   color: var(--tg-text-sec);
-  margin-top: 20px;
+  margin-top: 16px;
   margin-bottom: 8px;
   display: block;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.trainai-tab-content textarea,
-.trainai-tab-content input {
+.trainai-dashboard-container textarea,
+.trainai-dashboard-container input {
   width: 100%;
   box-sizing: border-box;
   background: var(--tg-surface-light);
@@ -260,9 +252,12 @@
   transition: all 0.3s ease;
   resize: vertical;
 }
-.trainai-tab-content textarea { height: 140px; }
-.trainai-tab-content textarea:focus,
-.trainai-tab-content input:focus {
+/* BUG FIX: Increased Textarea Heights */
+#tg-profile-resume { height: 200px; }
+#tg-profile-bio { height: 120px; }
+
+.trainai-dashboard-container textarea:focus,
+.trainai-dashboard-container input:focus {
   outline: none;
   border-color: var(--tg-accent);
   box-shadow: 0 0 0 3px var(--tg-accent-glow);
@@ -300,6 +295,7 @@
   cursor: pointer;
   box-shadow: 0 8px 20px var(--tg-accent-glow);
   transition: all 0.3s;
+  flex-shrink: 0;
 }
 #trainai-autofill-btn:hover {
   transform: translateY(-3px);
@@ -335,17 +331,6 @@
 }
 .tg-laser-scan {
   animation: tgLaserScan 0.4s ease-out;
-}
-
-/* 11. Highlight Animation for Voice Tour */
-@keyframes tgTourHighlight {
-  0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.8); z-index: 10; position:relative; }
-  50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); z-index: 10; position:relative;}
-  100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); z-index: 10; position:relative;}
-}
-.tg-tour-active {
-  animation: tgTourHighlight 1s infinite;
-  border-color: #6366f1 !important;
 }
 
 /* 12. Injected Page Tools (ATS Scanner & Impact Coach) */
