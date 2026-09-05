@@ -1,18 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
-  <!-- Transparent background for website -->
   <rect width="400" height="400" fill="none"/>
-  
-  <!-- Outer Hexagon -->
   <polygon points="200,40 340,115 340,265 200,340 60,265 60,115" fill="none" stroke="#10b981" stroke-width="12" stroke-linejoin="round"/>
-  
-  <!-- Inner dark polygon -->
-  <polygon points="200,60 320,125 320,255 200,320 80,255 80,125" fill="#111111" />
-  
-  <!-- Abstract 'T' merging with an upward arrow inside the hex -->
   <path d="M140 140 L 260 140" stroke="#10b981" stroke-width="24" stroke-linecap="round"/>
   <path d="M200 140 L 200 280" stroke="#10b981" stroke-width="24" stroke-linecap="round"/>
-  
-  <!-- A white spark / AI node on the right of the T -->
-  <circle cx="270" cy="190" r="14" fill="#ffffff" />
-  <circle cx="230" cy="240" r="10" fill="#ffffff" />
+  <circle cx="270" cy="190" r="14" fill="#10b981" />
+  <circle cx="230" cy="240" r="10" fill="#10b981" />
 </svg>
