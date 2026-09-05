@@ -168,9 +168,16 @@
       <p style="color:#aaa; margin-bottom:24px; font-size:15px; line-height:1.6;">This simulator uses your microphone to conduct a real, high-pressure audio interview. The AI will speak the questions out loud and analyze your voice for immediate coaching feedback.</p>
       
       <select id="domain-selector" class="domain-selector">
-        <option value="software">Role: Software & Tech</option>
-        <option value="medical">Role: Medical & Clinical</option>
-        <option value="finance">Role: Finance & Quant</option>
+        <option value="software">Role: AI Software Engineer (RLHF)</option>
+        <option value="medical">Role: Medical & Clinical Expert</option>
+        <option value="finance">Role: Finance & Quant Expert</option>
+        <option value="legal">Role: Legal & Compliance Expert</option>
+        <option value="creative">Role: Creative Writer & Editor</option>
+        <option value="data">Role: Data Scientist & Analyst</option>
+        <option value="product">Role: Product Manager (Technical)</option>
+        <option value="math">Role: Advanced Math & Physics</option>
+        <option value="language">Role: Foreign Language Expert</option>
+        <option value="general">Role: General AI Training</option>
       </select>
       
       <br>
@@ -298,6 +305,146 @@
         keywords: ["future", "past", "leakage", "predict", "overfit", "validation", "chronological"],
         feedbackMiss: "You didn't explain the chronological constraint clearly. You must emphasize that training data must be strictly separated chronologically to prevent the model from 'seeing the future'.",
         feedbackHit: "Excellent. You clearly explained the necessity of strict chronological separation in validation sets."
+      }
+    ],
+    "legal": [
+      {
+        q: "Describe how you would evaluate an AI model's summary of a complex licensing agreement for legal accuracy.",
+        keywords: ["liability", "indemnification", "jurisdiction", "material breach", "omission", "clause"],
+        feedbackMiss: "You need to mention specific high-risk clauses. In legal summaries, missing an indemnification or jurisdiction clause is a critical failure. Focus on omission testing.",
+        feedbackHit: "Perfect. You identified that evaluating for material omissions is just as important as checking the facts it did include."
+      },
+      {
+        q: "How do you handle an AI model that generates plausible but fake case law?",
+        keywords: ["hallucination", "shepardize", "verify", "cite", "precedent", "grounding"],
+        feedbackMiss: "You missed the standard legal verification process. You must mention Shepardizing the cited cases or strictly grounding the model in a verified legal database.",
+        feedbackHit: "Excellent. Recognizing the danger of legal hallucinations and enforcing strict citation verification is exactly right."
+      },
+      {
+        q: "What is the primary risk of using LLMs to draft client-facing compliance documents?",
+        keywords: ["privilege", "unauthorized", "advice", "disclaimer", "ambiguity", "liability"],
+        feedbackMiss: "You missed the regulatory risk. You must mention the risk of the AI inadvertently providing unauthorized legal advice or creating ambiguity that increases liability.",
+        feedbackHit: "Spot on. Highlighting the unauthorized practice of law and the need for strict disclaimers is crucial."
+      }
+    ],
+    "creative": [
+      {
+        q: "An AI model generates a story that lacks emotional resonance. How do you instruct it to fix the pacing and tone?",
+        keywords: ["show", "tell", "sensory", "pacing", "dialogue", "subtext", "character"],
+        feedbackMiss: "You gave a generic prompt answer. You need to explain specific editorial techniques, like instructing the AI to use 'show, don't tell', focusing on sensory details, or rewriting dialogue for subtext.",
+        feedbackHit: "Great answer. You applied real creative writing principles (like sensory details and subtext) to your prompt engineering."
+      },
+      {
+        q: "How do you evaluate an AI's ability to maintain a consistent brand voice across 50 different blog posts?",
+        keywords: ["style guide", "tone", "vocabulary", "constraint", "persona", "consistency"],
+        feedbackMiss: "You missed the structural approach. You must mention feeding the AI a strict style guide, defining a consistent persona, and evaluating against specific vocabulary constraints.",
+        feedbackHit: "Perfect. Using a defined style guide and persona constraints is the only way to scale brand voice."
+      },
+      {
+        q: "If an AI generates grammatically correct but culturally insensitive copy, what is your feedback strategy?",
+        keywords: ["nuance", "idiom", "context", "bias", "penalize", "RLHF"],
+        feedbackMiss: "You missed the human-in-the-loop requirement. You must emphasize penalizing the output via RLHF to teach the model cultural nuance and context beyond just grammar.",
+        feedbackHit: "Excellent. You recognized that grammar is not enough and focused on training the model on cultural nuance."
+      }
+    ],
+    "data": [
+      {
+        q: "Explain the difference between supervised and unsupervised learning, and when you would use each.",
+        keywords: ["label", "target", "cluster", "pattern", "predict", "group"],
+        feedbackMiss: "You missed the fundamental distinction: Supervised learning uses labeled data to predict targets, while unsupervised learning uses unlabeled data to find hidden clusters.",
+        feedbackHit: "Spot on. You clearly distinguished between labeled prediction and unlabeled clustering."
+      },
+      {
+        q: "How do you evaluate an AI model that writes SQL queries for a massive, unnormalized database?",
+        keywords: ["join", "efficiency", "index", "complexity", "execution plan", "timeout"],
+        feedbackMiss: "You only focused on if the query works. You must evaluate the query's efficiency—mention checking the execution plan, avoiding Cartesian joins, and optimizing for indexes.",
+        feedbackHit: "Great answer! You recognized that in massive databases, a query's execution efficiency is just as important as its accuracy."
+      },
+      {
+        q: "An AI generates a Pandas script that causes an OutOfMemory error on a 50GB dataset. How do you fix it?",
+        keywords: ["chunking", "iterator", "generator", "dask", "lazy", "optimize"],
+        feedbackMiss: "You missed the memory management concepts. You must mention chunking the data, using iterators, or switching to lazy-evaluation libraries like Dask.",
+        feedbackHit: "Perfect. Chunking and lazy evaluation are the exact right approaches for memory-bound data tasks."
+      }
+    ],
+    "product": [
+      {
+        q: "How do you prioritize feature development when engineering constraints clash with immediate user needs?",
+        keywords: ["trade-off", "MVP", "impact", "effort", "stakeholder", "iteration"],
+        feedbackMiss: "You didn't explain a framework. You must mention using an impact-versus-effort matrix and focusing on delivering a Minimum Viable Product (MVP) to satisfy immediate needs.",
+        feedbackHit: "Excellent. You clearly articulated a prioritization framework balancing impact, effort, and MVP delivery."
+      },
+      {
+        q: "An AI model generates a product roadmap that ignores technical debt. How do you correct this?",
+        keywords: ["balance", "refactor", "velocity", "maintenance", "allocate", "sprint"],
+        feedbackMiss: "You missed the velocity argument. You need to explain that you would instruct the AI to allocate a specific percentage of sprint capacity to refactoring to maintain long-term velocity.",
+        feedbackHit: "Spot on. Balancing feature delivery with dedicated capacity for refactoring is the right PM approach."
+      },
+      {
+        q: "How do you evaluate an AI-generated user story for a complex technical feature?",
+        keywords: ["acceptance", "criteria", "edge case", "testable", "value", "who"],
+        feedbackMiss: "You missed the criteria. A good user story must have clear, testable acceptance criteria and account for edge cases. That is how you evaluate it.",
+        feedbackHit: "Great answer! Focusing on testable acceptance criteria and edge cases shows strong technical PM skills."
+      }
+    ],
+    "math": [
+      {
+        q: "An AI fails a multi-step calculus derivation. Walk me through your step-by-step verification process.",
+        keywords: ["intermediate", "chain rule", "integration", "boundary", "isolate", "step"],
+        feedbackMiss: "You missed the step-by-step isolation. You must explain breaking the derivation down to verify intermediate steps (like applying the chain rule) to isolate exactly where the hallucination occurred.",
+        feedbackHit: "Perfect. Isolating intermediate steps is exactly how you debug complex mathematical derivations in AI."
+      },
+      {
+        q: "How do you evaluate an AI model's code for solving a system of non-linear differential equations?",
+        keywords: ["numerical", "stability", "convergence", "error", "tolerance", "solver"],
+        feedbackMiss: "You didn't mention numerical methods. You must evaluate the code based on numerical stability, convergence rates, and the appropriate choice of solver.",
+        feedbackHit: "Excellent. You correctly identified that numerical stability and convergence are the critical evaluation metrics."
+      },
+      {
+        q: "If an AI model hallucinated a proof in linear algebra, what specific constraints would you add to the prompt?",
+        keywords: ["axioms", "theorems", "rigor", "contradiction", "induction", "cite"],
+        feedbackMiss: "You missed mathematical rigor. You should instruct the AI to explicitly state the axioms and theorems it is using at each step, or force a specific proof structure like induction.",
+        feedbackHit: "Spot on. Forcing the AI to explicitly cite theorems ensures rigorous, step-by-step proofs."
+      }
+    ],
+    "language": [
+      {
+        q: "How do you evaluate an AI's translation of an idiomatic phrase where a direct translation loses the original cultural context?",
+        keywords: ["localize", "equivalent", "intent", "nuance", "literal", "cultural"],
+        feedbackMiss: "You missed the concept of localization. You must explain that you evaluate the translation based on capturing the original intent and cultural nuance, rather than literal accuracy.",
+        feedbackHit: "Great answer! You correctly prioritized cultural equivalence and intent over literal translation."
+      },
+      {
+        q: "An AI model struggles with gendered nouns in a highly inflected language. How do you train it to improve?",
+        keywords: ["syntax", "agreement", "grammar", "context", "RLHF", "penalize"],
+        feedbackMiss: "You missed the syntactic agreement. You must explain training the model to recognize context clues for noun-adjective agreement and heavily penalizing agreement errors in RLHF.",
+        feedbackHit: "Perfect. Focusing on syntactic agreement and context-based rules is exactly right."
+      },
+      {
+        q: "Explain how you would write a prompt to force an LLM to output text in a specific regional dialect.",
+        keywords: ["vocabulary", "slang", "register", "colloquial", "constraints", "examples"],
+        feedbackMiss: "You didn't provide enough structure. You must mention providing few-shot examples of the dialect, specifying the vocabulary, and defining the formal/informal register.",
+        feedbackHit: "Excellent. Using few-shot examples and defining the register is the best way to control dialect."
+      }
+    ],
+    "general": [
+      {
+        q: "You are given a model output containing multiple historical claims. Walk me through your fact-checking workflow.",
+        keywords: ["primary", "source", "cross-reference", "citation", "bias", "verify"],
+        feedbackMiss: "You missed the core workflow. You must mention isolating each specific claim, cross-referencing against primary sources, and checking for hallucinated citations.",
+        feedbackHit: "Spot on! Breaking down claims and strictly requiring primary sources is the correct workflow."
+      },
+      {
+        q: "How do you evaluate an AI's summary of a 50-page document for accuracy and completeness?",
+        keywords: ["omission", "hallucination", "key points", "compare", "distill", "concise"],
+        feedbackMiss: "You missed the concept of omission testing. You must evaluate not just if the summary is factually correct, but whether it omitted critical key points from the original document.",
+        feedbackHit: "Excellent. You recognized that testing for material omissions is just as important as checking for hallucinations."
+      },
+      {
+        q: "If an AI generates a response that is factually correct but highly biased, how do you provide feedback?",
+        keywords: ["neutral", "objective", "tone", "perspective", "RLHF", "align"],
+        feedbackMiss: "You didn't explain the alignment process. You must mention penalizing the response in the reward model and rewriting the answer to maintain a neutral, objective tone.",
+        feedbackHit: "Perfect. Rewriting the answer for objective neutrality and penalizing the bias is exactly what AI labs look for."
       }
     ]
   };
