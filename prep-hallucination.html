@@ -119,15 +119,27 @@
         <h2 style="font-size:24px; font-weight:800; margin-bottom:8px; color:var(--black);">Identify the Hallucination</h2>
         <p style="color:var(--gray-500); font-size:15px; margin-bottom:32px;">Click on the specific sentence in the model's output below that contains a factual hallucination or logical error before the timer runs out.</p>
 
-        <div id="text-container" style="font-size:18px; line-height:1.8; color:var(--gray-800); background:var(--gray-50); padding:24px; border:1px solid var(--gray-200); border-radius:var(--radius-sm); margin-bottom:24px;">
-            <span class="text-token" onclick="selectToken(0)">The Apollo 11 mission was the first manned mission to land on the Moon. </span>
-            <span class="text-token" onclick="selectToken(1)">It was launched on July 16, 1969, and carried Commander Neil Armstrong, Command Module Pilot Michael Collins, and Lunar Module Pilot Buzz Aldrin. </span>
-            <span class="text-token" onclick="selectToken(2)">Armstrong and Aldrin walked on the lunar surface, while Collins remained in orbit. </span>
-            <span class="text-token" onclick="selectToken(3, true)">They returned safely to Earth on July 24, splashing down in the Atlantic Ocean. </span>
-            <span class="text-token" onclick="selectToken(4)">The mission fulfilled President John F. Kennedy's national goal proposed in 1961.</span>
+        <label for="role-select" style="display:block; font-weight:700; margin-bottom:8px; color:var(--black);">Select Scenario Domain:</label>
+        <select id="role-select" style="width:100%; padding:14px; border-radius:var(--radius); border:2px solid var(--gray-200); font-family:var(--font); font-size:15px; margin-bottom:24px; cursor:pointer;">
+          <option value="software">AI Software Engineer</option>
+          <option value="medical">Medical & Clinical Expert</option>
+          <option value="finance">Finance & Quant Expert</option>
+          <option value="legal">Legal & Compliance Expert</option>
+          <option value="creative">Creative Writer & Editor</option>
+          <option value="data">Data Scientist & Analyst</option>
+          <option value="product">Product Manager (Technical)</option>
+          <option value="math">Advanced Math & Physics</option>
+          <option value="language">Foreign Language Expert</option>
+          <option value="general">General AI Training</option>
+        </select>
+        
+        <div id="text-container" style="font-size:18px; line-height:1.8; color:var(--gray-800); background:var(--gray-50); padding:24px; border:1px solid var(--gray-200); border-radius:var(--radius-sm); margin-bottom:24px; cursor:pointer;">
+            <!-- JS populated -->
         </div>
 
-        <button onclick="submitAnswer()" class="btn-primary" style="width:100%;">Submit Evaluation</button>
+        <button onclick="submitAnswer()" id="submit-btn" class="btn-primary" style="width:100%;">Submit Evaluation</button>
+        <button onclick="loadNextScenario()" id="next-btn" class="btn-primary" style="width:100%; display:none; background:var(--black);">Next Scenario ➔</button>
+        
         <div id="feedback" style="display:none; margin-top:24px; padding:16px; border-radius:var(--radius-sm); font-weight:600; text-align:center;"></div>
     </div>
 
@@ -165,33 +177,268 @@
   </footer>
 
 <script>
+    const gymData = {
+      "software": [
+        {
+          sentences: ["React is a declarative JavaScript library for building user interfaces.", "It uses a virtual DOM to efficiently update and render components when data changes.", "The useEffect hook allows you to perform side effects in functional components.", "By default, useEffect runs synchronously before the initial render to block paint.", "To optimize performance, you can use useMemo to memoize expensive calculations."],
+          targetIdx: 3,
+          successMsg: "Excellent catch! useEffect runs asynchronously AFTER the render is committed to the screen, not before.",
+          failMsg: "Incorrect. You missed the hallucination in sentence 4 regarding useEffect execution timing."
+        },
+        {
+          sentences: ["Docker is a platform for developing, shipping, and running applications in containers.", "Containers are lightweight and share the host system's OS kernel.", "Docker images are built using a declarative file called a Dockerfile.", "Because containers share the kernel, a Windows container can run natively on a Linux host without virtualization.", "Docker Compose can be used to define and run multi-container applications."],
+          targetIdx: 3,
+          successMsg: "Spot on! Windows containers cannot run natively on a Linux host kernel; they require a VM or Windows host.",
+          failMsg: "Incorrect. You missed the hallucination in sentence 4 regarding kernel compatibility."
+        },
+        {
+          sentences: ["Python is an interpreted, high-level programming language.", "It utilizes a Global Interpreter Lock (GIL) in its standard CPython implementation.", "The GIL ensures thread safety by allowing only one thread to execute Python bytecode at a time.", "Because of the GIL, multithreading in Python provides massive performance boosts for CPU-bound tasks.", "For CPU-bound tasks, the multiprocessing module is generally preferred over multithreading."],
+          targetIdx: 3,
+          successMsg: "Great catch! The GIL actually *prevents* multithreading from speeding up CPU-bound tasks.",
+          failMsg: "Incorrect. You missed the logical error in sentence 4 about CPU-bound multithreading."
+        }
+      ],
+      "medical": [
+        {
+          sentences: ["Metformin is a first-line medication for the treatment of type 2 diabetes.", "It works primarily by decreasing hepatic glucose production and increasing insulin sensitivity.", "The standard starting dose for adults is typically 500 mg taken orally twice a day with meals.", "Common side effects include gastrointestinal distress, such as nausea or diarrhea.", "It is highly recommended for patients with severe renal impairment due to its protective kidney effects."],
+          targetIdx: 4,
+          successMsg: "Excellent catch! Metformin is strictly contraindicated in patients with severe renal impairment due to the risk of lactic acidosis.",
+          failMsg: "Incorrect. You missed the fatal clinical hallucination in sentence 5 regarding renal impairment."
+        },
+        {
+          sentences: ["Aspirin belongs to a class of drugs called NSAIDs.", "It works by irreversibly inhibiting the cyclooxygenase (COX) enzyme.", "This inhibition prevents the formation of thromboxane A2 in platelets.", "Because it is irreversible, the antiplatelet effect wears off within 2 to 3 hours as the drug clears the system.", "A low daily dose is often prescribed for secondary prevention of cardiovascular events."],
+          targetIdx: 3,
+          successMsg: "Perfect! Because the inhibition is irreversible, the effect lasts for the lifetime of the platelet (7-10 days), not 2-3 hours.",
+          failMsg: "Incorrect. You missed the pharmacological hallucination in sentence 4 regarding the duration of irreversible inhibition."
+        },
+        {
+          sentences: ["Asthma is a chronic inflammatory disorder of the airways.", "It is characterized by reversible airflow obstruction and bronchospasm.", "Short-acting beta-agonists (SABAs) are commonly used as rescue inhalers during acute attacks.", "Inhaled corticosteroids are the primary rescue medication used during a severe acute asthma exacerbation.", "Long-term control medications help reduce airway inflammation and prevent future attacks."],
+          targetIdx: 3,
+          successMsg: "Spot on. Inhaled corticosteroids are controller medications, not rescue medications for acute exacerbations.",
+          failMsg: "Incorrect. You missed the hallucination in sentence 4 regarding the use of corticosteroids for acute rescue."
+        }
+      ],
+      "finance": [
+        {
+          sentences: ["Free Cash Flow (FCF) represents the cash a company generates after accounting for cash outflows to support operations.", "It is a crucial metric for evaluating a company's financial health and profitability.", "To calculate FCF, you take Operating Cash Flow and add Capital Expenditures.", "A positive FCF indicates the company is generating more cash than is used to run the business.", "FCF can be used to pay dividends, reduce debt, or reinvest in growth."],
+          targetIdx: 2,
+          successMsg: "Great catch! To calculate FCF, you SUBTRACT Capital Expenditures from Operating Cash Flow.",
+          failMsg: "Incorrect. You missed the mathematical hallucination in sentence 3 regarding the FCF formula."
+        },
+        {
+          sentences: ["Options are financial derivatives that give buyers the right, but not the obligation, to buy or sell an asset.", "A call option gives the buyer the right to buy the underlying asset at a specified strike price.", "The premium is the price paid by the buyer to the seller for this option right.", "As the expiration date approaches, the time value of an out-of-the-money option increases significantly.", "Implied volatility is a key input in option pricing models like Black-Scholes."],
+          targetIdx: 3,
+          successMsg: "Spot on! Time value decays (decreases) as expiration approaches, known as theta decay.",
+          failMsg: "Incorrect. You missed the logical error in sentence 4 about time value decay."
+        },
+        {
+          sentences: ["A bond is a fixed-income instrument that represents a loan made by an investor to a borrower.", "The coupon rate is the interest rate the issuer promises to pay the bondholder.", "When prevailing interest rates in the economy rise, the price of existing fixed-rate bonds will also rise.", "Bonds are typically issued by corporations, municipalities, and governments.", "The maturity date is when the principal amount of the bond is to be paid back."],
+          targetIdx: 2,
+          successMsg: "Perfect! Bond prices and interest rates have an inverse relationship; if interest rates rise, bond prices fall.",
+          failMsg: "Incorrect. You missed the fundamental financial error in sentence 3 regarding interest rates and bond prices."
+        }
+      ],
+      "legal": [
+        {
+          sentences: ["A valid contract requires an offer, acceptance, and consideration.", "Consideration refers to something of value exchanged by the parties.", "An oral contract is generally enforceable unless it falls under the Statute of Frauds.", "The Statute of Frauds mandates that all contracts for the sale of goods under $50 must be in writing.", "If a party breaches a contract, the non-breaching party may seek damages."],
+          targetIdx: 3,
+          successMsg: "Great catch! The Statute of Frauds typically requires writing for goods OVER $500, not under $50.",
+          failMsg: "Incorrect. You missed the legal hallucination in sentence 4 regarding the Statute of Frauds threshold."
+        },
+        {
+          sentences: ["Copyright law protects original works of authorship fixed in a tangible medium.", "This includes literary, musical, and dramatic works.", "In the United States, a copyright is automatically granted the moment the work is created and fixed.", "However, copyright protection extends to the underlying ideas and facts, preventing others from discussing them.", "Registration with the Copyright Office is required before filing an infringement lawsuit."],
+          targetIdx: 3,
+          successMsg: "Spot on! Copyright protects the EXPRESSION of ideas, never the underlying ideas or facts themselves.",
+          failMsg: "Incorrect. You missed the hallucination in sentence 4 regarding the scope of copyright protection."
+        },
+        {
+          sentences: ["In a criminal trial, the prosecution bears the burden of proof.", "The standard of proof required is 'beyond a reasonable doubt'.", "The defendant has the right to remain silent under the Fifth Amendment.", "If a defendant is found not guilty, the prosecution can immediately appeal the verdict and try them again.", "The Sixth Amendment guarantees the right to a speedy and public trial."],
+          targetIdx: 3,
+          successMsg: "Perfect! The prosecution cannot appeal a 'not guilty' verdict due to the Double Jeopardy Clause.",
+          failMsg: "Incorrect. You missed the constitutional hallucination in sentence 4 regarding Double Jeopardy."
+        }
+      ],
+      "creative": [
+        {
+          sentences: ["The classic three-act structure divides a narrative into the Setup, Confrontation, and Resolution.", "The inciting incident usually occurs in the first act, thrusting the protagonist into the main conflict.", "The midpoint of the story typically features a major reversal or revelation.", "The climax, which is the point of highest tension, always occurs in the very first scene of Act One.", "Following the climax, the falling action leads to the resolution and tying up of loose ends."],
+          targetIdx: 3,
+          successMsg: "Great catch! The climax occurs near the end of the narrative (Act Three), not in the first scene.",
+          failMsg: "Incorrect. You missed the narrative structure error in sentence 4."
+        },
+        {
+          sentences: ["Active voice generally makes writing more direct and dynamic.", "In an active sentence, the subject performs the action denoted by the verb.", "An example of active voice is 'The ball was thrown by the boy'.", "Using active voice reduces wordiness and clarifies who is doing what.", "However, passive voice can be useful when the actor is unknown or irrelevant."],
+          targetIdx: 2,
+          successMsg: "Spot on! 'The ball was thrown by the boy' is passive voice. Active would be 'The boy threw the ball'.",
+          failMsg: "Incorrect. You missed the grammatical hallucination in sentence 3 regarding active voice."
+        },
+        {
+          sentences: ["Search Engine Optimization (SEO) involves optimizing content to rank higher in search results.", "Using relevant keywords in the H1 tag and meta description is a standard best practice.", "Keyword stuffing, which involves repeating keywords unnaturally, is highly rewarded by Google's modern algorithm.", "High-quality, authoritative backlinks signal to search engines that the content is trustworthy.", "Internal linking helps establish site architecture and distributes page authority."],
+          targetIdx: 2,
+          successMsg: "Perfect! Keyword stuffing is heavily penalized by modern search algorithms, not rewarded.",
+          failMsg: "Incorrect. You missed the SEO hallucination in sentence 3."
+        }
+      ],
+      "data": [
+        {
+          sentences: ["A p-value helps determine the statistical significance of a hypothesis test.", "It represents the probability of observing the results given that the null hypothesis is true.", "A common threshold for statistical significance is a p-value less than 0.05.", "A p-value of 0.01 proves that the alternative hypothesis is 100% absolutely true.", "Researchers use p-values in conjunction with confidence intervals to draw conclusions."],
+          targetIdx: 3,
+          successMsg: "Great catch! A p-value never 'proves' a hypothesis is 100% true; it only indicates evidence against the null.",
+          failMsg: "Incorrect. You missed the statistical hallucination in sentence 4 regarding absolute proof."
+        },
+        {
+          sentences: ["In relational databases, a primary key uniquely identifies each record in a table.", "A foreign key is a field in one table that uniquely identifies a row of another table.", "To combine rows from two or more tables based on a related column, you use a JOIN operation.", "An INNER JOIN returns all rows from both tables regardless of whether there is a match.", "Indexing a column can significantly speed up data retrieval operations."],
+          targetIdx: 3,
+          successMsg: "Spot on! An INNER JOIN only returns rows that have matching values in both tables. A FULL OUTER JOIN returns all rows.",
+          failMsg: "Incorrect. You missed the SQL hallucination in sentence 4 regarding INNER JOIN behavior."
+        },
+        {
+          sentences: ["K-Means clustering is a popular unsupervised machine learning algorithm.", "It aims to partition n observations into k clusters where each observation belongs to the cluster with the nearest mean.", "Before applying K-Means, it is best practice to scale or normalize the data.", "Because K-Means is a supervised algorithm, it requires a dataset with fully labeled target variables.", "The 'elbow method' is commonly used to determine the optimal number of clusters (k)."],
+          targetIdx: 3,
+          successMsg: "Perfect! K-Means is an unsupervised algorithm and does not use labeled target variables.",
+          failMsg: "Incorrect. You missed the logical hallucination in sentence 4 regarding supervised vs unsupervised learning."
+        }
+      ],
+      "product": [
+        {
+          sentences: ["Agile methodology emphasizes iterative development and cross-functional collaboration.", "A Sprint is a time-boxed period during which a specific body of work is completed.", "The Product Owner is responsible for maximizing the value of the product and managing the Product Backlog.", "In Scrum, the Daily Standup is a two-hour meeting where the team writes code together.", "A Retrospective is held at the end of a Sprint to discuss what went well and what could be improved."],
+          targetIdx: 3,
+          successMsg: "Great catch! The Daily Standup is a brief 15-minute synchronization meeting, not a two-hour coding session.",
+          failMsg: "Incorrect. You missed the Agile framework hallucination in sentence 4."
+        },
+        {
+          sentences: ["A Minimum Viable Product (MVP) is a version of a product with just enough features to be usable by early customers.", "The goal of an MVP is to collect the maximum amount of validated learning with the least effort.", "An MVP must always be a fully polished, bug-free application with a complete feature set before any user sees it.", "Feedback from the MVP guides future product development and prioritization.", "Using an MVP approach helps mitigate the risk of building something nobody wants."],
+          targetIdx: 2,
+          successMsg: "Spot on! An MVP is inherently NOT fully polished or complete; it is the bare minimum to test a hypothesis.",
+          failMsg: "Incorrect. You missed the product management hallucination in sentence 3 regarding MVPs."
+        },
+        {
+          sentences: ["Net Promoter Score (NPS) measures customer experience and predicts business growth.", "It is calculated based on responses to a single question asking how likely users are to recommend the product.", "Respondents who give a score of 9 or 10 are considered 'Promoters'.", "To calculate the final NPS, you add the percentage of Promoters to the percentage of Detractors.", "NPS can range from -100 to +100."],
+          targetIdx: 3,
+          successMsg: "Perfect! You calculate NPS by SUBTRACTING the percentage of Detractors from the percentage of Promoters.",
+          failMsg: "Incorrect. You missed the mathematical hallucination in sentence 4 regarding the NPS formula."
+        }
+      ],
+      "math": [
+        {
+          sentences: ["The derivative of a function represents its instantaneous rate of change at a given point.", "Geometrically, it corresponds to the slope of the tangent line to the function's curve.", "The power rule states that the derivative of x^n is n*x^(n-1).", "The derivative of a constant function f(x) = C is always equal to C.", "Differentiation is a fundamental operation in calculus, alongside integration."],
+          targetIdx: 3,
+          successMsg: "Great catch! The derivative of a constant is always zero, not C.",
+          failMsg: "Incorrect. You missed the calculus hallucination in sentence 4 regarding the derivative of a constant."
+        },
+        {
+          sentences: ["A matrix is a rectangular array of numbers arranged in rows and columns.", "To multiply two matrices A and B, the number of columns in A must equal the number of rows in B.", "The identity matrix is a square matrix with ones on the main diagonal and zeros elsewhere.", "Matrix multiplication is always commutative, meaning A*B is exactly equal to B*A.", "The determinant is a scalar value that is a function of the entries of a square matrix."],
+          targetIdx: 3,
+          successMsg: "Spot on! Matrix multiplication is generally NOT commutative (A*B != B*A).",
+          failMsg: "Incorrect. You missed the linear algebra hallucination in sentence 4 regarding commutativity."
+        },
+        {
+          sentences: ["In probability, two events are independent if the occurrence of one does not affect the probability of the other.", "The probability of the intersection of two independent events A and B is P(A) * P(B).", "Mutually exclusive events are events that cannot occur at the same time.", "If two events are mutually exclusive, the probability of their intersection is 1.", "The sum of probabilities of all possible outcomes in a sample space equals 1."],
+          targetIdx: 3,
+          successMsg: "Perfect! If events are mutually exclusive, the probability of their intersection is exactly 0, not 1.",
+          failMsg: "Incorrect. You missed the statistical hallucination in sentence 4 regarding mutually exclusive events."
+        }
+      ],
+      "language": [
+        {
+          sentences: ["Syntax refers to the arrangement of words and phrases to create well-formed sentences.", "In English, the standard sentence structure follows a Subject-Verb-Object (SVO) order.", "Morphology is the study of words, how they are formed, and their relationship to other words.", "A phoneme is the largest unit of meaning in a language, usually consisting of several sentences.", "Pragmatics considers the context in which meaning is constructed in language."],
+          targetIdx: 3,
+          successMsg: "Great catch! A phoneme is the SMALLEST unit of SOUND, whereas a morpheme is the smallest unit of meaning.",
+          failMsg: "Incorrect. You missed the linguistic hallucination in sentence 4 regarding phonemes."
+        },
+        {
+          sentences: ["Translation involves converting written text from a source language into a target language.", "Localization adapts the translation to meet the cultural and regional norms of the target audience.", "A literal, word-for-word translation is always the best approach for idioms and cultural metaphors.", "Machine translation systems like neural networks use large corpora to predict word sequences.", "Post-editing involves a human reviewing and correcting machine-generated translations."],
+          targetIdx: 2,
+          successMsg: "Spot on! Literal translation of idioms usually results in nonsense; cultural adaptation is required.",
+          failMsg: "Incorrect. You missed the localization hallucination in sentence 3 regarding literal translations."
+        },
+        {
+          sentences: ["Romance languages are a branch of the Indo-European language family.", "They evolved from Vulgar Latin spoken during the Roman Empire.", "Spanish, French, and Italian are all widely spoken Romance languages.", "English is also considered a Romance language because it originated directly from Latin.", "While English has Latin loanwords, it belongs to the Germanic language family."],
+          targetIdx: 3,
+          successMsg: "Perfect! English is a Germanic language, not a Romance language, despite having Latin loanwords.",
+          failMsg: "Incorrect. You missed the historical linguistics hallucination in sentence 4 regarding English."
+        }
+      ],
+      "general": [
+        {
+          sentences: ["The Apollo 11 mission was the first manned mission to land on the Moon.", "It was launched on July 16, 1969, and carried Commander Neil Armstrong, Command Module Pilot Michael Collins, and Lunar Module Pilot Buzz Aldrin.", "Armstrong and Aldrin walked on the lunar surface, while Collins remained in orbit.", "They returned safely to Earth on July 24, splashing down in the Atlantic Ocean.", "The mission fulfilled President John F. Kennedy's national goal proposed in 1961."],
+          targetIdx: 3,
+          successMsg: "Excellent catch! Apollo 11 actually splashed down in the Pacific Ocean, not the Atlantic.",
+          failMsg: "Incorrect. You missed the hallucination in sentence 4 (Pacific vs Atlantic)."
+        },
+        {
+          sentences: ["Photosynthesis is the process by which green plants transform light energy into chemical energy.", "During this process, plants take in carbon dioxide from the air and water from the soil.", "Using the energy from sunlight, they convert these ingredients into glucose, a type of sugar.", "As a byproduct of photosynthesis, plants release nitrogen gas into the atmosphere.", "This process primarily occurs in the chloroplasts of plant cells."],
+          targetIdx: 3,
+          successMsg: "Spot on! Plants release OXYGEN gas as a byproduct of photosynthesis, not nitrogen.",
+          failMsg: "Incorrect. You missed the biological hallucination in sentence 4 regarding the byproduct."
+        },
+        {
+          sentences: ["The Magna Carta is a royal charter of rights agreed to by King John of England.", "It was drafted by the Archbishop of Canterbury to make peace between the unpopular king and a group of rebel barons.", "It promised the protection of church rights and protection for the barons from illegal imprisonment.", "The document was signed in the year 1776, inspiring the American Revolution.", "Although initially a failure, it became a symbol of liberty and the rule of law."],
+          targetIdx: 3,
+          successMsg: "Perfect! The Magna Carta was signed in 1215, not 1776.",
+          failMsg: "Incorrect. You missed the historical hallucination in sentence 4 regarding the year."
+        }
+      ]
+    };
+
+    let currentRole = "software";
+    let roleScenarios = gymData[currentRole];
+    let currentScenarioIdx = 0;
     let selectedIdx = -1;
-    let isCorrectTarget = false;
     let timer = 60;
     let interval;
 
+    const roleSelect = document.getElementById('role-select');
+    const textContainer = document.getElementById('text-container');
+    const timerEl = document.getElementById('timer');
+    const feedbackEl = document.getElementById('feedback');
+    const submitBtn = document.getElementById('submit-btn');
+    const nextBtn = document.getElementById('next-btn');
+
     function startTimer() {
+        clearInterval(interval);
+        timer = 60;
+        timerEl.innerText = timer;
         interval = setInterval(() => {
             timer--;
-            document.getElementById('timer').innerText = timer;
+            timerEl.innerText = timer;
             if (timer <= 0) {
                 clearInterval(interval);
-                document.getElementById('feedback').style.display = 'block';
-                document.getElementById('feedback').style.background = '#fee2e2';
-                document.getElementById('feedback').style.color = '#991b1b';
-                document.getElementById('feedback').innerText = "Time's up! You failed to catch the hallucination.";
+                feedbackEl.style.display = 'block';
+                feedbackEl.style.background = '#fee2e2';
+                feedbackEl.style.color = '#991b1b';
+                feedbackEl.innerText = "Time's up! You failed to catch the hallucination.";
+                submitBtn.style.display = 'none';
+                nextBtn.style.display = 'block';
             }
         }, 1000);
     }
 
-    function selectToken(idx, isTarget=false) {
+    function renderScenario() {
+        const scenario = roleScenarios[currentScenarioIdx];
+        textContainer.innerHTML = '';
+        scenario.sentences.forEach((sentence, idx) => {
+            const span = document.createElement('span');
+            span.className = 'text-token';
+            span.innerText = sentence + " ";
+            span.onclick = () => selectToken(idx);
+            textContainer.appendChild(span);
+        });
+        
+        selectedIdx = -1;
+        feedbackEl.style.display = 'none';
+        submitBtn.style.display = 'block';
+        nextBtn.style.display = 'none';
+        
+        startTimer();
+    }
+
+    function selectToken(idx) {
         if(timer <= 0) return;
         document.querySelectorAll('.text-token').forEach((el, i) => {
             if (i === idx) el.classList.add('selected');
             else el.classList.remove('selected');
         });
         selectedIdx = idx;
-        isCorrectTarget = isTarget;
     }
 
     function submitAnswer() {
@@ -199,21 +446,46 @@
         if (selectedIdx === -1) return alert("Select a sentence first!");
         
         clearInterval(interval);
-        const feedback = document.getElementById('feedback');
-        feedback.style.display = 'block';
+        
+        const scenario = roleScenarios[currentScenarioIdx];
+        const isCorrectTarget = (selectedIdx === scenario.targetIdx);
+        
+        feedbackEl.style.display = 'block';
+        submitBtn.style.display = 'none';
+        nextBtn.style.display = 'block';
         
         if (isCorrectTarget) {
-            feedback.style.background = '#d1fae5';
-            feedback.style.color = '#065f46';
-            feedback.innerText = "Excellent catch! Apollo 11 actually splashed down in the Pacific Ocean, not the Atlantic. (+100 Points)";
+            feedbackEl.style.background = '#d1fae5';
+            feedbackEl.style.color = '#065f46';
+            feedbackEl.innerText = scenario.successMsg + " (+100 Points)";
         } else {
-            feedback.style.background = '#fee2e2';
-            feedback.style.color = '#991b1b';
-            feedback.innerText = "Incorrect. The selected sentence is factually accurate. You missed the hallucination in sentence 4 (Pacific vs Atlantic).";
+            feedbackEl.style.background = '#fee2e2';
+            feedbackEl.style.color = '#991b1b';
+            feedbackEl.innerText = scenario.failMsg;
+            // Highlight the correct one
+            document.querySelectorAll('.text-token')[scenario.targetIdx].style.background = '#fef08a';
         }
     }
 
-    document.addEventListener('DOMContentLoaded', startTimer);
+    function loadNextScenario() {
+        currentScenarioIdx++;
+        if (currentScenarioIdx >= roleScenarios.length) {
+            currentScenarioIdx = 0; // Loop back
+        }
+        renderScenario();
+    }
+
+    roleSelect.addEventListener('change', (e) => {
+        currentRole = e.target.value;
+        roleScenarios = gymData[currentRole];
+        currentScenarioIdx = 0;
+        renderScenario();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Init
+        renderScenario();
+    });
 </script>
 
 
