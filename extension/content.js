@@ -577,7 +577,30 @@ function initVoiceAssistant() {
             }
 
             try {
-                const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro', 'gemini-pro'];
+                let activeModelName = 'gemini-1.5-flash';
+                
+                // Dynamically fetch available models first to guarantee we use a valid one
+                try {
+                    const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+                    const listRes = await fetch(listUrl);
+                    const listData = await listRes.json();
+                    
+                    if (listData && listData.models) {
+                        const availableModel = listData.models.find(m => 
+                            m.supportedGenerationMethods && 
+                            m.supportedGenerationMethods.includes('generateContent') && 
+                            m.name.includes('gemini')
+                        );
+                        if (availableModel) {
+                            activeModelName = availableModel.name.replace('models/', '');
+                            console.log("Dynamically selected model:", activeModelName);
+                        }
+                    }
+                } catch (e) {
+                    console.warn("Failed to fetch model list, using defaults.");
+                }
+
+                const modelsToTry = [activeModelName, 'gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro', 'gemini-pro'];
                 let data = null;
                 
                 const context = document.body.textContent.substring(0, 4000);
