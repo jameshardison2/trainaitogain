@@ -51,52 +51,6 @@
     window.handleIntake = async function(e) {
       e.preventDefault();
       
-      const btn = document.getElementById('submitIntakeBtn');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = 'Saving...';
-      btn.disabled = true;
-      
-      const firstName = document.getElementById('firstName').value;
-      const email = document.getElementById('email').value;
-      
-      try {
-        await addDoc(collection(db, "leads"), {
-          firstName: firstName,
-          email: email,
-          timestamp: serverTimestamp(),
-          source: window.location.href
-        });
-        
-        // Success! Open the modal so they can proceed.
-        openApplyModal('hero_intake');
-      } catch (error) {
-        console.error("Error adding document: ", error);
-        // Fallback: still open modal even if db fails so we don't break funnel
-        openApplyModal('hero_intake'); 
-      } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-      }
-    };
-  </script>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      projectId: "trainaitogain-50c19"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    
-    window.handleIntake = async function(e) {
-      e.preventDefault();
-      
       const form = e.target;
       const btn = form.querySelector('button[type="submit"]');
       const originalText = btn.innerHTML;
@@ -130,12 +84,10 @@
           }
         }
         
-        // Success! Open the modal so they can proceed.
-        openApplyModal('hero_intake');
+        // Modal popup removed here because we now show an inline success message instead
       } catch (error) {
         console.error("Error adding document: ", error);
-        // Fallback: still open modal even if db fails so we don't break funnel
-        openApplyModal('hero_intake'); 
+        // Modal popup removed here as well
       } finally {
         btn.innerHTML = originalText;
         btn.disabled = false;
