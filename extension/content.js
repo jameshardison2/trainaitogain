@@ -48,7 +48,7 @@ function initCoreFeatures() {
     }
 
     // 2. ATS Scanner (Only on Job Descriptions)
-    if (url.includes('roles') || url.includes('opportunities')) {
+    if (url.includes('roles') || url.includes('opportunities') || url.includes('jobs/list_') || url.includes('/job')) {
       injectATSScanner();
     } else {
       const scanner = document.getElementById('trainai-ats-scanner');
@@ -56,10 +56,10 @@ function initCoreFeatures() {
     }
   }, 2000);
 
-  // 3. MEAT Coach (Event Delegation on all textareas)
+  // 3. Impact Coach (Event Delegation on all textareas)
   document.addEventListener('focusin', handleTextareaFocus);
   document.addEventListener('focusout', handleTextareaBlur);
-  document.addEventListener('input', handleMEATCoaching);
+  document.addEventListener('input', handleImpactCoaching);
 }
 
 // ----------------------------------------------------
@@ -189,6 +189,22 @@ function injectSidePanel() {
 
   // Initial scan for tracker
   runTrackerScan();
+  
+  // Onboarding Tooltip
+  chrome.storage.local.get(['tgOnboardingSeen'], (res) => {
+    if (!res.tgOnboardingSeen) {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'trainai-injected';
+      tooltip.style.cssText = 'position:fixed; top:50%; right:140px; transform:translateY(-50%); background:rgba(16,185,129,0.9); color:white; padding:12px 16px; border-radius:8px; font-family:Inter,sans-serif; font-size:14px; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,0.2); z-index:999999; backdrop-filter:blur(10px); display:flex; align-items:center; gap:8px; pointer-events:none;';
+      tooltip.innerHTML = '<span>TrainAIToGain: Click here to set up your profile and enable Autofill ➔</span>';
+      document.body.appendChild(tooltip);
+      
+      trigger.addEventListener('click', () => {
+        tooltip.remove();
+        chrome.storage.local.set({tgOnboardingSeen: true});
+      }, {once: true});
+    }
+  });
 }
 
 function setReactInputValue(input, value) {
@@ -209,8 +225,13 @@ function runTrackerScan() {
   let apps = 0;
   
   // A crude but effective heuristic to find the "Applications X" text on the dashboard
-  const appMatch = document.body.innerText.match(/Applications\s*(\d+)/i);
-  if (appMatch) apps = parseInt(appMatch[1]);
+  const appMatch = document.body.innerText.match(/(?:active|in progress|under review|applied).*?(\d+)/i) || document.body.innerText.match(/(\d+).*?(?:active|in progress|under review|applied)/i);
+  if (appMatch) {
+    apps = parseInt(appMatch[1]);
+  } else {
+    const matches = document.body.innerText.match(/\b(?:in progress|active|under review)\b/gi);
+    if (matches) apps = matches.length;
+  }
   
   statsDiv.innerHTML = `
     <div class="tg-stat-box">
@@ -303,7 +324,7 @@ function injectATSScanner() {
 }
 
 // ----------------------------------------------------
-// FEATURE 4: The M.E.A.T. Framework Coach
+// FEATURE 4: The Impact Framework Coach
 // ----------------------------------------------------
 let activeCoachTarget = null;
 
@@ -321,7 +342,7 @@ function handleTextareaBlur(e) {
     setTimeout(() => {
       // Small delay to allow clicking on the widget if needed
       if (activeCoachTarget === e.target) {
-        const widget = document.getElementById('trainai-meat-coach');
+        const widget = document.getElementById('trainai-impact-coach');
         if (widget) widget.classList.add('tg-fade-out');
         setTimeout(() => { if (widget) widget.remove(); activeCoachTarget = null; }, 300);
       }
@@ -329,7 +350,7 @@ function handleTextareaBlur(e) {
   }
 }
 
-function handleMEATCoaching(e) {
+function handleImpactCoaching(e) {
   if (!isEnabled) return;
   if (e.target === activeCoachTarget) {
     updateCoachScore(e.target.value);
@@ -337,13 +358,13 @@ function handleMEATCoaching(e) {
 }
 
 function injectCoachWidget(textarea) {
-  if (document.getElementById('trainai-meat-coach')) return;
+  if (document.getElementById('trainai-impact-coach')) return;
   
   const widget = document.createElement('div');
-  widget.id = 'trainai-meat-coach';
+  widget.id = 'trainai-impact-coach';
   widget.className = 'trainai-injected';
   widget.innerHTML = `
-    <div class="tg-coach-header">🥩 M.E.A.T. Coach Live</div>
+    <div class="tg-coach-header">🎯 Impact Coach Live</div>
     <div class="tg-coach-stats">
       <span id="tg-coach-metrics">0 Metrics</span> | 
       <span id="tg-coach-verbs">0 Verbs</span>
@@ -361,9 +382,9 @@ function injectCoachWidget(textarea) {
   
   // Re-position on window resize
   window.addEventListener('resize', () => {
-    if (activeCoachTarget && document.getElementById('trainai-meat-coach')) {
+    if (activeCoachTarget && document.getElementById('trainai-impact-coach')) {
       const r = activeCoachTarget.getBoundingClientRect();
-      const w = document.getElementById('trainai-meat-coach');
+      const w = document.getElementById('trainai-impact-coach');
       w.style.top = (r.bottom + window.scrollY + 8) + 'px';
       w.style.left = (r.left + window.scrollX) + 'px';
       w.style.width = r.width + 'px';
@@ -372,7 +393,7 @@ function injectCoachWidget(textarea) {
 }
 
 function updateCoachScore(text) {
-  const widget = document.getElementById('trainai-meat-coach');
+  const widget = document.getElementById('trainai-impact-coach');
   if (!widget) return;
   
   const metricsCount = (text.match(/\d+|%|\$|percent/g) || []).length;
@@ -398,7 +419,7 @@ function updateCoachScore(text) {
     adviceDiv.innerHTML = `⚠️ No metrics found. Add numbers, percentages, or $ impact.`;
     adviceDiv.style.color = '#f59e0b';
   } else if (metricsCount > 0 && verbCount > 0) {
-    adviceDiv.innerHTML = `✅ Excellent! Strong M.E.A.T. structure.`;
+    adviceDiv.innerHTML = `✅ Excellent! Strong Impact structure.`;
     adviceDiv.style.color = '#10b981';
   } else {
     adviceDiv.innerHTML = `Keep typing...`;

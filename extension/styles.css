@@ -2,8 +2,8 @@
 
 :root {
   --tg-bg: #0f172a;
-  --tg-surface: rgba(30, 41, 59, 0.95);
-  --tg-surface-light: rgba(51, 65, 85, 0.9);
+  --tg-surface: rgba(16, 185, 129, 0.25);
+  --tg-surface-light: rgba(16, 185, 129, 0.4);
   --tg-accent: #10b981;
   --tg-accent-hover: #059669;
   --tg-text: #f8fafc;
@@ -282,7 +282,7 @@
 .tg-modal button:hover { background: rgba(255,255,255,0.2); }
 
 /* 4. M.E.A.T. Coach Widget */
-#trainai-meat-coach {
+#trainai-impact-coach {
   position: absolute;
   background: var(--tg-surface);
   border: 1px solid var(--tg-border);
