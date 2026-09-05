@@ -11,67 +11,10 @@
   <link rel="stylesheet" href="shared.css" />
   
   <style>
-    /* Specific styles for this page overriding shared.css if needed */
-    .download-page-header {
-      padding: 100px 20px 60px;
-      text-align: center;
-      background: var(--surface);
-    }
-    .download-page-header h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-    .download-page-header p {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    
-    .download-box {
-      background: var(--surface-light);
-      border: 1px solid var(--border);
-      padding: 40px;
-      border-radius: 12px;
-      text-align: center;
-      max-width: 700px;
-      margin: 40px auto;
-    }
-    .download-btn {
-      display: inline-block;
-      background: var(--accent);
-      color: var(--background);
-      padding: 16px 32px;
-      font-size: 1.25rem;
-      font-weight: 700;
-      text-decoration: none;
-      border-radius: 8px;
-      margin-top: 20px;
-      transition: all 0.2s ease;
-    }
-    .download-btn:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-
-    .instructions-section {
-      max-width: 800px;
-      margin: 0 auto 80px auto;
-      padding: 0 20px;
-    }
-    
-    .step {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 30px;
-      background: var(--surface);
-      padding: 24px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
+    /* Specific styles for this page */
     .step-number {
-      background: var(--accent);
-      color: var(--background);
+      background: var(--primary);
+      color: var(--black);
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -82,57 +25,29 @@
       font-size: 1.25rem;
       flex-shrink: 0;
     }
-    .step-content h3 {
-      margin: 0 0 10px 0;
-      font-size: 1.25rem;
+    .feature-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+      transition: all 0.2s;
     }
-    .step-content p {
-      margin: 0;
-      color: var(--text-secondary);
+    .feature-card:hover {
+      border-color: var(--primary);
+      background: rgba(16,185,129,0.05);
     }
     code {
-      background: var(--surface-light);
+      background: rgba(255,255,255,0.1);
       padding: 4px 8px;
       border-radius: 4px;
       font-family: monospace;
-      color: var(--accent);
-    }
-
-    /* Resources Section */
-    .resources-section {
-      max-width: 800px;
-      margin: 0 auto 100px auto;
-      padding: 0 20px;
-    }
-    .resource-card {
-      display: block;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 24px;
-      border-radius: 12px;
-      text-decoration: none;
-      color: inherit;
-      margin-bottom: 16px;
-      transition: all 0.2s;
-    }
-    .resource-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-    .resource-card h3 {
-      margin: 0 0 8px 0;
-      color: var(--accent);
-    }
-    .resource-card p {
-      margin: 0;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
+      color: var(--primary);
     }
   </style>
 </head>
-<body>
+<body style="background:var(--black); color:var(--white);">
 
-  <!-- Navigation injected by build script -->
   <nav class="nav" aria-label="Primary Navigation">
     <div class="container">
       <div class="nav-inner">
@@ -213,89 +128,98 @@
     </style>
   </nav>
 
-  <header class="download-page-header">
-    <h1>The "Get You Hired" Extension</h1>
-    <div style="display:inline-block; background:rgba(16,185,129,0.1); border:1px solid var(--accent); color:var(--accent); padding:4px 12px; border-radius:20px; font-weight:700; margin-bottom:20px;">Current Version: v2.0 (Blockbuster Update)</div>
-    <p>Your secret weapon for bypassing the AI gatekeepers and UX glitches. Not available on the Chrome Web Store.</p>
-  </header>
-
-  <main>
-    <div class="download-box">
-      <h3 style="margin-top:0; font-size:1.5rem;">Step 1: Download the Files</h3>
-      <p style="color:var(--text-secondary); margin-bottom: 30px;">Because this tool interacts aggressively with Mercor's platform to protect you, it must be installed locally.</p>
-      
-      <a href="/get-you-hired-extension.zip" class="download-btn" download>
-        ⬇️ Download get-you-hired-extension.zip
-      </a>
+  <section class="section" style="padding-top:160px; padding-bottom:60px;">
+    <div class="container fade-up">
+      <div style="max-width:800px;">
+        <div style="display:inline-block; background:rgba(16,185,129,0.1); border:1px solid var(--primary); color:var(--primary); padding:6px 16px; border-radius:100px; font-weight:700; margin-bottom:24px; font-size:13px; letter-spacing:1px; text-transform:uppercase;">
+          Current Version: v2.0 (Blockbuster Update)
+        </div>
+        <h1 style="font-size:48px; line-height:1.1; margin-bottom:24px; font-weight:800;">The "Get You Hired" Extension</h1>
+        <p style="font-size:20px; color:var(--gray-400); line-height:1.6; margin-bottom:40px;">
+          Your professional assistant for bypassing the AI gatekeepers and UX glitches on Mercor. Not available on the Chrome Web Store.
+        </p>
+        <a href="/get-you-hired-extension.zip" download class="btn-primary" style="display:inline-flex; align-items:center; gap:12px; font-size:18px; padding:20px 32px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download Extension (V2.0)
+        </a>
+      </div>
     </div>
+  </section>
 
-    <section class="instructions-section">
-      <h2 style="border-bottom: 2px solid var(--accent); padding-bottom:12px; display:inline-block; margin-bottom: 32px;">Step 2: Install via "Developer Mode"</h2>
-      
-      <div class="step">
-        <div class="step-number">1</div>
-        <div class="step-content">
-          <h3>Unzip the Folder</h3>
-          <p>Find the downloaded <code>get-you-hired-extension.zip</code> file on your computer and extract/unzip it. You should now have a folder named <strong>extension</strong>.</p>
+  <section class="section" style="padding-bottom:120px;">
+    <div class="container fade-up" style="transition-delay:0.1s;">
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap:64px;">
+        
+        <!-- Left Column: Installation -->
+        <div>
+          <h2 style="font-size:28px; margin-bottom:32px; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.1);">How to Install (Developer Mode)</h2>
+          <p style="color:var(--gray-400); margin-bottom:32px; line-height:1.6;">Because this tool interacts aggressively with Mercor's platform to protect your application, it must be installed locally.</p>
+          
+          <div style="display:flex; gap:20px; margin-bottom:32px;">
+            <div class="step-number">1</div>
+            <div>
+              <h3 style="font-size:18px; margin-bottom:8px;">Unzip the Folder</h3>
+              <p style="color:var(--gray-400); line-height:1.5;">Find the downloaded <code>get-you-hired-extension.zip</code> file on your computer and extract it. You should now have a folder named <strong>extension</strong>.</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:20px; margin-bottom:32px;">
+            <div class="step-number">2</div>
+            <div>
+              <h3 style="font-size:18px; margin-bottom:8px;">Open Chrome Extensions</h3>
+              <p style="color:var(--gray-400); line-height:1.5;">In your Chrome browser, type <code>chrome://extensions</code> into the URL bar and hit Enter.</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:20px; margin-bottom:32px;">
+            <div class="step-number">3</div>
+            <div>
+              <h3 style="font-size:18px; margin-bottom:8px;">Enable Developer Mode</h3>
+              <p style="color:var(--gray-400); line-height:1.5;">In the top right corner of the Extensions page, toggle the switch that says <strong>"Developer mode"</strong> to the ON position.</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:20px; margin-bottom:48px;">
+            <div class="step-number">4</div>
+            <div>
+              <h3 style="font-size:18px; margin-bottom:8px;">Load Unpacked</h3>
+              <p style="color:var(--gray-400); line-height:1.5;">Click the <strong>"Load unpacked"</strong> button in the top left. Select the unzipped <strong>extension</strong> folder. That's it! The extension is now active.</p>
+            </div>
+          </div>
+          
+          <a href="index.html" class="btn-secondary" style="display:inline-block;">Return to Dashboard</a>
         </div>
-      </div>
 
-      <div class="step">
-        <div class="step-number">2</div>
-        <div class="step-content">
-          <h3>Open Chrome Extensions</h3>
-          <p>In your Chrome browser, type <code>chrome://extensions</code> into the URL bar and hit Enter.</p>
+        <!-- Right Column: Features -->
+        <div>
+          <h2 style="font-size:28px; margin-bottom:32px; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.1);">How to use the Hub</h2>
+          <p style="color:var(--gray-400); margin-bottom:32px; line-height:1.6;">The V2 update replaces scattered tooltips with a sleek, unified Side-Panel. Just log into Mercor, and click the <strong>TrainAIToGain Hub</strong> tab on the right side of your screen to access your tools.</p>
+          
+          <div class="feature-card">
+            <h3 style="font-size:20px; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="font-size:24px;">📊</span> The App Tracker</h3>
+            <p style="color:var(--gray-400); line-height:1.5;">Stop guessing where you stand. The tracker silently scans your dashboard and visually alerts you if you need to apply for more roles or complete pending interviews to trigger the algorithm.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3 style="font-size:20px; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="font-size:24px;">⚡</span> Master Profile Autofill</h3>
+            <p style="color:var(--gray-400); line-height:1.5;">Save your bio and links once in the Hub. When you land on any empty application form, hit the glowing Autofill button to populate everything instantly.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3 style="font-size:20px; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="font-size:24px;">🔍</span> ATS Pre-Scanner</h3>
+            <p style="color:var(--gray-400); line-height:1.5;">When viewing a job description, click the injected Scan button. The extension compares the job's keywords against your saved resume, giving you a Match Score and telling you exactly what keywords you are missing.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3 style="font-size:20px; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="font-size:24px;">🥩</span> M.E.A.T. Coach</h3>
+            <p style="color:var(--gray-400); line-height:1.5;">Write answers the AI actually respects. When typing in any text box, a live coach analyzes your words, validating you in green when you use metrics and action verbs, and flagging vague fluff in red.</p>
+          </div>
+
         </div>
+
       </div>
-
-      <div class="step">
-        <div class="step-number">3</div>
-        <div class="step-content">
-          <h3>Enable Developer Mode</h3>
-          <p>In the top right corner of the Extensions page, toggle the switch that says <strong>"Developer mode"</strong> to the ON position.</p>
-        </div>
-      </div>
-      
-      <div class="step">
-        <div class="step-number">4</div>
-        <div class="step-content">
-          <h3>Load Unpacked</h3>
-          <p>Click the <strong>"Load unpacked"</strong> button that appeared in the top left. Select the unzipped <strong>extension</strong> folder you created in Step 1. That's it! The extension is now active.</p>
-        </div>
-      </div>
-
-      <div style="background:rgba(245, 158, 11, 0.1); border-left:4px solid #f59e0b; padding:20px; border-radius:4px; margin-top:40px; margin-bottom: 40px;">
-        <h4 style="margin:0 0 10px 0; color:#f59e0b;">How to use it:</h4>
-        <p style="margin:0; color:var(--text-secondary);">You don't need to do anything! Just log into Mercor. The extension will automatically detect when you are uploading a resume, taking an interview, or sitting on the dashboard, and will magically inject the necessary tools directly onto your screen to guide you.</p>
-      </div>
-      
-      <div style="text-align: center;">
-        <a href="/" class="download-btn" style="background: var(--black); box-shadow: none;">⬅️ Return to Home Page</a>
-      </div>
-    </section>
-
-    <!-- NEW SECTION: Essential Resources -->
-    <section class="resources-section">
-      <h2 style="border-bottom: 2px solid var(--accent); padding-bottom:12px; display:inline-block; margin-bottom: 32px;">Essential Resources</h2>
-      <p style="color:var(--text-secondary); margin-bottom:24px;">Use these guides alongside the extension to guarantee you pass the application pipelines.</p>
-
-      <a href="experts-guide.html" class="resource-card">
-        <h3>📄 The Expert's Guide to AI Consulting</h3>
-        <p>Our flagship 3-part framework covering ATS keyword hacking, Priority Partner pipelines, and the M.E.A.T. Video Interview Strategy.</p>
-      </a>
-
-      <a href="resume-ats-guide.html" class="resource-card">
-        <h3>📝 Resume ATS Optimization Guide</h3>
-        <p>A deep dive into exactly how Mercor's rigid AI parser reads your resume, and the exact templates you need to use to avoid instant rejection.</p>
-      </a>
-      
-      <a href="ai-interview.html" class="resource-card">
-        <h3>🎥 AI Interview Mastery</h3>
-        <p>Understand the psychology of the 1-way AI video interview and practice the cadence required to bypass the anti-cheat flags.</p>
-      </a>
-    </section>
-
-  </main>
+    </div>
+  </section>
 
   <footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
     <div class="container">
