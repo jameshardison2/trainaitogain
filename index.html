@@ -235,64 +235,84 @@
 
   
   <!-- ─── New Direct-Response Hero ─────────────────────────────────────────── -->
-  <header style="padding: 64px 0 40px; text-align: center; background-color: var(--white);">
-    <div class="container" style="max-width: 800px;">
-      <h1 style="font-size:48px; font-weight:800; color:var(--black); letter-spacing:-0.03em; line-height:1.1; margin-bottom:16px;">
-        Earn $100-160/hr Doing AI Work On The Side
-      </h1>
-      <p style="font-size:20px; color:var(--gray-700); line-height:1.5; margin-bottom:32px;">
-        Remote, flexible, no need to leave your current job.
-      </p>
-
-      <!-- Social Proof Row -->
-      <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:24px; margin-bottom:40px;">
-        <!-- Fake Stripe Payout Notification -->
-        <div style="background:var(--white); border:1px solid #E5E7EB; border-radius:12px; padding:16px; display:inline-flex; align-items:center; gap:16px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.05); text-align:left;">
-          <div style="background:#635BFF; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-          </div>
-          <div>
-            <p style="margin:0; font-size:14px; font-weight:600; color:#111827;">Payout Initiated</p>
-            <p style="margin:0; font-size:18px; font-weight:800; color:#059669;">+$1,280.00</p>
-          </div>
-        </div>
-
-        <!-- High-Status Testimonial Quote -->
-        <div style="background:var(--white); border:1px solid #E5E7EB; border-radius:12px; padding:16px; display:inline-flex; align-items:center; gap:16px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.05); text-align:left; max-width: 320px;">
-          <div style="width:40px; height:40px; border-radius:50%; overflow:hidden; flex-shrink:0;">
-            <img src="https://i.pravatar.cc/150?img=32" alt="Dr. Sarah K." style="width:100%; height:100%; object-fit:cover;" />
-          </div>
-          <div>
-            <p style="margin:0 0 4px 0; font-size:12px; font-style:italic; color:#4B5563; line-height:1.4;">"Incredible remote opportunity. I consult for 5 hours a week and earn an extra $3k/mo."</p>
-            <p style="margin:0; font-size:11px; font-weight:700; color:#111827;">Dr. Sarah K. &mdash; Medical Expert</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Intake Form -->
-      <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 32px; max-width: 500px; margin: 0 auto 40px; text-align: left;">
-        <div style="display:inline-block; background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 10px; border-radius:100px; margin-bottom:12px;">FREE DOWNLOAD</div>
-        <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">The "Get You Hired" Extension</h3>
-        <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Install our proprietary Chrome Extension to bypass the AI gatekeepers, autofill your applications, and track your pipeline. Enter your details to get it for free.</p>
+  <header style="padding: 80px 0 60px; background-color: var(--white);">
+    <div class="container">
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 60px; align-items: center;">
         
-        <form name="lead-magnet" id="intakeForm" class="leadMagnetForm">
-          <div style="margin-bottom: 16px;">
-            <label for="firstName" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">First Name</label>
-            <input type="text" id="firstName" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your first name">
+        <!-- Left Side: Copy & Buttons -->
+        <div>
+          <h1 style="font-size:48px; font-weight:800; color:var(--black); letter-spacing:-0.03em; line-height:1.1; margin-bottom:16px;">
+            Earn $100-160/hr Doing AI Work On The Side
+          </h1>
+          <p style="font-size:20px; color:var(--gray-700); line-height:1.5; margin-bottom:32px;">
+            Remote, flexible, no need to leave your current job.
+          </p>
+          
+          <div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:40px;">
+            <button onclick="document.getElementById('intakeForm').scrollIntoView({behavior:'smooth'})" class="btn-primary" style="padding:16px 24px; font-size:16px;">
+              Get Free Extension
+            </button>
+            <button onclick="openApplyModal('hero')" class="btn-secondary" style="padding:16px 24px; font-size:16px;">
+              Apply Directly to Mercor ➔
+            </button>
           </div>
-          <div style="margin-bottom: 24px;">
-            <label for="email" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">Email Address</label>
-            <input type="email" id="email" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your best email">
-          </div>
-          <button type="submit" id="submitIntakeBtn" class="btn-primary" style="width: 100%; padding: 16px; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            Get Free Extension ➔
-          </button>
-        </form>
-      </div>
 
-      <!-- Trust Elements -->
+          <!-- Social Proof Row -->
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <!-- Fake Stripe Payout Notification -->
+            <div style="background:var(--white); border:1px solid #E5E7EB; border-radius:12px; padding:12px 16px; display:inline-flex; align-items:center; gap:16px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.05); max-width:320px;">
+              <div style="background:#635BFF; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </div>
+              <div>
+                <p style="margin:0; font-size:12px; font-weight:600; color:#111827;">Payout Initiated</p>
+                <p style="margin:0; font-size:16px; font-weight:800; color:#059669;">+$1,280.00</p>
+              </div>
+            </div>
+
+            <!-- High-Status Testimonial Quote -->
+            <div style="background:var(--white); border:1px solid #E5E7EB; border-radius:12px; padding:12px 16px; display:inline-flex; align-items:center; gap:16px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.05); max-width:320px;">
+              <div style="width:32px; height:32px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                <img src="https://i.pravatar.cc/150?img=32" alt="Dr. Sarah K." style="width:100%; height:100%; object-fit:cover;" />
+              </div>
+              <div>
+                <p style="margin:0 0 4px 0; font-size:11px; font-style:italic; color:#4B5563; line-height:1.4;">"Incredible remote opportunity. I consult for 5 hours a week and earn an extra $3k/mo."</p>
+                <p style="margin:0; font-size:10px; font-weight:700; color:#111827;">Dr. Sarah K. &mdash; Medical Expert</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Intake Form -->
+        <div>
+          <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 32px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);">
+            <div style="display:inline-block; background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 10px; border-radius:100px; margin-bottom:12px;">FREE DOWNLOAD</div>
+            <h3 style="margin-top: 0; font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 8px;">The "Get You Hired" Extension</h3>
+            <p style="color: #4b5563; font-size: 14px; margin-bottom: 24px;">Install our proprietary Chrome Extension to bypass the AI gatekeepers, autofill your applications, and track your pipeline. Enter your details to get it for free.</p>
+            
+            <form name="lead-magnet" id="intakeForm" class="leadMagnetForm">
+              <div style="margin-bottom: 16px;">
+                <label for="firstName" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">First Name</label>
+                <input type="text" id="firstName" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your first name">
+              </div>
+              <div style="margin-bottom: 24px;">
+                <label for="email" style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px;">Email Address</label>
+                <input type="email" id="email" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 16px; box-sizing: border-box;" placeholder="Enter your best email">
+              </div>
+              <button type="submit" id="submitIntakeBtn" class="btn-primary" style="width: 100%; padding: 16px; font-size: 18px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                Get Free Extension ➔
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Trust Elements -->
       <div style="display:flex; flex-direction:column; gap:16px; text-align:left; max-width:600px; margin:0 auto 48px;">
         <div style="background:#F3F4F6; padding:16px; border-radius:8px;">
           <h4 style="margin:0 0 4px 0; font-size:16px; color:#111827;">What is Mercor?</h4>
