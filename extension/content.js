@@ -266,6 +266,7 @@ function setupSPAObserver() {
                 if (path.includes('job') || path.includes('role') || path.includes('explore') || document.querySelector('h1')) {
                     injectATSScanner();
                 }
+                runTrackerScan();
 
                 document.querySelectorAll('textarea').forEach(ta => {
                     if (!ta.dataset.tgCoachAttached) {
@@ -316,8 +317,8 @@ function runTrackerScan() {
   let submittedCount = 0;
   let pendingCount = 0;
 
-  // 1. Look for the exact "Submitted applications (X)" dropdown
-  const submittedMatch = text.match(/Submitted applications\s*\((\d+)\)/i);
+  // 1. Look for "Submitted applications (X)" OR "Submitted applicationsX"
+  const submittedMatch = text.match(/Submitted applications\s*\(?(\d+)\)?/i);
   if (submittedMatch) {
       submittedCount = parseInt(submittedMatch[1], 10);
   } else {
@@ -326,13 +327,19 @@ function runTrackerScan() {
       if (genericSubmitted) submittedCount = parseInt(genericSubmitted[1], 10);
   }
 
-  // 2. Look for "steps completed" (e.g. "2 of 3 steps completed") which means incomplete/pending
-  const pendingMatches = [...text.matchAll(/(\d+)\s*of\s*(\d+)\s*steps\s*completed/gi)];
-  pendingMatches.forEach(match => {
-      if (match[1] !== match[2]) {
-          pendingCount++;
-      }
-  });
+  // 2. Look for "Applications X" which represents the pending/draft apps tab
+  const applicationsTabMatch = text.match(/Applications\s*(\d+)/i);
+  if (applicationsTabMatch) {
+      pendingCount = parseInt(applicationsTabMatch[1], 10);
+  } else {
+      // Fallback to "steps completed" (e.g. "2 of 3 steps completed")
+      const pendingMatches = [...text.matchAll(/(\d+)\s*of\s*(\d+)\s*steps\s*completed/gi)];
+      pendingMatches.forEach(match => {
+          if (match[1] !== match[2]) {
+              pendingCount++;
+          }
+      });
+  }
   
   // Update UI
   submittedElem.innerText = submittedCount;
