@@ -48,8 +48,15 @@ function initializeExtension() {
   
   panel.innerHTML = `
     <div class="trainai-panel-header">
-      <h2>Get You Hired</h2>
-      <button id="trainai-panel-close">×</button>
+      <div class="trainai-panel-header-left">
+        <h2>Get You Hired</h2>
+      </div>
+      <div class="trainai-panel-header-right">
+        <button id="tg-settings-btn" data-tg-tooltip="AI Settings (API Key)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+        <button id="trainai-panel-close">×</button>
+      </div>
     </div>
     
     <div class="trainai-dashboard-container">
@@ -85,6 +92,20 @@ function initializeExtension() {
             </button>
         </div>
     </div>
+
+    <!-- Settings Modal -->
+    <div id="tg-settings-modal">
+        <h3>AI Settings</h3>
+        <label>Google Gemini API Key</label>
+        <input type="password" id="tg-api-key-input" placeholder="AIzaSy...">
+        <p style="font-size:11px; color:#64748b; margin-top:-8px; margin-bottom:16px;">
+            Get a free key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.
+        </p>
+        <div style="display:flex; justify-content:flex-end;">
+            <button id="tg-settings-cancel" class="tg-btn-secondary">Cancel</button>
+            <button id="tg-settings-save" class="tg-btn-primary">Save Key</button>
+        </div>
+    </div>
   `;
   
   container.appendChild(trigger);
@@ -96,6 +117,28 @@ function initializeExtension() {
   const closeBtn = document.getElementById('trainai-panel-close');
   if (closeBtn) {
       closeBtn.onclick = () => panel.classList.remove('open');
+  }
+
+  // Logic: Settings Modal
+  const settingsBtn = document.getElementById('tg-settings-btn');
+  const settingsModal = document.getElementById('tg-settings-modal');
+  const cancelBtn = document.getElementById('tg-settings-cancel');
+  const saveBtn = document.getElementById('tg-settings-save');
+  const keyInput = document.getElementById('tg-api-key-input');
+
+  chrome.storage.local.get(['tgGeminiKey'], (res) => {
+      if (res.tgGeminiKey) keyInput.value = res.tgGeminiKey;
+  });
+
+  if (settingsBtn) settingsBtn.onclick = () => settingsModal.classList.add('active');
+  if (cancelBtn) cancelBtn.onclick = () => settingsModal.classList.remove('active');
+  if (saveBtn) {
+      saveBtn.onclick = () => {
+          chrome.storage.local.set({ tgGeminiKey: keyInput.value.trim() }, () => {
+              settingsModal.classList.remove('active');
+              showToast('API Key saved successfully!');
+          });
+      };
   }
 
   // Initialize Voice Assistant
@@ -483,25 +526,85 @@ function initVoiceAssistant() {
     };
 
     recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        showToast(`You said: "${transcript}"`);
+        const transcript = Array.from(event.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('');
         
-        // 1. Check if user has a text box focused (Voice Typing)
-        const activeElement = document.activeElement;
-        if (activeElement && (activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'INPUT')) {
-            setReactInputValue(activeElement, (activeElement.value ? activeElement.value + ' ' : '') + event.results[0][0].transcript);
+        console.log("Voice Transcript:", transcript);
+
+        // 1. Dictation Mode
+        const activeTextInput = document.activeElement && (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') ? document.activeElement : null;
+        if (activeTextInput) {
+            setReactInputValue(activeTextInput, activeTextInput.value + " " + transcript);
+            speakResponse("Dictated.");
             return;
         }
 
-        // 2. Voice Commands
-        if (transcript.includes('next') || transcript.includes('how') || transcript.includes('job') || transcript.includes('where') || transcript.includes('help')) {
+        // 2. AI Conversational Mode (BYOK)
+        chrome.storage.local.get(['tgGeminiKey'], async (res) => {
+            const apiKey = res.tgGeminiKey;
+            if (!apiKey) {
+                speakResponse("Please save your Gemini API key in the settings menu first.");
+                const settingsModal = document.getElementById('tg-settings-modal');
+                if (settingsModal) settingsModal.classList.add('active');
+                return;
+            }
+
             const magicBtn = document.getElementById('tg-magic-btn');
-            magicBtn.classList.add('tg-pulse-anim'); // Highlight it
-            setTimeout(() => magicBtn.classList.remove('tg-pulse-anim'), 3000);
-            speakResponse("I have highlighted the Magic Navigator button at the bottom. Click it to proceed to your exact next step.");
-        } else {
-            speakResponse("I heard you, but I am not sure what that means. You can ask me what to do next, or click a text box to voice-type.");
-        }
+            if (magicBtn) {
+                magicBtn.innerHTML = "Thinking...";
+                magicBtn.classList.add('tg-pulse-anim');
+            }
+
+            try {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const context = document.body.textContent.substring(0, 4000);
+                const prompt = `You are a highly intelligent, conversational AI assistant embedded directly into a Chrome extension for candidates using the Mercor platform. 
+                Your goal is to help them navigate the platform, answer interview questions, or provide strategic advice.
+                Keep your response conversational, extremely concise, and directly actionable (maximum 2-3 sentences). Do not use markdown styling since this will be spoken out loud via Text-to-Speech.
+
+                User's spoken request: "${transcript}"
+                
+                Visible text on their current screen (for context):
+                """
+                ${context}
+                """
+                
+                Provide your conversational response:`;
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+
+                const data = await response.json();
+                if (magicBtn) {
+                    magicBtn.classList.remove('tg-pulse-anim');
+                    updateSmartNavigator();
+                }
+
+                if (data.error) {
+                    speakResponse("Error contacting AI: " + data.error.message);
+                } else if (data.candidates && data.candidates.length > 0) {
+                    const aiReply = data.candidates[0].content.parts[0].text;
+                    speakResponse(aiReply);
+                } else {
+                    speakResponse("I couldn't process that.");
+                }
+
+            } catch (error) {
+                console.error("AI Error:", error);
+                if (magicBtn) {
+                    magicBtn.classList.remove('tg-pulse-anim');
+                    updateSmartNavigator();
+                }
+                speakResponse("Sorry, there was a network error contacting the AI.");
+            }
+        });
     };
 
     recognition.onend = () => {

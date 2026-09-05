@@ -72,6 +72,30 @@
   border-bottom: 1px solid var(--tg-border);
   background: var(--tg-surface);
 }
+.trainai-panel-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.trainai-panel-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#tg-settings-btn {
+  background: none;
+  border: none;
+  color: var(--tg-text-sec);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+#tg-settings-btn:hover {
+  color: var(--tg-text);
+}
 .trainai-panel-header h2 {
   margin: 0;
   font-size: 14px;
@@ -335,22 +359,78 @@
 /* 8. Premium Toasts */
 .tg-toast {
   position: fixed;
-  bottom: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--tg-text);
-  color: white;
+  bottom: 24px;
+  left: 24px;
+  background: var(--tg-accent);
+  color: #fff;
   padding: 12px 20px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 500;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   z-index: 9999999;
-  transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .tg-toast.show {
-  bottom: 24px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 9. Settings Modal */
+#tg-settings-modal {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  padding: 24px;
+}
+#tg-settings-modal.active {
+  display: flex;
+}
+#tg-settings-modal h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+}
+#tg-settings-modal label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tg-text-sec);
+  margin-bottom: 8px;
+  display: block;
+}
+#tg-api-key-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--tg-border);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+.tg-btn-primary {
+  background: var(--tg-accent);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.tg-btn-secondary {
+  background: transparent;
+  color: var(--tg-text-sec);
+  border: 1px solid var(--tg-border);
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 8px;
 }
 
 /* 9. Laser Autofill Animation */
