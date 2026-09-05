@@ -139,10 +139,8 @@
 <div class="ats-layout">
   <!-- Left: Input Panel -->
   <div class="ats-panel">
-    <h2>Paste Your Resume</h2>
-    <p>Copy and paste the plain text of your resume here. Do not worry about formatting—ATS bots only read the raw text.</p>
     
-    <label for="role-select" style="display:block; font-weight:700; margin-bottom:8px; color:var(--black);">Target Role:</label>
+    <label for="role-select" style="display:block; font-weight:700; margin-bottom:8px; color:var(--black);">1. Target Role:</label>
     <select id="role-select" style="width:100%; padding:14px; border-radius:var(--radius); border:2px solid var(--gray-200); font-family:var(--font); font-size:15px; margin-bottom:24px; cursor:pointer;">
       <option value="software">AI Software Engineer (RLHF)</option>
       <option value="medical">Medical Expert (AI Training)</option>
@@ -156,11 +154,19 @@
       <option value="general">General AI Training</option>
     </select>
 
-    <textarea class="resume-box" id="resume-text" placeholder="John Doe
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:8px;">
+      <label for="job-desc" style="display:block; font-weight:700; color:var(--black);">2. Job Description (Optional):</label>
+      <span id="import-badge" style="display:none; background:var(--primary); color:white; font-size:11px; padding:4px 8px; border-radius:4px; font-weight:800;">✓ IMPORTED BY EXTENSION</span>
+    </div>
+    <textarea class="resume-box" id="job-desc" style="height:120px; font-family:sans-serif;" placeholder="Paste the job description here, or use our Chrome Extension on Mercor to magically auto-import it."></textarea>
+
+    <label for="resume-text" style="display:block; font-weight:700; margin-bottom:8px; margin-top:8px; color:var(--black);">3. Paste Your Resume:</label>
+    <textarea class="resume-box" id="resume-text" style="height:250px;" placeholder="John Doe
 Software Engineer
 
 Experience
 - Trained large language models..."></textarea>
+    
     <button class="btn-scan" id="scan-btn">Scan My Resume</button>
   </div>
 

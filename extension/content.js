@@ -59,12 +59,12 @@ function initializeExtension() {
     <div class="trainai-dashboard-container" style="padding-top: 16px;">
       
       <!-- ATS SCANNER ONLY -->
-      <div class="tg-section" data-tg-tooltip="Scan the page to find keywords required to pass the AI resume filter.">
+      <div class="tg-section" data-tg-tooltip="Capture the current job description and export it to our powerful Web ATS Scanner.">
           <h3 class="tg-section-title">ATS KEYWORD SCANNER</h3>
           <p style="font-size:12px; color:var(--tg-text-sec); margin-bottom:16px;">
-              Automatically scan this job listing to reveal the hidden keywords required to pass the automated screening filters.
+              Automatically capture this job listing and export it to the TrainAIToGain ATS tool to compare it against your resume.
           </p>
-          <button id="tg-scan-btn-panel" class="tg-btn-primary" style="width:100%; padding:12px; font-weight:600;">Run ATS Scan ➔</button>
+          <button id="tg-scan-btn-panel" class="tg-btn-primary" style="width:100%; padding:12px; font-weight:600;">Export to Web ATS ➔</button>
       </div>
 
     </div>
@@ -81,13 +81,41 @@ function initializeExtension() {
       closeBtn.onclick = () => panel.classList.remove('open');
   }
 
-  // Bind ATS Scanner Button
+  // Bind ATS Scanner Button (Export to Web Tool)
   const scanBtn = document.getElementById('tg-scan-btn-panel');
   if (scanBtn) {
       scanBtn.onclick = () => {
-          runATSScan(document.body.textContent);
+          const pageText = document.body.innerText;
+          scanBtn.innerText = "Capturing...";
+          chrome.storage.local.set({ tg_captured_job: pageText }, () => {
+              setTimeout(() => {
+                  scanBtn.innerText = "Exported! Opening Web ATS...";
+                  setTimeout(() => {
+                      window.open('https://trainaitogain.com/resume-ats-guide.html', '_blank');
+                      scanBtn.innerText = "Export to Web ATS ➔";
+                  }, 800);
+              }, 500);
+          });
       };
   }
+}
+
+// ----------------------------------------------------
+// Auto-Populate Web ATS (If on trainaitogain.com)
+// ----------------------------------------------------
+if (window.location.href.includes('resume-ats-guide.html')) {
+    chrome.storage.local.get(['tg_captured_job'], (result) => {
+        if (result.tg_captured_job) {
+            const jobBox = document.getElementById('job-desc');
+            const badge = document.getElementById('import-badge');
+            if (jobBox && badge) {
+                jobBox.value = result.tg_captured_job;
+                badge.style.display = 'inline-block';
+                // Clear so it doesn't auto-fill next time they visit manually
+                chrome.storage.local.remove('tg_captured_job');
+            }
+        }
+    });
 }
 
 // ----------------------------------------------------
@@ -128,53 +156,6 @@ function setupSPAObserver() {
     }
 }
 
-// ----------------------------------------------------
-// FEATURE 3: The ATS Pre-Scanner
-// ----------------------------------------------------
-function injectATSScanner() {
-  if (document.getElementById('trainai-ats-scanner')) return;
-  
-  const mainContent = document.querySelector('main') || document.body;
-  if (!mainContent) return;
+// Removed fake modal scanner; we now export to the real web tool.
 
-  const scanner = document.createElement('div');
-  scanner.id = 'trainai-ats-scanner';
-  scanner.className = 'trainai-injected';
-  scanner.innerHTML = `
-    <button id="tg-scan-btn">Run ATS Keyword Scan</button>
-  `;
-  
-  mainContent.prepend(scanner);
-  
-  const scanBtn = document.getElementById('tg-scan-btn');
-  if (scanBtn) {
-      scanBtn.onclick = () => {
-        runATSScan(mainContent.textContent);
-      };
-  }
-}
 
-function runATSScan(pageText) {
-  let modal = document.getElementById('tg-scan-modal');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'tg-scan-modal';
-    modal.className = 'trainai-injected';
-    modal.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999999; background:white; padding:24px; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.1); border:1px solid #e2e8f0; width:360px; font-family:-apple-system, sans-serif; color:#0f172a;';
-    if (document.body) document.body.appendChild(modal);
-  }
-  
-  modal.innerHTML = `
-    <h3 style="margin-top:0; font-size:16px; margin-bottom:12px;">ATS Scan Complete</h3>
-    <p style="color:#64748b; font-size:13px; margin-bottom:16px; line-height:1.5;">We scanned this job description against common AI hiring models. To pass the filters, ensure these keywords are in your resume:</p>
-    <div style="display:flex; flex-wrap:wrap; gap:8px;">
-      <span style="background:#f1f5f9; border:1px solid #e2e8f0; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:500;">Data Analysis</span>
-      <span style="background:#f1f5f9; border:1px solid #e2e8f0; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:500;">Strategic Planning</span>
-      <span style="background:#f1f5f9; border:1px solid #e2e8f0; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:500;">Cross-functional</span>
-    </div>
-    <button id="tg-close-modal" style="margin-top:24px; width:100%; padding:12px; background:#0f172a; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:500; font-size:13px;">Done</button>
-  `;
-  
-  const closeBtn = document.getElementById('tg-close-modal');
-  if (closeBtn) closeBtn.onclick = () => modal.remove();
-}
