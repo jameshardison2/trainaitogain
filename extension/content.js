@@ -88,8 +88,8 @@ function injectSidePanel() {
     </div>
     
     <div class="trainai-tabs">
-      <button class="trainai-tab active" data-tab="tracker" data-tg-tooltip="A radar for the algorithm. Tells you what to do next to get prioritized.">App Tracker</button>
-      <button class="trainai-tab" data-tab="profile" data-tg-tooltip="Your personal vault. Save your resume here to auto-type it on applications.">Master Profile</button>
+      <button class="trainai-tab active" data-tab="tracker" data-tg-tooltip="A radar for the algorithm. It scans your dashboard automatically. Apply to the specific roles it highlights to trigger priority grading.">App Tracker</button>
+      <button class="trainai-tab" data-tab="profile" data-tg-tooltip="Your personal vault. Step 1: Paste your resume and bio here. Step 2: Click Save. We will use this to auto-type your forms.">Master Profile</button>
     </div>
     
     <div class="trainai-tab-content active" id="trainai-tab-tracker">
@@ -117,7 +117,7 @@ function injectSidePanel() {
       <p><strong>Impact Coach & ATS Scanner:</strong> These tools are automatically injected directly onto Job Application pages and Interview forms when you open them!</p>
     </div>
 
-    <div id="trainai-autofill-btn" data-tg-tooltip="Instantly beam your saved resume into all the empty boxes on this page.">
+    <div id="trainai-autofill-btn" data-tg-tooltip="Step 1: Open a job application form. Step 2: Click this button to instantly auto-type your saved resume into all the empty boxes.">
       ⚡ Autofill This Page
     </div>
   `;
