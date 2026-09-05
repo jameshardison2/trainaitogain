@@ -56,35 +56,17 @@ function initializeExtension() {
       </div>
     </div>
     
-    <div class="trainai-dashboard-container">
+    <div class="trainai-dashboard-container" style="padding-top: 16px;">
       
-      <!-- SECTION 1: Pipeline Tracker -->
-      <div class="tg-section" data-tg-tooltip="This tracks your Mercor pipeline. Finish your pending interviews to get graded.">
-          <h3 class="tg-section-title">PIPELINE STATUS</h3>
-          <div id="trainai-tracker-stats">
-              <div class="tg-stat-box">
-                  <strong id="tg-stat-submitted">0</strong>
-                  <span>Submitted</span>
-              </div>
-              <div class="tg-stat-box">
-                  <strong id="tg-stat-pending">0</strong>
-                  <span>Pending</span>
-              </div>
-          </div>
-          <div id="tg-algo-status" class="tg-algo-status low">Scanning Pipeline...</div>
-          <div id="trainai-tracker-advice" class="trainai-alert">Analyzing your Mercor dashboard...</div>
+      <!-- ATS SCANNER ONLY -->
+      <div class="tg-section" data-tg-tooltip="Scan the page to find keywords required to pass the AI resume filter.">
+          <h3 class="tg-section-title">ATS KEYWORD SCANNER</h3>
+          <p style="font-size:12px; color:var(--tg-text-sec); margin-bottom:16px;">
+              Automatically scan this job listing to reveal the hidden keywords required to pass the automated screening filters.
+          </p>
+          <button id="tg-scan-btn-panel" class="tg-btn-primary" style="width:100%; padding:12px; font-weight:600;">Run ATS Scan ➔</button>
       </div>
 
-    </div>
-
-    <!-- SECTION 3: Magic Navigator (Shape-Shifting Context Button) -->
-    <div class="tg-bottom-bar" data-tg-tooltip="This is the Magic Navigator. It shape-shifts to guide you to your exact next step.">
-        <div id="tg-nav-status" class="tg-nav-status">Analyzing Context...</div>
-        <div style="display:flex; gap:8px; align-items:center;">
-            <button id="tg-magic-btn" style="flex:1;">
-              Loading...
-            </button>
-        </div>
     </div>
   `;
   
@@ -99,93 +81,14 @@ function initializeExtension() {
       closeBtn.onclick = () => panel.classList.remove('open');
   }
 
-  // Initialize Magic Navigator Loop
-  setInterval(updateSmartNavigator, 1500);
-  updateSmartNavigator();
-
-  runTrackerScan();
-  setupSPAObserver();
+  // Bind ATS Scanner Button
+  const scanBtn = document.getElementById('tg-scan-btn-panel');
+  if (scanBtn) {
+      scanBtn.onclick = () => {
+          runATSScan(document.body.textContent);
+      };
+  }
 }
-
-// ----------------------------------------------------
-// The Magic Navigator (Context-Aware State Machine)
-// ----------------------------------------------------
-function updateSmartNavigator() {
-    const magicBtn = document.getElementById('tg-magic-btn');
-    const navStatus = document.getElementById('tg-nav-status');
-    
-    if (!magicBtn || !navStatus) return;
-
-    const path = window.location.href.toLowerCase();
-    
-    // State 0: On TrainAIToGain Website
-    if (path.includes('trainaitogain.com')) {
-        navStatus.innerText = 'Current Step: Choose Your Path';
-        magicBtn.innerHTML = 'Explore the Pipelines below!';
-        magicBtn.onclick = null;
-        return;
-    }
-    
-    // State 1: On Job Board
-    if (path.includes('explore') || path.includes('job') || path.includes('role')) {
-        const atsBtn = document.getElementById('tg-scan-btn');
-        if (atsBtn) {
-            navStatus.innerText = 'Current Step: Scan & Apply';
-            magicBtn.innerHTML = 'Run ATS Scanner';
-            magicBtn.onclick = () => {
-                const mainContent = document.querySelector('main') || document.body;
-                if (mainContent && typeof runATSScan === 'function') {
-                    runATSScan(mainContent.textContent);
-                }
-            };
-        } else {
-            navStatus.innerText = 'Current Step: Find a Job';
-            magicBtn.innerHTML = 'Click a Job to view details';
-            magicBtn.onclick = null;
-        }
-        return;
-    }
-
-    // State 1.5: Pending Interviews
-    const pendingElem = document.getElementById('tg-stat-pending');
-    if (pendingElem && parseInt(pendingElem.innerText) > 0 && !path.includes('interview')) {
-        navStatus.innerText = 'Current Step: Finish Interviews';
-        magicBtn.innerHTML = 'Go to your Interviews tab ➔';
-        magicBtn.style.background = 'var(--tg-warning)';
-        magicBtn.style.color = '#fff';
-        magicBtn.onclick = () => {
-            showToast('Please navigate to your Interviews tab on Mercor.');
-        };
-        return;
-    } else {
-        magicBtn.style.background = '';
-        magicBtn.style.color = '';
-    }
-
-    // State 2: On Interview
-    if (path.includes('interview')) {
-        navStatus.innerText = 'Current Step: Ace the Interview';
-        magicBtn.innerHTML = 'Activate Impact Coach';
-        magicBtn.onclick = () => {
-            const textareas = document.querySelectorAll('textarea');
-            if (textareas.length > 0) {
-                textareas[0].focus();
-                showToast('Coach is listening. Start typing or use the mic!');
-            } else {
-                showToast('No text box found yet.');
-            }
-        };
-        return;
-    }
-
-    // State 3: Default (Wandering) -> Guide them back to Jobs
-    navStatus.innerText = 'Current Step: Explore Opportunities';
-    magicBtn.innerHTML = 'Navigate to the Job Board ➔';
-    magicBtn.onclick = () => {
-        showToast('Please click on the Jobs/Explore tab in Mercor.');
-    };
-}
-
 
 // ----------------------------------------------------
 // UI Helpers
@@ -200,6 +103,7 @@ function showToast(message) {
     toast.innerHTML = message;
     toast.className = 'tg-toast show';
     setTimeout(() => { toast.className = 'tg-toast'; }, 3000);
+// Clean ATS UI only.
 }
 
 // ----------------------------------------------------
@@ -215,21 +119,6 @@ function setupSPAObserver() {
                 if (path.includes('job') || path.includes('role') || path.includes('explore') || document.querySelector('h1')) {
                     injectATSScanner();
                 }
-                runTrackerScan();
-
-                document.querySelectorAll('textarea').forEach(ta => {
-                    if (!ta.dataset.tgCoachAttached) {
-                        ta.dataset.tgCoachAttached = 'true';
-                        ta.addEventListener('focus', (e) => injectCoachWidget(e.target));
-                        ta.addEventListener('blur', (e) => {
-                           setTimeout(() => {
-                               const widget = document.getElementById('trainai-impact-coach');
-                               if (widget) widget.remove();
-                           }, 300);
-                        });
-                        ta.addEventListener('input', handleImpactCoaching);
-                    }
-                });
             }
         }, 500);
     });
@@ -237,76 +126,6 @@ function setupSPAObserver() {
     if (document.body) {
         observer.observe(document.body, { childList: true, subtree: true });
     }
-}
-
-// ----------------------------------------------------
-// Utility to inject text into React controlled inputs
-// ----------------------------------------------------
-function setReactInputValue(input, value) {
-  if (!input) return;
-  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set || Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
-  if (nativeInputValueSetter) {
-    nativeInputValueSetter.call(input, value);
-  } else {
-    input.value = value;
-  }
-  input.dispatchEvent(new Event('input', { bubbles: true }));
-  input.dispatchEvent(new Event('change', { bubbles: true }));
-}
-
-function runTrackerScan() {
-  const adviceDiv = document.getElementById('trainai-tracker-advice');
-  const submittedElem = document.getElementById('tg-stat-submitted');
-  const pendingElem = document.getElementById('tg-stat-pending');
-  const statusElem = document.getElementById('tg-algo-status');
-  if (!adviceDiv || !submittedElem || !pendingElem || !statusElem || !document.body) return;
-
-  const text = document.body.textContent;
-  
-  let submittedCount = 0;
-  let pendingCount = 0;
-
-  // 1. Look for "Submitted applications (X)" OR "Submitted applicationsX"
-  const submittedMatch = text.match(/Submitted applications\s*\(?(\d+)\)?/i);
-  if (submittedMatch) {
-      submittedCount = parseInt(submittedMatch[1], 10);
-  } else {
-      // Fallback
-      const genericSubmitted = text.match(/(\d+)\s*submitted/i);
-      if (genericSubmitted) submittedCount = parseInt(genericSubmitted[1], 10);
-  }
-
-  // 2. Look for "Applications X" which represents the pending/draft apps tab
-  const applicationsTabMatch = text.match(/Applications\s*(\d+)/i);
-  if (applicationsTabMatch) {
-      pendingCount = parseInt(applicationsTabMatch[1], 10);
-  } else {
-      // Fallback to "steps completed" (e.g. "2 of 3 steps completed")
-      const pendingMatches = [...text.matchAll(/(\d+)\s*of\s*(\d+)\s*steps\s*completed/gi)];
-      pendingMatches.forEach(match => {
-          if (match[1] !== match[2]) {
-              pendingCount++;
-          }
-      });
-  }
-  
-  // Update UI
-  submittedElem.innerText = submittedCount;
-  pendingElem.innerText = pendingCount;
-
-  if (pendingCount > 0) {
-    statusElem.className = 'tg-algo-status low';
-    statusElem.innerText = 'Priority: Blocked';
-    adviceDiv.innerHTML = `You have <strong>${pendingCount} pending interviews</strong>. Mercor's AI cannot grade you until these are finished.`;
-  } else if (submittedCount > 0) {
-    statusElem.className = 'tg-algo-status priority';
-    statusElem.innerText = 'Priority: High';
-    adviceDiv.innerHTML = 'You are fully in the AI grading pool. No pending action needed.';
-  } else {
-    statusElem.className = 'tg-algo-status low';
-    statusElem.innerText = 'Priority: Low Visibility';
-    adviceDiv.innerHTML = 'Apply to jobs to enter the grading algorithm.';
-  }
 }
 
 // ----------------------------------------------------
@@ -359,111 +178,3 @@ function runATSScan(pageText) {
   const closeBtn = document.getElementById('tg-close-modal');
   if (closeBtn) closeBtn.onclick = () => modal.remove();
 }
-
-// ----------------------------------------------------
-// FEATURE 4: Live Impact Coach
-// ----------------------------------------------------
-function handleImpactCoaching(e) {
-  if (!isEnabled) return;
-  if (e && e.target) updateCoachScore(e.target.value);
-}
-
-function injectCoachWidget(textarea) {
-  if (!textarea || document.getElementById('trainai-impact-coach')) return;
-  
-  const widget = document.createElement('div');
-  widget.id = 'trainai-impact-coach';
-  widget.className = 'trainai-injected tg-coach-container';
-  widget.innerHTML = `
-    <div class="tg-coach-header">Impact Coach Live</div>
-    <div class="tg-coach-stats">
-      <span id="tg-coach-metrics">0 Metrics</span> | 
-      <span id="tg-coach-verbs">0 Verbs</span>
-    </div>
-    <div id="tg-coach-advice" style="font-size:12px; margin-top:6px; color:var(--tg-text-sec);">AI Grade: Pending...</div>
-  `;
-  
-  const rect = textarea.getBoundingClientRect();
-  widget.style.position = 'absolute';
-  widget.style.top = (rect.bottom + window.scrollY + 4) + 'px';
-  widget.style.left = (rect.left + window.scrollX) + 'px';
-  widget.style.width = rect.width + 'px';
-  widget.style.zIndex = '999999';
-  
-  if (document.body) document.body.appendChild(widget);
-  updateCoachScore(textarea.value);
-}
-
-function updateCoachScore(text) {
-  const widget = document.getElementById('trainai-impact-coach');
-  if (!widget) return;
-  
-  text = text || '';
-  const metricsCount = (text.match(/\d+|%|$|percent/g) || []).length;
-  const actionVerbs = ['led', 'managed', 'developed', 'created', 'built', 'increased', 'decreased', 'improved', 'optimized', 'engineered', 'designed', 'architected'];
-  
-  const lowerText = text.toLowerCase();
-  let verbCount = 0;
-  actionVerbs.forEach(v => {
-    if (lowerText.includes(v)) verbCount++;
-  });
-  
-  const vagueWords = ['helped', 'worked on', 'was responsible for', 'good', 'stuff', 'things'];
-  let vagueFound = vagueWords.filter(v => lowerText.includes(v));
-
-  const metricsEl = document.getElementById('tg-coach-metrics');
-  const verbsEl = document.getElementById('tg-coach-verbs');
-  if (metricsEl) metricsEl.innerText = `${metricsCount} Metrics`;
-  if (verbsEl) verbsEl.innerText = `${verbCount} Verbs`;
-  
-  const adviceDiv = document.getElementById('tg-coach-advice');
-  if (!adviceDiv) return;
-
-  if (vagueFound.length > 0) {
-    adviceDiv.innerHTML = `AI Grade: Poor. Use strong action verbs instead of "${vagueFound[0]}".`;
-    adviceDiv.style.color = 'var(--tg-danger)';
-  } else if (metricsCount === 0 && text.length > 20) {
-    adviceDiv.innerHTML = `AI Grade: Average. Add a number, %, or $ amount.`;
-    adviceDiv.style.color = 'var(--tg-warning)';
-  } else if (metricsCount > 0 && verbCount > 0) {
-    adviceDiv.innerHTML = `AI Grade: Strong! The algorithm will prioritize this answer.`;
-    adviceDiv.style.color = 'var(--tg-success)';
-  } else {
-    adviceDiv.innerHTML = `AI Grade: Pending...`;
-    adviceDiv.style.color = 'var(--tg-text-sec)';
-  }
-}
-
-// ----------------------------------------------------
-// Voice Tooltips (Text-to-Speech)
-// ----------------------------------------------------
-document.addEventListener('mouseover', (e) => {
-  if (!isEnabled) return;
-  const tooltipElement = e.target.closest('[data-tg-tooltip]');
-  if (tooltipElement) {
-    if (window._tgLastSpoken === tooltipElement) return;
-    window._tgLastSpoken = tooltipElement;
-    
-    const text = tooltipElement.getAttribute('data-tg-tooltip');
-    if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1.1; 
-        const voices = window.speechSynthesis.getVoices();
-        const premiumVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google US English'));
-        if (premiumVoice) utterance.voice = premiumVoice;
-        window.speechSynthesis.speak(utterance);
-    }
-  }
-});
-document.addEventListener('mouseout', (e) => {
-  const tooltipElement = e.target.closest('[data-tg-tooltip]');
-  if (tooltipElement) {
-    window._tgLastSpoken = null;
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-  }
-});
-
-// ----------------------------------------------------
-// Voice Assistant (Speech Recognition)
-// Clean UI code end.
