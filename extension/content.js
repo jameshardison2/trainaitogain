@@ -1,271 +1,392 @@
-// TrainAIToGain - Mercor Extension Content Script V1.0.1
+// TrainAIToGain - The "Get You Hired" Extension V2.0 (Blockbuster Overhaul)
 
 let isEnabled = true;
 
-// 1. Initialize and sync state
+// 1. Initialize
 chrome.storage.local.get(['cheatCodeEnabled'], (res) => {
-  if (res.cheatCodeEnabled !== undefined) {
-    isEnabled = res.cheatCodeEnabled;
-  }
-  if (isEnabled) initHeavyHitters();
+  if (res.cheatCodeEnabled !== undefined) isEnabled = res.cheatCodeEnabled;
+  if (isEnabled) initCoreFeatures();
 });
 
 chrome.runtime.onMessage.addListener((request) => {
   if (request.action === "toggleStateChanged") {
     isEnabled = request.enabled;
-    if (isEnabled) {
-      initHeavyHitters();
-    } else {
-      removeAllInjectedUI();
-    }
+    if (isEnabled) initCoreFeatures();
+    else document.querySelectorAll('.trainai-injected').forEach(el => el.remove());
   }
 });
 
-function removeAllInjectedUI() {
-  document.querySelectorAll('.trainai-injected').forEach(el => el.remove());
-}
-
-function initHeavyHitters() {
+function initCoreFeatures() {
   if (!isEnabled) return;
+  injectSidePanel();
   
-  injectNetworkTranslator();
-  injectAutoCacheVault();
-  injectSOSButton();
-  
+  // Continuous polling for contextual injections
   setInterval(() => {
     if (!isEnabled) return;
     const url = window.location.href.toLowerCase();
     
-    if (url.includes('interview') || url.includes('record') || url.includes('assessment')) {
-      injectContextAnchor();
-    } else {
-      const anchor = document.getElementById('trainai-context-anchor');
-      if (anchor) anchor.remove();
-    }
-    
-    if (url.includes('home')) {
-      injectDemystifier();
-    } else {
-      const demy = document.getElementById('trainai-demystifier');
-      if (demy) demy.remove();
+    // 1. Master Autofill Button visibility
+    const autofillBtn = document.getElementById('trainai-autofill-btn');
+    if (autofillBtn) {
+      const inputs = document.querySelectorAll('input[type="text"], textarea');
+      autofillBtn.style.display = (inputs.length > 0 && !url.includes('roles')) ? 'flex' : 'none';
     }
 
-    if (url.includes('profile')) {
-      injectATSWarning();
+    // 2. ATS Scanner (Only on Job Descriptions)
+    if (url.includes('roles') || url.includes('opportunities')) {
+      injectATSScanner();
     } else {
-      const ats = document.getElementById('trainai-ats-warning');
-      if (ats) ats.remove();
+      const scanner = document.getElementById('trainai-ats-scanner');
+      if (scanner) scanner.remove();
     }
   }, 2000);
+
+  // 3. MEAT Coach (Event Delegation on all textareas)
+  document.addEventListener('focusin', handleTextareaFocus);
+  document.addEventListener('focusout', handleTextareaBlur);
+  document.addEventListener('input', handleMEATCoaching);
 }
 
 // ----------------------------------------------------
-// FEATURE 1: The Auto-Cache Vault (Cures Information Loop)
+// FEATURE 1 & 2: The Unified Side-Panel (Tracker & Profile)
 // ----------------------------------------------------
-function injectAutoCacheVault() {
-  document.addEventListener('input', (e) => {
-    if (!isEnabled) return;
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      const name = e.target.name || e.target.id || e.target.placeholder || 'generic_field';
-      if (name && name !== 'generic_field') {
-        chrome.storage.local.set({ [`trainai_cache_${name}`]: e.target.value });
-      }
-    }
-  });
+function injectSidePanel() {
+  if (document.getElementById('trainai-panel-container')) return;
 
-  setInterval(() => {
-    if (!isEnabled) return;
-    const url = window.location.href.toLowerCase();
-    if (!url.includes('profile')) return; // Only show on profile pages where forms exist
+  const container = document.createElement('div');
+  container.id = 'trainai-panel-container';
+  container.className = 'trainai-injected';
+  
+  // The subtle tab that hangs off the right side of the screen
+  const trigger = document.createElement('div');
+  trigger.id = 'trainai-panel-trigger';
+  trigger.innerHTML = `<img src="${chrome.runtime.getURL('icon.svg')}" width="20" height="20" style="border-radius:4px; margin-right:8px;"> TATG Hub`;
+  
+  // The actual panel
+  const panel = document.createElement('div');
+  panel.id = 'trainai-side-panel';
+  panel.innerHTML = `
+    <div class="trainai-panel-header">
+      <img src="${chrome.runtime.getURL('icon.svg')}" width="24" height="24" style="border-radius:4px;">
+      <h2>TrainAIToGain</h2>
+      <button id="trainai-panel-close">×</button>
+    </div>
     
-    const inputs = document.querySelectorAll('input[type="text"], textarea');
-    if (inputs.length >= 1 && !document.getElementById('trainai-restore-btn')) {
-      const restoreBtn = document.createElement('button');
-      restoreBtn.id = 'trainai-restore-btn';
-      restoreBtn.className = 'trainai-injected';
-      restoreBtn.innerText = '⚡ Magic Fill (Restore Data)';
-      
-      restoreBtn.onclick = (e) => {
-        e.preventDefault();
-        inputs.forEach(input => {
-          const name = input.name || input.id || input.placeholder;
-          if (name) {
-            chrome.storage.local.get([`trainai_cache_${name}`], (res) => {
-              if (res[`trainai_cache_${name}`]) {
-                input.value = res[`trainai_cache_${name}`];
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-                input.dispatchEvent(new Event('change', { bubbles: true }));
-              }
-            });
-          }
-        });
-        restoreBtn.innerText = '✅ Restored!';
-        setTimeout(() => { restoreBtn.innerText = '⚡ Magic Fill (Restore Data)'; }, 2000);
-      };
-      
-      document.body.appendChild(restoreBtn);
-    }
-  }, 3000);
-}
-
-// ----------------------------------------------------
-// FEATURE 2: The Context Anchor (Cures AI Date Hallucinations)
-// ----------------------------------------------------
-function injectContextAnchor() {
-  if (document.getElementById('trainai-context-anchor')) return;
-  
-  const anchor = document.createElement('div');
-  anchor.id = 'trainai-context-anchor';
-  anchor.className = 'trainai-injected';
-  
-  anchor.innerHTML = `
-    <div class="anchor-header">
-      📌 Resume Anchor
-      <div>
-        <button class="anchor-toggle" id="trainai-anchor-min">_</button>
-        <button class="anchor-toggle" id="trainai-anchor-close" style="margin-left: 8px;">×</button>
-      </div>
+    <div class="trainai-tabs">
+      <button class="trainai-tab active" data-tab="tracker">App Tracker</button>
+      <button class="trainai-tab" data-tab="profile">Master Profile</button>
     </div>
-    <div class="anchor-body" id="trainai-anchor-body">
-      <p class="anchor-desc">Paste your exact resume timeline here. If the AI interviewer gets confused about dates, read directly from here to correct it instantly.</p>
-      <textarea id="trainai-anchor-text" placeholder="e.g., 2021-2023: Senior Developer at TechCorp..."></textarea>
+    
+    <div class="trainai-tab-content active" id="trainai-tab-tracker">
+      <div id="trainai-tracker-stats">Scanning dashboard...</div>
+      <div id="trainai-tracker-advice" class="trainai-alert"></div>
+    </div>
+    
+    <div class="trainai-tab-content" id="trainai-tab-profile">
+      <p style="font-size:12px; color:var(--tg-text-sec); margin-top:0;">Save your raw resume text and bio here. We'll use this to scan job matches and autofill your forms.</p>
+      <label>Raw Resume Text</label>
+      <textarea id="tg-profile-resume" placeholder="Paste your entire resume text here..."></textarea>
+      
+      <label>Standard Bio / Intro</label>
+      <textarea id="tg-profile-bio" placeholder="Hi, I am an expert in..."></textarea>
+      
+      <label>LinkedIn URL</label>
+      <input type="text" id="tg-profile-linkedin" placeholder="https://linkedin.com/in/...">
+      
+      <button id="trainai-save-profile">💾 Save Master Profile</button>
+    </div>
+    
+    <div id="trainai-autofill-btn">
+      ⚡ Autofill This Page
     </div>
   `;
-  document.body.appendChild(anchor);
   
-  chrome.storage.local.get(['trainai_resume_anchor'], (res) => {
-    if (res.trainai_resume_anchor) {
-      document.getElementById('trainai-anchor-text').value = res.trainai_resume_anchor;
+  container.appendChild(trigger);
+  container.appendChild(panel);
+  document.body.appendChild(container);
+
+  // Logic: Open/Close Panel
+  trigger.onclick = () => panel.classList.add('open');
+  document.getElementById('trainai-panel-close').onclick = () => panel.classList.remove('open');
+
+  // Logic: Tabs
+  const tabs = panel.querySelectorAll('.trainai-tab');
+  const contents = panel.querySelectorAll('.trainai-tab-content');
+  tabs.forEach(tab => {
+    tab.onclick = () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`trainai-tab-${tab.dataset.tab}`).classList.add('active');
+      if (tab.dataset.tab === 'tracker') runTrackerScan();
+    };
+  });
+
+  // Logic: Master Profile Saving & Loading
+  const pResume = document.getElementById('tg-profile-resume');
+  const pBio = document.getElementById('tg-profile-bio');
+  const pLink = document.getElementById('tg-profile-linkedin');
+  const saveBtn = document.getElementById('trainai-save-profile');
+  
+  chrome.storage.local.get(['tgMasterProfile'], (res) => {
+    if (res.tgMasterProfile) {
+      pResume.value = res.tgMasterProfile.resume || '';
+      pBio.value = res.tgMasterProfile.bio || '';
+      pLink.value = res.tgMasterProfile.linkedin || '';
     }
   });
-  
-  document.getElementById('trainai-anchor-text').addEventListener('input', (e) => {
-    chrome.storage.local.set({ trainai_resume_anchor: e.target.value });
-  });
-  
-  // Minimize
-  document.getElementById('trainai-anchor-min').onclick = () => {
-    const body = document.getElementById('trainai-anchor-body');
-    body.style.display = (body.style.display === 'none') ? 'block' : 'none';
-  };
 
-  // Close completely
-  document.getElementById('trainai-anchor-close').onclick = () => {
-    anchor.style.display = 'none';
-  };
-}
-
-// ----------------------------------------------------
-// FEATURE 3: The Network Translator (Cures "Something went wrong")
-// ----------------------------------------------------
-function injectNetworkTranslator() {
-  if (window.trainaiNetworkInjected) return;
-  window.trainaiNetworkInjected = true;
-  
-  const originalFetch = window.fetch;
-  window.fetch = async function(...args) {
-    try {
-      const response = await originalFetch.apply(this, args);
-      if (!response.ok && isEnabled) {
-        showErrorToast(response.status);
+  saveBtn.onclick = () => {
+    saveBtn.innerText = '⏳ Saving...';
+    chrome.storage.local.set({
+      tgMasterProfile: {
+        resume: pResume.value,
+        bio: pBio.value,
+        linkedin: pLink.value
       }
-      return response;
-    } catch (err) {
-      if (isEnabled) showErrorToast("Network");
-      throw err;
-    }
+    }, () => {
+      setTimeout(() => { saveBtn.innerText = '✅ Saved!'; }, 500);
+      setTimeout(() => { saveBtn.innerText = '💾 Save Master Profile'; }, 2500);
+    });
   };
+
+  // Logic: Autofill Page
+  const autoBtn = document.getElementById('trainai-autofill-btn');
+  autoBtn.onclick = () => {
+    autoBtn.innerText = '⏳ Filling...';
+    chrome.storage.local.get(['tgMasterProfile'], (res) => {
+      if (!res.tgMasterProfile) return;
+      const inputs = document.querySelectorAll('input[type="text"], textarea');
+      inputs.forEach(input => {
+        const name = (input.name || input.id || input.placeholder || '').toLowerCase();
+        if (name.includes('linkedin') || name.includes('url')) {
+          setReactInputValue(input, res.tgMasterProfile.linkedin);
+        } else if (name.includes('bio') || name.includes('about') || name.includes('describe')) {
+          setReactInputValue(input, res.tgMasterProfile.bio);
+        } else if (name.includes('experience') || name.includes('resume')) {
+          setReactInputValue(input, res.tgMasterProfile.resume);
+        }
+      });
+      setTimeout(() => { autoBtn.innerText = '✅ Autofilled!'; }, 500);
+      setTimeout(() => { autoBtn.innerHTML = '⚡ Autofill This Page'; }, 2000);
+    });
+  };
+
+  // Initial scan for tracker
+  runTrackerScan();
 }
 
-function showErrorToast(status) {
-  const existing = document.getElementById('trainai-error-toast');
-  if (existing) existing.remove();
+function setReactInputValue(input, value) {
+  if (!value) return;
+  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+  const nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+  if (input.tagName === 'INPUT') nativeInputValueSetter.call(input, value);
+  if (input.tagName === 'TEXTAREA') nativeTextAreaValueSetter.call(input, value);
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function runTrackerScan() {
+  const statsDiv = document.getElementById('trainai-tracker-stats');
+  const adviceDiv = document.getElementById('trainai-tracker-advice');
+  if (!statsDiv || !adviceDiv) return;
+
+  const text = document.body.innerText.toLowerCase();
+  let apps = 0;
   
-  let msg = "A generic error occurred.";
-  if (status === 500) msg = "Mercor Server Error 500: Their system crashed. Do not keep clicking apply. Wait 5 minutes and refresh.";
-  if (status === 400) msg = "Mercor Error 400: Bad Request. The platform rejected your submission (likely a parsing loop). Try modifying your resume format.";
-  if (status === "Network") msg = "Network Disconnected. Your last action did not save.";
+  // A crude but effective heuristic to find the "Applications X" text on the dashboard
+  const appMatch = document.body.innerText.match(/Applications\s*(\d+)/i);
+  if (appMatch) apps = parseInt(appMatch[1]);
   
-  const toast = document.createElement('div');
-  toast.id = 'trainai-error-toast';
-  toast.className = 'trainai-injected';
-  toast.innerHTML = `
-    <strong>⚠️ Translator Alert</strong>
-    <p>${msg}</p>
-    <button onclick="this.parentElement.remove()">Dismiss</button>
+  statsDiv.innerHTML = `
+    <div class="tg-stat-box">
+      <strong>${apps}</strong>
+      <span>Active Applications</span>
+    </div>
   `;
-  document.body.appendChild(toast);
-}
 
-// ----------------------------------------------------
-// FEATURE 4: The "Next Step" Demystifier
-// ----------------------------------------------------
-function injectDemystifier() {
-  if (document.getElementById('trainai-demystifier')) return;
-  
-  // Wait for React to load dashboard content
-  const bodyText = document.body.innerText.toLowerCase();
-  
-  let advice = "💡 Your apps are in the algorithm. Apply to 3+ more Domain Expert roles to force priority.";
-  if (bodyText.includes('incomplete') || bodyText.includes('step 2') || bodyText.includes('step 3')) {
-    advice = "🚨 You have incomplete applications. Finish those first (especially Step 3 Video Interviews) before applying to new roles.";
+  if (apps < 3) {
+    adviceDiv.className = 'trainai-alert tg-alert-warning';
+    adviceDiv.innerHTML = '⚠️ <strong>Low Volume:</strong> The algorithm prioritizes candidates with 3+ applications. Apply to more domain expert roles to trigger priority grading.';
+  } else if (text.includes('incomplete') || text.includes('step 2') || text.includes('step 3')) {
+    adviceDiv.className = 'trainai-alert tg-alert-danger';
+    adviceDiv.innerHTML = '🚨 <strong>Incomplete Found:</strong> You have roles waiting on Video Interviews. The AI will not grade you until these are finished.';
+  } else {
+    adviceDiv.className = 'trainai-alert tg-alert-success';
+    adviceDiv.innerHTML = '✅ <strong>Pipeline Healthy:</strong> You are fully in the AI grading algorithm. No action needed, wait for email updates.';
   }
-
-  const demystifier = document.createElement('div');
-  demystifier.id = 'trainai-demystifier';
-  demystifier.className = 'trainai-injected';
-  demystifier.innerHTML = `
-    <strong>💡 TrainAIToGain Tip:</strong> ${advice}
-    <span class="trainai-close" onclick="this.parentElement.remove()">×</span>
-  `;
-  document.body.appendChild(demystifier);
-  
-  // Auto-dismiss after 10 seconds
-  setTimeout(() => {
-    if (demystifier.parentElement) {
-      demystifier.style.opacity = '0';
-      setTimeout(() => demystifier.remove(), 300);
-    }
-  }, 10000);
 }
 
 // ----------------------------------------------------
-// FEATURE 5: The Human Support Escalator (SOS Button)
+// FEATURE 3: The ATS Pre-Scanner
 // ----------------------------------------------------
-function injectSOSButton() {
-  if (document.getElementById('trainai-sos-btn')) return;
+function injectATSScanner() {
+  if (document.getElementById('trainai-ats-scanner')) return;
   
-  const sos = document.createElement('button');
-  sos.id = 'trainai-sos-btn';
-  sos.className = 'trainai-injected';
-  sos.innerText = '🆘 Stuck?';
-  document.body.appendChild(sos);
+  // Look for the apply button container or job title to anchor the scanner
+  const mainContent = document.querySelector('main') || document.body;
   
-  sos.onclick = () => {
-    const template = "ESCALATION REQUIRED: My account is experiencing a critical error preventing interview/assessment completion. Please escalate to a human agent immediately to clear the infinite loop so I can proceed.";
-    navigator.clipboard.writeText(template).then(() => {
-      alert("An aggressive escalation script has been copied to your clipboard! Paste this into an email to Mercor Support.");
-      window.location.href = "mailto:support@mercor.com?subject=ESCALATION%20REQUIRED";
+  const scanner = document.createElement('div');
+  scanner.id = 'trainai-ats-scanner';
+  scanner.className = 'trainai-injected';
+  scanner.innerHTML = `<button id="tg-scan-btn">🔍 Run ATS Keyword Scan</button>`;
+  
+  // Try to inject it cleanly at the top of the content
+  mainContent.insertBefore(scanner, mainContent.firstChild);
+
+  document.getElementById('tg-scan-btn').onclick = () => {
+    const btn = document.getElementById('tg-scan-btn');
+    btn.innerText = '⏳ Scanning...';
+    
+    chrome.storage.local.get(['tgMasterProfile'], (res) => {
+      const resume = (res.tgMasterProfile && res.tgMasterProfile.resume) ? res.tgMasterProfile.resume.toLowerCase() : '';
+      if (!resume) {
+        alert("Please save your Raw Resume Text in the TrainAIToGain Side Panel first!");
+        btn.innerText = '🔍 Run ATS Keyword Scan';
+        return;
+      }
+
+      // Extract text from the page (the job description)
+      const jdText = document.body.innerText.toLowerCase();
+      
+      // Highly crude keyword extraction (just for demonstration of value)
+      const commonTechWords = ['python', 'react', 'javascript', 'sql', 'aws', 'docker', 'machine learning', 'ai', 'data analysis', 'figma', 'node.js', 'typescript', 'rest api', 'agile'];
+      let foundJdWords = commonTechWords.filter(w => jdText.includes(w));
+      
+      if (foundJdWords.length === 0) foundJdWords = ['communication', 'leadership', 'problem solving']; // Fallback
+      
+      let matched = 0;
+      let missing = [];
+      foundJdWords.forEach(w => {
+        if (resume.includes(w)) matched++;
+        else missing.push(w);
+      });
+      
+      let score = Math.round((matched / foundJdWords.length) * 100) || 100;
+
+      // Show result modal
+      const modal = document.createElement('div');
+      modal.className = 'tg-modal-overlay trainai-injected';
+      modal.innerHTML = `
+        <div class="tg-modal">
+          <h3>ATS Scanner Results</h3>
+          <div class="tg-score ${score >= 70 ? 'tg-good' : 'tg-bad'}">${score}% Match</div>
+          <p>Mercor's AI parser will scan your resume for these specific terms found in the job description.</p>
+          ${missing.length > 0 ? `
+            <div class="tg-missing-box">
+              <strong>Missing Keywords (Add these!):</strong>
+              <ul>${missing.map(m => `<li>${m}</li>`).join('')}</ul>
+            </div>
+          ` : '<div class="tg-missing-box tg-good-box">You hit all the core keywords!</div>'}
+          <button onclick="this.closest('.tg-modal-overlay').remove()">Close</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      btn.innerText = '✅ Scan Complete';
+      setTimeout(() => { btn.innerText = '🔍 Run ATS Keyword Scan'; }, 3000);
     });
   };
 }
 
 // ----------------------------------------------------
-// FEATURE 6: The ATS Warning
+// FEATURE 4: The M.E.A.T. Framework Coach
 // ----------------------------------------------------
-function injectATSWarning() {
-  if (document.getElementById('trainai-ats-warning')) return;
+let activeCoachTarget = null;
+
+function handleTextareaFocus(e) {
+  if (!isEnabled) return;
+  if (e.target.tagName === 'TEXTAREA') {
+    activeCoachTarget = e.target;
+    injectCoachWidget(e.target);
+    updateCoachScore(e.target.value);
+  }
+}
+
+function handleTextareaBlur(e) {
+  if (e.target.tagName === 'TEXTAREA') {
+    setTimeout(() => {
+      // Small delay to allow clicking on the widget if needed
+      if (activeCoachTarget === e.target) {
+        const widget = document.getElementById('trainai-meat-coach');
+        if (widget) widget.classList.add('tg-fade-out');
+        setTimeout(() => { if (widget) widget.remove(); activeCoachTarget = null; }, 300);
+      }
+    }, 200);
+  }
+}
+
+function handleMEATCoaching(e) {
+  if (!isEnabled) return;
+  if (e.target === activeCoachTarget) {
+    updateCoachScore(e.target.value);
+  }
+}
+
+function injectCoachWidget(textarea) {
+  if (document.getElementById('trainai-meat-coach')) return;
   
-  const fileInputs = document.querySelectorAll('input[type="file"]');
-  if (fileInputs.length === 0) return;
-  
-  const warning = document.createElement('div');
-  warning.id = 'trainai-ats-warning';
-  warning.className = 'trainai-injected';
-  warning.innerHTML = `
-    <strong>⚠️ WARNING:</strong> Mercor's ATS parser is extremely rigid. If your PDF has columns, graphics, or tables, it will fail and trap you in an infinite "parsing loop." Ensure your resume is a simple, 1-column text document before uploading.
+  const widget = document.createElement('div');
+  widget.id = 'trainai-meat-coach';
+  widget.className = 'trainai-injected';
+  widget.innerHTML = `
+    <div class="tg-coach-header">🥩 M.E.A.T. Coach Live</div>
+    <div class="tg-coach-stats">
+      <span id="tg-coach-metrics">0 Metrics</span> | 
+      <span id="tg-coach-verbs">0 Verbs</span>
+    </div>
+    <div id="tg-coach-advice" class="tg-coach-advice">Type to analyze...</div>
   `;
   
-  const input = fileInputs[0];
-  input.parentNode.insertBefore(warning, input);
+  // Position it right below the textarea
+  const rect = textarea.getBoundingClientRect();
+  widget.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+  widget.style.left = (rect.left + window.scrollX) + 'px';
+  widget.style.width = rect.width + 'px';
+  
+  document.body.appendChild(widget);
+  
+  // Re-position on window resize
+  window.addEventListener('resize', () => {
+    if (activeCoachTarget && document.getElementById('trainai-meat-coach')) {
+      const r = activeCoachTarget.getBoundingClientRect();
+      const w = document.getElementById('trainai-meat-coach');
+      w.style.top = (r.bottom + window.scrollY + 8) + 'px';
+      w.style.left = (r.left + window.scrollX) + 'px';
+      w.style.width = r.width + 'px';
+    }
+  });
+}
+
+function updateCoachScore(text) {
+  const widget = document.getElementById('trainai-meat-coach');
+  if (!widget) return;
+  
+  const metricsCount = (text.match(/\d+|%|\$|percent/g) || []).length;
+  const actionVerbs = ['led', 'managed', 'developed', 'created', 'built', 'increased', 'decreased', 'improved', 'optimized', 'engineered', 'designed', 'architected'];
+  
+  const lowerText = text.toLowerCase();
+  let verbCount = 0;
+  actionVerbs.forEach(v => {
+    if (lowerText.includes(v)) verbCount++;
+  });
+  
+  const vagueWords = ['helped', 'worked on', 'was responsible for', 'good', 'stuff', 'things'];
+  let vagueFound = vagueWords.filter(v => lowerText.includes(v));
+
+  document.getElementById('tg-coach-metrics').innerText = `${metricsCount} Metrics`;
+  document.getElementById('tg-coach-verbs').innerText = `${verbCount} Verbs`;
+  
+  const adviceDiv = document.getElementById('tg-coach-advice');
+  if (vagueFound.length > 0) {
+    adviceDiv.innerHTML = `❌ Weak phrasing detected: "${vagueFound[0]}". Use strong action verbs instead.`;
+    adviceDiv.style.color = '#ef4444';
+  } else if (metricsCount === 0 && text.length > 20) {
+    adviceDiv.innerHTML = `⚠️ No metrics found. Add numbers, percentages, or $ impact.`;
+    adviceDiv.style.color = '#f59e0b';
+  } else if (metricsCount > 0 && verbCount > 0) {
+    adviceDiv.innerHTML = `✅ Excellent! Strong M.E.A.T. structure.`;
+    adviceDiv.style.color = '#10b981';
+  } else {
+    adviceDiv.innerHTML = `Keep typing...`;
+    adviceDiv.style.color = 'var(--tg-text-sec)';
+  }
 }

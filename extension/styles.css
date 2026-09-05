@@ -1,211 +1,319 @@
-/* TrainAIToGain V2 Premium "Expensive" UI */
+/* TrainAIToGain - The "Get You Hired" Extension V2.0 Styles */
 
-/* 1. Auto-Cache Vault Button */
-#trainai-restore-btn {
+:root {
+  --tg-bg: #0f172a;
+  --tg-surface: rgba(30, 41, 59, 0.95);
+  --tg-surface-light: rgba(51, 65, 85, 0.9);
+  --tg-accent: #10b981;
+  --tg-accent-hover: #059669;
+  --tg-text: #f8fafc;
+  --tg-text-sec: #94a3b8;
+  --tg-border: rgba(255, 255, 255, 0.1);
+  --tg-danger: #ef4444;
+  --tg-warning: #f59e0b;
+}
+
+/* 1. Side Panel Trigger */
+#trainai-panel-trigger {
   position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: var(--tg-surface);
+  color: var(--tg-text);
+  padding: 12px 16px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border: 1px solid var(--tg-border);
+  border-right: none;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 999998;
+  display: flex;
+  align-items: center;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.3);
+  backdrop-filter: blur(12px);
+  transition: transform 0.2s;
+}
+#trainai-panel-trigger:hover {
+  transform: translateY(-50%) translateX(-4px);
+  background: var(--tg-surface-light);
+}
+
+/* 2. Side Panel Container */
+#trainai-side-panel {
+  position: fixed;
+  top: 0;
+  right: -400px; /* Hidden by default */
+  width: 380px;
+  height: 100vh;
+  background: var(--tg-surface);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid var(--tg-border);
+  z-index: 999999;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--tg-text);
+  box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+  transition: right 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  display: flex;
+  flex-direction: column;
+}
+#trainai-side-panel.open {
+  right: 0;
+}
+
+.trainai-panel-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--tg-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.trainai-panel-header h2 {
+  margin: 0;
+  font-size: 18px;
+  flex-grow: 1;
+}
+#trainai-panel-close {
+  background: transparent;
+  border: none;
+  color: var(--tg-text-sec);
+  font-size: 24px;
+  cursor: pointer;
+}
+#trainai-panel-close:hover { color: var(--tg-text); }
+
+/* Tabs */
+.trainai-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--tg-border);
+}
+.trainai-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--tg-text-sec);
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.trainai-tab:hover { color: var(--tg-text); background: rgba(255,255,255,0.02); }
+.trainai-tab.active {
+  color: var(--tg-accent);
+  border-bottom-color: var(--tg-accent);
+}
+
+.trainai-tab-content {
+  display: none;
+  padding: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.trainai-tab-content.active {
+  display: block;
+}
+
+/* Master Profile Form */
+#trainai-tab-profile label {
+  display: block;
+  font-size: 12px;
+  color: var(--tg-text-sec);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+#trainai-tab-profile input, #trainai-tab-profile textarea {
+  width: 100%;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--tg-border);
+  color: var(--tg-text);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+#trainai-tab-profile textarea {
+  height: 120px;
+  resize: vertical;
+}
+#trainai-tab-profile input:focus, #trainai-tab-profile textarea:focus {
+  outline: none;
+  border-color: var(--tg-accent);
+}
+#trainai-save-profile {
+  width: 100%;
+  background: var(--tg-accent);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#trainai-save-profile:hover { background: var(--tg-accent-hover); }
+
+/* Autofill Button */
+#trainai-autofill-btn {
+  position: absolute;
   bottom: 24px;
+  left: 24px;
   right: 24px;
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 100px;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  z-index: 999999;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
-}
-#trainai-restore-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
-}
-
-/* 2. Context Anchor Widget */
-#trainai-context-anchor {
-  position: fixed;
-  top: 100px;
-  right: 24px;
-  width: 340px;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: white;
-  z-index: 999999;
-  font-family: 'Inter', system-ui, sans-serif;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.anchor-header {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 12px 16px;
-  font-weight: 700;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.anchor-toggle {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-}
-.anchor-toggle:hover { color: white; }
-
-.anchor-body {
   padding: 16px;
-}
-
-.anchor-desc {
-  font-size: 12px;
-  color: #94a3b8;
-  margin-top: 0;
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-
-#trainai-anchor-text {
-  width: 100%;
-  height: 200px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: #e2e8f0;
-  padding: 12px;
-  font-family: monospace;
-  font-size: 12px;
-  line-height: 1.5;
-  resize: vertical;
-  box-sizing: border-box;
-}
-#trainai-anchor-text:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-}
-
-/* 3. Network Translator Toast */
-#trainai-error-toast {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(127, 29, 29, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(248, 113, 113, 0.3);
-  color: white;
-  padding: 16px 20px;
   border-radius: 12px;
-  z-index: 999999;
-  font-family: 'Inter', system-ui, sans-serif;
-  box-shadow: 0 10px 30px rgba(127, 29, 29, 0.4);
-  max-width: 400px;
-  width: 100%;
-  animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  transition: all 0.2s;
+  display: none; /* Managed by JS */
 }
+#trainai-autofill-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
 
-#trainai-error-toast strong {
+/* Tracker Stats */
+.tg-stat-box {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--tg-border);
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.tg-stat-box strong {
   display: block;
-  font-size: 14px;
-  color: #fca5a5;
+  font-size: 36px;
+  color: var(--tg-accent);
   margin-bottom: 4px;
 }
-
-#trainai-error-toast p {
+.tg-stat-box span {
   font-size: 13px;
-  margin: 0 0 12px 0;
+  color: var(--tg-text-sec);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.trainai-alert {
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 13px;
   line-height: 1.5;
+  border-left: 4px solid;
 }
+.tg-alert-warning { background: rgba(245, 158, 11, 0.1); border-color: var(--tg-warning); color: #fcd34d; }
+.tg-alert-danger { background: rgba(239, 68, 68, 0.1); border-color: var(--tg-danger); color: #fca5a5; }
+.tg-alert-success { background: rgba(16, 185, 129, 0.1); border-color: var(--tg-accent); color: #6ee7b7; }
 
-#trainai-error-toast button {
-  background: rgba(0, 0, 0, 0.3);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-#trainai-error-toast button:hover { background: rgba(0, 0, 0, 0.5); }
-
-@keyframes slideDown {
-  from { top: -100px; opacity: 0; }
-  to { top: 24px; opacity: 1; }
-}
-
-/* 4. Dashboard Demystifier */
-#trainai-demystifier {
-  position: fixed;
-  bottom: 80px;
-  left: 24px;
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-  padding: 16px 20px;
+/* 3. ATS Scanner */
+#trainai-ats-scanner {
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--tg-surface-light);
+  border: 1px solid var(--tg-border);
   border-radius: 12px;
-  max-width: 350px;
-  z-index: 999998;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 13px;
-  line-height: 1.5;
-  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  transition: opacity 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
-.trainai-close {
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 18px;
-  opacity: 0.7;
-}
-.trainai-close:hover { opacity: 1; }
-
-/* 5. ATS Warning */
-#trainai-ats-warning {
-  background: #fffbeb;
-  border: 1px solid #fcd34d;
-  border-left: 4px solid #f59e0b;
-  color: #b45309;
-  padding: 12px 16px;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-/* 6. SOS Button */
-#trainai-sos-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 250px;
-  background: #ef4444;
+#tg-scan-btn {
+  background: var(--tg-accent);
   color: white;
   border: none;
-  padding: 14px 24px;
-  border-radius: 100px;
+  padding: 12px 24px;
+  border-radius: 8px;
   font-weight: 700;
-  font-family: 'Inter', system-ui, sans-serif;
-  z-index: 999999;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-  transition: transform 0.2s;
+  font-size: 14px;
+}
+
+/* Modal Overlay for ATS Scanner */
+.tg-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(4px);
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.tg-modal {
+  background: var(--tg-surface);
+  border: 1px solid var(--tg-border);
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  color: var(--tg-text);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  text-align: center;
+}
+.tg-modal h3 { margin: 0 0 16px 0; }
+.tg-score {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+.tg-good { color: var(--tg-accent); }
+.tg-bad { color: var(--tg-warning); }
+.tg-missing-box {
+  background: rgba(0,0,0,0.3);
+  padding: 16px;
+  border-radius: 8px;
+  text-align: left;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+.tg-missing-box ul { margin: 8px 0 0 0; padding-left: 20px; color: #fca5a5; }
+.tg-good-box { color: #6ee7b7; text-align: center; }
+.tg-modal button {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.tg-modal button:hover { background: rgba(255,255,255,0.2); }
+
+/* 4. M.E.A.T. Coach Widget */
+#trainai-meat-coach {
+  position: absolute;
+  background: var(--tg-surface);
+  border: 1px solid var(--tg-border);
+  padding: 12px;
+  border-radius: 8px;
+  z-index: 99999;
+  color: var(--tg-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeIn 0.2s ease;
   backdrop-filter: blur(8px);
 }
-#trainai-sos-btn:hover { transform: scale(1.05); }
+.tg-fade-out { opacity: 0; transition: opacity 0.2s ease; }
+
+.tg-coach-header {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--tg-text-sec);
+  font-weight: 700;
+}
+.tg-coach-stats {
+  font-size: 14px;
+  font-weight: 600;
+}
+.tg-coach-advice {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
