@@ -103,6 +103,16 @@
   flex: 1;
   overflow-y: auto;
 }
+.trainai-dashboard-container::-webkit-scrollbar {
+  width: 6px;
+}
+.trainai-dashboard-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.trainai-dashboard-container::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}
 
 .tg-section {
     display: flex;
