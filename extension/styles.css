@@ -1,20 +1,20 @@
-/* TrainAIToGain - Clean Professional SaaS Design (Single Pane Auto-Navigation) */
+/* TrainAIToGain - Ultra Professional Native UI (Linear / Stripe aesthetic) */
 
 :root {
-  --tg-bg: #f8fafc;
-  --tg-surface: rgba(241, 245, 249, 0.85); /* Light Gray Transparent */
-  --tg-surface-light: rgba(255, 255, 255, 0.9);
-  --tg-accent: #059669; /* Branded Emerald */
-  --tg-accent-hover: #047857;
-  --tg-accent-glow: rgba(5, 150, 105, 0.15);
+  --tg-bg: #ffffff;
+  --tg-surface: #ffffff;
+  --tg-surface-hover: #f1f5f9;
+  --tg-accent: #0f172a; /* Strict Black/Dark Slate for actions */
+  --tg-accent-hover: #334155;
   --tg-text: #0f172a;
-  --tg-text-sec: #475569;
-  --tg-border: rgba(0, 0, 0, 0.1);
+  --tg-text-sec: #64748b;
+  --tg-border: #e2e8f0;
+  --tg-success: #059669;
   --tg-danger: #ef4444;
-  --tg-warning: #f59e0b;
+  --tg-warning: #d97706;
 }
 
-/* 1. Side Panel Trigger (Soft Pill) */
+/* 1. Side Panel Trigger */
 #trainai-panel-trigger {
   position: fixed;
   top: 50%;
@@ -22,55 +22,40 @@
   transform: translateY(-50%);
   background: var(--tg-surface);
   color: var(--tg-text);
-  padding: 14px 20px 14px 16px;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
+  padding: 10px 14px 10px 12px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   border: 1px solid var(--tg-border);
   border-right: none;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
   cursor: pointer;
   z-index: 999998;
   display: flex;
   align-items: center;
-  box-shadow: -4px 0 16px rgba(0,0,0,0.06);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
+  box-shadow: -2px 0 12px rgba(0,0,0,0.04);
+  transition: transform 0.2s, background 0.2s;
 }
 #trainai-panel-trigger:hover {
-  transform: translateY(-50%) translateX(-6px);
-  background: white;
-  box-shadow: -8px 0 24px rgba(0,0,0,0.1);
+  transform: translateY(-50%) translateX(-4px);
+  background: var(--tg-surface-hover);
 }
 
-/* Pulse animation for the trigger to draw attention initially */
-@keyframes tgPulseTrigger {
-  0% { box-shadow: -4px 0 16px rgba(5, 150, 105, 0.2); }
-  50% { box-shadow: -4px 0 16px rgba(5, 150, 105, 0.6); }
-  100% { box-shadow: -4px 0 16px rgba(5, 150, 105, 0.2); }
-}
-.tg-pulse-anim {
-  animation: tgPulseTrigger 2s infinite;
-}
-
-/* 2. Side Panel Container (Sleek Drawer) */
+/* 2. Side Panel Container */
 #trainai-side-panel {
   position: fixed;
   top: 0;
   right: -420px;
-  width: 400px;
+  width: 380px;
   height: 100vh;
-  background: var(--tg-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--tg-bg);
   border-left: 1px solid var(--tg-border);
   z-index: 999999;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   color: var(--tg-text);
-  box-shadow: -10px 0 30px rgba(0,0,0,0.08);
-  transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  box-shadow: -4px 0 24px rgba(0,0,0,0.06);
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
 }
@@ -83,46 +68,40 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 28px;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--tg-border);
   background: var(--tg-surface);
 }
 .trainai-panel-header h2 {
   margin: 0;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--tg-text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 #trainai-panel-close {
   background: none;
   border: none;
   color: var(--tg-text-sec);
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
-  padding: 0;
-  width: 32px;
-  height: 32px;
+  transition: color 0.2s;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
 }
 #trainai-panel-close:hover {
   color: var(--tg-text);
-  background: rgba(0,0,0,0.05);
-  transform: rotate(90deg);
 }
 
 /* 4. Single Pane Dashboard Container */
 .trainai-dashboard-container {
   display: flex;
   flex-direction: column;
-  padding: 24px 28px;
+  padding: 24px;
   flex: 1;
   overflow-y: auto;
-  background: var(--tg-surface);
 }
 
 .tg-section {
@@ -131,11 +110,11 @@
 }
 
 .tg-section-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--tg-accent);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--tg-text-sec);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.08em;
     margin: 0 0 16px 0;
 }
 
@@ -149,157 +128,171 @@
 
 /* 5. Dashboard / App Tracker UI */
 #trainai-tracker-stats {
-  font-size: 48px;
-  font-weight: 800;
-  color: var(--tg-accent);
-  text-align: center;
-  margin: 8px 0;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--tg-text);
+  margin: 0 0 4px 0;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 #trainai-tracker-stats span {
   display: block;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--tg-text-sec);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 .tg-algo-status {
-  text-align: center;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 8px 16px;
-  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
   display: inline-block;
-  margin: 0 auto 16px auto;
+  margin: 12px 0 16px 0;
+  border: 1px solid var(--tg-border);
 }
 .tg-algo-status.priority {
-  background: rgba(16,185,129,0.1);
-  color: #059669;
+  background: #ecfdf5;
+  color: var(--tg-success);
+  border-color: #a7f3d0;
 }
 .tg-algo-status.low {
-  background: rgba(245,158,11,0.1);
-  color: #b45309;
+  background: #fffbeb;
+  color: var(--tg-warning);
+  border-color: #fde68a;
 }
 
 .trainai-alert {
-  background: var(--tg-surface-light);
+  background: #f8fafc;
   border: 1px solid var(--tg-border);
   color: var(--tg-text);
-  padding: 16px;
-  border-radius: 16px;
+  padding: 12px 16px;
+  border-radius: 6px;
   font-size: 13px;
-  line-height: 1.6;
-  font-weight: 500;
+  line-height: 1.5;
 }
 
-/* 6. Action Menu (Auto-Nav Buttons) */
+/* 6. Action Menu (Clean Native Links) */
+.tg-action-list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--tg-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
 .tg-action-btn {
-    background: var(--tg-text);
-    color: white;
+    background: white;
+    color: var(--tg-text);
     border: none;
-    padding: 14px 16px;
-    border-radius: 16px;
+    border-bottom: 1px solid var(--tg-border);
+    padding: 16px;
     cursor: pointer;
     text-align: left;
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 12px;
-    transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.15s;
+}
+.tg-action-btn:last-child {
+    border-bottom: none;
 }
 .tg-action-btn:hover {
-    transform: translateY(-2px);
-    background: #334155;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    background: var(--tg-surface-hover);
+}
+.tg-action-btn-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 .tg-action-btn span {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 600;
 }
 .tg-action-btn small {
     font-size: 12px;
-    color: rgba(255,255,255,0.7);
+    color: var(--tg-text-sec);
     font-weight: 400;
-    line-height: 1.4;
+}
+.tg-action-btn svg {
+    color: var(--tg-text-sec);
 }
 
 /* 7. Master Profile Inputs */
 .trainai-dashboard-container label {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--tg-text-sec);
+  font-weight: 500;
+  color: var(--tg-text);
   margin-top: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   display: block;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 .trainai-dashboard-container textarea,
 .trainai-dashboard-container input {
   width: 100%;
   box-sizing: border-box;
-  background: var(--tg-surface-light);
+  background: white;
   border: 1px solid var(--tg-border);
   color: var(--tg-text);
-  padding: 16px;
-  border-radius: 16px;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  padding: 12px;
+  border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: 13px;
   line-height: 1.5;
-  transition: all 0.3s ease;
+  transition: border-color 0.15s, box-shadow 0.15s;
   resize: vertical;
 }
-/* BUG FIX: Increased Textarea Heights */
 #tg-profile-resume { height: 200px; }
-#tg-profile-bio { height: 120px; }
+#tg-profile-bio { height: 100px; }
 
 .trainai-dashboard-container textarea:focus,
 .trainai-dashboard-container input:focus {
   outline: none;
-  border-color: var(--tg-accent);
-  box-shadow: 0 0 0 3px var(--tg-accent-glow);
-  background: white;
+  border-color: var(--tg-text);
+  box-shadow: 0 0 0 1px var(--tg-text);
 }
 #trainai-save-profile {
   background: var(--tg-accent);
   color: white;
   border: none;
-  padding: 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 700;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 24px;
-  transition: all 0.3s;
-  box-shadow: 0 4px 12px var(--tg-accent-glow);
+  margin-top: 20px;
+  transition: background 0.15s;
 }
 #trainai-save-profile:hover {
   background: var(--tg-accent-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(5,150,105,0.3);
 }
 
-/* 8. Autofill Button (Floating Pill) */
+/* 8. Autofill Button (Bottom Bar) */
+.tg-bottom-bar {
+    padding: 16px 24px;
+    border-top: 1px solid var(--tg-border);
+    background: var(--tg-surface);
+}
 #trainai-autofill-btn {
-  margin: 0 28px 28px 28px;
+  width: 100%;
   background: var(--tg-accent);
   color: white;
-  padding: 18px;
+  border: none;
+  padding: 14px;
   text-align: center;
-  border-radius: 24px;
-  font-weight: 700;
-  font-size: 15px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
-  box-shadow: 0 8px 20px var(--tg-accent-glow);
-  transition: all 0.3s;
-  flex-shrink: 0;
+  transition: background 0.15s;
 }
 #trainai-autofill-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 24px rgba(5, 150, 105, 0.4);
+  background: var(--tg-accent-hover);
+}
+#trainai-autofill-btn.disabled {
+    background: var(--tg-surface-hover);
+    color: var(--tg-text-sec);
+    cursor: not-allowed;
+    border: 1px solid var(--tg-border);
 }
 
 /* 9. Premium Toasts */
@@ -308,80 +301,71 @@
   bottom: -100px;
   left: 50%;
   transform: translateX(-50%);
-  background: #0f172a;
+  background: var(--tg-text);
   color: white;
-  padding: 16px 24px;
-  border-radius: 100px;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   z-index: 9999999;
-  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .tg-toast.show {
-  bottom: 40px;
+  bottom: 24px;
 }
 
 /* 10. Laser Autofill Animation */
 @keyframes tgLaserScan {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8); background: rgba(16,185,129,0.1); }
-  50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); background: rgba(16,185,129,0.2); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); background: transparent; }
+  0% { box-shadow: 0 0 0 0 rgba(15, 23, 42, 0.5); background: #f8fafc; }
+  50% { box-shadow: 0 0 0 3px rgba(15, 23, 42, 0); background: #f1f5f9; }
+  100% { box-shadow: 0 0 0 0 rgba(15, 23, 42, 0); background: white; }
 }
 .tg-laser-scan {
   animation: tgLaserScan 0.4s ease-out;
 }
 
-/* 12. Injected Page Tools (ATS Scanner & Impact Coach) */
+/* 12. Injected Page Tools */
 #tg-scan-btn {
   background: white;
   color: var(--tg-text);
   border: 1px solid var(--tg-border);
-  padding: 14px 24px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  margin: 24px 0;
+  margin: 16px 0;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: background 0.15s;
 }
 #tg-scan-btn:hover {
-  background: var(--tg-surface-light);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-  border-color: var(--tg-accent);
+  background: var(--tg-surface-hover);
 }
 
 .tg-coach-container {
   background: white;
   border: 1px solid var(--tg-border);
   border-top: none;
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  padding: 16px;
-  margin-top: -8px; 
-  margin-bottom: 24px;
-  font-family: 'Inter', system-ui, sans-serif;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 12px;
+  margin-top: -4px; 
+  margin-bottom: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   color: var(--tg-text);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 .tg-coach-header {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 600;
   color: var(--tg-text-sec);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
 }
 .tg-coach-stats {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
 }

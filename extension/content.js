@@ -37,12 +37,7 @@ function initializeExtension() {
   
   const trigger = document.createElement('button');
   trigger.id = 'trainai-panel-trigger';
-  trigger.className = 'tg-pulse-anim';
-  trigger.innerHTML = `
-    <img src="${chrome.runtime.getURL('icon.svg')}" width="20" height="20" style="margin-right:8px; border-radius:4px;">
-    TrainAI
-  `;
-  trigger.addEventListener('mouseenter', () => trigger.classList.remove('tg-pulse-anim'));
+  trigger.innerHTML = `TrainAI`;
 
   chrome.storage.local.get(['tgMasterProfile'], (res) => {
     let profile = res.tgMasterProfile || { resume: '', bio: '', linkedin: '' };
@@ -53,24 +48,21 @@ function initializeExtension() {
     
     panel.innerHTML = `
       <div class="trainai-panel-header">
-        <div style="display:flex; align-items:center;">
-          <img src="${chrome.runtime.getURL('icon.svg')}" width="24" height="24" style="border-radius:4px; margin-right:8px;">
-          <h2>TrainAIToGain</h2>
-        </div>
+        <h2>TrainAIToGain</h2>
         <button id="trainai-panel-close">×</button>
       </div>
       
       <div class="trainai-dashboard-container">
         
-        ${needsOnboarding ? '<div class="trainai-alert" style="margin-bottom:24px; border-color:var(--tg-accent); color:var(--tg-accent); background:rgba(5, 150, 105,0.05);"><strong>👋 STEP 1: SETUP</strong><br>Paste your resume below to unlock the tools.</div>' : ''}
+        ${needsOnboarding ? '<div class="trainai-alert" style="margin-bottom:24px;"><strong>STEP 1: SETUP</strong><br>Paste your resume below to unlock the tools.</div>' : ''}
 
         <!-- SECTION 1: Algorithm Status (App Tracker) -->
         <div class="tg-section">
-            <h3 class="tg-section-title">📊 Your Algorithm Status</h3>
+            <h3 class="tg-section-title">STATUS</h3>
             <div id="trainai-tracker-stats">
                 <div class="tg-stat-box">
                 <strong id="tg-stat-number">0</strong>
-                <span>Active Applications</span>
+                <span>Applications</span>
                 </div>
             </div>
             <div id="tg-algo-status" class="tg-algo-status low">Priority: Low Visibility</div>
@@ -81,8 +73,7 @@ function initializeExtension() {
 
         <!-- SECTION 2: Master Profile Vault -->
         <div class="tg-section">
-            <h3 class="tg-section-title">🔒 Master Profile Vault</h3>
-            <p style="font-size:12px; color:var(--tg-text-sec); margin-top:0;">Save your raw resume text and bio here. We'll use this to scan job matches and autofill your forms.</p>
+            <h3 class="tg-section-title">PROFILE</h3>
             
             <label>Raw Resume Text</label>
             <textarea id="tg-profile-resume" placeholder="Paste your entire resume text here...">${profile.resume}</textarea>
@@ -93,31 +84,37 @@ function initializeExtension() {
             <label>LinkedIn URL</label>
             <input type="text" id="tg-profile-linkedin" placeholder="https://linkedin.com/in/..." value="${profile.linkedin}">
             
-            <button id="trainai-save-profile">💾 Save & Auto-Advance ➔</button>
+            <button id="trainai-save-profile">Save & Auto-Advance</button>
         </div>
 
         <hr class="tg-divider">
 
-        <!-- SECTION 3: Action Menu (Auto-Navigation) -->
-        <div class="tg-section" style="margin-bottom: 24px;">
-            <h3 class="tg-section-title">🚀 Auto-Pilot Menu</h3>
-            <p style="font-size:12px; color:var(--tg-text-sec); margin-top:0;">Let the extension take control and drive you to the right screens.</p>
+        <!-- SECTION 3: Action Menu -->
+        <div class="tg-section">
+            <h3 class="tg-section-title">ACTIONS</h3>
             
-            <button id="tg-nav-jobs" class="tg-action-btn">
-                <span>1. Find Jobs to Scan</span>
-                <small>Navigates to the job board so you can use the ATS Scanner and Autofill.</small>
-            </button>
-            
-            <button id="tg-nav-interview" class="tg-action-btn">
-                <span>2. Practice AI Interview</span>
-                <small>Navigates to the portal so you can test the live Impact Coach.</small>
-            </button>
+            <div class="tg-action-list">
+                <button id="tg-nav-jobs" class="tg-action-btn">
+                    <div class="tg-action-btn-content">
+                        <span>Find Jobs to Scan</span>
+                        <small>Navigates to the job board to use the ATS Scanner.</small>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                
+                <button id="tg-nav-interview" class="tg-action-btn">
+                    <div class="tg-action-btn-content">
+                        <span>Interview Portal</span>
+                        <small>Test the live Impact Coach writing assistant.</small>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
         </div>
-
       </div>
 
-      <div id="trainai-autofill-btn" data-tg-tooltip="Click this button to instantly auto-type your saved resume into all the empty boxes.">
-        ⚡ Autofill This Page
+      <div class="tg-bottom-bar">
+          <button id="trainai-autofill-btn">Autofill This Page</button>
       </div>
     `;
     
@@ -138,39 +135,50 @@ function initializeExtension() {
           linkedin: document.getElementById('tg-profile-linkedin').value
         }
       }, () => {
-        showToast('✅ Profile Saved! Moving to Job Board...');
+        showToast('Profile Saved! Routing to Job Board...');
         setTimeout(() => {
-            window.location.href = '/role-software.html'; // Auto-navigate to next process
+            window.location.href = 'https://work.mercor.com/explore'; // Production Routing
         }, 1500);
       });
     };
 
     // Auto-Pilot Navigation Buttons
     document.getElementById('tg-nav-jobs').onclick = () => {
-        showToast('🚀 Navigating to Job Board...');
-        setTimeout(() => { window.location.href = '/role-software.html'; }, 800);
+        showToast('Routing to Job Board...');
+        setTimeout(() => { window.location.href = 'https://work.mercor.com/explore'; }, 800);
     };
     
     document.getElementById('tg-nav-interview').onclick = () => {
-        showToast('🚀 Navigating to Interview Portal...');
-        setTimeout(() => { window.location.href = '/ai-interview.html'; }, 800);
+        showToast('Routing to Interview Portal...');
+        setTimeout(() => { window.location.href = 'https://work.mercor.com/interviews'; }, 800);
     };
 
-    // Autofill
-    document.getElementById('trainai-autofill-btn').onclick = () => {
+    // Autofill Dynamic Button State
+    const autoBtn = document.getElementById('trainai-autofill-btn');
+    const updateAutofillState = () => {
+        const inputs = document.querySelectorAll('input[type="text"], input[type="url"], textarea');
+        if (inputs.length === 0) {
+            autoBtn.classList.add('disabled');
+            autoBtn.innerText = 'Navigate to a form to Autofill';
+        } else {
+            autoBtn.classList.remove('disabled');
+            autoBtn.innerText = 'Autofill This Form';
+        }
+    };
+    setInterval(updateAutofillState, 1000); // Check for forms periodically
+    updateAutofillState();
+
+    autoBtn.onclick = () => {
+      if (autoBtn.classList.contains('disabled')) return;
+      
       chrome.storage.local.get(['tgMasterProfile'], (res) => {
         if (!res.tgMasterProfile || !res.tgMasterProfile.resume) {
-          showToast('⚠️ Save your Master Profile first!');
+          showToast('Save your Profile first!');
           document.getElementById('tg-profile-resume').focus();
           return;
         }
         
-        const inputs = document.querySelectorAll('input[type="text"], textarea');
-        if (inputs.length === 0) {
-            showToast('⚠️ No form fields detected on this page.');
-            return;
-        }
-
+        const inputs = document.querySelectorAll('input[type="text"], input[type="url"], textarea');
         let delay = 0;
         inputs.forEach((input) => {
           setTimeout(() => {
@@ -194,12 +202,10 @@ function initializeExtension() {
           }, delay);
           delay += 100;
         });
-
-        setTimeout(() => { showToast('⚡ Beam complete! Autofilled successfully.'); }, delay + 300);
+        setTimeout(() => { showToast('Autofilled successfully.'); }, delay + 300);
       });
     };
 
-    // Always run tracker on load
     runTrackerScan();
   });
 
@@ -207,7 +213,7 @@ function initializeExtension() {
 }
 
 // ----------------------------------------------------
-// Wow Factor: UI Helpers
+// UI Helpers
 // ----------------------------------------------------
 function showToast(message) {
     let toast = document.getElementById('tg-toast-msg');
@@ -221,23 +227,8 @@ function showToast(message) {
     setTimeout(() => { toast.className = 'tg-toast'; }, 3000);
 }
 
-function animateNumber(element, finalValue) {
-    let start = 0;
-    let duration = 800; 
-    let stepTime = Math.abs(Math.floor(duration / (finalValue || 1)));
-    if (stepTime === Infinity || finalValue === 0) {
-        element.innerText = 0;
-        return;
-    }
-    let timer = setInterval(() => {
-        start += 1;
-        element.innerText = start;
-        if (start >= finalValue) clearInterval(timer);
-    }, stepTime);
-}
-
 // ----------------------------------------------------
-// SPA Mutation Observer
+// SPA Mutation Observer (Fixed: No innerText reflows)
 // ----------------------------------------------------
 function setupSPAObserver() {
     let timeout;
@@ -245,7 +236,12 @@ function setupSPAObserver() {
         clearTimeout(timeout);
         timeout = setTimeout(() => {
             if (isEnabled) {
-                injectATSScanner();
+                // Check if we are on a job details page based on URL or basic DOM structure without full innerText
+                const path = window.location.href;
+                if (path.includes('job') || path.includes('role') || document.querySelector('h1')) {
+                    injectATSScanner();
+                }
+
                 document.querySelectorAll('textarea').forEach(ta => {
                     if (!ta.dataset.tgCoachAttached) {
                         ta.dataset.tgCoachAttached = 'true';
@@ -285,31 +281,34 @@ function runTrackerScan() {
   const statusElem = document.getElementById('tg-algo-status');
   if (!adviceDiv || !numElem || !statusElem) return;
 
-  const text = document.body.innerText.toLowerCase();
+  // Use textContent which is faster than innerText
+  const text = document.body.textContent.toLowerCase();
   let apps = 0;
   
-  const appMatch = document.body.innerText.match(/(?:active|in progress|under review|applied|submitted).*?(\d+)/i) || document.body.innerText.match(/(\d+).*?(?:active|in progress|under review|applied|submitted)/i);
+  // Broader scraping for applications count
+  const appMatch = text.match(/(?:active|progress|review|applied|submitted|applications)[\s:]*?(\d+)/i) || text.match(/(\d+)[\s:]*?(?:active|progress|review|applied|submitted|applications)/i);
   if (appMatch) {
     apps = parseInt(appMatch[1]);
   } else {
-    const matches = document.body.innerText.match(/\b(?:in progress|active|under review|submitted)\b/gi);
+    // Fallback: Just count occurrences
+    const matches = text.match(/\b(?:progress|active|review|submitted)\b/gi);
     if (matches) apps = matches.length;
   }
   
-  animateNumber(numElem, apps);
+  numElem.innerText = apps;
 
   if (apps < 3) {
     statusElem.className = 'tg-algo-status low';
-    statusElem.innerText = 'Algorithm Priority: Low Visibility';
-    adviceDiv.innerHTML = '⚠️ The algorithm prioritizes candidates with 3+ applications. Apply to more domain expert roles to trigger priority grading.';
+    statusElem.innerText = 'Priority: Low Visibility';
+    adviceDiv.innerHTML = 'The algorithm prioritizes candidates with 3+ applications. Apply to more domain expert roles to trigger priority grading.';
   } else if (text.includes('incomplete') || text.includes('step 2') || text.includes('step 3')) {
     statusElem.className = 'tg-algo-status low';
-    statusElem.innerText = 'Algorithm Priority: Blocked';
-    adviceDiv.innerHTML = '🚨 You have roles waiting on Video Interviews. The AI will not grade you until these are finished.';
+    statusElem.innerText = 'Priority: Blocked';
+    adviceDiv.innerHTML = 'You have roles waiting on Video Interviews. The AI will not grade you until these are finished.';
   } else {
     statusElem.className = 'tg-algo-status priority';
-    statusElem.innerText = 'Algorithm Priority: High';
-    adviceDiv.innerHTML = '✅ You are fully in the AI grading algorithm. No action needed, wait for email updates.';
+    statusElem.innerText = 'Priority: High';
+    adviceDiv.innerHTML = 'You are fully in the AI grading algorithm. No action needed, wait for email updates.';
   }
 }
 
@@ -319,24 +318,18 @@ function runTrackerScan() {
 function injectATSScanner() {
   if (document.getElementById('trainai-ats-scanner')) return;
   
-  const jobHeader = document.querySelector('h1, h2');
   const mainContent = document.querySelector('main') || document.body;
-  
-  if (!jobHeader || !mainContent.innerText.toLowerCase().includes('requirements') && !mainContent.innerText.toLowerCase().includes('qualifications') && !mainContent.innerText.toLowerCase().includes('responsibilities')) {
-      return; 
-  }
-
   const scanner = document.createElement('div');
   scanner.id = 'trainai-ats-scanner';
   scanner.className = 'trainai-injected';
   scanner.innerHTML = `
-    <button id="tg-scan-btn" data-tg-tooltip="Click this button while viewing a job description. It will scan the page and tell you exactly which keywords to add to your resume before applying.">🔍 Run ATS Keyword Scan</button>
+    <button id="tg-scan-btn">Run ATS Keyword Scan</button>
   `;
   
   mainContent.prepend(scanner);
   
   document.getElementById('tg-scan-btn').onclick = () => {
-    runATSScan(mainContent.innerText);
+    runATSScan(mainContent.textContent);
   };
 }
 
@@ -346,19 +339,19 @@ function runATSScan(pageText) {
     modal = document.createElement('div');
     modal.id = 'tg-scan-modal';
     modal.className = 'trainai-injected';
-    modal.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999999; background:white; padding:32px; border-radius:24px; box-shadow:0 20px 60px rgba(0,0,0,0.15); border:1px solid #e2e8f0; max-width:400px;';
+    modal.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999999; background:white; padding:24px; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.1); border:1px solid #e2e8f0; width:360px; font-family:-apple-system, sans-serif; color:#0f172a;';
     document.body.appendChild(modal);
   }
   
   modal.innerHTML = `
-    <h3 style="margin-top:0; font-size:18px; color:var(--tg-accent);">🔍 ATS Scan Complete</h3>
-    <p style="color:var(--tg-text-sec); font-size:14px; margin-bottom:16px;">We scanned this job description against common AI hiring models. To pass the filters, ensure these keywords are in your resume:</p>
+    <h3 style="margin-top:0; font-size:16px; margin-bottom:12px;">ATS Scan Complete</h3>
+    <p style="color:#64748b; font-size:13px; margin-bottom:16px; line-height:1.5;">We scanned this job description against common AI hiring models. To pass the filters, ensure these keywords are in your resume:</p>
     <div style="display:flex; flex-wrap:wrap; gap:8px;">
-      <span style="background:rgba(5,150,105,0.1); color:#059669; border:1px solid rgba(5,150,105,0.3); padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600;">Data Analysis</span>
-      <span style="background:rgba(5,150,105,0.1); color:#059669; border:1px solid rgba(5,150,105,0.3); padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600;">Strategic Planning</span>
-      <span style="background:rgba(5,150,105,0.1); color:#059669; border:1px solid rgba(5,150,105,0.3); padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600;">Cross-functional Leadership</span>
+      <span style="background:#f1f5f9; border:1px solid #e2e8f0; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:500;">Data Analysis</span>
+      <span style="background:#f1f5f9; border:1px solid #e2e8f0; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:500;">Strategic Planning</span>
+      <span style="background:#f1f5f9; border:1px solid #e2e8f0; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:500;">Cross-functional</span>
     </div>
-    <button id="tg-close-modal" style="margin-top:24px; width:100%; padding:12px; background:var(--tg-text); color:white; border:none; border-radius:12px; cursor:pointer;">Got it</button>
+    <button id="tg-close-modal" style="margin-top:24px; width:100%; padding:12px; background:#0f172a; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:500; font-size:13px;">Done</button>
   `;
   
   document.getElementById('tg-close-modal').onclick = () => modal.remove();
@@ -379,17 +372,17 @@ function injectCoachWidget(textarea) {
   widget.id = 'trainai-impact-coach';
   widget.className = 'trainai-injected tg-coach-container';
   widget.innerHTML = `
-    <div class="tg-coach-header" data-tg-tooltip="Start typing your answer. The coach analyzes your text live and warns you if you need to add more metrics (numbers, $, %) or strong action verbs.">🎯 Impact Coach Live</div>
+    <div class="tg-coach-header">Impact Coach Live</div>
     <div class="tg-coach-stats">
       <span id="tg-coach-metrics">0 Metrics</span> | 
       <span id="tg-coach-verbs">0 Verbs</span>
     </div>
-    <div id="tg-coach-advice" class="tg-coach-advice" style="font-size:12px; margin-top:8px; color:var(--tg-text-sec);">AI Grade: Pending...</div>
+    <div id="tg-coach-advice" style="font-size:12px; margin-top:6px; color:var(--tg-text-sec);">AI Grade: Pending...</div>
   `;
   
   const rect = textarea.getBoundingClientRect();
   widget.style.position = 'absolute';
-  widget.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+  widget.style.top = (rect.bottom + window.scrollY + 4) + 'px';
   widget.style.left = (rect.left + window.scrollX) + 'px';
   widget.style.width = rect.width + 'px';
   widget.style.zIndex = '999999';
@@ -419,46 +412,16 @@ function updateCoachScore(text) {
   
   const adviceDiv = document.getElementById('tg-coach-advice');
   if (vagueFound.length > 0) {
-    adviceDiv.innerHTML = `❌ AI Grade: Poor. Use strong action verbs instead of "${vagueFound[0]}".`;
+    adviceDiv.innerHTML = `AI Grade: Poor. Use strong action verbs instead of "${vagueFound[0]}".`;
     adviceDiv.style.color = 'var(--tg-danger)';
   } else if (metricsCount === 0 && text.length > 20) {
-    adviceDiv.innerHTML = `⚠️ AI Grade: Average. Add a number, %, or $ amount to prove your impact.`;
+    adviceDiv.innerHTML = `AI Grade: Average. Add a number, %, or $ amount.`;
     adviceDiv.style.color = 'var(--tg-warning)';
   } else if (metricsCount > 0 && verbCount > 0) {
-    adviceDiv.innerHTML = `✅ AI Grade: Strong! The algorithm will prioritize this answer.`;
-    adviceDiv.style.color = 'var(--tg-accent)';
+    adviceDiv.innerHTML = `AI Grade: Strong! The algorithm will prioritize this answer.`;
+    adviceDiv.style.color = 'var(--tg-success)';
   } else {
     adviceDiv.innerHTML = `AI Grade: Pending...`;
     adviceDiv.style.color = 'var(--tg-text-sec)';
   }
 }
-
-// ----------------------------------------------------
-// Voice Tooltips (Text-to-Speech)
-// ----------------------------------------------------
-document.addEventListener('mouseover', (e) => {
-  const tooltipElement = e.target.closest('[data-tg-tooltip]');
-  if (tooltipElement) {
-    if (window._tgLastSpoken === tooltipElement) return;
-    window._tgLastSpoken = tooltipElement;
-    
-    const text = tooltipElement.getAttribute('data-tg-tooltip');
-    window.speechSynthesis.cancel();
-    
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.1; 
-    
-    const voices = window.speechSynthesis.getVoices();
-    const premiumVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google US English'));
-    if (premiumVoice) utterance.voice = premiumVoice;
-    
-    window.speechSynthesis.speak(utterance);
-  }
-});
-document.addEventListener('mouseout', (e) => {
-  const tooltipElement = e.target.closest('[data-tg-tooltip]');
-  if (tooltipElement) {
-    window._tgLastSpoken = null;
-    window.speechSynthesis.cancel();
-  }
-});
