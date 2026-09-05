@@ -95,15 +95,27 @@ function initializeExtension() {
 
     <!-- Settings Modal -->
     <div id="tg-settings-modal">
-        <h3>AI Settings</h3>
-        <label>Google Gemini API Key</label>
+        <h3 style="margin-bottom: 8px; color: var(--tg-accent);">Unlock Your AI Coach</h3>
+        <p style="font-size: 12px; color: var(--tg-text-sec); margin-bottom: 16px; line-height: 1.4;">
+            To give you an unfair advantage in your Mercor interview, this extension uses Google's genius-level Gemini AI to analyze your screen and feed you the perfect answers out loud.
+        </p>
+        
+        <div style="background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 16px;">
+            <p style="font-size: 11px; color: #475569; margin: 0 0 8px 0; font-weight: 500;">🔒 100% Secure & Private</p>
+            <p style="font-size: 11px; color: #64748b; margin: 0; line-height: 1.4;">
+                We don't use central servers. You bring your own free API key. It is saved <b>locally</b> on your device and communicates directly with Google. We never see your data.
+            </p>
+        </div>
+
+        <label>Your Free Google Gemini API Key</label>
         <input type="password" id="tg-api-key-input" placeholder="AIzaSy...">
         <p style="font-size:11px; color:#64748b; margin-top:-8px; margin-bottom:16px;">
-            Get a free key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.
+            Takes 10 seconds: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--tg-accent); font-weight: 600;">Get your free key here</a>.
         </p>
+        
         <div style="display:flex; justify-content:flex-end;">
             <button id="tg-settings-cancel" class="tg-btn-secondary">Cancel</button>
-            <button id="tg-settings-save" class="tg-btn-primary">Save Key</button>
+            <button id="tg-settings-save" class="tg-btn-primary">Activate AI</button>
         </div>
     </div>
   `;
