@@ -176,7 +176,11 @@ function injectSidePanel() {
   autoBtn.onclick = () => {
     autoBtn.innerText = '⏳ Filling...';
     chrome.storage.local.get(['tgMasterProfile'], (res) => {
-      if (!res.tgMasterProfile) return;
+      if (!res.tgMasterProfile) {
+        autoBtn.innerText = '⚠️ Save Profile First!';
+        setTimeout(() => { autoBtn.innerHTML = '⚡ Autofill This Page'; }, 2000);
+        return;
+      }
       const inputs = document.querySelectorAll('input[type="text"], textarea');
       inputs.forEach(input => {
         const name = (input.name || input.id || input.placeholder || '').toLowerCase();
