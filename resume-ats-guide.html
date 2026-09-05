@@ -141,6 +141,15 @@
   <div class="ats-panel">
     <h2>Paste Your Resume</h2>
     <p>Copy and paste the plain text of your resume here. Do not worry about formatting—ATS bots only read the raw text.</p>
+    
+    <label for="role-select" style="display:block; font-weight:700; margin-bottom:8px; color:var(--black);">Target Role:</label>
+    <select id="role-select" style="width:100%; padding:14px; border-radius:var(--radius); border:2px solid var(--gray-200); font-family:var(--font); font-size:15px; margin-bottom:24px; cursor:pointer;">
+      <option value="software">AI Software Engineer (RLHF)</option>
+      <option value="medical">Medical Expert (AI Training)</option>
+      <option value="finance">Finance & Quantitative Expert (AI Training)</option>
+      <option value="general">General AI Training</option>
+    </select>
+
     <textarea class="resume-box" id="resume-text" placeholder="John Doe
 Software Engineer
 
@@ -204,10 +213,15 @@ Experience
   </footer>
 
 <script>
-  const keywords = [
-    "Python", "Machine Learning", "LLM", "Prompt Engineering", "Data Analysis", 
-    "RLHF", "Generative AI", "SQL", "Algorithm", "Optimization", "Model", "Evaluation"
-  ];
+  const keywordSets = {
+    "software": ["Python", "React", "TypeScript", "LLM", "RLHF", "Machine Learning", "System Design", "AWS", "GCP", "LangChain", "OpenAI API", "Evaluation"],
+    "medical": ["MD", "MBBS", "USMLE", "ECFMG", "Board Certified", "Clinical Research", "Diagnostics", "Patient Care", "Healthcare", "Medical Writing", "Data Labeling", "Verification"],
+    "finance": ["CFA", "CPA", "Financial Modeling", "DCF", "Valuation", "Quantitative Analysis", "Private Equity", "Investment Banking", "SQL", "Excel", "Data Analysis", "Risk Assessment"],
+    "general": ["RLHF", "Generative AI", "Prompt Engineering", "Data Analysis", "Optimization", "Model", "Evaluation", "Accuracy", "Quality Assurance", "Fact-checking", "Editing", "Research"]
+  };
+  
+  let currentRole = "software";
+  let activeKeywords = keywordSets[currentRole];
   
   const kwListEl = document.getElementById('keyword-list');
   const scanBtn = document.getElementById('scan-btn');
@@ -216,15 +230,37 @@ Experience
   const scoreText = document.getElementById('score-text');
   const feedbackBox = document.getElementById('feedback-box');
   const applyBtn = document.getElementById('apply-btn');
+  const roleSelect = document.getElementById('role-select');
   
-  // Render chips
-  keywords.forEach(kw => {
-    const chip = document.createElement('div');
-    chip.className = 'kw-chip';
-    chip.innerText = kw;
-    chip.id = 'kw-' + kw.replace(/\s+/g, '-').toLowerCase();
-    kwListEl.appendChild(chip);
+  function renderChips() {
+    kwListEl.innerHTML = '';
+    activeKeywords.forEach(kw => {
+      const chip = document.createElement('div');
+      chip.className = 'kw-chip';
+      chip.innerText = kw;
+      chip.id = 'kw-' + kw.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+      kwListEl.appendChild(chip);
+    });
+    
+    // Reset visual state
+    meterFill.style.width = '0%';
+    scoreText.innerText = '0';
+    meterFill.style.background = '#ef4444';
+    scoreText.style.color = '#ef4444';
+    feedbackBox.innerHTML = '<h4>Awaiting Scan...</h4><p>Paste your resume on the left and click scan to see your results.</p>';
+    applyBtn.className = 'btn-apply';
+    applyBtn.innerText = 'You must score 80%+ to Apply';
+    scanBtn.innerText = 'Scan My Resume';
+  }
+  
+  roleSelect.addEventListener('change', (e) => {
+    currentRole = e.target.value;
+    activeKeywords = keywordSets[currentRole];
+    renderChips();
   });
+  
+  // Initial render
+  renderChips();
   
   scanBtn.addEventListener('click', () => {
     const text = resumeBox.value.toLowerCase();
@@ -239,8 +275,8 @@ Experience
     setTimeout(() => {
       let hits = 0;
       
-      keywords.forEach(kw => {
-        const chip = document.getElementById('kw-' + kw.replace(/\s+/g, '-').toLowerCase());
+      activeKeywords.forEach(kw => {
+        const chip = document.getElementById('kw-' + kw.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase());
         if (text.includes(kw.toLowerCase())) {
           hits++;
           chip.classList.add('found');
@@ -249,7 +285,7 @@ Experience
         }
       });
       
-      const score = Math.round((hits / keywords.length) * 100);
+      const score = Math.round((hits / activeKeywords.length) * 100);
       
       // Animate score
       meterFill.style.width = score + '%';
