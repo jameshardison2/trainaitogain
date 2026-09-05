@@ -1,15 +1,15 @@
-/* TrainAIToGain - Ultra-Premium Glassmorphism Design */
+/* TrainAIToGain - Clean Professional SaaS Design */
 
 :root {
-  --tg-bg: #0b0f19;
-  --tg-surface: rgba(15, 23, 42, 0.85); /* Dark Slate Glass */
-  --tg-surface-light: rgba(30, 41, 59, 0.9);
-  --tg-accent: #10b981; /* Premium Green */
-  --tg-accent-glow: rgba(16, 185, 129, 0.3);
-  --tg-accent-hover: #059669;
-  --tg-text: #ffffff;
-  --tg-text-sec: #94a3b8;
-  --tg-border: rgba(255, 255, 255, 0.08);
+  --tg-bg: #ffffff;
+  --tg-surface: rgba(255, 255, 255, 0.95);
+  --tg-surface-light: #f8fafc;
+  --tg-accent: #059669; /* Professional Emerald */
+  --tg-accent-hover: #047857;
+  --tg-accent-glow: rgba(5, 150, 105, 0.15);
+  --tg-text: #0f172a;
+  --tg-text-sec: #475569;
+  --tg-border: #e2e8f0;
   --tg-danger: #ef4444;
   --tg-warning: #f59e0b;
 }
@@ -34,32 +34,42 @@
   z-index: 999998;
   display: flex;
   align-items: center;
-  box-shadow: -8px 0 24px rgba(0,0,0,0.4);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  box-shadow: -4px 0 16px rgba(0,0,0,0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
 }
 #trainai-panel-trigger:hover {
   transform: translateY(-50%) translateX(-6px);
-  background: var(--tg-surface-light);
-  box-shadow: -12px 0 32px rgba(16,185,129,0.2);
+  background: white;
+  box-shadow: -8px 0 24px rgba(0,0,0,0.1);
+}
+
+/* Pulse animation for the trigger to draw attention initially */
+@keyframes tgPulseTrigger {
+  0% { box-shadow: -4px 0 16px rgba(5, 150, 105, 0.2); }
+  50% { box-shadow: -4px 0 16px rgba(5, 150, 105, 0.6); }
+  100% { box-shadow: -4px 0 16px rgba(5, 150, 105, 0.2); }
+}
+.tg-pulse-anim {
+  animation: tgPulseTrigger 2s infinite;
 }
 
 /* 2. Side Panel Container (Sleek Drawer) */
 #trainai-side-panel {
   position: fixed;
   top: 0;
-  right: -420px; /* Hidden by default */
+  right: -420px;
   width: 400px;
   height: 100vh;
   background: var(--tg-surface);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-left: 1px solid var(--tg-border);
   z-index: 999999;
   font-family: 'Inter', system-ui, sans-serif;
   color: var(--tg-text);
-  box-shadow: -20px 0 60px rgba(0,0,0,0.6);
+  box-shadow: -10px 0 30px rgba(0,0,0,0.08);
   transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
   display: flex;
   flex-direction: column;
@@ -75,6 +85,7 @@
   align-items: center;
   padding: 24px 28px;
   border-bottom: 1px solid var(--tg-border);
+  background: white;
 }
 .trainai-panel-header h2 {
   margin: 0;
@@ -100,7 +111,7 @@
 }
 #trainai-panel-close:hover {
   color: var(--tg-text);
-  background: rgba(255,255,255,0.1);
+  background: var(--tg-surface-light);
   transform: rotate(90deg);
 }
 
@@ -109,28 +120,29 @@
   display: flex;
   padding: 16px 28px;
   gap: 12px;
+  background: white;
 }
 .trainai-tab {
   flex: 1;
-  background: rgba(255,255,255,0.05);
+  background: var(--tg-surface-light);
   border: 1px solid transparent;
   color: var(--tg-text-sec);
   padding: 12px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  border-radius: 20px; /* Pill shape */
+  border-radius: 20px;
   transition: all 0.3s ease;
   font-family: 'Inter', sans-serif;
 }
 .trainai-tab:hover {
-  background: rgba(255,255,255,0.1);
+  background: #f1f5f9;
   color: var(--tg-text);
 }
 .trainai-tab.active {
   background: var(--tg-accent);
   color: white;
-  box-shadow: 0 4px 16px var(--tg-accent-glow);
+  box-shadow: 0 4px 12px var(--tg-accent-glow);
 }
 
 /* 5. Tab Content */
@@ -139,6 +151,7 @@
   padding: 0 28px 28px 28px;
   flex: 1;
   overflow-y: auto;
+  background: white;
 }
 .trainai-tab-content.active {
   display: flex;
@@ -157,22 +170,40 @@
   font-weight: 800;
   color: var(--tg-accent);
   text-align: center;
-  margin: 32px 0 16px 0;
+  margin: 24px 0 8px 0;
   line-height: 1;
 }
 #trainai-tracker-stats span {
   display: block;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--tg-text-sec);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-top: 8px;
 }
+.tg-algo-status {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 12px;
+  display: inline-block;
+  margin: 0 auto 24px auto;
+}
+.tg-algo-status.priority {
+  background: rgba(16,185,129,0.1);
+  color: #059669;
+}
+.tg-algo-status.low {
+  background: rgba(245,158,11,0.1);
+  color: #b45309;
+}
+
 .trainai-alert {
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  color: #fbbf24;
+  background: var(--tg-surface-light);
+  border: 1px solid var(--tg-border);
+  color: var(--tg-text);
   padding: 16px;
   border-radius: 16px;
   font-size: 13px;
@@ -181,35 +212,34 @@
   margin-top: 16px;
 }
 
-/* Tools Map (New Feature) */
-.tg-tools-map {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
+/* Play Tour Button */
+#tg-play-tour {
+  background: var(--tg-text);
+  color: white;
+  border: none;
+  padding: 12px;
   border-radius: 16px;
-  padding: 20px;
-  margin-top: 32px;
-}
-.tg-tools-map h3 {
-  margin: 0 0 12px 0;
   font-size: 13px;
-  color: var(--tg-text);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
 }
-.tg-tools-map p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--tg-text-sec);
-  line-height: 1.6;
+#tg-play-tour:hover {
+  background: #334155;
+  transform: translateY(-2px);
 }
 
-/* 7. Master Profile Inputs (Soft, Rounded Forms) */
+/* 7. Master Profile Inputs */
 .trainai-tab-content label {
   font-size: 12px;
   font-weight: 600;
   color: var(--tg-text-sec);
-  margin-top: 24px;
+  margin-top: 20px;
   margin-bottom: 8px;
   display: block;
   text-transform: uppercase;
@@ -219,11 +249,11 @@
 .trainai-tab-content input {
   width: 100%;
   box-sizing: border-box;
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--tg-surface-light);
+  border: 1px solid var(--tg-border);
   color: var(--tg-text);
   padding: 16px;
-  border-radius: 16px; /* Soft rounding */
+  border-radius: 16px;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 1.5;
@@ -235,55 +265,96 @@
 .trainai-tab-content input:focus {
   outline: none;
   border-color: var(--tg-accent);
-  box-shadow: 0 0 0 4px var(--tg-accent-glow);
-  background: rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 3px var(--tg-accent-glow);
+  background: white;
 }
 #trainai-save-profile {
   background: var(--tg-accent);
   color: white;
   border: none;
   padding: 16px;
-  border-radius: 20px; /* Pill shape */
+  border-radius: 20px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  margin-top: 28px;
+  margin-top: 24px;
   transition: all 0.3s;
-  box-shadow: 0 4px 16px var(--tg-accent-glow);
+  box-shadow: 0 4px 12px var(--tg-accent-glow);
 }
 #trainai-save-profile:hover {
   background: var(--tg-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16,185,129,0.4);
+  box-shadow: 0 6px 16px rgba(5,150,105,0.3);
 }
 
 /* 8. Autofill Button (Floating Pill) */
 #trainai-autofill-btn {
   margin: 0 28px 28px 28px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: var(--tg-accent);
   color: white;
   padding: 18px;
   text-align: center;
-  border-radius: 24px; /* Ultra rounded pill */
+  border-radius: 24px;
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+  box-shadow: 0 8px 20px var(--tg-accent-glow);
   transition: all 0.3s;
 }
 #trainai-autofill-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 12px 24px rgba(5, 150, 105, 0.4);
 }
 
-/* 9. ATS Pre-Scanner UI (Injected into Page) */
-#tg-scan-btn {
-  background: rgba(15, 23, 42, 0.9);
-  backdrop-filter: blur(12px);
+/* 9. Premium Toasts */
+.tg-toast {
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f172a;
   color: white;
-  border: 1px solid rgba(255,255,255,0.1);
+  padding: 16px 24px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 9999999;
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.tg-toast.show {
+  bottom: 40px;
+}
+
+/* 10. Laser Autofill Animation */
+@keyframes tgLaserScan {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8); background: rgba(16,185,129,0.1); }
+  50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); background: rgba(16,185,129,0.2); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); background: transparent; }
+}
+.tg-laser-scan {
+  animation: tgLaserScan 0.4s ease-out;
+}
+
+/* 11. Highlight Animation for Voice Tour */
+@keyframes tgTourHighlight {
+  0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.8); z-index: 10; position:relative; }
+  50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); z-index: 10; position:relative;}
+  100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); z-index: 10; position:relative;}
+}
+.tg-tour-active {
+  animation: tgTourHighlight 1s infinite;
+  border-color: #6366f1 !important;
+}
+
+/* 12. Injected Page Tools (ATS Scanner & Impact Coach) */
+#tg-scan-btn {
+  background: white;
+  color: var(--tg-text);
+  border: 1px solid var(--tg-border);
   padding: 14px 24px;
-  border-radius: 20px; /* Pill */
+  border-radius: 20px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -292,28 +363,17 @@
   align-items: center;
   gap: 8px;
   transition: all 0.3s;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 #tg-scan-btn:hover {
   background: var(--tg-surface-light);
   transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.2);
-}
-#tg-scan-modal {
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(32px);
-  border: 1px solid var(--tg-border);
-  color: white;
-  padding: 32px;
-  border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  /* ...rest handled inline in content.js... */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-color: var(--tg-accent);
 }
 
-/* 10. Impact Coach (Textarea Injections) */
 .tg-coach-container {
-  background: rgba(15, 23, 42, 0.9);
-  backdrop-filter: blur(16px);
+  background: white;
   border: 1px solid var(--tg-border);
   border-top: none;
   border-bottom-left-radius: 16px;
@@ -322,8 +382,8 @@
   margin-top: -8px; 
   margin-bottom: 24px;
   font-family: 'Inter', system-ui, sans-serif;
-  color: white;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  color: var(--tg-text);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 .tg-coach-header {
   font-size: 11px;
@@ -339,83 +399,4 @@
 .tg-coach-stats {
   font-size: 14px;
   font-weight: 600;
-}
-.tg-coach-alert {
-  font-size: 12px;
-  color: #fbbf24;
-  margin-top: 6px;
-  font-weight: 500;
-}
-
-/* 11. Premium Layman Hover Tooltips (Visual) */
-[data-tg-tooltip] {
-  position: relative;
-}
-[data-tg-tooltip]::before {
-  content: attr(data-tg-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-12px);
-  background: #ffffff;
-  color: #0f172a;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.5;
-  white-space: normal;
-  width: max-content;
-  max-width: 280px;
-  text-align: center;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000000;
-  pointer-events: none;
-}
-/* Tooltip Arrow */
-[data-tg-tooltip]::after {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-4px);
-  border-width: 8px;
-  border-style: solid;
-  border-color: #ffffff transparent transparent transparent;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1000000;
-  pointer-events: none;
-}
-[data-tg-tooltip]:hover::before,
-[data-tg-tooltip]:hover::after {
-  opacity: 1;
-  visibility: visible;
-}
-[data-tg-tooltip]:hover::before {
-  transform: translateX(-50%) translateY(-8px);
-}
-[data-tg-tooltip]:hover::after {
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Blinking Transparent Pulse Animation for Trigger */
-@keyframes tgPulse {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); opacity: 0.7; }
-  50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); opacity: 1; }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); opacity: 0.7; }
-}
-
-#trainai-panel-trigger {
-  animation: tgPulse 2.5s infinite;
-  opacity: 0.7; /* Default slightly transparent */
-}
-
-#trainai-panel-trigger:hover {
-  animation: none; /* Stop blinking on hover */
-  opacity: 1; /* Full visibility */
 }
