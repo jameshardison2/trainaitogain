@@ -264,7 +264,7 @@ function injectATSScanner() {
   const scanner = document.createElement('div');
   scanner.id = 'trainai-ats-scanner';
   scanner.className = 'trainai-injected';
-  scanner.innerHTML = `<button id="tg-scan-btn">🔍 Run ATS Keyword Scan</button>`;
+  scanner.innerHTML = `<button id="tg-scan-btn" data-tooltip="Like an X-ray for job descriptions. It shows you exactly what keywords you're missing before you apply.">🔍 Run ATS Keyword Scan</button>`;
   
   // Try to inject it cleanly at the top of the content
   mainContent.insertBefore(scanner, mainContent.firstChild);
@@ -364,7 +364,7 @@ function injectCoachWidget(textarea) {
   widget.id = 'trainai-impact-coach';
   widget.className = 'trainai-injected';
   widget.innerHTML = `
-    <div class="tg-coach-header">🎯 Impact Coach Live</div>
+    <div class="tg-coach-header" data-tooltip="A live spell-checker, but for impact. It forces you to write answers the AI actually respects by tracking your metrics.">🎯 Impact Coach Live</div>
     <div class="tg-coach-stats">
       <span id="tg-coach-metrics">0 Metrics</span> | 
       <span id="tg-coach-verbs">0 Verbs</span>
