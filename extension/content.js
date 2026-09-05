@@ -61,7 +61,7 @@ function initializeExtension() {
         ${needsOnboarding ? '<div class="trainai-alert" style="margin-bottom:24px;"><strong>STEP 1: SETUP</strong><br>Paste your resume below to unlock the tools.</div>' : ''}
 
         <!-- SECTION 1: Algorithm Status (App Tracker) -->
-        <div class="tg-section">
+        <div class="tg-section" data-tg-tooltip="This tracks how many applications you have submitted. You need at least 3 for high priority.">
             <h3 class="tg-section-title">STATUS</h3>
             <div id="trainai-tracker-stats">
                 <div class="tg-stat-box">
@@ -76,7 +76,7 @@ function initializeExtension() {
         <hr class="tg-divider">
 
         <!-- SECTION 2: Master Profile Vault -->
-        <div class="tg-section">
+        <div class="tg-section" data-tg-tooltip="Save your resume and bio here. We will use this to autofill your applications instantly.">
             <h3 class="tg-section-title">PROFILE</h3>
             
             <label>Raw Resume Text</label>
@@ -94,7 +94,7 @@ function initializeExtension() {
       </div>
 
       <!-- SECTION 3: Magic Navigator (Shape-Shifting Context Button) -->
-      <div class="tg-bottom-bar">
+      <div class="tg-bottom-bar" data-tg-tooltip="This is the Magic Navigator. It shape-shifts to guide you to your exact next step.">
           <div id="tg-nav-status" class="tg-nav-status">Analyzing Context...</div>
           <button id="tg-magic-btn">
             Loading...
@@ -462,7 +462,7 @@ function updateCoachScore(text) {
   if (!widget) return;
   
   text = text || '';
-  const metricsCount = (text.match(/\d+|%|\$|percent/g) || []).length;
+  const metricsCount = (text.match(/\d+|%|$|percent/g) || []).length;
   const actionVerbs = ['led', 'managed', 'developed', 'created', 'built', 'increased', 'decreased', 'improved', 'optimized', 'engineered', 'designed', 'architected'];
   
   const lowerText = text.toLowerCase();
@@ -476,23 +476,53 @@ function updateCoachScore(text) {
 
   const metricsEl = document.getElementById('tg-coach-metrics');
   const verbsEl = document.getElementById('tg-coach-verbs');
-  if (metricsEl) metricsEl.innerText = \`\${metricsCount} Metrics\`;
-  if (verbsEl) verbsEl.innerText = \`\${verbCount} Verbs\`;
+  if (metricsEl) metricsEl.innerText = `${metricsCount} Metrics`;
+  if (verbsEl) verbsEl.innerText = `${verbCount} Verbs`;
   
   const adviceDiv = document.getElementById('tg-coach-advice');
   if (!adviceDiv) return;
 
   if (vagueFound.length > 0) {
-    adviceDiv.innerHTML = \`AI Grade: Poor. Use strong action verbs instead of "\${vagueFound[0]}".\`;
+    adviceDiv.innerHTML = `AI Grade: Poor. Use strong action verbs instead of "${vagueFound[0]}".`;
     adviceDiv.style.color = 'var(--tg-danger)';
   } else if (metricsCount === 0 && text.length > 20) {
-    adviceDiv.innerHTML = \`AI Grade: Average. Add a number, %, or $ amount.\`;
+    adviceDiv.innerHTML = `AI Grade: Average. Add a number, %, or $ amount.`;
     adviceDiv.style.color = 'var(--tg-warning)';
   } else if (metricsCount > 0 && verbCount > 0) {
-    adviceDiv.innerHTML = \`AI Grade: Strong! The algorithm will prioritize this answer.\`;
+    adviceDiv.innerHTML = `AI Grade: Strong! The algorithm will prioritize this answer.`;
     adviceDiv.style.color = 'var(--tg-success)';
   } else {
-    adviceDiv.innerHTML = \`AI Grade: Pending...\`;
+    adviceDiv.innerHTML = `AI Grade: Pending...`;
     adviceDiv.style.color = 'var(--tg-text-sec)';
   }
 }
+
+// ----------------------------------------------------
+// Voice Tooltips (Text-to-Speech)
+// ----------------------------------------------------
+document.addEventListener('mouseover', (e) => {
+  if (!isEnabled) return;
+  const tooltipElement = e.target.closest('[data-tg-tooltip]');
+  if (tooltipElement) {
+    if (window._tgLastSpoken === tooltipElement) return;
+    window._tgLastSpoken = tooltipElement;
+    
+    const text = tooltipElement.getAttribute('data-tg-tooltip');
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.1; 
+        const voices = window.speechSynthesis.getVoices();
+        const premiumVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google US English'));
+        if (premiumVoice) utterance.voice = premiumVoice;
+        window.speechSynthesis.speak(utterance);
+    }
+  }
+});
+document.addEventListener('mouseout', (e) => {
+  const tooltipElement = e.target.closest('[data-tg-tooltip]');
+  if (tooltipElement) {
+    window._tgLastSpoken = null;
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+});
