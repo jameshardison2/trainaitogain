@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "TrainAIToGain | The Get You Hired Extension",
-  "version": "1.0.1",
-  "description": "Your ultimate advantage for passing the Mercor AI evaluation pipelines.",
+  "name": "Get You Hired Extension",
+  "version": "3.2",
+  "description": "Your auto-pilot for bypassing AI filters.",
   "permissions": [
     "storage"
   ],

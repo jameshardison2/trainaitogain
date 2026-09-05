@@ -1,10 +1,10 @@
-/* TrainAIToGain - Ultra Professional Native UI (Linear / Stripe aesthetic) */
+/* TrainAIToGain - Ultra Professional Native UI (Magic Navigator Update) */
 
 :root {
   --tg-bg: #ffffff;
   --tg-surface: #ffffff;
   --tg-surface-hover: #f1f5f9;
-  --tg-accent: #0f172a; /* Strict Black/Dark Slate for actions */
+  --tg-accent: #0f172a; 
   --tg-accent-hover: #334155;
   --tg-text: #0f172a;
   --tg-text-sec: #64748b;
@@ -172,52 +172,7 @@
   line-height: 1.5;
 }
 
-/* 6. Action Menu (Clean Native Links) */
-.tg-action-list {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--tg-border);
-    border-radius: 8px;
-    overflow: hidden;
-}
-.tg-action-btn {
-    background: white;
-    color: var(--tg-text);
-    border: none;
-    border-bottom: 1px solid var(--tg-border);
-    padding: 16px;
-    cursor: pointer;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.15s;
-}
-.tg-action-btn:last-child {
-    border-bottom: none;
-}
-.tg-action-btn:hover {
-    background: var(--tg-surface-hover);
-}
-.tg-action-btn-content {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-.tg-action-btn span {
-    font-size: 13px;
-    font-weight: 600;
-}
-.tg-action-btn small {
-    font-size: 12px;
-    color: var(--tg-text-sec);
-    font-weight: 400;
-}
-.tg-action-btn svg {
-    color: var(--tg-text-sec);
-}
-
-/* 7. Master Profile Inputs */
+/* 6. Master Profile Inputs */
 .trainai-dashboard-container label {
   font-size: 12px;
   font-weight: 500;
@@ -241,8 +196,8 @@
   transition: border-color 0.15s, box-shadow 0.15s;
   resize: vertical;
 }
-#tg-profile-resume { height: 200px; }
-#tg-profile-bio { height: 100px; }
+#tg-profile-resume { height: 180px; }
+#tg-profile-bio { height: 80px; }
 
 .trainai-dashboard-container textarea:focus,
 .trainai-dashboard-container input:focus {
@@ -251,9 +206,9 @@
   box-shadow: 0 0 0 1px var(--tg-text);
 }
 #trainai-save-profile {
-  background: var(--tg-accent);
-  color: white;
-  border: none;
+  background: var(--tg-surface-hover);
+  color: var(--tg-text);
+  border: 1px solid var(--tg-border);
   padding: 12px;
   border-radius: 6px;
   font-size: 13px;
@@ -263,16 +218,27 @@
   transition: background 0.15s;
 }
 #trainai-save-profile:hover {
-  background: var(--tg-accent-hover);
+  background: #e2e8f0;
 }
 
-/* 8. Autofill Button (Bottom Bar) */
+/* 7. Magic Navigator (Bottom Bar) */
 .tg-bottom-bar {
-    padding: 16px 24px;
+    padding: 20px 24px;
     border-top: 1px solid var(--tg-border);
-    background: var(--tg-surface);
+    background: #f8fafc; /* slightly offset background */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
-#trainai-autofill-btn {
+.tg-nav-status {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--tg-text-sec);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+#tg-magic-btn {
   width: 100%;
   background: var(--tg-accent);
   color: white;
@@ -283,19 +249,27 @@
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
-#trainai-autofill-btn:hover {
+#tg-magic-btn:hover {
   background: var(--tg-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
-#trainai-autofill-btn.disabled {
+#tg-magic-btn.disabled {
     background: var(--tg-surface-hover);
     color: var(--tg-text-sec);
     cursor: not-allowed;
     border: 1px solid var(--tg-border);
+    box-shadow: none;
 }
 
-/* 9. Premium Toasts */
+/* 8. Premium Toasts */
 .tg-toast {
   position: fixed;
   bottom: -100px;
@@ -316,7 +290,7 @@
   bottom: 24px;
 }
 
-/* 10. Laser Autofill Animation */
+/* 9. Laser Autofill Animation */
 @keyframes tgLaserScan {
   0% { box-shadow: 0 0 0 0 rgba(15, 23, 42, 0.5); background: #f8fafc; }
   50% { box-shadow: 0 0 0 3px rgba(15, 23, 42, 0); background: #f1f5f9; }
@@ -326,7 +300,7 @@
   animation: tgLaserScan 0.4s ease-out;
 }
 
-/* 12. Injected Page Tools */
+/* 10. Injected Page Tools */
 #tg-scan-btn {
   background: white;
   color: var(--tg-text);
