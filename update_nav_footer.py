@@ -38,4 +38,3 @@ for hf in html_files:
     if footer_block:
         replace_block(hf, '<footer', '</footer>', footer_block)
         print(f"Updated footer in {hf}")
-
