@@ -84,10 +84,10 @@
           }
         }
         
-        // Modal popup removed here because we now show an inline success message instead
+        // Redirect to the extension download page
+        window.location.href = "extension-download.html";
       } catch (error) {
         console.error("Error adding document: ", error);
-        // Modal popup removed here as well
       } finally {
         btn.innerHTML = originalText;
         btn.disabled = false;

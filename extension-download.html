@@ -10,6 +10,76 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css" />
   
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      projectId: "trainaitogain-50c19"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    window.handleIntake = async function(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Verifying...';
+      btn.disabled = true;
+      
+      const firstName = form.querySelector('input[type="text"]').value;
+      const email = form.querySelector('input[type="email"]').value;
+      
+      try {
+        const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+        await addDoc(collection(db, "leads"), {
+          firstName: firstName,
+          email: email,
+          timestamp: serverTimestamp(),
+          source: window.location.href,
+          referred_by: refCode
+        });
+        
+        // Push lead to Instantly.ai CRM Webhook
+        const instantlyWebhookUrl = "https://api.instantly.ai/api/v1/webhooks/campaign/add-lead/NTkzMGNjMjEtOTc2Zi00ZDE2LWExODMtOTllNGYwMThhNTljOnlHU2tCclJwTUpZTw==";
+        try {
+          await fetch(instantlyWebhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, firstName: firstName, source: window.location.href, referred_by: refCode })
+          });
+        } catch (webhookError) {
+          console.error("Error sending to Instantly:", webhookError);
+        }
+        
+        // Visually unlock the download link
+        const formBox = document.getElementById('lead-form-box');
+        if (formBox) {
+            formBox.style.display = 'none';
+            document.getElementById('success-box').style.display = 'block';
+        }
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    };
+
+    // Safely attach the submit listener once DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.leadMagnetForm').forEach(form => {
+        form.addEventListener('submit', window.handleIntake);
+      });
+    });
+  </script>
+  
   <style>
     .step-number {
       background: var(--primary);
@@ -182,7 +252,7 @@
             <h3 style="font-size:24px; margin-bottom:12px;">Get Early Access</h3>
             <p style="color:var(--gray-400); margin-bottom:24px;">Enter your details below to unlock the private extension download.</p>
             
-            <form id="unlock-form" onsubmit="unlockDownload(event)">
+            <form id="unlock-form" class="leadMagnetForm">
                 <div class="form-group">
                     <label class="form-label">First Name</label>
                     <input type="text" class="form-input" required placeholder="John" />
@@ -208,21 +278,7 @@
             </a>
         </div>
 
-        <script>
-            function unlockDownload(e) {
-                e.preventDefault();
-                const formBox = document.getElementById('lead-form-box');
-                const btn = formBox.querySelector('button');
-                btn.innerText = "Verifying...";
-                btn.style.opacity = "0.7";
-                
-                // Simulate network request
-                setTimeout(() => {
-                    formBox.style.display = 'none';
-                    document.getElementById('success-box').style.display = 'block';
-                }, 800);
-            }
-        </script>
+        <!-- Script moved to head -->
 
       </div>
     </div>
