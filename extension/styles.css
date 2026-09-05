@@ -138,19 +138,33 @@
 
 /* 5. Dashboard / App Tracker UI */
 #trainai-tracker-stats {
-  font-size: 32px;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.tg-stat-box {
+  flex: 1;
+  background: #f8fafc;
+  border: 1px solid var(--tg-border);
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+.tg-stat-box strong {
+  display: block;
+  font-size: 24px;
   font-weight: 600;
   color: var(--tg-text);
-  margin: 0 0 4px 0;
   line-height: 1;
-  letter-spacing: -0.02em;
 }
-#trainai-tracker-stats span {
+.tg-stat-box span {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--tg-text-sec);
-  margin-top: 4px;
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 .tg-algo-status {
   font-size: 13px;

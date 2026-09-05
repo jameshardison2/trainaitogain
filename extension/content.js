@@ -54,17 +54,21 @@ function initializeExtension() {
     
     <div class="trainai-dashboard-container">
       
-      <!-- SECTION 1: Algorithm Status (App Tracker) -->
-      <div class="tg-section" data-tg-tooltip="This tracks how many applications you have submitted. You need at least 3 for high priority.">
-          <h3 class="tg-section-title">STATUS</h3>
+      <!-- SECTION 1: Pipeline Tracker -->
+      <div class="tg-section" data-tg-tooltip="This tracks your Mercor pipeline. Finish your pending interviews to get graded.">
+          <h3 class="tg-section-title">PIPELINE STATUS</h3>
           <div id="trainai-tracker-stats">
               <div class="tg-stat-box">
-              <strong id="tg-stat-number">0</strong>
-              <span>Applications</span>
+                  <strong id="tg-stat-submitted">0</strong>
+                  <span>Submitted</span>
+              </div>
+              <div class="tg-stat-box">
+                  <strong id="tg-stat-pending">0</strong>
+                  <span>Pending</span>
               </div>
           </div>
-          <div id="tg-algo-status" class="tg-algo-status low">Priority: Low Visibility</div>
-          <div id="trainai-tracker-advice" class="trainai-alert">Scanning...</div>
+          <div id="tg-algo-status" class="tg-algo-status low">Scanning Pipeline...</div>
+          <div id="trainai-tracker-advice" class="trainai-alert">Analyzing your Mercor dashboard...</div>
       </div>
 
     </div>
@@ -134,6 +138,23 @@ function updateSmartNavigator() {
             magicBtn.onclick = null;
         }
         return;
+    }
+
+    // State 1.5: Pending Interviews
+    const pendingElem = document.getElementById('tg-stat-pending');
+    if (pendingElem && parseInt(pendingElem.innerText) > 0 && !path.includes('interview')) {
+        navStatus.innerText = 'Current Step: Finish Interviews';
+        magicBtn.innerHTML = 'Practice Pending Interviews ➔';
+        magicBtn.style.background = 'var(--tg-warning)';
+        magicBtn.style.color = '#fff';
+        magicBtn.onclick = () => {
+            showToast('Routing to Interview Practice...');
+            setTimeout(() => { window.location.href = 'https://work.mercor.com/interviews'; }, 500);
+        };
+        return;
+    } else {
+        magicBtn.style.background = '';
+        magicBtn.style.color = '';
     }
 
     // State 2: On Interview
@@ -230,35 +251,50 @@ function setReactInputValue(input, value) {
 
 function runTrackerScan() {
   const adviceDiv = document.getElementById('trainai-tracker-advice');
-  const numElem = document.getElementById('tg-stat-number');
+  const submittedElem = document.getElementById('tg-stat-submitted');
+  const pendingElem = document.getElementById('tg-stat-pending');
   const statusElem = document.getElementById('tg-algo-status');
-  if (!adviceDiv || !numElem || !statusElem || !document.body) return;
+  if (!adviceDiv || !submittedElem || !pendingElem || !statusElem || !document.body) return;
 
-  const text = document.body.textContent.toLowerCase();
-  let apps = 0;
+  const text = document.body.textContent;
   
-  const appMatch = text.match(/(?:active|progress|review|applied|submitted|applications)[\s:]*?(\d+)/i) || text.match(/(\d+)[\s:]*?(?:active|progress|review|applied|submitted|applications)/i);
-  if (appMatch) {
-    apps = parseInt(appMatch[1], 10);
+  let submittedCount = 0;
+  let pendingCount = 0;
+
+  // 1. Look for the exact "Submitted applications (X)" dropdown
+  const submittedMatch = text.match(/Submitted applications\s*\((\d+)\)/i);
+  if (submittedMatch) {
+      submittedCount = parseInt(submittedMatch[1], 10);
   } else {
-    const matches = text.match(/\b(?:progress|active|review|submitted)\b/gi);
-    if (matches) apps = matches.length;
+      // Fallback
+      const genericSubmitted = text.match(/(\d+)\s*submitted/i);
+      if (genericSubmitted) submittedCount = parseInt(genericSubmitted[1], 10);
   }
-  
-  numElem.innerText = apps;
 
-  if (apps < 3) {
-    statusElem.className = 'tg-algo-status low';
-    statusElem.innerText = 'Priority: Low Visibility';
-    adviceDiv.innerHTML = 'The algorithm prioritizes candidates with 3+ applications. Apply to more domain expert roles to trigger priority grading.';
-  } else if (text.includes('incomplete') || text.includes('step 2') || text.includes('step 3')) {
+  // 2. Look for "steps completed" (e.g. "2 of 3 steps completed") which means incomplete/pending
+  const pendingMatches = [...text.matchAll(/(\d+)\s*of\s*(\d+)\s*steps\s*completed/gi)];
+  pendingMatches.forEach(match => {
+      if (match[1] !== match[2]) {
+          pendingCount++;
+      }
+  });
+  
+  // Update UI
+  submittedElem.innerText = submittedCount;
+  pendingElem.innerText = pendingCount;
+
+  if (pendingCount > 0) {
     statusElem.className = 'tg-algo-status low';
     statusElem.innerText = 'Priority: Blocked';
-    adviceDiv.innerHTML = 'You have roles waiting on Video Interviews. The AI will not grade you until these are finished.';
-  } else {
+    adviceDiv.innerHTML = `You have <strong>${pendingCount} pending interviews</strong>. Mercor's AI cannot grade you until these are finished.`;
+  } else if (submittedCount > 0) {
     statusElem.className = 'tg-algo-status priority';
     statusElem.innerText = 'Priority: High';
-    adviceDiv.innerHTML = 'You are fully in the AI grading algorithm. No action needed, wait for email updates.';
+    adviceDiv.innerHTML = 'You are fully in the AI grading pool. No pending action needed.';
+  } else {
+    statusElem.className = 'tg-algo-status low';
+    statusElem.innerText = 'Priority: Low Visibility';
+    adviceDiv.innerHTML = 'Apply to jobs to enter the grading algorithm.';
   }
 }
 
