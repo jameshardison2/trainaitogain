@@ -88,8 +88,8 @@ function injectSidePanel() {
     </div>
     
     <div class="trainai-tabs">
-      <button class="trainai-tab active" data-tab="tracker">App Tracker</button>
-      <button class="trainai-tab" data-tab="profile">Master Profile</button>
+      <button class="trainai-tab active" data-tab="tracker" data-tg-tooltip="A radar for the algorithm. Tells you what to do next to get prioritized.">App Tracker</button>
+      <button class="trainai-tab" data-tab="profile" data-tg-tooltip="Your personal vault. Save your resume here to auto-type it on applications.">Master Profile</button>
     </div>
     
     <div class="trainai-tab-content active" id="trainai-tab-tracker">
@@ -111,7 +111,13 @@ function injectSidePanel() {
       <button id="trainai-save-profile">💾 Save Master Profile</button>
     </div>
     
-    <div id="trainai-autofill-btn">
+
+    <div class="tg-tools-map">
+      <h3>📍 Tools Map</h3>
+      <p><strong>Impact Coach & ATS Scanner:</strong> These tools are automatically injected directly onto Job Application pages and Interview forms when you open them!</p>
+    </div>
+
+    <div id="trainai-autofill-btn" data-tg-tooltip="Instantly beam your saved resume into all the empty boxes on this page.">
       ⚡ Autofill This Page
     </div>
   `;
@@ -426,3 +432,37 @@ function updateCoachScore(text) {
     adviceDiv.style.color = 'var(--tg-text-sec)';
   }
 }
+
+
+// Voice Tooltips (Text-to-Speech)
+document.addEventListener('mouseover', (e) => {
+  const tooltipElement = e.target.closest('[data-tg-tooltip]');
+  if (tooltipElement) {
+    // Prevent spamming the same speech
+    if (window._tgLastSpoken === tooltipElement) return;
+    window._tgLastSpoken = tooltipElement;
+    
+    const text = tooltipElement.getAttribute('data-tg-tooltip');
+    window.speechSynthesis.cancel(); // Stop any current speech
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.1; // Slightly faster
+    utterance.pitch = 1.0;
+    
+    // Pick a good English voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const premiumVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google US English'));
+    if (premiumVoice) {
+      utterance.voice = premiumVoice;
+    }
+    
+    window.speechSynthesis.speak(utterance);
+  }
+});
+document.addEventListener('mouseout', (e) => {
+  const tooltipElement = e.target.closest('[data-tg-tooltip]');
+  if (tooltipElement) {
+    window._tgLastSpoken = null;
+    window.speechSynthesis.cancel();
+  }
+});
