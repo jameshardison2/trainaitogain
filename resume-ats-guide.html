@@ -460,18 +460,27 @@ Return only the fully rewritten resume. Ensure the tone remains highly professio
       `;
       
       // Update feedback
+      // Update feedback
       if (score < 50) {
          feedbackBox.innerHTML = `<h4>Low Match Probability 🔴</h4><p>Your resume is missing critical AI industry keywords. The automated scanner is highly likely to reject this. Please add the missing keywords highlighted above into your bullet points organically.</p> ${nudgeCTA}`;
          applyBtn.className = 'btn-apply';
          applyBtn.innerText = 'You must score 80%+ to Apply';
+         applyBtn.onclick = function() { openApplyModal('content_button'); };
       } else if (score < 80) {
          feedbackBox.innerHTML = `<h4>Medium Match Probability 🟡</h4><p>You have a decent foundation, but you are still missing some key terms. To guarantee your resume is flagged for review, try to incorporate a few more of the gray keywords.</p> ${nudgeCTA}`;
          applyBtn.className = 'btn-apply';
          applyBtn.innerText = 'You must score 80%+ to Apply';
-      } else {
+         applyBtn.onclick = function() { openApplyModal('content_button'); };
+      } else if (score < 100) {
          feedbackBox.innerHTML = '<h4>High Match Probability 🟢</h4><p>Excellent work. Your resume is dense with high-value AI keywords. You have a very high probability of passing the automated screening phase.</p>';
          applyBtn.className = 'btn-apply ready';
          applyBtn.innerText = 'Pass: Submit Resume to Mercor Now';
+         applyBtn.onclick = function() { openApplyModal('content_button'); };
+      } else {
+         feedbackBox.innerHTML = '<h4>Flawless 100% Match! 🏆</h4><p>Great job! Your resume is absolutely perfect. It is guaranteed to pass the ATS screening. Let\\'s move you along the pipeline to prepare for the AI Interview!</p>';
+         applyBtn.className = 'btn-apply ready';
+         applyBtn.innerText = 'Next Step: AI Interview Prep ➔';
+         applyBtn.onclick = function() { window.location.href = 'prep-hub.html'; };
       }
       
       scanBtn.innerText = 'Scan Again';
