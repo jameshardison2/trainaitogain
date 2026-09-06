@@ -362,6 +362,7 @@
           const currentRef = document.getElementById('ref-input').value.trim().toLowerCase();
           const refBadge = currentRef === 'admin_all' && lead.referred_by ? `<div style="background:var(--primary-light); color:var(--primary-dark); font-size:10px; font-weight:800; padding:2px 6px; border-radius:100px; display:inline-block; margin-bottom:8px;">REF: ${lead.referred_by}</div>` : '';
           
+          let statusUI = '';
           let deleteBtn = '';
           if (currentRef === 'admin_all') {
             statusUI = `
