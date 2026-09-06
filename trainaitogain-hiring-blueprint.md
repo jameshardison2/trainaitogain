@@ -1,5 +1,5 @@
 
-# The Ultimate Mercor Hiring Blueprint
+# The Ultimate TrainAIToGain Hiring Blueprint
 
 **TRAINAITOGAIN — WE GET YOU HIRED.**
 
@@ -35,7 +35,7 @@ When answering behavioral questions, use this exact fill-in-the-blank structure:
 2. **Task (10s):** *"My specific objective was to [Goal] within a strict deadline of [Timeframe]."*
 3. **Action (30s):** *"I took the initiative by [Action 1]. Specifically, I designed a [Tool/System] using [Key Skill/Tech]. I then collaborated with [Stakeholders] to [Action 2]."*
 4. **Result (10s):** *"As a result, we successfully [Quantifiable Metric - e.g., reduced costs by 20% / shipped 2 weeks early]."*
-5. **+ Plus (10s):** *"This experience taught me [Key Takeaway], which I plan to bring to this role at Mercor."*
+5. **+ Plus (10s):** *"This experience taught me [Key Takeaway], which I plan to bring to this role."*
 
 *👉 Practice this structure live against our AI critic in the [TrainAIToGain Prep Hub](https://trainaitogain.com/prep-hub.html).*
 
@@ -49,7 +49,7 @@ The AI grades your confidence and transcription accuracy. Do not fail for techni
 ---
 
 ## 🔴 Phase 3: Surviving the AI Cross-Examination
-Mercor's AI interviewer is notorious for asking deep, aggressive follow-up questions. It will try to poke holes in your story.
+The AI interviewer is notorious for asking deep, aggressive follow-up questions. It will try to poke holes in your story.
 
 ### The 3 Most Common AI Follow-Ups
 1. **"Why did you choose that specific approach instead of [Alternative]?"**
