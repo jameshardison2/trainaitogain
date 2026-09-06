@@ -83,12 +83,36 @@
             console.error("Error sending to Instantly:", webhookError);
           }
         }
+        // Fire Google Analytics Conversion Event if GA is loaded
+        if(typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            'event_category': 'lead_magnet',
+            'event_label': 'Companion_Guide'
+          });
+        }
+
+        // Trigger confetti if available
+        if(typeof confetti === 'function') {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        }
         
-        // Redirect to the extension download page
-        window.location.href = "extension-download.html";
+        // Inline success message
+        if (form.parentElement) {
+          form.parentElement.innerHTML = `
+            <div style="text-align:center; padding: 20px 0;">
+              <div style="width:64px; height:64px; background:#10b981; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin: 0 auto 24px;">✓</div>
+              <h3 style="font-size:24px; font-weight:800; color:#111827; margin-bottom:12px;">Success!</h3>
+              <p style="color:#4b5563; font-size:16px; margin-bottom:32px; line-height:1.6;">We've also emailed you a backup copy.</p>
+              <a href="/mercor-companion-guide.pdf" download="Mercor-Companion-Guide.pdf" target="_blank" class="btn-primary" style="display:inline-block; width:100%; padding:16px; font-size:18px; text-decoration:none; margin-bottom:16px;">Download PDF Guide ➔</a>
+            </div>
+          `;
+        }
       } catch (error) {
         console.error("Error adding document: ", error);
-      } finally {
         btn.innerHTML = originalText;
         btn.disabled = false;
       }
