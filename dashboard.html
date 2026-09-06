@@ -191,15 +191,16 @@
     <div style="background:var(--black); color:var(--white); border-radius:var(--radius-lg); padding:32px; margin-bottom:48px; box-shadow:var(--shadow-lg);">
         <div style="display:flex; justify-content:space-between; align-items:flex-end;">
             <div>
-                <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:800; margin-bottom:8px;">Current Estimated Earnings</div>
+                <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:800; margin-bottom:8px;">Weekly Estimated Earnings <span style="color:var(--gray-400); font-weight:500; text-transform:none; letter-spacing:normal; margin-left:8px;" id="current-week-date"></span></div>
                 <h2 style="font-size:36px; font-weight:800; margin:0; color:var(--primary);">$<span id="bonus-amount">0</span></h2>
             </div>
             <div style="text-align:right;">
                 <div style="font-size:16px; font-weight:800;"><span id="applied-count-bonus">0</span> Applied (+$5)</div>
                 <div style="font-size:16px; font-weight:800;"><span id="hires-count-bonus">0</span> Hired (+$15)</div>
+                <div style="font-size:13px; font-weight:700; color:var(--primary); margin-top:8px;" id="mega-bonus-ui">🔥 5 Hires = +$200 Bonus!</div>
             </div>
         </div>
-        <p style="color:var(--gray-400); font-size:14px; margin-top:24px; margin-bottom:0;">Bonus estimates are based on manual pipeline updates. Make sure you keep your candidate statuses accurate as they progress through the Mercor interview process!</p>
+        <p style="color:var(--gray-400); font-size:14px; margin-top:24px; margin-bottom:0;">Bonuses are calculated and paid weekly based on verified pipeline updates. Get 5 candidates hired in a week to trigger the $200 mega-bonus!</p>
     </div>
 
     <!-- Admin Filters -->
@@ -453,8 +454,21 @@
         document.getElementById('applied-count-bonus').innerText = appliedCount;
         document.getElementById('hires-count-bonus').innerText = hiresCount;
         
-        const totalBonus = (appliedCount * 5) + (hiresCount * 15);
+        let totalBonus = (appliedCount * 5) + (hiresCount * 15);
+        if (hiresCount >= 5) {
+            totalBonus += 200;
+            document.getElementById('mega-bonus-ui').innerHTML = '🔥 $200 Mega-Bonus Unlocked!';
+        } else {
+            document.getElementById('mega-bonus-ui').innerHTML = `🔥 ${5 - hiresCount} more Hires to unlock $200 Bonus!`;
+        }
         document.getElementById('bonus-amount').innerText = totalBonus;
+        
+        const d1 = new Date();
+        const startOfWeek = new Date(d1.setDate(d1.getDate() - d1.getDay()));
+        const d2 = new Date();
+        const endOfWeek = new Date(d2.setDate(d2.getDate() - d2.getDay() + 6));
+        const formatOptions = { month: 'short', day: 'numeric' };
+        document.getElementById('current-week-date').innerText = `(Week of ${startOfWeek.toLocaleDateString(undefined, formatOptions)} - ${endOfWeek.toLocaleDateString(undefined, formatOptions)})`;
     }
   }
 
