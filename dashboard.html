@@ -202,6 +202,9 @@
         <p style="color:var(--gray-400); font-size:14px; margin-top:24px; margin-bottom:0;">Bonus estimates are based on manual pipeline updates. Make sure you keep your candidate statuses accurate as they progress through the Mercor interview process!</p>
     </div>
 
+    <!-- Admin Filters -->
+    <div id="admin-filters" style="display:none; margin-bottom: 24px; gap:8px; flex-wrap:wrap;"></div>
+
     <!-- Kanban Board -->
     <div class="kanban-board">
         
@@ -335,6 +338,12 @@
     }
   }
 
+  window.activeAdminFilter = 'all';
+  window.setAdminFilter = function(refName) {
+    window.activeAdminFilter = refName;
+    renderBoard();
+  }
+
   function renderBoard() {
     const cols = {
         'Captured': document.getElementById('col-captured'),
@@ -351,15 +360,37 @@
 
     // Clear columns
     Object.values(cols).forEach(col => col.innerHTML = '');
+    
+    const currentRef = document.getElementById('ref-input').value.trim().toLowerCase();
+    const filterContainer = document.getElementById('admin-filters');
+    
+    if (currentRef === 'admin_all') {
+      filterContainer.style.display = 'flex';
+      const uniqueRefs = [...new Set(globalLeads.map(l => l.referred_by || 'Unknown'))].sort();
+      
+      let html = `<button onclick="setAdminFilter('all')" style="padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 100px; cursor:pointer; border: 1px solid var(--gray-300); background: ${window.activeAdminFilter === 'all' ? 'var(--primary)' : 'var(--white)'}; color: ${window.activeAdminFilter === 'all' ? 'var(--white)' : 'var(--gray-600)'};">All</button>`;
+      
+      uniqueRefs.forEach(refName => {
+        const isActive = window.activeAdminFilter === refName;
+        html += `<button onclick="setAdminFilter('${refName}')" style="padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 100px; cursor:pointer; border: 1px solid var(--gray-300); background: ${isActive ? 'var(--primary)' : 'var(--white)'}; color: ${isActive ? 'var(--white)' : 'var(--gray-600)'};">${refName}</button>`;
+      });
+      filterContainer.innerHTML = html;
+    } else {
+      filterContainer.style.display = 'none';
+      window.activeAdminFilter = 'all';
+    }
 
-    globalLeads.forEach(lead => {
+    const leadsToRender = currentRef === 'admin_all' && window.activeAdminFilter !== 'all' 
+        ? globalLeads.filter(l => (l.referred_by || 'Unknown') === window.activeAdminFilter)
+        : globalLeads;
+
+    leadsToRender.forEach(lead => {
       const status = lead.status || 'Captured'; // Default to Captured
       if (counts[status] !== undefined) {
           counts[status]++;
           
           const dateStr = lead.timestamp ? new Date(lead.timestamp.toMillis()).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Unknown';
           const masked = maskEmail(lead.email);
-          const currentRef = document.getElementById('ref-input').value.trim().toLowerCase();
           const refBadge = currentRef === 'admin_all' && lead.referred_by ? `<div style="background:var(--primary-light); color:var(--primary-dark); font-size:10px; font-weight:800; padding:2px 6px; border-radius:100px; display:inline-block; margin-bottom:8px;">REF: ${lead.referred_by}</div>` : '';
           
           let statusUI = '';
