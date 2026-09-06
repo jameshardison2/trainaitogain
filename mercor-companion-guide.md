@@ -1,49 +1,52 @@
-# The Mercor Application Companion Guide
+# The Ultimate Mercor Hiring Blueprint
 
-**Your blueprint to bypassing the waitlist and passing the AI gatekeepers.**
+**Welcome to TrainAIToGain!** 
 
----
+You've successfully secured your copy of the blueprint. Instead of a standard boring PDF, we've built an entire suite of **interactive tools** to get you hired. 
 
-## 1. The ATS Resume Checklist
-Before you upload your resume to the Mercor portal, make sure you have checked off every item on this list. The AI evaluates your resume based on structure and keywords.
-
-- [ ] **Standard Formatting:** Use a single-column layout (no tables or weird sidebars).
-- [ ] **No Graphics:** Remove all images, charts, and icons.
-- [ ] **Standard Fonts:** Use Arial, Times New Roman, or Calibri.
-- [ ] **Clear Section Headers:** Use standard names like "Experience", "Education", and "Skills".
-- [ ] **Bullet Points:** Use standard bullet points (dots), not custom icons.
-- [ ] **Action Verbs:** Start *every single* bullet point with a strong action verb (e.g., *Architected*, *Developed*, *Led*, *Engineered*).
-- [ ] **Quantified Impact:** Ensure at least 60% of your bullet points contain a number, percentage, or dollar amount (e.g., *Increased revenue by 15%*, *Led a team of 4*).
-- [ ] **Keyword Density:** Mention your core skills (e.g., Python, React, NLP) organically 2-3 times across different roles.
+This guide is your roadmap. Keep it open and use it to navigate our platform step-by-step as you go through the Mercor process.
 
 ---
 
-## 2. The AI Video Interview Framework
-The one-way video interview is where 80% of applicants fail. You are not talking to a human; you are talking to an AI that is transcribing your words and running sentiment analysis.
+## Step 1: Beat the ATS Resume Scanner
+Before you even apply, you must ensure your resume can be read by an AI parser. If the AI can't read it, a human will never see it.
 
-**The STAR+ Method**
-Structure every answer using this framework:
-1. **Situation:** Briefly set the context (10 seconds).
-2. **Task:** What was the specific problem you needed to solve? (10 seconds)
-3. **Action:** What exactly did *you* do? Focus on your individual contribution, not the team's. Use active language. (30 seconds)
-4. **Result:** What was the quantifiable outcome? (10 seconds)
-5. **+ Plus:** What did you learn that applies to this new role? (10 seconds)
+👉 **Action:** Go to the [**Resume ATS Check**](https://trainaitogain.com/resume-ats-guide.html) tool.
+- Paste your resume bullet points.
+- Use the **Real-time Keyword Highlighter** to ensure you have the right keyword density.
+- Check the **Action Verb Density Score** to make sure you are using strong verbs (like *Architected* or *Spearheaded*).
 
-**Pro Tips for the AI Interview:**
-- **Pacing:** Speak clearly and at a moderate pace. Do not rush. The AI needs to transcribe your words accurately.
-- **Micro-expressions:** Maintain eye contact with the camera and smile. Some AI systems analyze facial expressions for confidence markers.
-- **Audio Quality:** Use a dedicated microphone if possible. Muffled audio leads to poor transcription and a lower score.
+## Step 2: Understand the Pipeline & Wait Times
+Once you apply, the wait begins. Don't sit in the dark wondering what happens next.
+
+👉 **Action:** Check the [**Live Hiring Pipeline**](https://trainaitogain.com/hiring-pipeline.html).
+- Use the **Estimated Wait Time Calculator** to see exactly how long each stage takes based on real-world data.
+- See the breakdown of the 4 key stages: Applied, Interviewing, Offer, and Hired.
+
+## Step 3: Dominate the AI Video Interview
+The one-way video interview is where 80% of applicants fail. You aren't talking to a human; you are talking to a machine that runs speech-to-text and sentiment analysis.
+
+👉 **Action:** Enter the [**Interview Prep Hub**](https://trainaitogain.com/prep-hub.html).
+Here you will find our 4 interactive simulators:
+1. **[Coding Sandbox](https://trainaitogain.com/prep-coding.html):** Practice live technical algorithms with an AI critic.
+2. **[Cross-Examination Simulator](https://trainaitogain.com/prep-crossexam.html):** Prepare for aggressive follow-up questions where the AI tries to poke holes in your story.
+3. **[Case Study Analyzer](https://trainaitogain.com/prep-casestudy.html):** Learn how to structure open-ended business problems using the MECE framework.
+4. **[Hallucination Test](https://trainaitogain.com/prep-hallucination.html):** Practice identifying when the AI deliberately feeds you false information to test your domain knowledge.
+
+## Step 4: Find Your Perfect Role
+Mercor hires for a massive variety of roles. Make sure you are targeting the one that fits your skills.
+
+👉 **Action:** Browse our **Job Boards**:
+- 💻 **[Software & Engineering](https://trainaitogain.com/role-software.html)** (Full Stack, Backend, AI/ML)
+- 📈 **[Finance & Strategy](https://trainaitogain.com/role-finance.html)** (Analysts, Quants, Operations)
+- 🏥 **[Medical & Healthcare](https://trainaitogain.com/role-medical.html)** (Research, Biotech, Clinical)
 
 ---
 
-## 3. High-Impact Action Verbs
-Replace weak verbs (helped, worked on, responsible for) with these high-impact alternatives:
+## 💡 Final Pro Tips
 
-**Leadership:** Orchestrated, Directed, Spearheaded, Championed
-**Technical:** Architected, Engineered, Deployed, Optimized
-**Results:** Accelerated, Maximized, Streamlined, Surpassed
-**Communication:** Negotiated, Persuaded, Clarified, Synthesized
+- **Bookmark the site!** We are constantly adding new tools and updated wait-time metrics.
+- **The STAR+ Method:** In your video interview, always structure your answers with Situation, Task, Action, Result, and **Plus** (what you learned).
+- **Audio is Everything:** Use a dedicated microphone for the interview. If the AI can't transcribe your words, you get a zero.
 
----
-
-*Keep this guide open on your phone while you navigate the application process. Good luck!*
+*Good luck on your application! We are rooting for you.*
