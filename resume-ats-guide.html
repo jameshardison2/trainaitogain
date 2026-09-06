@@ -413,13 +413,47 @@ Return only the fully rewritten resume. Ensure the tone remains highly professio
       // Escape prompt for inline onclick handler
       const escapedPrompt = aiPrompt.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n');
       
+      // Ensure the global timer function exists
+      if (!window.startAITimer) {
+        window.startAITimer = function(btn) {
+          navigator.clipboard.writeText(btn.getAttribute('data-prompt'));
+          btn.innerText = 'Copied! You have 5 minutes ➔';
+          btn.style.color = '#10b981';
+          
+          const helperText = document.getElementById('ai-helper-text');
+          helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ ACTION REQUIRED:</span> Open ChatGPT now, paste the prompt, and return here in the next <span id="countdown-timer" style="font-weight:800; font-family:monospace; background:#fee2e2; color:#ef4444; padding:2px 4px; border-radius:4px;">05:00</span> minutes to rescan your resume. Let\\'s get you hired!';
+          
+          let timeLeft = 300; // 5 minutes
+          if(window.activeAITimer) clearInterval(window.activeAITimer);
+          
+          window.activeAITimer = setInterval(() => {
+            timeLeft--;
+            const timerEl = document.getElementById('countdown-timer');
+            if(timerEl) {
+              const m = Math.floor(timeLeft / 60);
+              const s = timeLeft % 60;
+              timerEl.innerText = `0${m}:${s < 10 ? '0' : ''}${s}`;
+            }
+            
+            if (timeLeft <= 0) {
+              clearInterval(window.activeAITimer);
+              if(timerEl) {
+                helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ Time is up!</span> You\\'ve got this. Paste your new AI-upgraded resume into the box above and hit Scan to verify it passes. Let\\'s get you hired!';
+                btn.innerText = 'Generate New Prompt 🪄';
+                btn.style.color = 'white';
+              }
+            }
+          }, 1000);
+        };
+      }
+      
       const nudgeCTA = `
         <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(0,0,0,0.1);">
           <p style="font-size:13px; color:var(--gray-600); margin-bottom:8px;">Want AI to fix it for you?</p>
-          <button id="copy-prompt-btn" onclick="navigator.clipboard.writeText('${escapedPrompt}'); this.innerText = 'Copied! Now paste into any AI ➔'; this.style.color = '#10b981';" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:4px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; transition:background 0.2s;">
+          <button id="copy-prompt-btn" data-prompt='${escapedPrompt}' onclick="window.startAITimer(this);" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:4px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; transition:background 0.2s;">
             Copy Custom AI Prompt 🪄
           </button>
-          <p style="font-size:12px; color:var(--gray-500); margin-top:8px; line-height:1.4;">
+          <p id="ai-helper-text" style="font-size:12px; color:var(--gray-500); margin-top:8px; line-height:1.4;">
             <em>After copying, open ChatGPT, Claude, or Gemini and paste the prompt. It will automatically rewrite your resume to include the missing keywords!</em>
           </p>
         </div>
