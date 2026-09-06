@@ -327,13 +327,13 @@
     const cols = {
         'Captured': document.getElementById('col-captured'),
         'Applied': document.getElementById('col-applied'),
-        'Interviewing': document.getElementById('col-interviewing'),
+        'Offer': document.getElementById('col-offer'),
         'Hired': document.getElementById('col-hired')
     };
     const counts = {
         'Captured': 0,
         'Applied': 0,
-        'Interviewing': 0,
+        'Offer': 0,
         'Hired': 0
     };
 
@@ -357,7 +357,7 @@
             <select id="status-${lead.id}" data-original="${status}" class="status-select" onchange="updateLeadStatus('${lead.id}', this.value)">
                 <option value="Captured" ${status === 'Captured' ? 'selected' : ''}>Captured</option>
                 <option value="Applied" ${status === 'Applied' ? 'selected' : ''}>Applied</option>
-                <option value="Interviewing" ${status === 'Interviewing' ? 'selected' : ''}>Interviewing</option>
+                <option value="Offer" ${status === 'Offer' ? 'selected' : ''}>Offer</option>
                 <option value="Hired" ${status === 'Hired' ? 'selected' : ''}>Hired 🎉</option>
             </select>
           `;
@@ -368,7 +368,7 @@
     // Update counts
     document.getElementById('count-captured').innerText = counts['Captured'];
     document.getElementById('count-applied').innerText = counts['Applied'];
-    document.getElementById('count-interviewing').innerText = counts['Interviewing'];
+    document.getElementById('count-offer').innerText = counts['Offer'];
     document.getElementById('count-hired').innerText = counts['Hired'];
 
     // Update Bonus Progress
