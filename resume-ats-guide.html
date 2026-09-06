@@ -421,7 +421,7 @@ Return only the fully rewritten resume. Ensure the tone remains highly professio
           btn.style.color = '#10b981';
           
           const helperText = document.getElementById('ai-helper-text');
-          helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ ACTION REQUIRED:</span> Open an LLM now, paste the prompt, and return here in the next <span id="countdown-timer" style="font-weight:800; font-family:monospace; background:#fee2e2; color:#ef4444; padding:2px 4px; border-radius:4px;">05:00</span> minutes to rescan your resume. Let\'s get you hired!';
+          helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ ACTION REQUIRED:</span> Open ChatGPT or your preferred AI now, paste the prompt, and return here in the next <span id="countdown-timer" style="font-weight:800; font-family:monospace; background:#fee2e2; color:#ef4444; padding:2px 4px; border-radius:4px;">05:00</span> minutes to rescan your resume. Let\'s get you hired!';
           
           let timeLeft = 300; // 5 minutes
           if(window.activeAITimer) clearInterval(window.activeAITimer);
