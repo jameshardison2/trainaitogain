@@ -256,6 +256,19 @@ Experience
     "general": "Seeking General AI Trainers for RLHF and Generative AI optimization. You will perform Prompt Engineering, Data Analysis, Quality Assurance, Fact-checking, and Editing to improve Model Accuracy."
   };
 
+  const resumePlaceholders = {
+    "software": "John Doe\nSoftware Engineer\n\nExperience\n- Trained large language models using Python and React\n- Evaluated OpenAI API outputs for accuracy...",
+    "medical": "Dr. Jane Smith\nAttending Physician\n\nExperience\n- Board Certified MD with 5 years clinical experience\n- Conducted medical writing and patient diagnostics...",
+    "finance": "John Doe, CFA\nFinancial Analyst\n\nExperience\n- Built complex DCF valuation models in Excel\n- Performed quantitative risk assessment...",
+    "legal": "Jane Smith, JD\nCorporate Lawyer\n\nExperience\n- Handled contract review, litigation, and compliance\n- Fact-checked intellectual property regulations...",
+    "creative": "John Doe\nContent Strategist & Copywriter\n\nExperience\n- Developed editorial narratives and SEO strategies\n- Ensured tone and grammar consistency for publications...",
+    "data": "Jane Smith\nData Scientist\n\nExperience\n- Built ETL pipelines and analyzed big data with Pandas\n- Created Tableau data visualizations...",
+    "product": "John Doe\nTechnical Product Manager\n\nExperience\n- Led Agile scrum teams and defined go-to-market strategies\n- Managed stakeholder UX/UI requirements...",
+    "math": "Dr. Jane Smith\nMathematics Researcher\n\nExperience\n- PhD in Applied Math, modeling complex thermodynamics\n- Evaluated proofs and differential equations...",
+    "language": "John Doe\nBilingual Translator\n\nExperience\n- Expert in NLP localization and grammatical nuance\n- Performed bilingual interpretation and editing...",
+    "general": "Jane Smith\nAI Trainer & QA Specialist\n\nExperience\n- Evaluated Generative AI outputs for accuracy and tone\n- Performed prompt engineering and fact-checking..."
+  };
+
   const keywordSets = {
     "software": ["Python", "React", "TypeScript", "LLM", "RLHF", "Machine Learning", "System Design", "AWS", "GCP", "LangChain", "OpenAI API", "Evaluation"],
     "medical": ["MD", "MBBS", "USMLE", "ECFMG", "Board Certified", "Clinical Research", "Diagnostics", "Patient Care", "Healthcare", "Medical Writing", "Data Labeling", "Verification"],
@@ -311,6 +324,10 @@ Experience
     const badge = document.getElementById('import-badge');
     jobDescBox.value = jobDescriptions[currentRole];
     badge.style.display = 'inline-block';
+
+    // Update the resume placeholder text to match the role
+    const resumeBoxEl = document.getElementById('resume-text');
+    resumeBoxEl.placeholder = resumePlaceholders[currentRole];
     
     renderChips();
   });
@@ -318,6 +335,7 @@ Experience
   // Initial render
   document.getElementById('job-desc').value = jobDescriptions[currentRole];
   document.getElementById('import-badge').style.display = 'inline-block';
+  document.getElementById('resume-text').placeholder = resumePlaceholders[currentRole];
   renderChips();
   
   scanBtn.addEventListener('click', () => {
