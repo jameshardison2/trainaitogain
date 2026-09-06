@@ -421,7 +421,7 @@ Return only the fully rewritten resume. Ensure the tone remains highly professio
           btn.style.color = '#10b981';
           
           const helperText = document.getElementById('ai-helper-text');
-          helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ ACTION REQUIRED:</span> Open ChatGPT now, paste the prompt, and return here in the next <span id="countdown-timer" style="font-weight:800; font-family:monospace; background:#fee2e2; color:#ef4444; padding:2px 4px; border-radius:4px;">05:00</span> minutes to rescan your resume. Let\\'s get you hired!';
+          helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ ACTION REQUIRED:</span> Open ChatGPT now, paste the prompt, and return here in the next <span id="countdown-timer" style="font-weight:800; font-family:monospace; background:#fee2e2; color:#ef4444; padding:2px 4px; border-radius:4px;">05:00</span> minutes to rescan your resume. Let\'s get you hired!';
           
           let timeLeft = 300; // 5 minutes
           if(window.activeAITimer) clearInterval(window.activeAITimer);
@@ -438,7 +438,7 @@ Return only the fully rewritten resume. Ensure the tone remains highly professio
             if (timeLeft <= 0) {
               clearInterval(window.activeAITimer);
               if(timerEl) {
-                helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ Time is up!</span> You\\'ve got this. Paste your new AI-upgraded resume into the box above and hit Scan to verify it passes. Let\\'s get you hired!';
+                helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ Time is up!</span> You\'ve got this. Paste your new AI-upgraded resume into the box above and hit Scan to verify it passes. Let\'s get you hired!';
                 btn.innerText = 'Generate New Prompt 🪄';
                 btn.style.color = 'white';
               }
@@ -477,7 +477,7 @@ Return only the fully rewritten resume. Ensure the tone remains highly professio
          applyBtn.innerText = 'Pass: Submit Resume to Mercor Now';
          applyBtn.onclick = function() { openApplyModal('content_button'); };
       } else {
-         feedbackBox.innerHTML = '<h4>Flawless 100% Match! 🏆</h4><p>Great job! Your resume is absolutely perfect. It is guaranteed to pass the ATS screening. Let\\'s move you along the pipeline to prepare for the AI Interview!</p>';
+         feedbackBox.innerHTML = '<h4>Flawless 100% Match! 🏆</h4><p>Great job! Your resume is absolutely perfect. It is guaranteed to pass the ATS screening. Let\'s move you along the pipeline to prepare for the AI Interview!</p>';
          applyBtn.className = 'btn-apply ready';
          applyBtn.innerText = 'Next Step: AI Interview Prep ➔';
          applyBtn.onclick = function() { window.location.href = 'prep-hub.html'; };
