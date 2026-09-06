@@ -8,7 +8,7 @@ service cloud.firestore {
       allow read: if true;
       // Allow updates to status, but prevent changing the owner
       allow update: if request.resource.data.referred_by == resource.data.referred_by;
-      allow delete: if false;
+      allow delete: if true;
     }
     
     // Deny all other access

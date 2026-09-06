@@ -271,7 +271,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  import { getFirestore, collection, query, where, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
   const firebaseConfig = {
     projectId: "trainaitogain-50c19"
@@ -320,6 +320,21 @@
     }
   }
 
+  window.deleteLead = async function(leadId) {
+    if (!confirm("Are you sure you want to delete this test lead?")) return;
+    
+    try {
+      const leadRef = doc(db, "leads", leadId);
+      await deleteDoc(leadRef);
+      // Remove from local state
+      globalLeads = globalLeads.filter(l => l.id !== leadId);
+      renderBoard();
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting lead. Make sure you have permission.");
+    }
+  }
+
   function renderBoard() {
     const cols = {
         'Captured': document.getElementById('col-captured'),
@@ -347,7 +362,7 @@
           const currentRef = document.getElementById('ref-input').value.trim().toLowerCase();
           const refBadge = currentRef === 'admin_all' && lead.referred_by ? `<div style="background:var(--primary-light); color:var(--primary-dark); font-size:10px; font-weight:800; padding:2px 6px; border-radius:100px; display:inline-block; margin-bottom:8px;">REF: ${lead.referred_by}</div>` : '';
           
-          let statusUI = '';
+          let deleteBtn = '';
           if (currentRef === 'admin_all') {
             statusUI = `
               <select id="status-${lead.id}" data-original="${status}" class="status-select" onchange="updateLeadStatus('${lead.id}', this.value)">
@@ -357,6 +372,7 @@
                   <option value="Hired" ${status === 'Hired' ? 'selected' : ''}>Hired 🎉</option>
               </select>
             `;
+            deleteBtn = `<button onclick="deleteLead('${lead.id}')" style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:14px; padding:4px;" title="Delete Test Lead">🗑️</button>`;
           } else {
             statusUI = `
               <div style="font-size:12px; font-weight:800; color:var(--primary-dark); background:var(--primary-light); padding:6px 12px; border-radius:4px; display:inline-block; border: 1px solid rgba(16, 185, 129, 0.2);">
@@ -367,8 +383,12 @@
           
           const card = document.createElement('div');
           card.className = 'lead-card';
+          card.style.position = 'relative';
           card.innerHTML = `
-            ${refBadge}
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                ${refBadge}
+                ${deleteBtn}
+            </div>
             <div style="font-weight:700; color:var(--black); font-size:16px;">${lead.firstName || 'Anonymous'}</div>
             <div style="color:var(--gray-500); font-size:12px; font-family:monospace; margin-bottom:8px;">${masked}</div>
             <div style="color:var(--gray-400); font-size:12px; margin-bottom:12px;">Captured: ${dateStr}</div>
