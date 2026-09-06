@@ -386,25 +386,22 @@ Experience
         if (start === score) clearInterval(counter);
       }, 30);
       
-      // Nudge CTA for low scores
-      const templatesHTML = `
-        <div id="inline-templates" style="display:none; text-align:left; margin-top:12px; background:var(--gray-50); padding:16px; border-radius:6px; font-size:13px; color:var(--gray-700); border:1px solid var(--gray-200);">
-          <strong style="display:block; margin-bottom:8px; color:var(--primary);">Template 1: The Action-Metric Format</strong>
-          <p style="margin-bottom:12px; font-family:monospace; background:white; padding:8px; border:1px solid #ddd; line-height:1.4;">Evaluated and fact-checked over [Number] [Keyword/Topic] model outputs, improving accuracy and reducing hallucinations by [Percentage]%.</p>
-          
-          <strong style="display:block; margin-bottom:8px; color:var(--primary);">Template 2: The Direct Experience Format</strong>
-          <p style="margin-bottom:12px; font-family:monospace; background:white; padding:8px; border:1px solid #ddd; line-height:1.4;">Leveraged expertise in [Keyword] and [Keyword] to generate high-quality RLHF training data for complex prompts.</p>
-          
-          <strong style="display:block; margin-bottom:8px; color:var(--primary);">Template 3: The QA Format</strong>
-          <p style="font-family:monospace; background:white; padding:8px; border:1px solid #ddd; line-height:1.4;">Performed rigorous quality assurance and system design review on large language model responses to ensure alignment with human intent.</p>
-        </div>
-      `;
-
+      // Nudge CTA: ChatGPT Prompt Generator
+      const missingKws = activeKeywords.filter(kw => !text.includes(kw.toLowerCase()));
+      const jobDescText = document.getElementById('job-desc').value;
+      const resumeTextValue = resumeBox.value;
+      
+      const aiPrompt = `Act as an expert resume writer. I am applying for an AI Training role. Here is the job description:\n\n${jobDescText}\n\nHere is my current resume:\n\n${resumeTextValue}\n\nPlease rewrite my resume bullet points to naturally include these exact missing keywords:\n${missingKws.join(', ')}\n\nMake sure the new bullets sound organic, professional, and pass ATS screening.`;
+      
+      // Escape prompt for inline onclick handler
+      const escapedPrompt = aiPrompt.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n');
+      
       const nudgeCTA = `
         <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(0,0,0,0.1);">
-          <p style="font-size:13px; color:var(--gray-600); margin-bottom:8px;">Not sure how to add these naturally?</p>
-          <button onclick="document.getElementById('inline-templates').style.display = document.getElementById('inline-templates').style.display === 'none' ? 'block' : 'none';" style="background:none; border:none; padding:0; font-weight:700; color:var(--primary); text-decoration:underline; font-size:14px; cursor:pointer; font-family:inherit;">Click here to view exact bullet-point templates ➔</button>
-          ${templatesHTML}
+          <p style="font-size:13px; color:var(--gray-600); margin-bottom:8px;">Want AI to fix it for you?</p>
+          <button id="copy-prompt-btn" onclick="navigator.clipboard.writeText('${escapedPrompt}'); this.innerText = 'Copied! Now paste into ChatGPT ➔'; this.style.color = '#10b981';" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:4px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; transition:background 0.2s;">
+            Generate ChatGPT Prompt 🪄
+          </button>
         </div>
       `;
       
