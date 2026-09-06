@@ -190,9 +190,14 @@
       <p style="font-size:20px; color:var(--gray-700); line-height:1.6; margin-bottom:40px;">
         We've analyzed thousands of successful applications to reverse-engineer the hiring process. Follow these 3 proven steps to bypass the ATS filters, ace the AI interview, and secure a high-paying RLHF contract.
       </p>
-      <a href="javascript:void(0)" onclick="const el = document.getElementById('step1'); window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth'});" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:18px 32px; font-size:18px; text-decoration:none; box-shadow:var(--shadow-orange);">
-        Start Step 1 ➔
-      </a>
+      <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+        <a href="javascript:void(0)" onclick="const el = document.getElementById('step1'); window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth'});" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:18px 32px; font-size:18px; text-decoration:none; box-shadow:var(--shadow-orange);">
+          Start Step 1 ➔
+        </a>
+        <a href="apply.html" style="display:inline-flex; align-items:center; gap:8px; padding:18px 32px; font-size:18px; text-decoration:none; color:var(--gray-500); font-weight:700; transition:color 0.2s;" onmouseover="this.style.color='var(--black)'" onmouseout="this.style.color='var(--gray-500)'">
+          Skip prep and view open opportunities ➔
+        </a>
+      </div>
     </div>
   </header>
 
@@ -204,9 +209,13 @@
       <div class="pipeline-step" id="step1">
         <div class="step-number">1</div>
         <div class="step-content">
+          <div style="display:inline-block; background:var(--gray-100); color:var(--gray-700); font-size:12px; font-weight:700; padding:4px 8px; border-radius:4px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.05em;">Time: 3 Mins</div>
           <h2>Bypass the ATS Recruiter</h2>
-          <p>AI labs filter out 90% of applicants instantly using Automated Tracking Systems (ATS). If you don't have the exact keyword density they are looking for, a human will never see your resume. Use our live scanner to optimize your CV for the exact role you want.</p>
+          <p>AI labs filter out 90% of applicants instantly using Automated Tracking Systems (ATS). If you don't have the exact "keyword density matrix" they are scanning for, a human will never see your resume. Our live scanner analyzes your CV against the exact model requirements to guarantee a perfect match.</p>
           <a href="resume-ats-guide.html" class="btn-step">Launch ATS Resume Optimizer ➔</a>
+          <div style="margin-top:20px; padding:16px; background:#F8FAFC; border-left:4px solid var(--primary); border-radius:4px; display:inline-block;">
+            <p style="margin:0; font-size:14px; color:var(--gray-700); font-style:italic;">"I got rejected instantly 3 times in a row. After using this exact keyword format, I got my interview invite within 10 minutes." <strong style="color:var(--black);">— David, Software Engineer</strong></p>
+          </div>
         </div>
       </div>
 
@@ -214,9 +223,13 @@
       <div class="pipeline-step" id="step2">
         <div class="step-number">2</div>
         <div class="step-content">
+          <div style="display:inline-block; background:var(--gray-100); color:var(--gray-700); font-size:12px; font-weight:700; padding:4px 8px; border-radius:4px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.05em;">Time: 15 Mins</div>
           <h2>Ace the AI Interview</h2>
-          <p>Once your resume passes, you will be invited to a one-way recorded video interview evaluated entirely by an AI model. Master the "uncanny valley" of talking to a bot with our proven interview frameworks, behavioral guides, and technical prep.</p>
+          <p>Once your resume passes, you're invited to a one-way recorded video interview evaluated entirely by an AI model. Master the "uncanny valley" of talking to a bot. Inside the Prep Hub, we break down exactly what the AI looks for in your eye contact, audio cadence, and technical reasoning.</p>
           <a href="prep-hub.html" class="btn-step">Enter the Interview Prep Hub ➔</a>
+          <div style="margin-top:20px; padding:16px; background:#F8FAFC; border-left:4px solid var(--primary); border-radius:4px; display:inline-block;">
+            <p style="margin:0; font-size:14px; color:var(--gray-700); font-style:italic;">"The AI interviewer feels incredibly unnatural. The framework in here kept me from panicking and helped me structure my answers perfectly." <strong style="color:var(--black);">— Sarah, Medical Evaluator</strong></p>
+          </div>
         </div>
       </div>
 
@@ -224,9 +237,13 @@
       <div class="pipeline-step" id="step3">
         <div class="step-number">3</div>
         <div class="step-content">
+          <div style="display:inline-block; background:var(--gray-100); color:var(--gray-700); font-size:12px; font-weight:700; padding:4px 8px; border-radius:4px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.05em;">Time: 10 Mins</div>
           <h2>Survive the "Black Box"</h2>
-          <p>Getting hired is only the beginning. These platforms use invisible, continuous quality audits to evaluate your work. Drop below the threshold, and you'll be shadowbanned without warning. Learn how to maintain high quality scores and keep the high-paying tasks flowing.</p>
+          <p>Getting hired is only the beginning. Platforms use invisible, continuous quality audits to evaluate your work. Drop below the threshold, and you'll be permanently shadowbanned without warning. Learn the exact heuristics used to grade your tasks so you keep the high-paying work flowing.</p>
           <a href="post-hire.html" class="btn-step">Read the Post-Hire Guide ➔</a>
+          <div style="margin-top:20px; padding:16px; background:#F8FAFC; border-left:4px solid var(--primary); border-radius:4px; display:inline-block;">
+            <p style="margin:0; font-size:14px; color:var(--gray-700); font-style:italic;">"I had no idea I was making formatting mistakes until I got shadowbanned. I wish I had read this guide on my first day." <strong style="color:var(--black);">— Michael, Data Analyst</strong></p>
+          </div>
         </div>
       </div>
 
@@ -387,10 +404,9 @@
               myForm.parentElement.innerHTML = `
                 <div style="text-align:center; padding: 20px 0;">
                   <div style="width:64px; height:64px; background:#10b981; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin: 0 auto 24px;">✓</div>
-                  <h3 style="font-size:24px; font-weight:800; color:#111827; margin-bottom:12px;">Your Guide is Ready!</h3>
-                  <p style="color:#4b5563; font-size:16px; margin-bottom:32px; line-height:1.6;">We've emailed you a backup copy. Now, <strong>let's get you hired.</strong></p>
-                  <a href="#" onclick="window.open('/mercor-companion-guide.pdf', '_blank'); return false;" class="btn-primary" style="display:inline-block; width:100%; padding:16px; font-size:18px; text-decoration:none; margin-bottom:16px;">Download PDF Guide ➔</a>
-                  <a href="javascript:void(0)" onclick="const el = document.getElementById('step1'); window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth'});" style="color:var(--gray-500); font-size:16px; text-decoration:underline; display:block; margin-top:16px; font-weight:700; transition:color 0.2s;" onmouseover="this.style.color='var(--black)'" onmouseout="this.style.color='var(--gray-500)'">Next Step: Learn How To Apply ➔</a>
+                  <h3 style="font-size:24px; font-weight:800; color:#111827; margin-bottom:12px;">Your Guide is on the way!</h3>
+                  <p style="color:#4b5563; font-size:16px; margin-bottom:32px; line-height:1.6;">We just emailed it to you. While you wait, <strong>let's get you hired.</strong></p>
+                  <a href="javascript:void(0)" onclick="const el = document.getElementById('step1'); window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth'});" class="btn-primary" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:16px; font-size:18px; text-decoration:none; box-shadow:var(--shadow-orange);">Next Step: Learn How To Apply ➔</a>
                 </div>
               `;
             }
