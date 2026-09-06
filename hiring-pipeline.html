@@ -366,9 +366,9 @@
 
       if (myForm.name === 'lead-magnet') {
           // Instantly webhook
-          actionUrl = 'https://api.instantly.ai/api/v1/webhook/66dbfa3e2bf2f38d35eb73e7';
-          payload.append('firstName', formData.get('firstName'));
-          payload.append('email', formData.get('email'));
+          actionUrl = 'https://api.instantly.ai/api/v1/webhooks/campaign/add-lead/NTkzMGNjMjEtOTc2Zi00ZDE2LWExODMtOTllNGYwMThhNTljOnlHU2tCclJwTUpZTw==';
+          payload.append('firstName', formData.get('bottomFirstName') || formData.get('firstName'));
+          payload.append('email', formData.get('bottomEmail') || formData.get('email'));
 
           // Fire Google Analytics Conversion Event if GA is loaded
           if(typeof gtag === 'function') {
