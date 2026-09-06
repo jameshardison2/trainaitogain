@@ -430,7 +430,17 @@ Return only the fully rewritten resume. Ensure the tone remains highly professio
       if (!window.startAITimer) {
         window.startAITimer = function(btn) {
           navigator.clipboard.writeText(btn.getAttribute('data-prompt'));
-          btn.innerText = 'Copied! You have 5 minutes ➔';
+          
+          if (btn.innerText.includes('Copied')) {
+            btn.innerText = 'Copied again! ✅';
+            setTimeout(() => {
+              if (btn.innerText === 'Copied again! ✅') {
+                btn.innerText = 'Copied! You have 5 minutes ➔';
+              }
+            }, 1000);
+          } else {
+            btn.innerText = 'Copied! You have 5 minutes ➔';
+          }
           btn.style.color = '#10b981';
           
           const helperText = document.getElementById('ai-helper-text');
