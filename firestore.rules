@@ -4,8 +4,9 @@ service cloud.firestore {
     match /leads/{document=**} {
       // Anyone can create a lead (submit the form)
       allow create: if true;
-      // Nobody can read the leads (except Firebase Admin SDK / Console)
-      allow read, update, delete: if false;
+      // Anyone can read leads (for affiliate dashboard), but nobody can modify/delete them
+      allow read: if true;
+      allow update, delete: if false;
     }
     
     // Deny all other access
