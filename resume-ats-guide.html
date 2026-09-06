@@ -391,7 +391,24 @@ Experience
       const jobDescText = document.getElementById('job-desc').value;
       const resumeTextValue = resumeBox.value;
       
-      const aiPrompt = `Act as an expert resume writer. I am applying for an AI Training role. Here is the job description:\n\n${jobDescText}\n\nHere is my current resume:\n\n${resumeTextValue}\n\nPlease rewrite my resume bullet points to naturally include these exact missing keywords:\n${missingKws.join(', ')}\n\nMake sure the new bullets sound organic, professional, and pass ATS screening.`;
+      const aiPrompt = `Persona: Act as an expert executive resume writer specializing in AI industry hiring and ATS optimization.
+
+Task: Rewrite my current resume bullet points so they organically and professionally include the specific missing keywords required to pass the automated ATS screening for this role.
+
+Context: 
+I am applying for an AI Training role. 
+
+Target Job Description:
+${jobDescText}
+
+My Current Resume:
+${resumeTextValue}
+
+Exact Missing Keywords to Add:
+${missingKws.join(', ')}
+
+Format:
+Return only the fully rewritten resume. Ensure the tone remains highly professional and fact-based. Bold the newly added keywords so I can easily see where you integrated them.`;
       
       // Escape prompt for inline onclick handler
       const escapedPrompt = aiPrompt.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '\\n');
@@ -399,8 +416,8 @@ Experience
       const nudgeCTA = `
         <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(0,0,0,0.1);">
           <p style="font-size:13px; color:var(--gray-600); margin-bottom:8px;">Want AI to fix it for you?</p>
-          <button id="copy-prompt-btn" onclick="navigator.clipboard.writeText('${escapedPrompt}'); this.innerText = 'Copied! Now paste into ChatGPT ➔'; this.style.color = '#10b981';" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:4px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; transition:background 0.2s;">
-            Generate ChatGPT Prompt 🪄
+          <button id="copy-prompt-btn" onclick="navigator.clipboard.writeText('${escapedPrompt}'); this.innerText = 'Copied! Now paste into any AI ➔'; this.style.color = '#10b981';" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:4px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; transition:background 0.2s;">
+            Copy Custom AI Prompt 🪄
           </button>
         </div>
       `;
