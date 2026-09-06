@@ -347,6 +347,17 @@ Experience
     }
     
     scanBtn.innerText = 'Scanning...';
+    scoreText.innerText = '0';
+    meterFill.style.width = '0%';
+    meterFill.style.background = '#ef4444';
+    scoreText.style.color = '#ef4444';
+    feedbackBox.innerHTML = '<h4>Scanning...</h4><p>Analyzing your resume against the required ATS keywords...</p>';
+    
+    // Reset chips to gray before scanning
+    activeKeywords.forEach(kw => {
+      const chip = document.getElementById('kw-' + kw.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase());
+      if(chip) chip.classList.remove('found');
+    });
     
     setTimeout(() => {
       let hits = 0;
@@ -406,6 +417,8 @@ ${resumeTextValue}
 
 Exact Missing Keywords to Add:
 ${missingKws.join(', ')}
+
+CRITICAL REQUIREMENT: You MUST include every single one of the missing keywords EXACTLY as they are written above. Do not change the tense, do not use synonyms, and do not abbreviate them. Real ATS scanners require exact matches.
 
 Format:
 Return only the fully rewritten resume. Ensure the tone remains highly professional and fact-based. Bold the newly added keywords so I can easily see where you integrated them.`;
@@ -485,7 +498,7 @@ Return only the fully rewritten resume. Ensure the tone remains highly professio
       
       scanBtn.innerText = 'Scan Again';
       
-    }, 600); // Simulate processing delay
+    }, 1200);
   });
 </script>
 
