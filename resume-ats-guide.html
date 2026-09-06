@@ -282,7 +282,8 @@ Experience
     "general": ["RLHF", "Generative AI", "Prompt Engineering", "Data Analysis", "Optimization", "Model", "Evaluation", "Accuracy", "Quality Assurance", "Fact-checking", "Editing", "Research"]
   };
   
-  let currentRole = "software";
+  const roleSelect = document.getElementById('role-select');
+  let currentRole = roleSelect.value || "software";
   let activeKeywords = keywordSets[currentRole];
   
   const kwListEl = document.getElementById('keyword-list');
@@ -292,7 +293,6 @@ Experience
   const scoreText = document.getElementById('score-text');
   const feedbackBox = document.getElementById('feedback-box');
   const applyBtn = document.getElementById('apply-btn');
-  const roleSelect = document.getElementById('role-select');
   
   function renderChips() {
     kwListEl.innerHTML = '';
