@@ -8,6 +8,84 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
+  <style>
+    /* Mercor-style Kanban CSS */
+    .kanban-board {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding-bottom: 24px;
+      min-height: 500px;
+    }
+    .kanban-col {
+      flex: 1;
+      min-width: 280px;
+      background: var(--gray-50);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      border: 1px solid var(--gray-200);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .kanban-header {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gray-500);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .kanban-count {
+      background: var(--gray-200);
+      color: var(--gray-600);
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 12px;
+    }
+    .lead-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .lead-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    .status-select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 12px;
+      border: 1px solid var(--gray-200);
+      border-radius: 4px;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--gray-600);
+      background: var(--gray-50);
+      cursor: pointer;
+    }
+    
+    /* Progress Bar */
+    .progress-container {
+      background: var(--gray-200);
+      height: 12px;
+      border-radius: 100px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    .progress-fill {
+      background: var(--primary);
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease-out;
+    }
+  </style>
 </head>
 <body style="background:var(--gray-50); display:flex; flex-direction:column; min-height:100vh;">
 
@@ -92,30 +170,72 @@
     </style>
   </nav>
 
-<section style="padding: 64px 0 24px;">
-  <div class="container" style="max-width:800px; text-align:center;">
+<section style="padding: 64px 0 24px; background:var(--white); border-bottom:1px solid var(--gray-200);">
+  <div class="container" style="max-width:1200px; text-align:center;">
     <h1 style="font-size:40px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Partner Dashboard</h1>
-    <p style="font-size:16px; color:var(--gray-500); margin-bottom:32px;">Enter your referral code to view your pipeline of captured leads.</p>
+    <p style="font-size:16px; color:var(--gray-500); margin-bottom:32px; max-width:600px; margin-left:auto; margin-right:auto;">Enter your referral code to view your pipeline. Keep statuses up to date to track your bonus goals!</p>
     
-    <div style="background:var(--white); padding:32px; border-radius:var(--radius-lg); border:1px solid var(--gray-200); box-shadow:var(--shadow-md);">
-        <form id="dashboard-form" style="display:flex; gap:16px; max-width:500px; margin:0 auto;">
+    <div style="background:var(--gray-50); padding:24px; border-radius:var(--radius-lg); border:1px solid var(--gray-200); max-width:500px; margin:0 auto;">
+        <form id="dashboard-form" style="display:flex; gap:16px;">
             <input type="text" id="ref-input" placeholder="Enter your Ref Code (e.g., james2024)" required style="flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font); font-size:16px;">
-            <button type="submit" id="load-btn" class="btn-primary">View Leads</button>
+            <button type="submit" id="load-btn" class="btn-primary">Load Pipeline</button>
         </form>
     </div>
   </div>
 </section>
 
-<section id="results-section" style="padding: 24px 0 64px; flex:1; display:none;">
-  <div class="container" style="max-width:800px;">
+<section id="results-section" style="padding: 48px 0 64px; flex:1; display:none;">
+  <div class="container" style="max-width:1200px;">
     
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--gray-200);">
-        <h2 style="font-size:24px; font-weight:700;">Your Pipeline</h2>
-        <div style="font-size:16px; font-weight:700; color:var(--primary);">Total Leads: <span id="total-count">0</span></div>
+    <!-- Bonus Goals Widget -->
+    <div style="background:var(--black); color:var(--white); border-radius:var(--radius-lg); padding:32px; margin-bottom:48px; box-shadow:var(--shadow-lg);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+            <div>
+                <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:800; margin-bottom:8px;">Current Objective</div>
+                <h2 style="font-size:28px; font-weight:800; margin:0;">10 Hires Target</h2>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-size:24px; font-weight:800;"><span id="hires-count">0</span> / 10</div>
+                <div style="font-size:14px; color:var(--gray-400);">Hires Completed</div>
+            </div>
+        </div>
+        <div class="progress-container">
+            <div id="bonus-progress" class="progress-fill"></div>
+        </div>
+        <p style="color:var(--gray-400); font-size:14px; margin:0;">Reach 10 Hires to unlock your next volume bonus tier. Manually update your leads below as they progress through the Mercor interview process.</p>
     </div>
-    
-    <div id="leads-container" style="display:flex; flex-direction:column; gap:16px;">
-        <!-- Leads will be injected here -->
+
+    <!-- Kanban Board -->
+    <div class="kanban-board">
+        
+        <div class="kanban-col">
+            <div class="kanban-header">
+                Captured <span id="count-captured" class="kanban-count">0</span>
+            </div>
+            <div id="col-captured" style="display:flex; flex-direction:column; gap:12px;"></div>
+        </div>
+
+        <div class="kanban-col">
+            <div class="kanban-header">
+                Applied <span id="count-applied" class="kanban-count">0</span>
+            </div>
+            <div id="col-applied" style="display:flex; flex-direction:column; gap:12px;"></div>
+        </div>
+
+        <div class="kanban-col">
+            <div class="kanban-header">
+                Interviewing <span id="count-interviewing" class="kanban-count">0</span>
+            </div>
+            <div id="col-interviewing" style="display:flex; flex-direction:column; gap:12px;"></div>
+        </div>
+
+        <div class="kanban-col">
+            <div class="kanban-header">
+                Hired 🎉 <span id="count-hired" class="kanban-count">0</span>
+            </div>
+            <div id="col-hired" style="display:flex; flex-direction:column; gap:12px;"></div>
+        </div>
+
     </div>
     
   </div>
@@ -154,7 +274,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
   const firebaseConfig = {
     projectId: "trainaitogain-50c19"
@@ -162,6 +282,7 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  let globalLeads = []; // Store leads in memory
 
   function maskEmail(email) {
     if (!email || !email.includes('@')) return email;
@@ -178,11 +299,90 @@
     return `${maskedName}@${domain}`;
   }
 
+  // Handle status update
+  window.updateLeadStatus = async function(leadId, newStatus) {
+    const selectEl = document.getElementById(`status-${leadId}`);
+    const origStatus = selectEl.getAttribute('data-original');
+    
+    selectEl.disabled = true;
+    try {
+      const leadRef = doc(db, "leads", leadId);
+      await updateDoc(leadRef, {
+        status: newStatus
+      });
+      // Update local state and re-render
+      const leadObj = globalLeads.find(l => l.id === leadId);
+      if (leadObj) leadObj.status = newStatus;
+      renderBoard();
+    } catch (err) {
+      console.error(err);
+      alert("Error updating status. Make sure you have permission.");
+      selectEl.value = origStatus; // Revert on failure
+    } finally {
+      selectEl.disabled = false;
+    }
+  }
+
+  function renderBoard() {
+    const cols = {
+        'Captured': document.getElementById('col-captured'),
+        'Applied': document.getElementById('col-applied'),
+        'Interviewing': document.getElementById('col-interviewing'),
+        'Hired': document.getElementById('col-hired')
+    };
+    const counts = {
+        'Captured': 0,
+        'Applied': 0,
+        'Interviewing': 0,
+        'Hired': 0
+    };
+
+    // Clear columns
+    Object.values(cols).forEach(col => col.innerHTML = '');
+
+    globalLeads.forEach(lead => {
+      const status = lead.status || 'Captured'; // Default to Captured
+      if (counts[status] !== undefined) {
+          counts[status]++;
+          
+          const dateStr = lead.timestamp ? new Date(lead.timestamp.toMillis()).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Unknown';
+          const masked = maskEmail(lead.email);
+          
+          const card = document.createElement('div');
+          card.className = 'lead-card';
+          card.innerHTML = `
+            <div style="font-weight:700; color:var(--black); font-size:16px;">${lead.firstName || 'Anonymous'}</div>
+            <div style="color:var(--gray-500); font-size:12px; font-family:monospace; margin-bottom:8px;">${masked}</div>
+            <div style="color:var(--gray-400); font-size:12px; margin-bottom:12px;">Captured: ${dateStr}</div>
+            <select id="status-${lead.id}" data-original="${status}" class="status-select" onchange="updateLeadStatus('${lead.id}', this.value)">
+                <option value="Captured" ${status === 'Captured' ? 'selected' : ''}>Captured</option>
+                <option value="Applied" ${status === 'Applied' ? 'selected' : ''}>Applied</option>
+                <option value="Interviewing" ${status === 'Interviewing' ? 'selected' : ''}>Interviewing</option>
+                <option value="Hired" ${status === 'Hired' ? 'selected' : ''}>Hired 🎉</option>
+            </select>
+          `;
+          cols[status].appendChild(card);
+      }
+    });
+
+    // Update counts
+    document.getElementById('count-captured').innerText = counts['Captured'];
+    document.getElementById('count-applied').innerText = counts['Applied'];
+    document.getElementById('count-interviewing').innerText = counts['Interviewing'];
+    document.getElementById('count-hired').innerText = counts['Hired'];
+
+    // Update Bonus Progress
+    const hiresCount = counts['Hired'];
+    document.getElementById('hires-count').innerText = hiresCount;
+    let progress = (hiresCount / 10) * 100;
+    if (progress > 100) progress = 100;
+    document.getElementById('bonus-progress').style.width = progress + '%';
+  }
+
   window.loadDashboard = async function() {
     const refCode = document.getElementById('ref-input').value.trim();
     if (!refCode) return;
     
-    // Update URL so it can be shared
     const url = new URL(window.location);
     url.searchParams.set('ref', refCode);
     window.history.pushState({}, '', url);
@@ -192,57 +392,30 @@
     btn.innerHTML = 'Loading...';
     btn.disabled = true;
     
-    const resultsSection = document.getElementById('results-section');
-    const leadsContainer = document.getElementById('leads-container');
-    const totalCount = document.getElementById('total-count');
+    document.getElementById('results-section').style.display = 'block';
     
     try {
-      // Query Firestore
       const q = query(
         collection(db, "leads"), 
         where("referred_by", "==", refCode)
       );
       
       const querySnapshot = await getDocs(q);
-      const leads = [];
+      globalLeads = [];
       querySnapshot.forEach((doc) => {
-        leads.push(doc.data());
+        globalLeads.push({
+            id: doc.id,
+            ...doc.data()
+        });
       });
       
-      // Sort by timestamp descending (since orderBy requires an index if combined with where, we sort client-side)
-      leads.sort((a, b) => {
+      globalLeads.sort((a, b) => {
         const timeA = a.timestamp ? a.timestamp.toMillis() : 0;
         const timeB = b.timestamp ? b.timestamp.toMillis() : 0;
-        return timeB - timeA; // Descending
+        return timeB - timeA; 
       });
       
-      // Update UI
-      resultsSection.style.display = 'block';
-      totalCount.innerText = leads.length;
-      leadsContainer.innerHTML = '';
-      
-      if (leads.length === 0) {
-        leadsContainer.innerHTML = '<div style="padding:24px; text-align:center; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); color:var(--gray-500);">No leads found for this referral code yet.</div>';
-      } else {
-        leads.forEach(lead => {
-          const dateStr = lead.timestamp ? new Date(lead.timestamp.toMillis()).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'Unknown Date';
-          const masked = maskEmail(lead.email);
-          
-          const card = document.createElement('div');
-          card.style.cssText = 'background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:20px; display:flex; justify-content:space-between; align-items:center;';
-          card.innerHTML = `
-            <div>
-              <div style="font-weight:700; color:var(--black); font-size:18px; margin-bottom:4px;">${lead.firstName || 'Anonymous'}</div>
-              <div style="color:var(--gray-500); font-size:14px; font-family:monospace;">${masked}</div>
-            </div>
-            <div style="text-align:right;">
-              <div style="background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 8px; border-radius:4px; display:inline-block; margin-bottom:6px;">Captured</div>
-              <div style="color:var(--gray-400); font-size:13px;">${dateStr}</div>
-            </div>
-          `;
-          leadsContainer.appendChild(card);
-        });
-      }
+      renderBoard();
       
     } catch (err) {
       console.error(err);
@@ -253,7 +426,6 @@
     }
   }
   
-  // Auto-load if ref is in URL
   window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('ref');

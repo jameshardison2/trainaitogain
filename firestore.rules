@@ -4,9 +4,11 @@ service cloud.firestore {
     match /leads/{document=**} {
       // Anyone can create a lead (submit the form)
       allow create: if true;
-      // Anyone can read leads (for affiliate dashboard), but nobody can modify/delete them
+      // Anyone can read leads (for affiliate dashboard)
       allow read: if true;
-      allow update, delete: if false;
+      // Allow updates to status, but prevent changing the owner
+      allow update: if request.resource.data.referred_by == resource.data.referred_by;
+      allow delete: if false;
     }
     
     // Deny all other access
