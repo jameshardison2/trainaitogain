@@ -427,9 +427,12 @@
           // Submit to webhook
           fetch(actionUrl, {
             method: 'POST',
-            mode: 'no-cors',
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: payload.toString()
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              firstName: formData.get('bottomFirstName') || formData.get('firstName') || '',
+              email: formData.get('bottomEmail') || formData.get('email') || '',
+              source: 'Application Companion Guide'
+            })
           }).catch(e => console.log('Webhook error', e));
 
           // Redirect to the guide download page
