@@ -175,7 +175,7 @@
     <h1 style="font-size:40px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Partner Dashboard</h1>
     <p style="font-size:16px; color:var(--gray-500); margin-bottom:32px; max-width:600px; margin-left:auto; margin-right:auto;">Enter your referral code to view your pipeline. Keep statuses up to date to track your bonus goals!</p>
     
-    <div style="background:var(--gray-50); padding:24px; border-radius:var(--radius-lg); border:1px solid var(--gray-200); max-width:500px; margin:0 auto;">
+    <div id="search-box-container" style="background:var(--gray-50); padding:24px; border-radius:var(--radius-lg); border:1px solid var(--gray-200); max-width:500px; margin:0 auto;">
         <form id="dashboard-form" style="display:flex; gap:16px;">
             <input type="text" id="ref-input" placeholder="Enter your Ref Code (e.g., james2024)" required style="flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font); font-size:16px;">
             <button type="submit" id="load-btn" class="btn-primary">Load Pipeline</button>
@@ -191,18 +191,15 @@
     <div style="background:var(--black); color:var(--white); border-radius:var(--radius-lg); padding:32px; margin-bottom:48px; box-shadow:var(--shadow-lg);">
         <div style="display:flex; justify-content:space-between; align-items:flex-end;">
             <div>
-                <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:800; margin-bottom:8px;">Current Objective</div>
-                <h2 style="font-size:28px; font-weight:800; margin:0;">10 Hires Target</h2>
+                <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:800; margin-bottom:8px;">Current Estimated Earnings</div>
+                <h2 style="font-size:36px; font-weight:800; margin:0; color:var(--primary);">$<span id="bonus-amount">0</span></h2>
             </div>
             <div style="text-align:right;">
-                <div style="font-size:24px; font-weight:800;"><span id="hires-count">0</span> / 10</div>
-                <div style="font-size:14px; color:var(--gray-400);">Hires Completed</div>
+                <div style="font-size:16px; font-weight:800;"><span id="applied-count-bonus">0</span> Applied (+$5)</div>
+                <div style="font-size:16px; font-weight:800;"><span id="hires-count-bonus">0</span> Hired (+$15)</div>
             </div>
         </div>
-        <div class="progress-container">
-            <div id="bonus-progress" class="progress-fill"></div>
-        </div>
-        <p style="color:var(--gray-400); font-size:14px; margin:0;">Reach 10 Hires to unlock your next volume bonus tier. Manually update your leads below as they progress through the Mercor interview process.</p>
+        <p style="color:var(--gray-400); font-size:14px; margin-top:24px; margin-bottom:0;">Bonus estimates are based on manual pipeline updates. Make sure you keep your candidate statuses accurate as they progress through the Mercor interview process!</p>
     </div>
 
     <!-- Kanban Board -->
@@ -374,12 +371,17 @@
     document.getElementById('count-offer').innerText = counts['Offer'];
     document.getElementById('count-hired').innerText = counts['Hired'];
 
-    // Update Bonus Progress
+    // Update Bonus UI
     const hiresCount = counts['Hired'];
-    document.getElementById('hires-count').innerText = hiresCount;
-    let progress = (hiresCount / 10) * 100;
-    if (progress > 100) progress = 100;
-    document.getElementById('bonus-progress').style.width = progress + '%';
+    const appliedCount = counts['Applied'];
+    
+    if (document.getElementById('applied-count-bonus')) {
+        document.getElementById('applied-count-bonus').innerText = appliedCount;
+        document.getElementById('hires-count-bonus').innerText = hiresCount;
+        
+        const totalBonus = (appliedCount * 5) + (hiresCount * 15);
+        document.getElementById('bonus-amount').innerText = totalBonus;
+    }
   }
 
   window.loadDashboard = async function() {
@@ -437,8 +439,20 @@
   window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('ref');
+    
     if (ref) {
       document.getElementById('ref-input').value = ref;
+      
+      // Affiliate Lock Down
+      if (ref.toLowerCase() !== 'admin_all') {
+         document.getElementById('search-box-container').style.display = 'none';
+         
+         // Add a nice header indicating whose board this is
+         const headerContainer = document.createElement('div');
+         headerContainer.innerHTML = `<h3 style="color:var(--primary); font-size:24px; font-weight:800; margin-top:24px; text-transform:uppercase;">Pipeline For: ${ref}</h3>`;
+         document.getElementById('search-box-container').parentElement.appendChild(headerContainer);
+      }
+      
       loadDashboard();
     }
     document.getElementById('dashboard-form').addEventListener('submit', (e) => {
