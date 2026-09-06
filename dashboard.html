@@ -347,10 +347,13 @@
           
           const dateStr = lead.timestamp ? new Date(lead.timestamp.toMillis()).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Unknown';
           const masked = maskEmail(lead.email);
+          const currentRef = document.getElementById('ref-input').value.trim().toLowerCase();
+          const refBadge = currentRef === 'admin_all' && lead.referred_by ? `<div style="background:var(--primary-light); color:var(--primary-dark); font-size:10px; font-weight:800; padding:2px 6px; border-radius:100px; display:inline-block; margin-bottom:8px;">REF: ${lead.referred_by}</div>` : '';
           
           const card = document.createElement('div');
           card.className = 'lead-card';
           card.innerHTML = `
+            ${refBadge}
             <div style="font-weight:700; color:var(--black); font-size:16px;">${lead.firstName || 'Anonymous'}</div>
             <div style="color:var(--gray-500); font-size:12px; font-family:monospace; margin-bottom:8px;">${masked}</div>
             <div style="color:var(--gray-400); font-size:12px; margin-bottom:12px;">Captured: ${dateStr}</div>
@@ -395,10 +398,15 @@
     document.getElementById('results-section').style.display = 'block';
     
     try {
-      const q = query(
-        collection(db, "leads"), 
-        where("referred_by", "==", refCode)
-      );
+      let q;
+      if (refCode.toLowerCase() === 'admin_all') {
+        q = collection(db, "leads");
+      } else {
+        q = query(
+          collection(db, "leads"), 
+          where("referred_by", "==", refCode)
+        );
+      }
       
       const querySnapshot = await getDocs(q);
       globalLeads = [];
