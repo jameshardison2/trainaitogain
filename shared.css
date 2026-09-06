@@ -2045,3 +2045,78 @@ html { scroll-behavior: smooth; }
 .ticker-item { display: inline-flex; align-items: center; gap: 8px; margin-right: 48px; }
 .pulse-dot { width: 6px; height: 6px; background: #34d399; border-radius: 50%; box-shadow: 0 0 8px #34d399; animation: pulse 1.5s infinite; }
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+/* ============================================================
+   GLOBAL MOBILE OVERRIDES
+   ============================================================ */
+@media (max-width: 860px) {
+  /* Force Dashboard Kanban to stack vertically */
+  .kanban-board {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+  .kanban-col {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+  
+  /* Dashboard Bonus Widget Stacking */
+  #results-section > .container > div:first-child > div:first-child {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px;
+  }
+  #results-section > .container > div:first-child > div:first-child > div:last-child {
+    text-align: left !important;
+  }
+  
+  /* Dashboard Input Form */
+  form[style*="display:flex"] {
+    flex-direction: column !important;
+  }
+  
+  /* Hiring Pipeline Split Views */
+  div[style*="display:flex; justify-content:space-between; align-items:center; gap:64px;"] {
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+  div[style*="flex:1; padding-right:40px;"] {
+    padding-right: 0 !important;
+  }
+  
+  /* Interactive Modules (Prep Hub) */
+  .interactive-module {
+    padding: 24px !important;
+  }
+  .interactive-module > div {
+    flex-direction: column !important;
+  }
+  .interactive-module > div > div {
+    width: 100% !important;
+  }
+  
+  /* Generic inline flex containers that need to wrap */
+  div[style*="display:flex; justify-content:space-between; align-items:flex-start;"] {
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+  }
+  
+  /* Carousels should remain horizontal but scrollable */
+  [id^="carousel-"] {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+  }
+  
+  /* Headers scaling */
+  h1 { font-size: clamp(32px, 8vw, 42px) !important; }
+  h2 { font-size: clamp(28px, 6vw, 36px) !important; }
+  
+  /* Make images responsive */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
