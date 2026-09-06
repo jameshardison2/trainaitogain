@@ -220,6 +220,19 @@
             } else {
                 pMsg.innerHTML = "<strong>Lead Evaluator:</strong> We have concluded our questioning. Your ability to defend your logic under pressure has been recorded. Score: <span style='color:#059669;'>Passed (85/100)</span>";
                 document.getElementById('chat-input').disabled = true;
+                
+                if (!document.getElementById('proceed-btn')) {
+                    const proceedBtn = document.createElement('a');
+                    proceedBtn.id = 'proceed-btn';
+                    proceedBtn.href = 'post-hire.html';
+                    proceedBtn.className = 'btn-primary';
+                    proceedBtn.style.display = 'inline-block';
+                    proceedBtn.style.marginTop = '16px';
+                    proceedBtn.innerHTML = 'Next Step: Post-Hire Guide ➔';
+                    
+                    // Append it to the chat input area
+                    document.querySelector('.chat-input-area').appendChild(proceedBtn);
+                }
             }
             history.appendChild(pMsg);
             history.scrollTop = history.scrollHeight;

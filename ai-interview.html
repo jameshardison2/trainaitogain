@@ -649,8 +649,28 @@
 
   nextBtn.addEventListener('click', () => {
     if (synth.speaking) synth.cancel();
-    currentQ = (currentQ + 1) % currentQuestions.length;
-    askQuestion();
+    
+    if (currentQ + 1 >= currentQuestions.length) {
+      setUIState('feedback', 'Module Complete! You have finished the Voice Evaluator Simulator.');
+      simStatus.innerText = 'Module Complete 🏆';
+      avatarEmoji.innerText = '🎉';
+      userTranscript.style.display = 'none';
+      nextBtn.style.display = 'none';
+      
+      // Prevent duplicate proceed buttons if they somehow click next rapidly
+      if (!document.getElementById('proceed-btn')) {
+        const proceedBtn = document.createElement('a');
+        proceedBtn.id = 'proceed-btn';
+        proceedBtn.href = 'prep-coding.html';
+        proceedBtn.className = 'btn-sim';
+        proceedBtn.style.marginTop = '24px';
+        proceedBtn.innerHTML = 'Next Step: Live Coding Sandbox ➔';
+        document.querySelector('.sim-container').appendChild(proceedBtn);
+      }
+    } else {
+      currentQ++;
+      askQuestion();
+    }
   });
   
   if (speechSynthesis.onvoiceschanged !== undefined) {

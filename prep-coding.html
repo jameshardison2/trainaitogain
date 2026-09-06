@@ -215,7 +215,18 @@
                 cons.innerHTML += '<span style="color:#ef4444;">[FAIL] Space complexity is O(N) due to hash set. Target is O(1).</span><br/>';
             } else if (code.includes('slow') && code.includes('fast') && code.includes('fast.next')) {
                 cons.innerHTML += '<span style="color:#34d399;">[PASS] Floyd\'s Tortoise and Hare implemented correctly! O(1) space.</span><br/>';
-                cons.innerHTML += '<span style="color:#34d399;">Score: 100/100</span>';
+                cons.innerHTML += '<span style="color:#34d399;">Score: 100/100</span><br/><br/>';
+                
+                if (!document.getElementById('proceed-btn')) {
+                    const proceedBtn = document.createElement('a');
+                    proceedBtn.id = 'proceed-btn';
+                    proceedBtn.href = 'prep-casestudy.html';
+                    proceedBtn.className = 'btn-primary';
+                    proceedBtn.style.display = 'inline-block';
+                    proceedBtn.style.marginTop = '16px';
+                    proceedBtn.innerHTML = 'Next Step: Case Study Scenarios ➔';
+                    cons.appendChild(proceedBtn);
+                }
             } else {
                 cons.innerHTML += '<span style="color:#f59e0b;">[WARN] Tests ran, but O(1) space constraints could not be verified. Check your logic.</span><br/>';
             }

@@ -216,11 +216,24 @@
 
     function nextScenario() {
         if (step >= scenarios.length) {
-            document.getElementById('cs-title').innerText = "Simulation Complete";
-            document.getElementById('cs-text').innerText = "You scored " + score + "/100. Return to the Prep Hub to try another module.";
+            document.getElementById('cs-title').innerText = "Simulation Complete 🏆";
+            document.getElementById('cs-text').innerText = "You scored " + score + "/100. Great job resolving these complex edge cases.";
             document.getElementById('cs-options').style.display = 'none';
             document.getElementById('cs-feedback').style.display = 'none';
             document.getElementById('cs-next').style.display = 'none';
+            
+            if (!document.getElementById('proceed-btn')) {
+                const proceedBtn = document.createElement('a');
+                proceedBtn.id = 'proceed-btn';
+                proceedBtn.href = 'prep-hallucination.html';
+                proceedBtn.className = 'btn-primary';
+                proceedBtn.style.display = 'inline-block';
+                proceedBtn.style.marginTop = '24px';
+                proceedBtn.innerHTML = 'Next Step: Hallucination Gym ➔';
+                
+                // Append to the parent of cs-next
+                document.getElementById('cs-next').parentNode.appendChild(proceedBtn);
+            }
             return;
         }
         

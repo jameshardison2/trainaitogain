@@ -470,7 +470,25 @@
     function loadNextScenario() {
         currentScenarioIdx++;
         if (currentScenarioIdx >= roleScenarios.length) {
-            currentScenarioIdx = 0; // Loop back
+            clearInterval(interval);
+            timerEl.innerText = "DONE";
+            textContainer.innerHTML = "<h3 style='color:var(--black);'>Simulation Complete 🏆</h3><p style='color:var(--gray-600);'>You successfully completed all hallucination challenges for this domain.</p>";
+            feedbackEl.style.display = 'none';
+            submitBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            
+            if (!document.getElementById('proceed-btn')) {
+                const proceedBtn = document.createElement('a');
+                proceedBtn.id = 'proceed-btn';
+                proceedBtn.href = 'prep-crossexam.html';
+                proceedBtn.className = 'btn-primary';
+                proceedBtn.style.display = 'inline-block';
+                proceedBtn.style.marginTop = '24px';
+                proceedBtn.innerHTML = 'Next Step: Panel Stress-Test ➔';
+                
+                textContainer.appendChild(proceedBtn);
+            }
+            return;
         }
         renderScenario();
     }
