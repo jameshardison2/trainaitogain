@@ -403,24 +403,18 @@
           const masked = maskEmail(lead.email);
           const refBadge = currentRef === 'admin_all' && lead.referred_by ? `<div style="background:var(--primary-light); color:var(--primary-dark); font-size:10px; font-weight:800; padding:2px 6px; border-radius:100px; display:inline-block; margin-bottom:8px;">REF: ${lead.referred_by}</div>` : '';
           
-          let statusUI = '';
-          let deleteBtn = '';
-          if (currentRef === 'admin_all') {
-            statusUI = `
+          let statusUI = `
               <select id="status-${lead.id}" data-original="${status}" class="status-select" onchange="updateLeadStatus('${lead.id}', this.value)">
                   <option value="Captured" ${status === 'Captured' ? 'selected' : ''}>Captured</option>
                   <option value="Applied" ${status === 'Applied' ? 'selected' : ''}>Applied</option>
                   <option value="Offer" ${status === 'Offer' ? 'selected' : ''}>Offer</option>
                   <option value="Hired" ${status === 'Hired' ? 'selected' : ''}>Hired 🎉</option>
               </select>
-            `;
+          `;
+          
+          let deleteBtn = '';
+          if (currentRef === 'admin_all') {
             deleteBtn = `<button onclick="deleteLead('${lead.id}')" style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:14px; padding:4px;" title="Delete Lead">🗑️</button>`;
-          } else {
-            statusUI = `
-              <div style="font-size:12px; font-weight:800; color:var(--primary-dark); background:var(--primary-light); padding:6px 12px; border-radius:4px; display:inline-block; border: 1px solid rgba(16, 185, 129, 0.2);">
-                  Status: ${status} ${status === 'Hired' ? '🎉' : ''}
-              </div>
-            `;
           }
           
           const card = document.createElement('div');
