@@ -156,9 +156,9 @@
 
     <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:8px;">
       <label for="job-desc" style="display:block; font-weight:700; color:var(--black);">2. Job Description (Optional):</label>
-      <span id="import-badge" style="display:none; background:var(--primary); color:white; font-size:11px; padding:4px 8px; border-radius:4px; font-weight:800;">✓ IMPORTED BY EXTENSION</span>
+      <span id="import-badge" style="display:none; background:var(--primary); color:white; font-size:11px; padding:4px 8px; border-radius:4px; font-weight:800;">✓ AUTO-IMPORTED FROM MERCOR</span>
     </div>
-    <textarea class="resume-box" id="job-desc" style="height:120px; font-family:sans-serif;" placeholder="Paste the job description here, or use our Chrome Extension on Mercor to magically auto-import it."></textarea>
+    <textarea class="resume-box" id="job-desc" style="height:120px; font-family:sans-serif;" placeholder="Select a role above to auto-import a job description."></textarea>
 
     <label for="resume-text" style="display:block; font-weight:700; margin-bottom:8px; margin-top:8px; color:var(--black);">3. Paste Your Resume:</label>
     <textarea class="resume-box" id="resume-text" style="height:250px;" placeholder="John Doe
@@ -233,6 +233,19 @@ Experience
   </footer>
 
 <script>
+  const jobDescriptions = {
+    "software": "Seeking an expert Software Engineer to train advanced AI models on complex programming tasks. Must be highly proficient in Python, React, and TypeScript. Experience with System Design, AWS, and GCP is strongly preferred. Familiarity with LangChain, OpenAI API, and RLHF (Reinforcement Learning from Human Feedback) is a major plus.",
+    "medical": "We are seeking Board Certified Medical Doctors (MD/MBBS) to verify and evaluate AI-generated medical advice. Must have passed USMLE or ECFMG. You will assist in Clinical Research, Diagnostics, and Patient Care simulations, providing expert Medical Writing and Data Labeling for Healthcare models.",
+    "finance": "Seeking a Quantitative Analyst or CFA/CPA to train financial AI models. You will evaluate outputs related to Financial Modeling, DCF, and Valuation. Must have a strong background in Private Equity, Investment Banking, Risk Assessment, and Data Analysis using SQL and Excel.",
+    "legal": "We are looking for Bar Admitted lawyers (JD) to evaluate AI on Contract Review, Litigation, and Corporate Law. You will handle Fact-checking, Legal Writing, and Compliance for Intellectual Property and Privacy regulations.",
+    "creative": "Seeking expert Copywriters and Content Strategists for AI narrative training. You will focus on Tone, Grammar, Fiction, and Non-Fiction writing. Strong background in Journalism, SEO, Publishing, and Editorial Communication is required.",
+    "data": "Seeking a Data Scientist or Analyst. Must be proficient in SQL, Pandas, NumPy, and Tableau. You will evaluate AI models on ETL, Data Visualization, Statistics, Big Data, Data Mining, and Quantitative Analysis.",
+    "product": "Looking for a Technical Product Manager to evaluate AI on Agile, Scrum, and Roadmap planning. Experience with User Stories, JIRA, Stakeholder Management, Go-to-Market, and Product Strategy is required. Focus on UX/UI and Metrics.",
+    "math": "Seeking PhD-level mathematicians to train AI on Calculus, Linear Algebra, and Quantum Mechanics. You will evaluate proofs, Differential Equations, Thermodynamics, and Mathematical Modeling.",
+    "language": "Seeking Bilingual experts in Linguistics and Translation. You will evaluate AI on Localization, NLP, Syntax, Grammar, and Nuance. Must have native Fluency for Interpretation and Proofreading.",
+    "general": "Seeking General AI Trainers for RLHF and Generative AI optimization. You will perform Prompt Engineering, Data Analysis, Quality Assurance, Fact-checking, and Editing to improve Model Accuracy."
+  };
+
   const keywordSets = {
     "software": ["Python", "React", "TypeScript", "LLM", "RLHF", "Machine Learning", "System Design", "AWS", "GCP", "LangChain", "OpenAI API", "Evaluation"],
     "medical": ["MD", "MBBS", "USMLE", "ECFMG", "Board Certified", "Clinical Research", "Diagnostics", "Patient Care", "Healthcare", "Medical Writing", "Data Labeling", "Verification"],
@@ -282,10 +295,19 @@ Experience
   roleSelect.addEventListener('change', (e) => {
     currentRole = e.target.value;
     activeKeywords = keywordSets[currentRole];
+    
+    // Auto-populate job description from Mercor
+    const jobDescBox = document.getElementById('job-desc');
+    const badge = document.getElementById('import-badge');
+    jobDescBox.value = jobDescriptions[currentRole];
+    badge.style.display = 'inline-block';
+    
     renderChips();
   });
   
   // Initial render
+  document.getElementById('job-desc').value = jobDescriptions[currentRole];
+  document.getElementById('import-badge').style.display = 'inline-block';
   renderChips();
   
   scanBtn.addEventListener('click', () => {
@@ -336,13 +358,21 @@ Experience
         if (start === score) clearInterval(counter);
       }, 30);
       
+      // Nudge CTA for low scores
+      const nudgeCTA = `
+        <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(0,0,0,0.1);">
+          <p style="font-size:13px; color:var(--gray-600); margin-bottom:8px;">Not sure how to add these naturally?</p>
+          <a href="index.html" style="font-weight:700; color:var(--primary); text-decoration:underline; font-size:14px;">Grab the Companion Guide for exact bullet-point templates ➔</a>
+        </div>
+      `;
+      
       // Update feedback
       if (score < 50) {
-         feedbackBox.innerHTML = '<h4>Low Match Probability 🔴</h4><p>Your resume is missing critical AI industry keywords. The automated scanner is highly likely to reject this. Please add the missing keywords highlighted above into your bullet points organically.</p>';
+         feedbackBox.innerHTML = `<h4>Low Match Probability 🔴</h4><p>Your resume is missing critical AI industry keywords. The automated scanner is highly likely to reject this. Please add the missing keywords highlighted above into your bullet points organically.</p> ${nudgeCTA}`;
          applyBtn.className = 'btn-apply';
          applyBtn.innerText = 'You must score 80%+ to Apply';
       } else if (score < 80) {
-         feedbackBox.innerHTML = '<h4>Medium Match Probability 🟡</h4><p>You have a decent foundation, but you are still missing some key terms. To guarantee your resume is flagged for review, try to incorporate a few more of the gray keywords.</p>';
+         feedbackBox.innerHTML = `<h4>Medium Match Probability 🟡</h4><p>You have a decent foundation, but you are still missing some key terms. To guarantee your resume is flagged for review, try to incorporate a few more of the gray keywords.</p> ${nudgeCTA}`;
          applyBtn.className = 'btn-apply';
          applyBtn.innerText = 'You must score 80%+ to Apply';
       } else {
