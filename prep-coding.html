@@ -111,31 +111,31 @@
           <button class="tab-btn" id="btn-tab-hint" onclick="switchTab('hint')">Hints</button>
       </div>
       <div id="tab-desc" style="padding:24px; overflow-y:auto; flex:1;">
-          <h2 style="font-size:22px; font-weight:700; margin-bottom:16px; color:var(--white);">Detect Cycle in Linked List (O(1) Space)</h2>
+          <h2 id="prob-title" style="font-size:22px; font-weight:700; margin-bottom:16px; color:var(--white);">Detect Cycle in Linked List (O(1) Space)</h2>
           <div style="display:flex; gap:12px; margin-bottom:24px;">
-              <span style="background:rgba(239, 68, 68, 0.15); color:#ef4444; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:600;">Hard</span>
-              <span style="background:rgba(52, 211, 153, 0.15); color:#34d399; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:600;">Time Limit: 15m</span>
+              <span id="prob-diff" style="background:rgba(239, 68, 68, 0.15); color:#ef4444; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:600;">Hard</span>
+              <span id="prob-time" style="background:rgba(52, 211, 153, 0.15); color:#34d399; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:600;">Time Limit: 15m</span>
           </div>
-          <p style="color:var(--gray-300); font-size:15px; line-height:1.6; margin-bottom:16px;">
-              You are an expert AI evaluator. The AI model has generated a solution to detect a cycle in a linked list. However, it used an <code style="background:#333; padding:2px 6px; border-radius:4px; color:var(--primary);">O(N)</code> space approach by keeping track of visited nodes in a hash set.
-          </p>
-          <p style="color:var(--gray-300); font-size:15px; line-height:1.6; margin-bottom:24px;">
-              <strong>Your Task:</strong> Modify the model's code to achieve an <code style="background:#333; padding:2px 6px; border-radius:4px; color:var(--primary);">O(1)</code> space complexity without modifying the linked list structure.
-          </p>
+          <div id="prob-desc">
+              <p style="color:var(--gray-300); font-size:15px; line-height:1.6; margin-bottom:16px;">
+                  You are an expert AI evaluator. The AI model has generated a solution to detect a cycle in a linked list. However, it used an <code style="background:#333; padding:2px 6px; border-radius:4px; color:var(--primary);">O(N)</code> space approach by keeping track of visited nodes in a hash set.
+              </p>
+              <p style="color:var(--gray-300); font-size:15px; line-height:1.6; margin-bottom:24px;">
+                  <strong>Your Task:</strong> Modify the model's code to achieve an <code style="background:#333; padding:2px 6px; border-radius:4px; color:var(--primary);">O(1)</code> space complexity without modifying the linked list structure.
+              </p>
+          </div>
           <div style="background:#252526; padding:16px; border-radius:8px; border:1px solid #333;">
               <p style="margin:0 0 8px 0; font-size:13px; color:var(--gray-400); text-transform:uppercase; font-weight:700;">Example 1:</p>
-              <div style="font-family:monospace; font-size:13px; color:#d4d4d4;">
-                  Input: head = [3,2,0,-4], pos = 1<br>
-                  Output: true
-              </div>
+              <div id="prob-example" style="font-family:monospace; font-size:13px; color:#d4d4d4; white-space:pre-wrap;">Input: head = [3,2,0,-4], pos = 1
+Output: true</div>
           </div>
       </div>
       <div id="tab-hint" style="padding:24px; overflow-y:auto; flex:1; display:none;">
           <h3 style="font-size:16px; margin-bottom:12px; color:var(--white);">Hint 1</h3>
-          <p style="color:var(--gray-300); font-size:14px; line-height:1.6; margin-bottom:24px; background:#252526; padding:16px; border-radius:8px;">Consider using two pointers. Often referred to as Floyd's Tortoise and Hare algorithm.</p>
+          <p id="prob-hint1" style="color:var(--gray-300); font-size:14px; line-height:1.6; margin-bottom:24px; background:#252526; padding:16px; border-radius:8px;">Consider using two pointers. Often referred to as Floyd's Tortoise and Hare algorithm.</p>
           
           <h3 style="font-size:16px; margin-bottom:12px; color:var(--white);">Hint 2</h3>
-          <p style="color:var(--gray-300); font-size:14px; line-height:1.6; background:#252526; padding:16px; border-radius:8px;">One pointer moves one step at a time, while the other moves two steps at a time. If there is a cycle, they will eventually meet.</p>
+          <p id="prob-hint2" style="color:var(--gray-300); font-size:14px; line-height:1.6; background:#252526; padding:16px; border-radius:8px;">One pointer moves one step at a time, while the other moves two steps at a time. If there is a cycle, they will eventually meet.</p>
       </div>
   </div>
 
@@ -150,6 +150,7 @@
                   <option value="cpp">C++</option>
                   <option value="rust">Rust</option>
               </select>
+              <button onclick="loadRandomChallenge()" style="background:transparent; border:1px solid var(--gray-500); color:var(--gray-300); padding:6px 12px; border-radius:4px; cursor:pointer; font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg> Random Challenge</button>
           </div>
           <div style="display:flex; align-items:center; gap:16px;">
               <div style="display:flex; align-items:center; gap:8px; background:#252526; padding:4px 12px; border-radius:100px; border:1px solid #444;">
@@ -213,33 +214,73 @@
     </script>
   </footer>
 
+<!-- Database Scripts -->
+<script src="js/problems.js"></script>
+
 <!-- Monaco Editor Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
 <script>
+    let activeProblem = null;
+    let timerInterval = null;
+
+    function loadRandomChallenge(specificLang = null) {
+        const lang = specificLang || document.getElementById('language-select').value;
+        const problems = problemsDatabase[lang];
+        if (!problems || problems.length === 0) return;
+        
+        // Pick random problem
+        const randomIndex = Math.floor(Math.random() * problems.length);
+        activeProblem = problems[randomIndex];
+        
+        // Update UI
+        document.getElementById('prob-title').textContent = activeProblem.title;
+        document.getElementById('prob-diff').textContent = activeProblem.difficulty;
+        document.getElementById('prob-time').textContent = `Time Limit: ${activeProblem.timeLimit}`;
+        document.getElementById('prob-desc').innerHTML = `<p style="color:var(--gray-300); font-size:15px; line-height:1.6; margin-bottom:16px;">${activeProblem.desc}</p>`;
+        
+        if (activeProblem.example) {
+            document.getElementById('prob-example').textContent = activeProblem.example;
+            document.getElementById('prob-example').parentElement.style.display = 'block';
+        } else {
+            document.getElementById('prob-example').parentElement.style.display = 'none';
+        }
+        
+        document.getElementById('prob-hint1').textContent = activeProblem.hint1;
+        document.getElementById('prob-hint2').textContent = activeProblem.hint2;
+        
+        document.getElementById('output-console').innerHTML = "Ready. Click 'Run Tests' to execute your code against the private test cases.";
+        
+        // Reset timer based on difficulty
+        clearInterval(timerInterval);
+        let timeMinutes = parseInt(activeProblem.timeLimit.replace('m', '')) || 15;
+        let timeLeft = timeMinutes * 60;
+        const timerDisplay = document.getElementById('timer');
+        timerDisplay.style.color = '#ef4444';
+        
+        timerInterval = setInterval(() => {
+            if (timeLeft <= 0) return;
+            timeLeft--;
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            timerDisplay.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+            if (timeLeft < 60) {
+                timerDisplay.style.color = (timeLeft % 2 === 0) ? '#ef4444' : '#fff'; // blink
+            } else {
+                timerDisplay.style.color = '#ef4444';
+            }
+        }, 1000);
+
+        // Update Editor
+        if (window.editor) {
+            monaco.editor.setModelLanguage(window.editor.getModel(), lang);
+            window.editor.setValue(activeProblem.code);
+        }
+    }
+
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } });
     require(['vs/editor/editor.main'], function() {
         window.editor = monaco.editor.create(document.getElementById('editor-container'), {
-            value: [
-                'class ListNode:',
-                '    def __init__(self, x):',
-                '        self.val = x',
-                '        self.next = None',
-                '',
-                'class Solution:',
-                '    def hasCycle(self, head: ListNode) -> bool:',
-                '        seen = set()',
-                '        current = head',
-                '        while current:',
-                '            if current in seen:',
-                '                return True',
-                '            seen.add(current)',
-                '            current = current.next',
-                '        return False',
-                '',
-                '# NOTE: The LLM used O(n) space instead of O(1).',
-                '# Please optimize it using Floyd\'s Tortoise and Hare algorithm.',
-                '# Then click "Run Code".'
-            ].join('\n'),
+            value: '',
             language: 'python',
             theme: 'vs-dark',
             minimap: { enabled: false },
@@ -247,92 +288,11 @@
             fontSize: 14
         });
         
+        // Load initial challenge
+        loadRandomChallenge('python');
+        
         document.getElementById('language-select').addEventListener('change', function(e) {
-            monaco.editor.setModelLanguage(window.editor.getModel(), e.target.value);
-            if (e.target.value === 'cpp') {
-                window.editor.setValue([
-                    '#include <unordered_set>',
-                    '',
-                    'struct ListNode {',
-                    '    int val;',
-                    '    ListNode *next;',
-                    '    ListNode(int x) : val(x), next(nullptr) {}',
-                    '};',
-                    '',
-                    'class Solution {',
-                    'public:',
-                    '    bool hasCycle(ListNode *head) {',
-                    '        std::unordered_set<ListNode*> seen;',
-                    '        ListNode* current = head;',
-                    '        while (current != nullptr) {',
-                    '            if (seen.find(current) != seen.end()) {',
-                    '                return true;',
-                    '            }',
-                    '            seen.insert(current);',
-                    '            current = current->next;',
-                    '        }',
-                    '        return false;',
-                    '    }',
-                    '};',
-                    '',
-                    '// NOTE: The LLM used O(n) space instead of O(1).',
-                    '// Please optimize it using Floyd\'s Tortoise and Hare algorithm.',
-                    '// Then click "Run Tests".'
-                ].join('\n'));
-            } else if (e.target.value === 'rust') {
-                window.editor.setValue([
-                    'use std::collections::HashSet;',
-                    'use std::ptr;',
-                    '',
-                    '#[derive(Debug, PartialEq, Eq)]',
-                    'pub struct ListNode {',
-                    '  pub val: i32,',
-                    '  pub next: Option<Box<ListNode>>',
-                    '}',
-                    '',
-                    'impl Solution {',
-                    '    pub fn has_cycle(head: Option<Box<ListNode>>) -> bool {',
-                    '        // NOTE: Rust\'s strict ownership makes this problem tricky.',
-                    '        // Here is a flawed O(N) approach using raw pointers and a HashSet.',
-                    '        // Your task is to optimize this to O(1) space.',
-                    '        let mut seen = HashSet::new();',
-                    '        let mut current = &head;',
-                    '        ',
-                    '        while let Some(node) = current {',
-                    '            let ptr = node.as_ref() as *const ListNode;',
-                    '            if seen.contains(&ptr) {',
-                    '                return true;',
-                    '            }',
-                    '            seen.insert(ptr);',
-                    '            current = &node.next;',
-                    '        }',
-                    '        false',
-                    '    }',
-                    '}'
-                ].join('\n'));
-            } else if (e.target.value === 'python') {
-                window.editor.setValue([
-                    'class ListNode:',
-                    '    def __init__(self, x):',
-                    '        self.val = x',
-                    '        self.next = None',
-                    '',
-                    'class Solution:',
-                    '    def hasCycle(self, head: ListNode) -> bool:',
-                    '        seen = set()',
-                    '        current = head',
-                    '        while current:',
-                    '            if current in seen:',
-                    '                return True',
-                    '            seen.add(current)',
-                    '            current = current.next',
-                    '        return False',
-                    '',
-                    '# NOTE: The LLM used O(n) space instead of O(1).',
-                    '# Please optimize it using Floyd\'s Tortoise and Hare algorithm.',
-                    '# Then click "Run Tests".'
-                ].join('\n'));
-            }
+            loadRandomChallenge(e.target.value);
         });
     });
 
@@ -346,51 +306,46 @@
         document.getElementById('tab-' + tab).style.display = 'block';
     }
 
-    // Timer logic
-    let timeLeft = 15 * 60; // 15 minutes
-    const timerDisplay = document.getElementById('timer');
-    setInterval(() => {
-        if (timeLeft <= 0) return;
-        timeLeft--;
-        const m = Math.floor(timeLeft / 60);
-        const s = timeLeft % 60;
-        timerDisplay.textContent = `${m}:${s.toString().padStart(2, '0')}`;
-        if (timeLeft < 60) timerDisplay.style.color = '#ef4444'; // blink red
-    }, 1000);
-
     function runCode() {
+        if (!activeProblem) return;
         const code = window.editor.getValue();
         const cons = document.getElementById('output-console');
-        cons.innerHTML = '<span style="color:#a7f3d0;">Compiling...</span><br/>';
+        cons.innerHTML = '<span style="color:#a7f3d0;">Compiling and running against hidden test cases...</span><br/>';
         
-        // Mock evaluation logic
         setTimeout(() => {
             cons.innerHTML = '';
             
-            if (code.includes('seen = set()')) {
-                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#ef4444;">Test Case 1: [FAIL]</strong><br/><span style="color:var(--gray-400);">Space complexity is O(N) due to hash set. Target is O(1).</span></div>';
-                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#ef4444;">Test Case 2: [FAIL]</strong><br/><span style="color:var(--gray-400);">Memory Limit Exceeded</span></div>';
-            } else if (code.includes('slow') && code.includes('fast') && code.includes('fast.next')) {
-                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 1: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 42ms | Space: O(1)</span></div>';
-                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 2: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 38ms | Space: O(1)</span></div>';
-                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 3: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 45ms | Space: O(1)</span></div>';
+            const failRegex = new RegExp(activeProblem.fail_regex, 'g');
+            const passRegex = new RegExp(activeProblem.pass_regex, 'g');
+            
+            if (failRegex.test(code)) {
+                cons.innerHTML += `<div style="margin-bottom:12px;"><strong style="color:#ef4444;">Test Case 1: [FAIL]</strong><br/><span style="color:var(--gray-400);">${activeProblem.fail_msg}</span></div>`;
+                cons.innerHTML += `<div style="margin-bottom:12px;"><strong style="color:#ef4444;">Test Case 2: [FAIL]</strong><br/><span style="color:var(--gray-400);">Sub-optimal performance detected.</span></div>`;
+            } else if (passRegex.test(code)) {
+                cons.innerHTML += `<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 1: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 12ms | Memory: OK</span></div>`;
+                cons.innerHTML += `<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 2: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 14ms | Memory: OK</span></div>`;
+                cons.innerHTML += `<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 3: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 11ms | Memory: OK</span></div>`;
             } else {
-                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#f59e0b;">Test Case 1: [WARN]</strong><br/><span style="color:var(--gray-400);">Tests ran, but O(1) space constraints could not be verified. Check your logic.</span></div>';
+                cons.innerHTML += `<div style="margin-bottom:12px;"><strong style="color:#f59e0b;">Test Case 1: [WARN]</strong><br/><span style="color:var(--gray-400);">Code executed, but optimal constraints could not be strictly verified.</span></div>`;
             }
         }, 800);
     }
     
     function submitCode() {
+        if (!activeProblem) return;
         const code = window.editor.getValue();
         const cons = document.getElementById('output-console');
         
         cons.innerHTML = '<span style="color:var(--primary);">Submitting final evaluation to mock server...</span><br/>';
         
         setTimeout(() => {
-            if (code.includes('seen = set()')) {
-                cons.innerHTML = '<strong style="color:#ef4444; font-size:16px;">Evaluation Failed ❌</strong><br/><br/><span style="color:var(--gray-300);">Your solution did not meet the strict O(1) memory requirement. In a real Mercor evaluation, this would result in a failure for the coding portion.</span>';
-            } else if (code.includes('slow') && code.includes('fast') && code.includes('fast.next')) {
-                cons.innerHTML = '<strong style="color:#34d399; font-size:16px;">Evaluation Passed 🏆</strong><br/><br/><span style="color:var(--gray-300);">Excellent work! You successfully identified the LLM\'s space complexity hallucination and implemented Floyd\'s Tortoise and Hare algorithm optimally.</span><br/><br/>';
+            const failRegex = new RegExp(activeProblem.fail_regex, 'g');
+            const passRegex = new RegExp(activeProblem.pass_regex, 'g');
+            
+            if (failRegex.test(code)) {
+                cons.innerHTML = `<strong style="color:#ef4444; font-size:16px;">Evaluation Failed ❌</strong><br/><br/><span style="color:var(--gray-300);">${activeProblem.fail_msg} In a real Mercor evaluation, this logic failure would result in a rejection.</span>`;
+            } else if (passRegex.test(code)) {
+                cons.innerHTML = `<strong style="color:#34d399; font-size:16px;">Evaluation Passed 🏆</strong><br/><br/><span style="color:var(--gray-300);">${activeProblem.pass_msg}</span><br/><br/>`;
                 
                 const proceedBtn = document.createElement('a');
                 proceedBtn.id = 'proceed-btn';
@@ -401,7 +356,7 @@
                 proceedBtn.innerHTML = 'Next Module: Case Study Scenarios ➔';
                 cons.appendChild(proceedBtn);
             } else {
-                cons.innerHTML = '<strong style="color:#f59e0b; font-size:16px;">Evaluation Incomplete ⚠️</strong><br/><br/><span style="color:var(--gray-300);">We could not verify the O(1) space complexity. Try using two pointers (slow and fast).</span>';
+                cons.innerHTML = '<strong style="color:#f59e0b; font-size:16px;">Evaluation Incomplete ⚠️</strong><br/><br/><span style="color:var(--gray-300);">Your solution does not definitively meet the prompt\'s requirements. Review the hints and try again.</span>';
             }
         }, 1200);
     }
