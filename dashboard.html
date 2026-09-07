@@ -335,39 +335,59 @@
 <section id="results-section" style="padding: 48px 0 64px; flex:1; display:none;">
   <div class="container" style="max-width:1200px;">
     
-    <!-- Company Goal Widget -->
-    <div style="background:var(--primary-light); border:1px solid var(--primary); border-radius:var(--radius-lg); padding:32px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
-        <div style="flex:1; min-width:250px;">
-            <h3 style="color:var(--primary-dark); font-size:24px; font-weight:800; margin:0 0 8px 0;">Company Goal: 10 Hires This Month</h3>
-            <p style="color:var(--primary-dark); font-size:14px; margin:0; opacity:0.8;">Help us reach our network-wide goal of 10 successful hires this month. Every candidate counts!</p>
-        </div>
-        <div style="flex:1; min-width:250px; width:100%;">
-            <div style="display:flex; justify-content:space-between; font-weight:800; color:var(--primary-dark); font-size:14px; margin-bottom:12px;">
-                <span><span id="goal-hires-count">0</span> Hires</span>
-                <span>10 Hires</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.6); border-radius:100px; height:12px; overflow:hidden;">
-                <div id="goal-progress-bar" style="background:var(--primary); height:100%; width:0%; border-radius:100px; transition:width 0.5s ease-out;"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bonus Goals Widget -->
-    <div style="background:var(--black); color:var(--white); border-radius:var(--radius-lg); padding:32px; margin-bottom:48px; box-shadow:var(--shadow-lg);">
-        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
-            <div>
+    <!-- Dashboard Metrics Grid -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px; margin-bottom:48px;">
+        
+        <!-- Weekly Earnings Widget -->
+        <div style="background:var(--gray-900); color:var(--white); border-radius:var(--radius-lg); padding:32px; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;">
+            <!-- Decorative bg -->
+            <div style="position:absolute; top:-50px; right:-50px; width:150px; height:150px; background:var(--primary); opacity:0.05; filter:blur(40px); border-radius:50%;"></div>
+            
+            <div style="position:relative; z-index:1;">
                 <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:800; margin-bottom:8px;">Weekly Estimated Earnings <span style="color:var(--gray-400); font-weight:500; text-transform:none; letter-spacing:normal; margin-left:8px;" id="current-week-date"></span></div>
-                <h2 style="font-size:36px; font-weight:800; margin:0; color:var(--primary);">$<span id="bonus-amount">0</span></h2>
+                <h2 style="font-size:42px; font-weight:800; margin:0; color:var(--primary);">$<span id="bonus-amount">0</span></h2>
             </div>
-            <div style="text-align:right;">
-                <div style="font-size:16px; font-weight:800;"><span id="applied-count-bonus">0</span> Completed (+$5)</div>
-                <div style="font-size:16px; font-weight:800;"><span id="hires-count-bonus">0</span> Hired (+$15)</div>
-                <div style="font-size:13px; font-weight:700; color:var(--primary); margin-top:8px;" id="mega-bonus-ui">🔥 5 Hires = +$200 Bonus!</div>
+            
+            <div style="margin-top:24px; padding-top:24px; border-top:1px solid var(--gray-800); position:relative; z-index:1;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div style="font-size:14px; color:var(--gray-400);">Completed Applications</div>
+                    <div style="font-size:14px; font-weight:800;"><span id="applied-count-bonus">0</span> <span style="color:var(--primary);">(+$5)</span></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <div style="font-size:14px; color:var(--gray-400);">Successful Hires 🎉</div>
+                    <div style="font-size:14px; font-weight:800;"><span id="hires-count-bonus">0</span> <span style="color:var(--primary);">(+$15)</span></div>
+                </div>
+                <div style="font-size:13px; font-weight:800; color:var(--primary); background:rgba(34,197,94,0.1); padding:10px 16px; border-radius:var(--radius-sm); display:flex; align-items:center; gap:8px;" id="mega-bonus-ui">
+                    <span>🔥</span> 5 Hires = +$200 Bonus!
+                </div>
             </div>
         </div>
-        <p style="color:var(--gray-400); font-size:14px; margin-top:24px; margin-bottom:0;">Bonuses are calculated and paid weekly based on verified pipeline updates. Get 5 candidates hired in a week to trigger the $200 mega-bonus!</p>
-    </div>
 
+        <!-- Company Goal Widget -->
+        <div style="background:var(--gray-900); color:var(--white); border-radius:var(--radius-lg); padding:32px; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;">
+            <!-- Decorative bg -->
+            <div style="position:absolute; bottom:-50px; left:-50px; width:150px; height:150px; background:var(--primary); opacity:0.05; filter:blur(40px); border-radius:50%;"></div>
+            
+            <div style="position:relative; z-index:1;">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px;">🎯</div>
+                    <h3 style="font-size:22px; font-weight:800; margin:0;">Network Goal</h3>
+                </div>
+                <p style="color:var(--gray-400); font-size:15px; margin:0; line-height:1.6;">Help us reach our network-wide goal of <strong>10 successful hires</strong> this month. Every candidate you refer and guide through the pipeline brings us closer to the finish line!</p>
+            </div>
+            
+            <div style="margin-top:32px; position:relative; z-index:1;">
+                <div style="display:flex; justify-content:space-between; font-weight:800; color:var(--white); font-size:14px; margin-bottom:12px;">
+                    <span><span id="goal-hires-count">0</span> Hires Achieved</span>
+                    <span style="color:var(--gray-500);">10 Goal</span>
+                </div>
+                <div style="background:var(--gray-800); border-radius:100px; height:12px; overflow:hidden;">
+                    <div id="goal-progress-bar" style="background:var(--primary); height:100%; width:0%; border-radius:100px; transition:width 1s cubic-bezier(0.4, 0, 0.2, 1); box-shadow:inset 0 0 8px rgba(0,0,0,0.2);"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
     <!-- Admin Filters -->
     <div id="admin-filters" style="display:none; margin-bottom: 24px; gap:8px; flex-wrap:wrap;"></div>
 
