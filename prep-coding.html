@@ -92,48 +92,91 @@
     </style>
   </nav>
 
-<section style="padding: 24px 0; flex:1; display:flex; flex-direction:column;">
-  <div class="container" style="flex:1; display:flex; flex-direction:column; max-width:1400px; padding:0 24px;">
-    
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <div>
-            <h1 style="font-size:28px; font-weight:800; margin-bottom:4px; color:var(--white);">Live Coding Sandbox</h1>
-            <p style="color:var(--gray-400); font-size:14px; margin:0;">Practice technical evaluation tasks in our embedded Monaco Editor.</p>
-        </div>
-        <div style="display:flex; gap:12px;">
-            <select id="language-select" style="background:var(--black); color:var(--white); border:1px solid var(--gray-700); padding:8px 12px; border-radius:4px; font-family:var(--font);">
-                <option value="python">Python</option>
-                <option value="cpp">C++</option>
-                <option value="rust">Rust</option>
-            </select>
-            <button onclick="runCode()" class="btn-primary">Run Code</button>
-        </div>
-    </div>
+<style>
+  .tab-btn { background:transparent; border:none; color:var(--gray-400); padding:12px 24px; cursor:pointer; font-weight:600; font-size:14px; border-bottom:2px solid transparent; transition:all 0.2s; outline:none; }
+  .tab-btn.active { color:var(--white); border-bottom:2px solid var(--primary); }
+  .tab-btn:hover:not(.active) { color:var(--gray-200); }
+  
+  /* Ensure the nav doesn't take too much space in this view */
+  .nav { border-bottom: 1px solid #333; background: #111; }
+  body { background: #000; }
+</style>
 
-    <div style="display:flex; gap:24px; flex:1; min-height:600px;">
-        <div style="flex:1; background:var(--black); border:1px solid var(--gray-700); border-radius:var(--radius); padding:24px; overflow-y:auto;">
-            <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:700; margin-bottom:8px;">Challenge</div>
-            <h2 style="font-size:20px; font-weight:700; margin-bottom:12px; color:var(--white);">Detect Cycle in Linked List (O(1) Space)</h2>
-            <p style="color:var(--gray-400); font-size:14px; line-height:1.6; margin-bottom:24px;">
-                You are evaluating an LLM's logic for cycle detection. The model provided the code on the right. Does it work? Is it O(1) space? Fix any bugs you find and run the tests.
-            </p>
-            <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray-500); font-weight:700; margin-bottom:8px;">Console Output</div>
-            <div id="output-console" style="background:#111; color:#0f0; font-family:monospace; font-size:13px; padding:16px; border-radius:6px; min-height:200px; border:1px solid #333;">
-                Waiting for execution...
-            </div>
-        </div>
-
-        <div style="flex:2; border:1px solid var(--gray-700); border-radius:var(--radius); overflow:hidden; position:relative;">
-            <div id="editor-container" style="width:100%; height:100%;"></div>
-        </div>
-    </div>
-    
-    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
-        <p style="color: var(--gray-400); font-size: 14px; margin: 0;"><em>"I don't stop when I'm tired. I stop when I'm done." - David Goggins.<br>Complete the simulation to unlock the next module, or skip ahead if you must.</em></p>
-        <a href="prep-casestudy.html" style="color: var(--gray-400); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">Skip to Case Studies ➔</a>
-    </div>
+<div style="display:flex; flex-direction:row; height:calc(100vh - 75px); gap:16px; padding:16px; width: 100%; box-sizing: border-box;">
+  
+  <!-- Left Panel -->
+  <div style="flex: 1; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; display:flex; flex-direction:column; overflow:hidden; min-width:300px;">
+      <div style="display:flex; background:#252526; border-bottom:1px solid #333;">
+          <button class="tab-btn active" id="btn-tab-desc" onclick="switchTab('desc')">Description</button>
+          <button class="tab-btn" id="btn-tab-hint" onclick="switchTab('hint')">Hints</button>
+      </div>
+      <div id="tab-desc" style="padding:24px; overflow-y:auto; flex:1;">
+          <h2 style="font-size:22px; font-weight:700; margin-bottom:16px; color:var(--white);">Detect Cycle in Linked List (O(1) Space)</h2>
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+              <span style="background:rgba(239, 68, 68, 0.15); color:#ef4444; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:600;">Hard</span>
+              <span style="background:rgba(52, 211, 153, 0.15); color:#34d399; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:600;">Time Limit: 15m</span>
+          </div>
+          <p style="color:var(--gray-300); font-size:15px; line-height:1.6; margin-bottom:16px;">
+              You are an expert AI evaluator. The AI model has generated a solution to detect a cycle in a linked list. However, it used an <code style="background:#333; padding:2px 6px; border-radius:4px; color:var(--primary);">O(N)</code> space approach by keeping track of visited nodes in a hash set.
+          </p>
+          <p style="color:var(--gray-300); font-size:15px; line-height:1.6; margin-bottom:24px;">
+              <strong>Your Task:</strong> Modify the model's code to achieve an <code style="background:#333; padding:2px 6px; border-radius:4px; color:var(--primary);">O(1)</code> space complexity without modifying the linked list structure.
+          </p>
+          <div style="background:#252526; padding:16px; border-radius:8px; border:1px solid #333;">
+              <p style="margin:0 0 8px 0; font-size:13px; color:var(--gray-400); text-transform:uppercase; font-weight:700;">Example 1:</p>
+              <div style="font-family:monospace; font-size:13px; color:#d4d4d4;">
+                  Input: head = [3,2,0,-4], pos = 1<br>
+                  Output: true
+              </div>
+          </div>
+      </div>
+      <div id="tab-hint" style="padding:24px; overflow-y:auto; flex:1; display:none;">
+          <h3 style="font-size:16px; margin-bottom:12px; color:var(--white);">Hint 1</h3>
+          <p style="color:var(--gray-300); font-size:14px; line-height:1.6; margin-bottom:24px; background:#252526; padding:16px; border-radius:8px;">Consider using two pointers. Often referred to as Floyd's Tortoise and Hare algorithm.</p>
+          
+          <h3 style="font-size:16px; margin-bottom:12px; color:var(--white);">Hint 2</h3>
+          <p style="color:var(--gray-300); font-size:14px; line-height:1.6; background:#252526; padding:16px; border-radius:8px;">One pointer moves one step at a time, while the other moves two steps at a time. If there is a cycle, they will eventually meet.</p>
+      </div>
   </div>
-</section>
+
+  <!-- Right Panel -->
+  <div style="flex: 2; display:flex; flex-direction:column; gap:16px; min-width:400px;">
+      
+      <!-- Top Bar inside Right Panel -->
+      <div style="display:flex; justify-content:space-between; align-items:center; background:#1e1e1e; padding:12px 16px; border-radius:8px; border:1px solid #333;">
+          <div style="display:flex; align-items:center; gap:16px;">
+              <select id="language-select" style="background:#252526; color:var(--white); border:1px solid #444; padding:6px 12px; border-radius:4px; font-size:13px; outline:none; font-family:inherit;">
+                  <option value="python">Python 3</option>
+                  <option value="cpp">C++</option>
+                  <option value="rust">Rust</option>
+              </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:16px;">
+              <div style="display:flex; align-items:center; gap:8px; background:#252526; padding:4px 12px; border-radius:100px; border:1px solid #444;">
+                  <span style="font-size:14px;">⏱️</span>
+                  <div id="timer" style="font-family:monospace; font-size:16px; color:#ef4444; font-weight:700;">15:00</div>
+              </div>
+              <button onclick="runCode()" style="background:#252526; border:1px solid #444; color:var(--white); padding:8px 20px; border-radius:4px; cursor:pointer; font-size:14px; font-weight:600; transition:background 0.2s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#252526'">Run Tests</button>
+              <button id="submit-btn" onclick="submitCode()" style="background:var(--primary); border:none; color:var(--primary-dark); padding:8px 20px; border-radius:4px; cursor:pointer; font-size:14px; font-weight:700; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Submit Evaluation</button>
+          </div>
+      </div>
+
+      <!-- Monaco Editor -->
+      <div style="flex:2; border:1px solid #333; border-radius:8px; overflow:hidden; position:relative; background:#1e1e1e;">
+          <div id="editor-container" style="width:100%; height:100%;"></div>
+      </div>
+
+      <!-- Console / Output -->
+      <div style="flex:1; background:#1e1e1e; border:1px solid #333; border-radius:8px; display:flex; flex-direction:column; overflow:hidden; min-height:200px;">
+          <div style="background:#252526; padding:10px 16px; border-bottom:1px solid #333; display:flex; gap:16px;">
+              <span style="font-size:12px; font-weight:700; color:var(--white); text-transform:uppercase; letter-spacing:0.05em;">Test Results</span>
+          </div>
+          <div id="output-console" style="padding:16px; font-family:monospace; font-size:14px; color:var(--gray-300); overflow-y:auto; flex:1;">
+              Ready. Click 'Run Tests' to execute your code against the private test cases.
+          </div>
+      </div>
+  </div>
+</div>
 
 <footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
     <div class="container">
@@ -209,33 +252,74 @@
         });
     });
 
+    function switchTab(tab) {
+        document.getElementById('btn-tab-desc').classList.remove('active');
+        document.getElementById('btn-tab-hint').classList.remove('active');
+        document.getElementById('tab-desc').style.display = 'none';
+        document.getElementById('tab-hint').style.display = 'none';
+        
+        document.getElementById('btn-tab-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).style.display = 'block';
+    }
+
+    // Timer logic
+    let timeLeft = 15 * 60; // 15 minutes
+    const timerDisplay = document.getElementById('timer');
+    setInterval(() => {
+        if (timeLeft <= 0) return;
+        timeLeft--;
+        const m = Math.floor(timeLeft / 60);
+        const s = timeLeft % 60;
+        timerDisplay.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+        if (timeLeft < 60) timerDisplay.style.color = '#ef4444'; // blink red
+    }, 1000);
+
     function runCode() {
         const code = window.editor.getValue();
         const cons = document.getElementById('output-console');
-        cons.innerHTML = '<span style="color:#a7f3d0;">Running tests...</span><br/>';
+        cons.innerHTML = '<span style="color:#a7f3d0;">Compiling...</span><br/>';
         
         // Mock evaluation logic
         setTimeout(() => {
+            cons.innerHTML = '';
+            
             if (code.includes('seen = set()')) {
-                cons.innerHTML += '<span style="color:#ef4444;">[FAIL] Space complexity is O(N) due to hash set. Target is O(1).</span><br/>';
+                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#ef4444;">Test Case 1: [FAIL]</strong><br/><span style="color:var(--gray-400);">Space complexity is O(N) due to hash set. Target is O(1).</span></div>';
+                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#ef4444;">Test Case 2: [FAIL]</strong><br/><span style="color:var(--gray-400);">Memory Limit Exceeded</span></div>';
             } else if (code.includes('slow') && code.includes('fast') && code.includes('fast.next')) {
-                cons.innerHTML += '<span style="color:#34d399;">[PASS] Floyd\'s Tortoise and Hare implemented correctly! O(1) space.</span><br/>';
-                cons.innerHTML += '<span style="color:#34d399;">Score: 100/100</span><br/><br/>';
-                
-                if (!document.getElementById('proceed-btn')) {
-                    const proceedBtn = document.createElement('a');
-                    proceedBtn.id = 'proceed-btn';
-                    proceedBtn.href = 'prep-casestudy.html';
-                    proceedBtn.className = 'btn-primary';
-                    proceedBtn.style.display = 'inline-block';
-                    proceedBtn.style.marginTop = '16px';
-                    proceedBtn.innerHTML = 'Next Step: Case Study Scenarios ➔';
-                    cons.appendChild(proceedBtn);
-                }
+                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 1: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 42ms | Space: O(1)</span></div>';
+                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 2: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 38ms | Space: O(1)</span></div>';
+                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#34d399;">Test Case 3: [PASS]</strong><br/><span style="color:var(--gray-400);">Execution Time: 45ms | Space: O(1)</span></div>';
             } else {
-                cons.innerHTML += '<span style="color:#f59e0b;">[WARN] Tests ran, but O(1) space constraints could not be verified. Check your logic.</span><br/>';
+                cons.innerHTML += '<div style="margin-bottom:12px;"><strong style="color:#f59e0b;">Test Case 1: [WARN]</strong><br/><span style="color:var(--gray-400);">Tests ran, but O(1) space constraints could not be verified. Check your logic.</span></div>';
             }
         }, 800);
+    }
+    
+    function submitCode() {
+        const code = window.editor.getValue();
+        const cons = document.getElementById('output-console');
+        
+        cons.innerHTML = '<span style="color:var(--primary);">Submitting final evaluation to mock server...</span><br/>';
+        
+        setTimeout(() => {
+            if (code.includes('seen = set()')) {
+                cons.innerHTML = '<strong style="color:#ef4444; font-size:16px;">Evaluation Failed ❌</strong><br/><br/><span style="color:var(--gray-300);">Your solution did not meet the strict O(1) memory requirement. In a real Mercor evaluation, this would result in a failure for the coding portion.</span>';
+            } else if (code.includes('slow') && code.includes('fast') && code.includes('fast.next')) {
+                cons.innerHTML = '<strong style="color:#34d399; font-size:16px;">Evaluation Passed 🏆</strong><br/><br/><span style="color:var(--gray-300);">Excellent work! You successfully identified the LLM\'s space complexity hallucination and implemented Floyd\'s Tortoise and Hare algorithm optimally.</span><br/><br/>';
+                
+                const proceedBtn = document.createElement('a');
+                proceedBtn.id = 'proceed-btn';
+                proceedBtn.href = 'prep-casestudy.html';
+                proceedBtn.className = 'btn-primary';
+                proceedBtn.style.display = 'inline-block';
+                proceedBtn.style.marginTop = '16px';
+                proceedBtn.innerHTML = 'Next Module: Case Study Scenarios ➔';
+                cons.appendChild(proceedBtn);
+            } else {
+                cons.innerHTML = '<strong style="color:#f59e0b; font-size:16px;">Evaluation Incomplete ⚠️</strong><br/><br/><span style="color:var(--gray-300);">We could not verify the O(1) space complexity. Try using two pointers (slow and fast).</span>';
+            }
+        }, 1200);
     }
 </script>
 
