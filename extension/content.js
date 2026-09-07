@@ -35,17 +35,26 @@ function injectLifelineWidget() {
             
             <div class="tg-lifeline-body" id="tg-lifeline-step-1">
                 <div class="tg-lifeline-chat-history" id="tg-chat-history">
-                    <div class="tg-chat-msg tg-msg-ai">Hello! I'm your Application Copilot. What are you struggling with?</div>
+                    <div class="tg-chat-msg tg-msg-ai">
+                        <strong>I am your Screen Assistant!</strong><br><br>
+                        We work alongside Maven to enhance your experience. Use Maven for general account questions, but talk to me if you need help navigating the screen or get stuck!
+                    </div>
                 </div>
                 
+                <div class="tg-quick-actions" id="tg-quick-actions" style="display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px;">
+                    <button class="tg-qa-btn" data-qa="Where is the search filter?" style="background:var(--tg-surface); border:1px solid var(--tg-border); color:var(--tg-text); font-size:11px; padding:6px 10px; border-radius:100px; cursor:pointer; white-space:nowrap;">Where is the search?</button>
+                    <button class="tg-qa-btn" data-qa="My camera won't connect." style="background:var(--tg-surface); border:1px solid var(--tg-border); color:var(--tg-text); font-size:11px; padding:6px 10px; border-radius:100px; cursor:pointer; white-space:nowrap;">Fix Camera</button>
+                    <button class="tg-qa-btn" data-qa="I need SOS Live Help." style="background:var(--tg-surface); border:1px solid var(--tg-border); color:var(--tg-text); font-size:11px; padding:6px 10px; border-radius:100px; cursor:pointer; white-space:nowrap;">SOS Live Help</button>
+                </div>
+
                 <form id="tg-chat-form" class="tg-chat-input-area">
-                    <input type="text" id="tg-chat-input" class="tg-chat-input" placeholder="Type your issue..." autocomplete="off">
+                    <input type="text" id="tg-chat-input" class="tg-chat-input" placeholder="Tell me what to click..." autocomplete="off">
                     <button type="submit" id="tg-chat-send" class="tg-chat-send">➔</button>
                 </form>
                 
                 <div class="tg-lifeline-sos-section">
-                    <p>Still stuck? We can help you live.</p>
-                    <button id="tg-lifeline-sos-btn" class="tg-btn-danger">🚨 Send SOS & Request Zoom</button>
+                    <p>Total emergency?</p>
+                    <button id="tg-lifeline-sos-btn" class="tg-btn-danger">🚨 Send SOS to Referral Partner</button>
                 </div>
             </div>
 
@@ -54,7 +63,9 @@ function injectLifelineWidget() {
                     <div class="tg-check">✅</div>
                     <h4>SOS Signal Sent!</h4>
                     <p>We've captured your screen and alerted our affiliates.</p>
-                    <a href="https://zoom.us/test" target="_blank" class="tg-btn-primary">Join Live Zoom Support</a>
+                    <div style="background: rgba(5, 150, 105, 0.1); border: 1px solid rgba(5, 150, 105, 0.2); padding: 12px; border-radius: 8px; color: var(--tg-primary); font-size: 13px; font-weight: 600;">
+                        They will review your issue and reach out to you shortly to help you finish your application.
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,6 +134,16 @@ function injectLifelineWidget() {
             });
         }
     }
+
+    document.querySelectorAll('.tg-qa-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const qaText = e.target.getAttribute('data-qa');
+            if (qaText) {
+                chatInput.value = qaText;
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+    });
 
     chatForm.addEventListener('submit', (e) => {
         e.preventDefault();
