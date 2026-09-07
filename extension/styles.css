@@ -1,36 +1,28 @@
-/* TrainAIToGain - Minimal Contextual Overlay CSS */
+/* TrainAIToGain - Application Lifeline CSS */
 
 :root {
-  --tg-bg: #ffffff;
-  --tg-surface: #ffffff;
-  --tg-surface-hover: #f1f5f9;
-  --tg-accent: #0f172a; 
-  --tg-accent-hover: #334155;
-  --tg-text: #0f172a;
-  --tg-text-sec: #64748b;
-  --tg-border: #e2e8f0;
-  --tg-success: #059669;
+  --tg-bg: #111111;
+  --tg-surface: #222222;
+  --tg-text: #ffffff;
+  --tg-text-sec: #999999;
+  --tg-primary: #059669;
+  --tg-primary-hover: #047857;
   --tg-danger: #ef4444;
-  --tg-warning: #d97706;
-  --tg-shadow: 0 10px 40px -10px rgba(0,0,0,0.15);
+  --tg-danger-bg: rgba(239, 68, 68, 0.1);
+  --tg-border: #333333;
+  --tg-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
 }
 
-/* ----------------------------------------------------
-   1. The ATS Job Board Overlay
----------------------------------------------------- */
-.tg-context-overlay {
+.tg-hidden {
+    display: none !important;
+}
+
+.tg-lifeline-container {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background: var(--tg-bg);
-    border: 1px solid var(--tg-border);
-    border-radius: 12px;
-    box-shadow: var(--tg-shadow);
     z-index: 9999999;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-    color: var(--tg-text);
-    padding: 16px;
-    width: 280px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Outfit', sans-serif;
     animation: tgSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -39,109 +31,192 @@
     100% { transform: translateY(0); opacity: 1; }
 }
 
-.tg-overlay-content {
+/* Floating Button */
+.tg-lifeline-btn {
+    background: var(--tg-bg);
+    color: var(--tg-text);
+    border: 1px solid var(--tg-primary);
+    border-radius: 100px;
+    padding: 12px 24px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 12px;
-}
-
-.tg-overlay-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.tg-overlay-text strong {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
-.tg-overlay-text p {
-    font-size: 12px;
-    color: var(--tg-text-sec);
-    line-height: 1.4;
-    margin: 0;
-}
-
-.tg-icon {
-    font-size: 24px;
-    margin-bottom: 4px;
-}
-
-#tg-overlay-scan-btn {
-    background: var(--tg-accent);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px;
-    font-size: 13px;
-    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
-    text-align: center;
+    box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3);
+    transition: all 0.2s;
 }
 
-#tg-overlay-scan-btn:hover {
-    background: var(--tg-accent-hover);
+.tg-lifeline-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(5, 150, 105, 0.5);
+    background: #1a1a1a;
 }
 
+.tg-lifeline-icon {
+    font-size: 20px;
+}
 
-/* ----------------------------------------------------
-   2. The Impact Coach (Text Box Overlay)
----------------------------------------------------- */
-.tg-coach-container {
+.tg-lifeline-btn strong {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--tg-primary);
+}
+
+/* Modal */
+.tg-lifeline-modal {
     background: var(--tg-bg);
     border: 1px solid var(--tg-border);
-    border-radius: 8px;
+    border-radius: 16px;
     box-shadow: var(--tg-shadow);
-    padding: 14px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    width: 320px;
+    overflow: hidden;
+}
+
+.tg-lifeline-header {
+    background: var(--tg-surface);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--tg-border);
+}
+
+.tg-lifeline-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--tg-primary);
+}
+
+#tg-lifeline-close {
+    background: none;
+    border: none;
+    color: var(--tg-text-sec);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+#tg-lifeline-close:hover {
     color: var(--tg-text);
-    z-index: 999999;
-    animation: tgFadeIn 0.2s ease-out;
 }
 
-@keyframes tgFadeIn {
-    0% { opacity: 0; transform: translateY(-4px); }
-    100% { opacity: 1; transform: translateY(0); }
+.tg-lifeline-body {
+    padding: 20px;
 }
 
-.tg-coach-header {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--tg-text-sec);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-}
-
-.tg-coach-stats {
+.tg-lifeline-body p {
+    margin: 0 0 16px 0;
     font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.tg-coach-advice {
-    font-size: 12px;
-    font-weight: 500;
-    padding: 8px;
-    border-radius: 6px;
-    line-height: 1.4;
-}
-
-.tg-coach-advice.pending {
-    background: var(--tg-surface-hover);
     color: var(--tg-text-sec);
+    line-height: 1.5;
 }
-.tg-coach-advice.success {
-    background: #ecfdf5;
-    color: var(--tg-success);
+
+.tg-lifeline-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
 }
-.tg-coach-advice.warning {
-    background: #fffbeb;
-    color: var(--tg-warning);
+
+.tg-lifeline-option {
+    background: var(--tg-surface);
+    border: 1px solid var(--tg-border);
+    color: var(--tg-text);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
 }
-.tg-coach-advice.danger {
-    background: #fef2f2;
+
+.tg-lifeline-option:hover {
+    border-color: var(--tg-primary);
+}
+
+.tg-lifeline-tip {
+    background: rgba(5, 150, 105, 0.1);
+    color: #a7f3d0;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.tg-lifeline-sos-section {
+    border-top: 1px solid var(--tg-border);
+    padding-top: 16px;
+}
+
+.tg-lifeline-sos-section p {
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.tg-btn-danger {
+    display: block;
+    width: 100%;
+    background: var(--tg-danger-bg);
     color: var(--tg-danger);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tg-btn-danger:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.tg-btn-danger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tg-sos-success {
+    text-align: center;
+    padding: 24px 0;
+}
+
+.tg-check {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.tg-sos-success h4 {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    color: var(--tg-primary);
+}
+
+.tg-sos-success p {
+    margin-bottom: 24px;
+}
+
+.tg-btn-primary {
+    display: block;
+    width: 100%;
+    background: var(--tg-primary);
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 800;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tg-btn-primary:hover {
+    background: var(--tg-primary-hover);
+    transform: translateY(-2px);
 }

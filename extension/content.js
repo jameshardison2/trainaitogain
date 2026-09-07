@@ -1,183 +1,110 @@
 let isEnabled = true;
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', initLifeline);
 } else {
-    init();
+    initLifeline();
 }
 
-function init() {
-    setupSPAObserver();
-    checkContextualOverlay();
-    setInterval(checkContextualOverlay, 2000);
+function initLifeline() {
+    // Only inject if on mercor
+    if (!window.location.href.toLowerCase().includes('mercor.com')) return;
+    injectLifelineWidget();
 }
 
-// ----------------------------------------------------
-// 1. Contextual Overlays (The Job Board ATS Export)
-// ----------------------------------------------------
-function checkContextualOverlay() {
-    const path = window.location.href.toLowerCase();
+function injectLifelineWidget() {
+    if (document.getElementById('tg-lifeline-widget')) return;
     
-    // Feature 1: Auto-populate if they land on our Web ATS
-    if (path.includes('trainaitogain.com/resume-ats-guide')) {
-        chrome.storage.local.get(['tg_captured_job'], (res) => {
-            if (res.tg_captured_job) {
-                const jobBox = document.getElementById('job-desc');
-                const badge = document.getElementById('import-badge');
-                if (jobBox && badge) {
-                    jobBox.value = res.tg_captured_job;
-                    badge.style.display = 'inline-block';
-                    chrome.storage.local.remove('tg_captured_job');
-                }
-            }
-        });
-        return;
-    }
-
-    // Feature 2: Inject smart floating widget if on a job board
-    if (path.includes('explore') || path.includes('job') || path.includes('role') || path.includes('career')) {
-        injectATSOverlay();
-    } else {
-        removeATSOverlay();
-    }
-}
-
-function injectATSOverlay() {
-    if (document.getElementById('tg-ats-overlay')) return;
+    const widget = document.createElement('div');
+    widget.id = 'tg-lifeline-widget';
+    widget.className = 'tg-lifeline-container';
     
-    const overlay = document.createElement('div');
-    overlay.id = 'tg-ats-overlay';
-    overlay.className = 'tg-context-overlay';
-    overlay.innerHTML = `
-        <div class="tg-overlay-content">
-            <span class="tg-icon">🎯</span>
-            <div class="tg-overlay-text">
-                <strong>ATS Scanner</strong>
-                <p>Export this job to scan against your resume.</p>
+    widget.innerHTML = `
+        <!-- Floating Button -->
+        <button id="tg-lifeline-btn" class="tg-lifeline-btn">
+            <span class="tg-lifeline-icon">🚨</span> 
+            <strong>TrainAIToGain Lifeline</strong>
+        </button>
+
+        <!-- Expanded Modal -->
+        <div id="tg-lifeline-modal" class="tg-lifeline-modal tg-hidden">
+            <div class="tg-lifeline-header">
+                <h3>Application Lifeline</h3>
+                <button id="tg-lifeline-close">&times;</button>
             </div>
-            <button id="tg-overlay-scan-btn">Scan Job</button>
+            
+            <div class="tg-lifeline-body" id="tg-lifeline-step-1">
+                <p>Are you stuck or experiencing a bug on the Mercor platform?</p>
+                
+                <div class="tg-lifeline-options">
+                    <button class="tg-lifeline-option" data-tip="Check your browser permissions (the lock icon in the URL bar) to ensure Camera and Mic are allowed, then refresh.">Camera/Mic won't connect</button>
+                    <button class="tg-lifeline-option" data-tip="Don't worry about the search filter. Mercor's AI will automatically route you to the best fit.">Confusing search filter</button>
+                    <button class="tg-lifeline-option" data-tip="Focus on one specific technical project and explain your impact using numbers.">I don't know what to say</button>
+                </div>
+                
+                <div id="tg-lifeline-tip" class="tg-lifeline-tip tg-hidden"></div>
+                
+                <div class="tg-lifeline-sos-section">
+                    <p>Still stuck? We can help you live.</p>
+                    <button id="tg-lifeline-sos-btn" class="tg-btn-danger">🚨 Send SOS & Request Zoom</button>
+                </div>
+            </div>
+
+            <div class="tg-lifeline-body tg-hidden" id="tg-lifeline-step-2">
+                <div class="tg-sos-success">
+                    <div class="tg-check">✅</div>
+                    <h4>SOS Signal Sent!</h4>
+                    <p>We've captured your screen and alerted our affiliates.</p>
+                    <a href="https://zoom.us/test" target="_blank" class="tg-btn-primary">Join Live Zoom Support</a>
+                </div>
+            </div>
         </div>
     `;
-    document.body.appendChild(overlay);
-
-    document.getElementById('tg-overlay-scan-btn').onclick = (e) => {
-        const btn = e.target;
-        btn.innerText = "Exporting...";
-        const pageText = document.body.innerText;
-        chrome.storage.local.set({ tg_captured_job: pageText }, () => {
-            setTimeout(() => {
-                window.open('https://trainaitogain.com/resume-ats-guide.html', '_blank');
-                btn.innerText = "Scan Job";
-            }, 600);
-        });
-    };
-}
-
-function removeATSOverlay() {
-    const el = document.getElementById('tg-ats-overlay');
-    if (el) el.remove();
-}
-
-// ----------------------------------------------------
-// 2. Impact Coach (The Interview Overlay)
-// ----------------------------------------------------
-function setupSPAObserver() {
-    let timeout;
-    const observer = new MutationObserver(() => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            if (!isEnabled) return;
-            
-            // Look for any text inputs (this includes React controlled inputs)
-            const inputs = document.querySelectorAll('textarea, input[type="text"], [contenteditable="true"]');
-            inputs.forEach(el => {
-                if (!el.dataset.tgCoachAttached) {
-                    el.dataset.tgCoachAttached = 'true';
-                    el.addEventListener('focus', (e) => injectCoachWidget(e.target));
-                    el.addEventListener('blur', () => {
-                       // Small delay so if they click the widget itself, it doesn't instantly die
-                       setTimeout(() => {
-                           const widget = document.getElementById('trainai-impact-coach');
-                           if (widget) widget.remove();
-                       }, 300);
-                    });
-                    el.addEventListener('input', (e) => {
-                        const val = e.target.value || e.target.innerText;
-                        updateCoachScore(val);
-                    });
-                }
-            });
-        }, 500);
+    
+    document.body.appendChild(widget);
+    
+    // Event Listeners
+    const btn = document.getElementById('tg-lifeline-btn');
+    const modal = document.getElementById('tg-lifeline-modal');
+    const closeBtn = document.getElementById('tg-lifeline-close');
+    const tipBox = document.getElementById('tg-lifeline-tip');
+    
+    btn.addEventListener('click', () => {
+        modal.classList.remove('tg-hidden');
+        btn.classList.add('tg-hidden');
     });
     
-    if (document.body) {
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
-}
-
-function injectCoachWidget(inputElement) {
-  if (!inputElement || document.getElementById('trainai-impact-coach')) return;
-  
-  const widget = document.createElement('div');
-  widget.id = 'trainai-impact-coach';
-  widget.className = 'tg-coach-container';
-  widget.innerHTML = `
-    <div class="tg-coach-header">AI Impact Coach</div>
-    <div class="tg-coach-stats">
-      <span id="tg-coach-metrics">0 Metrics</span> <span style="opacity:0.3">|</span> 
-      <span id="tg-coach-verbs">0 Verbs</span>
-    </div>
-    <div id="tg-coach-advice" class="tg-coach-advice pending">AI Grade: Start typing...</div>
-  `;
-  
-  const rect = inputElement.getBoundingClientRect();
-  widget.style.position = 'absolute';
-  // Anchor to the bottom of the input field
-  widget.style.top = (rect.bottom + window.scrollY + 6) + 'px';
-  widget.style.left = (rect.left + window.scrollX) + 'px';
-  widget.style.width = Math.max(rect.width, 280) + 'px'; 
-  
-  if (document.body) document.body.appendChild(widget);
-  const initialVal = inputElement.value || inputElement.innerText;
-  updateCoachScore(initialVal);
-}
-
-function updateCoachScore(text) {
-  const widget = document.getElementById('trainai-impact-coach');
-  if (!widget) return;
-  
-  text = text || '';
-  const metricsCount = (text.match(/\d+|%|\$|percent/g) || []).length;
-  const actionVerbs = ['led', 'managed', 'developed', 'created', 'built', 'increased', 'decreased', 'improved', 'optimized', 'engineered', 'designed', 'architected', 'implemented'];
-  
-  const lowerText = text.toLowerCase();
-  let verbCount = 0;
-  actionVerbs.forEach(v => {
-    if (lowerText.includes(v)) verbCount++;
-  });
-  
-  const vagueWords = ['helped', 'worked on', 'was responsible for', 'good', 'stuff', 'things'];
-  let vagueFound = vagueWords.filter(v => lowerText.includes(v));
-
-  const metricsEl = document.getElementById('tg-coach-metrics');
-  const verbsEl = document.getElementById('tg-coach-verbs');
-  if (metricsEl) metricsEl.innerText = `${metricsCount} Metrics`;
-  if (verbsEl) verbsEl.innerText = `${verbCount} Verbs`;
-  
-  const adviceDiv = document.getElementById('tg-coach-advice');
-  if (!adviceDiv) return;
-
-  if (vagueFound.length > 0) {
-    adviceDiv.innerHTML = `<strong>AI Grade: Weak.</strong> Avoid vague phrases like "${vagueFound[0]}".`;
-    adviceDiv.className = 'tg-coach-advice danger';
-  } else if (metricsCount === 0 && text.length > 20) {
-    adviceDiv.innerHTML = `<strong>AI Grade: Average.</strong> Add a number, %, or $ amount to prove scale.`;
-    adviceDiv.className = 'tg-coach-advice warning';
-  } else if (metricsCount > 0 && verbCount > 0) {
-    adviceDiv.innerHTML = `<strong>AI Grade: Strong!</strong> The algorithm will prioritize this response.`;
-    adviceDiv.className = 'tg-coach-advice success';
-  } else {
-    adviceDiv.innerHTML = `<strong>AI Grade: Pending...</strong>`;
-    adviceDiv.className = 'tg-coach-advice pending';
-  }
+    closeBtn.addEventListener('click', () => {
+        modal.classList.add('tg-hidden');
+        btn.classList.remove('tg-hidden');
+    });
+    
+    // Tips
+    document.querySelectorAll('.tg-lifeline-option').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+            tipBox.innerText = e.target.getAttribute('data-tip');
+            tipBox.classList.remove('tg-hidden');
+        });
+    });
+    
+    // SOS Trigger
+    const sosBtn = document.getElementById('tg-lifeline-sos-btn');
+    sosBtn.addEventListener('click', () => {
+        sosBtn.innerText = "Capturing Context...";
+        sosBtn.disabled = true;
+        
+        chrome.runtime.sendMessage({
+            action: 'triggerSOS',
+            payload: { issueType: 'Live Help Requested' }
+        }, (response) => {
+            if (response && response.success) {
+                document.getElementById('tg-lifeline-step-1').classList.add('tg-hidden');
+                document.getElementById('tg-lifeline-step-2').classList.remove('tg-hidden');
+            } else {
+                alert("Failed to send SOS. Please try again.");
+                sosBtn.innerText = "🚨 Send SOS & Request Zoom";
+                sosBtn.disabled = false;
+            }
+        });
+    });
 }
