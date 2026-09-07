@@ -2,192 +2,342 @@ import json
 
 python_problems = [
     {
-        "title": "Two Sum (O(N) Time)",
-        "difficulty": "Easy",
-        "timeLimit": "10m",
-        "desc": "The LLM generated a brute-force O(N^2) solution using nested loops. Optimize it to O(N) using a hash map.",
+        "title": "Two Sum (Time Complexity)",
+        "difficulty": "Easy", "timeLimit": "10m",
+        "desc": "The LLM generated a brute-force O(N^2) solution using nested loops. Optimize it to O(N).",
         "example": "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]",
         "hint1": "You can solve this in one pass.",
-        "hint2": "Store the complement of each number in a dictionary as you iterate.",
+        "hint2": "Store the complement of each number in a dictionary.",
         "code": "class Solution:\n    def twoSum(self, nums, target):\n        for i in range(len(nums)):\n            for j in range(i+1, len(nums)):\n                if nums[i] + nums[j] == target:\n                    return [i, j]\n        return []",
-        "fail_regex": "for j in range",
-        "fail_msg": "Your solution is still O(N^2) because of the nested loop. Use a dictionary.",
-        "pass_regex": "\\{.*\\}|dict\\(|in ",
-        "pass_msg": "Great! You used a hash map to achieve O(N) time complexity."
+        "fail_regex": "for j in range", "fail_msg": "Still O(N^2) because of the nested loop.",
+        "pass_regex": "\\{.*\\}|dict\\(|in ", "pass_msg": "Great! Hash map achieves O(N) time."
     },
     {
-        "title": "Detect Cycle in Linked List (O(1) Space)",
-        "difficulty": "Hard",
-        "timeLimit": "15m",
-        "desc": "The LLM used an O(N) space approach by tracking visited nodes in a hash set. Modify it to achieve O(1) space complexity.",
+        "title": "Detect Cycle (Space Complexity)",
+        "difficulty": "Medium", "timeLimit": "15m",
+        "desc": "The LLM used an O(N) space approach with a hash set. Modify it to achieve O(1) space.",
         "example": "Input: head = [3,2,0,-4], pos = 1\nOutput: true",
         "hint1": "Consider using two pointers.",
-        "hint2": "Floyd's Tortoise and Hare algorithm: one pointer moves 1 step, the other moves 2 steps.",
+        "hint2": "Floyd's Tortoise and Hare algorithm.",
         "code": "class Solution:\n    def hasCycle(self, head) -> bool:\n        seen = set()\n        current = head\n        while current:\n            if current in seen:\n                return True\n            seen.add(current)\n            current = current.next\n        return False",
-        "fail_regex": "seen = set\\(\\)",
-        "fail_msg": "Space complexity is O(N) due to hash set. Target is O(1).",
-        "pass_regex": "slow|fast",
-        "pass_msg": "Floyd's Tortoise and Hare implemented correctly! O(1) space."
+        "fail_regex": "seen = set\\(\\)", "fail_msg": "Space complexity is O(N) due to hash set.",
+        "pass_regex": "slow|fast", "pass_msg": "Floyd's Tortoise and Hare implemented correctly! O(1) space."
     },
     {
-        "title": "Valid Parentheses",
-        "difficulty": "Easy",
-        "timeLimit": "10m",
-        "desc": "The LLM wrote a solution that fails when closing brackets appear before opening ones. Fix the logic.",
+        "title": "Valid Parentheses (Logic Flaw)",
+        "difficulty": "Easy", "timeLimit": "10m",
+        "desc": "The LLM's solution fails when closing brackets appear before opening ones. Fix it.",
         "example": "Input: s = '(]'\nOutput: false",
         "hint1": "Use a stack data structure.",
-        "hint2": "Push opening brackets. For closing brackets, pop and check for a match.",
+        "hint2": "Push opening brackets. For closing, pop and match.",
         "code": "class Solution:\n    def isValid(self, s: str) -> bool:\n        count = 0\n        for char in s:\n            if char in '({[':\n                count += 1\n            elif char in ')}]':\n                count -= 1\n        return count == 0",
-        "fail_regex": "count \\+= 1",
-        "fail_msg": "Counting brackets doesn't ensure they are properly nested or of the right type. Use a stack.",
-        "pass_regex": "append|pop",
-        "pass_msg": "Excellent! A stack correctly validates the order and nesting of parentheses."
+        "fail_regex": "count \\+= 1", "fail_msg": "Counting brackets doesn't ensure proper nesting.",
+        "pass_regex": "append|pop", "pass_msg": "Excellent! A stack validates order."
+    },
+    {
+        "title": "Reverse Linked List (Space Optimization)",
+        "difficulty": "Medium", "timeLimit": "10m",
+        "desc": "The LLM wrote a recursive solution which uses O(N) call stack space. Make it iterative (O(1) space).",
+        "example": "Input: head = [1,2,3,4,5]\nOutput: [5,4,3,2,1]",
+        "hint1": "You only need three pointers: prev, curr, and next.",
+        "hint2": "Iterate through the list and reverse pointers one by one.",
+        "code": "class Solution:\n    def reverseList(self, head):\n        if not head or not head.next:\n            return head\n        p = self.reverseList(head.next)\n        head.next.next = head\n        head.next = None\n        return p",
+        "fail_regex": "self\\.reverseList\\(", "fail_msg": "Recursive call still exists, causing O(N) space.",
+        "pass_regex": "while|prev|curr", "pass_msg": "Iterative approach uses O(1) space!"
+    },
+    {
+        "title": "Merge Intervals (Logic Flaw)",
+        "difficulty": "Medium", "timeLimit": "15m",
+        "desc": "The LLM failed to sort the intervals before merging, which breaks on unsorted inputs. Fix it.",
+        "example": "Input: [[1,4],[0,4]]\nOutput: [[0,4]]",
+        "hint1": "How do you guarantee overlapping intervals are adjacent?",
+        "hint2": "Sort by the starting time.",
+        "code": "class Solution:\n    def merge(self, intervals):\n        merged = []\n        for interval in intervals:\n            if not merged or merged[-1][1] < interval[0]:\n                merged.append(interval)\n            else:\n                merged[-1][1] = max(merged[-1][1], interval[1])\n        return merged",
+        "fail_regex": "merged = \\[\\]\\n\\s*for", "fail_msg": "You must sort the intervals before iterating.",
+        "pass_regex": "sort\\(|sorted\\(", "pass_msg": "Sorting intervals guarantees correctness."
+    },
+    {
+        "title": "Contains Duplicate (Time Complexity)",
+        "difficulty": "Easy", "timeLimit": "5m",
+        "desc": "The LLM used a nested loop for Contains Duplicate (O(N^2)). Optimize it to O(N).",
+        "example": "Input: [1,2,3,1]\nOutput: true",
+        "hint1": "Can you use a data structure that prevents duplicates?",
+        "hint2": "Convert to a set and compare lengths.",
+        "code": "class Solution:\n    def containsDuplicate(self, nums):\n        for i in range(len(nums)):\n            for j in range(i+1, len(nums)):\n                if nums[i] == nums[j]:\n                    return True\n        return False",
+        "fail_regex": "for j in range", "fail_msg": "Still O(N^2). Use a set.",
+        "pass_regex": "set\\(|len\\(set", "pass_msg": "Set lookup is O(1), making overall time O(N)."
+    },
+    {
+        "title": "Maximum Subarray (Time Complexity)",
+        "difficulty": "Medium", "timeLimit": "15m",
+        "desc": "The LLM used an O(N^2) approach to find the max subarray. Optimize to O(N) using Kadane's algorithm.",
+        "example": "Input: [-2,1,-3,4,-1,2,1,-5,4]\nOutput: 6",
+        "hint1": "You only need to track the max ending here and the max so far.",
+        "hint2": "If the running sum drops below 0, reset it.",
+        "code": "class Solution:\n    def maxSubArray(self, nums):\n        max_sum = float('-inf')\n        for i in range(len(nums)):\n            curr = 0\n            for j in range(i, len(nums)):\n                curr += nums[j]\n                max_sum = max(max_sum, curr)\n        return max_sum",
+        "fail_regex": "for j in range", "fail_msg": "Still O(N^2). Use Kadane's algorithm (one pass).",
+        "pass_regex": "max\\(|if.*< 0", "pass_msg": "Kadane's algorithm achieved O(N) time!"
+    },
+    {
+        "title": "Climbing Stairs (Time Complexity)",
+        "difficulty": "Easy", "timeLimit": "10m",
+        "desc": "The LLM wrote a pure recursive solution (O(2^N)). Add memoization or use DP to make it O(N).",
+        "example": "Input: n = 3\nOutput: 3",
+        "hint1": "You are recalculating the same subproblems repeatedly.",
+        "hint2": "Store results in an array or use two variables.",
+        "code": "class Solution:\n    def climbStairs(self, n: int) -> int:\n        if n == 1: return 1\n        if n == 2: return 2\n        return self.climbStairs(n-1) + self.climbStairs(n-2)",
+        "fail_regex": "return self\\.climbStairs", "fail_msg": "Still using pure recursion without memoization.",
+        "pass_regex": "dp|memo|cache|a, b = b, a \\+ b", "pass_msg": "Memoization/DP successfully brought time to O(N)."
+    },
+    {
+        "title": "Binary Search (Time Complexity Flaw)",
+        "difficulty": "Easy", "timeLimit": "5m",
+        "desc": "The LLM hallucinated and wrote a linear scan (O(N)) instead of binary search (O(log N)). Fix it.",
+        "example": "Input: nums = [-1,0,3,5,9,12], target = 9\nOutput: 4",
+        "hint1": "The array is sorted. Use this property.",
+        "hint2": "Maintain a left and right pointer, and check the middle element.",
+        "code": "class Solution:\n    def search(self, nums, target):\n        for i in range(len(nums)):\n            if nums[i] == target:\n                return i\n        return -1",
+        "fail_regex": "for i in range", "fail_msg": "Linear scan detected. Implement a binary search while loop.",
+        "pass_regex": "while left <= right:|while l <= r:", "pass_msg": "O(log N) Binary search correctly implemented."
+    },
+    {
+        "title": "Valid Palindrome (Space Complexity)",
+        "difficulty": "Easy", "timeLimit": "10m",
+        "desc": "The LLM used string replacement and created a new string, using O(N) extra space. Optimize to O(1) space.",
+        "example": "Input: 'A man, a plan, a canal: Panama'\nOutput: true",
+        "hint1": "Avoid creating new strings or lists.",
+        "hint2": "Use a two-pointer approach (left and right) and skip non-alphanumeric chars.",
+        "code": "import re\nclass Solution:\n    def isPalindrome(self, s: str) -> bool:\n        s = re.sub(r'[^a-zA-Z0-9]', '', s).lower()\n        return s == s[::-1]",
+        "fail_regex": "re\\.sub|s\\[::-1\\]", "fail_msg": "Creating a new string uses O(N) space. Use two pointers.",
+        "pass_regex": "while.*<.*:|isalnum", "pass_msg": "Two pointer approach uses O(1) space!"
     }
 ]
-
-# Generate 7 more python problems to make it 10
-for i in range(4, 11):
-    python_problems.append({
-        "title": f"Python Algorithmic Challenge {i}",
-        "difficulty": "Medium",
-        "timeLimit": "15m",
-        "desc": "The LLM generated an inefficient solution. Review the code and optimize it for better performance.",
-        "example": "Input: [1,2,3]\nOutput: [3,2,1]",
-        "hint1": "Look for redundant operations.",
-        "hint2": "Consider using built-in Python functions or a different data structure.",
-        "code": "def solve(data):\n    # LLM generated inefficient code\n    result = []\n    for item in data:\n        result.insert(0, item)\n    return result",
-        "fail_regex": "insert\\(0",
-        "fail_msg": "Using insert(0, item) on a list is O(N), making the loop O(N^2). Use append and reverse, or slicing.",
-        "pass_regex": "reverse|::-1",
-        "pass_msg": "Good job! You optimized the list operation."
-    })
-
 
 cpp_problems = [
     {
-        "title": "Memory Leak in Tree Traversal",
-        "difficulty": "Medium",
-        "timeLimit": "15m",
-        "desc": "The LLM dynamically allocated memory for tree nodes but forgot to free them, causing a memory leak. Fix it.",
-        "example": "Input: root = [1,2,3]\nOutput: (No memory leaks)",
-        "hint1": "C++ requires manual memory management if you use 'new'.",
-        "hint2": "Add a destructor or use smart pointers (std::unique_ptr).",
+        "title": "Memory Leak in Tree (C++)",
+        "difficulty": "Medium", "timeLimit": "15m",
+        "desc": "The LLM dynamically allocated memory for nodes but forgot to free them. Fix the memory leak.",
+        "example": "Input: root = [1,2,3]\nOutput: No leaks",
+        "hint1": "C++ requires manual memory management if using 'new'.",
+        "hint2": "Add a destructor (~Tree).",
         "code": "class Tree {\npublic:\n    struct Node { int val; Node* left; Node* right; };\n    Node* root;\n    // LLM forgot to write a destructor\n};",
-        "fail_regex": "// LLM forgot",
-        "fail_msg": "You still have a memory leak. You need to implement ~Tree() and delete nodes.",
-        "pass_regex": "~Tree|delete|unique_ptr",
-        "pass_msg": "Memory leak fixed! Proper resource management is critical in C++."
+        "fail_regex": "// LLM forgot", "fail_msg": "You must implement ~Tree() and delete nodes.",
+        "pass_regex": "~Tree|delete|unique_ptr", "pass_msg": "Memory leak fixed!"
     },
     {
-        "title": "Pass by Value vs Reference",
-        "difficulty": "Easy",
-        "timeLimit": "10m",
-        "desc": "The LLM is passing a massive vector by value into a recursive function, causing massive overhead. Optimize it.",
+        "title": "Pass by Value Overhead (C++)",
+        "difficulty": "Easy", "timeLimit": "10m",
+        "desc": "The LLM is passing a massive vector by value into a function, causing massive copy overhead. Fix it.",
         "example": "Input: vector of 1M elements\nOutput: Fast execution",
-        "hint1": "Passing by value copies the entire vector every time.",
-        "hint2": "Pass by constant reference: const std::vector<int>&",
-        "code": "void process(std::vector<int> data) {\n    // doing some read-only processing\n}",
-        "fail_regex": "process\\(std::vector<int> data\\)",
-        "fail_msg": "You are still passing by value. Add an ampersand (&) to pass by reference.",
-        "pass_regex": "const std::vector<int>&|std::vector<int> &",
-        "pass_msg": "Passed by reference! This prevents unnecessary copying."
+        "hint1": "Pass by value copies the entire vector.",
+        "hint2": "Pass by constant reference.",
+        "code": "void process(std::vector<int> data) {\n    // read-only processing\n}",
+        "fail_regex": "process\\(std::vector<int> data\\)", "fail_msg": "Still passing by value. Add &.",
+        "pass_regex": "const std::vector<int>&|std::vector<int> &", "pass_msg": "Passed by reference! Overhead eliminated."
     },
     {
-        "title": "Out of Bounds Vector Access",
-        "difficulty": "Easy",
-        "timeLimit": "10m",
-        "desc": "The LLM used the [] operator on a vector without bounds checking, which might segfault. Make it safer.",
-        "example": "Input: index = 10, vector size = 5\nOutput: Handle error gracefully",
-        "hint1": "Vector operator[] does not check bounds.",
-        "hint2": "Use vector.at() instead, which throws std::out_of_range.",
+        "title": "Out of Bounds Access (C++)",
+        "difficulty": "Easy", "timeLimit": "10m",
+        "desc": "The LLM used the [] operator without bounds checking, which could segfault. Make it safer.",
+        "example": "Input: index = 10, vector size = 5\nOutput: Throws out_of_range",
+        "hint1": "Operator [] does not check bounds.",
+        "hint2": "Use vector.at() instead.",
         "code": "int getElement(std::vector<int>& v, int i) {\n    return v[i];\n}",
-        "fail_regex": "v\\[i\\]",
-        "fail_msg": "Still using the unsafe [] operator.",
-        "pass_regex": "v\\.at\\(i\\)",
-        "pass_msg": "Using .at() ensures an exception is thrown if the index is out of bounds."
-    }
-]
-
-# Generate 7 more cpp problems
-for i in range(4, 11):
-    cpp_problems.append({
-        "title": f"C++ System Design Challenge {i}",
-        "difficulty": "Hard",
-        "timeLimit": "20m",
-        "desc": "The LLM wrote C++ code that is not thread-safe. Add a mutex lock to fix the race condition.",
-        "example": "Input: Concurrent thread access\nOutput: No race conditions",
+        "fail_regex": "v\\[i\\]", "fail_msg": "Still using unsafe [] operator.",
+        "pass_regex": "v\\.at\\(i\\)", "pass_msg": "Safe bounds checking added."
+    },
+    {
+        "title": "Race Condition (C++)",
+        "difficulty": "Hard", "timeLimit": "20m",
+        "desc": "The LLM wrote code that modifies a global variable across multiple threads. Fix the race condition.",
+        "example": "Input: Concurrent thread access\nOutput: Consistent count",
         "hint1": "Include <mutex>.",
         "hint2": "Use std::lock_guard.",
-        "code": "int counter = 0;\nvoid increment() {\n    counter++; // Not thread safe\n}",
-        "fail_regex": "counter\\+\\+; // Not thread safe",
-        "fail_msg": "You need to lock the critical section.",
-        "pass_regex": "std::lock_guard|mutex",
-        "pass_msg": "Thread safety achieved using mutex locks!"
-    })
-
+        "code": "#include <thread>\nint counter = 0;\nvoid increment() {\n    counter++; // Not thread safe\n}",
+        "fail_regex": "counter\\+\\+; // Not thread safe", "fail_msg": "You need to lock the critical section.",
+        "pass_regex": "std::lock_guard|mutex", "pass_msg": "Thread safety achieved using mutex locks!"
+    },
+    {
+        "title": "Dangling Pointer (C++)",
+        "difficulty": "Medium", "timeLimit": "10m",
+        "desc": "The LLM returned a reference to a local variable. This leads to undefined behavior. Fix it.",
+        "example": "Input: N/A\nOutput: Valid memory access",
+        "hint1": "Local variables are destroyed when the function returns.",
+        "hint2": "Return by value, or allocate on the heap.",
+        "code": "const int& getNumber() {\n    int num = 42;\n    return num;\n}",
+        "fail_regex": "return num;", "fail_msg": "Returning reference to local variable causes dangling pointer.",
+        "pass_regex": "int getNumber\\(\\)|new int", "pass_msg": "Fixed! Safe memory access guaranteed."
+    },
+    {
+        "title": "String Reallocation Overhead (C++)",
+        "difficulty": "Easy", "timeLimit": "10m",
+        "desc": "The LLM is appending characters in a loop, causing O(N^2) reallocation overhead. Preallocate memory.",
+        "example": "Input: Append 1M chars\nOutput: O(N) execution",
+        "hint1": "std::string automatically resizes, which is costly.",
+        "hint2": "Use std::string::reserve() before the loop.",
+        "code": "std::string buildString(int n) {\n    std::string s;\n    for(int i=0; i<n; i++) s += 'a';\n    return s;\n}",
+        "fail_regex": "std::string s;\\n\\s*for", "fail_msg": "Missing call to reserve().",
+        "pass_regex": "s\\.reserve\\(", "pass_msg": "String capacity reserved, O(N) time achieved."
+    },
+    {
+        "title": "Iterator Invalidation (C++)",
+        "difficulty": "Medium", "timeLimit": "15m",
+        "desc": "The LLM is erasing elements from a vector while iterating over it, causing a crash. Fix the loop.",
+        "example": "Input: vector=[1,2,3], remove even\nOutput: [1,3]",
+        "hint1": "vector.erase() invalidates iterators at and after the erased element.",
+        "hint2": "Use the return value of erase(), or the erase-remove idiom.",
+        "code": "void removeEvens(std::vector<int>& v) {\n    for(auto it = v.begin(); it != v.end(); ++it) {\n        if(*it % 2 == 0) v.erase(it);\n    }\n}",
+        "fail_regex": "v\\.erase\\(it\\);", "fail_msg": "Iterator is invalidated and incremented incorrectly.",
+        "pass_regex": "it = v\\.erase\\(it\\)|remove_if", "pass_msg": "Safe iterator advancement during erase."
+    },
+    {
+        "title": "Uninitialized Variable UB (C++)",
+        "difficulty": "Easy", "timeLimit": "5m",
+        "desc": "The LLM used an uninitialized integer, causing Undefined Behavior (UB). Fix it.",
+        "example": "Input: N/A\nOutput: Deterministic output",
+        "hint1": "In C++, local primitive variables are not zero-initialized by default.",
+        "hint2": "Explicitly initialize the variable.",
+        "code": "int calculate() {\n    int sum;\n    for(int i=1; i<=10; i++) sum += i;\n    return sum;\n}",
+        "fail_regex": "int sum;\\n", "fail_msg": "Variable 'sum' is uninitialized.",
+        "pass_regex": "int sum = 0;", "pass_msg": "Variable initialized safely."
+    },
+    {
+        "title": "delete vs delete[] (C++)",
+        "difficulty": "Easy", "timeLimit": "5m",
+        "desc": "The LLM allocated an array with 'new[]' but freed it with 'delete'. Fix the UB.",
+        "example": "Input: N/A\nOutput: No leaks/crashes",
+        "hint1": "Array allocations require array deletions.",
+        "hint2": "Use delete[].",
+        "code": "void process() {\n    int* arr = new int[100];\n    // ... processing ...\n    delete arr;\n}",
+        "fail_regex": "delete arr;", "fail_msg": "Using scalar delete on an array allocation.",
+        "pass_regex": "delete\\[\\] arr;", "pass_msg": "Correct array deletion used."
+    },
+    {
+        "title": "Object Slicing (C++)",
+        "difficulty": "Medium", "timeLimit": "10m",
+        "desc": "The LLM passed a derived class object by value to a function expecting a base class, causing object slicing.",
+        "example": "Input: Derived object\nOutput: Correct polymorphic behavior",
+        "hint1": "Passing by value strips away derived class attributes.",
+        "hint2": "Pass by pointer or reference.",
+        "code": "class Base { virtual void print() {} };\nclass Derived : public Base { void print() override {} };\nvoid doPrint(Base obj) {\n    obj.print();\n}",
+        "fail_regex": "doPrint\\(Base obj\\)", "fail_msg": "Passing by value causes object slicing.",
+        "pass_regex": "Base&|Base\\*", "pass_msg": "Passed by reference/pointer. Polymorphism preserved."
+    }
+]
 
 rust_problems = [
     {
-        "title": "Borrow Checker Violation",
-        "difficulty": "Medium",
-        "timeLimit": "15m",
-        "desc": "The LLM tried to mutate a string while holding an immutable reference to it. Fix the code to satisfy the borrow checker.",
-        "example": "Input: s = String::from(\"hello\")\nOutput: \"hello world\"",
-        "hint1": "You cannot have a mutable reference while an immutable one exists.",
-        "hint2": "Drop the immutable reference or clone the string.",
+        "title": "Borrow Checker Violation (Rust)",
+        "difficulty": "Medium", "timeLimit": "15m",
+        "desc": "The LLM tried to mutate a string while holding an immutable reference to it. Fix it.",
+        "example": "Input: s = \"hello\"\nOutput: \"hello world\"",
+        "hint1": "Cannot have mutable reference while an immutable one exists.",
+        "hint2": "Drop immutable ref or clone.",
         "code": "fn main() {\n    let mut s = String::from(\"hello\");\n    let r1 = &s;\n    s.push_str(\" world\");\n    println!(\"{}\", r1);\n}",
-        "fail_regex": "let r1 = &s;",
-        "fail_msg": "The borrow checker will still reject this. You cannot borrow 's' as mutable because it is also borrowed as immutable.",
-        "pass_regex": "clone|//",
-        "pass_msg": "Borrow checker satisfied! Welcome to Rust."
+        "fail_regex": "let r1 = &s;", "fail_msg": "Borrow checker rejected: mutating while immutably borrowed.",
+        "pass_regex": "clone|//", "pass_msg": "Borrow checker satisfied!"
     },
     {
-        "title": "Unsafe Block Misuse",
-        "difficulty": "Hard",
-        "timeLimit": "20m",
-        "desc": "The LLM used an 'unsafe' block to dereference a raw pointer unnecessarily. Refactor it to safe Rust.",
+        "title": "Unsafe Block Misuse (Rust)",
+        "difficulty": "Hard", "timeLimit": "20m",
+        "desc": "The LLM used 'unsafe' to dereference a raw pointer unnecessarily. Refactor to safe Rust.",
         "example": "Input: raw pointer\nOutput: Safe reference",
-        "hint1": "Avoid raw pointers unless interacting with C code.",
-        "hint2": "Use standard references &T or Box<T>.",
+        "hint1": "Avoid raw pointers.",
+        "hint2": "Use standard references &T.",
         "code": "fn main() {\n    let num = 5;\n    let r1 = &num as *const i32;\n    unsafe {\n        println!(\"r1 is: {}\", *r1);\n    }\n}",
-        "fail_regex": "unsafe \\{",
-        "fail_msg": "You are still using an unsafe block. Refactor to purely safe Rust.",
-        "pass_regex": "&num",
-        "pass_msg": "Good job! You removed the unsafe block and used safe references."
+        "fail_regex": "unsafe \\{", "fail_msg": "Still using unsafe block.",
+        "pass_regex": "&num", "pass_msg": "Unsafe block removed. Pure safe Rust."
     },
     {
-        "title": "Missing Error Handling",
-        "difficulty": "Easy",
-        "timeLimit": "10m",
-        "desc": "The LLM used .unwrap() on a Result, which will panic if the file doesn't exist. Implement proper error handling.",
-        "example": "Input: Missing file\nOutput: Graceful error message instead of panic",
-        "hint1": "Don't use unwrap() in production code.",
-        "hint2": "Use match or the ? operator.",
+        "title": "Missing Error Handling (Rust)",
+        "difficulty": "Easy", "timeLimit": "10m",
+        "desc": "The LLM used .unwrap() on a Result. Implement proper error handling.",
+        "example": "Input: Missing file\nOutput: Graceful error instead of panic",
+        "hint1": "Don't use unwrap().",
+        "hint2": "Use match or ? operator.",
         "code": "use std::fs::File;\nfn main() {\n    let f = File::open(\"hello.txt\").unwrap();\n}",
-        "fail_regex": "\\.unwrap\\(\\)",
-        "fail_msg": ".unwrap() is still present. This will crash the program.",
-        "pass_regex": "match|\\?",
-        "pass_msg": "Excellent! Handling Results explicitly prevents unexpected panics."
+        "fail_regex": "\\.unwrap\\(\\)", "fail_msg": ".unwrap() is present. This will crash if the file is missing.",
+        "pass_regex": "match|\\?", "pass_msg": "Results handled gracefully."
+    },
+    {
+        "title": "Missing Lifetime Annotations (Rust)",
+        "difficulty": "Hard", "timeLimit": "20m",
+        "desc": "The LLM failed to specify lifetimes for a function returning a reference. Fix it.",
+        "example": "Input: Two strings\nOutput: The longer string",
+        "hint1": "Compiler doesn't know which reference is returned.",
+        "hint2": "Use <'a>.",
+        "code": "fn longest(x: &str, y: &str) -> &str {\n    if x.len() > y.len() { x } else { y }\n}",
+        "fail_regex": "fn longest\\(x: &str, y: &str\\) -> &str", "fail_msg": "Missing lifetime annotations.",
+        "pass_regex": "<'a>", "pass_msg": "Lifetimes specified correctly!"
+    },
+    {
+        "title": "Use After Move (Rust)",
+        "difficulty": "Medium", "timeLimit": "15m",
+        "desc": "The LLM moved a String into a function and then tried to print it. Fix the compiler error.",
+        "example": "Input: s = \"test\"\nOutput: prints twice",
+        "hint1": "Passing a String by value moves ownership.",
+        "hint2": "Pass a reference (&String) instead.",
+        "code": "fn take_ownership(s: String) {}\nfn main() {\n    let s = String::from(\"hello\");\n    take_ownership(s);\n    println!(\"{}\", s);\n}",
+        "fail_regex": "take_ownership\\(s\\);\\n\\s*println", "fail_msg": "Value 's' used after being moved.",
+        "pass_regex": "&s|clone", "pass_msg": "Ownership issues resolved!"
+    },
+    {
+        "title": "Double Mutable Borrow (Rust)",
+        "difficulty": "Medium", "timeLimit": "15m",
+        "desc": "The LLM created two mutable references to the same data in the same scope. Fix it.",
+        "example": "Input: mut s\nOutput: compiles",
+        "hint1": "Rust only allows one mutable reference at a time.",
+        "hint2": "Use scoping { } to drop the first borrow before the second.",
+        "code": "fn main() {\n    let mut s = String::from(\"hello\");\n    let r1 = &mut s;\n    let r2 = &mut s;\n    r1.push_str(\"1\");\n    r2.push_str(\"2\");\n}",
+        "fail_regex": "let r2 = &mut s;", "fail_msg": "Cannot borrow as mutable more than once at a time.",
+        "pass_regex": "\\{|clone", "pass_msg": "Mutable aliasing rules respected."
+    },
+    {
+        "title": "Iterating and Mutating (Rust)",
+        "difficulty": "Hard", "timeLimit": "20m",
+        "desc": "The LLM tried to remove items from a Vec while iterating over it via a for loop, causing borrow checker errors.",
+        "example": "Input: vec of ints\nOutput: vec without evens",
+        "hint1": "You cannot mutate a collection while iterating with an immutable borrow.",
+        "hint2": "Use retain() or filter().",
+        "code": "fn main() {\n    let mut vec = vec![1, 2, 3, 4];\n    for (i, v) in vec.iter().enumerate() {\n        if v % 2 == 0 { vec.remove(i); }\n    }\n}",
+        "fail_regex": "vec\\.remove\\(i\\);", "fail_msg": "Cannot borrow 'vec' as mutable because it is also borrowed as immutable.",
+        "pass_regex": "retain|filter", "pass_msg": "Proper functional filtering applied."
+    },
+    {
+        "title": "RefCell Runtime Panic (Rust)",
+        "difficulty": "Hard", "timeLimit": "20m",
+        "desc": "The LLM used RefCell to borrow mutably twice at runtime, causing a panic. Fix the logic.",
+        "example": "Input: RefCell<T>\nOutput: No panic",
+        "hint1": "RefCell enforces borrowing rules at runtime.",
+        "hint2": "Drop the first borrow before creating the second.",
+        "code": "use std::cell::RefCell;\nfn main() {\n    let cell = RefCell::new(5);\n    let b1 = cell.borrow_mut();\n    let b2 = cell.borrow_mut(); // Panics here\n}",
+        "fail_regex": "let b2 = cell\\.borrow_mut\\(\\);", "fail_msg": "This will still panic at runtime.",
+        "pass_regex": "drop\\(|\\{", "pass_msg": "Runtime borrow rules respected."
+    },
+    {
+        "title": "Memory Leak via Reference Cycle (Rust)",
+        "difficulty": "Hard", "timeLimit": "25m",
+        "desc": "The LLM used Rc<RefCell<T>> to create a circular reference, leading to a memory leak. Fix it.",
+        "example": "Input: Graph nodes\nOutput: Nodes dropped correctly",
+        "hint1": "Rc pointers keep data alive as long as count > 0.",
+        "hint2": "Use Weak pointers to break the cycle.",
+        "code": "use std::rc::Rc;\nuse std::cell::RefCell;\nstruct Node { next: Option<Rc<RefCell<Node>>> }\nfn main() {\n    // Cycle created, memory leaked.\n}",
+        "fail_regex": "Option<Rc<RefCell<Node>>>", "fail_msg": "Cycle still exists. Replace Rc with Weak for back-references.",
+        "pass_regex": "Weak", "pass_msg": "Weak reference broke the cycle. No leaks!"
+    },
+    {
+        "title": "Invalid String Indexing (Rust)",
+        "difficulty": "Easy", "timeLimit": "5m",
+        "desc": "The LLM tried to index into a String using s[0], which is not allowed in Rust. Fix it.",
+        "example": "Input: 'hello'\nOutput: 'h'",
+        "hint1": "Strings in Rust are UTF-8 encoded; direct indexing is unsafe.",
+        "hint2": "Use s.chars().nth(0).",
+        "code": "fn get_first(s: &str) -> char {\n    return s[0];\n}",
+        "fail_regex": "s\\[0\\]", "fail_msg": "String indexing is not allowed in Rust.",
+        "pass_regex": "chars\\(\\)\\.nth\\(0\\)|as_bytes", "pass_msg": "Safely accessed string characters."
     }
 ]
-
-# Generate 7 more rust problems
-for i in range(4, 11):
-    rust_problems.append({
-        "title": f"Rust Lifetimes Challenge {i}",
-        "difficulty": "Hard",
-        "timeLimit": "20m",
-        "desc": "The LLM failed to specify lifetimes for a function returning a reference. Add the correct lifetime annotations.",
-        "example": "Input: Two strings\nOutput: The longer string",
-        "hint1": "The compiler doesn't know which reference the returned reference points to.",
-        "hint2": "Use <'a> to tie the input lifetimes to the output lifetime.",
-        "code": "fn longest(x: &str, y: &str) -> &str {\n    if x.len() > y.len() {\n        x\n    } else {\n        y\n    }\n}",
-        "fail_regex": "fn longest\\(x: &str, y: &str\\) -> &str",
-        "fail_msg": "Missing lifetime annotations. Add <'a>.",
-        "pass_regex": "<'a>",
-        "pass_msg": "Lifetimes specified correctly! The Rust compiler is happy."
-    })
-
 
 database = {
     "python": python_problems,
@@ -200,4 +350,4 @@ with open("js/problems.js", "w") as f:
     json.dump(database, f, indent=4)
     f.write(";")
 
-print("Generated js/problems.js with 30 challenges!")
+print("Generated js/problems.js with 30 distinct challenges!")
