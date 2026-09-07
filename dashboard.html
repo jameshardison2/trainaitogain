@@ -210,7 +210,7 @@
               timestamp: serverTimestamp(),
               source: window.location.href + ' (Apply Modal)',
               referred_by: refCode,
-              status: 'Applied' // They are applying right now
+              status: 'Application Started' // They are applying right now
             });
             
             localStorage.setItem('hasEnteredEmailForApply', 'true');
@@ -288,9 +288,16 @@
 
         <div class="kanban-col">
             <div class="kanban-header">
-                Applied <span id="count-applied" class="kanban-count">0</span>
+                Application Started <span id="count-applied" class="kanban-count">0</span>
             </div>
             <div id="col-applied" style="display:flex; flex-direction:column; gap:12px;"></div>
+        </div>
+
+        <div class="kanban-col">
+            <div class="kanban-header">
+                Application Completed <span id="count-completed" class="kanban-count">0</span>
+            </div>
+            <div id="col-completed" style="display:flex; flex-direction:column; gap:12px;"></div>
         </div>
 
         <div class="kanban-col">
@@ -416,13 +423,15 @@
   function renderBoard() {
     const cols = {
         'Captured': document.getElementById('col-captured'),
-        'Applied': document.getElementById('col-applied'),
+        'Application Started': document.getElementById('col-applied'),
+        'Application Completed': document.getElementById('col-completed'),
         'Offer': document.getElementById('col-offer'),
         'Hired': document.getElementById('col-hired')
     };
     const counts = {
         'Captured': 0,
-        'Applied': 0,
+        'Application Started': 0,
+        'Application Completed': 0,
         'Offer': 0,
         'Hired': 0
     };
@@ -454,7 +463,9 @@
         : globalLeads;
 
     leadsToRender.forEach(lead => {
-      const status = lead.status || 'Captured'; // Default to Captured
+      let status = lead.status || 'Captured'; // Default to Captured
+      if (status === 'Applied') status = 'Application Started'; // Legacy mapping
+      
       if (counts[status] !== undefined) {
           counts[status]++;
           
@@ -465,7 +476,8 @@
           let statusUI = `
               <select id="status-${lead.id}" data-original="${status}" class="status-select" onchange="updateLeadStatus('${lead.id}', this.value)">
                   <option value="Captured" ${status === 'Captured' ? 'selected' : ''}>Captured</option>
-                  <option value="Applied" ${status === 'Applied' ? 'selected' : ''}>Applied</option>
+                  <option value="Application Started" ${status === 'Application Started' ? 'selected' : ''}>Application Started</option>
+                  <option value="Application Completed" ${status === 'Application Completed' ? 'selected' : ''}>Application Completed</option>
                   <option value="Offer" ${status === 'Offer' ? 'selected' : ''}>Offer</option>
                   <option value="Hired" ${status === 'Hired' ? 'selected' : ''}>Hired 🎉</option>
               </select>
@@ -495,13 +507,14 @@
 
     // Update counts
     document.getElementById('count-captured').innerText = counts['Captured'];
-    document.getElementById('count-applied').innerText = counts['Applied'];
+    document.getElementById('count-applied').innerText = counts['Application Started'];
+    document.getElementById('count-completed').innerText = counts['Application Completed'];
     document.getElementById('count-offer').innerText = counts['Offer'];
     document.getElementById('count-hired').innerText = counts['Hired'];
 
     // Update Bonus UI
     const hiresCount = counts['Hired'];
-    const appliedCount = counts['Applied'];
+    const appliedCount = counts['Application Started'] + counts['Application Completed'];
     
     if (document.getElementById('applied-count-bonus')) {
         document.getElementById('applied-count-bonus').innerText = appliedCount;
