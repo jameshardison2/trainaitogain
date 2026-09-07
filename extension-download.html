@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Install Application Assistant | TrainAIToGain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .step-card {
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        margin-bottom: 24px;
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        box-shadow: var(--shadow-sm);
+    }
+    .step-number {
+        background: var(--black);
+        color: var(--white);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+  </style>
+</head>
+<body style="background:var(--gray-50);">
+
+  <nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; flex-direction:column; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+            <span style="color:var(--primary); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">We Get You Hired.</span>
+          </div>
+          </a>
+          <input type="checkbox" id="nav-toggle" style="display:none;" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="nav-toggle-icon"></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="hiring-pipeline.html" class="nav-link" style="color:var(--primary); font-weight:700; display:flex; align-items:center; gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> The Hiring Pipeline</a></li>
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="saved-roles.html" style="display:flex; align-items:center; gap:6px;">Dashboard <span style="background:var(--primary); color:var(--white); font-size:10px; padding:2px 6px; border-radius:100px; font-weight:800;">NEW</span></a></li>
+        </ul>
+        <div class="nav-cta" style="display:flex; align-items:center; gap:24px;">
+          <a href="https://www.linkedin.com/company/trainaitogain/" aria-label="LinkedIn" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Application Interceptor Modal -->
+    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
+      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
+        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
+          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
+        </div>
+        <div style="padding:24px;">
+          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official application portal.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
+          </div>
+          
+          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
+            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
+            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+          </form>
+
+          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.currentApplySource = 'unknown';
+      function openApplyModal(source) {
+        window.currentApplySource = source;
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
+        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
+        
+        // If they already entered their email, don't ask again
+        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
+            window.open(targetUrl, '_blank');
+            return;
+        }
+
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'flex';
+      }
+      function closeApplyModal() {
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'none';
+        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
+        document.getElementById('modalApplyBtn').disabled = false;
+      }
+      async function handleModalSubmit(e) {
+        e.preventDefault();
+        var emailInput = document.getElementById('applyModalEmail').value.trim();
+        var nameInput = document.getElementById('applyModalName').value.trim();
+        if (!emailInput) {
+            alert('Please enter your email to proceed.');
+            return;
+        }
+        
+        var btn = document.getElementById('modalApplyBtn');
+        btn.innerHTML = 'Routing...';
+        btn.disabled = true;
+        
+        try {
+            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
+            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
+            
+            let app;
+            if (!getApps().length) {
+                app = initializeApp({ projectId: "trainaitogain-50c19" });
+            } else {
+                app = getApp();
+            }
+            const db = getFirestore(app);
+            
+            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            
+            await addDoc(collection(db, "leads"), {
+              firstName: nameInput || 'Applicant',
+              email: emailInput,
+              timestamp: serverTimestamp(),
+              source: window.location.href + ' (Apply Modal)',
+              referred_by: refCode,
+              status: 'Application Started' // They are applying right now
+            });
+            
+            localStorage.setItem('hasEnteredEmailForApply', 'true');
+            
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
+            
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (refCode) {
+                targetUrl += "?ref=" + encodeURIComponent(refCode);
+            }
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+            
+        } catch (err) {
+            console.error(err);
+            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+        }
+      }
+    </script>
+    <style>
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+  </nav>
+
+  <section style="padding: 64px 0;">
+    <div class="container" style="max-width: 800px;">
+      
+      <div style="text-align:center; margin-bottom: 48px;">
+        <h1 style="font-size:36px; font-weight:800; margin-bottom:16px;">Install Your Application Assistant</h1>
+        <p style="font-size:18px; color:var(--gray-500); line-height:1.6;">Before you start your Mercor application, install the "Life Alert" assistant. If you get stuck or confused during the interview, click it to get instant help from your referral partner.</p>
+        
+        <a href="get-you-hired-extension.zip" download class="btn-primary" style="display:inline-block; margin-top:24px; font-size:18px; padding:16px 32px; text-decoration:none;">
+          📥 Download Extension (.zip)
+        </a>
+      </div>
+
+      <h2 style="font-size:24px; font-weight:800; margin-bottom:24px;">How to install it (Takes 30 seconds):</h2>
+
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <div>
+          <h3 style="font-size:20px; font-weight:800; margin-bottom:8px;">Extract the ZIP file</h3>
+          <p style="color:var(--gray-500); line-height:1.5;">Find the <code>get-you-hired-extension.zip</code> file in your downloads folder. Double-click it (Mac) or Right-Click and select "Extract All" (Windows) to unzip it into a folder.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <div>
+          <h3 style="font-size:20px; font-weight:800; margin-bottom:8px;">Open Chrome Extensions</h3>
+          <p style="color:var(--gray-500); line-height:1.5; margin-bottom:12px;">Open a new tab in Chrome and copy/paste this URL into the address bar:</p>
+          <div style="background:var(--gray-100); padding:12px; border-radius:8px; font-family:monospace; font-size:16px; font-weight:700;">chrome://extensions/</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <div>
+          <h3 style="font-size:20px; font-weight:800; margin-bottom:8px;">Load Unpacked</h3>
+          <p style="color:var(--gray-500); line-height:1.5;">In the top right corner, turn on <strong>"Developer mode"</strong>. Then click the <strong>"Load unpacked"</strong> button in the top left and select the folder you unzipped in Step 1.</p>
+          <div style="margin-top:16px; background:rgba(34, 197, 94, 0.1); border:1px solid rgba(34, 197, 94, 0.2); padding:16px; border-radius:8px; color:var(--primary-dark);">
+            <strong>✅ Success!</strong> You will see the "Mercor App Assistant" icon appear in your Chrome toolbar.
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:48px; border-top:1px solid var(--gray-200); padding-top:48px;">
+        <h2 style="font-size:24px; font-weight:800; margin-bottom:16px;">Done installing?</h2>
+        <p style="color:var(--gray-500); margin-bottom:24px;">Click below to proceed to the official Mercor Application Portal. Don't forget to click the extension if you get stuck!</p>
+        
+        <button onclick="goToMercor()" class="btn-primary" style="font-size:18px; padding:16px 32px; text-decoration:none; display:inline-block; cursor:pointer; border:none; font-family:var(--font);">
+          Start Mercor Application ➔
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    function goToMercor() {
+        var targetUrl = "https://t.mercor.com/wbPMF";
+        var ref = new URLSearchParams(window.location.search).get('ref') || localStorage.getItem('affiliate_ref') || '';
+        if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
+        window.location.href = targetUrl;
+    }
+    
+    // Store ref if it exists on page load
+    (function() {
+      var ref = new URLSearchParams(window.location.search).get('ref');
+      if (ref) localStorage.setItem('affiliate_ref', ref);
+    })();
+  </script>
+
+</body>
+</html>

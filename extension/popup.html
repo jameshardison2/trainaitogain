@@ -2,21 +2,23 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     body {
-      width: 320px;
+      width: 340px;
       margin: 0;
       padding: 24px;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: #0f172a; /* Brand dark bg */
-      color: #f8fafc;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #111111;
+      color: #FFFFFF;
     }
     .header {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 24px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 16px;
     }
     .header img {
       width: 32px;
@@ -25,116 +27,162 @@
     }
     h2 {
       margin: 0;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
-      color: #10b981; /* Brand Primary Green */
+      color: #059669;
     }
     p {
       font-size: 14px;
-      color: #94a3b8;
+      color: #999;
       line-height: 1.5;
-      margin-top: 0;
-      margin-bottom: 24px;
+    }
+    .hidden { display: none !important; }
+    
+    /* Buttons */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background: #059669;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: 'Outfit';
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: #047857;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(5, 150, 105, 0.6);
     }
     
-    /* Toggle Switch UI */
-    .toggle-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 24px;
-    }
-    .toggle-label {
-      font-size: 15px;
+    .btn-secondary {
+      display: block;
+      width: 100%;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
       font-weight: 600;
-      color: #ffffff;
-    }
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 48px;
-      height: 28px;
-    }
-    .switch input { 
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
       cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #334155; 
-      transition: .3s;
-      border-radius: 34px;
+      font-family: 'Outfit';
+      margin-bottom: 8px;
+      transition: all 0.2s;
     }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 20px;
-      width: 20px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: .3s;
-      border-radius: 50%;
-    }
-    input:checked + .slider {
-      background-color: #10b981; 
-      box-shadow: 0 0 12px rgba(16,185,129,0.4);
-    }
-    input:checked + .slider:before {
-      transform: translateX(20px);
+    .btn-secondary:hover {
+      background: #333;
+      border-color: #555;
     }
 
-    .link {
+    .btn-sos {
       display: block;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.05);
-      color: #cbd5e1;
-      text-decoration: none;
-      padding: 14px;
+      width: 100%;
+      background: rgba(220, 38, 38, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      padding: 12px;
       border-radius: 10px;
-      font-size: 15px;
-      font-weight: 600;
-      transition: background 0.2s, color 0.2s;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: 'Outfit';
+      margin-top: 16px;
+      transition: all 0.2s;
     }
-    .link:hover { 
-      background: rgba(16, 185, 129, 0.2); 
-      color: #10b981;
+    .btn-sos:hover {
+      background: rgba(220, 38, 38, 0.2);
+    }
+
+    /* Views */
+    #view-wrong-site, #view-home, #view-troubleshoot, #view-sos-sent {
+      display: none;
+    }
+    .active-view {
+      display: block !important;
+    }
+    
+    .status-box {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      background: #222;
+      color: #059669;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    
+    #screenshot-preview {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #333;
+      margin-top: 16px;
+      display: none;
     }
   </style>
 </head>
 <body>
   <div class="header">
     <img src="icon48.png" alt="Logo">
-    <h2>The Invisible Advantage</h2>
+    <h2>Mercor App Assistant</h2>
   </div>
-  <p><strong>Stealth Mode is Active.</strong></p>
-  <p style="color:#94a3b8; font-size:13px; margin-bottom:12px;">This extension runs completely invisibly in the background. It will automatically slide into view when you need it.</p>
-  
-  <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px; margin-bottom:24px;">
-      <strong style="font-size:13px; color:white; display:block; margin-bottom:8px;">How to use it:</strong>
-      <ul style="font-size:12px; color:#94a3b8; padding-left:16px; margin:0; line-height:1.5;">
-          <li style="margin-bottom:8px;"><strong>Job Scanner:</strong> Go to the Mercor Job Board. An overlay will slide up in the bottom right corner allowing you to export and scan the job.</li>
-          <li><strong>Impact Coach:</strong> Click inside any text box on a Mercor application. The Live Coach will instantly attach to the box and grade you as you type.</li>
-      </ul>
+
+  <!-- View 1: Not on Mercor -->
+  <div id="view-wrong-site">
+    <p>This assistant only works while you are actively applying on Mercor's platform.</p>
+    <a href="https://mercor.com" target="_blank" style="color:#059669; font-weight:800; text-decoration:none;">Go to Mercor.com ➔</a>
   </div>
-  
-  <div class="toggle-container">
-    <div class="toggle-label">Master Switch</div>
-    <label class="switch">
-      <input type="checkbox" id="master-toggle" checked>
-      <span class="slider"></span>
-    </label>
+
+  <!-- View 2: Home (On Mercor) -->
+  <div id="view-home">
+    <div class="status-box">
+      <span class="badge">Status: Connected</span>
+      <p style="margin:0; color:#fff; font-size:15px; font-weight:600;">We see you are currently on the Mercor portal.</p>
+    </div>
+    <p>Are you stuck on a question, experiencing a bug, or need help navigating the application?</p>
+    <button class="btn-primary" id="btn-stuck">Help! I'm Stuck</button>
   </div>
-  
-  <a href="https://trainaitogain-50c19.web.app/" target="_blank" class="link">Visit Dashboard</a>
-  
+
+  <!-- View 3: Troubleshooting -->
+  <div id="view-troubleshoot">
+    <div class="status-box">
+      <p style="margin:0 0 12px 0; color:#fff; font-weight:600;">What are you having trouble with?</p>
+      <button class="btn-secondary" onclick="showTip('My camera/mic won\'t connect in the interview tab. Check your browser permissions and refresh.')">Camera/Mic Issues</button>
+      <button class="btn-secondary" onclick="showTip('Resume parsing failed. Try uploading as a plain PDF instead of a Word doc.')">Resume Upload Failed</button>
+      <button class="btn-secondary" onclick="showTip('I don\'t know what to say. Focus on one specific technical project and explain your impact.')">I don't know what to say</button>
+      <div id="tip-container" style="display:none; margin-top:16px; color:#a7f3d0; font-size:13px; background:rgba(5,150,105,0.1); padding:12px; border-radius:8px;"></div>
+    </div>
+    
+    <p style="text-align:center; font-size:12px; margin-bottom:8px;">Still stuck? We can help you live.</p>
+    <button class="btn-sos" id="btn-sos">🚨 Send SOS & Request Zoom</button>
+  </div>
+
+  <!-- View 4: SOS Sent -->
+  <div id="view-sos-sent">
+    <div style="text-align:center; margin-bottom:24px;">
+      <div style="font-size:48px; margin-bottom:16px;">✅</div>
+      <h3 style="margin:0 0 8px 0; color:#059669;">SOS Signal Sent</h3>
+      <p style="margin:0;">We captured your screen context. An affiliate is ready to help you finish your application.</p>
+    </div>
+    <img id="screenshot-preview" src="">
+    <button class="btn-primary" id="btn-zoom" style="margin-top:24px;">Join Live Zoom Support</button>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
