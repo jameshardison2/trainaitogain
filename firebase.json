@@ -11,11 +11,7 @@
     ],
     "cleanUrls": true,
     "redirects": [
-      {
-        "source": "/extension-download",
-        "destination": "/guide-download.html",
-        "type": 301
-      },
+
       {
         "source": "/wali",
         "destination": "/?ref=wali",
