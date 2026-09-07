@@ -21,7 +21,8 @@ async function handleSOSRequest(payload, tab, sendResponse) {
                 timestamp: { stringValue: new Date().toISOString() },
                 url: { stringValue: tab ? tab.url : 'unknown' },
                 issueType: { stringValue: payload.issueType || 'General Error' },
-                screenshotDataUrl: { stringValue: dataUrl }
+                screenshotDataUrl: { stringValue: dataUrl },
+                referred_by: { stringValue: payload.referred_by || 'unknown' }
             }
         };
 

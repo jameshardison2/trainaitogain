@@ -79,6 +79,13 @@ function injectLifelineWidget() {
         btn.classList.remove('tg-hidden');
     });
     
+    // Affiliate Tracking
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    if (ref) {
+        chrome.storage.local.set({ 'affiliate_ref': ref });
+    }
+    
     // Tips & Interactions
     document.querySelectorAll('.tg-lifeline-option').forEach(opt => {
         opt.addEventListener('click', (e) => {
@@ -91,7 +98,6 @@ function injectLifelineWidget() {
                 const searchInputs = document.querySelectorAll('input[type="text"], input[type="search"]');
                 const buttons = document.querySelectorAll('button, div[role="button"]');
                 
-                // Highlight search bar and focus it
                 searchInputs.forEach(input => {
                     if (input.placeholder && input.placeholder.toLowerCase().includes('search')) {
                         input.style.transition = 'box-shadow 0.3s ease-in-out';
@@ -101,7 +107,6 @@ function injectLifelineWidget() {
                     }
                 });
                 
-                // Highlight filter buttons
                 buttons.forEach(btn => {
                     if (btn.innerText && (btn.innerText.toLowerCase().includes('filter') || btn.innerText.toLowerCase().includes('priority'))) {
                         btn.style.transition = 'box-shadow 0.3s ease-in-out';
@@ -119,18 +124,38 @@ function injectLifelineWidget() {
         sosBtn.innerText = "Capturing Context...";
         sosBtn.disabled = true;
         
-        chrome.runtime.sendMessage({
-            action: 'triggerSOS',
-            payload: { issueType: 'Live Help Requested' }
-        }, (response) => {
-            if (response && response.success) {
-                document.getElementById('tg-lifeline-step-1').classList.add('tg-hidden');
-                document.getElementById('tg-lifeline-step-2').classList.remove('tg-hidden');
-            } else {
-                alert("Failed to send SOS. Please try again.");
-                sosBtn.innerText = "🚨 Send SOS & Request Zoom";
-                sosBtn.disabled = false;
-            }
+        chrome.storage.local.get(['affiliate_ref'], (result) => {
+            const affiliate = result.affiliate_ref || 'unknown';
+            
+            chrome.runtime.sendMessage({
+                action: 'triggerSOS',
+                payload: { 
+                    issueType: 'Live Help Requested',
+                    referred_by: affiliate
+                }
+            }, (response) => {
+                if (response && response.success) {
+                    document.getElementById('tg-lifeline-step-1').classList.add('tg-hidden');
+                    
+                    // Update success UI to remove zoom link and alert partner
+                    const step2 = document.getElementById('tg-lifeline-step-2');
+                    step2.innerHTML = `
+                        <div class="tg-sos-success">
+                            <div class="tg-check">✅</div>
+                            <h4>SOS Signal Sent!</h4>
+                            <p>We've captured your screen context and alerted your referral partner.</p>
+                            <div style="background: rgba(5, 150, 105, 0.1); border: 1px solid rgba(5, 150, 105, 0.2); padding: 12px; border-radius: 8px; color: var(--tg-primary); font-size: 13px; font-weight: 600;">
+                                They will review your issue and reach out to you shortly to help you finish your application.
+                            </div>
+                        </div>
+                    `;
+                    step2.classList.remove('tg-hidden');
+                } else {
+                    alert("Failed to send SOS. Please try again.");
+                    sosBtn.innerText = "🚨 Send SOS & Request Zoom";
+                    sosBtn.disabled = false;
+                }
+            });
         });
     });
 }
