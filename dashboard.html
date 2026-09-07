@@ -257,6 +257,23 @@
 <section id="results-section" style="padding: 48px 0 64px; flex:1; display:none;">
   <div class="container" style="max-width:1200px;">
     
+    <!-- Company Goal Widget -->
+    <div style="background:var(--primary-light); border:1px solid var(--primary); border-radius:var(--radius-lg); padding:32px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:250px;">
+            <h3 style="color:var(--primary-dark); font-size:24px; font-weight:800; margin:0 0 8px 0;">Company Goal: 10 Hires This Month</h3>
+            <p style="color:var(--primary-dark); font-size:14px; margin:0; opacity:0.8;">Help us reach our network-wide goal of 10 successful hires this month. Every candidate counts!</p>
+        </div>
+        <div style="flex:1; min-width:250px; width:100%;">
+            <div style="display:flex; justify-content:space-between; font-weight:800; color:var(--primary-dark); font-size:14px; margin-bottom:12px;">
+                <span><span id="goal-hires-count">0</span> Hires</span>
+                <span>10 Hires</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.6); border-radius:100px; height:12px; overflow:hidden;">
+                <div id="goal-progress-bar" style="background:var(--primary); height:100%; width:0%; border-radius:100px; transition:width 0.5s ease-out;"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bonus Goals Widget -->
     <div style="background:var(--black); color:var(--white); border-radius:var(--radius-lg); padding:32px; margin-bottom:48px; box-shadow:var(--shadow-lg);">
         <div style="display:flex; justify-content:space-between; align-items:flex-end;">
@@ -515,6 +532,12 @@
     // Update Bonus UI
     const hiresCount = counts['Hired'];
     const appliedCount = counts['Application Completed'];
+    if (document.getElementById('goal-hires-count')) {
+        document.getElementById('goal-hires-count').innerText = hiresCount;
+        let progressPercent = (hiresCount / 10) * 100;
+        if (progressPercent > 100) progressPercent = 100;
+        document.getElementById('goal-progress-bar').style.width = progressPercent + '%';
+    }
     
     if (document.getElementById('applied-count-bonus')) {
         document.getElementById('applied-count-bonus').innerText = appliedCount;
