@@ -2050,15 +2050,9 @@ html { scroll-behavior: smooth; }
    GLOBAL MOBILE OVERRIDES
    ============================================================ */
 @media (max-width: 860px) {
-  /* Force Dashboard Kanban to stack vertically */
-  .kanban-board {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 24px !important;
-  }
+  /* Dashboard Kanban mobile tweaks */
   .kanban-col {
-    width: 100% !important;
-    min-width: 100% !important;
+    min-width: 250px !important;
   }
   
   /* Dashboard Bonus Widget Stacking */
