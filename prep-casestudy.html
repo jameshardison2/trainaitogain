@@ -96,10 +96,20 @@
       window.currentApplySource = 'unknown';
       function openApplyModal(source) {
         window.currentApplySource = source;
-        var modal = document.getElementById('applyModal');
         var params = new URLSearchParams(window.location.search);
-        var ref = params.get('ref') || localStorage.getItem('affiliate_ref');
+        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
         if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
+        
+        // If they already entered their email, don't ask again
+        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
+            window.open(targetUrl, '_blank');
+            return;
+        }
+
+        var modal = document.getElementById('applyModal');
         modal.style.display = 'flex';
       }
       function closeApplyModal() {
@@ -144,6 +154,8 @@
               status: 'Applied' // They are applying right now
             });
             
+            localStorage.setItem('hasEnteredEmailForApply', 'true');
+            
             if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
             
             var targetUrl = "https://t.mercor.com/wbPMF";
@@ -155,6 +167,7 @@
             
         } catch (err) {
             console.error(err);
+            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
             var targetUrl = "https://t.mercor.com/wbPMF";
             var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
             if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
