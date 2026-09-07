@@ -85,6 +85,84 @@
       width: 0%;
       transition: width 0.5s ease-out;
     }
+    /* Premium Scrollbar for Kanban */
+    .kanban-board::-webkit-scrollbar {
+      height: 10px;
+    }
+    .kanban-board::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 100px;
+      margin: 0 16px;
+    }
+    .kanban-board::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 100px;
+    }
+    .kanban-board::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+    
+    /* List View Table */
+    .list-view-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .list-view-table th {
+      background: var(--gray-50);
+      color: var(--gray-600);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 16px 24px;
+      text-align: left;
+      border-bottom: 2px solid var(--gray-200);
+    }
+    .list-view-table td {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 14px;
+      color: var(--black);
+      vertical-align: middle;
+    }
+    .list-view-table tr:hover td {
+      background: var(--gray-50);
+    }
+    
+    /* Read-Only Status Badge */
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+    
+    .view-toggle-btn {
+      background: none;
+      border: 1px solid var(--gray-700);
+      color: var(--gray-400);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .view-toggle-btn.active {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+    .view-toggle-btn:hover:not(.active) {
+      color: var(--white);
+      border-color: var(--gray-500);
+    }
   </style>
 </head>
 <body style="background:var(--gray-50); display:flex; flex-direction:column; min-height:100vh;">
@@ -293,18 +371,29 @@
     <!-- Admin Filters -->
     <div id="admin-filters" style="display:none; margin-bottom: 24px; gap:8px; flex-wrap:wrap;"></div>
 
-    <!-- Kanban Board Wrapper -->
+    <!-- Pipeline Wrapper -->
     <div style="background:var(--gray-900); padding:32px; border-radius:var(--radius-lg); margin-bottom:48px; position:relative; box-shadow:var(--shadow-lg);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-            <h3 style="color:var(--white); font-size:20px; font-weight:800; margin:0;">Applicant Tracking Pipeline</h3>
-            <div style="display:flex; gap:8px;">
-                <button onclick="document.querySelector('.kanban-board').scrollBy({left:-300, behavior:'smooth'})" style="background:var(--gray-800); border:1px solid var(--gray-700); color:var(--white); padding:8px 12px; border-radius:var(--radius); cursor:pointer; font-weight:700; transition:all 0.2s;" onmouseover="this.style.background='var(--gray-700)'" onmouseout="this.style.background='var(--gray-800)'">&larr; Scroll</button>
-                <button onclick="document.querySelector('.kanban-board').scrollBy({left:300, behavior:'smooth'})" style="background:var(--gray-800); border:1px solid var(--gray-700); color:var(--white); padding:8px 12px; border-radius:var(--radius); cursor:pointer; font-weight:700; transition:all 0.2s;" onmouseover="this.style.background='var(--gray-700)'" onmouseout="this.style.background='var(--gray-800)'">Scroll &rarr;</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+            <h3 style="color:var(--white); font-size:24px; font-weight:800; margin:0;">Applicant Pipeline</h3>
+            <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                <!-- Search Bar -->
+                <input type="text" id="lead-search" placeholder="Search by name or email..." style="background:var(--gray-800); border:1px solid var(--gray-700); color:var(--white); padding:8px 16px; border-radius:var(--radius-sm); font-size:14px; outline:none; min-width:200px;" oninput="renderBoard()">
+                <!-- View Toggles -->
+                <div style="display:flex; background:var(--gray-800); border-radius:var(--radius-sm); padding:4px;">
+                    <button id="btn-view-kanban" class="view-toggle-btn active" onclick="setViewMode('kanban')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle; margin-right:4px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Board
+                    </button>
+                    <button id="btn-view-list" class="view-toggle-btn" onclick="setViewMode('list')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle; margin-right:4px;"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                        List
+                    </button>
+                </div>
             </div>
         </div>
         
-        <!-- Kanban Board -->
-        <div class="kanban-board">
+        <!-- Kanban Board View -->
+        <div id="kanban-view-container" class="kanban-board">
             
             <div class="kanban-col">
                 <div class="kanban-header">
@@ -342,6 +431,25 @@
             </div>
 
         </div>
+        
+        <!-- List View Table -->
+        <div id="list-view-container" style="display:none; overflow-x:auto;">
+            <table class="list-view-table">
+                <thead>
+                    <tr>
+                        <th>Candidate Name</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="list-view-body">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+
     </div>
     
     <div style="background:var(--gray-50); border-left:4px solid var(--primary); padding:24px; border-radius:0 var(--radius-md) var(--radius-md) 0; margin-top: 48px; text-align: left;">
@@ -448,6 +556,12 @@
     renderBoard();
   }
 
+  window.currentViewMode = 'kanban';
+  window.setViewMode = function(mode) {
+    window.currentViewMode = mode;
+    renderBoard();
+  }
+
   function renderBoard() {
     const cols = {
         'Captured': document.getElementById('col-captured'),
@@ -464,8 +578,28 @@
         'Hired': 0
     };
 
-    // Clear columns
+    // View Toggle Logic
+    const viewKanbanBtn = document.getElementById('btn-view-kanban');
+    const viewListBtn = document.getElementById('btn-view-list');
+    const kanbanContainer = document.getElementById('kanban-view-container');
+    const listContainer = document.getElementById('list-view-container');
+    
+    if (window.currentViewMode === 'list') {
+        viewListBtn.classList.add('active');
+        viewKanbanBtn.classList.remove('active');
+        listContainer.style.display = 'block';
+        kanbanContainer.style.display = 'none';
+    } else {
+        viewKanbanBtn.classList.add('active');
+        viewListBtn.classList.remove('active');
+        kanbanContainer.style.display = 'flex';
+        listContainer.style.display = 'none';
+    }
+
+    // Clear columns & list body
     Object.values(cols).forEach(col => col.innerHTML = '');
+    const listBody = document.getElementById('list-view-body');
+    if (listBody) listBody.innerHTML = '';
     
     const currentRef = document.getElementById('ref-input').value.trim().toLowerCase();
     const filterContainer = document.getElementById('admin-filters');
@@ -486,9 +620,20 @@
       window.activeAdminFilter = 'all';
     }
 
-    const leadsToRender = currentRef === 'admin_all' && window.activeAdminFilter !== 'all' 
+    // Search Filter
+    const searchQuery = (document.getElementById('lead-search')?.value || '').toLowerCase().trim();
+
+    let leadsToRender = currentRef === 'admin_all' && window.activeAdminFilter !== 'all' 
         ? globalLeads.filter(l => (l.referred_by || 'Unknown') === window.activeAdminFilter)
         : globalLeads;
+        
+    if (searchQuery) {
+        leadsToRender = leadsToRender.filter(l => {
+            const name = (l.firstName || '').toLowerCase();
+            const email = (l.email || '').toLowerCase();
+            return name.includes(searchQuery) || email.includes(searchQuery);
+        });
+    }
 
     leadsToRender.forEach(lead => {
       let status = lead.status || 'Captured'; // Default to Captured
@@ -501,21 +646,29 @@
           const masked = maskEmail(lead.email);
           const refBadge = currentRef === 'admin_all' && lead.referred_by ? `<div style="background:var(--primary-light); color:var(--primary-dark); font-size:10px; font-weight:800; padding:2px 6px; border-radius:100px; display:inline-block; margin-bottom:8px;">REF: ${lead.referred_by}</div>` : '';
           
-          let statusUI = `
-              <select id="status-${lead.id}" data-original="${status}" class="status-select" onchange="updateLeadStatus('${lead.id}', this.value)">
-                  <option value="Captured" ${status === 'Captured' ? 'selected' : ''}>Captured</option>
-                  <option value="Application Started" ${status === 'Application Started' ? 'selected' : ''}>Application Started</option>
-                  <option value="Application Completed" ${status === 'Application Completed' ? 'selected' : ''}>Application Completed</option>
-                  <option value="Offer" ${status === 'Offer' ? 'selected' : ''}>Offer</option>
-                  <option value="Hired" ${status === 'Hired' ? 'selected' : ''}>Hired 🎉</option>
-              </select>
-          `;
+          let statusUI = '';
+          if (currentRef === 'admin_all') {
+              statusUI = `
+                  <select id="status-${lead.id}" data-original="${status}" class="status-select" onchange="updateLeadStatus('${lead.id}', this.value)">
+                      <option value="Captured" ${status === 'Captured' ? 'selected' : ''}>Captured</option>
+                      <option value="Application Started" ${status === 'Application Started' ? 'selected' : ''}>Application Started</option>
+                      <option value="Application Completed" ${status === 'Application Completed' ? 'selected' : ''}>Application Completed</option>
+                      <option value="Offer" ${status === 'Offer' ? 'selected' : ''}>Offer</option>
+                      <option value="Hired" ${status === 'Hired' ? 'selected' : ''}>Hired 🎉</option>
+                  </select>
+              `;
+          } else {
+              // Read-only Badge for regular affiliates
+              const cssClass = status.replace(/\s+/g, '-').replace('🎉', '').trim();
+              statusUI = `<div class="status-badge ${cssClass}">${status}</div>`;
+          }
           
           let deleteBtn = '';
           if (currentRef === 'admin_all') {
             deleteBtn = `<button onclick="deleteLead('${lead.id}')" style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:14px; padding:4px;" title="Delete Lead">🗑️</button>`;
           }
           
+          // Render Kanban Card
           const card = document.createElement('div');
           card.className = 'lead-card';
           card.style.position = 'relative';
@@ -524,12 +677,25 @@
                 ${refBadge}
                 ${deleteBtn}
             </div>
-            <div style="font-weight:700; color:var(--black); font-size:16px;">${lead.firstName || 'Anonymous'}</div>
+            <div style="font-weight:700; color:var(--black); font-size:16px; margin-top:${refBadge || deleteBtn ? '8px' : '0'};">${lead.firstName || 'Anonymous'}</div>
             <div style="color:var(--gray-500); font-size:12px; font-family:monospace; margin-bottom:8px;">${masked}</div>
             <div style="color:var(--gray-400); font-size:12px; margin-bottom:12px;">Captured: ${dateStr}</div>
             ${statusUI}
           `;
           cols[status].appendChild(card);
+          
+          // Render List Row
+          if (listBody) {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                  <td style="font-weight:700;">${lead.firstName || 'Anonymous'} ${refBadge}</td>
+                  <td style="font-family:monospace; color:var(--gray-600);">${masked}</td>
+                  <td>${dateStr}</td>
+                  <td>${statusUI}</td>
+                  <td>${deleteBtn}</td>
+              `;
+              listBody.appendChild(tr);
+          }
       }
     });
 
