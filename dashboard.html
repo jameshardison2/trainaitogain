@@ -265,7 +265,7 @@
                 <h2 style="font-size:36px; font-weight:800; margin:0; color:var(--primary);">$<span id="bonus-amount">0</span></h2>
             </div>
             <div style="text-align:right;">
-                <div style="font-size:16px; font-weight:800;"><span id="applied-count-bonus">0</span> Applied (+$5)</div>
+                <div style="font-size:16px; font-weight:800;"><span id="applied-count-bonus">0</span> Completed (+$5)</div>
                 <div style="font-size:16px; font-weight:800;"><span id="hires-count-bonus">0</span> Hired (+$15)</div>
                 <div style="font-size:13px; font-weight:700; color:var(--primary); margin-top:8px;" id="mega-bonus-ui">🔥 5 Hires = +$200 Bonus!</div>
             </div>
@@ -514,7 +514,7 @@
 
     // Update Bonus UI
     const hiresCount = counts['Hired'];
-    const appliedCount = counts['Application Started'] + counts['Application Completed'];
+    const appliedCount = counts['Application Completed'];
     
     if (document.getElementById('applied-count-bonus')) {
         document.getElementById('applied-count-bonus').innerText = appliedCount;
