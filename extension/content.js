@@ -79,11 +79,37 @@ function injectLifelineWidget() {
         btn.classList.remove('tg-hidden');
     });
     
-    // Tips
+    // Tips & Interactions
     document.querySelectorAll('.tg-lifeline-option').forEach(opt => {
         opt.addEventListener('click', (e) => {
-            tipBox.innerText = e.target.getAttribute('data-tip');
+            const tipText = e.target.getAttribute('data-tip');
+            tipBox.innerText = tipText;
             tipBox.classList.remove('tg-hidden');
+            
+            // Dom Interactions on Mercor Page
+            if (tipText.includes("search filter")) {
+                const searchInputs = document.querySelectorAll('input[type="text"], input[type="search"]');
+                const buttons = document.querySelectorAll('button, div[role="button"]');
+                
+                // Highlight search bar and focus it
+                searchInputs.forEach(input => {
+                    if (input.placeholder && input.placeholder.toLowerCase().includes('search')) {
+                        input.style.transition = 'box-shadow 0.3s ease-in-out';
+                        input.style.boxShadow = '0 0 0 4px rgba(5, 150, 105, 0.5)';
+                        input.focus();
+                        setTimeout(() => input.style.boxShadow = '', 3000);
+                    }
+                });
+                
+                // Highlight filter buttons
+                buttons.forEach(btn => {
+                    if (btn.innerText && (btn.innerText.toLowerCase().includes('filter') || btn.innerText.toLowerCase().includes('priority'))) {
+                        btn.style.transition = 'box-shadow 0.3s ease-in-out';
+                        btn.style.boxShadow = '0 0 0 4px rgba(5, 150, 105, 0.5)';
+                        setTimeout(() => btn.style.boxShadow = '', 3000);
+                    }
+                });
+            }
         });
     });
     
