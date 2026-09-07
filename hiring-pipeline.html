@@ -150,7 +150,14 @@
             <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
             <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
           </div>
-          <a id="modalApplyBtn" href="https://t.mercor.com/wbPMF" target="_blank" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; text-decoration:none;" onclick="if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource}); closeApplyModal();">Proceed to Application Portal ➔</a>
+          
+          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
+            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
+            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+          </form>
+
+          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
         </div>
       </div>
     </div>
@@ -159,20 +166,70 @@
       function openApplyModal(source) {
         window.currentApplySource = source;
         var modal = document.getElementById('applyModal');
-        var modalBtn = document.getElementById('modalApplyBtn');
         var params = new URLSearchParams(window.location.search);
         var ref = params.get('ref') || localStorage.getItem('affiliate_ref');
         if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
-        if (ref) {
-          modalBtn.href = "https://t.mercor.com/wbPMF?ref=" + encodeURIComponent(ref);
-        } else {
-          modalBtn.href = "https://t.mercor.com/wbPMF";
-        }
         modal.style.display = 'flex';
       }
       function closeApplyModal() {
         var modal = document.getElementById('applyModal');
         modal.style.display = 'none';
+        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
+        document.getElementById('modalApplyBtn').disabled = false;
+      }
+      async function handleModalSubmit(e) {
+        e.preventDefault();
+        var emailInput = document.getElementById('applyModalEmail').value.trim();
+        var nameInput = document.getElementById('applyModalName').value.trim();
+        if (!emailInput) {
+            alert('Please enter your email to proceed.');
+            return;
+        }
+        
+        var btn = document.getElementById('modalApplyBtn');
+        btn.innerHTML = 'Routing...';
+        btn.disabled = true;
+        
+        try {
+            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
+            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
+            
+            let app;
+            if (!getApps().length) {
+                app = initializeApp({ projectId: "trainaitogain-50c19" });
+            } else {
+                app = getApp();
+            }
+            const db = getFirestore(app);
+            
+            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            
+            await addDoc(collection(db, "leads"), {
+              firstName: nameInput || 'Applicant',
+              email: emailInput,
+              timestamp: serverTimestamp(),
+              source: window.location.href + ' (Apply Modal)',
+              referred_by: refCode,
+              status: 'Applied' // They are applying right now
+            });
+            
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
+            
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (refCode) {
+                targetUrl += "?ref=" + encodeURIComponent(refCode);
+            }
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+            
+        } catch (err) {
+            console.error(err);
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+        }
       }
     </script>
     <style>
