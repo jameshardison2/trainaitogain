@@ -34,15 +34,14 @@ function injectLifelineWidget() {
             </div>
             
             <div class="tg-lifeline-body" id="tg-lifeline-step-1">
-                <p>Are you stuck or experiencing a bug on the Mercor platform?</p>
-                
-                <div class="tg-lifeline-options">
-                    <button class="tg-lifeline-option" data-tip="Check your browser permissions (the lock icon in the URL bar) to ensure Camera and Mic are allowed, then refresh.">Camera/Mic won't connect</button>
-                    <button class="tg-lifeline-option" data-tip="Don't worry about the search filter. Mercor's AI will automatically route you to the best fit.">Confusing search filter</button>
-                    <button class="tg-lifeline-option" data-tip="Focus on one specific technical project and explain your impact using numbers.">I don't know what to say</button>
+                <div class="tg-lifeline-chat-history" id="tg-chat-history">
+                    <div class="tg-chat-msg tg-msg-ai">Hello! I'm your Application Copilot. What are you struggling with?</div>
                 </div>
                 
-                <div id="tg-lifeline-tip" class="tg-lifeline-tip tg-hidden"></div>
+                <form id="tg-chat-form" class="tg-chat-input-area">
+                    <input type="text" id="tg-chat-input" class="tg-chat-input" placeholder="Type your issue..." autocomplete="off">
+                    <button type="submit" id="tg-chat-send" class="tg-chat-send">➔</button>
+                </form>
                 
                 <div class="tg-lifeline-sos-section">
                     <p>Still stuck? We can help you live.</p>
@@ -67,11 +66,11 @@ function injectLifelineWidget() {
     const btn = document.getElementById('tg-lifeline-btn');
     const modal = document.getElementById('tg-lifeline-modal');
     const closeBtn = document.getElementById('tg-lifeline-close');
-    const tipBox = document.getElementById('tg-lifeline-tip');
     
     btn.addEventListener('click', () => {
         modal.classList.remove('tg-hidden');
         btn.classList.add('tg-hidden');
+        document.getElementById('tg-chat-input').focus();
     });
     
     closeBtn.addEventListener('click', () => {
@@ -86,34 +85,72 @@ function injectLifelineWidget() {
         chrome.storage.local.set({ 'affiliate_ref': ref });
     }
     
-    // Tips & Interactions
-    document.querySelectorAll('.tg-lifeline-option').forEach(opt => {
-        opt.addEventListener('click', (e) => {
-            const tipText = e.target.getAttribute('data-tip');
-            tipBox.innerText = tipText;
-            tipBox.classList.remove('tg-hidden');
-            
-            // Dom Interactions on Mercor Page
-            if (tipText.includes("search filter")) {
-                const searchInputs = document.querySelectorAll('input[type="text"], input[type="search"]');
-                const buttons = document.querySelectorAll('button, div[role="button"]');
-                
-                searchInputs.forEach(input => {
-                    if (input.placeholder && input.placeholder.toLowerCase().includes('search')) {
-                        input.style.transition = 'box-shadow 0.3s ease-in-out';
-                        input.style.boxShadow = '0 0 0 4px rgba(5, 150, 105, 0.5)';
-                        input.focus();
-                        setTimeout(() => input.style.boxShadow = '', 3000);
-                    }
-                });
-                
-                buttons.forEach(btn => {
-                    if (btn.innerText && (btn.innerText.toLowerCase().includes('filter') || btn.innerText.toLowerCase().includes('priority'))) {
-                        btn.style.transition = 'box-shadow 0.3s ease-in-out';
-                        btn.style.boxShadow = '0 0 0 4px rgba(5, 150, 105, 0.5)';
-                        setTimeout(() => btn.style.boxShadow = '', 3000);
-                    }
-                });
+    // Chat Logic
+    const chatForm = document.getElementById('tg-chat-form');
+    const chatInput = document.getElementById('tg-chat-input');
+    const chatHistory = document.getElementById('tg-chat-history');
+    const chatSendBtn = document.getElementById('tg-chat-send');
+
+    function addMessage(text, sender) {
+        const msg = document.createElement('div');
+        msg.className = `tg-chat-msg ${sender === 'user' ? 'tg-msg-user' : 'tg-msg-ai'}`;
+        msg.innerText = text;
+        chatHistory.appendChild(msg);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    function executeDOMAction(action) {
+        if (!action) return;
+        
+        if (action.type === 'highlightSearch') {
+            const searchInputs = document.querySelectorAll('input[type="text"], input[type="search"]');
+            searchInputs.forEach(input => {
+                if (input.placeholder && input.placeholder.toLowerCase().includes('search')) {
+                    input.style.transition = 'box-shadow 0.3s ease-in-out';
+                    input.style.boxShadow = '0 0 0 4px rgba(5, 150, 105, 0.5)';
+                    input.focus();
+                    setTimeout(() => input.style.boxShadow = '', 3000);
+                }
+            });
+        } else if (action.type === 'highlightFilter') {
+            const buttons = document.querySelectorAll('button, div[role="button"]');
+            buttons.forEach(btn => {
+                if (btn.innerText && (btn.innerText.toLowerCase().includes('filter') || btn.innerText.toLowerCase().includes('priority'))) {
+                    btn.style.transition = 'box-shadow 0.3s ease-in-out';
+                    btn.style.boxShadow = '0 0 0 4px rgba(5, 150, 105, 0.5)';
+                    setTimeout(() => btn.style.boxShadow = '', 3000);
+                }
+            });
+        }
+    }
+
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        addMessage(text, 'user');
+        chatInput.value = '';
+        chatInput.disabled = true;
+        chatSendBtn.disabled = true;
+
+        chrome.runtime.sendMessage({
+            action: 'chatMessage',
+            payload: { message: text }
+        }, (response) => {
+            chatInput.disabled = false;
+            chatSendBtn.disabled = false;
+            chatInput.focus();
+
+            if (response && response.success) {
+                if (response.reply) {
+                    addMessage(response.reply, 'ai');
+                }
+                if (response.domAction) {
+                    executeDOMAction(response.domAction);
+                }
+            } else {
+                addMessage("Sorry, I encountered an error. Please try again or use the SOS button.", 'ai');
             }
         });
     });

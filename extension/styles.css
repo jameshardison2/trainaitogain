@@ -112,38 +112,93 @@
     line-height: 1.5;
 }
 
-.tg-lifeline-options {
+.tg-lifeline-chat-history {
+    max-height: 250px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-right: 4px;
+}
+
+.tg-chat-msg {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.tg-msg-user {
+    align-self: flex-end;
+    background: var(--tg-primary);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.tg-msg-ai {
+    align-self: flex-start;
+    background: var(--tg-surface);
+    color: var(--tg-text);
+    border: 1px solid var(--tg-border);
+    border-bottom-left-radius: 4px;
+}
+
+.tg-chat-input-area {
+    display: flex;
     gap: 8px;
     margin-bottom: 16px;
 }
 
-.tg-lifeline-option {
-    background: var(--tg-surface);
+.tg-chat-input {
+    flex: 1;
+    background: var(--tg-bg);
     border: 1px solid var(--tg-border);
     color: var(--tg-text);
-    padding: 12px;
+    padding: 10px 12px;
     border-radius: 8px;
     font-size: 13px;
-    font-weight: 600;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.2s;
+    font-family: inherit;
+    outline: none;
 }
 
-.tg-lifeline-option:hover {
+.tg-chat-input:focus {
     border-color: var(--tg-primary);
 }
 
-.tg-lifeline-tip {
-    background: rgba(5, 150, 105, 0.1);
-    color: #a7f3d0;
-    padding: 12px;
+.tg-chat-send {
+    background: var(--tg-primary);
+    color: #fff;
+    border: none;
     border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.5;
-    margin-bottom: 16px;
+    padding: 0 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.tg-chat-send:hover {
+    background: var(--tg-primary-hover);
+}
+
+.tg-chat-send:disabled {
+    background: var(--tg-surface);
+    color: var(--tg-text-sec);
+    cursor: not-allowed;
+}
+
+/* Scrollbar for chat */
+.tg-lifeline-chat-history::-webkit-scrollbar {
+    width: 6px;
+}
+.tg-lifeline-chat-history::-webkit-scrollbar-track {
+    background: var(--tg-bg);
+}
+.tg-lifeline-chat-history::-webkit-scrollbar-thumb {
+    background: var(--tg-border);
+    border-radius: 10px;
 }
 
 .tg-lifeline-sos-section {
