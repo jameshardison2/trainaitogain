@@ -1,0 +1,10 @@
+{
+  "name": "trainaitogain-site",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,25 @@
+service: trainaitogain-doc-processor
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+          Resource: "arn:aws:s3:::trainaitogain-resumes/*"
+
+functions:
+  processDocument:
+    handler: handler.process_document
+    events:
+      - s3:
+          bucket: trainaitogain-resumes
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .pdf
+
+# Resume value: "Built serverless document processing using AWS S3 and Lambda."

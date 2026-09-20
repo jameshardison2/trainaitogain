@@ -1,0 +1,1559 @@
+<!-- CACHE BUST 23  1789362162.8833659 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Live AI Mock Interview - TrainAIToGain</title>
+  <meta name="description" content="Get your Mercor referral, master the AI model training interview, and bypass the waitlist for high-paying RLHF jobs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    body { background: var(--black); color: var(--white); }
+    
+    .prep-hub { max-width: 1500px; margin: 0 auto; padding: 64px 24px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: stretch; }
+    
+    @media (max-width: 800px) {
+        .prep-hub { grid-template-columns: 1fr; }
+    }
+    
+    .cheat-sheet { background: rgba(255,255,255,0.02); padding: 32px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
+    .cheat-sheet h3 { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+    .cheat-sheet ul { list-style: none; padding: 0; margin: 0; }
+    .cheat-sheet li { margin-bottom: 20px; font-size: 14px; color: #ccc; line-height: 1.6; position: relative; padding-left: 24px; }
+    .cheat-sheet li::before { content: '✓'; position: absolute; left: 0; color: var(--primary); font-weight: 800; }
+    .cheat-sheet li strong { color: var(--white); }
+    
+    .sim-container { background: rgba(0,0,0,0.5); border-radius: var(--radius-lg); padding: 48px 32px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 48px rgba(0,0,0,0.4); text-align: center; position: relative; overflow: hidden; min-height: 500px; }
+    
+    .avatar-ring { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 32px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.3s; }
+    .avatar-ring.speaking { animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1); border: 2px solid var(--primary); }
+    .avatar-ring.listening { animation: pulse-ring-blue 1.5s infinite; border: 2px solid #3b82f6; }
+    
+    .avatar-icon { font-size: 48px; }
+    
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 30px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    
+    @keyframes pulse-ring-blue {
+      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+      70% { box-shadow: 0 0 0 30px rgba(59, 130, 246, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+    
+    .sim-status { font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 16px; transition: color 0.3s; }
+    .sim-status.speaking { color: var(--primary); }
+    .sim-status.listening { color: #3b82f6; }
+    
+    .sim-text { font-size: 22px; font-weight: 600; line-height: 1.4; color: var(--white); }
+    .user-transcript { font-size: 18px; color: var(--white); font-weight:500; background: rgba(59, 130, 246, 0.15); padding: 16px 24px; border-radius: 24px; margin: 0 auto 24px auto; max-width: 80%; text-align: center; display: none; border: 1px solid rgba(59, 130, 246, 0.3); box-shadow: 0 8px 16px rgba(0,0,0,0.2); line-height:1.5; }
+    
+    .btn-sim { background: var(--primary); color: var(--white); border: none; padding: 16px 32px; font-size: 16px; font-weight: 800; border-radius: 100px; cursor: pointer; transition: all 0.2s; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3); display: inline-flex; align-items: center; gap: 12px; }
+    .btn-sim:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5); }
+    .btn-sim svg { width: 20px; height: 20px; fill: currentColor; }
+    .btn-sim:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    
+    .domain-selector { width: 100%; max-width: 300px; padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: var(--white); font-family: inherit; font-size: 16px; margin-bottom: 24px; appearance: none; cursor: pointer; }
+    .domain-selector:focus { outline: none; border-color: var(--primary); }
+    .domain-selector option { background: var(--black); color: var(--white); }
+  </style>
+
+    <style>
+    @keyframes scrollTextUp {
+        0% { transform: translateY(150px); opacity: 0; }
+        15% { opacity: 1; }
+        85% { opacity: 1; }
+        100% { transform: translateY(-150px); opacity: 0; }
+    }
+    .teleprompter-text-anim {
+        animation: scrollTextUp 9.5s linear forwards;
+    }
+    </style>
+
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7Z54KYTV6B');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+</head>
+<body>
+
+<nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg?v=2" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; flex-direction:column; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+            <span style="color:var(--primary); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">We Get You Hired.</span>
+          </div>
+          </a>
+          <input type="checkbox" id="nav-toggle" style="display:none;" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="nav-toggle-icon"></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="hiring-pipeline.html" class="nav-link" style="background:var(--primary); color:var(--white); padding:8px 16px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> The Playbook</a></li>
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="guide-download.html" style="display:flex; align-items:center; gap:6px;">Blueprint <span style="background:var(--primary); color:var(--white); font-size:10px; padding:2px 6px; border-radius:100px; font-weight:800;">FREE</span></a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Application Interceptor Modal -->
+    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
+      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
+        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
+          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
+        </div>
+        <div style="padding:24px;">
+          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official application portal.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
+          </div>
+          
+          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
+            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
+            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+          </form>
+
+          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.currentApplySource = 'unknown';
+      function openApplyModal(source) {
+        window.currentApplySource = source;
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
+        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
+        
+        // If they already entered their email, don't ask again
+        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
+            window.open(targetUrl, '_blank');
+            return;
+        }
+
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'flex';
+      }
+      function closeApplyModal() {
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'none';
+        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
+        document.getElementById('modalApplyBtn').disabled = false;
+      }
+      async function handleModalSubmit(e) {
+        e.preventDefault();
+        var emailInput = document.getElementById('applyModalEmail').value.trim();
+        var nameInput = document.getElementById('applyModalName').value.trim();
+        if (!emailInput) {
+            alert('Please enter your email to proceed.');
+            return;
+        }
+        
+        var btn = document.getElementById('modalApplyBtn');
+        btn.innerHTML = 'Routing...';
+        localStorage.setItem('hasEnteredEmailForApply', 'true');
+        btn.disabled = true;
+        
+        try {
+            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
+            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
+            
+            let app;
+            if (!getApps().length) {
+                app = initializeApp({ projectId: "trainaitogain-50c19" });
+            } else {
+                app = getApp();
+            }
+            const db = getFirestore(app);
+            
+            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            
+            await addDoc(collection(db, "leads"), {
+              firstName: nameInput || 'Applicant',
+              email: emailInput,
+              timestamp: serverTimestamp(),
+              source: window.location.href + ' (Apply Modal)',
+              referred_by: refCode,
+              status: 'Application Started' // They are applying right now
+            });
+            
+            localStorage.setItem('hasEnteredEmailForApply', 'true');
+            
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
+            
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (refCode) {
+                targetUrl += "?ref=" + encodeURIComponent(refCode);
+            }
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+            
+        } catch (err) {
+            console.error(err);
+            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+        }
+      }
+    </script>
+    <style>
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+  </nav>
+
+<div class="prep-hub">
+  
+  <!-- Dynamic Live Copilot Panel -->
+  <div class="cheat-sheet" id="copilot-panel" style="display:flex; flex-direction:column; position:relative; overflow:hidden;">
+    <div style="position:absolute; top:0; left:0; width:100%; height:4px; background:linear-gradient(90deg, transparent, var(--primary), transparent); animation: scanline 2s infinite linear; display:none;" id="copilot-scanline"></div>
+    <h3 style="margin-bottom:16px;">
+        <span style="display:inline-block; width:12px; height:12px; background:var(--primary); border-radius:50%; margin-right:8px; box-shadow:0 0 10px var(--primary); animation:pulse 2s infinite;"></span>
+        Live AI Copilot
+    </h3>
+    <p style="font-size:13px; color:#888; margin-bottom:24px; line-height:1.5;" id="copilot-status">Waiting for interviewer to speak...</p>
+    
+    <div id="copilot-content" style="display:none; flex-grow:1;">
+        <div id="copilot-feedback-container" style="display:none;">
+            <div style="font-size:12px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Coaching Feedback</div>
+            <div id="copilot-strategy" style="font-size:14px; color:var(--white); background:rgba(16,185,129,0.1); border-left:3px solid var(--primary); padding:12px; border-radius:4px; margin-bottom:24px; line-height:1.5;"></div>
+        </div>
+        
+        <div style="font-size:12px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">Keywords to Hit</div>
+        <div id="copilot-keywords" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+    </div>
+  </div>
+  <style>
+    @keyframes scanline { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
+    .kw-tag { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:4px 8px; border-radius:4px; font-size:12px; color:#ccc; transition:all 0.2s; }
+    .kw-tag.hit { background:rgba(16,185,129,0.2); border-color:var(--primary); color:var(--white); font-weight:700; }
+  </style>
+
+  <!-- Voice Simulator -->
+  <div class="sim-container">
+    
+    <div id="setup-view">
+      <div class="avatar-ring">
+        <div class="avatar-icon">🎙️</div>
+      </div>
+      <h2 style="font-size:28px; margin-bottom:16px;">Voice AI Simulator</h2>
+      <p style="color:#aaa; margin-bottom:24px; font-size:15px; line-height:1.6;">This simulator uses your microphone to conduct a real, high-pressure audio interview. The AI will speak the questions out loud and analyze your voice for immediate coaching feedback.</p>
+      
+      
+      <div id="custom-domain-selector" style="position:relative; max-width:600px; margin: 0 auto 24px auto; text-align:left; z-index:1000;">
+          <div id="cds-display" style="width:100%; padding:14px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:border-color 0.2s;">
+              <span id="cds-text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Role: Senior Python / ML Evaluator</span>
+              <span style="font-size:12px; margin-left:12px;">▼</span>
+          </div>
+          <div id="cds-options" style="display:none; position:absolute; top:100%; left:0; width:100%; background:#1a1a1a; border:1px solid rgba(255,255,255,0.2); border-radius:8px; max-height:280px; overflow-y:auto; z-index:100; margin-top:4px; box-shadow:0 10px 25px rgba(0,0,0,0.8);">
+              <!-- Options will be injected by JS -->
+          </div>
+      </div>
+      
+      <!-- Preferences -->
+      <div style="max-width:600px; margin: 0 auto 24px auto; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:20px; text-align:left; box-shadow:inset 0 2px 10px rgba(0,0,0,0.5);">
+          <h3 style="font-size:14px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px; margin-top:0;">Simulator Preferences</h3>
+          
+          <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:24px; padding:12px; background:rgba(0,0,0,0.2); border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
+              <input type="checkbox" id="toggle-teleprompter" style="width:20px; height:20px; accent-color:var(--primary); cursor:pointer;">
+              <span style="font-size:15px; color:white; font-weight:600;">Enable Teleprompter (Display Ideal Answer)</span>
+          </label>
+          
+          <label style="display:block; font-size:12px; color:#aaa; margin-bottom:8px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">AI Voice Model (Pick the most human one):</label>
+          <div style="position:relative;">
+              <select id="voice-select" style="width:100%; padding:12px 16px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:#111; color:white; font-size:15px; appearance:none; cursor:pointer; font-weight:500;">
+                  <option value="">Loading voices...</option>
+              </select>
+              <span style="position:absolute; right:16px; top:12px; color:#aaa; pointer-events:none; font-size:12px;">▼</span>
+          </div>
+          <p style="font-size:12px; color:#888; margin-top:8px; margin-bottom:0; line-height:1.4;">If you don't like the robotic voice, click the dropdown above to choose a premium, humanized OS voice.</p>
+      </div>
+      
+      <!-- Keep the select hidden so existing references (if any) don't crash -->
+      <select id="domain-selector" style="display:none;">
+        <option value="software">Role: Senior Python / ML Evaluator</option>
+        <option value="software">Role: C++ Systems & Performance</option>
+        <option value="software">Role: Frontend / React Architecture</option>
+        <option value="software">Role: Data Engineering / SQL Architect</option>
+        <option value="software">Role: Security & Cryptography</option>
+        <option value="software">Role: General SWE / Leetcode Master</option>
+        <option value="software">Role: Rust Backend Engineer</option>
+        <option value="software">Role: Go Cloud Infrastructure</option>
+        <option value="software">Role: AI Research Scientist</option>
+        <option value="software">Role: DevOps / SRE Architect</option>
+        <option value="software">Role: Blockchain / Web3 Developer</option>
+        <option value="software">Role: iOS / Swift Engineer</option>
+        <option value="software">Role: Android / Kotlin Expert</option>
+        <option value="software">Role: Embedded Systems C/C++</option>
+        <option value="medical">Role: Oncology AI Reviewer</option>
+        <option value="medical">Role: Neurology / BCI Annotator</option>
+        <option value="medical">Role: General Practitioner Evaluator</option>
+        <option value="medical">Role: Pharmacology Expert</option>
+        <option value="medical">Role: Surgical Methodology</option>
+        <option value="medical">Role: Radiology / MRI Annotator</option>
+        <option value="medical">Role: Cardiology Diagnostic Reviewer</option>
+        <option value="medical">Role: Pediatrics Case Specialist</option>
+        <option value="medical">Role: Psychiatry / Therapy AI Analyst</option>
+        <option value="medical">Role: Dermatology Vision Model Expert</option>
+        <option value="medical">Role: Pathology Slide Reviewer</option>
+        <option value="finance">Role: Quant Dev / Algo Trader</option>
+        <option value="finance">Role: Actuarial Science Reviewer</option>
+        <option value="finance">Role: Corporate Finance / M&A</option>
+        <option value="math">Role: PhD Level Mathematician</option>
+        <option value="finance">Role: Tax Strategy & Compliance</option>
+        <option value="finance">Role: Hedge Fund Risk Analyst</option>
+        <option value="finance">Role: Derivatives Pricing Expert</option>
+        <option value="finance">Role: Crypto Economics Researcher</option>
+        <option value="finance">Role: Venture Capital Analyst</option>
+        <option value="finance">Role: Macroeconomics Forecaster</option>
+        <option value="language">Role: Japanese/English Cultural Context</option>
+        <option value="language">Role: Arabic Natural Language Processing</option>
+        <option value="language">Role: Spanish / English Localization</option>
+        <option value="language">Role: Mandarin Tone & Nuance Evaluator</option>
+        <option value="language">Role: French Medical Translation</option>
+        <option value="language">Role: German Financial Documentation</option>
+        <option value="language">Role: Hindi Speech-to-Text Annotator</option>
+        <option value="language">Role: Korean Sentiment Analysis</option>
+        <option value="language">Role: Russian Political Context Reviewer</option>
+        <option value="legal">Role: Legal & Compliance Expert</option>
+        <option value="creative">Role: Creative Writer / Fiction Author</option>
+        <option value="creative">Role: Journalism Fact Checker</option>
+        <option value="product">Role: Product Manager (Technical)</option>
+        <option value="data">Role: Data Scientist & Analyst</option>
+        <option value="general">Role: History / Humanities Expert</option>
+        <option value="general">Role: Instruction Following Evaluator</option>
+        <option value="general">Role: Prompt Engineering Specialist</option>
+        <option value="general">Role: General AI Training</option>
+      </select>
+      
+      <br>
+      <button class="btn-sim" id="start-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+        Start Voice Interview
+      </button>
+      <p style="font-size: 12px; color: #666; margin-top: 16px;">(Requires Microphone Permission on Chrome/Safari)</p>
+    </div>
+
+    <div id="active-view" style="display:none; text-align:center; position:relative; width:100%;">
+      
+      <div class="video-container" style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); margin-bottom:24px; box-shadow: 0 12px 32px rgba(0,0,0,0.8);">
+          <div id="teleprompter-box" style="position:absolute; top:0; left:0; width:100%; height:80%; z-index:100; background:linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, transparent 100%); display:none; padding:32px 64px; box-sizing:border-box; text-align:center; overflow:hidden; pointer-events:none;">
+              <div style="font-size:11px; color:var(--primary); text-transform:uppercase; letter-spacing:0.1em; font-weight:800; margin-bottom:24px; opacity:0.8;">Live Teleprompter</div>
+              <div id="teleprompter-text" style="font-size:32px; color:rgba(255,255,255,0.9); font-weight:800; line-height:1.6; text-shadow: 0 2px 8px rgba(0,0,0,1); will-change:transform;"></div>
+          </div>
+          <button id="stop-ai-btn" style="position:absolute; top:16px; right:16px; z-index:100; background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid rgba(239,68,68,0.4); border-radius:100px; padding:8px 16px; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; cursor:pointer; display:none; align-items:center; gap:6px; backdrop-filter:blur(8px); transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.4)'" onmouseout="this.style.background='rgba(239,68,68,0.2)'">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+            Pause AI
+          </button>
+          <!-- User's Camera -->
+          <video id="user-camera" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1); display:none;"></video>
+          
+          <!-- Placeholder before camera starts -->
+          <div id="camera-placeholder" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#1a1a1a;">
+              <div style="font-size:48px; margin-bottom:16px; animation: pulse-ring-blue 2s infinite;">📹</div>
+              <p style="color:#aaa; font-weight:600;">Accessing Camera...</p>
+          </div>
+          
+
+          
+          <!-- Sleek Cinematic Subtitles -->
+          <div style="position:absolute; bottom:24px; left:0; width:100%; padding:0 48px; box-sizing:border-box; text-align:center;">
+              <div class="sim-text" id="sim-text" style="display:inline-block; font-size:24px; font-weight:700; line-height:1.3; color:white; margin:0; text-shadow: 0px 2px 4px rgba(0,0,0,1), 0px 4px 12px rgba(0,0,0,0.8), 0px 0px 24px rgba(0,0,0,1); padding:0;">Initializing AI...</div>
+          </div>
+      </div>
+      
+      
+      
+      <button class="btn-sim" id="finish-btn" style="display:none; margin:0 auto; background:#3b82f6; box-shadow:0 8px 24px rgba(59, 130, 246, 0.3);">
+        Done Answering
+      </button>
+      <button class="btn-sim" id="next-btn" style="display:none; margin:0 auto;">
+        Next Question ➔
+      </button>
+    </div>
+  </div>
+  
+  <div style="grid-column: 1 / -1; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+      <a href="resume-ats-guide.html" style="color: var(--gray-400); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">⬅ Back to ATS Scanner</a>
+      <a href="post-hire.html" style="color: var(--primary); text-decoration: none; font-size: 14px; font-weight: 800; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Step 3: Survive the Black Box ➔</a>
+  </div>
+</div>
+
+<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <img src="logo.svg" style="height:24px; filter: brightness(0) invert(1);" alt="TrainAIToGain Logo" />
+            <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+          <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <a href="disclosure.html" style="color:var(--gray-500); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-500)'">Affiliate Disclosure</a>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:24px;">
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Global Affiliate Tracker -->
+    <script>
+      (function() {
+        var ref = new URLSearchParams(window.location.search).get('ref');
+        if (ref) localStorage.setItem('affiliate_ref', ref);
+      })();
+    </script>
+  </footer>
+
+<script>
+  // Browser Speech APIs
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const synth = window.speechSynthesis;
+  let recognition;
+  
+  if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+  }
+
+  const domainData = {
+  "software": [
+    {
+      "q": "I see you have experience with distributed systems. Explain how you would handle network partitions in a microservices architecture to ensure high availability.",
+      "answer": "I would implement the Circuit Breaker pattern to prevent cascading failures, use fallback mechanisms for degraded functionality, and design the system with eventual consistency in mind using asynchronous event queues.",
+      "keywords": [
+        "circuit breaker",
+        "fallback",
+        "eventual consistency",
+        "asynchronous",
+        "queue",
+        "CAP theorem"
+      ],
+      "feedbackMiss": "You didn't address the core architectural patterns. A strong answer must mention Circuit Breakers, fallbacks, or eventual consistency to handle partitions.",
+      "feedbackHit": "Excellent. You correctly identified Circuit Breakers and eventual consistency as the standard patterns for network partition tolerance."
+    },
+    {
+      "q": "Walk me through how you would optimize a React application that is experiencing severe re-rendering issues on a complex dashboard.",
+      "answer": "I would profile the app using React DevTools to identify unnecessary renders, then memoize expensive components using React.memo, and optimize state management by keeping local state close to where it's used rather than in a global context.",
+      "keywords": [
+        "profile",
+        "devtools",
+        "memo",
+        "useMemo",
+        "local state",
+        "context"
+      ],
+      "feedbackMiss": "You missed the profiling step. You should always start by using React DevTools to measure, and then apply memoization strategies like React.memo or useMemo.",
+      "feedbackHit": "Spot on. Profiling first and then applying targeted memoization is exactly how a senior engineer handles this."
+    },
+    {
+      "q": "Explain the underlying mechanism of how a garbage collector works in a language like Java or Go, and how it impacts latency.",
+      "answer": "Garbage collectors typically use a mark-and-sweep algorithm to identify unreachable objects. This process can cause 'stop-the-world' pauses, which directly increase tail latency in high-throughput applications if not tuned properly.",
+      "keywords": [
+        "mark and sweep",
+        "unreachable",
+        "stop-the-world",
+        "pause",
+        "tail latency",
+        "heap"
+      ],
+      "feedbackMiss": "You didn't explain the latency impact. You must mention 'stop-the-world' pauses and how they create tail latency spikes in production.",
+      "feedbackHit": "Great explanation. Linking mark-and-sweep mechanics to tail latency shows deep systems knowledge."
+    }
+  ],
+  "data": [
+    {
+      "q": "You are building a recommendation engine. How do you mitigate the 'cold start' problem for brand new users?",
+      "answer": "For new users, I would fall back to a popularity-based model or use content-based filtering based on their initial onboarding questionnaire until we gather enough interaction data for collaborative filtering.",
+      "keywords": [
+        "popularity",
+        "content-based",
+        "onboarding",
+        "collaborative",
+        "fallback",
+        "heuristic"
+      ],
+      "feedbackMiss": "You missed the fallback strategies. You need to explicitly mention using popularity-based recommendations or content-based filtering for new users.",
+      "feedbackHit": "Perfect. Switching between content-based and collaborative filtering is the exact solution to the cold start problem."
+    },
+    {
+      "q": "How would you design a data pipeline to ingest 5 terabytes of streaming log data per day with sub-second latency requirements?",
+      "answer": "I would use Apache Kafka as the distributed event streaming platform to buffer the data, process it in real-time using Apache Flink or Spark Streaming, and sink it into a fast OLAP database like ClickHouse.",
+      "keywords": [
+        "Kafka",
+        "Flink",
+        "streaming",
+        "buffer",
+        "ClickHouse",
+        "OLAP"
+      ],
+      "feedbackMiss": "You didn't specify the right tools for sub-second streaming. You should mention Kafka for ingestion and Flink or Spark for stream processing.",
+      "feedbackHit": "Excellent architectural choices. Kafka combined with Flink and ClickHouse perfectly handles high-throughput, low-latency streaming."
+    },
+    {
+      "q": "Explain the concept of Data Leakage in machine learning training and how you prevent it.",
+      "answer": "Data leakage occurs when information from outside the training dataset is used to create the model, artificially inflating performance. I prevent it by strictly splitting data before any preprocessing or feature engineering occurs.",
+      "keywords": [
+        "leakage",
+        "inflate",
+        "split",
+        "preprocessing",
+        "feature engineering",
+        "future"
+      ],
+      "feedbackMiss": "You missed the prevention step. You must emphasize that train/test splitting must occur BEFORE any feature engineering or scaling.",
+      "feedbackHit": "Spot on. Applying the train/test split prior to preprocessing is the golden rule to prevent leakage."
+    }
+  ],
+  "product": [
+    {
+      "q": "Your engineering team says a critical feature will take 3 months, but sales needs it in 3 weeks to close a major deal. How do you handle this?",
+      "answer": "I would sit down with engineering to brutally scope down the feature to its absolute Minimum Viable Product, removing all edge cases, and negotiate with sales to deliver that core value in 3 weeks while scheduling the rest later.",
+      "keywords": [
+        "scope",
+        "MVP",
+        "negotiate",
+        "edge cases",
+        "core value",
+        "compromise"
+      ],
+      "feedbackMiss": "You didn't focus on scoping. The PM's job here is to ruthlessly cut scope to an MVP to meet the deadline without burning out the team.",
+      "feedbackHit": "Great answer. Ruthless prioritization and MVP scoping is exactly how a PM resolves timeline conflicts."
+    },
+    {
+      "q": "How do you measure the success of a newly launched onboarding flow?",
+      "answer": "I would track the conversion rate through each step of the funnel to identify drop-offs, measure the time-to-first-value, and look at the 7-day retention rate of cohorts who experienced the new flow versus the old one.",
+      "keywords": [
+        "funnel",
+        "conversion",
+        "drop-off",
+        "time-to-value",
+        "retention",
+        "cohort"
+      ],
+      "feedbackMiss": "You missed the cohort analysis. You need to explicitly mention tracking the funnel drop-off and comparing retention cohorts.",
+      "feedbackHit": "Excellent metrics. Time-to-first-value and cohort retention are the strongest indicators of onboarding success."
+    },
+    {
+      "q": "Tell me about a time you had to pivot a product strategy based on user data.",
+      "answer": "We noticed through Mixpanel that users were completely ignoring our primary feature and heavily using a secondary sharing tool. We immediately reallocated engineering resources to expand the sharing tool, which doubled our active users.",
+      "keywords": [
+        "data",
+        "analytics",
+        "reallocate",
+        "resources",
+        "ignore",
+        "double"
+      ],
+      "feedbackMiss": "You didn't give a clear hypothetical or structural response. Mention using an analytics tool, observing unexpected behavior, and decisively reallocating resources.",
+      "feedbackHit": "Perfect structure. You highlighted the data source, the surprising insight, and the decisive action taken."
+    }
+  ],
+  "math": [
+    {
+      "q": "Explain the concept of eigenvectors and eigenvalues, and give a practical application in machine learning.",
+      "answer": "An eigenvector is a vector whose direction does not change when a linear transformation is applied, and the eigenvalue is the scale of that stretch. In ML, they are the foundation of Principal Component Analysis for dimensionality reduction.",
+      "keywords": [
+        "direction",
+        "transformation",
+        "scale",
+        "PCA",
+        "dimensionality",
+        "reduction"
+      ],
+      "feedbackMiss": "You missed the ML application. You must explicitly connect eigenvectors to Principal Component Analysis (PCA) and dimensionality reduction.",
+      "feedbackHit": "Spot on. Connecting eigenvectors directly to PCA shows strong applied mathematical knowledge."
+    },
+    {
+      "q": "Walk me through how Gradient Descent optimizes a loss function.",
+      "answer": "Gradient descent calculates the derivative of the loss function with respect to each weight to find the direction of steepest ascent. It then updates the weights by taking a small step in the opposite direction, controlled by the learning rate.",
+      "keywords": [
+        "derivative",
+        "steepest",
+        "opposite",
+        "learning rate",
+        "update",
+        "minimum"
+      ],
+      "feedbackMiss": "You missed the derivative concept. You need to explain that it calculates the gradient (derivative) to find the slope, and moves in the opposite direction.",
+      "feedbackHit": "Excellent. You clearly explained the relationship between the derivative, the learning rate, and the weight update."
+    },
+    {
+      "q": "What is the difference between L1 and L2 regularization mathematically, and how do they affect the model?",
+      "answer": "L1 adds the absolute value of the weights to the loss, driving less important weights exactly to zero, creating a sparse model. L2 adds the squared value of the weights, forcing them to be small but rarely exactly zero.",
+      "keywords": [
+        "absolute",
+        "zero",
+        "sparse",
+        "squared",
+        "small",
+        "penalty"
+      ],
+      "feedbackMiss": "You didn't mention sparsity. You must explicitly state that L1 drives weights to absolute zero (feature selection), while L2 just shrinks them.",
+      "feedbackHit": "Perfect. Distinguishing between L1's sparsity and L2's shrinkage is exactly what we look for."
+    }
+  ],
+  "language": [
+    {
+      "q": "How would you design an evaluation prompt to grade an LLM's ability to maintain a specific persona across a long conversation?",
+      "answer": "I would prompt the evaluator LLM to act as a strict linguistic judge, providing it with the exact character traits, and instruct it to penalize any responses that break character, use modern slang inappropriately, or contradict previous statements.",
+      "keywords": [
+        "judge",
+        "traits",
+        "penalize",
+        "break character",
+        "slang",
+        "contradict"
+      ],
+      "feedbackMiss": "You lacked specificity in the grading criteria. You need to tell the evaluator to look for specific infractions like breaking character or logical contradictions.",
+      "feedbackHit": "Great answer. Setting up the evaluator as a strict judge with specific penalty conditions is the industry standard."
+    },
+    {
+      "q": "An AI model is translating English idioms literally into Spanish, losing the meaning. How do we fix this in the training data?",
+      "answer": "We need to curate a high-quality dataset of idiomatic pairs and use supervised fine-tuning. We should also implement RLHF to heavily penalize literal translations of known idioms and reward culturally equivalent phrases.",
+      "keywords": [
+        "curate",
+        "pairs",
+        "SFT",
+        "RLHF",
+        "penalize",
+        "equivalent"
+      ],
+      "feedbackMiss": "You missed the RLHF component. You should mention penalizing literal translations and rewarding cultural equivalents using reinforcement learning.",
+      "feedbackHit": "Spot on. Combining SFT with curated pairs and RLHF penalties is the right approach for idiomatic translation."
+    },
+    {
+      "q": "Explain the challenge of tokenization for morphologically rich languages like Turkish or Finnish.",
+      "answer": "Because words are formed by stacking many suffixes, standard subword tokenizers like BPE often split words in ways that destroy grammatical meaning. It requires custom morphological tokenizers that respect the language's root structures.",
+      "keywords": [
+        "suffixes",
+        "BPE",
+        "split",
+        "destroy",
+        "morphological",
+        "root"
+      ],
+      "feedbackMiss": "You didn't explain WHY it's a problem. You must mention that standard BPE tokenizers split words arbitrarily, destroying the root grammatical meaning.",
+      "feedbackHit": "Excellent. You accurately identified the conflict between standard BPE tokenization and suffix-heavy agglutinative languages."
+    }
+  ],
+  "medical": [
+    {
+      "q": "How do you evaluate an AI model designed to detect anomalies in MRI scans to ensure it doesn't have a high false-negative rate?",
+      "answer": "I would prioritize tracking the Recall metric over Precision, ensuring the threshold is set conservatively. I would also mandate that the test set includes a highly diverse demographic pool to check for bias in edge-case anomalies.",
+      "keywords": [
+        "Recall",
+        "Precision",
+        "threshold",
+        "diverse",
+        "demographic",
+        "bias"
+      ],
+      "feedbackMiss": "You missed the statistical metrics. In medical anomaly detection, you must explicitly state that Recall (minimizing false negatives) is vastly more important than Precision.",
+      "feedbackHit": "Perfect. Prioritizing Recall and checking for demographic bias is critical for medical AI safety."
+    },
+    {
+      "q": "An LLM is giving outdated pharmacological dosing advice. How do you force it to adhere strictly to current medical guidelines?",
+      "answer": "I would implement a Retrieval-Augmented Generation (RAG) architecture that queries a strictly curated, up-to-date medical database, and instruct the system prompt to explicitly refuse to answer if the information is not in the retrieved documents.",
+      "keywords": [
+        "RAG",
+        "retrieval",
+        "curated",
+        "database",
+        "refuse",
+        "hallucination"
+      ],
+      "feedbackMiss": "You didn't mention RAG. You cannot rely on model weights for dosing; you must use Retrieval-Augmented Generation connected to a verified medical database.",
+      "feedbackHit": "Excellent. Using RAG and instructing the model to refuse unverified answers prevents dangerous medical hallucinations."
+    },
+    {
+      "q": "What ethical considerations must be evaluated when training a diagnostic AI on historical patient records?",
+      "answer": "We must strictly anonymize the data to comply with HIPAA, and rigorously audit the historical records for systemic bias, as past diagnostic data often reflects historical healthcare disparities against minority groups.",
+      "keywords": [
+        "anonymize",
+        "HIPAA",
+        "audit",
+        "bias",
+        "disparities",
+        "minority"
+      ],
+      "feedbackMiss": "You missed the bias audit. While HIPAA is important, you must also address that historical data contains systemic biases that the AI will learn if not corrected.",
+      "feedbackHit": "Spot on. Addressing both privacy (HIPAA) and historical systemic bias shows deep medical AI ethics."
+    }
+  ],
+  "finance": [
+    {
+      "q": "How do you evaluate a trading algorithm's backtest to ensure it isn't overfitted to historical data?",
+      "answer": "I would strictly separate the data into training and out-of-sample holdout sets, evaluate the Sharpe ratio across different market regimes, and check if the strategy degrades significantly when small transaction costs and slippage are added.",
+      "keywords": [
+        "out-of-sample",
+        "holdout",
+        "Sharpe",
+        "regimes",
+        "transaction costs",
+        "slippage"
+      ],
+      "feedbackMiss": "You didn't mention slippage or out-of-sample testing. You must emphasize testing on holdout data and accounting for real-world transaction costs.",
+      "feedbackHit": "Great answer. Checking out-of-sample performance and factoring in slippage are the hallmarks of a robust backtest."
+    },
+    {
+      "q": "Explain how you would prompt an LLM to extract complex covenants from a 200-page corporate bond prospectus.",
+      "answer": "I would break the document into overlapping chunks, pass each chunk through the LLM with a highly structured JSON schema prompt demanding specific covenant fields, and use a final map-reduce step to consolidate the extracted clauses.",
+      "keywords": [
+        "chunks",
+        "overlapping",
+        "JSON",
+        "schema",
+        "map-reduce",
+        "consolidate"
+      ],
+      "feedbackMiss": "You missed the chunking strategy. LLMs have context limits; you must mention chunking the document and forcing a structured JSON output.",
+      "feedbackHit": "Perfect. Chunking with a strict JSON schema and a map-reduce consolidation is the exact right pipeline."
+    },
+    {
+      "q": "What is the difference between Delta and Gamma in options pricing, and why does an AI model need to understand both?",
+      "answer": "Delta measures the rate of change of the option price relative to the underlying asset, while Gamma measures the rate of change of the Delta itself. The AI must understand both to accurately hedge against large, sudden market movements.",
+      "keywords": [
+        "rate of change",
+        "underlying",
+        "Gamma",
+        "hedge",
+        "sudden",
+        "acceleration"
+      ],
+      "feedbackMiss": "You missed the hedging application. You need to explain that Gamma is the acceleration of Delta, which is critical for dynamic hedging.",
+      "feedbackHit": "Excellent. Defining Gamma as the derivative of Delta and linking it to dynamic hedging is exactly correct."
+    }
+  ],
+  "creative": [
+    {
+      "q": "How do you prompt an AI to write a fictional story that has a genuine emotional arc, rather than just a flat sequence of events?",
+      "answer": "I would prompt the AI using the 'Save the Cat' beat sheet framework, explicitly forcing it to outline the protagonist's internal flaw, the inciting incident, and the specific emotional realization at the climax before generating the prose.",
+      "keywords": [
+        "beat sheet",
+        "framework",
+        "flaw",
+        "inciting incident",
+        "climax",
+        "outline"
+      ],
+      "feedbackMiss": "You didn't provide a structural framework. You should mention using established narrative frameworks like 'Save the Cat' or the Hero's Journey in the prompt.",
+      "feedbackHit": "Spot on. Forcing the AI to outline the emotional beats using a framework BEFORE generating prose yields the best results."
+    },
+    {
+      "q": "An AI is generating dialogue that sounds completely robotic and overly formal. How do you fix the prompt?",
+      "answer": "I would instruct the AI to use contractions, allow characters to interrupt each other, use sentence fragments, and provide specific few-shot examples of natural, messy human conversation in the system prompt.",
+      "keywords": [
+        "contractions",
+        "interrupt",
+        "fragments",
+        "few-shot",
+        "messy",
+        "examples"
+      ],
+      "feedbackMiss": "You missed the specific linguistic instructions. You need to explicitly tell the AI to use contractions and sentence fragments to break the formal tone.",
+      "feedbackHit": "Great answer. Specifying contractions, fragments, and providing few-shot examples immediately fixes robotic dialogue."
+    },
+    {
+      "q": "How do you evaluate an AI-generated poem for thematic consistency and meter?",
+      "answer": "I evaluate meter by checking the specific syllable stress patterns, like iambic pentameter, and check thematic consistency by ensuring the extended metaphors introduced in the first stanza carry through logically to the conclusion.",
+      "keywords": [
+        "syllable",
+        "stress",
+        "iambic",
+        "metaphor",
+        "stanza",
+        "conclusion"
+      ],
+      "feedbackMiss": "You didn't explain the mechanics of poetry. You must mention checking syllable stress for meter, and tracking extended metaphors for theme.",
+      "feedbackHit": "Perfect. Evaluating syllable stress patterns and extended metaphors shows a deep understanding of poetic structure."
+    }
+  ],
+  "legal": [
+    {
+      "q": "How do you ensure an AI summarizing legal contracts does not omit critical indemnification clauses?",
+      "answer": "I would use a two-pass system: the first pass specifically extracts all sentences containing risk-shifting keywords like 'indemnify' or 'hold harmless', and the second pass generates the summary, guaranteeing those extracted clauses are included.",
+      "keywords": [
+        "two-pass",
+        "extract",
+        "risk",
+        "indemnify",
+        "hold harmless",
+        "guarantee"
+      ],
+      "feedbackMiss": "You missed the extraction strategy. You must use a two-pass or targeted extraction step focusing on specific legal keywords before summarizing.",
+      "feedbackHit": "Excellent. A two-pass extraction and summarization system is the only safe way to ensure critical legal clauses aren't dropped."
+    },
+    {
+      "q": "An AI model is generating legal advice. Why is this dangerous, and how do you restrict it?",
+      "answer": "Generating legal advice constitutes the unauthorized practice of law, creating massive liability. I would implement strict guardrails in the system prompt to explicitly state 'This is legal information, not legal advice' and refuse subjective interpretations.",
+      "keywords": [
+        "unauthorized",
+        "liability",
+        "guardrails",
+        "information",
+        "advice",
+        "refuse"
+      ],
+      "feedbackMiss": "You didn't mention the 'unauthorized practice of law'. You must explicitly define the liability and force the AI to disclaim that it provides information, not advice.",
+      "feedbackHit": "Spot on. Identifying the liability of unauthorized practice and implementing strict disclaimers is exactly right."
+    },
+    {
+      "q": "Explain how you would evaluate an AI model trained to identify privileged communications in e-discovery.",
+      "answer": "I would evaluate its ability to accurately flag attorney-client communications by testing it on edge cases, such as emails where an attorney is merely CC'd for visibility rather than providing legal counsel, minimizing false positives.",
+      "keywords": [
+        "attorney-client",
+        "edge cases",
+        "CC",
+        "visibility",
+        "counsel",
+        "false positives"
+      ],
+      "feedbackMiss": "You missed the nuance of privilege. You must evaluate the AI on edge cases, like distinguishing between legal counsel and an attorney just being CC'd on a business email.",
+      "feedbackHit": "Great answer. Testing edge cases like CC'd attorneys demonstrates a strong grasp of e-discovery nuances."
+    }
+  ],
+  "general": [
+    {
+      "q": "You are given a model output containing multiple historical claims. Walk me through your fact-checking workflow.",
+      "answer": "I would isolate each specific claim, cross-reference it against primary academic sources, and strictly verify every generated citation to ensure the model isn't hallucinating fake journals or authors.",
+      "keywords": [
+        "isolate",
+        "cross-reference",
+        "primary",
+        "verify",
+        "hallucinating",
+        "fake"
+      ],
+      "feedbackMiss": "You missed the hallucination check. You must explicitly mention verifying the citations themselves, as AI is notorious for hallucinating fake academic sources.",
+      "feedbackHit": "Perfect. Isolating claims and explicitly checking for hallucinated citations is the correct workflow."
+    },
+    {
+      "q": "How do you handle a situation where an AI refuses to answer a safe prompt due to an overly aggressive safety filter?",
+      "answer": "I would analyze the prompt to identify which specific word triggered the false positive, rewrite the prompt using euphemisms or structural framing to bypass the filter, and log the incident to tune the safety guardrails.",
+      "keywords": [
+        "trigger",
+        "false positive",
+        "rewrite",
+        "framing",
+        "log",
+        "tune"
+      ],
+      "feedbackMiss": "You didn't mention identifying the trigger. You must explain diagnosing the false positive and rewriting the structural framing of the prompt.",
+      "feedbackHit": "Excellent. Diagnosing the false positive, reframing, and logging it for tuning is the standard prompt engineering approach."
+    },
+    {
+      "q": "Tell me about a time you had to learn a completely new technical domain very quickly to evaluate an AI's performance.",
+      "answer": "I was assigned to evaluate a quantum computing model. I spent 48 hours reading introductory textbooks, identified the 5 core principles it needed to get right, and built a targeted evaluation rubric based purely on those constraints.",
+      "keywords": [
+        "textbooks",
+        "core principles",
+        "rubric",
+        "constraints",
+        "targeted",
+        "48 hours"
+      ],
+      "feedbackMiss": "You didn't explain a structured learning approach. You need to mention identifying core principles and building a targeted rubric, rather than trying to become an expert overnight.",
+      "feedbackHit": "Great structural answer. Focusing on identifying core principles to build a targeted rubric is exactly how generalists succeed."
+    }
+  ]
+};
+
+  let totalScore = 0;
+  let totalFillers = 0;
+  let totalQuestionsAnswered = 0;
+  let currentDomain = "software";
+  let currentQuestions = domainData[currentDomain];
+  let currentQ = 0;
+  
+  const startBtn = document.getElementById('start-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const setupView = document.getElementById('setup-view');
+  const activeView = document.getElementById('active-view');
+  const domainSelector = document.getElementById('domain-selector');
+  
+  // Auto-fill from ATS Scanner
+  const atsRole = localStorage.getItem('atsRole');
+  const atsDomain = localStorage.getItem('atsDomain');
+  
+  if (atsRole) {
+      const titleEl = document.querySelector('#setup-view h2');
+      if (titleEl) {
+          titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + atsRole + '</span>';
+      }
+  }
+  
+  if (atsDomain) {
+      const domLow = atsDomain.toLowerCase();
+      let matchedValue = 'software';
+      if (domLow.includes('medical') || domLow.includes('health')) matchedValue = 'medical';
+      if (domLow.includes('finance') || domLow.includes('quant')) matchedValue = 'finance';
+      if (domLow.includes('legal') || domLow.includes('law')) matchedValue = 'legal';
+      if (domLow.includes('creative') || domLow.includes('writer')) matchedValue = 'creative';
+      if (domLow.includes('data')) matchedValue = 'data';
+      if (domLow.includes('product')) matchedValue = 'product';
+      
+      domainSelector.value = matchedValue;
+      
+      // Update the option text to match their exact role!
+      const option = domainSelector.querySelector('option[value="' + matchedValue + '"]');
+      if (option && atsRole) {
+          // option.text hidden
+      }
+  }
+
+  
+  
+  const cdsDisplay = document.getElementById('cds-display');
+  const cdsOptions = document.getElementById('cds-options');
+  const cdsText = document.getElementById('cds-text');
+  
+  // Populate custom options from hidden select
+  Array.from(domainSelector.options).forEach(opt => {
+      const div = document.createElement('div');
+      div.style.padding = '12px 16px';
+      div.style.cursor = 'pointer';
+      div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      div.style.color = '#ccc';
+      div.style.fontSize = '14px';
+      div.style.transition = 'background 0.2s, color 0.2s';
+      div.innerText = opt.text;
+      
+      div.onmouseover = () => { div.style.background = 'rgba(255,255,255,0.1)'; div.style.color = 'white'; };
+      div.onmouseout = () => { div.style.background = 'transparent'; div.style.color = '#ccc'; };
+      
+      div.onclick = () => {
+          cdsText.innerText = opt.text;
+          cdsOptions.style.display = 'none';
+          domainSelector.value = opt.value;
+          currentDomain = opt.value;
+          currentQuestions = domainData[currentDomain];
+          
+          // FIX UP THE POSITION ABOVE (h2 title)
+          const newRole = opt.text.replace("Role: ", "");
+          const titleEl = document.querySelector('#setup-view h2');
+          if (titleEl) {
+              titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + newRole + '</span>';
+          }
+      };
+      cdsOptions.appendChild(div);
+  });
+  
+  cdsDisplay.onclick = () => {
+      cdsOptions.style.display = cdsOptions.style.display === 'none' ? 'block' : 'none';
+      cdsDisplay.style.borderColor = cdsOptions.style.display === 'block' ? 'var(--primary)' : 'rgba(255,255,255,0.2)';
+  };
+  
+  document.addEventListener('click', (e) => {
+      const container = document.getElementById('custom-domain-selector');
+      if (container && !container.contains(e.target)) {
+          cdsOptions.style.display = 'none';
+          cdsDisplay.style.borderColor = 'rgba(255,255,255,0.2)';
+      }
+  });
+  
+  // Also update cdsText if atsRole was set on load
+  if (atsRole) {
+      cdsText.innerText = "Role: " + atsRole;
+  }
+
+  
+  
+  
+  const simText = document.getElementById('sim-text');
+  
+  
+  let transcriptEnabled = false;
+  
+  let teleprompterEnabled = false;
+  document.getElementById('toggle-teleprompter').addEventListener('change', (e) => {
+      teleprompterEnabled = e.target.checked;
+  });
+  
+  let availableVoices = [];
+  let voiceInterval;
+  function populateVoiceList() {
+      if(typeof synth === 'undefined') return;
+      
+      let voices = synth.getVoices();
+      const voiceSelect = document.getElementById('voice-select');
+      
+      if (voices.length === 0) {
+          if (voiceSelect && voiceSelect.options.length === 1 && voiceSelect.options[0].textContent.includes('Loading')) {
+              voiceSelect.options[0].textContent = "System Default Voice (Auto-selected)";
+          }
+          return; // Still loading or blocked by browser
+      }
+      
+      if (voiceInterval) clearInterval(voiceInterval);
+      
+      // Only rebuild if we haven't already
+      if (availableVoices.length === voices.length) return;
+      
+      availableVoices = voices;
+      
+      if (voiceSelect) {
+          voiceSelect.innerHTML = '';
+          availableVoices.forEach((v, i) => {
+              const option = document.createElement('option');
+              option.textContent = v.name + " (" + (v.lang) + ")";
+              option.value = i;
+              
+              if (v.name === 'Google US English' || v.name === 'Ava' || v.name === 'Allison' || v.name === 'Samantha') {
+                  option.selected = true;
+              }
+              
+              voiceSelect.appendChild(option);
+          });
+      }
+  }
+  
+  // Try populating on user interaction as well
+  document.addEventListener('click', populateVoiceList, {once: false});
+  document.addEventListener('touchstart', populateVoiceList, {once: false});
+  
+  if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = populateVoiceList;
+  }
+  // Fallback: poll every 250ms until voices load (max 10 seconds)
+  let pollAttempts = 0;
+  voiceInterval = setInterval(() => {
+      populateVoiceList();
+      pollAttempts++;
+      if (pollAttempts > 40) clearInterval(voiceInterval); // Give up after 10s
+  }, 250);
+  populateVoiceList();
+
+
+  function setUIState(state, text) {
+    if (text) {
+        simText.innerText = text;
+        simText.style.display = 'inline-block';
+    }
+    
+    if (state === 'speaking') {
+      
+      nextBtn.style.display = 'none';
+      if(document.getElementById('finish-btn')) document.getElementById('finish-btn').style.display = 'none';
+      document.getElementById('teleprompter-box').style.display = 'none';
+      document.getElementById('stop-ai-btn').style.display = 'inline-flex';
+    } else if (state === 'listening') {
+      simText.style.opacity = '1';
+      simText.style.transform = 'scale(1)';
+      simText.innerText = 'Listening...';
+      
+      document.getElementById('copilot-status').innerText = "Analyzing question and generating real-time suggestions...";
+      document.getElementById('copilot-scanline').style.display = 'block';
+      document.getElementById('stop-ai-btn').style.display = 'none';
+      if(document.getElementById('finish-btn')) document.getElementById('finish-btn').style.display = 'inline-flex';
+      
+      if (teleprompterEnabled && currentQuestions[currentQ]) {
+          const tText = document.getElementById('teleprompter-text');
+          tText.innerText = currentQuestions[currentQ].answer || ("Try mentioning: " + currentQuestions[currentQ].keywords.join(', '));
+          
+          // Reset animation by triggering reflow
+          tText.classList.remove('teleprompter-text-anim');
+          void tText.offsetWidth; 
+          tText.classList.add('teleprompter-text-anim');
+          
+          document.getElementById('teleprompter-box').style.display = 'block';
+      } else {
+          document.getElementById('teleprompter-box').style.display = 'none';
+      }
+      
+      simText.style.display = 'none';
+    } else if (state === 'analyzing') {
+      simText.style.display = 'none';
+    } else if (state === 'feedback') {
+      simText.style.display = 'none';
+      if(document.getElementById('finish-btn')) document.getElementById('finish-btn').style.display = 'none';
+      nextBtn.style.display = 'inline-flex';
+      document.getElementById('stop-ai-btn').style.display = 'none';
+    }
+  }
+
+  function speakText(text, callback) {
+    if (synth.speaking) {
+        synth.cancel();
+    }
+    const stopBtn = document.getElementById('stop-ai-btn');
+    if (stopBtn) stopBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI`;
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Use the voice selected by the user in the Preferences dropdown
+    const voiceSelect = document.getElementById('voice-select');
+    if (voiceSelect && availableVoices.length > 0) {
+        const selectedIndex = parseInt(voiceSelect.value, 10);
+        if (!isNaN(selectedIndex) && availableVoices[selectedIndex]) {
+            utterance.voice = availableVoices[selectedIndex];
+        }
+    } else {
+        const voices = synth.getVoices();
+        if (voices.length > 0) {
+            utterance.voice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha')) || voices.find(v => v.lang.includes('en-')) || voices[0];
+        }
+    }
+    
+    utterance.rate = 1.05;
+    utterance.pitch = 1.1;
+    utterance.volume = 1; // Unmuted to let them hear the voice
+    
+    utterance.onend = () => {
+      if (callback) callback();
+    };
+    
+    synth.speak(utterance);
+  }
+
+  function processAnswer(transcript) {
+    setUIState('analyzing', 'Analyzing your transcript...');
+    
+    setTimeout(() => {
+      const text = " " + transcript.toLowerCase() + " ";
+      const qData = currentQuestions[currentQ];
+      
+      let matches = 0;
+      qData.keywords.forEach(kw => {
+        if (text.includes(kw.toLowerCase())) matches++;
+      });
+      
+      // Filler word analysis
+      const fillers = [' um ', ' uh ', ' like ', ' you know ', ' basically ', ' i mean '];
+      let fillerCount = 0;
+      fillers.forEach(fw => {
+         const fwMatches = text.match(new RegExp(fw, 'g'));
+         if (fwMatches) fillerCount += fwMatches.length;
+      });
+      
+      // Base confidence score logic
+      const wordCount = text.split(' ').filter(w => w.length > 0).length;
+      let confScore = 80; // baseline
+      if (wordCount < 10) confScore -= 30; // penalty for too short
+      confScore += (matches * 10); // bonus for keywords
+      confScore -= (fillerCount * 15); // massive penalty for fillers
+      
+      const cappedScore = Math.min(100, Math.max(10, confScore));
+      totalScore += cappedScore;
+      totalFillers += fillerCount;
+      totalQuestionsAnswered++;
+
+      let feedback = "";
+      if (wordCount < 10) {
+         feedback = "Your answer was way too short. You need to elaborate more to prove your expertise. " + qData.feedbackMiss;
+      } else if (matches >= 2) {
+         feedback = qData.feedbackHit;
+      } else {
+         feedback = qData.feedbackMiss;
+      }
+      
+      const finalFeedback = feedback + `\n\n(Confidence Score: ${cappedScore}%. Filler words detected: ${fillerCount})`;
+      
+      setUIState('feedback', 'Feedback generated. Check the AI Copilot panel.');
+      document.getElementById('copilot-feedback-container').style.display = 'block';
+      
+      const stratBox = document.getElementById('copilot-strategy');
+      stratBox.innerText = finalFeedback;
+      if (cappedScore >= 80) {
+          stratBox.style.background = 'rgba(16,185,129,0.1)';
+          stratBox.style.borderLeftColor = 'var(--primary)';
+      } else {
+          stratBox.style.background = 'rgba(239,68,68,0.1)';
+          stratBox.style.borderLeftColor = '#ef4444';
+      }
+
+      speakText(feedback, () => {
+         
+      });
+      
+    }, 1000);
+  }
+
+  function askQuestion() {
+    const qText = currentQuestions[currentQ].q;
+    document.getElementById('copilot-content').style.display = 'none';
+    document.getElementById('copilot-status').style.display = 'block';
+    document.getElementById('copilot-status').innerText = "Listening to interviewer...";
+    simText.style.opacity = '1'; simText.style.transform = 'scale(1)'; setUIState('speaking', qText);
+    
+    
+    speakText(qText, () => {
+      if (!recognition) {
+         setUIState('feedback', 'Speech Recognition is not supported on this browser. Please use Google Chrome or Safari.');
+         return;
+      }
+      
+      setUIState('listening', 'Waiting for your answer...');
+      let finalTranscript = '';
+      
+      recognition.onresult = (event) => {
+        let interim = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const t = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += t + ' ';
+          } else {
+            interim += t;
+          }
+        }
+        
+        
+        // Real-time copilot keyword highlighting
+        const liveText = (finalTranscript + interim).toLowerCase();
+        currentQuestions[currentQ].keywords.forEach(kw => {
+            if (liveText.includes(kw.toLowerCase())) {
+                const tag = document.querySelector('.kw-' + kw.replace(/\s+/g, '-'));
+                if(tag) tag.classList.add('hit');
+            }
+        });
+      };
+      
+      recognition.onerror = (e) => {
+         if (e.error === 'no-speech') {
+             processAnswer(finalTranscript);
+         }
+      };
+      
+      recognition.onend = () => {
+        if (finalTranscript.trim() === '') {
+            processAnswer(simText.innerText !== "Listening..." ? finalTranscript : "I don't know");
+        } else {
+            processAnswer(finalTranscript);
+        }
+      };
+      
+      recognition.start();
+    });
+  }
+
+  startBtn.addEventListener('click', () => {
+    // UNLOCK SPEECH ENGINE SYNCHRONOUSLY
+    const unlockUtterance = new SpeechSynthesisUtterance('');
+    unlockUtterance.volume = 0;
+    window.speechSynthesis.speak(unlockUtterance);
+
+    currentDomain = domainSelector.value;
+    currentQuestions = [...domainData[currentDomain]]; // Clone array so we don't mutate the global one multiple times
+    
+    // START HYBRID LLM BATCH GENERATION
+    setupView.style.display = 'none';
+    const loadingScreen = document.createElement('div');
+    loadingScreen.id = 'gemini-loading-screen';
+    loadingScreen.style.cssText = "position:absolute; top:0; left:0; width:100%; height:100%; background:var(--black); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center;";
+    loadingScreen.innerHTML = `
+        <div style="width:48px; height:48px; border:4px solid rgba(16,185,129,0.2); border-top-color:var(--primary); border-radius:50%; animation:spin 1s linear infinite; margin-bottom:24px;"></div>
+        <h2 style="font-size:24px; font-weight:800; margin-bottom:12px;">Initializing TrainAIToGain Copilot...</h2>
+        <p style="color:#aaa; font-size:15px;" id="gemini-status">Parsing your resume and dynamically generating highly-specific technical questions.</p>
+        <style>@keyframes spin { 100% { transform:rotate(360deg); } }</style>
+    `;
+    document.querySelector('.sim-container').appendChild(loadingScreen);
+    
+    const exactRole = document.getElementById('cds-text') ? document.getElementById('cds-text').innerText.replace('Role: ', '') : currentDomain;
+    const generatePrompt = `You are a high-pressure AI technical recruiter. The candidate just passed the ATS screening phase and is in the live AI Audio Interview for the position: '${exactRole}'. Their resume text is: ${candidateResume || 'None provided.'}
+    
+    Generate EXACTLY 7 highly specific interview questions.
+    1. The FIRST question MUST be a behavioral question asking them to use the STAR method to describe a challenge they overcame, citing a VERY SPECIFIC project, company, or metric found directly in their resume. The 'answer' field for this question MUST be a custom 3-sentence STAR response that perfectly fits their actual resume experience.
+    2. The next 6 questions should be difficult technical questions (System Design, Edge Cases, Ethical Traps, and Technical deep dives) tailored specifically to the ${exactRole} role and their resume experience.
+    
+    Return ONLY a raw JSON array of objects with this EXACT structure (no markdown, no backticks):
+    [{"q": "The question", "answer": "The ideal 3-sentence teleprompter answer", "keywords": ["kw1", "kw2"], "feedbackMiss": "What they missed", "feedbackHit": "Why it's a good answer"}]`;
+    
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
+        
+    fetch('/api/generateAiResponse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: generatePrompt }] }] }),
+        signal: controller.signal
+    })
+    .finally(() => clearTimeout(timeoutId))
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) {
+            console.error("Gemini API Error:", data.error);
+            if (data.error.code === 403) {
+                loadingScreen.innerHTML = `
+                    <div style="font-size:48px; margin-bottom:16px;">⚠️</div>
+                    <h2 style="font-size:24px; font-weight:800; margin-bottom:12px; color:#ef4444;">Gemini API Disabled</h2>
+                    <p style="color:#aaa; font-size:14px; max-width:400px; line-height:1.6; margin-bottom:24px;">
+                        The dynamic AI generation requires the Gemini Developer API, which is not currently enabled in your Firebase project.<br><br>
+                        <strong>To enable it, run this command in your terminal:</strong><br>
+                        <code style="background:#222; padding:8px; border-radius:4px; display:block; margin-top:8px; color:var(--primary);">npx firebase-tools init ailogic</code>
+                    </p>
+                    <button class="btn-sim" id="fallback-btn" style="padding:12px 24px; font-size:14px;">Fallback to Offline Question Bank</button>
+                `;
+                document.getElementById('fallback-btn').onclick = () => {
+                    loadingScreen.remove();
+                    startInterviewEngine();
+                };
+            } else {
+                loadingScreen.innerHTML = `<h2 style="color:red;">Error: ${data.error.message}</h2><button class="btn-sim" onclick="document.getElementById('gemini-loading-screen').remove(); startInterviewEngine();">Fallback</button>`;
+            }
+        } else {
+            try {
+                const rawText = data.candidates[0].content.parts[0].text;
+                const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+                const generatedQuestions = JSON.parse(cleanJson);
+                currentQuestions = generatedQuestions;
+                loadingScreen.remove();
+                startInterviewEngine();
+            } catch (e) {
+                console.error("Failed to parse Gemini output:", e);
+                loadingScreen.innerHTML = `<h2 style="color:red;">Generation Failed. Using fallback.</h2>`;
+                setTimeout(() => { loadingScreen.remove(); startInterviewEngine(); }, 2000);
+            }
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        loadingScreen.innerHTML = `<h2 style="color:red;">Network Error. Using fallback.</h2>`;
+        setTimeout(() => { loadingScreen.remove(); startInterviewEngine(); }, 2000);
+    });
+    
+    function startInterviewEngine() {
+        currentQ = 0;
+        // Request Camera & Mic
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+            const videoEl = document.getElementById('user-camera');
+            videoEl.srcObject = stream;
+            videoEl.style.display = 'block';
+            document.getElementById('camera-placeholder').style.display = 'none';
+        })
+        .catch(err => {
+            console.warn("Camera not available, proceeding with audio only:", err);
+            document.getElementById('camera-placeholder').innerHTML = '<div style="font-size:48px; margin-bottom:16px;">🎙️</div><p style="color:#aaa; font-weight:600;">Audio Only Mode</p>';
+        });
+
+    activeView.style.display = 'block';
+    
+    synth.getVoices(); // Ensure voices are loaded
+    
+    // Skip the long greeting and immediately start the interview
+    setTimeout(() => {
+        askQuestion();
+    }, 500);
+    } // CLOSE startInterviewEngine() !!
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (synth.speaking) synth.cancel();
+    
+    if (currentQ + 1 >= currentQuestions.length) {
+      setUIState('feedback', 'Module Complete');
+      
+      // Hide the global chat widget so it doesn't overlap the final dashboard
+      const chatWidget = document.getElementById('chat-widget-container');
+      if (chatWidget) chatWidget.style.display = 'none';
+      const chatToggle = document.getElementById('chat-widget-toggle');
+      if (chatToggle) chatToggle.style.display = 'none';
+      
+      nextBtn.style.display = 'none';
+      
+      const avgScore = totalQuestionsAnswered > 0 ? Math.round(totalScore / totalQuestionsAnswered) : 0;
+      let passChance = 'Low (<20%)';
+      let passColor = '#ef4444';
+      if (avgScore >= 80) { passChance = 'High (85%+)'; passColor = '#10b981'; }
+      else if (avgScore >= 50) { passChance = 'Moderate (50%)'; passColor = '#eab308'; }
+      
+      let improvement = "Your delivery is crisp. Focus on projecting confidence and maintaining this pacing.";
+      if (totalFillers > 2) {
+          improvement = "You use too many filler words ('um', 'like', 'uh'). Practice speaking slower and embracing silent pauses to sound more authoritative.";
+      } else if (avgScore < 80) {
+          improvement = "You need to incorporate more domain-specific keywords into your answers. The AI relies heavily on vocabulary density to score you.";
+      }
+      
+      const summaryHTML = `
+        <div style="background:var(--black); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:48px; text-align:center; width:100%; box-shadow:0 12px 48px rgba(0,0,0,0.5); animation:fade-up 0.6s ease-out;">
+            <h2 style="color:white; font-size:32px; margin-bottom:8px; font-weight:800;">Interview Complete 🏆</h2>
+            <p style="color:var(--gray-400); margin-bottom:32px; font-size:16px;">Here is your performance breakdown.</p>
+            
+            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:12px; padding:32px; margin-bottom:32px;">
+                <div style="font-size:12px; color:var(--gray-400); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;">Predicted Pass Probability</div>
+                <div style="font-size:48px; font-weight:800; color:${passColor}; margin-bottom:32px; text-shadow: 0 4px 12px ${passColor}33;">${passChance}</div>
+                
+                <div style="display:flex; justify-content:center; gap:64px; border-top:1px solid rgba(255,255,255,0.05); padding-top:32px;">
+                    <div>
+                        <div style="font-size:11px; color:var(--gray-500); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;">Confidence Score</div>
+                        <div style="font-size:28px; color:white; font-weight:700;">${avgScore}%</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:var(--gray-500); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;">Total Filler Words</div>
+                        <div style="font-size:28px; color:white; font-weight:700;">${totalFillers}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align:left; background:rgba(16, 185, 129, 0.05); border:1px solid rgba(16, 185, 129, 0.2); border-radius:12px; padding:24px; margin-bottom:32px;">
+                <div style="font-size:12px; color:var(--primary); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.05em; font-weight:800; display:flex; align-items:center; gap:8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    Priority Action Plan
+                </div>
+                <div style="font-size:15px; color:#ddd; line-height:1.6;">${improvement}</div>
+            </div>
+            
+            <a href="post-hire.html" class="btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; width:100%; max-width:300px; font-size:16px;">Next Step: Post-Hire Guide ➔</a>
+        </div>
+      `;
+      
+      const vContainer = document.querySelector('.video-container');
+      vContainer.style.display = 'none'; // Hide the restricted video container
+      document.getElementById('active-view').insertAdjacentHTML('beforeend', summaryHTML); // Append clean layout
+
+      
+      // Stop the camera feed to save battery now that we're done
+      const cam = document.getElementById('user-camera');
+      if (cam && cam.srcObject) {
+          cam.srcObject.getTracks().forEach(t => t.stop());
+      }
+    } else {
+      currentQ++;
+      askQuestion();
+    }
+  });
+  
+
+
+  if(document.getElementById('finish-btn')) {
+      document.getElementById('finish-btn').addEventListener('click', () => {
+          if (recognition) recognition.stop();
+      });
+  }
+
+  document.getElementById('stop-ai-btn').addEventListener('click', (e) => {
+      const btn = e.currentTarget;
+      if (synth.paused) {
+          synth.resume();
+          btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI`;
+      } else if (synth.speaking) {
+          synth.pause();
+          btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume AI`;
+      }
+  });
+</script>
+
+<script>
+  // Global Affiliate Tracker
+  (function() {
+    var ref = new URLSearchParams(window.location.search).get('ref');
+    if (ref) localStorage.setItem('affiliate_ref', ref);
+    var activeRef = localStorage.getItem('affiliate_ref');
+    if (activeRef) {
+      document.addEventListener('DOMContentLoaded', function() {
+        var links = document.querySelectorAll('a[href^="https://t.mercor.com"]');
+        links.forEach(function(link) {
+          try {
+            var url = new URL(link.href);
+            url.searchParams.set('ref', activeRef);
+            link.href = url.toString();
+          } catch(e) {}
+        });
+      });
+    }
+  })();
+</script>
+
+<!-- GLOBAL FIREBASE TRACKING (PRIORITY 6) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+      apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
+      authDomain: "trainaitogain-50c19.firebaseapp.com", 
+      projectId: "trainaitogain-50c19", 
+      storageBucket: "trainaitogain-50c19.firebasestorage.app", 
+      messagingSenderId: "637746276432", 
+      appId: "1:637746276432:web:1a7cfa65357b0bc3b90955", 
+      measurementId: "G-RH65NXKCHE" 
+    };
+
+    let app;
+    try { app = initializeApp(firebaseConfig); } catch(e) {}
+    const db = getFirestore(app);
+
+    let sessionId = localStorage.getItem('tgt_session_id');
+    if (!sessionId) {
+        sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('tgt_session_id', sessionId);
+    }
+
+    const currentRef = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || 'organic';
+
+    if (!sessionStorage.getItem('page_view_logged_' + window.location.pathname)) {
+        addDoc(collection(db, "pipeline_events"), {
+            event_type: "page_view",
+            referral_id: currentRef,
+            session_id: sessionId,
+            page_url: window.location.pathname,
+            timestamp: serverTimestamp()
+        }).catch(e => console.error(e));
+        sessionStorage.setItem('page_view_logged_' + window.location.pathname, 'true');
+    }
+
+    document.addEventListener('click', (e) => {
+        let isMercorLink = false;
+        
+        const link = e.target.closest('a');
+        if (link && link.href.includes('t.mercor.com')) {
+            isMercorLink = true;
+        }
+        
+        const btn = e.target.closest('button');
+        if (btn && btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('t.mercor.com')) {
+            isMercorLink = true;
+        }
+
+        if (isMercorLink) {
+            addDoc(collection(db, "pipeline_events"), {
+                event_type: "application_started",
+                referral_id: currentRef,
+                session_id: sessionId,
+                page_url: window.location.pathname,
+                timestamp: serverTimestamp()
+            }).catch(console.error);
+        }
+    });
+</script>
+<script src="chat.js?v=13"></script>
+</body>
+
+
+</html>

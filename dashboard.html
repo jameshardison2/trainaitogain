@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Partner Dashboard - TrainAIToGain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* Mercor-style Kanban CSS */
+    .kanban-board {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding-bottom: 24px;
+      min-height: 500px;
+    }
+    .kanban-col {
+      flex: 1;
+      min-width: 280px;
+      background: var(--black);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      border: 1px solid var(--gray-800);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .kanban-header {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .kanban-count {
+      background: rgba(34,197,94,0.1);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 12px;
+    }
+    .lead-card {
+      background: var(--gray-900);
+      border: 1px solid var(--gray-800);
+      color: var(--white);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      transition: transform 0.1s, box-shadow 0.1s, border-color 0.2s;
+    }
+    .lead-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    .status-select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 12px;
+      border: 1px solid var(--gray-700);
+      border-radius: 4px;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--white);
+      background: var(--black);
+      cursor: pointer;
+    }
+    
+    /* Progress Bar */
+    .progress-container {
+      background: var(--gray-800);
+      height: 12px;
+      border-radius: 100px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    .progress-fill {
+      background: var(--primary);
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease-out;
+    }
+    /* Premium Scrollbar for Kanban */
+    .kanban-board::-webkit-scrollbar {
+      height: 10px;
+    }
+    .kanban-board::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 100px;
+      margin: 0 16px;
+    }
+    .kanban-board::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 100px;
+    }
+    .kanban-board::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+    
+    /* List View Table */
+    .list-view-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--black);
+      color: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      border: 1px solid var(--gray-800);
+    }
+    .list-view-table th {
+      background: var(--gray-900);
+      color: var(--gray-400);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 16px 24px;
+      text-align: left;
+      border-bottom: 2px solid var(--gray-800);
+    }
+    .list-view-table td {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--gray-800);
+      font-size: 14px;
+      color: var(--white);
+      vertical-align: middle;
+    }
+    .list-view-table tr:hover td {
+      background: var(--gray-900);
+    }
+    
+    /* Read-Only Status Badge */
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+    
+    .view-toggle-btn {
+      background: none;
+      border: 1px solid var(--gray-700);
+      color: var(--gray-400);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .view-toggle-btn.active {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+    .view-toggle-btn:hover:not(.active) {
+      color: var(--white);
+      border-color: var(--gray-500);
+    }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7Z54KYTV6B');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+</head>
+<body style="background:var(--gray-50); display:flex; flex-direction:column; min-height:100vh;">
+
+<!-- Nav placeholder, will be replaced by script -->
+<nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg?v=2" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; flex-direction:column; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+            <span style="color:var(--primary); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">We Get You Hired.</span>
+          </div>
+          </a>
+          <input type="checkbox" id="nav-toggle" style="display:none;" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="nav-toggle-icon"></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="hiring-pipeline.html" class="nav-link" style="background:var(--primary); color:var(--white); padding:8px 16px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> The Playbook</a></li>
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="guide-download.html" style="display:flex; align-items:center; gap:6px;">Blueprint <span style="background:var(--primary); color:var(--white); font-size:10px; padding:2px 6px; border-radius:100px; font-weight:800;">FREE</span></a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Application Interceptor Modal -->
+    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
+      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
+        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
+          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
+        </div>
+        <div style="padding:24px;">
+          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official application portal.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
+          </div>
+          
+          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
+            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
+            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+          </form>
+
+          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.currentApplySource = 'unknown';
+      function openApplyModal(source) {
+        window.currentApplySource = source;
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
+        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
+        
+        // If they already entered their email, don't ask again
+        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
+            window.open(targetUrl, '_blank');
+            return;
+        }
+
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'flex';
+      }
+      function closeApplyModal() {
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'none';
+        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
+        document.getElementById('modalApplyBtn').disabled = false;
+      }
+      async function handleModalSubmit(e) {
+        e.preventDefault();
+        var emailInput = document.getElementById('applyModalEmail').value.trim();
+        var nameInput = document.getElementById('applyModalName').value.trim();
+        if (!emailInput) {
+            alert('Please enter your email to proceed.');
+            return;
+        }
+        
+        var btn = document.getElementById('modalApplyBtn');
+        btn.innerHTML = 'Routing...';
+        localStorage.setItem('hasEnteredEmailForApply', 'true');
+        btn.disabled = true;
+        
+        try {
+            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
+            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
+            
+            let app;
+            if (!getApps().length) {
+                app = initializeApp({ projectId: "trainaitogain-50c19" });
+            } else {
+                app = getApp();
+            }
+            const db = getFirestore(app);
+            
+            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            
+            await addDoc(collection(db, "leads"), {
+              firstName: nameInput || 'Applicant',
+              email: emailInput,
+              timestamp: serverTimestamp(),
+              source: window.location.href + ' (Apply Modal)',
+              referred_by: refCode,
+              status: 'Application Started' // They are applying right now
+            });
+            
+            localStorage.setItem('hasEnteredEmailForApply', 'true');
+            
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
+            
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (refCode) {
+                targetUrl += "?ref=" + encodeURIComponent(refCode);
+            }
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+            
+        } catch (err) {
+            console.error(err);
+            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+        }
+      }
+    </script>
+    <style>
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+  </nav>
+
+<section style="padding: 64px 0 24px; background:var(--white); border-bottom:1px solid var(--gray-200);">
+  <div class="container" style="max-width:1200px; text-align:center;">
+    <h1 style="font-size:40px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Partner Dashboard</h1>
+    <p style="font-size:16px; color:var(--gray-500); margin-bottom:32px; max-width:600px; margin-left:auto; margin-right:auto;">Enter your referral code to view your pipeline. Keep statuses up to date to track your bonus goals!</p>
+    
+    <div id="search-box-container" style="background:var(--gray-50); padding:24px; border-radius:var(--radius-lg); border:1px solid var(--gray-200); max-width:500px; margin:0 auto;">
+        <form id="dashboard-form" style="display:flex; gap:16px;">
+            <input type="text" id="ref-input" placeholder="Enter your Ref Code (e.g., james2024)" required style="flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font); font-size:16px;">
+            <button type="submit" id="load-btn" class="btn-primary">Load Pipeline</button>
+        </form>
+    </div>
+  </div>
+</section>
+
+<section id="results-section" style="padding: 48px 0 64px; flex:1; display:none;">
+  <div class="container" style="max-width:1200px;">
+    
+    <!-- Dashboard Metrics Grid -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px; margin-bottom:48px;">
+        
+        <!-- Weekly Earnings Widget -->
+        <div style="background:var(--gray-900); color:var(--white); border-radius:var(--radius-lg); padding:32px; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;">
+            <!-- Decorative bg -->
+            <div style="position:absolute; top:-50px; right:-50px; width:150px; height:150px; background:var(--primary); opacity:0.05; filter:blur(40px); border-radius:50%;"></div>
+            
+            <div style="position:relative; z-index:1;">
+                <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary); font-weight:800; margin-bottom:8px;">Weekly Estimated Earnings <span style="color:var(--gray-400); font-weight:500; text-transform:none; letter-spacing:normal; margin-left:8px;" id="current-week-date"></span></div>
+                <h2 style="font-size:42px; font-weight:800; margin:0; color:var(--primary);">$<span id="bonus-amount">0</span></h2>
+            </div>
+            
+            <div style="margin-top:24px; padding-top:24px; border-top:1px solid var(--gray-800); position:relative; z-index:1;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div style="font-size:14px; color:var(--gray-400);">Completed Applications</div>
+                    <div style="font-size:14px; font-weight:800;"><span id="applied-count-bonus">0</span> <span style="color:var(--primary);">(+$5)</span></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <div style="font-size:14px; color:var(--gray-400);">Successful Hires 🎉</div>
+                    <div style="font-size:14px; font-weight:800;"><span id="hires-count-bonus">0</span> <span style="color:var(--primary);">(+$30)</span></div>
+                </div>
+                <div style="font-size:13px; font-weight:800; color:var(--primary); background:rgba(34,197,94,0.1); padding:10px 16px; border-radius:var(--radius-sm); display:flex; align-items:center; gap:8px;" id="mega-bonus-ui">
+                    <span>🔥</span> 5 Hires = +$200 Bonus!
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Goal Widget -->
+        <div style="background:var(--gray-900); color:var(--white); border-radius:var(--radius-lg); padding:32px; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;">
+            <!-- Decorative bg -->
+            <div style="position:absolute; bottom:-50px; left:-50px; width:150px; height:150px; background:var(--primary); opacity:0.05; filter:blur(40px); border-radius:50%;"></div>
+            
+            <div style="position:relative; z-index:1;">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px;">🎯</div>
+                    <h3 style="font-size:22px; font-weight:800; margin:0;">Network Goal</h3>
+                </div>
+                <p style="color:var(--gray-400); font-size:15px; margin:0; line-height:1.6;">Help us reach our network-wide goal of <strong>10 successful hires</strong> this month. Every candidate you refer and guide through the pipeline brings us closer to the finish line!</p>
+            </div>
+            
+            <div style="margin-top:32px; position:relative; z-index:1;">
+                <div style="display:flex; justify-content:space-between; font-weight:800; color:var(--white); font-size:14px; margin-bottom:12px;">
+                    <span><span id="goal-hires-count">0</span> Hires Achieved</span>
+                    <span style="color:var(--gray-500);">10 Goal</span>
+                </div>
+                <div style="background:var(--gray-800); border-radius:100px; height:12px; overflow:hidden;">
+                    <div id="goal-progress-bar" style="background:var(--primary); height:100%; width:0%; border-radius:100px; transition:width 1s cubic-bezier(0.4, 0, 0.2, 1); box-shadow:inset 0 0 8px rgba(0,0,0,0.2);"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <!-- Admin Filters -->
+    <div id="admin-filters" style="display:none; margin-bottom: 24px; gap:8px; flex-wrap:wrap;"></div>
+
+    <!-- Pipeline Wrapper -->
+    <div style="background:var(--gray-900); padding:40px; border-radius:32px; margin-bottom:48px; position:relative; box-shadow:var(--shadow-lg);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+            <h3 style="color:var(--white); font-size:24px; font-weight:800; margin:0;">Applicant Pipeline</h3>
+            <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                
+                <button id="btn-export-csv" onclick="exportLeadsCSV()" style="background:var(--primary); color:var(--white); border:none; padding:8px 16px; border-radius:var(--radius-sm); font-size:14px; font-weight:700; cursor:pointer; display:none;">
+                    Export Emails (CSV)
+                </button>
+
+                <!-- Search Bar -->
+                <input type="text" id="lead-search" placeholder="Search by name or email..." style="background:var(--gray-800); border:1px solid var(--gray-700); color:var(--white); padding:8px 16px; border-radius:var(--radius-sm); font-size:14px; outline:none; min-width:200px;" oninput="renderBoard()">
+                <!-- View Toggles -->
+                <div style="display:flex; background:var(--gray-800); border-radius:var(--radius-sm); padding:4px;">
+                    <button id="btn-view-kanban" class="view-toggle-btn active" onclick="setViewMode('kanban')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle; margin-right:4px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Board
+                    </button>
+                    <button id="btn-view-list" class="view-toggle-btn" onclick="setViewMode('list')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle; margin-right:4px;"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                        List
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Kanban Board View -->
+        <div id="kanban-view-container" class="kanban-board">
+            
+            <div class="kanban-col">
+                <div class="kanban-header">
+                    Captured <span id="count-captured" class="kanban-count">0</span>
+                </div>
+                <div id="col-captured" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+
+            <div class="kanban-col">
+                <div class="kanban-header">
+                    Application Started <span id="count-applied" class="kanban-count">0</span>
+                </div>
+                <div id="col-applied" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+
+            <div class="kanban-col">
+                <div class="kanban-header">
+                    Application Completed <span id="count-completed" class="kanban-count">0</span>
+                </div>
+                <div id="col-completed" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+
+            <div class="kanban-col">
+                <div class="kanban-header">
+                    Offer <span id="count-offer" class="kanban-count">0</span>
+                </div>
+                <div id="col-offer" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+
+            <div class="kanban-col">
+                <div class="kanban-header">
+                    Hired 🎉 <span id="count-hired" class="kanban-count">0</span>
+                </div>
+                <div id="col-hired" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+
+        </div>
+        
+        <!-- List View Table -->
+        <div id="list-view-container" style="display:none; overflow-x:auto;">
+            <table class="list-view-table">
+                <thead>
+                    <tr>
+                        <th>Candidate Name</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="list-view-body">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    
+    
+
+  </div>
+</section>
+
+<!-- Footer placeholder, will be replaced by script -->
+<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <img src="logo.svg" style="height:24px; filter: brightness(0) invert(1);" alt="TrainAIToGain Logo" />
+            <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+          <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <a href="disclosure.html" style="color:var(--gray-500); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-500)'">Affiliate Disclosure</a>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:24px;">
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Global Affiliate Tracker -->
+    <script>
+      (function() {
+        var ref = new URLSearchParams(window.location.search).get('ref');
+        if (ref) localStorage.setItem('affiliate_ref', ref);
+      })();
+    </script>
+  </footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, query, where, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    projectId: "trainaitogain-50c19"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  let globalLeads = []; // Store leads in memory
+
+  function maskEmail(email) {
+    return email || "Unknown";
+  }
+
+  // Handle status update
+  window.updateLeadStatus = async function(leadId, newStatus) {
+    const selectEl = document.getElementById(`status-${leadId}`);
+    const origStatus = selectEl.getAttribute('data-original');
+    
+    selectEl.disabled = true;
+    try {
+      const leadRef = doc(db, "leads", leadId);
+      await updateDoc(leadRef, {
+        status: newStatus
+      });
+      // Update local state and re-render
+      const leadObj = globalLeads.find(l => l.id === leadId);
+      if (leadObj) leadObj.status = newStatus;
+      renderBoard();
+    } catch (err) {
+      console.error(err);
+      alert("Error updating status. Make sure you have permission.");
+      selectEl.value = origStatus; // Revert on failure
+    } finally {
+      selectEl.disabled = false;
+    }
+  }
+
+  window.deleteLead = async function(leadId) {
+    if (!confirm("Are you sure you want to permanently delete this lead? This action cannot be undone.")) return;
+    
+    try {
+      const leadRef = doc(db, "leads", leadId);
+      await deleteDoc(leadRef);
+      // Remove from local state
+      globalLeads = globalLeads.filter(l => l.id !== leadId);
+      renderBoard();
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting lead. Make sure you have permission.");
+    }
+  }
+
+  window.activeAdminFilter = 'all';
+  window.setAdminFilter = function(refName) {
+    window.activeAdminFilter = refName;
+    renderBoard();
+  }
+
+  window.currentViewMode = 'kanban';
+  window.setViewMode = function(mode) {
+    window.currentViewMode = mode;
+    renderBoard();
+  }
+
+  function renderBoard() {
+    const cols = {
+        'Captured': document.getElementById('col-captured'),
+        'Application Started': document.getElementById('col-applied'),
+        'Application Completed': document.getElementById('col-completed'),
+        'Offer': document.getElementById('col-offer'),
+        'Hired': document.getElementById('col-hired')
+    };
+    const counts = {
+        'Captured': 0,
+        'Application Started': 0,
+        'Application Completed': 0,
+        'Offer': 0,
+        'Hired': 0
+    };
+
+    // View Toggle Logic
+    const viewKanbanBtn = document.getElementById('btn-view-kanban');
+    const viewListBtn = document.getElementById('btn-view-list');
+    const kanbanContainer = document.getElementById('kanban-view-container');
+    const listContainer = document.getElementById('list-view-container');
+    
+    if (window.currentViewMode === 'list') {
+        viewListBtn.classList.add('active');
+        viewKanbanBtn.classList.remove('active');
+        listContainer.style.display = 'block';
+        kanbanContainer.style.display = 'none';
+    } else {
+        viewKanbanBtn.classList.add('active');
+        viewListBtn.classList.remove('active');
+        kanbanContainer.style.display = 'flex';
+        listContainer.style.display = 'none';
+    }
+
+    // Clear columns & list body
+    Object.values(cols).forEach(col => col.innerHTML = '');
+    const listBody = document.getElementById('list-view-body');
+    if (listBody) listBody.innerHTML = '';
+    
+    const currentRef = document.getElementById('ref-input').value.trim().toLowerCase();
+    const filterContainer = document.getElementById('admin-filters');
+    
+    if (currentRef === 'admin_all') {
+      filterContainer.style.display = 'flex';
+      const uniqueRefs = [...new Set(globalLeads.map(l => l.referred_by || 'Unknown'))].sort();
+      
+      let html = `<button onclick="setAdminFilter('all')" style="padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 100px; cursor:pointer; border: 1px solid var(--gray-300); background: ${window.activeAdminFilter === 'all' ? 'var(--primary)' : 'var(--white)'}; color: ${window.activeAdminFilter === 'all' ? 'var(--white)' : 'var(--gray-600)'};">All</button>`;
+      
+      uniqueRefs.forEach(refName => {
+        const isActive = window.activeAdminFilter === refName;
+        html += `<button onclick="setAdminFilter('${refName}')" style="padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 100px; cursor:pointer; border: 1px solid var(--gray-300); background: ${isActive ? 'var(--primary)' : 'var(--white)'}; color: ${isActive ? 'var(--white)' : 'var(--gray-600)'};">${refName}</button>`;
+      });
+      filterContainer.innerHTML = html;
+    } else {
+      filterContainer.style.display = 'none';
+      window.activeAdminFilter = 'all';
+    }
+
+    // Search Filter
+    const searchQuery = (document.getElementById('lead-search')?.value || '').toLowerCase().trim();
+
+    let leadsToRender = currentRef === 'admin_all' && window.activeAdminFilter !== 'all' 
+        ? globalLeads.filter(l => (l.referred_by || 'Unknown') === window.activeAdminFilter)
+        : globalLeads;
+        
+    if (searchQuery) {
+        leadsToRender = leadsToRender.filter(l => {
+            const name = (l.firstName || '').toLowerCase();
+            const email = (l.email || '').toLowerCase();
+            return name.includes(searchQuery) || email.includes(searchQuery);
+        });
+    }
+
+    leadsToRender.forEach(lead => {
+      let status = lead.status || 'Captured'; // Default to Captured
+      if (status === 'Applied') status = 'Application Started'; // Legacy mapping
+      
+      if (counts[status] !== undefined) {
+          counts[status]++;
+          
+          const dateStr = lead.timestamp ? new Date(lead.timestamp.toMillis()).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'Unknown';
+          const masked = maskEmail(lead.email);
+          const refBadge = currentRef === 'admin_all' && lead.referred_by ? `<div style="background:var(--primary-light); color:var(--primary-dark); font-size:10px; font-weight:800; padding:2px 6px; border-radius:100px; display:inline-block; margin-bottom:8px;">REF: ${lead.referred_by}</div>` : '';
+          
+          let statusUI = '';
+          if (currentRef === 'admin_all') {
+              statusUI = `
+                  <select id="status-${lead.id}" data-original="${status}" class="status-select" onchange="updateLeadStatus('${lead.id}', this.value)">
+                      <option value="Captured" ${status === 'Captured' ? 'selected' : ''}>Captured</option>
+                      <option value="Application Started" ${status === 'Application Started' ? 'selected' : ''}>Application Started</option>
+                      <option value="Application Completed" ${status === 'Application Completed' ? 'selected' : ''}>Application Completed</option>
+                      <option value="Offer" ${status === 'Offer' ? 'selected' : ''}>Offer</option>
+                      <option value="Hired" ${status === 'Hired' ? 'selected' : ''}>Hired 🎉</option>
+                  </select>
+              `;
+          } else {
+              // Read-only Badge for regular affiliates
+              const cssClass = status.replace(/\s+/g, '-').replace('🎉', '').trim();
+              statusUI = `<div class="status-badge ${cssClass}">${status}</div>`;
+          }
+          
+          let deleteBtn = '';
+          if (currentRef === 'admin_all') {
+            deleteBtn = `<button onclick="deleteLead('${lead.id}')" style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:14px; padding:4px;" title="Delete Lead">🗑️</button>`;
+          }
+          
+          // Render Kanban Card
+          const card = document.createElement('div');
+          card.className = 'lead-card';
+          card.style.position = 'relative';
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                ${refBadge}
+                ${deleteBtn}
+            </div>
+            <div style="font-weight:700; color:var(--white); font-size:16px; margin-top:${refBadge || deleteBtn ? '8px' : '0'};">${lead.firstName || 'Anonymous'}</div>
+            <div style="color:var(--gray-500); font-size:12px; font-family:monospace; margin-bottom:8px;"><a href="mailto:${masked}" style="color:inherit; text-decoration:underline;">${masked}</a></div>
+            <div style="background:rgba(16,185,129,0.1); color:var(--primary); font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; display:inline-block; margin-bottom:8px; border:1px solid rgba(16,185,129,0.2);">${lead.target_role || 'General Application'}</div>
+            <div style="color:var(--gray-400); font-size:12px; margin-bottom:12px;">Captured: ${dateStr}</div>
+            ${statusUI}
+          `;
+          cols[status].appendChild(card);
+          
+          // Render List Row
+          if (listBody) {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                  <td style="font-weight:700;">${lead.firstName || 'Anonymous'} ${refBadge}</td>
+                  <td style="font-family:monospace; color:var(--gray-600);"><a href="mailto:${masked}" style="color:inherit; text-decoration:underline;">${masked}</a></td>
+                  <td>${dateStr}</td>
+                  <td>${statusUI}</td>
+                  <td>${deleteBtn}</td>
+              `;
+              listBody.appendChild(tr);
+          }
+      }
+    });
+
+    // Update counts
+    document.getElementById('count-captured').innerText = counts['Captured'];
+    document.getElementById('count-applied').innerText = counts['Application Started'];
+    document.getElementById('count-completed').innerText = counts['Application Completed'];
+    document.getElementById('count-offer').innerText = counts['Offer'];
+    document.getElementById('count-hired').innerText = counts['Hired'];
+
+    // Update Bonus UI
+    const hiresCount = counts['Hired'];
+    const appliedCount = counts['Application Completed'];
+    if (document.getElementById('goal-hires-count')) {
+        document.getElementById('goal-hires-count').innerText = hiresCount;
+        let progressPercent = (hiresCount / 10) * 100;
+        if (progressPercent > 100) progressPercent = 100;
+        document.getElementById('goal-progress-bar').style.width = progressPercent + '%';
+    }
+    
+    if (document.getElementById('applied-count-bonus')) {
+        document.getElementById('applied-count-bonus').innerText = appliedCount;
+        document.getElementById('hires-count-bonus').innerText = hiresCount;
+        
+        let totalBonus = (appliedCount * 5) + (hiresCount * 30);
+        if (hiresCount >= 5) {
+            totalBonus += 200;
+            document.getElementById('mega-bonus-ui').innerHTML = '🔥 $200 Mega-Bonus Unlocked!';
+        } else {
+            document.getElementById('mega-bonus-ui').innerHTML = `🔥 ${5 - hiresCount} more Hires to unlock $200 Bonus!`;
+        }
+        document.getElementById('bonus-amount').innerText = totalBonus;
+        
+        const d1 = new Date();
+        const startOfWeek = new Date(d1.setDate(d1.getDate() - d1.getDay()));
+        const d2 = new Date();
+        const endOfWeek = new Date(d2.setDate(d2.getDate() - d2.getDay() + 6));
+        const formatOptions = { month: 'short', day: 'numeric' };
+        document.getElementById('current-week-date').innerText = `(Week of ${startOfWeek.toLocaleDateString(undefined, formatOptions)} - ${endOfWeek.toLocaleDateString(undefined, formatOptions)})`;
+    }
+  }
+
+  window.loadDashboard = async function() {
+    const refCode = document.getElementById('ref-input').value.trim();
+    if (!refCode) return;
+    
+    const url = new URL(window.location);
+    url.searchParams.set('ref', refCode);
+    window.history.pushState({}, '', url);
+    
+    const btn = document.getElementById('load-btn');
+    const origText = btn.innerHTML;
+    btn.innerHTML = 'Loading...';
+    btn.disabled = true;
+    
+    document.getElementById('results-section').style.display = 'block';
+    
+    try {
+      // 1. Fetch old leads with emails
+      let qLeads;
+      if (refCode.toLowerCase() === 'admin_all') {
+        qLeads = collection(db, "leads");
+      } else {
+        qLeads = query(
+          collection(db, "leads"), 
+          where("referred_by", "==", refCode)
+        );
+      }
+      
+      const leadsSnapshot = await getDocs(qLeads);
+      globalLeads = [];
+      leadsSnapshot.forEach((doc) => {
+        globalLeads.push({
+            id: doc.id,
+            ...doc.data()
+        });
+      });
+
+      // 2. Fetch new anonymous pipeline events
+      let qEvents;
+      if (refCode.toLowerCase() === 'admin_all') {
+        qEvents = collection(db, "pipeline_events");
+      } else {
+        qEvents = query(
+          collection(db, "pipeline_events"), 
+          where("referral_id", "==", refCode)
+        );
+      }
+      const eventsSnapshot = await getDocs(qEvents);
+      
+      let sessions = {};
+      eventsSnapshot.forEach((doc) => {
+          const data = doc.data();
+          const sessId = data.session_id || doc.id;
+          if (!sessions[sessId]) {
+              sessions[sessId] = {
+                  id: sessId,
+                  firstName: 'Anonymous User',
+                  email: 'session:' + sessId.substring(0, 8),
+                  status: 'Captured',
+                  referred_by: data.referral_id,
+                  timestamp: data.timestamp,
+                  events: []
+              };
+          }
+          sessions[sessId].events.push(data.event_type);
+          
+          if (data.event_type === 'application_started') {
+              sessions[sessId].status = 'Application Started';
+          }
+      });
+      
+      // Merge anonymous sessions into globalLeads (only if they aren't already real leads!)
+      Object.values(sessions).forEach(sess => {
+          // If this session has a real lead associated with it (or we already have a bunch of real leads),
+          // don't clutter the board with 'Anonymous' cards unless they explicitly clicked Apply
+          const isJustPageView = sess.events.length === 1 && sess.events[0] === 'page_view';
+          
+          if (!isJustPageView) {
+              globalLeads.push(sess);
+          }
+      });
+      
+      globalLeads.sort((a, b) => {
+        const timeA = a.timestamp ? a.timestamp.toMillis() : 0;
+        const timeB = b.timestamp ? b.timestamp.toMillis() : 0;
+        return timeB - timeA; 
+      });
+      
+      renderBoard();
+      
+    } catch (err) {
+      console.error(err);
+      alert("Error loading dashboard data.");
+    } finally {
+      btn.innerHTML = origText;
+      btn.disabled = false;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    if (ref) {
+      document.getElementById('ref-input').value = ref;
+      if (ref.toLowerCase() === 'admin_all') {
+         // Show admin dashboard header
+         const headerContainer = document.createElement('div');
+         headerContainer.innerHTML = `<div style="background:var(--primary); color:var(--white); padding:12px; border-radius:var(--radius-sm); margin-top:24px; font-weight:800; font-size:14px; text-align:center;">🛡️ ADMIN OVERVIEW ACTIVE</div>`;
+         document.getElementById('search-box-container').parentElement.appendChild(headerContainer);
+      }
+      loadDashboard();
+    }
+    const form = document.getElementById('dashboard-form');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        loadDashboard();
+      });
+    }
+  });
+
+</script>
+
+<!-- GLOBAL FIREBASE TRACKING (PRIORITY 6) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+      apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
+      authDomain: "trainaitogain-50c19.firebaseapp.com", 
+      projectId: "trainaitogain-50c19", 
+      storageBucket: "trainaitogain-50c19.firebasestorage.app", 
+      messagingSenderId: "637746276432", 
+      appId: "1:637746276432:web:1a7cfa65357b0bc3b90955", 
+      measurementId: "G-RH65NXKCHE" 
+    };
+
+    let app;
+    try { app = initializeApp(firebaseConfig); } catch(e) {}
+    const db = getFirestore(app);
+
+    let sessionId = localStorage.getItem('tgt_session_id');
+    if (!sessionId) {
+        sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('tgt_session_id', sessionId);
+    }
+
+    const currentRef = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || 'organic';
+
+    if (!sessionStorage.getItem('page_view_logged_' + window.location.pathname)) {
+        addDoc(collection(db, "pipeline_events"), {
+            event_type: "page_view",
+            referral_id: currentRef,
+            session_id: sessionId,
+            page_url: window.location.pathname,
+            timestamp: serverTimestamp()
+        }).catch(e => console.error(e));
+        sessionStorage.setItem('page_view_logged_' + window.location.pathname, 'true');
+    }
+
+    document.addEventListener('click', (e) => {
+        let isMercorLink = false;
+        
+        const link = e.target.closest('a');
+        if (link && link.href.includes('t.mercor.com')) {
+            isMercorLink = true;
+        }
+        
+        const btn = e.target.closest('button');
+        if (btn && btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('t.mercor.com')) {
+            isMercorLink = true;
+        }
+
+        if (isMercorLink) {
+            addDoc(collection(db, "pipeline_events"), {
+                event_type: "application_started",
+                referral_id: currentRef,
+                session_id: sessionId,
+                page_url: window.location.pathname,
+                timestamp: serverTimestamp()
+            }).catch(console.error);
+        }
+    });
+</script>
+<script src="chat.js?v=13"></script>
+<script>
+    // Hide Guide Assistant on Dashboard to prevent UI overlap with the Kanban board
+    document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+            const chatWidget = document.getElementById('chat-widget-container');
+            if (chatWidget) chatWidget.style.display = 'none';
+            const chatToggle = document.getElementById('chat-widget-toggle');
+            if (chatToggle) chatToggle.style.display = 'none';
+        }, 500);
+    });
+
+  window.exportLeadsCSV = function() {
+      // Get the currently filtered leads
+      const searchQuery = (document.getElementById('lead-search')?.value || '').toLowerCase().trim();
+      let leadsToExport = window.currentRef === 'admin_all' && window.activeAdminFilter !== 'all' 
+          ? globalLeads.filter(l => (l.referred_by || 'Unknown') === window.activeAdminFilter)
+          : globalLeads;
+          
+      if (searchQuery) {
+          leadsToExport = leadsToExport.filter(l => {
+              const name = (l.firstName || '').toLowerCase();
+              const email = (l.email || '').toLowerCase();
+              return name.includes(searchQuery) || email.includes(searchQuery);
+          });
+      }
+
+      // Convert to CSV
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Name,Email,Role,Status,Date,Referral\n";
+      
+      leadsToExport.forEach(lead => {
+          if (!lead.email || lead.email.startsWith('session:')) return; // Skip anonymous
+          const name = (lead.firstName || 'Unknown').replace(/,/g, '');
+          const email = lead.email.replace(/,/g, '');
+          const role = (lead.target_role || 'General').replace(/,/g, '');
+          const status = (lead.status || 'Captured').replace(/,/g, '');
+          const date = lead.timestamp ? new Date(lead.timestamp.toMillis()).toLocaleDateString() : 'Unknown';
+          const ref = (lead.referred_by || '').replace(/,/g, '');
+          
+          csvContent += `${name},${email},${role},${status},${date},${ref}\n`;
+      });
+      
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "trainaitogain_leads.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  };
+
+</script>
+</body>
+
+</html>

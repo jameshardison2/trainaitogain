@@ -1,0 +1,91 @@
+// waves.ts
+
+// Define interfaces for our JSON data
+interface WaveRole {
+  id: string;
+  title: string;
+  icon: string;
+  status: string;
+  badgeClass: string;
+  description: string;
+  type: 'wave' | 'evergreen';
+}
+
+interface WavesData {
+  lastUpdated: string;
+  roles: WaveRole[];
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await fetch('waves.json');
+    const data: WavesData = await response.json();
+    const roles = data.roles;
+
+    // 1. Render Index.html wave cards
+    const indexGrid = document.querySelector('#waves .feature-grid');
+    if (indexGrid) {
+      indexGrid.innerHTML = '';
+      roles.filter((r) => r.type === 'wave').forEach((role) => {
+        const bgVar = role.badgeClass === 'orange' ? 'var(--orange)' : 'var(--black)';
+        indexGrid.innerHTML += `
+        <div class="feature-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="feature-card-title">${role.title}</div>
+            <span style="background:${bgVar}; color:var(--white); padding:2px 8px; border-radius:12px; font-size:12px; font-weight:bold;">${role.status}</span>
+          </div>
+          <div class="feature-card-body">${role.description}</div>
+        </div>
+        `;
+      });
+    }
+
+    // 2. Render Apply.html wave & evergreen cards
+    const applyWaveTrack = document.querySelector('#waves-track');
+    const applyEvergreenTrack = document.querySelector('#evergreen-track');
+    
+    if (applyWaveTrack) {
+      applyWaveTrack.innerHTML = '';
+      roles.filter((r) => r.type === 'wave').forEach((role) => {
+        applyWaveTrack.innerHTML += `
+          <div class="opp-card">
+            <div class="opp-card-icon">${role.icon}</div>
+            <div class="opp-card-title" style="font-size:18px; font-weight:800; margin-bottom:8px;">${role.title} (Active Wave)</div>
+            <div class="opp-card-desc" style="font-size:14px; color:var(--gray-500); line-height:1.6; margin-bottom:16px;">${role.description}</div>
+          </div>
+        `;
+      });
+    }
+
+    if (applyEvergreenTrack) {
+      applyEvergreenTrack.innerHTML = '';
+      roles.filter((r) => r.type === 'evergreen').forEach((role) => {
+        applyEvergreenTrack.innerHTML += `
+          <div class="opp-card">
+            <div class="opp-card-icon">${role.icon}</div>
+            <div class="opp-card-title" style="font-size:18px; font-weight:800; margin-bottom:8px;">${role.title}</div>
+            <div class="opp-card-desc" style="font-size:14px; color:var(--gray-500); line-height:1.6; margin-bottom:16px;">${role.description}</div>
+          </div>
+        `;
+      });
+    }
+
+    // 3. Render Affiliate.html wave summary
+    const affiliateGrid = document.querySelector('#affiliate-waves-grid');
+    if (affiliateGrid) {
+      affiliateGrid.innerHTML = '';
+      roles.filter((r) => r.type === 'wave').forEach((role) => {
+        const bgVar = role.badgeClass === 'orange' ? 'var(--orange)' : 'var(--black)';
+        affiliateGrid.innerHTML += `
+        <div class="feature-card" style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 700; font-size: 16px;">${role.title}</span>
+          <span style="background: ${bgVar}; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">${role.status}</span>
+        </div>
+        `;
+      });
+    }
+
+  } catch (error) {
+    console.error("Error loading wave data:", error);
+  }
+});

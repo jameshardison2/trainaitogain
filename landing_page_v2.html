@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure a High-Paying AI Job — TrainAIToGain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+<link rel="canonical" href="https://trainaitogain.com/">
+<meta name="description" content="Master the AI model training interview and bypass the waitlist for high-paying RLHF jobs at Outlier, Micro1, and Mercor.">
+<meta property="og:title" content="Secure a High-Paying AI Job - TrainAIToGain">
+<meta property="og:description" content="Master the AI model training interview and bypass the waitlist for high-paying RLHF jobs at Outlier, Micro1, and Mercor.">
+<meta property="og:url" content="https://trainaitogain.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Secure a High-Paying AI Job - TrainAIToGain">
+<meta name="twitter:description" content="Master the AI model training interview and bypass the waitlist for high-paying RLHF jobs at Outlier, Micro1, and Mercor.">
+  <meta name="keywords" content="Mercor AI interview, Mercor interview questions, Mercor SWE evaluator, Mercor jobs, Mercor referral, train AI models, RLHF jobs, Mercor $150 hr, Mercor medical evaluator">
+
+  <!-- Google tag (gtag.js) - Deferred for Consent -->
+  <script>
+    function loadGA() {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+      document.head.appendChild(script);
+      
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7Z54KYTV6B');
+    }
+  </script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      projectId: "trainaitogain-50c19"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    window.handleIntake = async function(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Saving...';
+      btn.disabled = true;
+      
+      const firstName = form.querySelector('input[type="text"]').value;
+      const email = form.querySelector('input[type="email"]').value;
+      
+      try {
+        const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+        await addDoc(collection(db, "leads"), {
+          firstName: firstName,
+          email: email,
+          timestamp: serverTimestamp(),
+          source: window.location.href,
+          referred_by: refCode
+        });
+        
+        // Push lead to Instantly.ai CRM Webhook
+        const instantlyWebhookUrl = 'https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec';
+        if (instantlyWebhookUrl !== "YOUR_INSTANTLY_WEBHOOK_URL") {
+          try {
+            await fetch(instantlyWebhookUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: email, firstName: firstName, source: window.location.href, referred_by: refCode })
+            });
+          } catch (webhookError) {
+            console.error("Error sending to Instantly:", webhookError);
+          }
+        }
+        // Fire Google Analytics Conversion Event if GA is loaded
+        if(typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            'event_category': 'lead_magnet',
+            'event_label': 'Companion_Guide'
+          });
+        }
+
+        // Trigger confetti if available
+        if(typeof confetti === 'function') {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        }
+        
+        // Inline success message
+        if (form.parentElement) {
+          form.parentElement.innerHTML = `
+            <div style="text-align:center; padding: 20px 0;">
+              <div style="width:64px; height:64px; background:#10b981; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin: 0 auto 24px;">✓</div>
+              <h3 style="font-size:24px; font-weight:800; color:#111827; margin-bottom:12px;">Your Guide is on the way!</h3>
+              <p style="color:#4b5563; font-size:16px; margin-bottom:32px; line-height:1.6;">We just emailed it to you. While you wait, <strong>let's get you hired.</strong></p>
+              <a href="javascript:void(0)" onclick="openApplyModal('Home_Hero')" class="btn-primary" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:16px; font-size:18px; text-decoration:none; box-shadow:var(--shadow-orange);">Access The Application Portal ➔</a>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    };
+
+    // Safely attach the submit listener once DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.leadMagnetForm').forEach(form => {
+        form.addEventListener('submit', window.handleIntake);
+      });
+    });
+  </script>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+</head>
+<body>
+
+  <!-- ─── Nav ─────────────────────────────────────────── -->
+  <nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg?v=2" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; flex-direction:column; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+            <span style="color:var(--primary); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">We Get You Hired.</span>
+          </div>
+          </a>
+          <input type="checkbox" id="nav-toggle" style="display:none;" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="nav-toggle-icon"></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="hiring-pipeline.html" class="nav-link" style="background:var(--primary); color:var(--white); padding:8px 16px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> The Playbook</a></li>
+          <li><a href="apply.html">Opportunities</a></li>
+          <li><a href="guide-download.html" style="display:flex; align-items:center; gap:6px;">Blueprint <span style="background:var(--primary); color:var(--white); font-size:10px; padding:2px 6px; border-radius:100px; font-weight:800;">FREE</span></a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Application Interceptor Modal -->
+    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
+      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
+        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
+          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
+        </div>
+        <div style="padding:24px;">
+          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official application portal.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
+          </div>
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
+          </div>
+          
+          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
+            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
+            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+          </form>
+
+          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.currentApplySource = 'unknown';
+      function openApplyModal(source) {
+        window.currentApplySource = source;
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
+        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
+        
+        // If they already entered their email, don't ask again
+        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
+            window.open(targetUrl, '_blank');
+            return;
+        }
+
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'flex';
+      }
+      function closeApplyModal() {
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'none';
+        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
+        document.getElementById('modalApplyBtn').disabled = false;
+      }
+      async function handleModalSubmit(e) {
+        e.preventDefault();
+        var emailInput = document.getElementById('applyModalEmail').value.trim();
+        var nameInput = document.getElementById('applyModalName').value.trim();
+        if (!emailInput) {
+            alert('Please enter your email to proceed.');
+            return;
+        }
+        
+        var btn = document.getElementById('modalApplyBtn');
+        btn.innerHTML = 'Routing...';
+        localStorage.setItem('hasEnteredEmailForApply', 'true');
+        btn.disabled = true;
+        
+        try {
+            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
+            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
+            
+            let app;
+            if (!getApps().length) {
+                app = initializeApp({ projectId: "trainaitogain-50c19" });
+            } else {
+                app = getApp();
+            }
+            const db = getFirestore(app);
+            
+            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            
+            await addDoc(collection(db, "leads"), {
+              firstName: nameInput || 'Applicant',
+              email: emailInput,
+              timestamp: serverTimestamp(),
+              source: window.location.href + ' (Apply Modal)',
+              referred_by: refCode,
+              status: 'Application Started' // They are applying right now
+            });
+            
+            localStorage.setItem('hasEnteredEmailForApply', 'true');
+            
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
+            
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (refCode) {
+                targetUrl += "?ref=" + encodeURIComponent(refCode);
+            }
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+            
+        } catch (err) {
+            console.error(err);
+            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+        }
+      }
+    </script>
+    <style>
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+  </nav>
+
+  
+  <!-- ─── New Direct-Response Hero ─────────────────────────────────────────── -->
+  <header style="padding: 80px 0 60px; background-color: var(--white);">
+    <div class="container">
+      
+      <!-- Main Two-Column Layout -->
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 60px; align-items: center;">
+        
+        <!-- Left Side: Hero Text and Social Proof -->
+        <div>
+          <div style="display:inline-block; background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 10px; border-radius:100px; margin-bottom:12px;">100% FLEXIBLE</div>
+          <h1 style="font-size:48px; font-weight:800; color:var(--black); letter-spacing:-0.03em; line-height:1.1; margin-bottom:16px;">
+            Earn $100-160/hr Doing AI Work On The Side
+          </h1>
+          <p style="font-size:20px; color:var(--gray-700); line-height:1.5; margin-bottom:32px;">
+            Train the world’s best AI models on your own schedule. Remote, flexible, no need to leave your current job.
+          </p>
+
+          <div style="display:flex; flex-direction:column; gap:24px;">
+            <!-- Fake Stripe Payout Notification -->
+            <div style="background:var(--white); border:1px solid #E5E7EB; border-radius:12px; padding:20px 28px; display:inline-flex; align-items:center; gap:24px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.05); width:100%; max-width:440px; text-align:left;">
+              <div style="background:#635BFF; border-radius:50%; width:56px; height:56px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </div>
+              <div>
+                <p style="margin:0; font-size:16px; font-weight:600; color:#111827;">Payout Initiated</p>
+                <p style="margin:0; font-size:26px; font-weight:800; color:#059669;">+$1,280.00</p>
+              </div>
+            </div>
+
+            <!-- High-Status Testimonial Quote -->
+            <div style="background:var(--white); border:1px solid #E5E7EB; border-radius:12px; padding:20px 28px; display:inline-flex; align-items:center; gap:24px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.05); width:100%; max-width:440px; text-align:left;">
+              <div style="width:56px; height:56px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+                <img src="https://i.pravatar.cc/150?img=32" alt="Dr. Sarah K." style="width:100%; height:100%; object-fit:cover;" />
+              </div>
+              <div>
+                <p style="margin:0 0 8px 0; font-size:15px; font-style:italic; color:#4B5563; line-height:1.5;">"Incredible remote opportunity. I consult for 5 hours a week and earn an extra $3k/mo."</p>
+                <p style="margin:0; font-size:14px; font-weight:700; color:#111827;">Dr. Sarah K. - Medical Expert</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Direct Application CTA -->
+        <div>
+          <div style="background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; padding: 40px; box-shadow: var(--shadow-xl); text-align:center;">
+            <div style="display:inline-block; background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 10px; border-radius:100px; margin-bottom:16px;">HIGH-PRIORITY ROUTING</div>
+            <h3 style="margin-top: 0; font-size: 28px; font-weight: 800; color: var(--black); margin-bottom: 12px; line-height:1.2;">Ready to bypass the waitlist?</h3>
+            <p style="color: var(--gray-500); font-size: 16px; margin-bottom: 32px; line-height:1.6;">Click below to securely access the Mercor application portal. Your application will be automatically prioritized via our verified partner link.</p>
+            
+            <a href="javascript:void(0)" onclick="openApplyModal('Home_Hero')" class="btn-primary" style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:20px; font-size:18px; text-decoration:none; box-shadow:var(--shadow-orange); border-radius:12px;">Access The Application Portal ➔</a>
+            
+            <div style="margin-top:24px; font-size:13px; color:var(--gray-400); display:flex; align-items:center; justify-content:center; gap:6px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Secure 256-bit Partner Routing
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+
+      </div>
+    </div>
+  <!-- ─── Footer ─────────────────────────────────────────── -->
+  <footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <img src="logo.svg" style="height:24px; filter: brightness(0) invert(1);" alt="TrainAIToGain Logo" />
+            <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+          <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <a href="disclosure.html" style="color:var(--gray-500); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-500)'">Affiliate Disclosure</a>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:24px;">
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Global Affiliate Tracker -->
+    <script>
+      (function() {
+        var ref = new URLSearchParams(window.location.search).get('ref');
+        if (ref) localStorage.setItem('affiliate_ref', ref);
+      })();
+    </script>
+  </footer>
+
+  <script>
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const myForm = e.target;
+        const formData = new FormData(myForm);
+        const submitBtn = myForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = 'Submitting...';
+      localStorage.setItem('hasEnteredEmailForApply', 'true');
+        submitBtn.style.opacity = '0.7';
+        submitBtn.disabled = true;
+
+        let actionUrl = '';
+        const payload = new URLSearchParams();
+
+        if (myForm.name === 'lead-magnet') {
+          // Instantly webhook
+          actionUrl = 'https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec';
+          payload.append('firstName', formData.get('firstName'));
+          payload.append('email', formData.get('email'));
+
+          // Fire Google Analytics Conversion Event if GA is loaded
+          if(typeof gtag === 'function') {
+            gtag('event', 'generate_lead', {
+              'event_category': 'lead_magnet',
+              'event_label': 'Companion_Guide'
+            });
+          }
+
+          // Trigger confetti if available
+          if(typeof confetti === 'function') {
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 }
+            });
+          }
+
+          // Submit to webhook
+          fetch(actionUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              firstName: formData.get('firstName') || '',
+              email: formData.get('email') || '',
+              source: 'Application Companion Guide'
+            })
+          }).catch(e => console.log('Webhook error', e));
+
+          // Replace form with permanent success message and clickable links
+          setTimeout(() => {
+            if (myForm.parentElement) {
+              myForm.parentElement.innerHTML = `
+                <div style="text-align:center; padding: 20px 0;">
+                  <div style="width:64px; height:64px; background:#10b981; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin: 0 auto 24px;">✓</div>
+                  <h3 style="font-size:24px; font-weight:800; color:#111827; margin-bottom:12px;">Success!</h3>
+                  <p style="color:#4b5563; font-size:16px; margin-bottom:32px; line-height:1.6;">We've also emailed you a backup copy.</p>
+                  <a href="/trainaitogain-hiring-blueprint.pdf" target="_blank" class="btn-primary" style="display:inline-block; width:100%; padding:16px; font-size:18px; text-decoration:none; margin-bottom:16px;">Download PDF Guide ➔</a>
+                </div>
+              `;
+            }
+          }, 800);
+          return;
+        }
+      });
+    });
+
+    // Consent Logic
+    document.addEventListener("DOMContentLoaded", () => {
+      if(!localStorage.getItem('cookieConsent')) {
+        setTimeout(() => {
+          document.getElementById('consent-banner').classList.add('show');
+        }, 1000);
+      } else if(localStorage.getItem('cookieConsent') === 'accepted') {
+        loadGA();
+      }
+    });
+
+    function acceptConsent() {
+      localStorage.setItem('cookieConsent', 'accepted');
+      document.getElementById('consent-banner').classList.remove('show');
+      loadGA();
+    }
+
+    function declineConsent() {
+      localStorage.setItem('cookieConsent', 'declined');
+      document.getElementById('consent-banner').classList.remove('show');
+    }
+  </script>
+
+  <!-- Consent Banner HTML -->
+  <div id="consent-banner">
+    <div class="consent-text">
+      <strong>We value your privacy.</strong> We use minimal cookies to analyze traffic and improve our onboarding resources. 
+      You can accept all cookies or decline non-essential ones.
+    </div>
+    <div class="consent-actions">
+      <button class="btn-secondary" style="padding: 10px 16px; font-size: 13px;" onclick="declineConsent()">Decline</button>
+      <button class="btn-primary" style="padding: 10px 16px; font-size: 13px;" onclick="acceptConsent()">Accept All</button>
+    </div>
+  </div>
+
+
+<script>
+  // Global Affiliate Tracker
+  (function() {
+    var ref = new URLSearchParams(window.location.search).get('ref');
+    if (ref) localStorage.setItem('affiliate_ref', ref);
+    var activeRef = localStorage.getItem('affiliate_ref');
+    if (activeRef) {
+      document.addEventListener('DOMContentLoaded', function() {
+        var links = document.querySelectorAll('a[href^="https://t.mercor.com"]');
+        links.forEach(function(link) {
+          try {
+            var url = new URL(link.href);
+            url.searchParams.set('ref', activeRef);
+            link.href = url.toString();
+          } catch(e) {}
+        });
+      });
+    }
+  })();
+</script>
+
+<!-- GLOBAL FIREBASE TRACKING (PRIORITY 6) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+      apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
+      authDomain: "trainaitogain-50c19.firebaseapp.com", 
+      projectId: "trainaitogain-50c19", 
+      storageBucket: "trainaitogain-50c19.firebasestorage.app", 
+      messagingSenderId: "637746276432", 
+      appId: "1:637746276432:web:1a7cfa65357b0bc3b90955", 
+      measurementId: "G-RH65NXKCHE" 
+    };
+
+    let app;
+    try { app = initializeApp(firebaseConfig); } catch(e) {}
+    const db = getFirestore(app);
+
+    let sessionId = localStorage.getItem('tgt_session_id');
+    if (!sessionId) {
+        sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('tgt_session_id', sessionId);
+    }
+
+    const currentRef = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || 'organic';
+
+    if (!sessionStorage.getItem('page_view_logged_' + window.location.pathname)) {
+        addDoc(collection(db, "pipeline_events"), {
+            event_type: "page_view",
+            referral_id: currentRef,
+            session_id: sessionId,
+            page_url: window.location.pathname,
+            timestamp: serverTimestamp()
+        }).catch(e => console.error(e));
+        sessionStorage.setItem('page_view_logged_' + window.location.pathname, 'true');
+    }
+
+    document.addEventListener('click', (e) => {
+        let isMercorLink = false;
+        
+        const link = e.target.closest('a');
+        if (link && link.href.includes('t.mercor.com')) {
+            isMercorLink = true;
+        }
+        
+        const btn = e.target.closest('button');
+        if (btn && btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('t.mercor.com')) {
+            isMercorLink = true;
+        }
+
+        if (isMercorLink) {
+            addDoc(collection(db, "pipeline_events"), {
+                event_type: "application_started",
+                referral_id: currentRef,
+                session_id: sessionId,
+                page_url: window.location.pathname,
+                timestamp: serverTimestamp()
+            }).catch(console.error);
+        }
+    });
+</script>
+<script src="chat.js?v=13"></script>
+</body>
+
+
+</html>
