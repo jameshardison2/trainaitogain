@@ -40,6 +40,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Active Hiring Waves</h2>
         <span style="background:var(--orange); color:white; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:800; margin-left:8px;">HIGH PRIORITY</span>
       </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:24px;">
+        <input type="text" id="jobSearchInput" placeholder="Search roles (e.g. Python, Medical)..." style="flex:1; min-width:200px; padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+        <select id="jobDomainFilter" style="padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; background:white; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+            <option value="ALL">All Categories</option>
+            <option value="SOFTWARE">Software & Engineering</option>
+            <option value="GENERAL">General & Expert</option>
+        </select>
+      </div>
+
       
       <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-waves')?.scrollBy({left: -320, behavior: 'smooth'})">‹</button>
       <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-waves')?.scrollBy({left: 320, behavior: 'smooth'})">›</button>
@@ -60,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const safePay = role.pay.replace(/'/g, "\\'");
 
       html += `
-        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+        <div class="feature-card opp-card" data-domain="${role.domain}" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
           <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
             <div style="display:flex; gap:8px;">
               <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
@@ -73,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">${tagsHtml}</div>
           <div style="display:flex; gap:8px;">
             <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.location.href='https://t.mercor.com/wbPMF'">Apply Now</button>
-            <button onclick="saveRole('${safeTitle}', '${safeDomain}', '${safePay}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
+            
           </div>
           <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your PDF resume ready</div>
         </div>
@@ -87,6 +97,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (carouselsSection && carouselsSection.firstChild) {
       carouselsSection.insertBefore(carouselWrapper, carouselsSection.firstChild);
     }
+
+    // Search and Filter Logic
+    const searchInput = document.getElementById('jobSearchInput') as HTMLInputElement;
+    const domainFilter = document.getElementById('jobDomainFilter') as HTMLSelectElement;
+    
+    function filterJobs() {
+      const term = searchInput.value.toLowerCase();
+      const domain = domainFilter.value;
+      const cards = carouselWrapper.querySelectorAll('.opp-card');
+      
+      cards.forEach((card: any) => {
+        const text = card.textContent?.toLowerCase() || '';
+        const cardDomain = card.getAttribute('data-domain');
+        
+        let matchesSearch = text.includes(term);
+        let matchesDomain = domain === 'ALL' || cardDomain === domain;
+        
+        if (matchesSearch && matchesDomain) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+    
+    searchInput?.addEventListener('input', filterJobs);
+    domainFilter?.addEventListener('change', filterJobs);
+
     
     // 2. Synchronize Evergreen Carousels
     // Find all hardcoded cards

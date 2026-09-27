@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The AI Interview Cheat Sheet | TrainAIToGain</title>
+  <style>
+    :root { --primary: #10b981; --primary-dark: #059669; --black: #111827; --gray-50: #f9fafb; --gray-200: #e5e7eb; --gray-800: #1f2937; --font: 'Inter', system-ui, sans-serif; }
+    body { font-family: var(--font); background-color: var(--gray-50); color: var(--black); margin: 0; padding: 0; line-height: 1.6; }
+    .container { max-width: 800px; margin: 40px auto; background: white; padding: 60px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+    h1 { font-size: 36px; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 8px; }
+    h2 { font-size: 24px; font-weight: 800; margin-top: 48px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--gray-200); }
+    h3 { font-size: 18px; font-weight: 700; margin-top: 24px; }
+    p { color: #4b5563; font-size: 16px; margin-bottom: 16px; }
+    .badge { display: inline-block; background: var(--primary); color: white; padding: 6px 12px; border-radius: 100px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+    .alert { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
+    .good-bad { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 24px 0; }
+    .box { padding: 20px; border-radius: 8px; border: 1px solid var(--gray-200); }
+    .box.bad { background: #fef2f2; border-color: #fecaca; }
+    .box.good { background: #ecfdf5; border-color: #a7f3d0; }
+    .box-title { font-weight: 800; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; }
+    .script-box { background: var(--black); color: white; padding: 32px; border-radius: 12px; margin: 32px 0; }
+    .script-box p { color: #9ca3af; }
+    .script-box strong { color: var(--primary); }
+    .cta-btn { display: block; width: 100%; text-align: center; background: var(--primary); color: white; text-decoration: none; padding: 20px; font-size: 18px; font-weight: 800; border-radius: 12px; margin-top: 48px; transition: background 0.2s; }
+    .cta-btn:hover { background: var(--primary-dark); }
+    @media (max-width: 600px) { .container { padding: 30px 20px; margin: 20px; } h1 { font-size: 28px; } }
+  </style>
+
+<script>
+  // Simple client-side gate to ensure they signed up
+  if (!localStorage.getItem('hasEnteredEmailForBlueprint') && !localStorage.getItem('hasEnteredEmailForApply')) {
+    window.location.href = "index.html";
+  }
+</script>
+</head>
+
+<body>
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 48px;">
+      <img src="logo.svg" style="height:48px; width:48px; margin:0 auto 24px auto; display:block;" alt="TrainAIToGain Logo" />
+      <div class="badge">Official Cheat Sheet</div>
+      <h1>The AI Interview Blueprint</h1>
+      <p style="font-size: 20px; color: var(--gray-800); font-weight: 600;">Your dense, high-value roadmap to beating AI gatekeepers and bypassing the waitlist.</p>
+    </div>
+    <div class="alert">
+      <h3 style="margin-top:0; color: #b45309;">🛑 The Secret of AI Gatekeepers</h3>
+      <p style="color: #92400e; margin-bottom:0;">Platforms like Mercor and Micro1 do not have humans reviewing your initial application. They use Large Language Models (LLMs) to scan your resume and transcribe your one-way video interview. If your resume lacks keyword density, or if you ramble on camera, a human will never even see your profile. <strong>You aren't interviewing for a recruiter—you are optimizing for an algorithm.</strong> Here is exactly how to beat it.</p>
+    </div>
+    <h2>1. The "Keyword Drop" Strategy</h2>
+    <p>The first hurdle is getting past the AI resume parser. Do not just list skills at the bottom of your resume in a "Skills" section. The AI gives exponentially higher weight to skills mentioned <em>inside</em> the context of your experience bullets.</p>
+    <div class="good-bad">
+      <div class="box bad">
+        <div class="box-title" style="color: #dc2626;">❌ Bad Structure</div>
+        <p style="color: #991b1b; margin:0;">"Built a web app. Skills: React, Node.js"</p>
+      </div>
+      <div class="box good">
+        <div class="box-title" style="color: #059669;">✅ Good Structure</div>
+        <p style="color: #065f46; margin:0;">"Architected a scalable web application using React and Node.js, decreasing load times by 40%."</p>
+      </div>
+    </div>
+    <h2>2. High-Impact Action Verbs</h2>
+    <p>Ensure every bullet point starts with a powerful action verb. The AI looks for these specific semantic markers to grade your seniority:</p>
+    <ul>
+      <li><strong>To show Leadership:</strong> Spearheaded, Orchestrated, Directed, Championed, Mentored</li>
+      <li><strong>To show Technical Execution:</strong> Architected, Engineered, Deployed, Refactored, Optimized</li>
+      <li><strong>To show Impact:</strong> Accelerated, Maximized, Streamlined, Surpassed, Generated</li>
+    </ul>
+    <h2>3. The "STAR+ Impact" Script</h2>
+    <p>During the one-way video interview, the AI analyzes your speech-to-text transcript. Rambling lowers your score. Use this exact fill-in-the-blank structure to keep your answers under 60 seconds and densely packed with keywords:</p>
+    <div class="script-box">
+      <p><strong>Situation (10s):</strong> "In my previous role at [Company], we were facing a major issue with [Bottleneck]."</p>
+      <p><strong>Task (10s):</strong> "My specific objective was to [Goal] within a strict deadline."</p>
+      <p><strong>Action (30s):</strong> "I took the initiative by [Action 1]. Specifically, I designed a [System] using [Key Skill]."</p>
+      <p><strong>Result (10s):</strong> "As a result, we successfully [Quantifiable Metric - e.g., reduced costs by 20%]."</p>
+      <p style="margin-bottom:0;"><strong>Plus (10s):</strong> "This experience taught me [Takeaway], which I plan to bring to this role."</p>
+    </div>
+    <h2>4. Real Interview Breakdowns</h2>
+    <p>We reviewed hundreds of AI evaluation transcripts. Here is exactly why candidates fail, and how to succeed:</p>
+    <div class="box bad" style="margin-bottom:16px;">
+      <div class="box-title" style="color: #dc2626;">❌ The "Rambler" (Score: 40/100 - Rejected)</div>
+      <p style="color: #991b1b; margin-bottom: 8px;"><em>"Yeah, so we had this bug in our system and nobody knew how to fix it, so I spent like three weeks looking at the code and I finally figured out it was a database issue, so I fixed it and my manager was really happy."</em></p>
+      <p style="color: #7f1d1d; margin:0; font-size:14px;"><strong>AI Feedback:</strong> Lacks technical keywords, zero quantifiable metrics, unstructured. Flagged as "Junior/Poor Communication."</p>
+    </div>
+    <div class="box" style="background:#f3f4f6; border-color:#d1d5db; margin-bottom:16px;">
+      <div class="box-title" style="color: #4b5563;">⚠️ The "Vague Expert" (Score: 65/100 - Waitlisted)</div>
+      <p style="color: #374151; margin-bottom: 8px;"><em>"I was tasked with improving our data pipeline. I used Python to rewrite the scripts and made everything run much faster. It saved the company a lot of money and improved our efficiency."</em></p>
+      <p style="color: #4b5563; margin:0; font-size:14px;"><strong>AI Feedback:</strong> Good structure, but impact is unverifiable. Words like "much faster" and "a lot of money" are ignored by the parser.</p>
+    </div>
+    <div class="box good">
+      <div class="box-title" style="color: #059669;">✅ The "STAR Master" (Score: 98/100 - Hired)</div>
+      <p style="color: #065f46; margin-bottom: 8px;"><em>"Our data pipeline was bottlenecking, causing 2-hour delays. My objective was to reduce latency before our Q3 launch. I spearheaded a complete refactor of the architecture using Python and Apache Kafka. As a result, we decreased data processing time by 85% and saved $40,000 in monthly AWS costs."</em></p>
+      <p style="color: #064e3b; margin:0; font-size:14px;"><strong>AI Feedback:</strong> Flawless. High density of action verbs (spearheaded, refactored), exact technical keywords (Python, Kafka), and hard metrics (85%, $40,000, Q3).</p>
+    </div>
+    
+    <h2>5. Surviving the "Black Box" (Post-Hire Audits)</h2>
+    <p>Getting hired is only the beginning. Once you are in the network, platforms use invisible, continuous quality audits to evaluate your work. Drop below their threshold, and you'll be permanently shadowbanned without warning.</p>
+    <ul>
+      <li style="margin-bottom:12px;"><strong>Fact-check Everything:</strong> The AI routinely tests you with "trap" prompts that contain subtle hallucinations. If you accept a model's false claim without verifying it externally, you will fail the audit.</li>
+      <li style="margin-bottom:12px;"><strong>Write Detailed Justifications:</strong> When rating models, do not just write "Model A is better". You must write a 3-4 sentence detailed justification explaining exactly why, citing specific lines of code, logic, or text from the response.</li>
+      <li style="margin-bottom:12px;"><strong>Pacing & Velocity:</strong> The platform tracks your "Time per Task". If you submit tasks too quickly (e.g. under 3 minutes for a complex coding evaluation), the heuristic engine automatically flags your account for spamming and locks your queue.</li>
+    </ul>
+    <div style="background:linear-gradient(135deg, #1f2937 0%, #111827 100%); border:1px solid #374151; padding:32px 24px; border-radius:16px; margin-top:48px; text-align:center; box-shadow:0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);">
+      <div style="font-size:32px; margin-bottom:12px;">📺</div>
+      <h3 style="margin-top:0; color:white; font-size:22px; font-weight:800; letter-spacing:-0.02em;">Bonus: AI Interview Video Masterclass</h3>
+      <p style="color:#9ca3af; margin-bottom:24px; font-size:16px; max-width:400px; margin-left:auto; margin-right:auto;">We compiled the absolute best video breakdowns of how the AI evaluation works. Watch these before your interview.</p>
+      <a href="video-guides.html" style="display:inline-block; background:var(--primary); color:white; font-weight:800; text-decoration:none; padding:16px 32px; border-radius:100px; font-size:16px; box-shadow:0 4px 14px rgba(16, 185, 129, 0.4); transition:all 0.2s;">Unlock the Video Library ➔</a>
+    </div>
+
+    <a href="post-hire.html" class="cta-btn" style="margin-top: 32px;">Step 1: Secure Your Spot in the Networks ➔</a>
+    <a href="resume-ats-guide.html" class="cta-btn" style="margin-top: 16px; background: var(--black);">Step 2: Scan Your Resume via AI ➔</a>
+    <a href="ai-interview.html" class="cta-btn" style="margin-top: 16px; background: white; color: var(--black); border: 2px solid var(--black);">Step 3: Take a Mock AI Interview ➔</a>
+    <div style="text-align: center; margin-top: 60px; color: #9ca3af; font-size: 14px;">
+      &copy; 2026 TrainAIToGain. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Admin Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Outfit', sans-serif; background: #000; color: #fff; margin: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+    h1 { font-weight: 800; font-size: 32px; margin-bottom: 40px; }
+    .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 600px; }
+    .tool-card { background: #111; border: 1px solid #333; padding: 32px; border-radius: 12px; text-align: center; text-decoration: none; color: #fff; transition: all 0.2s; }
+    .tool-card:hover { background: #1a1a1a; border-color: #10b981; transform: translateY(-4px); }
+    .tool-icon { font-size: 48px; margin-bottom: 16px; }
+    .tool-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .tool-desc { font-size: 14px; color: #888; }
+  </style>
+</head>
+<body>
+  <div style="font-size:32px; margin-bottom:16px;">🔒</div>
+  <h1>Internal Team Hub</h1>
+  <div class="tool-grid">
+    <a href="outreach-tool.html" class="tool-card">
+      <div class="tool-icon">✉️</div>
+      <div class="tool-title">CRM / Outreach</div>
+      <div class="tool-desc">Generate AI messages and track candidate leads.</div>
+    </a>
+    <a href="dashboard.html" class="tool-card">
+      <div class="tool-icon">📊</div>
+      <div class="tool-title">Partner Dashboard</div>
+      <div class="tool-desc">Track leads, analytics, and partner payouts.</div>
+    </a>
+  </div>
+</body>
+</html>

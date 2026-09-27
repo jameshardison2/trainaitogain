@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outreach CRM - TrainAIToGain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --primary-light: rgba(16, 185, 129, 0.1);
+      --black: #111827;
+      --gray-900: #111827;
+      --gray-800: #1f2937;
+      --gray-700: #374151;
+      --gray-600: #4b5563;
+      --gray-500: #6b7280;
+      --gray-400: #9ca3af;
+      --gray-300: #d1d5db;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --gray-50: #f9fafb;
+      --white: #ffffff;
+      --font: 'Inter', -apple-system, sans-serif;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--gray-50);
+      margin: 0;
+      padding: 0;
+      color: var(--black);
+    }
+    * { box-sizing: border-box; }
+    
+    .navbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar h1 { margin: 0; font-size: 20px; font-weight: 800; display:flex; align-items:center; gap:8px;}
+    .btn {
+      padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-outline { background: var(--white); border: 1px solid var(--gray-300); color: var(--gray-700); }
+    .btn-outline:hover { background: var(--gray-100); }
+
+    /* Screen 1: Upload */
+    #screen-upload {
+      max-width: 600px;
+      margin: 80px auto;
+      background: var(--white);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    .drop-zone {
+      border: 2px dashed var(--gray-300);
+      border-radius: 12px;
+      padding: 48px;
+      margin-top: 24px;
+      background: var(--gray-50);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Screen 2: Queue */
+    #screen-queue {
+      display: none;
+      padding: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .filters {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      background: var(--white);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .filters select {
+      padding: 8px 12px;
+      border: 1px solid var(--gray-300);
+      border-radius: 6px;
+      font-family: var(--font);
+    }
+    .table-container {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th {
+      background: var(--gray-50);
+      padding: 16px;
+      font-size: 13px;
+      color: var(--gray-500);
+      font-weight: 600;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 14px;
+    }
+    tr:hover {
+      background: var(--gray-50);
+      cursor: pointer;
+    }
+    .badge {
+      padding: 4px 8px; border-radius: 100px; font-size: 12px; font-weight: 600;
+    }
+    .badge-ready { background: #e0e7ff; color: #4338ca; }
+    .badge-contacted { background: #fef3c7; color: #b45309; }
+    .badge-replied { background: #d1fae5; color: #047857; }
+    .badge-skip { background: #f3f4f6; color: #4b5563; }
+
+    /* Screen 3: Contact Panel Drawer */
+    #drawer {
+      position: fixed;
+      top: 0; right: -500px;
+      width: 450px; height: 100vh;
+      background: var(--white);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+      transition: right 0.3s ease;
+      z-index: 1000;
+      display: flex; flex-direction: column;
+    }
+    #drawer.open { right: 0; }
+    .drawer-overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.5); z-index: 999; display: none;
+    }
+    .drawer-overlay.open { display: block; }
+    .drawer-header {
+      padding: 24px; border-bottom: 1px solid var(--gray-200);
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .drawer-content {
+      padding: 24px; overflow-y: auto; flex: 1;
+    }
+    .drawer-footer {
+      padding: 24px; border-top: 1px solid var(--gray-200); background: var(--gray-50);
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    textarea {
+      width: 100%; padding: 16px; border: 1px solid var(--gray-300);
+      border-radius: 8px; font-family: var(--font); font-size: 14px;
+      min-height: 200px; line-height: 1.5; margin-bottom: 16px;
+    }
+    input[type="text"] {
+      width: 100%; padding: 12px; border: 1px solid var(--gray-300);
+      border-radius: 8px; font-family: var(--font); font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    /* Mobile Responsive Overrides */
+    @media (max-width: 768px) {
+      .drawer {
+        width: 100vw;
+        right: -100vw;
+      }
+      .nav {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        gap: 12px;
+      }
+      .nav-logo {
+        margin-bottom: 8px;
+      }
+      .filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .filters select {
+        width: 100%;
+      }
+      #screen-queue {
+        padding: 12px;
+      }
+      .queue-table th, .queue-table td {
+        padding: 12px 8px;
+        font-size: 13px;
+      }
+      /* Hide some columns on mobile to fit the screen */
+      .queue-table th:nth-child(3), .queue-table td:nth-child(3),
+      .queue-table th:nth-child(4), .queue-table td:nth-child(4) {
+        display: none;
+      }
+      .drawer-header {
+        padding: 24px 16px 16px 16px;
+      }
+      .drawer-content {
+        padding: 16px;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="navbar">
+    <h1><span style="background:var(--primary); color:white; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center;">O</span> Outreach CRM</h1>
+    
+    <div id="nav-tabs" style="display:none; background:var(--gray-100); padding:4px; border-radius:8px; flex:0 1 auto; position:absolute; left:50%; transform:translateX(-50%);">
+        <button class="btn" id="tab-queue" style="background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.1); margin-right:4px;" onclick="switchTab('queue')">Queue</button>
+        <button class="btn" id="tab-dashboard" style="background:transparent; color:var(--gray-600);" onclick="switchTab('dashboard')">Dashboard</button>
+    </div>
+
+    <div>
+      <button class="btn btn-outline" onclick="exportCSV()" id="exportBtn" style="display:none;">Export CSV</button>
+      <button class="btn btn-outline" onclick="resetData()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Screen 1: Upload -->
+  <div id="screen-upload">
+    <h2 style="margin-top:0;">Upload Outreach Queue</h2>
+    <p style="color:var(--gray-500);">Upload the ranked CSV from the LinkedIn export tool to begin.</p>
+    
+    <div class="drop-zone" id="drop-zone">
+      <div style="font-size:32px; margin-bottom:12px;">📁</div>
+      <p style="margin:0; font-weight:600; color:var(--gray-700);">Drag and drop CSV file here</p>
+      <p style="margin:8px 0 0 0; font-size:13px; color:var(--gray-500);">or click to browse</p>
+      <input type="file" id="file-input" accept=".csv" style="display:none;">
+    </div>
+  </div>
+
+  <!-- Screen 2: Queue -->
+  <div id="screen-queue">
+    <div class="filters">
+      <select id="filter-status" onchange="renderTable()">
+        <option value="ALL">All Statuses</option>
+        <option value="READY" selected>Status: READY</option>
+        <option value="Contacted">Status: Contacted</option>
+        <option value="Replied">Status: Replied</option>
+        <option value="No Response">Status: No Response</option>
+        <option value="FOLLOWUP">⚠️ Follow-up Due</option>
+        <optgroup label="Micro1 Dashboard">
+          <option value="Applying">Applying</option>
+          <option value="AI interview completed">AI interview completed</option>
+          <option value="MCC Met">MCC Met</option>
+          <option value="Certified">Certified</option>
+          <option value="Matched to project">Matched to project</option>
+          <option value="Hired">Hired</option>
+          <option value="Reward assigned">Reward assigned</option>
+          <option value="Payment released">Payment released</option>
+          <option value="Payment sent">Payment sent</option>
+          <option value="Paid">Paid</option>
+          <option value="Existing micro1 user">Existing micro1 user</option>
+          <option value="Invalid">Invalid</option>
+        </optgroup>
+      </select>
+      <select id="filter-domain" onchange="renderTable()">
+        <option value="ALL">All Domains</option>
+        <option value="medical">Medical</option>
+        <option value="aviation">Aviation</option>
+        <option value="legal">Legal</option>
+        <option value="finance">Finance</option>
+        <option value="tech">Tech / General</option>
+      </select>
+      <div style="flex:1;"></div>
+      <div style="display:flex; align-items:center; color:var(--gray-500); font-size:14px;">
+        <span id="queue-stats">0 contacts</span>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Domain</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Screen 2b: Dashboard -->
+  <div id="screen-dashboard" style="display:none; padding:32px; max-width:1000px; margin:0 auto;">
+    <h2 style="margin-top:0;">Pipeline Dashboard</h2>
+    <div style="display:flex; gap:24px; margin-bottom:48px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:200px; background:white; padding:24px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); text-align:center; border-top:4px solid var(--black);">
+            <div style="font-size:36px; font-weight:800; color:var(--black);" id="dash-total">0</div>
+            <div style="color:var(--gray-500); font-size:14px; font-weight:600; text-transform:uppercase;">Total Leads</div>
+        </div>
+        <div style="flex:1; min-width:200px; background:white; padding:24px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); text-align:center; border-top:4px solid #b45309;">
+            <div style="font-size:36px; font-weight:800; color:#b45309;" id="dash-contacted">0</div>
+            <div style="color:var(--gray-500); font-size:14px; font-weight:600; text-transform:uppercase;">Reached Out</div>
+        </div>
+        <div style="flex:1; min-width:200px; background:white; padding:24px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); text-align:center; border-top:4px solid #047857;">
+            <div style="font-size:36px; font-weight:800; color:#047857;" id="dash-replied">0</div>
+            <div style="color:var(--gray-500); font-size:14px; font-weight:600; text-transform:uppercase;">Engaged</div>
+        </div>
+        <div style="flex:1; min-width:200px; background:white; padding:24px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); text-align:center; border-top:4px solid var(--primary);">
+            <div style="font-size:36px; font-weight:800; color:var(--primary);" id="dash-hired">0</div>
+            <div style="color:var(--gray-500); font-size:14px; font-weight:600; text-transform:uppercase;">Pipeline / Hired</div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: Contact Panel (Drawer) -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+  <div id="drawer">
+    <div class="drawer-header">
+      <div style="flex:1;">
+        <h2 id="drawer-name" style="margin:0 0 4px 0; font-size:20px;">Name</h2>
+        <div id="drawer-title" style="color:var(--gray-500); font-size:14px; margin-bottom:4px;">Title @ Company</div>
+        <div style="display:flex; align-items:center; gap:8px;">
+           <div id="drawer-badge" class="badge badge-ready" style="display:inline-block;">READY</div>
+           <span id="drawer-email-badge" style="font-size:12px; font-weight:600; color:#4f46e5; background:#e0e7ff; padding:2px 8px; border-radius:100px; display:none;">No Email</span>
+        </div>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <button class="btn" style="background:#fee2e2; color:#991b1b; display:none; padding:8px 12px; font-size:13px;" onclick="openGmail()" id="gmail-btn">✉️ Email</button>
+        <button onclick="closeDrawer()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-400); padding:0; margin:0; line-height:1;">&times;</button>
+      </div>
+    </div>
+    
+        <div class="drawer-content">
+      
+
+
+      <button onclick="openLinkedIn()" id="drawer-linkedin-btn" style="display:block; width:100%; border:none; cursor:pointer; background:#0a66c2; color:white; text-align:center; padding:12px; border-radius:8px; font-weight:700; text-decoration:none; margin-bottom:24px; font-size:14px; box-shadow: 0 4px 12px rgba(10,102,194,0.3);">
+        <span style="margin-right:8px; font-size:16px;">🔗</span> Open LinkedIn Profile
+      </button>
+
+      <!-- DEEP AI GENERATOR UI -->
+      <div style="background:linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border:1px solid #bbf7d0; padding:16px; border-radius:12px; margin-bottom:24px;">
+        <label style="font-size:14px; font-weight:700; color:#166534; display:flex; align-items:center; gap:8px; margin-bottom:8px; cursor:pointer;" onclick="document.getElementById('ai-magic-box').style.display='block'">
+          ✨ Deep AI Outreach Generator <span style="font-size:11px; font-weight:600; background:#166534; color:white; padding:2px 6px; border-radius:100px;">NEW</span>
+        </label>
+        <div id="ai-magic-box" style="display:none; margin-top:12px;">
+          <p style="font-size:12px; color:#15803d; margin:0 0 8px 0;">Paste their LinkedIn profile text OR drop a screenshot to run a custom ATS analysis.</p>
+          
+          <div id="ai-image-preview-container" style="display:none; margin-bottom:8px; position:relative;">
+             <img id="ai-image-preview" style="width:100%; max-height:120px; object-fit:contain; border-radius:8px; border:1px solid #d1d5db; background:white;" />
+             <button onclick="clearAIImage()" style="position:absolute; top:4px; right:4px; background:rgba(0,0,0,0.7); color:white; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer;">&times;</button>
+          </div>
+          
+          <div style="position:relative;">
+            <textarea id="ai-profile-input" placeholder="Paste text or Cmd+V to paste an image screenshot..." style="min-height:80px; font-size:12px; margin-bottom:8px; background:white; width:100%; box-sizing:border-box; padding:8px; border:1px solid #d1d5db; border-radius:8px;"></textarea>
+            <input type="file" id="ai-image-upload" accept="image/*" style="display:none;" onchange="handleAIImageSelect(event)">
+            <button onclick="document.getElementById('ai-image-upload').click()" style="position:absolute; bottom:16px; right:8px; background:var(--gray-100); border:1px solid var(--gray-300); border-radius:4px; padding:4px 8px; font-size:12px; cursor:pointer;">📷 Upload Image</button>
+          </div>
+
+          <button class="btn btn-primary" id="ai-generate-btn" onclick="generateDeepAIPitch()" style="width:100%; font-size:13px; display:flex; justify-content:center; align-items:center; gap:8px; margin-top:4px;">
+            Run ATS Analysis & Generate
+          </button>
+        </div>
+      </div>
+
+      <div id="referral-warning" style="background:#fff3cd; color:#856404; padding:12px; border-radius:8px; font-size:13px; margin-bottom:16px; display:none; border:1px solid #ffeeba;">
+        <strong>Warning:</strong> Ensure the candidate clicks your referral link BEFORE applying, or the payout is lost!
+      </div>
+
+      <label style="font-weight:600; font-size:13px; color:var(--gray-700); margin-bottom:8px; display:block;">Message Template</label>
+      <textarea id="drawer-message"></textarea>
+      <button class="btn btn-primary" style="width:100%; margin-bottom:8px; background:#0a66c2; color:white; border:none; box-shadow:0 4px 12px rgba(10,102,194,0.3);" onclick="copyAndMessage()">🚀 Copy Pitch & Auto-Open LinkedIn</button>
+<button class="btn btn-outline" style="width:100%; margin-bottom:24px;" onclick="copyMessage()">Copy Only</button>
+
+      <label style="font-weight:600; font-size:13px; color:var(--gray-700); margin-bottom:8px; display:block;">Notes</label>
+      <input type="text" id="drawer-notes" placeholder="Left voicemail, wants zoom call..." onblur="saveNotes()">
+    </div>
+
+    <div class="drawer-footer" style="flex-direction:column; gap:12px;">
+      <div style="display:flex; gap:8px; width:100%;">
+        <button class="btn btn-primary" onclick="updateStatus('Contacted')" style="flex:1;">Mark Contacted</button>
+        <button class="btn btn-outline" onclick="updateStatus('Replied')" style="flex:1;">Mark Replied</button>
+      </div>
+      <div style="display:flex; gap:8px; width:100%;">
+        <select id="micro1-status-selector" style="flex:1; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; background:#f9fafb; font-weight:600;" onchange="if(this.value) updateStatus(this.value); this.value='';">
+          <option value="">+ Add Micro1 Status...</option>
+          <option value="Applying">Applying</option>
+          <option value="AI interview completed">AI interview completed</option>
+          <option value="MCC Met">MCC Met</option>
+          <option value="Certified">Certified</option>
+          <option value="Matched to project">Matched to project</option>
+          <option value="Hired">Hired</option>
+          <option value="Reward assigned">Reward assigned</option>
+          <option value="Payment released">Payment released</option>
+          <option value="Payment sent">Payment sent</option>
+          <option value="Paid">Paid</option>
+          <option value="Existing micro1 user">Existing micro1 user</option>
+          <option value="Invalid">Invalid</option>
+        </select>
+        <button class="btn btn-outline" onclick="updateStatus('SKIP')" style="background:var(--gray-200); border:none; padding:10px 16px;">Skip</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <script>
+    // LinkedIn Scraper Bookmarklet Listener
+    window.addEventListener('message', (event) => {
+        if (event.origin !== 'https://www.linkedin.com' && event.origin !== 'http://localhost:5000') {
+            // Depending on strictness, we might want to check origin, but the bookmarklet executes on linkedin.com
+        }
+        
+        if (event.data && event.data.type === 'LINKEDIN_SCRAPE') {
+            console.log("Received LinkedIn Data!");
+            
+            // Open the AI box if it's hidden
+            document.getElementById('ai-magic-box').style.display = 'block';
+            
+            // Populate the text area
+            const profileInput = document.getElementById('ai-profile-input');
+            profileInput.value = event.data.text;
+            
+            // Provide visual feedback
+            profileInput.style.background = '#dcfce7';
+            setTimeout(() => { profileInput.style.background = 'white'; }, 1000);
+            
+            // Auto-trigger the generation
+            const btn = document.getElementById('ai-generate-btn');
+            if(btn && typeof generateDeepAIPitch === 'function') {
+                btn.innerHTML = 'Auto-Generating Pitch...';
+                generateDeepAIPitch();
+            }
+        }
+    });
+
+    let wavesData = [];
+    let contacts = [];
+    let currentContactIndex = -1;
+    let currentContactGlobalIndex = -1;
+
+    const REFLINK = "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe";
+
+    const templates = {
+      "medical": "Hi [Name] -- I came across your profile and noticed your background in [Specialty]. I help healthcare professionals find AI evaluation work that pays well and fits around clinical schedules. Micro1 is hiring licensed clinicians to review and rate AI-generated medical content -- fully remote, flexible hours, $40-80/hr. Would a quick overview be worth 10 minutes?\n\nReferral Link: " + REFLINK,
+      
+      "aviation": "Hi [Name] -- Your background caught my attention. I place pilots and aviation professionals into AI evaluation roles where your technical expertise is specifically what they're paying for. Micro1 is looking for people with real-world aviation experience to review AI outputs -- remote, flexible, competitive pay. Worth a quick conversation?\n\nReferral Link: " + REFLINK,
+      
+      "legal": "Hi [Name] -- I work with attorneys and legal professionals who are interested in AI evaluation work on the side. Micro1 pays well for licensed legal professionals to review AI-generated legal content for accuracy. Fully remote, no commitment to hours. Would this be worth 10 minutes to explore?\n\nReferral Link: " + REFLINK,
+      
+      "finance": "Hi [Name] -- I noticed your background in finance. Micro1 is hiring finance professionals to evaluate AI-generated financial analysis and content -- remote, flexible, solid pay. Your domain expertise is exactly what they're looking for. Want a quick overview?\n\nReferral Link: " + REFLINK,
+      
+      "tech": "Hi [Name] -- I help software engineers and tech professionals find AI evaluation work that pays well and fits around their schedule. Mercor and Micro1 are both hiring -- remote, flexible hours, no commitment. Worth a quick look?\n\nReferral Link: " + REFLINK,
+      
+      "other": "Hi [Name] -- I help professionals find AI evaluation work that pays well and fits around their schedule. Mercor and Micro1 are both hiring domain experts to evaluate AI models -- remote, flexible hours, no commitment. Worth a quick look?\n\nReferral Link: " + REFLINK
+    };
+
+    document.addEventListener('DOMContentLoaded', async () => {
+
+      try {
+        const res = await fetch('/waves.json');
+        const d = await res.json();
+        wavesData = d.roles || [];
+      } catch (e) { console.error("Waves fetch error", e); }
+
+      localforage.getItem('outreach_contacts').then((saved) => {
+        if (saved) {
+          contacts = saved;
+          showQueue();
+        }
+      });
+
+      // Drag and Drop
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+
+      dropZone.addEventListener('click', () => fileInput.click());
+      
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+          parseFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+          parseFile(e.target.files[0]);
+        }
+      });
+    });
+
+    function parseFile(file) {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          const required = ['name', 'linkedin_url', 'domain', 'priority_score', 'outreach_status'];
+          const fields = results.meta.fields || [];
+          
+          // Auto-map Apollo & LinkedIn CSVs
+          let isApollo = fields.includes('First Name') && fields.includes('Person Linkedin Url');
+          let isLinkedIn = fields.includes('First Name') && fields.includes('URL') && fields.includes('Position');
+          let isMessages = fields.includes('CONTENT') && (fields.includes('FROM') || fields.includes('SENDER PROFILE URL'));
+          
+          if (isMessages) {
+              if (contacts.length === 0) {
+                  alert("Please upload your Connections.csv FIRST to build the CRM queue, then upload Messages.csv to attach message history to those contacts!");
+                  return;
+              }
+              let matchedCount = 0;
+              // Sort messages by date or just iterate
+              results.data.forEach(row => {
+                  let msgContent = row['CONTENT'] || '';
+                  if (!msgContent) return;
+                  
+                  let sender = row['FROM'] || '';
+                  let to = row['TO'] || '';
+                  
+                  // Try to find the contact by name in our CRM (we don't know if they are sender or recipient)
+                  let contact = contacts.find(c => c.name && (sender.includes(c.name) || to.includes(c.name)));
+                  
+                  if (contact) {
+                      if (!contact.notes.includes(msgContent.substring(0, 20))) {
+                          contact.notes += "\n\n[PAST MESSAGE]: " + msgContent;
+                          matchedCount++;
+                      }
+                  }
+              });
+              saveData();
+              alert("Successfully attached " + matchedCount + " past messages to your CRM contacts!");
+              showQueue();
+              return;
+          }
+          
+          if (isLinkedIn) {
+              contacts = results.data.filter(r => r['First Name'] && r['URL']).map((row, i) => {
+                  return {
+                      _id: i,
+                      name: (row['First Name'] || '') + ' ' + (row['Last Name'] || ''),
+                      linkedin_url: row['URL'] || '',
+                      title: row['Position'] || '',
+                      company: row['Company'] || '',
+                      email: row['Email Address'] || '',
+                      domain: 'Other',
+                      priority_score: 50,
+                      outreach_status: 'READY',
+                      notes: 'Connected on: ' + (row['Connected On'] || '')
+                  };
+              });
+              saveData();
+              showQueue();
+              return;
+          }
+          
+          if (isApollo) {
+              contacts = results.data.filter(r => r['First Name']).map((row, i) => {
+                  return {
+                      _id: i,
+                      name: (row['First Name'] || '') + ' ' + (row['Last Name'] || ''),
+                      linkedin_url: row['Person Linkedin Url'] || '',
+                      title: row['Title'] || '',
+                      company: row['Company Name'] || '',
+                      email: row['Email'] || '',
+                      domain: row['Industry'] || 'Other',
+                      priority_score: 50,
+                      outreach_status: 'READY',
+                      notes: row['Notes'] || ''
+                  };
+              });
+          } else {
+              let missing = required.filter(r => !fields.includes(r));
+              if (missing.length > 0) {
+                alert("Error: Missing required columns: " + missing.join(", ") + "\n\nTip: You can upload a raw Apollo.io export and it will auto-format it!");
+                return;
+              }
+              contacts = results.data.map((row, i) => {
+                row._id = i;
+                if(!row.notes) row.notes = "";
+                return row;
+              });
+          }
+          
+          saveData();
+          showQueue();
+        }
+      });
+    }
+
+    async function saveData() {
+      try {
+        await localforage.setItem('outreach_contacts', contacts);
+      } catch (e) {
+        console.error("Storage error", e);
+      }
+    }
+
+    function showQueue() {
+      document.getElementById('screen-upload').style.display = 'none';
+      document.getElementById('nav-tabs').style.display = 'flex';
+      document.getElementById('exportBtn').style.display = 'inline-block';
+      switchTab('queue');
+    }
+    
+    function switchTab(tab) {
+        if(tab === 'queue') {
+            document.getElementById('screen-queue').style.display = 'block';
+            document.getElementById('screen-dashboard').style.display = 'none';
+            document.getElementById('tab-queue').style.cssText = "background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.1); margin-right:4px;";
+            document.getElementById('tab-dashboard').style.cssText = "background:transparent; color:var(--gray-600);";
+            renderTable();
+        } else {
+            document.getElementById('screen-queue').style.display = 'none';
+            document.getElementById('screen-dashboard').style.display = 'block';
+            document.getElementById('tab-dashboard').style.cssText = "background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.1);";
+            document.getElementById('tab-queue').style.cssText = "background:transparent; color:var(--gray-600); margin-right:4px;";
+            renderDashboard();
+        }
+    }
+    
+    function renderDashboard() {
+        let total = contacts.length;
+        const engagedStatuses = ['CONTACTED', 'REPLIED', 'APP STARTED', 'COMPLETED', 'HIRED', 'NO RESPONSE', 'APPLYING', 'AI INTERVIEW COMPLETED', 'MCC MET', 'CERTIFIED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
+        const repliedStatuses = ['REPLIED', 'APP STARTED', 'COMPLETED', 'HIRED', 'APPLYING', 'AI INTERVIEW COMPLETED', 'MCC MET', 'CERTIFIED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
+        const hiredStatuses = ['HIRED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
+        
+        let contacted = contacts.filter(c => engagedStatuses.includes((c.outreach_status||'').toUpperCase())).length;
+        let replied = contacts.filter(c => repliedStatuses.includes((c.outreach_status||'').toUpperCase())).length;
+        let hired = contacts.filter(c => hiredStatuses.includes((c.outreach_status||'').toUpperCase())).length;
+        
+        document.getElementById('dash-total').innerText = total;
+        document.getElementById('dash-contacted').innerText = contacted;
+        document.getElementById('dash-replied').innerText = replied;
+        document.getElementById('dash-hired').innerText = hired;
+    }
+
+    function renderTable() {
+      const statusFilter = document.getElementById('filter-status').value;
+      const domainFilter = document.getElementById('filter-domain').value;
+      
+      let filtered = contacts.filter(c => {
+        let matchStatus = false;
+        if(statusFilter === 'ALL') {
+            matchStatus = true;
+        } else if(statusFilter === 'FOLLOWUP') {
+            if (c.outreach_status && c.outreach_status.toUpperCase() === 'FOLLOWUP') {
+                matchStatus = true;
+            } else if (c.outreach_status && c.outreach_status.toUpperCase() === 'CONTACTED' && c.last_updated) {
+                let diff = (new Date() - new Date(c.last_updated)) / (1000 * 60 * 60 * 24);
+                if(diff >= 3) matchStatus = true;
+            }
+        } else {
+            matchStatus = (c.outreach_status && c.outreach_status.toUpperCase() === statusFilter.toUpperCase());
+        }
+        
+        let matchDomain = domainFilter === 'ALL' || (c.domain && c.domain.toLowerCase() === domainFilter.toLowerCase());
+        return matchStatus && matchDomain;
+      });
+
+      // Sort by priority_score desc
+      filtered.sort((a, b) => (parseFloat(b.priority_score) || 0) - (parseFloat(a.priority_score) || 0));
+
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+
+      filtered.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.onclick = () => openDrawer(c._id);
+        
+        let statusClass = 'badge-skip';
+        let st = (c.outreach_status || '').toUpperCase();
+        if(st === 'READY') statusClass = 'badge-ready';
+        if(st === 'CONTACTED') statusClass = 'badge-contacted';
+        if(st === 'REPLIED' || st === 'APP STARTED' || st === 'COMPLETED' || st === 'HIRED') statusClass = 'badge-replied';
+
+        tr.innerHTML = `
+          <td style="font-weight:700;">${c.priority_score || 0}</td>
+          <td style="font-weight:600;">${c.name}</td>
+          <td style="color:var(--gray-500); max-width:250px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.title || ''}</td>
+          <td><span style="background:var(--gray-100); padding:2px 8px; border-radius:4px; font-size:12px;">${(c.domain || 'other').toUpperCase()}</span></td>
+          <td><span class="badge ${statusClass}">${c.outreach_status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('queue-stats').innerText = `${filtered.length} contacts`;
+    }
+
+    function openDrawer(globalId) {
+      const c = contacts.find(x => x._id === globalId);
+      if(!c) return;
+      currentContactGlobalIndex = globalId;
+
+      document.getElementById('drawer-name').innerText = c.name;
+      document.getElementById('drawer-title').innerText = `${c.title || 'Unknown Role'} @ ${c.company || 'Unknown Company'}`;
+      
+      let badge = document.getElementById('drawer-badge');
+      badge.innerText = c.outreach_status;
+      badge.className = 'badge';
+      let st = (c.outreach_status || '').toUpperCase();
+      if(st === 'READY') badge.classList.add('badge-ready');
+      else if(st === 'CONTACTED') badge.classList.add('badge-contacted');
+      else if(st === 'REPLIED' || st === 'APP STARTED' || st === 'HIRED') badge.classList.add('badge-replied');
+      else badge.classList.add('badge-skip');
+
+      document.getElementById('referral-warning').style.display = (st === 'REPLIED' || st === 'APP STARTED') ? 'block' : 'none';
+      if(c.linkedin_url && c.linkedin_url.trim() !== '') {
+        document.getElementById('drawer-linkedin-btn').setAttribute('data-url', c.linkedin_url);
+        document.getElementById('drawer-linkedin-btn').style.display = 'block';
+      } else {
+        document.getElementById('drawer-linkedin-btn').style.display = 'none';
+      }
+
+      // Load Dynamic Template
+      
+      
+      
+      let domainKey = (c.domain || 'other').toUpperCase();
+      let matchedJobs = wavesData.filter(w => w.domain === domainKey);
+      let generalJobs = wavesData.filter(w => w.domain === 'GENERAL');
+      
+      let allJobsPool = matchedJobs.concat(generalJobs);
+      
+      let top4Jobs = allJobsPool.slice(0, 4);
+      
+      let jobListings = "";
+      let percentages = [100, 95, 98, 92];
+      
+      top4Jobs.forEach((job, index) => {
+         let company = "Mercor";
+         let s = JSON.stringify(job).toLowerCase();
+         if (s.includes("micro1") || s.includes("refer.micro1.ai")) {
+            company = "Micro1";
+         }
+         jobListings += "• " + percentages[index] + "% Match - " + job.title + " (" + company + ") | " + job.pay + "\n\n";
+      });
+
+
+      let domainWorker = "professionals";
+      let domainAdjective = "";
+      if(domainKey === 'MEDICAL') { domainWorker = "clinicians"; domainAdjective = "clinical "; }
+      else if(domainKey === 'SOFTWARE') { domainWorker = "engineers"; domainAdjective = "coding "; }
+      else if(domainKey === 'LEGAL') { domainWorker = "attorneys"; domainAdjective = "legal "; }
+      else if(domainKey === 'FINANCE') { domainWorker = "experts"; domainAdjective = "financial "; }
+      
+      let firstName = c.name.split(' ')[0];
+      let msg = `Hey ${firstName}, it was great connecting with you! My name is James Hardison and I'm the founder of TrainAIToGain.
+
+https://trainaitogain.com/apply
+
+I ran your profile through our matching tool and honestly your results stood out, here's what came back:
+
+${jobListings}
+These are remote, part-time roles you can do alongside your current position. Companies use ${domainWorker} like you to help evaluate and improve AI ${domainAdjective}tools. The application takes about 3 minutes: https://trainaitogain.com/apply
+
+Before you apply, run your resume through our ATS scanner to make sure everything clears smoothly: https://trainaitogain.com/resume-ats-guide
+
+The interview is AI-based so nothing stressful. I'm happy to hop on a quick Zoom and walk you through the whole process whenever works for you.
+
+Looking forward to hearing from you!
+
+Best,
+James`;
+      
+      document.getElementById('drawer-message').value = msg;
+      document.getElementById('drawer-notes').value = c.notes || "";
+
+      document.getElementById('drawer').classList.add('open');
+      document.getElementById('drawer-overlay').classList.add('open');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawer').classList.remove('open');
+      document.getElementById('drawer-overlay').classList.remove('open');
+    }
+
+    function syncToGoogleSheets(contact) {
+      const url = "https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec";
+      
+      const formData = new URLSearchParams();
+      formData.append('action', 'outreach_sync');
+      formData.append('name', contact.name || '');
+      formData.append('title', contact.title || '');
+      formData.append('domain', contact.domain || '');
+      formData.append('priority_score', contact.priority_score || '');
+      formData.append('outreach_status', contact.outreach_status || '');
+      formData.append('notes', contact.notes || '');
+      formData.append('linkedin_url', contact.linkedin_url || '');
+      formData.append('email', contact.email || '');
+
+      fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      }).catch(err => console.error("Sync error:", err));
+    }
+
+    function updateStatus(newStatus) {
+      if(currentContactGlobalIndex === -1) return;
+      const c = contacts.find(x => x._id === currentContactGlobalIndex);
+      if(c) {
+        c.outreach_status = newStatus;
+        c.last_updated = new Date().toISOString();
+        c.notes = document.getElementById('drawer-notes').value;
+        saveData();
+        renderTable();
+        closeDrawer();
+        
+        // Quietly sync this contact to Google Sheets in the background!
+        syncToGoogleSheets(c);
+      }
+    }
+
+    function saveNotes() {
+      if(currentContactGlobalIndex === -1) return;
+      const c = contacts.find(x => x._id === currentContactGlobalIndex);
+      if(c) {
+        c.notes = document.getElementById('drawer-notes').value;
+        saveData();
+      }
+    }
+
+    
+    function copyAndMessage() {
+      copyMessage();
+      updateStatus('Contacted');
+      openLinkedIn();
+    }
+
+    function copyMessage() {
+      const msg = document.getElementById('drawer-message');
+      msg.select();
+      document.execCommand('copy');
+      const btn = event.target;
+      const oldTxt = btn.innerText;
+      btn.innerText = "Copied!";
+      setTimeout(() => btn.innerText = oldTxt, 2000);
+    }
+
+    function exportCSV() {
+      const cleanData = contacts.map(c => {
+        let copy = {...c};
+        delete copy._id;
+        return copy;
+      });
+      const csv = Papa.unparse(cleanData);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "outreach_queue_updated.csv");
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function resetData() {
+      if(confirm("Are you sure? This will delete all local progress and return to the upload screen.")) {
+        localforage.removeItem('outreach_contacts');
+        location.reload();
+      }
+    }
+
+    let currentAIImageBase64 = null;
+    
+    function handleAIImageSelect(event) {
+        const file = event.target.files[0];
+        if(file) processAIImage(file);
+    }
+    
+    function processAIImage(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentAIImageBase64 = e.target.result.split(',')[1];
+            document.getElementById('ai-image-preview').src = e.target.result;
+            document.getElementById('ai-image-preview-container').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function clearAIImage() {
+        currentAIImageBase64 = null;
+        document.getElementById('ai-image-preview').src = '';
+        document.getElementById('ai-image-preview-container').style.display = 'none';
+        document.getElementById('ai-image-upload').value = '';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const ta = document.getElementById('ai-profile-input');
+        if(ta) {
+            ta.addEventListener('paste', (e) => {
+                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                for (let index in items) {
+                    const item = items[index];
+                    if (item.kind === 'file') {
+                        const blob = item.getAsFile();
+                        processAIImage(blob);
+                    }
+                }
+            });
+        }
+    });
+
+    async function generateDeepAIPitch() {
+      const profileText = document.getElementById('ai-profile-input').value;
+      if ((!profileText || profileText.trim().length < 20) && !currentAIImageBase64) {
+        alert("Please paste text or an image of the candidate's LinkedIn profile first!");
+        return;
+      }
+      
+      const btn = document.getElementById('ai-generate-btn');
+      btn.innerHTML = '<span style="animation: pulse 1s infinite;">⚙️ Analyzing Profile...</span>';
+      btn.disabled = true;
+      
+      const c = contacts.find(x => x._id === currentContactGlobalIndex);
+      const firstName = c ? c.name.split(' ')[0] : '[Name]';
+      const affiliateRef = localStorage.getItem('affiliate_ref');
+      const applyUrl = affiliateRef ? `https://trainaitogain.com/apply?ref=${affiliateRef}` : `https://trainaitogain.com/apply`;
+
+      const prompt = `You are James Hardison, founder of TrainAIToGain. 
+Your goal is to write a highly persuasive, customized outreach message for a candidate named ${firstName}.
+
+Here is the candidate's full profile:
+\n\n${profileText}\n\n
+
+Here are the currently active high-paying remote roles available:
+\n\n${JSON.stringify(wavesData.map(w => ({title: w.title, pay: w.pay, company: (JSON.stringify(w).toLowerCase().includes('micro1') || JSON.stringify(w).toLowerCase().includes('refer.micro1.ai')) ? 'Micro1' : 'Mercor'})))}\n\n
+
+INSTRUCTIONS:
+1. Analyze the candidate's profile to figure out exactly what domain they are in and select the 4 absolute best matching active roles.
+2. Calculate a realistic "ATS Match Percentage" (e.g., 94%, 98%) for each of those 4 roles based on their exact experience.
+3. Write the outreach message EXACTLY matching the format below. Do not include markdown code blocks (like \`\`\`html) or subject lines. Just the raw text.
+
+FORMAT REQUIREMENTS:
+Hey ${firstName}, it was great connecting with you! My name is James Hardison and I'm the founder of TrainAIToGain.
+
+${applyUrl}
+
+I ran your profile through our matching tool and honestly your results stood out, here's what came back:
+
+• [PERCENTAGE]% Match - [JOB 1 TITLE] ([COMPANY]) | [PAY]
+
+• [PERCENTAGE]% Match - [JOB 2 TITLE] ([COMPANY]) | [PAY]
+
+• [PERCENTAGE]% Match - [JOB 3 TITLE] ([COMPANY]) | [PAY]
+
+• [PERCENTAGE]% Match - [JOB 4 TITLE] ([COMPANY]) | [PAY]
+
+These are remote, part-time roles you can do alongside your current position. Companies use [Specific Profession, e.g. clinicians/engineers/experts] like you to help evaluate and improve AI [Specific Domain, e.g. clinical/coding/financial] tools. The application takes about 3 minutes: https://trainaitogain.com/apply
+
+Before you apply, run your resume through our ATS scanner to make sure everything clears smoothly: https://trainaitogain.com/resume-ats-guide
+
+The interview is AI-based so nothing stressful. I'm happy to hop on a quick Zoom and walk you through the whole process whenever works for you.
+
+Looking forward to hearing from you!
+
+Best,
+James
+`;
+
+      try {
+        const parts = [{ text: prompt }];
+        if (currentAIImageBase64) {
+            parts.push({
+                inlineData: {
+                    mimeType: "image/jpeg",
+                    data: currentAIImageBase64
+                }
+            });
+        }
+
+        const response = await fetch('https://trainaitogain-50c19.web.app/api/generateAiResponse', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ role: 'user', parts: parts }]
+          })
+        });
+        
+        const data = await response.json();
+        if(data.error) throw new Error(data.error.message || data.error);
+        
+        let aiText = data.candidates[0].content.parts[0].text;
+        document.getElementById('drawer-message').value = aiText.trim();
+        document.getElementById('ai-magic-box').style.display = 'none';
+        
+      } catch (err) {
+        console.error(err);
+        alert("AI Generation failed: " + err.message);
+      } finally {
+        btn.innerHTML = 'Run ATS Analysis & Generate';
+        btn.disabled = false;
+        document.getElementById('ai-profile-input').value = '';
+      }
+    }
+
+
+    function openGmail() {
+      if(currentContactGlobalIndex === -1) return;
+      const c = contacts.find(x => x._id === currentContactGlobalIndex);
+      if(c && c.email) {
+        const bodyText = document.getElementById('drawer-message').value;
+        const subject = encodeURIComponent("TrainAIToGain / Opportunities for your background");
+        const body = encodeURIComponent(bodyText);
+        window.open(`mailto:${c.email}?subject=${subject}&body=${body}`);
+      }
+    }
+
+
+    let linkedInWindow = null;
+    function openLinkedIn() {
+      const url = document.getElementById('drawer-linkedin-btn').getAttribute('data-url');
+      if (url) {
+         linkedInWindow = window.open(url, 'linkedin_window');
+      }
+    }
+
+    // Listen for bookmarklet messages from the LinkedIn tab
+    window.addEventListener("message", (event) => {
+        if (event.data && event.data.type === "LINKEDIN_SCRAPE") {
+            // Un-hide the AI box
+            document.getElementById("ai-magic-box").style.display = "block";
+            // Populate the input with the scraped text
+            document.getElementById("ai-profile-input").value = event.data.text;
+            // Optionally bring focus back to the CRM (doesn't always work due to browser security, but good to try)
+            window.focus();
+            // Automatically trigger the AI!
+            generateDeepAIPitch();
+            
+            // Show a nice temporary toast or update
+            const btn = document.getElementById('ai-generate-btn');
+            const oldText = btn.innerHTML;
+            btn.innerHTML = "✅ Profile received! Running AI...";
+            setTimeout(() => { btn.innerHTML = oldText; }, 3000);
+        }
+    });
+
+
+    // Auto-trigger AI on paste
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('ai-profile-input');
+        if (input) {
+            input.addEventListener('paste', (e) => {
+                setTimeout(() => {
+                    if(input.value.length > 50) {
+                        generateDeepAIPitch();
+                    }
+                }, 100);
+            });
+        }
+    });
+
+  </script>
+</body>
+</html>

@@ -50,7 +50,7 @@
         <ul class="nav-links">
           <li><a href="hiring-pipeline.html" class="nav-link" style="background:var(--primary); color:var(--white); padding:8px 16px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> The Playbook</a></li>
           <li><a href="apply.html">Opportunities</a></li>
-          <li><a href="guide-download.html" style="display:flex; align-items:center; gap:6px;">Blueprint <span style="background:var(--primary); color:var(--white); font-size:10px; padding:2px 6px; border-radius:100px; font-weight:800;">FREE</span></a></li>
+          <li><a href="#" onclick="openNavbarLeadModal(event)" style="display:flex; align-items:center; gap:6px; font-weight:800; color:var(--primary);">🎁 Get Free Blueprint</a></li>
         </ul>
       </div>
     </div>
@@ -66,7 +66,7 @@
           <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
           <div style="display:flex; gap:12px; margin-bottom:12px;">
             <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official application portal.</p>
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official portal. <strong style="color: #10b981; font-weight: 800;">(IMPORTANT: If you already have an account, you must SIGN OUT first, then come back and click this button to ensure proper routing).</strong></p>
           </div>
           <div style="display:flex; gap:12px; margin-bottom:12px;">
             <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
@@ -362,7 +362,61 @@
         }
     });
 </script>
-<script src="chat.js?v=13"></script>
+<script src="chat.js?v=16"></script>
+
+<!-- Navbar Lead Capture Modal -->
+<div id="navbarLeadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+  <div style="background:white; padding:32px; border-radius:12px; max-width:400px; width:90%; position:relative; box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+    <button onclick="closeNavbarLeadModal()" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:#6b7280;">&times;</button>
+    <div id="navbarLeadModalContent">
+      <h3 style="font-size:22px; font-weight:800; margin-bottom:8px; color:#111827;">Get the Free ATS Blueprint</h3>
+      <p style="color:#4b5563; font-size:14px; margin-bottom:24px; line-height:1.5;">Drop your email below and we'll instantly send you the framework used by candidates to pass the AI screening.</p>
+      <form id="navbarLeadForm" onsubmit="submitNavbarLead(event)" style="display:flex; flex-direction:column; gap:12px;">
+        <input type="text" id="navbarLeadName" placeholder="First Name" required style="padding:14px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; width:100%; box-sizing:border-box;">
+        <input type="email" id="navbarLeadEmail" placeholder="Email Address" required style="padding:14px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; width:100%; box-sizing:border-box;">
+        <button type="submit" id="navbarLeadBtn" style="background:#10b981; color:white; border:none; padding:16px; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; width:100%; margin-top:8px;">Send Me The Guide ➔</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openNavbarLeadModal(e) {
+  e.preventDefault();
+  document.getElementById('navbarLeadModal').style.display = 'flex';
+}
+function closeNavbarLeadModal() {
+  document.getElementById('navbarLeadModal').style.display = 'none';
+}
+function submitNavbarLead(e) {
+  e.preventDefault();
+  var btn = document.getElementById('navbarLeadBtn');
+  var name = document.getElementById('navbarLeadName').value;
+  var email = document.getElementById('navbarLeadEmail').value.trim();
+  if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+  
+  btn.innerHTML = 'Sending...';
+  btn.style.opacity = '0.7';
+  btn.disabled = true;
+
+  fetch('https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec', {
+    method: 'POST',
+    body: JSON.stringify({ firstName: name, email: email, source: 'Navbar Popup Form' })
+  }).catch(e => console.error(e));
+
+  setTimeout(function() {
+    document.getElementById('navbarLeadModalContent').innerHTML = `
+      <div style="text-align:center;">
+        <div style="width:64px; height:64px; background:#10b981; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 16px;">✓</div>
+        <h3 style="font-size:22px; font-weight:800; color:#111827; margin-bottom:8px;">Success!</h3>
+        <p style="color:#4b5563; font-size:14px; margin-bottom:24px;">Your guide has been unlocked.</p>
+        <a href="hiring-blueprint.html" style="display:block; background:#10b981; color:white; text-decoration:none; padding:16px; font-size:16px; font-weight:700; border-radius:8px; width:100%; box-sizing:border-box;">View Blueprint Now ➔</a>
+      </div>
+    `;
+  }, 1000);
+}
+</script>
+
 </body>
 
 

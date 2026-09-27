@@ -46,24 +46,55 @@
   <div class="container" style="max-width:800px;">
     
     <div style="text-align:center; margin-bottom:48px;">
-        <span style="background:rgba(16,185,129,0.1); color:var(--primary); font-weight:800; text-transform:uppercase; letter-spacing:0.1em; padding:6px 16px; border-radius:100px; font-size:13px; display:inline-block; margin-bottom:16px;">Step 3 of 3</span>
-        <h1 class="section-heading" style="margin-bottom:16px;">Final Step: Submit Your Application</h1>
-        <p class="section-subheading">You have optimized your resume and completed the AI mock interview. You are officially ready to apply for the Universal Talent Network.</p>
+        <h1 class="section-heading" style="margin-bottom:16px;">Create Your Applicant Profiles</h1>
+        <p class="section-subheading">Before you optimize your resume or practice the AI interview, secure your spot in the hiring networks by creating your free applicant profiles below.</p>
     </div>
 
     <div class="step-box" style="border:2px solid var(--primary); background:rgba(16,185,129,0.02);">
-        <h2 style="font-size:24px; font-weight:800; color:var(--black); margin-bottom:16px; text-align:center;">Your Application is Ready</h2>
-        
-        <ul class="check-list" style="margin-bottom:32px;">
-            <li><strong>ATS Optimization Complete:</strong> Your resume has the necessary AI keywords to pass the automated screening.</li>
-            <li><strong>STAR Method Prepped:</strong> You have practiced the specific behavioral frameworks the AI interviewer is looking for.</li>
-            <li><strong>Priority Routing:</strong> Applying through this partner portal ensures you are routed directly to the active hiring pipeline.</li>
-        </ul>
+        <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius); padding:24px; margin-bottom:48px;">
+            <p style="font-weight:800; color:var(--black); margin-bottom:24px; font-size:20px; text-align:center;">Create your free applicant profiles on the hiring portals below:</p>
+            
+            <div style="display:flex; flex-direction:column; gap:16px;">
+                <!-- Mercor Card -->
+                <div style="background:var(--white); border:1px solid var(--gray-200); border-radius:8px; padding:20px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;">
+                    <div>
+                        <h3 style="font-size:18px; font-weight:800; color:var(--black); margin-bottom:4px;">Universal AI Network</h3>
+                        <p style="color:var(--gray-600); font-size:13px;">High volume, generalized and domain-specific AI evaluation roles.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openMercor()" style="padding:12px 24px; font-size:15px; flex-shrink:0;">Apply to Network A ➔</button>
+                </div>
+                
+                <!-- Micro1 Card -->
+                <div style="background:var(--white); border:1px solid var(--gray-200); border-radius:8px; padding:20px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;">
+                    <div>
+                        <h3 style="font-size:18px; font-weight:800; color:var(--black); margin-bottom:4px;">Specialized Tech Network</h3>
+                        <p style="color:var(--gray-600); font-size:13px;">Specialized and technical evaluation roles, coding, and expert domains.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openMicro1()" style="padding:12px 24px; font-size:15px; flex-shrink:0; background:#000;">Apply to Network B ➔</button>
+                </div>
+            </div>
+            <p style="font-size:12px; color:var(--gray-500); margin-top:20px; text-align:center;">Make sure to use the exact same email address across all platforms.</p>
+        </div>
 
-        <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius); padding:24px; text-align:center;">
-            <p style="font-weight:700; color:var(--black); margin-bottom:16px; font-size:18px;">Click below to securely submit your application directly to the portal.</p>
-            <button class="btn-primary" onclick="openApplyModal('step3_final')" style="font-size:18px; padding:16px 32px; width:100%; box-shadow:0 8px 20px rgba(16,185,129,0.3);">Submit Official Application ➔</button>
-            <p style="font-size:12px; color:var(--gray-500); margin-top:12px;">You will be redirected to the secure Mercor portal.</p>
+        <div style="text-align: center; margin-bottom: 24px;">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--gray-800);">Why create your profiles first?</h3>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+            <div style="background: white; padding: 24px 20px; border-radius: 12px; border: 1px solid var(--gray-200); text-align: center; box-shadow: var(--shadow-sm);">
+                <div style="font-size: 28px; margin-bottom: 12px;">⚡</div>
+                <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 8px;">1. Priority Routing</h3>
+                <p style="font-size: 13px; color: var(--gray-600); line-height: 1.5; margin: 0;">Applying through this portal routes you directly into the active hiring queue.</p>
+            </div>
+            <div style="background: white; padding: 24px 20px; border-radius: 12px; border: 1px solid var(--gray-200); text-align: center; box-shadow: var(--shadow-sm);">
+                <div style="font-size: 28px; margin-bottom: 12px;">🔒</div>
+                <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 8px;">2. Secure Your Spot</h3>
+                <p style="font-size: 13px; color: var(--gray-600); line-height: 1.5; margin: 0;">Lock in your network placement before you even touch your resume.</p>
+            </div>
+            <div style="background: white; padding: 24px 20px; border-radius: 12px; border: 1px solid var(--gray-200); text-align: center; box-shadow: var(--shadow-sm);">
+                <div style="font-size: 28px; margin-bottom: 12px;">➡️</div>
+                <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 8px;">3. Move to Step 2</h3>
+                <p style="font-size: 13px; color: var(--gray-600); line-height: 1.5; margin: 0;">Once your profiles are active, return to the pipeline to optimize for the ATS.</p>
+            </div>
         </div>
     </div>
 
@@ -99,18 +130,27 @@
 
 <!-- Include the apply modal logic -->
 <script>
-      window.currentApplySource = 'unknown';
-      function openApplyModal(source) {
-        window.currentApplySource = source;
+      function getRef() {
         var params = new URLSearchParams(window.location.search);
         var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
         if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
-        
+        return ref;
+      }
+      function openMercor() {
+        if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'mercor'});
+        var ref = getRef();
         var targetUrl = "https://t.mercor.com/wbPMF";
         if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
         window.open(targetUrl, '_blank');
       }
+      function openMicro1() {
+        if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':'micro1'});
+        var ref = getRef();
+        var targetUrl = "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral";
+        if (ref) targetUrl += "&ref=" + encodeURIComponent(ref);
+        window.open(targetUrl, '_blank');
+      }
 </script>
-<script src="chat.js?v=13"></script>
+<script src="chat.js?v=16"></script>
 </body>
 </html>

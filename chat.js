@@ -2,7 +2,7 @@
 // chat.js
 document.addEventListener('DOMContentLoaded', () => {
 
-  let pageGreeting = "👋 Hi! I'm here to help you get hired on Mercor. Any questions about completing your application or acing the interview?";
+  let pageGreeting = "👋 Hi! I'm here to help you navigate the AI hiring pipeline. Let's get you hired! Any questions about completing your application or acing the interview?";
   const currentPath = window.location.pathname.toLowerCase();
   
   if (currentPath.includes('medical')) {
@@ -16,10 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatUI = `
 <div id="ai-chat-widget" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; font-family: inherit;">
   <div id="chat-window" style="display: none; position: absolute; bottom: 80px; right: 0; width: min(380px, calc(100vw - 40px)); height: 560px; max-height: calc(100vh - 100px); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-radius: 20px; box-shadow: 0 24px 60px rgba(0,0,0,0.15); border: 1px solid rgba(255, 255, 255, 0.6); flex-direction: column; overflow: hidden; transform-origin: bottom right; transition: all 0.3s ease;">
-    <div style="background: linear-gradient(135deg, #111 0%, #333 100%); color: white; padding: 20px 24px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+    <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 20px 24px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2);">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <img src="logo.svg" style="height: 24px; filter: brightness(0) invert(1);" alt="Logo" />
-        <span style="font-size: 16px; letter-spacing: -0.01em;">Hiring Assistant</span>
+        <div style="background:rgba(255,255,255,0.25); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px);"><img src="logo.svg" style="width:24px; height:24px; opacity:0.9;" /></div>
+        <div>
+          <span style="font-size: 18px; letter-spacing: -0.01em; display:block;">AI Recruiter</span>
+          <span style="font-size: 12px; font-weight:600; opacity:0.8; display:flex; align-items:center; gap:4px;"><span style="width:6px; height:6px; border-radius:50%; background:#fff; display:inline-block; animation: pulse 2s infinite;"></span> Online</span>
+        </div>
       </div>
       <button id="chat-close-btn" style="background: none; border: none; color: white; cursor: pointer; font-size: 18px; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">✖</button>
     </div>
@@ -41,11 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
       </button>
     </div>
   </div>
-  <button id="chat-toggle-btn" style="width: 64px; height: 64px; border-radius: 50%; background: #10b981; color: white; border: none; box-shadow: 0 8px 32px rgba(16,185,129,0.4); font-size: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-    💬
+  <button id="chat-toggle-btn" style="height: 56px; padding: 0 24px 0 16px; border-radius: 100px; background: #10b981; color: white; border: none; box-shadow: 0 8px 32px rgba(16,185,129,0.4); font-size: 16px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.2s; position: relative; overflow: hidden;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+    <div style="width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.95); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><img src="logo.svg" style="width:18px; height:18px; max-width:100%; object-fit:contain; opacity:0.9;" /></div>
+    <span class="chat-btn-text">Ask AI Recruiter</span>
+    <div style="position:absolute; top:12px; right:12px; width:6px; height:6px; background:#fff; border-radius:50%; animation: pulse 2s infinite;"></div>
   </button>
 </div>
 <style>
+  @media (max-width: 600px) {
+    .chat-btn-text { display: none; }
+    #chat-toggle-btn { padding: 0 !important; width: 56px; }
+    #chat-toggle-btn > div:last-child { top: 8px !important; right: 8px !important; }
+  }
   @keyframes pulse {
     0%, 100% { opacity: 0.4; transform: scale(0.8); }
     50% { opacity: 1; transform: scale(1.2); }
@@ -122,9 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (text.toLowerCase().includes("apply") || text.toLowerCase().includes("ready") || text.toLowerCase().includes("start")) {
       botResponse = `
         <strong style="color: #ef4444;">🚨 CRITICAL STEP BEFORE YOU APPLY:</strong><br><br>
-        Before clicking the application link, you <strong>MUST</strong> create a free Mercor account. If you don't do this first, your progress in the AI interview will be lost!<br><br>
-        <a href="https://mercor.com" target="_blank" style="color:#10b981; font-weight:700;">1. Click here to create your account</a><br>
-        <a href="apply.html" style="color:#10b981; font-weight:700;">2. Then click here to start the interview</a>
+        Before starting any application, you <strong>MUST</strong> create a free account on the platform (Micro1 or Mercor). If you don't do this first, your progress in the AI interview will be lost and you won't get hired!<br><br>
+        <strong style="color:#10b981;">1. Go to their site and create your account.</strong><br>
+        <a href="apply.html" style="color:#10b981; font-weight:700; text-decoration:underline;">2. Then click here to apply through our pipeline.</a>
       `;
       document.getElementById(loadingId).remove();
       chatMessages.innerHTML += `
@@ -146,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
           contents: [{
             parts: [{
               text: (function() {
-                let context = "You are a helpful, highly persuasive assistant for the TrainAIToGain hiring pipeline, helping candidates get hired at Mercor. ";
+                let context = "You are a helpful, highly persuasive assistant for the TrainAIToGain hiring pipeline, helping candidates get hired at Micro1, Mercor, and other AI platforms. ";
                 const score = localStorage.getItem('atsScore');
                 const role = localStorage.getItem('atsRole');
                 const missing = localStorage.getItem('atsMissing');
@@ -172,11 +182,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Convert markdown bold to html
       botResponse = botResponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       // Add the click-to-apply action at the end
+      botResponse += "<br><br><strong style='color:#ef4444; font-size:12px;'>⚠️ IMPORTANT:</strong> <span style='font-size:12px;'>Always create your free account on the hiring platform (Micro1/Mercor) FIRST before starting the application, or your progress will be lost!</span>";
       
       
     } catch(err) {
       console.error(err);
-      botResponse = "The Mercor AI interview evaluates your critical thinking and communication. My best advice: Answer directly, don't use filler words, and speak clearly. <br><br><strong style='color:#10b981; cursor:pointer;' onclick=\"document.getElementById('chat-input').value='I am ready to apply'; document.getElementById('chat-send-btn').click();\">Click here to start the application right now.</strong>";
+      botResponse = "The AI interviews evaluate your critical thinking and communication. My best advice: Answer directly, don't use filler words, and speak clearly. <br><br><strong style='color:#10b981; cursor:pointer;' onclick=\"document.getElementById('chat-input').value='I am ready to apply'; document.getElementById('chat-send-btn').click();\">Click here to start the application right now.</strong>";
     }
     
     document.getElementById(loadingId).remove();
