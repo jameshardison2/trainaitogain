@@ -1,0 +1,39 @@
+name: Auto-Sync Micro1 & Deploy
+
+on:
+  schedule:
+    - cron: '0 0,12 * * *' # Runs at 12:00 AM and 12:00 PM UTC every day
+  workflow_dispatch: # Allows you to click a button in GitHub to run it manually
+
+jobs:
+  sync_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Puppeteer & Dependencies
+        run: npm install
+
+      - name: Run Micro1 Sync Script
+        run: node sync_micro1.js
+        
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only hosting --token "$FIREBASE_TOKEN"
+
+      - name: Commit updated waves.json back to GitHub
+        run: |
+          git config --global user.name "TrainAIToGain Bot"
+          git config --global user.email "bot@trainaitogain.com"
+          git add waves.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync Micro1 jobs" && git push)
