@@ -34,8 +34,8 @@
       "platform": "Mercor"
     },
     {
-      "id": "multilingual-primary-care-physician-(md)-—-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Primary Care Physician (MD) — Clinical Documentation & AI Evaluation",
+      "id": "multilingual-primary-care-physician-(md)-\u2014-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Primary Care Physician (MD) \u2014 Clinical Documentation & AI Evaluation",
       "domain": "MEDICAL",
       "pay": "$190/hr",
       "status": "ACTIVE",
@@ -408,7 +408,7 @@
     },
     {
       "id": "micro1-d0f83737-b673-439b-a66f-0f23bcd2b707",
-      "title": "Generalist — U.S. Tax Workflow Evaluation",
+      "title": "Generalist \u2014 U.S. Tax Workflow Evaluation",
       "domain": "GENERAL",
       "pay": "$35-$110/hr",
       "status": "ACTIVE",
@@ -667,13 +667,3613 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/0075fd81-8fde-47a4-945a-b10a9bc436fa?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "mercor-da28fc9a",
+      "title": "Lead Genetic Counselor",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-39537e93",
+      "title": "Event Planner",
+      "domain": "GENERAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "LatAm",
+        "General",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-2cc8b264",
+      "title": "Senior Medical Director",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-28e955f3",
+      "title": "Economist (US)",
+      "domain": "FINANCE",
+      "pay": "$150/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "US Based",
+        "India",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-f5d5d29a",
+      "title": "Senior Compliance Officer (India)",
+      "domain": "FINANCE",
+      "pay": "$150/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-1776bffe",
+      "title": "Junior SEO Specialist",
+      "domain": "GENERAL",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "LatAm",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-428a93d5",
+      "title": "Staff Corporate Lawyer",
+      "domain": "LEGAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "US Based",
+        "Legal",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-f982ef1a",
+      "title": "Staff HR Generalist (LatAm)",
+      "domain": "GENERAL",
+      "pay": "$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "India",
+        "General",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-c756af44",
+      "title": "Solutions Architect (US)",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Remote",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-1fab0e7b",
+      "title": "Staff Frontend Developer",
+      "domain": "SOFTWARE",
+      "pay": "$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-07378fdd",
+      "title": "Lead Social Media Manager",
+      "domain": "GENERAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "General",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-de6d93d5",
+      "title": "Senior Frontend Developer",
+      "domain": "SOFTWARE",
+      "pay": "$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Software",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-c8470728",
+      "title": "Principal Graphic Designer",
+      "domain": "GENERAL",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "US Based",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-1b02389b",
+      "title": "Senior Phlebotomist",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-ded09752",
+      "title": "Contract Negotiator (US)",
+      "domain": "LEGAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Legal",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-f96650f0",
+      "title": "Telehealth Physician",
+      "domain": "MEDICAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-1e6eed04",
+      "title": "Senior Medical Laboratory Scientist",
+      "domain": "MEDICAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-adabe26b",
+      "title": "Healthcare Administrator (US)",
+      "domain": "MEDICAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Medical",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-93ac4833",
+      "title": "Lead 3D Modeler",
+      "domain": "GENERAL",
+      "pay": "$20/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Remote",
+        "General",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-104abe02",
+      "title": "Fixed Income Analyst (US)",
+      "domain": "FINANCE",
+      "pay": "$150/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "Global",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-66cec7df",
+      "title": "Principal Release Engineer (US)",
+      "domain": "SOFTWARE",
+      "pay": "$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "LatAm",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-f84a04a5",
+      "title": "Junior Platform Engineer (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "LatAm",
+        "India",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-e3abda12",
+      "title": "Junior Algorithmic Trader (LatAm)",
+      "domain": "FINANCE",
+      "pay": "$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "Remote",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-374db7b7",
+      "title": "Principal Customer Success Manager",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-d35fae3a",
+      "title": "Junior Notary Public",
+      "domain": "LEGAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Legal",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-db96de4b",
+      "title": "Senior Healthcare Consultant (US)",
+      "domain": "MEDICAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-8c325edf",
+      "title": "Lead Criminal Defense Attorney (US)",
+      "domain": "LEGAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-d44710bf",
+      "title": "Registered Nurse",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-45140127",
+      "title": "Compliance Officer",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "India",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-69310bea",
+      "title": "Junior Epidemiologist",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-7bac8dbd",
+      "title": "Junior Mobile Developer (Android) (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "LatAm",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-9b866823",
+      "title": "Lead Telehealth Physician",
+      "domain": "MEDICAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Medical",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-a6ba6fd2",
+      "title": "Network Engineer (US)",
+      "domain": "SOFTWARE",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Software",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-f9ca6432",
+      "title": "Senior Biomedical Engineer (US)",
+      "domain": "MEDICAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Medical",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-d34f5b7c",
+      "title": "Lead Psychiatrist",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-3878fa11",
+      "title": "Principal Mobile Developer (Android) (US)",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "India",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-401582f0",
+      "title": "Frontend Developer",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-24f08229",
+      "title": "Lead Systems Administrator (US)",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "India",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-2904002d",
+      "title": "Staff Tax Consultant",
+      "domain": "FINANCE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Finance",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-342cc53b",
+      "title": "Environmental Lawyer",
+      "domain": "LEGAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-55d484f9",
+      "title": "Lead Supply Chain Analyst",
+      "domain": "GENERAL",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Remote",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-364a197e",
+      "title": "Lead Site Reliability Engineer",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-3ac98f04",
+      "title": "Senior Telehealth Physician",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Global",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-165a6504",
+      "title": "Senior Operations Manager (US)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "US Based",
+        "India",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-37b343fa",
+      "title": "Principal Genetic Counselor",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Medical",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-d964b758",
+      "title": "Staff Legal Researcher (US)",
+      "domain": "LEGAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Global",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-0cdbec0e",
+      "title": "Logistics Coordinator",
+      "domain": "GENERAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "General",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-a4584c97",
+      "title": "Lead Product Manager (US)",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Software",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-4c5cfc94",
+      "title": "Research Analyst",
+      "domain": "GENERAL",
+      "pay": "$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "General",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-5c56768c",
+      "title": "Principal Legal Operations Manager",
+      "domain": "LEGAL",
+      "pay": "$250/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Legal",
+        "Remote",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-5534638c",
+      "title": "Senior Physical Therapist (US)",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Medical",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-f23dd4c1",
+      "title": "Staff Prosecutor",
+      "domain": "LEGAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-578bc624",
+      "title": "Junior Mobile Developer (iOS)",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Remote",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-b4f39f58",
+      "title": "Lead SDET",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-c2fdf734",
+      "title": "Respiratory Therapist",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "Remote",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-98027e88",
+      "title": "Principal Privacy Officer (US)",
+      "domain": "LEGAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Legal",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-733a6974",
+      "title": "Junior Legal Assistant",
+      "domain": "LEGAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Legal",
+        "Global",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-3bf8ecdb",
+      "title": "Senior Mobile Developer (Android) (India)",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Global",
+        "India",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-d61668a0",
+      "title": "Principal Executive Assistant (India)",
+      "domain": "GENERAL",
+      "pay": "$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "India",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-38eb5d04",
+      "title": "Lead Forensic Accountant (US)",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "US Based",
+        "Finance",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-6bd5b4b5",
+      "title": "Engineering Manager (India)",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Remote",
+        "Software",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-459b2e28",
+      "title": "Principal Fixed Income Analyst",
+      "domain": "FINANCE",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "India",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-f929341e",
+      "title": "Algorithmic Trader",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "US Based",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-7c32716d",
+      "title": "Lead Quality Assurance Specialist",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "India",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-412c4225",
+      "title": "Principal Blockchain Developer (US)",
+      "domain": "SOFTWARE",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Software",
+        "US Based",
+        "India",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-e61ccc16",
+      "title": "Senior Account Executive",
+      "domain": "GENERAL",
+      "pay": "$20/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "India",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-09a3589d",
+      "title": "Junior Recruiter (US)",
+      "domain": "GENERAL",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "India",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-2dd977f3",
+      "title": "Senior Legal Consultant",
+      "domain": "LEGAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "Legal",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-5c37a19c",
+      "title": "Junior Controller",
+      "domain": "FINANCE",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Remote",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-c2272980",
+      "title": "Staff Data Entry Specialist (US)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "India",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-55f7f80f",
+      "title": "Staff Dental Hygienist",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-fb2049c4",
+      "title": "Senior Chief Financial Officer (CFO) (India)",
+      "domain": "FINANCE",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Global",
+        "India",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-39b14b22",
+      "title": "Senior Quality Assurance Specialist (LatAm)",
+      "domain": "GENERAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "LatAm",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-31c41562",
+      "title": "Junior Registered Nurse (US)",
+      "domain": "MEDICAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-44a8cb96",
+      "title": "Lead Blockchain Developer (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "LatAm",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-27d9b448",
+      "title": "Senior Health Informatics Specialist",
+      "domain": "MEDICAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-c2568a36",
+      "title": "Staff Clinical Research Coordinator (US)",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Global",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-3155eddd",
+      "title": "Staff Trademark Examiner (US)",
+      "domain": "LEGAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-74eaf919",
+      "title": "Staff Radiologic Technologist",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-11637571",
+      "title": "Legal Operations Manager (US)",
+      "domain": "LEGAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Legal",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-8b94e58a",
+      "title": "Junior Engineering Manager (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "LatAm",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-32e155cb",
+      "title": "Staff Mediator (US)",
+      "domain": "LEGAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Legal",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-fb926f08",
+      "title": "Senior Translator",
+      "domain": "GENERAL",
+      "pay": "$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "India",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-946e45b1",
+      "title": "Principal Data Engineer",
+      "domain": "SOFTWARE",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "LatAm",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-9ec2a8ef",
+      "title": "Principal Legal Researcher",
+      "domain": "LEGAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "Legal",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-1d0b66c0",
+      "title": "Senior Full Stack Developer (US)",
+      "domain": "SOFTWARE",
+      "pay": "$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Software",
+        "US Based",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-74a8892d",
+      "title": "Principal Medical Laboratory Scientist",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-6bcc5ed6",
+      "title": "Senior Equity Research Analyst (US)",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "India",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-b6a035b9",
+      "title": "Lead Content Strategist",
+      "domain": "GENERAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "US Based",
+        "India",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-57765b78",
+      "title": "Quality Assurance Specialist (US)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "US Based",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-c3dcbffa",
+      "title": "Senior Game Developer (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-006aaa55",
+      "title": "Lead Full Stack Developer",
+      "domain": "SOFTWARE",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Remote",
+        "Software",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-566cc373",
+      "title": "Junior Solutions Architect (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "India",
+        "LatAm",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-cd2d8e45",
+      "title": "Senior Smart Contract Engineer (US)",
+      "domain": "SOFTWARE",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "LatAm",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-de614a1f",
+      "title": "Junior Medical Writer (US)",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "Remote",
+        "US Based",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-ec1fd262",
+      "title": "Junior QA Engineer (India)",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Global",
+        "India",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-624974c9",
+      "title": "Principal Medical Coder",
+      "domain": "MEDICAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "Medical",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-66af04aa",
+      "title": "Junior Tax Attorney",
+      "domain": "LEGAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Legal",
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-8d03f51b",
+      "title": "Junior Systems Administrator",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "Software",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "mercor-44b0a7f7",
+      "title": "Principal Health Informatics Specialist (US)",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Global",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "micro1-2999475a",
+      "title": "Lead Medical Biller",
+      "domain": "MEDICAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-0e19094e",
+      "title": "Senior Judge Advocate General (JAG) (US)",
+      "domain": "LEGAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Legal",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-35742726",
+      "title": "Principal Tax Attorney",
+      "domain": "LEGAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Legal",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a09ebdd9",
+      "title": "Lead Medical Coder",
+      "domain": "MEDICAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "Medical",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-bf0d127d",
+      "title": "SDET (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Software",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a25ae2db",
+      "title": "Project Manager",
+      "domain": "GENERAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-b1e1e51a",
+      "title": "Staff Patent Agent",
+      "domain": "LEGAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "US Based",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-5cea2e76",
+      "title": "Derivatives Trader",
+      "domain": "FINANCE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Finance",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c28faa4e",
+      "title": "Staff SEO Specialist",
+      "domain": "GENERAL",
+      "pay": "$20/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "General",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-5b6b502c",
+      "title": "Senior Trademark Examiner (US)",
+      "domain": "LEGAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Legal",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-317446c1",
+      "title": "Principal Criminal Defense Attorney",
+      "domain": "LEGAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "US Based",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-9e69e04e",
+      "title": "Junior Contract Negotiator (US)",
+      "domain": "LEGAL",
+      "pay": "$250/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-24884de6",
+      "title": "Compliance Director",
+      "domain": "LEGAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Legal",
+        "Global",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-1adba331",
+      "title": "Senior Event Planner",
+      "domain": "GENERAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-39650bca",
+      "title": "Staff Nutritionist (US)",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-084271ae",
+      "title": "Principal Notary Public (US)",
+      "domain": "LEGAL",
+      "pay": "$250/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "Legal",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-04ad16c6",
+      "title": "Principal Epidemiologist",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "US Based",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-da3ab01b",
+      "title": "Senior SEO Specialist (India)",
+      "domain": "GENERAL",
+      "pay": "$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "General",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-65885076",
+      "title": "Marketing Manager (US)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "General",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a059126a",
+      "title": "Tax Attorney (US)",
+      "domain": "LEGAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Legal",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2e85d1e1",
+      "title": "Lead Derivatives Trader (US)",
+      "domain": "FINANCE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-e07c6d0b",
+      "title": "Principal Equity Research Analyst",
+      "domain": "FINANCE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "LatAm",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-4bf5dfa5",
+      "title": "Senior Virtual Assistant (LatAm)",
+      "domain": "GENERAL",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Remote",
+        "General",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c0a8d57e",
+      "title": "Principal Medical Writer",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "Remote",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-5d6bad23",
+      "title": "Principal Court Reporter",
+      "domain": "LEGAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Legal",
+        "Remote",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-619f3bbd",
+      "title": "Lead Physical Therapist (US)",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-9f40cce2",
+      "title": "Junior Arbitrator",
+      "domain": "LEGAL",
+      "pay": "$250/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Legal",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2c01705f",
+      "title": "Lead Employment Lawyer (US)",
+      "domain": "LEGAL",
+      "pay": "$250/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Legal",
+        "US Based",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2b9532b7",
+      "title": "Junior Clinical Data Manager (US)",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Medical",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-db3da1a3",
+      "title": "Pharmacist",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "US Based",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-31c07785",
+      "title": "Lead Data Entry Specialist",
+      "domain": "GENERAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "General",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-56489196",
+      "title": "Lead Clinical Psychologist",
+      "domain": "MEDICAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Medical",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-51fd9e7a",
+      "title": "Senior Data Analyst (US)",
+      "domain": "SOFTWARE",
+      "pay": "$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Global",
+        "Software",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a0892d74",
+      "title": "Junior Event Planner (US)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "General",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2566bf31",
+      "title": "Risk Manager",
+      "domain": "FINANCE",
+      "pay": "$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Finance",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-b01195d8",
+      "title": "Staff Health Informatics Specialist",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Medical",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a6a094ca",
+      "title": "Junior Respiratory Therapist",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "US Based",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-830fb313",
+      "title": "Lead Machine Learning Engineer (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "India",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-622dafe6",
+      "title": "Principal Credit Analyst (India)",
+      "domain": "FINANCE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Finance",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-f991267e",
+      "title": "Junior Fixed Income Analyst",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "US Based",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-612d7e78",
+      "title": "Financial Planner",
+      "domain": "FINANCE",
+      "pay": "$150/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Global",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-234c1875",
+      "title": "Junior Content Strategist (US)",
+      "domain": "GENERAL",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c93da9e8",
+      "title": "Senior Hedge Fund Manager (India)",
+      "domain": "FINANCE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-1bd21246",
+      "title": "Principal Security Engineer (US)",
+      "domain": "SOFTWARE",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "LatAm",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-cd3c76c2",
+      "title": "Senior Investment Banker",
+      "domain": "FINANCE",
+      "pay": "$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-58dee267",
+      "title": "Lead Respiratory Therapist",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "US Based",
+        "Medical",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-6e01afd3",
+      "title": "Staff Environmental Lawyer (US)",
+      "domain": "LEGAL",
+      "pay": "$250/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Legal",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-19e185d0",
+      "title": "Staff Business Intelligence Analyst (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Remote",
+        "Software",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-539a1f51",
+      "title": "Principal Frontend Developer",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Global",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a710d87f",
+      "title": "Senior Genetic Counselor (US)",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Medical",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-48b45167",
+      "title": "Senior Legal Analyst",
+      "domain": "LEGAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "Legal",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-53cc845d",
+      "title": "Principal Event Planner (US)",
+      "domain": "GENERAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "India",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-6fc88fe9",
+      "title": "Senior Environmental Lawyer",
+      "domain": "LEGAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-ab64d038",
+      "title": "Medical Director (US)",
+      "domain": "MEDICAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "Global",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-ca396b12",
+      "title": "Principal Medical Assistant (US)",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Global",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-420c1bfa",
+      "title": "Senior Forensic Accountant (LatAm)",
+      "domain": "FINANCE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "India",
+        "Finance",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-35d9d793",
+      "title": "Lead Legal Analyst",
+      "domain": "LEGAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "US Based",
+        "Legal",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-5c9f28c1",
+      "title": "Staff Sales Representative (US)",
+      "domain": "GENERAL",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Global",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a1feb935",
+      "title": "Health Informatics Specialist (US)",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-372b1c3b",
+      "title": "Senior QA Engineer (India)",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "India",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2260f561",
+      "title": "Senior Venture Capital Associate (LatAm)",
+      "domain": "FINANCE",
+      "pay": "$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-e631c167",
+      "title": "Principal Legal Assistant",
+      "domain": "LEGAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Legal",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-bf130d55",
+      "title": "Senior Executive Assistant (India)",
+      "domain": "GENERAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "General",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-15062364",
+      "title": "Junior Clinical Psychologist (US)",
+      "domain": "MEDICAL",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Medical",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-1205ae22",
+      "title": "AR/VR Developer",
+      "domain": "SOFTWARE",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Software",
+        "India",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2f83ea15",
+      "title": "Junior Auditor",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Finance",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-658a3eeb",
+      "title": "Junior Tax Consultant (LatAm)",
+      "domain": "FINANCE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-1ae27cca",
+      "title": "Senior E-Discovery Specialist",
+      "domain": "LEGAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "Legal",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-3637d0c8",
+      "title": "Lead Surgical Technologist",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Medical",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-77dcfdf3",
+      "title": "Junior Customer Success Manager (US)",
+      "domain": "GENERAL",
+      "pay": "$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "US Based",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-e5b2a217",
+      "title": "Principal Virtual Assistant (LatAm)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "US Based",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-e80ead18",
+      "title": "Staff SDET (India)",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "LatAm",
+        "Software",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-cf146035",
+      "title": "Senior M&A Advisor (India)",
+      "domain": "FINANCE",
+      "pay": "$150/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Global",
+        "Finance",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-7798a90c",
+      "title": "Principal Corporate Lawyer",
+      "domain": "LEGAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Legal",
+        "Global",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-f2453591",
+      "title": "Lead Intellectual Property Attorney",
+      "domain": "LEGAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Legal",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-27839a47",
+      "title": "Junior Private Equity Analyst",
+      "domain": "FINANCE",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Global",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-084874de",
+      "title": "Staff Accountant (US)",
+      "domain": "FINANCE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "US Based",
+        "Finance",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-e29beda9",
+      "title": "Principal Underwriter",
+      "domain": "FINANCE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Remote",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-530fc36d",
+      "title": "Lead Veterinarian (US)",
+      "domain": "MEDICAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "Remote",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-98929d85",
+      "title": "Staff Full Stack Developer (US)",
+      "domain": "SOFTWARE",
+      "pay": "$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Remote",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-0f8abd6a",
+      "title": "Junior Procurement Manager (US)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "US Based",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d438ef11",
+      "title": "Social Media Manager (LatAm)",
+      "domain": "GENERAL",
+      "pay": "$20/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "General",
+        "India",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-3be405c6",
+      "title": "Staff Corporate Finance Manager (India)",
+      "domain": "FINANCE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "India",
+        "Remote",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-804ec183",
+      "title": "Staff Embedded Systems Engineer (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Global",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d6b2a48b",
+      "title": "Senior Network Engineer (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Global",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2ce66f7f",
+      "title": "Senior Psychiatrist",
+      "domain": "MEDICAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "Remote",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-8bde9a1c",
+      "title": "Senior 3D Modeler",
+      "domain": "GENERAL",
+      "pay": "$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-880dd580",
+      "title": "Senior Auditor",
+      "domain": "FINANCE",
+      "pay": "$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "Global",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-47d2170f",
+      "title": "Staff Account Executive (LatAm)",
+      "domain": "GENERAL",
+      "pay": "$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "LatAm",
+        "General",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-e0d78f2c",
+      "title": "Senior Dental Hygienist",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Medical",
+        "Global",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-79d3ba36",
+      "title": "Staff Telehealth Physician",
+      "domain": "MEDICAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-e6d932c5",
+      "title": "General Counsel",
+      "domain": "LEGAL",
+      "pay": "$250/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "US Based",
+        "Legal",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-cfc59c51",
+      "title": "Lead Epidemiologist",
+      "domain": "MEDICAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Global",
+        "Medical",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-fa41e0dc",
+      "title": "Junior Underwriter",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Finance",
+        "LatAm",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2eb369da",
+      "title": "Junior Privacy Officer",
+      "domain": "LEGAL",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Legal",
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-50cf60a3",
+      "title": "Staff Financial Planner (LatAm)",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Finance",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-6a523965",
+      "title": "Staff Quality Assurance Specialist",
+      "domain": "GENERAL",
+      "pay": "$20/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "LatAm",
+        "Global",
+        "General",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-6b8d65ce",
+      "title": "Staff Respiratory Therapist (US)",
+      "domain": "MEDICAL",
+      "pay": "$200/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "US Based",
+        "Remote",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-5f58a547",
+      "title": "Senior Title Examiner (US)",
+      "domain": "LEGAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Global",
+        "Legal",
+        "US Based",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-21144c52",
+      "title": "Lead Credit Analyst",
+      "domain": "FINANCE",
+      "pay": "$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring for this position right now. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "LatAm",
+        "Global",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     }
   ],
   "closedRoles": [
     "Senior Book Editor",
     "Software and Firmware Engineering Experts",
     "Personalized Life Assistant Expert",
-    "Multilingual Inpatient Hospitalist (MD) — Clinical Documentation & AI Evaluation",
+    "Multilingual Inpatient Hospitalist (MD) \u2014 Clinical Documentation & AI Evaluation",
     "Corporate/M&A Lawyer (United Kingdom)",
     "In-House Counsel (United Kingdom)",
     "Legal / Commercial Expert",
