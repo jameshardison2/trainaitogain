@@ -51,7 +51,14 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
       </div>
 
       
-      <div id="job-grid-waves" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:24px; padding: 12px 0 24px;">
+      <div style="position:relative;">
+        <button class="carousel-btn" style="position:absolute; left:-20px; top:50%; transform:translateY(-50%); z-index:10; background:white; border:1px solid #ddd; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);" onclick="document.getElementById('job-grid-waves')?.scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+        <button class="carousel-btn" style="position:absolute; right:-20px; top:50%; transform:translateY(-50%); z-index:10; background:white; border:1px solid #ddd; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);" onclick="document.getElementById('job-grid-waves')?.scrollBy({left: 320, behavior: 'smooth'})">›</button>
+        
+        <div id="job-grid-waves" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
+          <style>
+            #job-grid-waves::-webkit-scrollbar { display: none; }
+          </style>
     `;
         data.roles.forEach((role) => {
             let tagsHtml = role.tags.map(t => `<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">${t}</span>`).join('');
@@ -61,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
             const safeDomain = role.domain.replace(/'/g, "\\'");
             const safePay = role.pay.replace(/'/g, "\\'");
             html += `
-        <div class="feature-card opp-card" data-domain="${role.domain}" style="background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+        <div class="feature-card opp-card" data-domain="${role.domain}" style="flex:0 0 320px; scroll-snap-align:start; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
           <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
             <div style="display:flex; gap:8px;">
               <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
@@ -83,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
         </div>
       `;
         });
-        html += `</div>`;
+        html += `</div></div>`;
         carouselWrapper.innerHTML = html;
         const carouselsSection = document.querySelector('.section .container');
         if (carouselsSection && carouselsSection.firstChild) {
