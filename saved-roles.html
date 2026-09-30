@@ -242,7 +242,7 @@ function renderSavedRoles() {
                 <div style="color:var(--primary); font-weight:800; font-size:24px; margin-bottom:12px;">${role.pay}</div>
                 <div style="display:flex; gap:8px;">
                     <button onclick="removeRole('${role.id}')" class="btn-secondary" style="padding:8px 16px;">Remove</button>
-                    <button   class="btn-primary" style="cursor:pointer; padding:8px 24px;" onclick="openApplyModal('content_button');">Apply</button>
+                    <button class="btn-primary" style="cursor:pointer; padding:8px 24px; background:var(--orange, #fb923c); border-color:var(--orange, #fb923c);" onclick="const refCode = localStorage.getItem('affiliate_ref'); let targetUrl = '${role.linkTarget || 'https://t.mercor.com/wbPMF'}'; if (refCode && targetUrl.includes('mercor')) { if(!targetUrl.includes('ref=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'ref=' + encodeURIComponent(refCode); } else if (refCode && targetUrl.includes('micro1')) { if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode); } window.open(targetUrl, '_blank')">Apply</button>
                 </div>
             </div>
         </div>
