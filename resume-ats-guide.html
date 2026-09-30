@@ -1458,6 +1458,16 @@ ${resumeBox.value}
                         }
                     });
                 }
+                
+                // If a resume is already loaded, auto-run the scan for this role!
+                setTimeout(() => {
+                    const rBox = document.getElementById('resume-text');
+                    const sBtn = document.getElementById('scan-btn');
+                    if (rBox && rBox.value.length >= 50 && sBtn) {
+                        sBtn.disabled = false;
+                        sBtn.click();
+                    }
+                }, 600);
             }
         }, 500); // give the fetch waves.json time to complete
     }
