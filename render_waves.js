@@ -39,6 +39,16 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
         html += `
       <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:24px;">
         <input type="text" id="jobSearchInput" placeholder="Search roles (e.g. Python, Medical)..." style="flex:1; min-width:200px; padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+        <select id="jobDomainFilter" style="padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; background:white; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+            <option value="ALL">All Categories</option>
+            <option value="SOFTWARE">Software & Engineering</option>
+            <option value="GENERAL">General & Expert</option>
+            <option value="MEDICAL">Medical & Clinical</option>
+            <option value="FINANCE">Finance & Economics</option>
+            <option value="LEGAL">Legal & Compliance</option>
+            <option value="MICRO1">Micro1 Roles</option>
+            <option value="MERCOR">Mercor Roles</option>
+        </select>
       </div>
     `;
         categories.forEach(cat => {
@@ -46,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
             if (categoryRoles.length === 0)
                 return; // Skip empty categories
             html += `
+        <div class="category-wrapper">
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px; margin-top:48px;">
           <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">${cat.icon}</div>
           <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">${cat.name}</h2>
@@ -67,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
                 const safeDomain = role.domain.replace(/'/g, "\'");
                 const safePay = role.pay.replace(/'/g, "\'");
                 html += `
-          <div class="feature-card opp-card" data-domain="${role.domain}" style="flex:0 0 320px; scroll-snap-align:start; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div class="feature-card opp-card" data-domain="${role.domain}" data-platform="${role.platform || 'Mercor'}" style="flex:0 0 320px; scroll-snap-align:start; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
             <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
               <div style="display:flex; gap:8px;">
                 <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
@@ -89,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
           </div>
         `;
             });
-            html += `</div></div>`;
+            html += `</div></div></div>`;
         });
         carouselWrapper.innerHTML = html;
         const carouselsSection = document.querySelector('.section .container');
@@ -101,18 +112,39 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
         function filterJobs() {
             const term = searchInput ? searchInput.value.toLowerCase() : '';
             const domain = domainFilter ? domainFilter.value : 'ALL';
+            // Update individual cards
             const cards = carouselWrapper.querySelectorAll('.opp-card');
             cards.forEach((card) => {
-                var _a;
+                var _a, _b;
                 const text = ((_a = card.textContent) === null || _a === void 0 ? void 0 : _a.toLowerCase()) || '';
                 const cardDomain = card.getAttribute('data-domain');
+                const cardPlatform = ((_b = card.getAttribute('data-platform')) === null || _b === void 0 ? void 0 : _b.toUpperCase()) || '';
                 let matchesSearch = text.includes(term);
-                let matchesDomain = domain === 'ALL' || cardDomain === domain;
+                let matchesDomain = true;
+                if (domain !== 'ALL') {
+                    if (domain === 'MICRO1' || domain === 'MERCOR') {
+                        matchesDomain = cardPlatform === domain;
+                    }
+                    else {
+                        matchesDomain = cardDomain === domain;
+                    }
+                }
                 if (matchesSearch && matchesDomain) {
                     card.style.display = 'flex';
                 }
                 else {
                     card.style.display = 'none';
+                }
+            });
+            // Hide empty category carousels
+            const wrappers = carouselWrapper.querySelectorAll('.category-wrapper');
+            wrappers.forEach((wrapper) => {
+                const visibleCards = Array.from(wrapper.querySelectorAll('.opp-card')).filter((c) => c.style.display !== 'none');
+                if (visibleCards.length === 0) {
+                    wrapper.style.display = 'none';
+                }
+                else {
+                    wrapper.style.display = 'block';
                 }
             });
         }
