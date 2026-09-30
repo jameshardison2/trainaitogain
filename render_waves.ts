@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <option value="MEDICAL">Medical & Clinical</option>
             <option value="FINANCE">Finance & Economics</option>
             <option value="LEGAL">Legal & Compliance</option>
+            <option value="COMPLETED">Completed Roles</option>
         </select>
       </div>
 

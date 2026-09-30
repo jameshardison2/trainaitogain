@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
             <option value="MEDICAL">Medical & Clinical</option>
             <option value="FINANCE">Finance & Economics</option>
             <option value="LEGAL">Legal & Compliance</option>
+            <option value="COMPLETED">Completed Roles</option>
         </select>
       </div>
 
