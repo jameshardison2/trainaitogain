@@ -45,10 +45,10 @@ const path = require('path');
   let waves = JSON.parse(wavesRaw);
 
   // Filter out existing Micro1 jobs
-  waves.roles = waves.roles.filter(r => r.platform !== "Micro1");
+  waves.roles = waves.roles.filter(r => !r.id.startsWith("micro1-") && r.platform !== "Micro1");
 
-  // Take the top 10 jobs to inject
-  const topJobs = jobsData.slice(0, 10);
+  // Take all jobs to inject
+  const topJobs = jobsData;
   
   let newMicro1Jobs = topJobs.map(job => {
     let minPay = job.ideal_hourly_rate ? job.ideal_hourly_rate.min : 0;

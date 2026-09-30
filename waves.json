@@ -29,90 +29,7 @@
         "Firmware",
         "Test Automation"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
-    },
-    {
-      "id": "micro1-ai-tier-1",
-      "title": "Micro1 AI Generalist (Tier 1)",
-      "domain": "GENERAL",
-      "pay": "$15-$25/hr",
-      "status": "HIGH PRIORITY",
-      "badgeClass": "red",
-      "description": "Micro1 is mass hiring Generalist AI Trainers right now. No coding required.",
-      "atsKeywords": [
-        "Generalist",
-        "Writing",
-        "Editing",
-        "Evaluation"
-      ],
-      "tags": [
-        "Micro1",
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-ai-tier-2",
-      "title": "Micro1 AI Expert (Tier 2/3)",
-      "domain": "SOFTWARE",
-      "pay": "$35-$50/hr",
-      "status": "HIGH PRIORITY",
-      "badgeClass": "red",
-      "description": "Micro1 is looking for highly specialized domain experts (Software, Math, Physics) for complex RLHF.",
-      "atsKeywords": [
-        "Software Engineering",
-        "Mathematics",
-        "Python",
-        "C++"
-      ],
-      "tags": [
-        "Micro1",
-        "Software",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-ai-software-engineer",
-      "title": "Micro1 AI Software Engineer",
-      "domain": "SOFTWARE",
-      "pay": "$40-$60/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is actively hiring top 1% global engineering talent for remote AI development and RLHF.",
-      "atsKeywords": [
-        "Software Engineering",
-        "React",
-        "Node",
-        "Python"
-      ],
-      "tags": [
-        "Micro1",
-        "Software",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-ai-trainer",
-      "title": "Micro1 AI Data Trainer",
-      "domain": "GENERAL",
-      "pay": "$20-$30/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Train cutting-edge LLMs. Micro1 is seeking highly articulate writers and domain experts.",
-      "atsKeywords": [
-        "Data Annotation",
-        "Writing",
-        "RLHF"
-      ],
-      "tags": [
-        "Micro1",
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+      "linkTarget": "https://t.mercor.com/0e9X7"
     },
     {
       "id": "customer-success-engineer-(latam)",
@@ -202,11 +119,11 @@
         "General",
         "Remote"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "linkTarget": "https://t.mercor.com/13F7G"
     },
     {
-      "id": "cybersecurity-research-expert-\u2013-offensive-security-&-vulnerability-research",
-      "title": "Cybersecurity Research Expert \u2013 Offensive Security & Vulnerability Research",
+      "id": "cybersecurity-research-expert-–-offensive-security-&-vulnerability-research",
+      "title": "Cybersecurity Research Expert – Offensive Security & Vulnerability Research",
       "domain": "GENERAL",
       "pay": "$250/hr",
       "status": "ACTIVE",
@@ -250,8 +167,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "disease-area-clinician-\u2014-trial-endpoints-&-prescribing",
-      "title": "Disease-Area Clinician \u2014 Trial Endpoints & Prescribing",
+      "id": "disease-area-clinician-—-trial-endpoints-&-prescribing",
+      "title": "Disease-Area Clinician — Trial Endpoints & Prescribing",
       "domain": "MEDICAL",
       "pay": "$230/hr",
       "status": "ACTIVE",
@@ -265,8 +182,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "health-plan-finance-leaders-\u2013-paid-research-study-(pbm-decisions)",
-      "title": "Health Plan Finance Leaders \u2013 Paid Research Study (PBM Decisions)",
+      "id": "health-plan-finance-leaders-–-paid-research-study-(pbm-decisions)",
+      "title": "Health Plan Finance Leaders – Paid Research Study (PBM Decisions)",
       "domain": "MEDICAL",
       "pay": "$210/hr",
       "status": "ACTIVE",
@@ -280,8 +197,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "pharma-commercial-forecasting-expert-\u2014-launch-curves",
-      "title": "Pharma Commercial Forecasting Expert \u2014 Launch Curves",
+      "id": "pharma-commercial-forecasting-expert-—-launch-curves",
+      "title": "Pharma Commercial Forecasting Expert — Launch Curves",
       "domain": "GENERAL",
       "pay": "$210/hr",
       "status": "ACTIVE",
@@ -352,11 +269,11 @@
         "General",
         "Remote"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "linkTarget": "https://t.mercor.com/vKkRA"
     },
     {
-      "id": "payer-&-market-access-expert-\u2014-gross-to-net-&-formulary-strategy",
-      "title": "Payer & Market Access Expert \u2014 Gross-to-Net & Formulary Strategy",
+      "id": "payer-&-market-access-expert-—-gross-to-net-&-formulary-strategy",
+      "title": "Payer & Market Access Expert — Gross-to-Net & Formulary Strategy",
       "domain": "GENERAL",
       "pay": "$200/hr",
       "status": "ACTIVE",
@@ -370,8 +287,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "biotech-investment-analyst-\u2014-drug-asset-&-company-assessment",
-      "title": "Biotech Investment Analyst \u2014 Drug Asset & Company Assessment",
+      "id": "biotech-investment-analyst-—-drug-asset-&-company-assessment",
+      "title": "Biotech Investment Analyst — Drug Asset & Company Assessment",
       "domain": "FINANCE",
       "pay": "$200/hr",
       "status": "ACTIVE",
@@ -397,11 +314,11 @@
         "General",
         "Remote"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "linkTarget": "https://t.mercor.com/R1YTf"
     },
     {
-      "id": "multilingual-outpatient-physician-(md)-\u2014-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Outpatient Physician (MD) \u2014 Clinical Documentation & AI Evaluation",
+      "id": "multilingual-outpatient-physician-(md)-—-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Outpatient Physician (MD) — Clinical Documentation & AI Evaluation",
       "domain": "MEDICAL",
       "pay": "$190/hr",
       "status": "ACTIVE",
@@ -415,8 +332,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "multilingual-primary-care-physician-(md)-\u2014-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Primary Care Physician (MD) \u2014 Clinical Documentation & AI Evaluation",
+      "id": "multilingual-primary-care-physician-(md)-—-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Primary Care Physician (MD) — Clinical Documentation & AI Evaluation",
       "domain": "MEDICAL",
       "pay": "$190/hr",
       "status": "ACTIVE",
@@ -427,7 +344,7 @@
         "General",
         "Remote"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "linkTarget": "https://t.mercor.com/EK8QX"
     },
     {
       "id": "professional-design-experts",
@@ -460,8 +377,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "epidemiologist-\u2014-patient-population-sizing",
-      "title": "Epidemiologist \u2014 Patient Population Sizing",
+      "id": "epidemiologist-—-patient-population-sizing",
+      "title": "Epidemiologist — Patient Population Sizing",
       "domain": "MEDICAL",
       "pay": "$175/hr",
       "status": "ACTIVE",
@@ -475,8 +392,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "multilingual-inpatient-hospitalist-(md)-\u2014-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Inpatient Hospitalist (MD) \u2014 Clinical Documentation & AI Evaluation",
+      "id": "multilingual-inpatient-hospitalist-(md)-—-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Inpatient Hospitalist (MD) — Clinical Documentation & AI Evaluation",
       "domain": "MEDICAL",
       "pay": "$170/hr",
       "status": "ACTIVE",
@@ -487,7 +404,7 @@
         "General",
         "Remote"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "linkTarget": "https://t.mercor.com/pwGel"
     },
     {
       "id": "pro-bono-counsel-(access-to-justice-expert)",
@@ -865,247 +782,269 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-313b5b7a-a6a8-4acf-9842-017d8506a037",
-      "title": "Gmail & Google Calendar AI Assistant Evaluator",
+      "id": "micro1-c3de87a0-0f43-47af-8212-1703122b3679",
+      "title": "Procore Specialist",
       "domain": "GENERAL",
-      "pay": "$15-$30/hr",
+      "pay": "$90-$175/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 40+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Procore"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c3de87a0-0f43-47af-8212-1703122b3679?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-0bccba7d-b0cd-4be5-96b2-b0ae655c0ed0",
+      "title": "Bloomberg Specialist",
+      "domain": "GENERAL",
+      "pay": "$90-$170/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 40+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Bloomberg"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/0bccba7d-b0cd-4be5-96b2-b0ae655c0ed0?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-9ebedb7a-9911-4b0c-b771-13f3325bdc7d",
+      "title": "Primary Care Physician",
+      "domain": "GENERAL",
+      "pay": "$126-$441/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Primary Care",
+        "Clinical Medicine",
+        "Patient Assessment",
+        "Diagnosis & Treatment Planning"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/9ebedb7a-9911-4b0c-b771-13f3325bdc7d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d54c73d6-e3bc-4183-98ae-1f1a8197721d",
+      "title": "Pharmaceutical Expert",
+      "domain": "GENERAL",
+      "pay": "$126-$441/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Pharmaceutical Sciences",
+        "Clinical Pharmacology",
+        "Drug Safety & Evaluation",
+        "Clinical Research"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/d54c73d6-e3bc-4183-98ae-1f1a8197721d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-50d0cd3d-0d16-4c70-9094-8a66bbc9dffb",
+      "title": "Litigator / Practicing Attorney (US)",
+      "domain": "GENERAL",
+      "pay": "$100-$180/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
       "atsKeywords": [
-        "Gmail",
-        "Google Calendar",
-        "AI Usage",
-        "Scheduling",
-        "Emails",
-        "Google Meetings"
+        "Legal Reasoning",
+        "Litigation & Practice Expertise",
+        "Analytical Rigor",
+        "Calibration in Ambiguous Cases",
+        "Legal Writing",
+        "Communication Precision"
       ],
       "tags": [
         "Remote",
         "Micro1"
       ],
       "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/313b5b7a-a6a8-4acf-9842-017d8506a037?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+      "linkTarget": "https://jobs.micro1.ai/post/50d0cd3d-0d16-4c70-9094-8a66bbc9dffb?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-ca702454-8e86-4446-8654-1f08c2a9d162",
-      "title": "Danish Transcription Expert",
+      "id": "micro1-01c797e9-0eab-4a2f-988b-a0206e84f21d",
+      "title": "Bankruptcy Attorney",
       "domain": "GENERAL",
-      "pay": "$24-$30/hr",
+      "pay": "$100-$180/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "description": "Micro1 is aggressively hiring 45+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
       "atsKeywords": [
-        "AI Workflows",
-        "Attention to Detail in Quality Evaluation",
-        "Familiarity with Speech Data Collection",
-        "Audio Transcription & Annotation Skills"
+        "bankruptcy law expertise",
+        "legal document analysis",
+        "legal drafting (motions, pleadings, filings)",
+        "written communication",
+        "verbal communication"
       ],
       "tags": [
         "Remote",
         "Micro1"
       ],
       "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/ca702454-8e86-4446-8654-1f08c2a9d162?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+      "linkTarget": "https://jobs.micro1.ai/post/01c797e9-0eab-4a2f-988b-a0206e84f21d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-51a65c2c-07dd-4307-aba6-f7c4af17311c",
-      "title": "Open Source GitHub Maintainer",
+      "id": "micro1-306236e1-0ca6-4096-a8b2-4495678ff1ef",
+      "title": "Compliance Attorney",
       "domain": "GENERAL",
-      "pay": "$150-$300/hr",
+      "pay": "$100-$180/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
       "atsKeywords": [
-        "GitHub",
-        "C++",
-        "JAVA",
-        "Typescript",
-        "Rust",
-        "GoLang",
-        "Python",
-        "C"
+        "compliance law expertise",
+        "legal document analysis",
+        "legal writing",
+        "regulatory research",
+        "us law knowledge",
+        "attention to detail",
+        "critical thinking",
+        "written communication"
       ],
       "tags": [
         "Remote",
         "Micro1"
       ],
       "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/51a65c2c-07dd-4307-aba6-f7c4af17311c?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+      "linkTarget": "https://jobs.micro1.ai/post/306236e1-0ca6-4096-a8b2-4495678ff1ef?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-484708eb-dd2c-4d03-bb59-34684e78579f",
-      "title": "Mechanical Design Engineer \u2013 CAD & Manufacturing",
+      "id": "micro1-106a1938-b587-4e53-8d54-4b6eba20343a",
+      "title": "Corporate Attorney",
       "domain": "GENERAL",
-      "pay": "$40-$80/hr",
+      "pay": "$100-$180/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
       "atsKeywords": [
-        "solidworks",
-        "fusion 360",
-        "onshape",
-        "inventor",
-        "creo",
-        "nx",
-        "freecad",
-        "geometric dimensioning and tolerancing (gd&t)"
+        "US Law",
+        "Transactional document analysis",
+        "Corporate law accuracy",
+        "Written legal reasoning"
       ],
       "tags": [
         "Remote",
         "Micro1"
       ],
       "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/484708eb-dd2c-4d03-bb59-34684e78579f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+      "linkTarget": "https://jobs.micro1.ai/post/106a1938-b587-4e53-8d54-4b6eba20343a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-e107daa7-2cc8-4153-94c2-ff7806bb9d6e",
-      "title": "Finance Specialist",
+      "id": "micro1-5f72a4d0-b364-47f7-a034-5021cbdc0e51",
+      "title": "Audiovisual Producer",
       "domain": "GENERAL",
-      "pay": "$150-$350/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 5+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Microsoft PowerPoint",
-        "Slide Reconstruction",
-        "Presentation Design",
-        "Data Visualization",
-        "Visual Storytelling",
-        "Content Editing",
-        "Critical Thinking",
-        "Attenton to Detail"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/e107daa7-2cc8-4153-94c2-ff7806bb9d6e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-b4ce7861-a888-4f57-bb63-c50fb01ae65d",
-      "title": "Software Engineering Specialist",
-      "domain": "SOFTWARE",
-      "pay": "$150-$350/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 7+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Microsoft PowerPoint",
-        "Slide Reconstruction",
-        "Presentation Design",
-        "Data Visualization",
-        "Visual Storytelling",
-        "Content Editing",
-        "Critical Thinking",
-        "Attenton to Detail"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/b4ce7861-a888-4f57-bb63-c50fb01ae65d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-7e08e6c8-6e8a-46bb-a594-1bfae53c743b",
-      "title": "Consulting Specialist",
-      "domain": "GENERAL",
-      "pay": "$150-$350/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 15+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Microsoft PowerPoint",
-        "Slide Reconstruction",
-        "Presentation Design",
-        "Data Visualization",
-        "Visual Storytelling",
-        "Content Editing",
-        "Critical Thinking",
-        "Attenton to Detail"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/7e08e6c8-6e8a-46bb-a594-1bfae53c743b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-34374189-05e8-4eb2-8506-a831931459c9",
-      "title": "Data Science Specialist",
-      "domain": "GENERAL",
-      "pay": "$150-$350/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 7+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Microsoft PowerPoint",
-        "Slide Reconstruction",
-        "Presentation Design",
-        "Data Visualization",
-        "Visual Storytelling",
-        "Content Editing",
-        "Critical Thinking",
-        "Attenton to Detail"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/34374189-05e8-4eb2-8506-a831931459c9?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-ab52b995-a0f8-4aab-ac1d-98777ce867fa",
-      "title": "Senior Book Editor",
-      "domain": "GENERAL",
-      "pay": "$80-$120/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 20+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "manuscript editing",
-        "line editing",
-        "copyediting",
-        "editorial feedback",
-        "narrative structure analysis",
-        "english grammar",
-        "literary style",
-        "content restructuring"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/ab52b995-a0f8-4aab-ac1d-98777ce867fa?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-15be616a-44af-4fd5-8283-e2fd51a11f1b",
-      "title": "Junior Transactional Attorney",
-      "domain": "GENERAL",
-      "pay": "$70-$90/hr",
+      "pay": "$50-$90/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
       "atsKeywords": [
-        "Contract Redlining",
-        "Contract Negotiation",
-        "Contract Drafting",
-        "MSAs",
-        "NDAs",
-        "LPAs",
-        "ISDAs"
+        "Audiovisual Production",
+        "Video Editing",
+        "Video Quality Assurance",
+        "Attention to Detail"
       ],
       "tags": [
         "Remote",
         "Micro1"
       ],
       "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/15be616a-44af-4fd5-8283-e2fd51a11f1b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+      "linkTarget": "https://jobs.micro1.ai/post/5f72a4d0-b364-47f7-a034-5021cbdc0e51?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-bb3e957b-b767-4771-bfb7-bfa34d74632a",
+      "title": " Bilingual Malay Psychiatrist",
+      "domain": "GENERAL",
+      "pay": "$100-$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "bilingual communication",
+        "ethical decision-making",
+        "cultural sensitivity",
+        "analytical evaluation",
+        "case study development",
+        "written and verbal communication",
+        "interdisciplinary collaboration",
+        "psychological assessment"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/bb3e957b-b767-4771-bfb7-bfa34d74632a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-0075fd81-8fde-47a4-945a-b10a9bc436fa",
+      "title": " Bilingual Malay Psychologist (PhD)",
+      "domain": "GENERAL",
+      "pay": "$100-$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "bilingual communication",
+        "ethical decision-making",
+        "cultural sensitivity",
+        "analytical evaluation",
+        "case study development",
+        "written and verbal communication",
+        "interdisciplinary collaboration",
+        "psychological assessment"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/0075fd81-8fde-47a4-945a-b10a9bc436fa?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-9241ac3c-a083-4e6a-ae6c-0ebe8299ebcd",
+      "title": " Bilingual Marathi Psychiatrist",
+      "domain": "GENERAL",
+      "pay": "$100-$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "bilingual communication",
+        "ethical decision-making",
+        "cultural sensitivity",
+        "analytical evaluation",
+        "case study development",
+        "written and verbal communication",
+        "interdisciplinary collaboration",
+        "psychological assessment"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/9241ac3c-a083-4e6a-ae6c-0ebe8299ebcd?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     }
   ],
   "closedRoles": []

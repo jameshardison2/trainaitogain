@@ -1,57 +1,24 @@
-import re
+with open("render_waves.ts", "r") as f:
+    content = f.read()
 
-with open('ai-interview.html', 'r', encoding='utf-8') as f:
-    html = f.read()
+old_select = """<select id="jobDomainFilter" style="padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; background:white; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+            <option value="ALL">All Categories</option>
+            <option value="SOFTWARE">Software & Engineering</option>
+            <option value="GENERAL">General & Expert</option>
+        </select>"""
 
-# 1. Unhide dropdown
-find_sel = '<select id="domain-selector" class="domain-selector" style="display:none;">'
-replace_sel = '<select id="domain-selector" class="domain-selector">'
-html = html.replace(find_sel, replace_sel)
+new_select = """<select id="jobDomainFilter" style="padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; background:white; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+            <option value="ALL">All Categories</option>
+            <option value="SOFTWARE">Software & Engineering</option>
+            <option value="GENERAL">General & Expert</option>
+            <option value="MEDICAL">Medical & Clinical</option>
+            <option value="FINANCE">Finance & Economics</option>
+            <option value="LEGAL">Legal & Compliance</option>
+        </select>"""
 
-# 2. Add event listener and pre-selection logic
-find_js = """  if (atsRole) {
-      const titleEl = document.querySelector('#setup-view h2');
-      if (titleEl) {
-          titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + atsRole + '</span>';
-      }
-      
-      if (atsDomain && domainData[atsDomain]) {
-          currentDomain = atsDomain;
-          currentQuestions = domainData[currentDomain];
-      }
-  }"""
+if "MEDICAL" not in content:
+    content = content.replace(old_select, new_select)
 
-replace_js = """  if (atsRole) {
-      const titleEl = document.querySelector('#setup-view h2');
-      if (titleEl) {
-          titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + atsRole + '</span>';
-      }
-      
-      if (atsDomain && domainData[atsDomain]) {
-          currentDomain = atsDomain;
-          currentQuestions = domainData[currentDomain];
-          domainSelector.value = atsDomain;
-      }
-  } else {
-      const titleEl = document.querySelector('#setup-view h2');
-      if (titleEl) {
-          titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">AI Software Engineer (RLHF)</span>';
-      }
-  }
+with open("render_waves.ts", "w") as f:
+    f.write(content)
 
-  domainSelector.addEventListener('change', function() {
-      currentDomain = this.value;
-      currentQuestions = domainData[currentDomain];
-      
-      let newRole = this.options[this.selectedIndex].text.replace("Role: ", "");
-      const titleEl = document.querySelector('#setup-view h2');
-      if (titleEl) {
-          titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + newRole + '</span>';
-      }
-  });"""
-
-html = html.replace(find_js, replace_js)
-
-with open('ai-interview.html', 'w', encoding='utf-8') as f:
-    f.write(html)
-print("Updated ai-interview.html dropdown")
