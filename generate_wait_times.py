@@ -96,7 +96,7 @@ html = f"""<!DOCTYPE html>
     <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius-lg); padding:32px; margin-top:48px;">
       <h3 style="color:#92400e; font-size:20px; font-weight:700; margin-bottom:12px;">Stuck in the Generalist Queue?</h3>
       <p style="color:#92400e; font-size:15px; margin-bottom:16px;">If you've been waiting over 30 days, your resume likely got routed to the lowest-priority queue. You need to re-format your resume to trigger a specialized pipeline (like Tech, Medical, or Finance) and re-apply.</p>
-      <a href="resume-ats-guide.html" style="color:#b45309; font-weight:700; text-decoration:underline;">See the Resume Formatter &rarr;</a>
+      <a href="/resume-ats-guide" style="color:#b45309; font-weight:700; text-decoration:underline;">See the Resume Formatter &rarr;</a>
     </div>
 
   </div>

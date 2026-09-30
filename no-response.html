@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Community Wait-Time Database — TrainAIToGain</title>
-  <meta name="description" content="Get your Mercor referral, master the AI model training interview, and bypass the waitlist for high-paying RLHF jobs.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -238,7 +237,7 @@
     <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius-lg); padding:32px; margin-top:48px;">
       <h3 style="color:#92400e; font-size:20px; font-weight:700; margin-bottom:12px;">Stuck in the Generalist Queue?</h3>
       <p style="color:#92400e; font-size:15px; margin-bottom:16px;">If you've been waiting over 30 days, your resume likely got routed to the lowest-priority queue. You need to re-format your resume to trigger a specialized pipeline (like Tech, Medical, or Finance) and re-apply.</p>
-      <a href="resume-ats-guide.html" style="color:#b45309; font-weight:700; text-decoration:underline;">See the Resume Formatter &rarr;</a>
+      <a href="/resume-ats-guide" style="color:#b45309; font-weight:700; text-decoration:underline;">See the Resume Formatter &rarr;</a>
     </div>
 
   </div>
@@ -274,27 +273,5 @@
     </script>
   </footer>
 
-
-<script>
-  // Global Affiliate Tracker
-  (function() {
-    var ref = new URLSearchParams(window.location.search).get('ref');
-    if (ref) localStorage.setItem('affiliate_ref', ref);
-    var activeRef = localStorage.getItem('affiliate_ref');
-    if (activeRef) {
-      document.addEventListener('DOMContentLoaded', function() {
-        var links = document.querySelectorAll('a[href^="https://t.mercor.com"]');
-        links.forEach(function(link) {
-          try {
-            var url = new URL(link.href);
-            url.searchParams.set('ref', activeRef);
-            link.href = url.toString();
-          } catch(e) {}
-        });
-      });
-    }
-  })();
-</script>
 </body>
-
 </html>

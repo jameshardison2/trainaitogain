@@ -19,7 +19,7 @@ The first hurdle is getting past the AI resume parser. If the machine cannot ext
    - *Good:* "Architected a scalable web application using **React** and **Node.js**, decreasing load times by 40%."
 
 ### High-Impact Action Verb Bank
-Use our [Resume ATS Check](https://trainaitogain.com/resume-ats-guide.html) to scan your resume. Ensure every single bullet point starts with one of these power verbs:
+Use our [Resume ATS Check](https://trainaitogain.com/resume-ats-guide) to scan your resume. Ensure every single bullet point starts with one of these power verbs:
 - **To show Leadership:** Spearheaded, Orchestrated, Directed, Championed, Mentored
 - **To show Technical Execution:** Architected, Engineered, Deployed, Refactored, Optimized
 - **To show Impact:** Accelerated, Maximized, Streamlined, Surpassed, Generated
