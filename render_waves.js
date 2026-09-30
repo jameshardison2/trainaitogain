@@ -51,13 +51,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
       </div>
 
       
-      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-waves')?.scrollBy({left: -320, behavior: 'smooth'})">‹</button>
-      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-waves')?.scrollBy({left: 320, behavior: 'smooth'})">›</button>
-      
-      <div id="carousel-waves" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
-        <style>
-          #carousel-waves::-webkit-scrollbar { display: none; }
-        </style>
+      <div id="job-grid-waves" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:24px; padding: 12px 0 24px;">
     `;
         data.roles.forEach((role) => {
             let tagsHtml = role.tags.map(t => `<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">${t}</span>`).join('');
@@ -67,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
             const safeDomain = role.domain.replace(/'/g, "\\'");
             const safePay = role.pay.replace(/'/g, "\\'");
             html += `
-        <div class="feature-card opp-card" data-domain="${role.domain}" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+        <div class="feature-card opp-card" data-domain="${role.domain}" style="background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
           <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
             <div style="display:flex; gap:8px;">
               <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
@@ -79,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
           <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">${role.description}</p>
           <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">${tagsHtml}</div>
           <div style="display:flex; gap:8px;">
-            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('${role.linkTarget || 'https://t.mercor.com/wbPMF'}', '_blank')">Apply Now</button>
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="const refCode = localStorage.getItem('affiliate_ref'); let targetUrl = '${role.linkTarget || 'https://t.mercor.com/wbPMF'}'; if (refCode && targetUrl.includes('mercor')) { if(!targetUrl.includes('ref=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'ref=' + encodeURIComponent(refCode); } else if (refCode && targetUrl.includes('micro1')) { if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode); } window.open(targetUrl, '_blank')">Apply Now</button>
             <button onclick="saveRole('${safeTitle}', '${safeDomain}', '${safePay}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
             <button onclick="markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">✅</button>
             <button onclick="window.open('resume-ats-guide.html?role=' + encodeURIComponent('${safeTitle}'), '_blank');" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">🎯</button>
