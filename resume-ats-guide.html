@@ -217,9 +217,17 @@
             
             if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
             
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            if (refCode) {
-                targetUrl += "?ref=" + encodeURIComponent(refCode);
+            var baseTargetUrl = localStorage.getItem('atsLinkTarget') || "https://t.mercor.com/wbPMF";
+            var targetUrl = baseTargetUrl;
+            
+            if (refCode && targetUrl.includes('mercor')) {
+                if(!targetUrl.includes('ref=')) {
+                    targetUrl += (targetUrl.includes('?') ? '&' : '?') + "ref=" + encodeURIComponent(refCode);
+                }
+            } else if (refCode && targetUrl.includes('micro1')) {
+                if (!targetUrl.includes('referralCode=')) {
+                    targetUrl += (targetUrl.includes('?') ? '&' : '?') + "referralCode=" + encodeURIComponent(refCode);
+                }
             }
             window.open(targetUrl, '_blank');
             closeApplyModal();
@@ -227,9 +235,19 @@
         } catch (err) {
             console.error(err);
             localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
-            var targetUrl = "https://t.mercor.com/wbPMF";
             var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
+            var baseTargetUrl = localStorage.getItem('atsLinkTarget') || "https://t.mercor.com/wbPMF";
+            var targetUrl = baseTargetUrl;
+            
+            if (refCode && targetUrl.includes('mercor')) {
+                if(!targetUrl.includes('ref=')) {
+                    targetUrl += (targetUrl.includes('?') ? '&' : '?') + "ref=" + encodeURIComponent(refCode);
+                }
+            } else if (refCode && targetUrl.includes('micro1')) {
+                if (!targetUrl.includes('referralCode=')) {
+                    targetUrl += (targetUrl.includes('?') ? '&' : '?') + "referralCode=" + encodeURIComponent(refCode);
+                }
+            }
             window.open(targetUrl, '_blank');
             closeApplyModal();
         }
@@ -515,6 +533,7 @@
     try {
       const response = await fetch('waves.json?v=' + new Date().getTime());
       const data = await response.json();
+      window.allRoles = data.roles;
       
       // Clear existing hardcoded options
       
@@ -712,7 +731,14 @@ Experience
 
     roleSelect.addEventListener('change', async function() {
       const selectedRole = this.value;
-
+      if (window.allRoles) {
+          const roleObj = window.allRoles.find(r => r.title === selectedRole);
+          if (roleObj && roleObj.linkTarget) {
+              localStorage.setItem('atsLinkTarget', roleObj.linkTarget);
+          } else {
+              localStorage.setItem('atsLinkTarget', 'https://t.mercor.com/wbPMF');
+          }
+      }
         // Reset the ATS scanner UI
         document.getElementById('meter-fill').style.width = '0%';
         document.getElementById('score-text').innerHTML = '0%';
