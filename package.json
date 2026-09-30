@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/jameshardison2/trainaitogain#readme",
   "dependencies": {
+    "jsdom": "^29.1.1",
     "puppeteer": "^25.12.0"
   }
 }

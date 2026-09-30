@@ -68,6 +68,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             <option value="MICRO1">Micro1 Roles</option>
             <option value="MERCOR">Mercor Roles</option>
         </select>
+        <select id="jobLocationFilter" style="padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; background:white; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+            <option value="ALL">All Locations</option>
+            <option value="US">US Based</option>
+            <option value="INTL">International</option>
+        </select>
+        <select id="jobSortFilter" style="padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; background:white; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+            <option value="DEFAULT">Recommended Sort</option>
+            <option value="PAY_HIGH">Highest Paying</option>
+        </select>
       </div>
     `;
 
@@ -93,7 +102,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             </style>
       `;
 
-      categoryRoles.forEach((role: JobCard) => {
+      categoryRoles.forEach((role: JobCard, index: number) => {
+        let payYearly = 0;
+        let pStr = (role.pay || '').toLowerCase().replace(/,/g, '');
+        let m = pStr.match(/(\d+)/);
+        if (m) {
+          let val = parseInt(m[1]);
+          if (pStr.includes('k')) val *= 1000;
+          if (pStr.includes('/hr')) payYearly = val * 2000;
+          else if (pStr.includes('/mo')) payYearly = val * 12;
+          else payYearly = val;
+        }
+
+        let loc = 'ALL';
+        let searchStr = (role.title + ' ' + (role.tags || []).join(' ')).toLowerCase();
+        if (searchStr.includes('(us)') || searchStr.includes('us-based') || searchStr.includes('us only') || searchStr.includes('united states')) {
+            loc = 'US';
+        } else if (searchStr.includes('india') || searchStr.includes('latam') || searchStr.includes('uk-based') || searchStr.includes('bilingual')) {
+            loc = 'INTL';
+        }
         let tagsHtml = role.tags.map(t => `<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">${t}</span>`).join('');
         const bg = role.badgeClass === 'orange' ? 'var(--orange)' : 'var(--black)';
         
@@ -102,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const safePay = role.pay.replace(/'/g, "\'");
 
         html += `
-          <div class="feature-card opp-card" data-domain="${role.domain}" data-platform="${role.platform || 'Mercor'}" style="flex:0 0 320px; scroll-snap-align:start; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div class="feature-card opp-card" data-domain="${role.domain}" data-platform="${role.platform || 'Mercor'}" data-pay="${payYearly}" data-location="${loc}" data-index="${index}" style="flex:0 0 320px; order:${index}; scroll-snap-align:start; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
             <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
               <div style="display:flex; gap:8px;">
                 <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
@@ -136,17 +163,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const searchInput = document.getElementById('jobSearchInput') as HTMLInputElement;
     const domainFilter = document.getElementById('jobDomainFilter') as HTMLSelectElement;
+    const locationFilter = document.getElementById('jobLocationFilter') as HTMLSelectElement;
+    const sortFilter = document.getElementById('jobSortFilter') as HTMLSelectElement;
     
     function filterJobs() {
       const term = searchInput ? searchInput.value.toLowerCase() : '';
       const domain = domainFilter ? domainFilter.value : 'ALL';
+      const loc = locationFilter ? locationFilter.value : 'ALL';
+      const sort = sortFilter ? sortFilter.value : 'DEFAULT';
       
       // Update individual cards
       const cards = carouselWrapper.querySelectorAll('.opp-card');
-      cards.forEach((card: any) => {
+      
+      let cardsArray = Array.from(cards);
+      
+      cardsArray.forEach((card: any) => {
         const text = card.textContent?.toLowerCase() || '';
         const cardDomain = card.getAttribute('data-domain');
         const cardPlatform = card.getAttribute('data-platform')?.toUpperCase() || '';
+        const cardLoc = card.getAttribute('data-location');
         
         let matchesSearch = text.includes(term);
         let matchesDomain = true;
@@ -158,11 +193,39 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         }
         
-        if (matchesSearch && matchesDomain) {
+        let matchesLoc = (loc === 'ALL') || (cardLoc === loc);
+        // If a role is marked as ALL globally remote, maybe let it show in US too? The user said "US Based", so let's be strict: if they ask for US, only show explicitly US or assume ALL means US is included? Actually, let's treat 'ALL' roles as global (matches both). 
+        // Wait, user asked for filter for "US based" and "International". 
+        // If the role is globally remote (loc == 'ALL'), it's technically both!
+        if (loc !== 'ALL') {
+             if (cardLoc === 'ALL') matchesLoc = true; // Global roles fit both filters
+             else matchesLoc = (cardLoc === loc);
+        }
+        
+        if (matchesSearch && matchesDomain && matchesLoc) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
         }
+      });
+      
+      // Handle Sorting using Flex Order
+      const containerWrappers = carouselWrapper.querySelectorAll('.carousel-container');
+      containerWrappers.forEach((container: any) => {
+         const containerCards = Array.from(container.querySelectorAll('.opp-card'));
+         if (sort === 'PAY_HIGH') {
+             containerCards.sort((a: any, b: any) => {
+                 return parseInt(b.getAttribute('data-pay') || '0') - parseInt(a.getAttribute('data-pay') || '0');
+             });
+         } else {
+             containerCards.sort((a: any, b: any) => {
+                 return parseInt(a.getAttribute('data-index') || '0') - parseInt(b.getAttribute('data-index') || '0');
+             });
+         }
+         // Assign order
+         containerCards.forEach((c: any, i: number) => {
+             c.style.order = i.toString();
+         });
       });
       
       // Hide empty category carousels
