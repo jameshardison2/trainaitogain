@@ -315,6 +315,12 @@ ${resumeText.substring(0, 10000)}`;
           });
           
           const aiData = await aiResponse.json();
+          if (!aiData.candidates || aiData.candidates.length === 0) {
+              console.error("AI Error:", aiData);
+              statusDiv.style.animation = 'none';
+              statusDiv.innerHTML = '<span style="color:#ef4444; font-weight:700;">❌ Scanner Offline: Our AI provider is currently experiencing high load. Please browse and apply to the roles manually below.</span>';
+              return;
+          }
           let aiText = aiData.candidates[0].content.parts[0].text;
           
           // Clean markdown backticks if present

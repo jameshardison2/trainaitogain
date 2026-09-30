@@ -198,8 +198,10 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
             });
             // Hide empty category carousels
             const wrappers = carouselWrapper.querySelectorAll('.category-wrapper');
+            let totalVisibleCards = 0;
             wrappers.forEach((wrapper) => {
                 const visibleCards = Array.from(wrapper.querySelectorAll('.opp-card')).filter((c) => c.style.display !== 'none');
+                totalVisibleCards += visibleCards.length;
                 if (visibleCards.length === 0) {
                     wrapper.style.display = 'none';
                 }
@@ -207,6 +209,18 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
                     wrapper.style.display = 'block';
                 }
             });
+            let noResultsMsg = document.getElementById('no-results-msg');
+            if (!noResultsMsg) {
+                noResultsMsg = document.createElement('div');
+                noResultsMsg.id = 'no-results-msg';
+                noResultsMsg.style.textAlign = 'center';
+                noResultsMsg.style.padding = '64px 20px';
+                noResultsMsg.style.color = 'var(--gray-500)';
+                noResultsMsg.style.fontSize = '18px';
+                noResultsMsg.innerHTML = '<span style="font-size:32px; display:block; margin-bottom:12px;">🔍</span> No open roles match your specific search criteria.<br><span style="font-size:15px; margin-top:8px; display:block;">Try broadening your filters or check back tomorrow for new waves.</span>';
+                carouselWrapper.appendChild(noResultsMsg);
+            }
+            noResultsMsg.style.display = totalVisibleCards === 0 ? 'block' : 'none';
         }
         searchInput === null || searchInput === void 0 ? void 0 : searchInput.addEventListener('input', filterJobs);
         domainFilter === null || domainFilter === void 0 ? void 0 : domainFilter.addEventListener('change', filterJobs);
