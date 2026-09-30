@@ -2,6 +2,36 @@
   "lastUpdated": "Auto-Synced Live",
   "roles": [
     {
+      "id": "senior-book-editor",
+      "title": "Senior Book Editor",
+      "domain": "GENERAL",
+      "pay": "$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Review AI-generated text for long-form narrative coherence and editorial quality.",
+      "tags": [
+        "Editing",
+        "Narrative",
+        "Publishing"
+      ],
+      "linkTarget": "https://app.micro1.ai/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe"
+    },
+    {
+      "id": "software-firmware-engineering-experts",
+      "title": "Software and Firmware Engineering Experts",
+      "domain": "SOFTWARE",
+      "pay": "$100-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Requires 5+ years embedded firmware / FPGA / flight software / test automation.",
+      "tags": [
+        "Embedded",
+        "Firmware",
+        "Test Automation"
+      ],
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
       "id": "micro1-ai-tier-1",
       "title": "Micro1 AI Generalist (Tier 1)",
       "domain": "GENERAL",
@@ -175,8 +205,8 @@
       "linkTarget": "https://t.mercor.com/wbPMF"
     },
     {
-      "id": "cybersecurity-research-expert-–-offensive-security-&-vulnerability-research",
-      "title": "Cybersecurity Research Expert – Offensive Security & Vulnerability Research",
+      "id": "cybersecurity-research-expert-\u2013-offensive-security-&-vulnerability-research",
+      "title": "Cybersecurity Research Expert \u2013 Offensive Security & Vulnerability Research",
       "domain": "GENERAL",
       "pay": "$250/hr",
       "status": "ACTIVE",
@@ -220,8 +250,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "disease-area-clinician-—-trial-endpoints-&-prescribing",
-      "title": "Disease-Area Clinician — Trial Endpoints & Prescribing",
+      "id": "disease-area-clinician-\u2014-trial-endpoints-&-prescribing",
+      "title": "Disease-Area Clinician \u2014 Trial Endpoints & Prescribing",
       "domain": "MEDICAL",
       "pay": "$230/hr",
       "status": "ACTIVE",
@@ -235,8 +265,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "health-plan-finance-leaders-–-paid-research-study-(pbm-decisions)",
-      "title": "Health Plan Finance Leaders – Paid Research Study (PBM Decisions)",
+      "id": "health-plan-finance-leaders-\u2013-paid-research-study-(pbm-decisions)",
+      "title": "Health Plan Finance Leaders \u2013 Paid Research Study (PBM Decisions)",
       "domain": "MEDICAL",
       "pay": "$210/hr",
       "status": "ACTIVE",
@@ -250,8 +280,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "pharma-commercial-forecasting-expert-—-launch-curves",
-      "title": "Pharma Commercial Forecasting Expert — Launch Curves",
+      "id": "pharma-commercial-forecasting-expert-\u2014-launch-curves",
+      "title": "Pharma Commercial Forecasting Expert \u2014 Launch Curves",
       "domain": "GENERAL",
       "pay": "$210/hr",
       "status": "ACTIVE",
@@ -325,8 +355,8 @@
       "linkTarget": "https://t.mercor.com/wbPMF"
     },
     {
-      "id": "payer-&-market-access-expert-—-gross-to-net-&-formulary-strategy",
-      "title": "Payer & Market Access Expert — Gross-to-Net & Formulary Strategy",
+      "id": "payer-&-market-access-expert-\u2014-gross-to-net-&-formulary-strategy",
+      "title": "Payer & Market Access Expert \u2014 Gross-to-Net & Formulary Strategy",
       "domain": "GENERAL",
       "pay": "$200/hr",
       "status": "ACTIVE",
@@ -340,8 +370,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "biotech-investment-analyst-—-drug-asset-&-company-assessment",
-      "title": "Biotech Investment Analyst — Drug Asset & Company Assessment",
+      "id": "biotech-investment-analyst-\u2014-drug-asset-&-company-assessment",
+      "title": "Biotech Investment Analyst \u2014 Drug Asset & Company Assessment",
       "domain": "FINANCE",
       "pay": "$200/hr",
       "status": "ACTIVE",
@@ -370,8 +400,8 @@
       "linkTarget": "https://t.mercor.com/wbPMF"
     },
     {
-      "id": "multilingual-outpatient-physician-(md)-—-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Outpatient Physician (MD) — Clinical Documentation & AI Evaluation",
+      "id": "multilingual-outpatient-physician-(md)-\u2014-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Outpatient Physician (MD) \u2014 Clinical Documentation & AI Evaluation",
       "domain": "MEDICAL",
       "pay": "$190/hr",
       "status": "ACTIVE",
@@ -385,8 +415,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "multilingual-primary-care-physician-(md)-—-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Primary Care Physician (MD) — Clinical Documentation & AI Evaluation",
+      "id": "multilingual-primary-care-physician-(md)-\u2014-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Primary Care Physician (MD) \u2014 Clinical Documentation & AI Evaluation",
       "domain": "MEDICAL",
       "pay": "$190/hr",
       "status": "ACTIVE",
@@ -430,8 +460,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "epidemiologist-—-patient-population-sizing",
-      "title": "Epidemiologist — Patient Population Sizing",
+      "id": "epidemiologist-\u2014-patient-population-sizing",
+      "title": "Epidemiologist \u2014 Patient Population Sizing",
       "domain": "MEDICAL",
       "pay": "$175/hr",
       "status": "ACTIVE",
@@ -445,8 +475,8 @@
       "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "multilingual-inpatient-hospitalist-(md)-—-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Inpatient Hospitalist (MD) — Clinical Documentation & AI Evaluation",
+      "id": "multilingual-inpatient-hospitalist-(md)-\u2014-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Inpatient Hospitalist (MD) \u2014 Clinical Documentation & AI Evaluation",
       "domain": "MEDICAL",
       "pay": "$170/hr",
       "status": "ACTIVE",
@@ -905,7 +935,7 @@
     },
     {
       "id": "micro1-484708eb-dd2c-4d03-bb59-34684e78579f",
-      "title": "Mechanical Design Engineer – CAD & Manufacturing",
+      "title": "Mechanical Design Engineer \u2013 CAD & Manufacturing",
       "domain": "GENERAL",
       "pay": "$40-$80/hr",
       "status": "ACTIVE",

@@ -25,6 +25,13 @@
           }
         ]
       }
+    ],
+    "redirects": [
+      {
+        "source": "/guide-download",
+        "destination": "/trainaitogain-hiring-blueprint.pdf",
+        "type": 301
+      }
     ]
   },
   "functions": {

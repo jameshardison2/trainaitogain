@@ -204,7 +204,14 @@ window.addEventListener('unhandledrejection', function(event) {
             
             let app;
             if (!getApps().length) {
-                app = initializeApp({ projectId: "trainaitogain-50c19" });
+                app = initializeApp({ 
+                    apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
+                    authDomain: "trainaitogain-50c19.firebaseapp.com", 
+                    projectId: "trainaitogain-50c19", 
+                    storageBucket: "trainaitogain-50c19.firebasestorage.app", 
+                    messagingSenderId: "637746276432", 
+                    appId: "1:637746276432:web:1a7cfa65357b0bc3b90955"
+                });
             } else {
                 app = getApp();
             }
@@ -437,7 +444,7 @@ window.addEventListener('unhandledrejection', function(event) {
   </div>
   
   <div style="grid-column: 1 / -1; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
-      <a href="resume-ats-guide.html" style="color: var(--gray-400); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">⬅ Back to ATS Scanner</a>
+      <a href="resume-ats-guide" style="color: var(--gray-400); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">⬅ Back to ATS Scanner</a>
       <a href="post-hire.html" style="color: var(--primary); text-decoration: none; font-size: 14px; font-weight: 800; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Step 3: Survive the Black Box ➔</a>
   </div>
 </div>
