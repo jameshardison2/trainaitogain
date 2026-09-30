@@ -26,6 +26,15 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
         <span style="background:var(--orange); color:white; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:800; margin-left:8px;">HIGH PRIORITY</span>
       </div>
 
+      
+      <div style="background:var(--gray-100); border-left:4px solid var(--primary); padding:16px; margin-bottom:24px; border-radius:8px;">
+        <h4 style="margin-top:0; margin-bottom:8px; color:var(--black); font-size:16px;">What to expect after you click Apply:</h4>
+        <ul style="margin:0; padding-left:20px; color:var(--gray-700); font-size:14px; line-height:1.6;">
+          <li>First, create your account on the partner platform (Mercor or Micro1).</li>
+          <li>Next, complete a roughly 20-minute AI interview (audio/video).</li>
+          <li>Finally, matching can take a few days. Silence doesn't mean you're rejected—just keep an eye on your inbox!</li>
+        </ul>
+      </div>
       <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:24px;">
         <input type="text" id="jobSearchInput" placeholder="Search roles (e.g. Python, Medical)..." style="flex:1; min-width:200px; padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
         <select id="jobDomainFilter" style="padding:12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; background:white; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
