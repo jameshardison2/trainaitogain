@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
         </div>
         
         <div style="position:relative;">
-          <button class="carousel-btn" style="position:absolute; left:-20px; top:50%; transform:translateY(-50%); z-index:10; background:white; border:1px solid #ddd; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);" onclick="document.getElementById('${cat.id}')?.scrollBy({left: -320, behavior: 'smooth'})">‹</button>
-          <button class="carousel-btn" style="position:absolute; right:-20px; top:50%; transform:translateY(-50%); z-index:10; background:white; border:1px solid #ddd; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);" onclick="document.getElementById('${cat.id}')?.scrollBy({left: 320, behavior: 'smooth'})">›</button>
+          <button class="carousel-btn" style="position:absolute; left:-20px; top:50%; transform:translateY(-50%); z-index:10; background:white; color:var(--orange); border:1px solid var(--orange); width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:24px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all 0.2s;" onmouseover="this.style.background='var(--orange)'; this.style.color='white';" onmouseout="this.style.background='white'; this.style.color='var(--orange)';" onclick="document.getElementById('${cat.id}')?.scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+          <button class="carousel-btn" style="position:absolute; right:-20px; top:50%; transform:translateY(-50%); z-index:10; background:white; color:var(--orange); border:1px solid var(--orange); width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:24px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all 0.2s;" onmouseover="this.style.background='var(--orange)'; this.style.color='white';" onmouseout="this.style.background='white'; this.style.color='var(--orange)';" onclick="document.getElementById('${cat.id}')?.scrollBy({left: 320, behavior: 'smooth'})">›</button>
           
           <div id="${cat.id}" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
             <style>
@@ -166,15 +166,9 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
                         matchesDomain = cardDomain === domain;
                     }
                 }
-                let matchesLoc = (loc === 'ALL') || (cardLoc === loc);
-                // If a role is marked as ALL globally remote, maybe let it show in US too? The user said "US Based", so let's be strict: if they ask for US, only show explicitly US or assume ALL means US is included? Actually, let's treat 'ALL' roles as global (matches both). 
-                // Wait, user asked for filter for "US based" and "International". 
-                // If the role is globally remote (loc == 'ALL'), it's technically both!
+                let matchesLoc = true;
                 if (loc !== 'ALL') {
-                    if (cardLoc === 'ALL')
-                        matchesLoc = true; // Global roles fit both filters
-                    else
-                        matchesLoc = (cardLoc === loc);
+                    matchesLoc = (cardLoc === loc);
                 }
                 if (matchesSearch && matchesDomain && matchesLoc) {
                     card.style.display = 'flex';
