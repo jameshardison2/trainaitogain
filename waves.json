@@ -32,81 +32,6 @@
       "linkTarget": "https://t.mercor.com/0e9X7"
     },
     {
-      "id": "customer-success-engineer-(latam)",
-      "title": "Customer Success Engineer (LatAm)",
-      "domain": "SOFTWARE",
-      "pay": "$50,000/yr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Software",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "customer-success-engineer-(india)",
-      "title": "Customer Success Engineer (India)",
-      "domain": "SOFTWARE",
-      "pay": "$45,000/yr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Software",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "customer-success---operations-(india-region)",
-      "title": "Customer Success - Operations (India Region)",
-      "domain": "GENERAL",
-      "pay": "$30,000/yr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "agent-engineer",
-      "title": "Agent Engineer",
-      "domain": "SOFTWARE",
-      "pay": "$500/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Software",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "dermatologist-u.s.-licensed",
-      "title": "Dermatologist, U.S. Licensed",
-      "domain": "MEDICAL",
-      "pay": "$270/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "senior-design-expert---paid-ai-design-research-study",
       "title": "Senior Design Expert - Paid AI Design Research Study",
       "domain": "GENERAL",
@@ -120,141 +45,6 @@
         "Remote"
       ],
       "linkTarget": "https://t.mercor.com/13F7G"
-    },
-    {
-      "id": "cybersecurity-research-expert-–-offensive-security-&-vulnerability-research",
-      "title": "Cybersecurity Research Expert – Offensive Security & Vulnerability Research",
-      "domain": "GENERAL",
-      "pay": "$250/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "physician-talent-network",
-      "title": "Physician Talent Network",
-      "domain": "MEDICAL",
-      "pay": "$250/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "machine-learning-engineer-talent-network",
-      "title": "Machine Learning Engineer Talent Network",
-      "domain": "SOFTWARE",
-      "pay": "$250/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Software",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "disease-area-clinician-—-trial-endpoints-&-prescribing",
-      "title": "Disease-Area Clinician — Trial Endpoints & Prescribing",
-      "domain": "MEDICAL",
-      "pay": "$230/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "health-plan-finance-leaders-–-paid-research-study-(pbm-decisions)",
-      "title": "Health Plan Finance Leaders – Paid Research Study (PBM Decisions)",
-      "domain": "MEDICAL",
-      "pay": "$210/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Finance",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "pharma-commercial-forecasting-expert-—-launch-curves",
-      "title": "Pharma Commercial Forecasting Expert — Launch Curves",
-      "domain": "GENERAL",
-      "pay": "$210/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "expert-senior-swe",
-      "title": "Expert Senior SWE",
-      "domain": "GENERAL",
-      "pay": "$210/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "uk-based-data-engineering-experts",
-      "title": "UK-Based Data Engineering Experts",
-      "domain": "SOFTWARE",
-      "pay": "$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Software",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "compensation-&-equity-expert-(total-rewards)",
-      "title": "Compensation & Equity Expert (Total Rewards)",
-      "domain": "GENERAL",
-      "pay": "$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "legacy-codebase-migration-expert",
@@ -272,36 +62,6 @@
       "linkTarget": "https://t.mercor.com/vKkRA"
     },
     {
-      "id": "payer-&-market-access-expert-—-gross-to-net-&-formulary-strategy",
-      "title": "Payer & Market Access Expert — Gross-to-Net & Formulary Strategy",
-      "domain": "GENERAL",
-      "pay": "$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "biotech-investment-analyst-—-drug-asset-&-company-assessment",
-      "title": "Biotech Investment Analyst — Drug Asset & Company Assessment",
-      "domain": "FINANCE",
-      "pay": "$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Finance",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "personalized-life-assistant-expert",
       "title": "Personalized Life Assistant Expert",
       "domain": "GENERAL",
@@ -315,21 +75,6 @@
         "Remote"
       ],
       "linkTarget": "https://t.mercor.com/R1YTf"
-    },
-    {
-      "id": "multilingual-outpatient-physician-(md)-—-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Outpatient Physician (MD) — Clinical Documentation & AI Evaluation",
-      "domain": "MEDICAL",
-      "pay": "$190/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "multilingual-primary-care-physician-(md)-—-clinical-documentation-&-ai-evaluation",
@@ -347,51 +92,6 @@
       "linkTarget": "https://t.mercor.com/EK8QX"
     },
     {
-      "id": "professional-design-experts",
-      "title": "Professional Design Experts",
-      "domain": "GENERAL",
-      "pay": "$180/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "financial-analyst-talent-network",
-      "title": "Financial Analyst Talent Network",
-      "domain": "FINANCE",
-      "pay": "$180/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Finance",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "epidemiologist-—-patient-population-sizing",
-      "title": "Epidemiologist — Patient Population Sizing",
-      "domain": "MEDICAL",
-      "pay": "$175/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "multilingual-inpatient-hospitalist-(md)-—-clinical-documentation-&-ai-evaluation",
       "title": "Multilingual Inpatient Hospitalist (MD) — Clinical Documentation & AI Evaluation",
       "domain": "MEDICAL",
@@ -405,66 +105,6 @@
         "Remote"
       ],
       "linkTarget": "https://t.mercor.com/pwGel"
-    },
-    {
-      "id": "pro-bono-counsel-(access-to-justice-expert)",
-      "title": "Pro Bono Counsel (Access to Justice Expert)",
-      "domain": "LEGAL",
-      "pay": "$170/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "revenue-cycle-executive-(vpsr.-director-revenue-cycle-or-rcm-focused-finance-leader)",
-      "title": "Revenue-cycle Executive (VP/Sr. Director Revenue Cycle, or RCM-focused Finance Leader)",
-      "domain": "FINANCE",
-      "pay": "$162/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Finance",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "litigation-lawyer-(france)",
-      "title": "Litigation Lawyer (France)",
-      "domain": "LEGAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "corporatem&a-lawyer-(france)",
-      "title": "Corporate/M&A Lawyer (France)",
-      "domain": "LEGAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "corporatem&a-lawyer-(united-kingdom)",
@@ -482,21 +122,6 @@
       "linkTarget": "https://t.mercor.com/wbPMF"
     },
     {
-      "id": "in-house-counsel-(france)",
-      "title": "In-House Counsel (France)",
-      "domain": "LEGAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "in-house-counsel-(united-kingdom)",
       "title": "In-House Counsel (United Kingdom)",
       "domain": "LEGAL",
@@ -510,126 +135,6 @@
         "Remote"
       ],
       "linkTarget": "https://t.mercor.com/wbPMF"
-    },
-    {
-      "id": "retail--clienteling-professionals",
-      "title": "Retail / Clienteling professionals",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "real-estate--property-professionals",
-      "title": "Real Estate / Property Professionals",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "public-sector--legal--gtm-experts",
-      "title": "Public Sector / Legal / GTM Experts",
-      "domain": "LEGAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "product--platform-experts",
-      "title": "Product / Platform Experts",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "product--artifacts-experts",
-      "title": "Product / Artifacts Experts",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "generalist",
-      "title": "Generalist",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "operations--program-management-experts",
-      "title": "Operations / Program Management Experts",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "legal--grants--esg-experts",
-      "title": "Legal / Grants / ESG Experts",
-      "domain": "LEGAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "legal--commercial-expert",
@@ -662,36 +167,6 @@
       "linkTarget": "https://t.mercor.com/wbPMF"
     },
     {
-      "id": "gtm--revops--sales-expert",
-      "title": "GTM / RevOps / Sales Expert",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "gtm--marketing-experts",
-      "title": "GTM / Marketing Experts",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "finance--ir-experts",
       "title": "Finance / IR experts",
       "domain": "FINANCE",
@@ -705,81 +180,6 @@
         "Remote"
       ],
       "linkTarget": "https://t.mercor.com/wbPMF"
-    },
-    {
-      "id": "finance--business-ops-experts",
-      "title": "Finance / Business Ops Experts",
-      "domain": "FINANCE",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Finance",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "event--hospitality-professionals",
-      "title": "Event / Hospitality Professionals",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "engineering--platform-professionals",
-      "title": "Engineering / Platform Professionals",
-      "domain": "SOFTWARE",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Software",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "education--student",
-      "title": "Education / Student",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "customer-support--success-professionals",
-      "title": "Customer Support / Success Professionals",
-      "domain": "GENERAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-c3de87a0-0f43-47af-8212-1703122b3679",
