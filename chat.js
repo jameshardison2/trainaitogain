@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <strong style="color: #ef4444;">🚨 CRITICAL STEP BEFORE YOU APPLY:</strong><br><br>
         Before starting any application, you <strong>MUST</strong> create a free account on the platform (Micro1 or Mercor). If you don't do this first, your progress in the AI interview will be lost and you won't get hired!<br><br>
         <strong style="color:#10b981;">1. Go to their site and create your account.</strong><br>
-        <a href="apply.html" style="color:#10b981; font-weight:700; text-decoration:underline;">2. Then click here to apply through our pipeline.</a>
+        <a href="apply" style="color:#10b981; font-weight:700; text-decoration:underline;">2. Then click here to apply through our pipeline.</a>
       `;
       document.getElementById(loadingId).remove();
       chatMessages.innerHTML += `
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentWindowPath = window.location.pathname;
     
     // If the path matches (ignoring empty/index differences)
-    if (linkPath === currentWindowPath || (currentWindowPath === '/' && linkPath.includes('index.html'))) {
+    if (linkPath === currentWindowPath || (currentWindowPath === '/' && linkPath.includes('index'))) {
       // Don't mess with the green 'The Hiring Pipeline' button
       if (!link.style.background.includes('var(--primary)')) {
         link.style.color = 'var(--primary)';

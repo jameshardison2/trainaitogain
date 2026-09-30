@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         const response = yield fetch('waves.json');
         const data = yield response.json();
         const roles = data.roles;
-        // 1. Render Index.html wave cards
+        // 1. Render Index wave cards
         const indexGrid = document.querySelector('#waves .feature-grid');
         if (indexGrid) {
             indexGrid.innerHTML = '';
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         `;
             });
         }
-        // 2. Render Apply.html wave & evergreen cards
+        // 2. Render Apply wave & evergreen cards
         const applyWaveTrack = document.querySelector('#waves-track');
         const applyEvergreenTrack = document.querySelector('#evergreen-track');
         if (applyWaveTrack) {
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, vo
         `;
             });
         }
-        // 3. Render Affiliate.html wave summary
+        // 3. Render Affiliate wave summary
         const affiliateGrid = document.querySelector('#affiliate-waves-grid');
         if (affiliateGrid) {
             affiliateGrid.innerHTML = '';

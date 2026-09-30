@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const data: WavesData = await response.json();
     const roles = data.roles;
 
-    // 1. Render Index.html wave cards
+    // 1. Render Index wave cards
     const indexGrid = document.querySelector('#waves .feature-grid');
     if (indexGrid) {
       indexGrid.innerHTML = '';
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
-    // 2. Render Apply.html wave & evergreen cards
+    // 2. Render Apply wave & evergreen cards
     const applyWaveTrack = document.querySelector('#waves-track');
     const applyEvergreenTrack = document.querySelector('#evergreen-track');
     
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
-    // 3. Render Affiliate.html wave summary
+    // 3. Render Affiliate wave summary
     const affiliateGrid = document.querySelector('#affiliate-waves-grid');
     if (affiliateGrid) {
       affiliateGrid.innerHTML = '';
