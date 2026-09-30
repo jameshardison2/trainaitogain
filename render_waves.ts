@@ -238,8 +238,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     searchInput?.addEventListener('input', filterJobs);
     domainFilter?.addEventListener('change', filterJobs);
-    const locationFilter = document.getElementById('jobLocationFilter') as HTMLSelectElement;
-    const sortFilter = document.getElementById('jobSortFilter') as HTMLSelectElement;
+    locationFilter?.addEventListener('change', filterJobs);
+    sortFilter?.addEventListener('change', filterJobs);
     locationFilter?.addEventListener('change', filterJobs);
     sortFilter?.addEventListener('change', filterJobs);
 

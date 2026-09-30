@@ -210,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
         }
         searchInput === null || searchInput === void 0 ? void 0 : searchInput.addEventListener('input', filterJobs);
         domainFilter === null || domainFilter === void 0 ? void 0 : domainFilter.addEventListener('change', filterJobs);
-        const locationFilter = document.getElementById('jobLocationFilter');
-        const sortFilter = document.getElementById('jobSortFilter');
+        locationFilter === null || locationFilter === void 0 ? void 0 : locationFilter.addEventListener('change', filterJobs);
+        sortFilter === null || sortFilter === void 0 ? void 0 : sortFilter.addEventListener('change', filterJobs);
         locationFilter === null || locationFilter === void 0 ? void 0 : locationFilter.addEventListener('change', filterJobs);
         sortFilter === null || sortFilter === void 0 ? void 0 : sortFilter.addEventListener('change', filterJobs);
         // 2. Synchronize Evergreen Carousels
