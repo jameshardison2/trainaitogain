@@ -31,6 +31,16 @@
         "source": "/guide-download",
         "destination": "/trainaitogain-hiring-blueprint.pdf",
         "type": 301
+      },
+      {
+        "source": "/linkedin",
+        "destination": "/?utm_source=linkedin&utm_medium=post",
+        "type": 301
+      },
+      {
+        "source": "/dm",
+        "destination": "/?utm_source=linkedin&utm_medium=dm",
+        "type": 301
       }
     ]
   },
