@@ -1257,12 +1257,12 @@ Experience
                 applyBtn.style.cursor = 'pointer';
                 applyBtn.style.background = 'var(--primary)';
                 applyBtn.style.color = 'white';
-                applyBtn.innerHTML = 'Next Step: AI Mock Interview ➔';
+                applyBtn.innerHTML = 'Apply Now ➔';
                 // Trigger celebratory animation
                 applyBtn.style.boxShadow = '0 0 0 4px rgba(16,185,129,0.4)';
                 setTimeout(() => applyBtn.style.boxShadow = 'none', 1500);
                 
-                applyBtn.onclick = () => window.location.href='ai-interview.html';
+                applyBtn.onclick = () => openApplyModal('content_button');
             } else {
                 applyBtn.disabled = true;
                 applyBtn.style.opacity = '0.6';
@@ -1410,15 +1410,15 @@ ${resumeBox.value}
            item4Container.innerHTML = nudgeCTA;
            applyBtn.className = 'btn-apply ready';
            applyBtn.disabled = false;
-           applyBtn.innerText = 'Next Step: AI Mock Interview ➔';
-           applyBtn.onclick = () => window.location.href='ai-interview.html';
+           applyBtn.innerText = 'Apply Now ➔';
+           applyBtn.onclick = () => openApplyModal('content_button');
         } else {
-           feedbackBox.innerHTML = '<h4>Flawless 100% Match! 🏆</h4><p>Your resume is fully optimized and guaranteed to pass the ATS filter. Now that your resume is perfect, here is the next step: preparing for the live AI Interview.</p>';
+           feedbackBox.innerHTML = '<h4>Flawless 100% Match! 🏆</h4><p>Your resume is fully optimized and guaranteed to pass the ATS filter. Now that your resume is perfect, you are ready to apply for the role.</p>';
            if(item4Container) item4Container.style.display = 'none';
            applyBtn.className = 'btn-apply ready';
            applyBtn.disabled = false;
-           applyBtn.innerText = 'Next Step: AI Mock Interview ➔';
-           applyBtn.onclick = () => window.location.href='ai-interview.html';
+           applyBtn.innerText = 'Apply Now ➔';
+           applyBtn.onclick = () => openApplyModal('content_button');
         }
         
         scanBtn.innerText = 'Scan Again';
