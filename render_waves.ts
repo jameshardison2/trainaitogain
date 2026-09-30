@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             <option value="FINANCE">Finance & Economics</option>
             <option value="LEGAL">Legal & Compliance</option>
             <option value="COMPLETED">Completed Roles</option>
+            <option value="MICRO1">Micro1 Roles</option>
+            <option value="MERCOR">Mercor Roles</option>
         </select>
       </div>
 
@@ -95,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">${role.description}</p>
           <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">${tagsHtml}</div>
           <div style="display:flex; gap:8px;">
-            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.location.href='$'{role.linkTarget || 'https://t.mercor.com/wbPMF'}'">Apply on ${role.linkTarget && role.linkTarget.includes("micro1") ? "Micro1" : "Mercor"}</button>
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('${role.linkTarget || 'https://t.mercor.com/wbPMF'}', '_blank')">Apply Now</button>
             
           </div>
           <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your PDF resume ready</div>
