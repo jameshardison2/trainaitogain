@@ -546,7 +546,7 @@ ${resumeText.substring(0, 10000)}`;
   });
 </script>
 
-<script src="render_waves.js?v=1790782366"></script>
+<script src="render_waves.js?v=1790786310"></script>
 
 
 
@@ -612,15 +612,23 @@ function submitNavbarLead(e) {
 
 
 <script>
-function markAsComplete(title, domain, pay) {
+function markAsComplete(title, domain, pay, btn) {
     let completed = JSON.parse(localStorage.getItem('completedRoles')) || [];
     const roleId = title + domain;
     if (!completed.some(r => r.id === roleId)) {
         completed.push({ id: roleId, title: title, domain: domain, pay: pay, date: new Date().toISOString() });
         localStorage.setItem('completedRoles', JSON.stringify(completed));
-        alert('Role marked as Complete!');
-    } else {
-        alert('Role is already marked as Complete.');
+    }
+    if (btn) {
+        const card = btn.closest('div[style*="min-width: 320px"]');
+        if (card) {
+            card.style.opacity = '0.5';
+            card.style.transform = 'scale(0.98)';
+        }
+        btn.innerHTML = '✓';
+        btn.style.background = '#10b981';
+        btn.style.color = 'white';
+        btn.style.borderColor = '#10b981';
     }
 }
 </script>
