@@ -2,36 +2,6 @@
   "lastUpdated": "Auto-Synced Live",
   "roles": [
     {
-      "id": "senior-book-editor",
-      "title": "Senior Book Editor",
-      "domain": "GENERAL",
-      "pay": "$80/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Review AI-generated text for long-form narrative coherence and editorial quality.",
-      "tags": [
-        "Editing",
-        "Narrative",
-        "Publishing"
-      ],
-      "linkTarget": "https://app.micro1.ai/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe"
-    },
-    {
-      "id": "software-firmware-engineering-experts",
-      "title": "Software and Firmware Engineering Experts",
-      "domain": "SOFTWARE",
-      "pay": "$100-$120/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Requires 5+ years embedded firmware / FPGA / flight software / test automation.",
-      "tags": [
-        "Embedded",
-        "Firmware",
-        "Test Automation"
-      ],
-      "linkTarget": "https://t.mercor.com/0e9X7"
-    },
-    {
       "id": "senior-design-expert---paid-ai-design-research-study",
       "title": "Senior Design Expert - Paid AI Design Research Study",
       "domain": "GENERAL",
@@ -44,7 +14,8 @@
         "General",
         "Remote"
       ],
-      "linkTarget": "https://t.mercor.com/13F7G"
+      "linkTarget": "https://t.mercor.com/13F7G",
+      "platform": "Mercor"
     },
     {
       "id": "legacy-codebase-migration-expert",
@@ -59,22 +30,8 @@
         "General",
         "Remote"
       ],
-      "linkTarget": "https://t.mercor.com/vKkRA"
-    },
-    {
-      "id": "personalized-life-assistant-expert",
-      "title": "Personalized Life Assistant Expert",
-      "domain": "GENERAL",
-      "pay": "$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://t.mercor.com/R1YTf"
+      "linkTarget": "https://t.mercor.com/vKkRA",
+      "platform": "Mercor"
     },
     {
       "id": "multilingual-primary-care-physician-(md)-—-clinical-documentation-&-ai-evaluation",
@@ -89,97 +46,365 @@
         "General",
         "Remote"
       ],
-      "linkTarget": "https://t.mercor.com/EK8QX"
+      "linkTarget": "https://t.mercor.com/EK8QX",
+      "platform": "Mercor"
     },
     {
-      "id": "multilingual-inpatient-hospitalist-(md)-—-clinical-documentation-&-ai-evaluation",
-      "title": "Multilingual Inpatient Hospitalist (MD) — Clinical Documentation & AI Evaluation",
-      "domain": "MEDICAL",
-      "pay": "$170/hr",
+      "id": "mercor-agent-engineer",
+      "title": "Agent Engineer",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
       "status": "ACTIVE",
-      "badgeClass": "orange",
+      "badgeClass": "black",
       "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "SOFTWARE"
       ],
-      "linkTarget": "https://t.mercor.com/pwGel"
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/kVNzT"
     },
     {
-      "id": "corporatem&a-lawyer-(united-kingdom)",
-      "title": "Corporate/M&A Lawyer (United Kingdom)",
-      "domain": "LEGAL",
-      "pay": "$160/hr",
+      "id": "mercor-customer-success-engineer-latam",
+      "title": "Customer Success Engineer (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
       "status": "ACTIVE",
-      "badgeClass": "orange",
+      "badgeClass": "black",
       "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "SOFTWARE"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/kGQE9"
     },
     {
-      "id": "in-house-counsel-(united-kingdom)",
-      "title": "In-House Counsel (United Kingdom)",
-      "domain": "LEGAL",
-      "pay": "$160/hr",
+      "id": "mercor-customer-success-engineer-india",
+      "title": "Customer Success Engineer (India)",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
       "status": "ACTIVE",
-      "badgeClass": "orange",
+      "badgeClass": "black",
       "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "SOFTWARE"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/fE2I6"
     },
     {
-      "id": "legal--commercial-expert",
-      "title": "Legal / Commercial Expert",
-      "domain": "LEGAL",
-      "pay": "$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "orange",
-      "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
-      ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
-    },
-    {
-      "id": "job-seeker---new-grad",
-      "title": "Job Seeker - New Grad",
+      "id": "mercor-customer-success-operations-india",
+      "title": "Customer Success - Operations (India)",
       "domain": "GENERAL",
-      "pay": "$160/hr",
+      "pay": "Competitive",
       "status": "ACTIVE",
-      "badgeClass": "orange",
+      "badgeClass": "black",
       "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "General",
-        "Remote"
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "GENERAL"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/MaTRp"
     },
     {
-      "id": "finance--ir-experts",
-      "title": "Finance / IR experts",
-      "domain": "FINANCE",
-      "pay": "$160/hr",
+      "id": "mercor-cybersecurity-research-expert",
+      "title": "Cybersecurity Research Expert",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
       "status": "ACTIVE",
-      "badgeClass": "orange",
+      "badgeClass": "black",
       "description": "Mercor is actively hiring for this position right now.",
-      "atsKeywords": [],
-      "tags": [
-        "Finance",
-        "Remote"
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "SOFTWARE"
       ],
-      "linkTarget": "https://t.mercor.com/wbPMF"
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/DG7EB"
+    },
+    {
+      "id": "mercor-physician-talent-network",
+      "title": "Physician Talent Network",
+      "domain": "MEDICAL",
+      "pay": "$100/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "MEDICAL"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/MBefW"
+    },
+    {
+      "id": "mercor-machine-learning-engineer-talent-network",
+      "title": "Machine Learning Engineer Talent Network",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "SOFTWARE"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/yRhGV"
+    },
+    {
+      "id": "mercor-disease-area-clinician",
+      "title": "Disease-Area Clinician",
+      "domain": "MEDICAL",
+      "pay": "$100/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "MEDICAL"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/cr9De"
+    },
+    {
+      "id": "mercor-pharma-commercial-forecasting-expert",
+      "title": "Pharma Commercial Forecasting Expert",
+      "domain": "FINANCE",
+      "pay": "$100/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "FINANCE"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/gKSwB"
+    },
+    {
+      "id": "mercor-expert-senior-swe",
+      "title": "Expert Senior SWE",
+      "domain": "SOFTWARE",
+      "pay": "$100/hr+",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "SOFTWARE"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/7qxQv"
+    },
+    {
+      "id": "mercor-uk-based-data-engineering-experts",
+      "title": "UK-Based Data Engineering Experts",
+      "domain": "SOFTWARE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "SOFTWARE"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/dEdG2"
+    },
+    {
+      "id": "mercor-compensation-equity-expert",
+      "title": "Compensation & Equity Expert",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "FINANCE"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/92d2s"
+    },
+    {
+      "id": "mercor-payer-market-access-expert",
+      "title": "Payer & Market Access Expert",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "FINANCE"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/LTeeO"
+    },
+    {
+      "id": "mercor-biotech-investment-analyst",
+      "title": "Biotech Investment Analyst",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "FINANCE"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/yz4ov"
+    },
+    {
+      "id": "mercor-financial-analyst-talent-network",
+      "title": "Financial Analyst Talent Network",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "FINANCE"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/94FOe"
+    },
+    {
+      "id": "mercor-epidemiologist",
+      "title": "Epidemiologist",
+      "domain": "MEDICAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "MEDICAL"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/gkwKq"
+    },
+    {
+      "id": "mercor-pro-bono-counsel",
+      "title": "Pro Bono Counsel",
+      "domain": "LEGAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "black",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "Remote",
+        "AI",
+        "Mercor",
+        "LEGAL"
+      ],
+      "tags": [
+        "Remote",
+        "Mercor"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/K4k63"
     },
     {
       "id": "micro1-c3de87a0-0f43-47af-8212-1703122b3679",
@@ -220,8 +445,8 @@
     {
       "id": "micro1-9ebedb7a-9911-4b0c-b771-13f3325bdc7d",
       "title": "Primary Care Physician",
-      "domain": "GENERAL",
-      "pay": "$126-$441/hr",
+      "domain": "MEDICAL",
+      "pay": "$80-$285/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -241,8 +466,8 @@
     {
       "id": "micro1-d54c73d6-e3bc-4183-98ae-1f1a8197721d",
       "title": "Pharmaceutical Expert",
-      "domain": "GENERAL",
-      "pay": "$126-$441/hr",
+      "domain": "MEDICAL",
+      "pay": "$80-$285/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -373,8 +598,8 @@
     },
     {
       "id": "micro1-bb3e957b-b767-4771-bfb7-bfa34d74632a",
-      "title": " Bilingual Malay Psychiatrist",
-      "domain": "GENERAL",
+      "title": "Bilingual Malay Psychiatrist",
+      "domain": "MEDICAL",
       "pay": "$100-$200/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
@@ -398,7 +623,7 @@
     },
     {
       "id": "micro1-0075fd81-8fde-47a4-945a-b10a9bc436fa",
-      "title": " Bilingual Malay Psychologist (PhD)",
+      "title": "Bilingual Malay Psychologist (PhD)",
       "domain": "GENERAL",
       "pay": "$100-$200/hr",
       "status": "ACTIVE",
@@ -423,8 +648,8 @@
     },
     {
       "id": "micro1-9241ac3c-a083-4e6a-ae6c-0ebe8299ebcd",
-      "title": " Bilingual Marathi Psychiatrist",
-      "domain": "GENERAL",
+      "title": "Bilingual Marathi Psychiatrist",
+      "domain": "MEDICAL",
       "pay": "$100-$200/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
@@ -447,5 +672,15 @@
       "linkTarget": "https://jobs.micro1.ai/post/9241ac3c-a083-4e6a-ae6c-0ebe8299ebcd?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     }
   ],
-  "closedRoles": []
+  "closedRoles": [
+    "Senior Book Editor",
+    "Software and Firmware Engineering Experts",
+    "Personalized Life Assistant Expert",
+    "Multilingual Inpatient Hospitalist (MD) — Clinical Documentation & AI Evaluation",
+    "Corporate/M&A Lawyer (United Kingdom)",
+    "In-House Counsel (United Kingdom)",
+    "Legal / Commercial Expert",
+    "Job Seeker - New Grad",
+    "Finance / IR experts"
+  ]
 }

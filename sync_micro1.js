@@ -61,10 +61,22 @@ const path = require('path');
     // Fix ?ref= bug for safe tracking
     linkTarget = linkTarget.replace("?ref=", "&ref=");
 
+    const titleLower = job.job_name.toLowerCase();
+    let domain = "GENERAL";
+    if (titleLower.includes("software") || titleLower.includes("engineer") || titleLower.includes("developer") || titleLower.includes("data") || titleLower.includes("cybersecurity")) {
+      domain = "SOFTWARE";
+    } else if (titleLower.includes("medical") || titleLower.includes("physician") || titleLower.includes("clinician") || titleLower.includes("epidemiologist") || titleLower.includes("health") || titleLower.includes("pharma") || titleLower.includes("psychiatrist") || titleLower.includes("dermatologist")) {
+      domain = "MEDICAL";
+    } else if (titleLower.includes("legal") || titleLower.includes("lawyer") || titleLower.includes("counsel")) {
+      domain = "LEGAL";
+    } else if (titleLower.includes("finance") || titleLower.includes("financial") || titleLower.includes("equity") || titleLower.includes("investment") || titleLower.includes("revenue")) {
+      domain = "FINANCE";
+    }
+
     return {
       "id": `micro1-${job.job_id}`,
-      "title": job.job_name,
-      "domain": job.job_name.toLowerCase().includes("software") ? "SOFTWARE" : "GENERAL",
+      "title": job.job_name.trim(),
+      "domain": domain,
       "pay": payStr,
       "status": "ACTIVE",
       "badgeClass": "blue",
