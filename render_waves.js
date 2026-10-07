@@ -20,11 +20,13 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
         carouselWrapper.style.marginBottom = '48px';
         carouselWrapper.style.position = 'relative';
         const categories = [
-            { id: 'carousel-software', name: 'Software & Tech Pipelines', icon: '💻', domain: 'SOFTWARE' },
-            { id: 'carousel-medical', name: 'Medical & Clinical Pipelines', icon: '⚕️', domain: 'MEDICAL' },
-            { id: 'carousel-finance', name: 'Finance & Quant Pipelines', icon: '📈', domain: 'FINANCE' },
-            { id: 'carousel-legal', name: 'Translation & Law Pipelines', icon: '⚖️', domain: 'LEGAL' },
-            { id: 'carousel-general', name: 'Generalist & Content Pipelines', icon: '📋', domain: 'GENERAL' }
+            { id: 'carousel-software', name: 'Software & Engineering Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>', domain: 'SOFTWARE' },
+            { id: 'carousel-medical', name: 'Medical & Clinical Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>', domain: 'MEDICAL' },
+            { id: 'carousel-finance', name: 'Finance & Quant Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>', domain: 'FINANCE' },
+            { id: 'carousel-legal', name: 'Legal & Compliance Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>', domain: 'LEGAL' },
+            { id: 'carousel-language', name: 'Translation & Voice Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>', domain: 'LANGUAGE' },
+            { id: 'carousel-sales', name: 'Sales & Growth Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 19l16-16"></path><path d="M4 19l3-3"></path><path d="M20 3l-3 3"></path></svg>', domain: 'SALES' },
+            { id: 'carousel-general', name: 'General & Domain Expert Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>', domain: 'GENERAL' }
         ];
         let html = `
       <div style="background:var(--gray-100); border-left:4px solid var(--primary); padding:16px; margin-bottom:48px; border-radius:8px;">
