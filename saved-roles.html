@@ -191,6 +191,36 @@
         <button onclick="clearSavedRoles()" style="background:transparent; color:var(--gray-500); border:none; text-decoration:underline; cursor:pointer; font-size:14px;">Clear All</button>
       </div>
       
+      
+      <div id="dashboard-stats" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:32px;">
+        <!-- Card 1 -->
+        <div style="background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.02);">
+          <div style="font-size:11px; font-weight:800; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">Pipeline Volume</div>
+          <div id="stat-volume" style="font-size:36px; font-weight:800; color:var(--black); line-height:1;">0</div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div style="background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.02);">
+          <div style="font-size:11px; font-weight:800; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">Avg Potential Pay</div>
+          <div id="stat-pay" style="font-size:36px; font-weight:800; color:#F06A26; line-height:1;">$0/hr</div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div style="background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.02); grid-column: span 2;">
+          <div style="font-size:11px; font-weight:800; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">Conversion Funnel</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+            <div style="flex:1; height:8px; background:var(--primary); border-radius:4px;"></div>
+            <div style="flex:1; height:8px; background:var(--primary-light); border-radius:4px;"></div>
+            <div style="flex:1; height:8px; background:var(--gray-200); border-radius:4px;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em;">
+            <div style="flex:1; text-align:center;">Saved</div>
+            <div style="flex:1; text-align:center;">ATS Scanned</div>
+            <div style="flex:1; text-align:center;">Applied</div>
+          </div>
+        </div>
+      </div>
+      
       <div id="saved-roles-container" style="display:flex; flex-direction:column; gap:16px;">
         <div style="text-align:center; padding:48px; background:var(--white); border:1px dashed var(--gray-300); border-radius:var(--radius-lg); color:var(--gray-500);">
           Loading your saved pipelines...

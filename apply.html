@@ -253,10 +253,10 @@
     </div>
 
     <script>
-      const uploadZone = document.getElementById('aws-upload-zone');
+      const uploadZone = document.getElementById('aws-file-input');
       const fileInput = document.getElementById('aws-file-input');
       const statusDiv = document.getElementById('aws-upload-status');
-      const statusText = document.getElementById('aws-status-text');
+      const statusText = document.getElementById('aws-status-container');
       const matchedSection = document.getElementById('matched-roles-section');
       const matchedTrack = document.getElementById('matched-waves-track');
       
@@ -275,7 +275,7 @@
           <div class="loading-spinner"></div>
           <span id="aws-status-text">📄 Securely reading your resume...</span>
         </div>`;
-        const statusText = document.getElementById('aws-status-text');
+        const statusText = document.getElementById('aws-status-container');
 
         try {
           // 1. Extract Text
@@ -298,14 +298,14 @@
               }
           }
           
-          statusText.innerHTML = '🔄 Scanning active network pipelines...';
+          document.getElementById('aws-status-container').style.display='block'; document.getElementById('aws-status-container').innerHTML = '🔄 Scanning active network pipelines...';
           
           // 2. Fetch active roles
           const response = await fetch('waves.json');
           const waves = await response.json();
           const roleList = (waves.roles || waves).map(w => ({ name: w.title, rate: w.hourlyRate || w.pay, url: w.applyUrl || w.linkTarget }));
           
-          statusText.innerHTML = '⚡ TrainAIToGain matching engine is analyzing your experience...';
+          document.getElementById('aws-status-container').style.display='block'; document.getElementById('aws-status-container').innerHTML = '⚡ TrainAIToGain matching engine is analyzing your experience...';
           
           // 3. Prompt Gemini
           const prompt = `You are an expert technical recruiter for Mercor. I will provide a candidate's resume and a JSON list of open job roles.
