@@ -49,6 +49,10 @@
 </head>
 <body style="background:var(--gray-50);">
 
+<div style="background: #2F3E32; color: #D1D8D3; padding: 12px; text-align: center; font-weight: 700; font-size: 14px; position: relative; z-index: 9999; display:flex; justify-content:center; align-items:center; gap:8px; cursor:pointer;" onclick="alert('Syncing Mercor Jobs...')">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:#A1B0A6;"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+  <span style="color:white; font-size:15px; letter-spacing:0.02em;">Sync Mercor Jobs</span>
+</div>
 <nav class="nav" aria-label="Primary Navigation">
     <div class="container">
       <div class="nav-inner">
@@ -63,25 +67,30 @@
         <label for="nav-toggle" class="nav-toggle-label">
           <span class="nav-toggle-icon"></span>
         </label>
-                <ul class="nav-links" style="align-items:center;">
+                        <ul class="nav-links" style="align-items:center;">
           <li class="desktop-only">
-            <a href="hiring-pipeline.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'playbook' })">
+            <a href="hiring-pipeline.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> The Playbook
             </a>
           </li>
           <li class="desktop-only">
-            <a href="apply.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'active_roles' })">
+            <a href="apply.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> Active Roles
             </a>
           </li>
           <li class="desktop-only">
-            <a href="ai-interview.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'mock_interview' })">
+            <a href="ai-interview.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> Mock Interview
             </a>
           </li>
+          <li class="desktop-only">
+            <a href="dashboard.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Dashboard
+            </a>
+          </li>
           <li>
-            <a href="#" class="nav-link" style="background:var(--primary); color:var(--white); padding:10px 20px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'blueprint_cta' }); openNavbarLeadModal(event)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg> Get Free Blueprint
+            <a href="#" onclick="openNavbarLeadModal(event)" style="background:var(--primary); color:var(--white); padding:8px 16px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg> Get Free Blueprint
             </a>
           </li>
         </ul>
@@ -202,200 +211,21 @@
   </nav>
 
 <section style="padding: 48px 0 24px;">
-  <div class="container" style="text-align:center; max-width:800px;">
-    <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Active Open Roles</h1>
-    <p style="font-size:16px; color:var(--gray-500); margin-bottom: 32px;">Click Apply to be directed to the official Mercor application page. Referrals are tracked automatically.</p>
+  <div class="container" style="max-width:1000px;">
     
-    
-
-    <!-- AWS Serverless Resume Processor -->
-    <div style="background: white; padding: 20px 24px; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); text-align: left; margin-top: 32px; display: flex; flex-direction: column; gap: 12px;">
-      
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-        <div style="flex: 1; min-width: 250px;">
-          <h3 style="font-size:20px; font-weight:800; margin-bottom:8px;">✨ Check if your resume matches these roles</h3>
-          <div style="color:var(--gray-700); font-size:15px; margin: 0; line-height:1.6; display:flex; flex-direction:column; gap:6px;">
-            <div style="margin-bottom:8px;">Upload your resume to see which roles you have the highest chance of landing.</div>
-          </div>
-        </div>
-        
-        <div id="aws-upload-zone" style="position: relative; background: var(--gray-100); border: 2px dashed var(--primary); border-radius: var(--radius); padding: 16px 32px; text-align: center; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 16px;" onmouseover="this.style.backgroundColor='var(--primary-light)';" onmouseout="this.style.backgroundColor='var(--gray-100)';">
-          <div style="font-size:32px; line-height: 1;">📄</div>
-          <div style="text-align: left;">
-            <div style="font-weight:800; color:var(--primary-dark); font-size: 16px;">Click here to upload</div>
-            <div style="font-size:13px; color:var(--gray-600); font-weight:500;">PDF or DOCX format</div>
-          </div>
-          <input type="file" id="aws-file-input" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; font-size: 0; cursor: pointer; z-index: 999;" title="Click to Upload" />
-        </div>
+    <!-- Pro Tip Header (No text, just buttons as per Image 2) -->
+    <div style="background:var(--gray-50); border-left:4px solid var(--primary); border-radius:8px; padding:16px 24px; margin-bottom:48px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
+      <div style="background:var(--white); border:1px solid var(--gray-200); padding:8px 12px; border-radius:6px; font-size:12px; font-weight:700; color:var(--black); display:flex; align-items:center; gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Save to Dashboard
       </div>
-
-      <!-- Upload Progress / Success State -->
-      <style>
-        @keyframes pulse-bg { 0% { background-color: var(--primary-light); box-shadow: 0 0 0 rgba(16,185,129,0); } 50% { background-color: #d1fae5; box-shadow: 0 0 15px rgba(16,185,129,0.3); } 100% { background-color: var(--primary-light); box-shadow: 0 0 0 rgba(16,185,129,0); } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-spinner { border: 3px solid rgba(16, 185, 129, 0.2); border-top: 3px solid var(--primary); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
-      </style>
-      <div id="aws-upload-status" style="display:none; margin-top:16px; padding:20px; border-radius:12px; border:2px solid var(--primary); animation: pulse-bg 2s infinite; font-size:16px; font-weight:800; color:var(--primary-dark); text-align:center;">
-        <div style="display:flex; align-items:center; justify-content:center; gap:16px;">
-          <div class="loading-spinner"></div>
-          <span id="aws-status-text">Analyzing document...</span>
-        </div>
+      <div style="background:var(--white); border:1px solid var(--gray-200); padding:8px 12px; border-radius:6px; font-size:12px; font-weight:700; color:var(--black); display:flex; align-items:center; gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Mark as Applied
+      </div>
+      <div style="background:var(--white); border:1px solid var(--gray-200); padding:8px 12px; border-radius:6px; font-size:12px; font-weight:700; color:var(--black); display:flex; align-items:center; gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> Scan Resume Match
       </div>
     </div>
-
-    <!-- AWS Frontend Integration Script -->
-    <div id="matched-roles-section" style="display:none; margin-top: 48px; text-align: center;">
-      <div class="section-eyebrow" style="display:inline-block; padding:6px 14px; border-radius:100px; color:var(--primary-dark); background:var(--primary-light);">Resume Match Complete</div>
-      <h2 style="font-size:24px; font-weight:800; margin-bottom:24px;">Your Top Qualified Roles</h2>
-      <div id="matched-waves-track" style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px;">
-        <!-- Injected via JS -->
-      </div>
-    </div>
-
-    <script>
-      const uploadZone = document.getElementById('aws-file-input');
-      const fileInput = document.getElementById('aws-file-input');
-      const statusDiv = document.getElementById('aws-upload-status');
-      const statusText = document.getElementById('aws-status-container');
-      const matchedSection = document.getElementById('matched-roles-section');
-      const matchedTrack = document.getElementById('matched-waves-track');
-      
-      
-      // uploadZone click removed for mobile
-
-      fileInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        uploadZone.style.display = 'none';
-        statusDiv.style.display = 'block';
-        statusDiv.style.animation = 'pulse-bg 2s infinite';
-        statusDiv.style.borderColor = 'var(--primary)';
-        statusDiv.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; gap:16px;">
-          <div class="loading-spinner"></div>
-          <span id="aws-status-text">📄 Securely reading your resume...</span>
-        </div>`;
-        const statusText = document.getElementById('aws-status-container');
-
-        try {
-          // 1. Extract Text
-          const arrayBuffer = await new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = e => resolve(e.target.result);
-              reader.onerror = e => reject(new Error("File read failed"));
-              reader.readAsArrayBuffer(file);
-          });
-          let resumeText = "";
-          if (file.name.toLowerCase().endsWith('.docx')) {
-              const result = await mammoth.extractRawText({arrayBuffer: arrayBuffer});
-              resumeText = result.value;
-          } else {
-              const pdf = await pdfjsLib.getDocument({data: new Uint8Array(arrayBuffer)}).promise;
-              for (let i = 1; i <= pdf.numPages; i++) {
-                  const page = await pdf.getPage(i);
-                  const textContent = await page.getTextContent();
-                  resumeText += textContent.items.map(item => item.str).join(" ") + "\n";
-              }
-          }
-          
-          document.getElementById('aws-status-container').style.display='block'; document.getElementById('aws-status-container').innerHTML = '🔄 Scanning active network pipelines...';
-          
-          // 2. Fetch active roles
-          const response = await fetch('waves.json');
-          const waves = await response.json();
-          const roleList = (waves.roles || waves).map(w => ({ name: w.title, rate: w.hourlyRate || w.pay, url: w.applyUrl || w.linkTarget }));
-          
-          document.getElementById('aws-status-container').style.display='block'; document.getElementById('aws-status-container').innerHTML = '⚡ TrainAIToGain matching engine is analyzing your experience...';
-          
-          // 3. Prompt Gemini
-          const prompt = `You are an expert technical recruiter for Mercor. I will provide a candidate's resume and a JSON list of open job roles.
-Analyze the candidate's experience and find the top 3 best matching roles for them. 
-Return ONLY a raw JSON array of objects (no markdown, no backticks), where each object has:
-'roleName' (exact match from the list), 'matchScore' (integer 0-100), and 'explanation' (1-2 sentences highly personalized explaining why their specific past experience is a fit).
-
-ROLES:
-${JSON.stringify(roleList)}
-
-RESUME:
-${resumeText.substring(0, 10000)}`;
-
-          const aiResponse = await fetch('/api/generateAiResponse', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: { temperature: 0.1 }
-            })
-          });
-          
-          const aiData = await aiResponse.json();
-          if (!aiData.candidates || aiData.candidates.length === 0) {
-              console.error("AI Error:", aiData);
-              statusDiv.style.animation = 'none';
-              statusDiv.innerHTML = '<span style="color:#ef4444; font-weight:700;">❌ Scanner Offline: Our AI provider is currently experiencing high load. Please browse and apply to the roles manually below.</span>';
-              return;
-          }
-          let aiText = aiData.candidates[0].content.parts[0].text;
-          
-          // Clean markdown backticks if present
-          aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
-          
-          const matches = JSON.parse(aiText);
-          
-          // Merge with rate/url
-          matches.forEach(m => {
-             const matchedRole = roleList.find(r => r.name === m.roleName);
-             if (matchedRole) {
-                 m.hourlyRate = matchedRole.rate;
-                 m.roleUrl = matchedRole.url;
-             }
-          });
-          
-          statusDiv.style.animation = 'none';
-          statusDiv.innerHTML = '<span style="color:var(--primary); font-weight:700;">✅ AI Analysis Complete! Found your best matches.</span>';
-          
-          
-          // Save to session storage so it persists if they reload
-          sessionStorage.setItem('ai_matches', JSON.stringify(matches));
-          
-          // 4. Render!
-
-          matchedSection.style.display = 'block';
-          matchedTrack.innerHTML = matches.map(m => `
-            <div class="wave-card" style="width: 100%; max-width: 600px; text-align: left; background: white; padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); display:flex; flex-direction:column; align-items:flex-start;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; width:100%;">
-                 <span style="background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 8px; border-radius:4px;">${m.matchScore}% Match</span>
-                 <span style="color:var(--gray-500); font-weight:700; font-size:14px;">${m.hourlyRate || 'Market Rate'}</span>
-              </div>
-              <h3 style="font-size:18px; font-weight:800; color:var(--black); margin-bottom:12px; line-height:1.3;">${m.roleName}</h3>
-              <p style="font-size:14px; color:var(--gray-600); line-height:1.5; margin-bottom:24px; flex-grow:1;"><strong>Why you're a fit:</strong> ${m.explanation}</p>
-              
-                    
-                    <div style="display:flex; gap:8px; width:100%;">
-                      <button type="button" onclick="const refCode = localStorage.getItem('affiliate_ref'); let targetUrl = '${m.roleUrl}'; if (refCode && targetUrl.includes('mercor')) { if(!targetUrl.includes('ref=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'ref=' + encodeURIComponent(refCode); } else if (refCode && targetUrl.includes('micro1')) { if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode); } window.open(targetUrl, '_blank')" style="flex:1; background:var(--gray-900); color:white; border:none; padding:12px; border-radius:var(--radius-sm); font-weight:700; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--primary)'" onmouseout="this.style.background='var(--gray-900)'">Apply for this Role ➔</button>
-                      <button type="button" onclick="saveRole('${m.roleName.replace(/'/g, "\\'")}', '${m.domainFilter || 'ALL'}', '${m.hourlyRate || 'Market Rate'}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
-                      <button type="button" onclick="markAsComplete('${m.roleName.replace(/'/g, "\\'")}', '${m.domainFilter || 'ALL'}', '${m.hourlyRate || 'Market Rate'}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">✅</button>
-                      <button type="button" onclick="window.open('resume-ats-guide?role=' + encodeURIComponent('${m.roleName.replace(/'/g, "\\'")}'), '_blank');" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">🎯</button>
-                    </div>
-            </div>
-          `).join('');
-          
-          // Scroll to results
-          setTimeout(() => matchedSection.scrollIntoView({behavior: 'smooth', block: 'start'}), 100);
-
-        } catch (error) {
-          console.error("Analysis Error:", error);
-          statusDiv.style.animation = 'none';
-          statusDiv.style.borderColor = '#ef4444';
-          statusDiv.innerHTML = '<span style="color:#ef4444; font-weight:700;">❌ Technical Error: ' + (error.message || JSON.stringify(error) || error) + '<br>Please screenshot this exact text and send it to your developer.</span>';
-          setTimeout(() => {
-              statusDiv.style.display = 'none';
-              uploadZone.style.display = 'flex';
-          }, 3000);
-        }
-      });
-    </script>
-
+    
   </div>
 </section>
 
@@ -721,4 +551,12 @@ function saveRole(title, domain, pay, btn, applyUrl) {
       }
     });
   });
+</script>
+<script>
+window.handleApplyClick = function(title, linkTarget, btn) {
+    if (!linkTarget || linkTarget === '#' || linkTarget === 'undefined') {
+        linkTarget = 'https://t.mercor.com/wbPMF';
+    }
+    window.open(linkTarget, '_blank');
+};
 </script>
