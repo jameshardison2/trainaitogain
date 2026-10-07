@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Active Open Roles - TrainAIToGain</title>
+  <meta name="description" content="Browse live pipelines for Software, Medical, and Finance AI training roles. Bypass the Mercor waitlist with direct referral applications.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #10b981;
+        border: 2px solid white;
+        box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        cursor: pointer;
+        z-index: 999; display: block;
+        transition: all 0.2s;
+        opacity: 1 !important;
+    }
+    .carousel-btn:hover { transform: translateY(-50%) scale(1.1); }
+    @media (max-width: 768px) { .carousel-btn { display: none; } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7Z54KYTV6B');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+</head>
+<body style="background:var(--gray-50);">
+
+<nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg?v=2" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; flex-direction:column; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+            <span style="color:var(--primary); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">We Get You Hired.</span>
+          </div>
+          </a>
+          <input type="checkbox" id="nav-toggle" style="display:none;" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="nav-toggle-icon"></span>
+        </label>
+                                <ul class="nav-links" style="align-items:center;">
+          <li class="desktop-only">
+            <a href="hiring-pipeline.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'playbook' })">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> The Playbook
+            </a>
+          </li>
+          <li class="desktop-only">
+            <a href="apply.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'active_roles' })">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> Active Roles
+            </a>
+          </li>
+          <li class="desktop-only">
+            <a href="ai-interview.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'mock_interview' })">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> Mock Interview
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" style="background:var(--primary); color:var(--white); padding:10px 20px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'blueprint_cta' }); openNavbarLeadModal(event)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg> Get Free Blueprint
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Application Interceptor Modal -->
+    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
+      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
+        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Before you apply...</h3>
+          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
+        </div>
+        <div style="padding:24px;">
+          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are leaving TrainAIToGain to apply on the official external network. Optional: Join our free newsletter to get interview prep tips sent to your inbox before you start.</p>
+          
+            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
+          </div>
+          
+          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
+            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Where should we send your matched roles?</div>
+            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
+          </form>
+
+          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Join Newsletter & Continue to Application ➔</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.currentApplySource = 'unknown';
+      function openApplyModal(source) {
+        window.currentApplySource = source;
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
+        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
+        
+        // If they already entered their email, don't ask again
+        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
+            var targetUrl = "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral";
+            if (ref) targetUrl += "&ref=" + encodeURIComponent(ref);
+            window.open(targetUrl, '_blank');
+            return;
+        }
+
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'flex';
+      }
+      function closeApplyModal() {
+        var modal = document.getElementById('applyModal');
+        modal.style.display = 'none';
+        document.getElementById('modalApplyBtn').innerHTML = 'Join Newsletter & Continue to Application ➔';
+        document.getElementById('modalApplyBtn').disabled = false;
+      }
+      async function handleModalSubmit(e) {
+        e.preventDefault();
+        var emailInput = document.getElementById('applyModalEmail').value.trim();
+        var nameInput = document.getElementById('applyModalName').value.trim();
+        if (!emailInput) {
+            alert('Please enter your email to proceed.');
+            return;
+        }
+        
+        var btn = document.getElementById('modalApplyBtn');
+        btn.innerHTML = 'Routing...';
+        localStorage.setItem('hasEnteredEmailForApply', 'true');
+        btn.disabled = true;
+        
+        try {
+            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
+            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
+            
+            let app;
+            if (!getApps().length) {
+                app = initializeApp({ projectId: "trainaitogain-50c19" });
+            } else {
+                app = getApp();
+            }
+            const db = getFirestore(app);
+            
+            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            
+            await addDoc(collection(db, "leads"), {
+              firstName: nameInput || 'Applicant',
+              email: emailInput,
+              timestamp: serverTimestamp(),
+              source: window.location.href + ' (Apply Modal)',
+              referred_by: refCode,
+              status: 'Application Started' // They are applying right now
+            });
+            
+            localStorage.setItem('hasEnteredEmailForApply', 'true');
+            
+            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
+            
+            var targetUrl = "https://t.mercor.com/wbPMF";
+            if (refCode) {
+                targetUrl += "?ref=" + encodeURIComponent(refCode);
+            }
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+            
+        } catch (err) {
+            console.error(err);
+            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
+            var targetUrl = "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral";
+            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
+            window.open(targetUrl, '_blank');
+            closeApplyModal();
+        }
+      }
+    </script>
+    <style>
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+  </nav>
+
+<section style="padding: 48px 0 24px;">
+  <div class="container" style="text-align:center; max-width:800px;">
+    <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Active Open Roles</h1>
+    <p style="font-size:16px; color:var(--gray-500); margin-bottom: 32px;">Select your area of expertise below to browse active hiring waves and start your application.</p>
+    
+    
+
+    <!-- AWS Serverless Resume Processor -->
+    <div style="background: white; padding: 20px 24px; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); text-align: left; margin-top: 32px; display: flex; flex-direction: column; gap: 12px;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div style="flex: 1; min-width: 250px;">
+          <h3 style="font-size:18px; font-weight:800; margin-bottom:4px;">Fast-Track: Match My Resume</h3>
+          <p style="color:var(--gray-500); font-size:14px; margin: 0; line-height:1.5;">Upload your resume to instantly see which open roles match your expertise.</p>
+        </div>
+        
+        <div id="aws-upload-zone" style="position: relative; background: var(--gray-100); border: 1.5px dashed var(--gray-300); border-radius: var(--radius); padding: 12px 24px; text-align: center; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px;" onmouseover="this.style.borderColor='var(--primary)'; this.style.backgroundColor='var(--primary-light)';" onmouseout="this.style.borderColor='var(--gray-300)'; this.style.backgroundColor='var(--gray-100)';">
+          <div style="font-size:24px; line-height: 1;">📄</div>
+          <div style="text-align: left;">
+            <div style="font-weight:700; color:var(--black); font-size: 14px;">Upload Resume</div>
+            <div style="font-size:11px; color:var(--gray-500);">PDF or DOCX (Max: 5MB)</div>
+          </div>
+          <input type="file" id="aws-file-input" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; font-size: 0;" title="Click to Upload"  cursor: pointer; z-index: 999;" />
+        </div>
+      </div>
+
+      <!-- Upload Progress / Success State -->
+      <div id="aws-upload-status" style="display:none; margin-top:16px; padding:12px; border-radius:6px; background:var(--gray-100); font-size:14px;">
+        <span id="aws-status-text">Analyzing document...</span>
+      </div>
+    </div>
+
+    <!-- AWS Frontend Integration Script -->
+    <div id="matched-roles-section" style="display:none; margin-top: 48px; text-align: center;">
+      <div class="section-eyebrow" style="display:inline-block; padding:6px 14px; border-radius:100px; color:var(--primary-dark); background:var(--primary-light);">Resume Match Complete</div>
+      <h2 style="font-size:24px; font-weight:800; margin-bottom:24px;">Your Top Qualified Roles</h2>
+      <div id="matched-waves-track" style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <script>
+      const uploadZone = document.getElementById('aws-upload-zone');
+      const fileInput = document.getElementById('aws-file-input');
+      const statusDiv = document.getElementById('aws-upload-status');
+      const statusText = document.getElementById('aws-status-text');
+      const matchedSection = document.getElementById('matched-roles-section');
+      const matchedTrack = document.getElementById('matched-waves-track');
+      
+      
+      // uploadZone click removed for mobile
+
+      fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        uploadZone.style.display = 'none';
+        statusDiv.style.display = 'block';
+        statusText.innerHTML = '📄 Securely reading your resume...';
+
+        try {
+          // 1. Extract Text
+          const arrayBuffer = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = e => resolve(e.target.result);
+              reader.onerror = e => reject(new Error("File read failed"));
+              reader.readAsArrayBuffer(file);
+          });
+          let resumeText = "";
+          if (file.name.toLowerCase().endsWith('.docx')) {
+              const result = await mammoth.extractRawText({arrayBuffer: arrayBuffer});
+              resumeText = result.value;
+          } else {
+              const pdf = await pdfjsLib.getDocument({data: new Uint8Array(arrayBuffer)}).promise;
+              for (let i = 1; i <= pdf.numPages; i++) {
+                  const page = await pdf.getPage(i);
+                  const textContent = await page.getTextContent();
+                  resumeText += textContent.items.map(item => item.str).join(" ") + "\n";
+              }
+          }
+          
+          statusText.innerHTML = '🔄 Scanning active network pipelines...';
+          
+          // 2. Fetch active roles
+          const response = await fetch('waves.json');
+          const waves = await response.json();
+          const roleList = (waves.roles || waves).map(w => ({ name: w.title, rate: w.hourlyRate || w.pay, url: w.applyUrl || w.linkTarget }));
+          
+          statusText.innerHTML = '⚡ TrainAIToGain matching engine is analyzing your experience...';
+          
+          // 3. Prompt Gemini
+          const prompt = `You are an expert technical recruiter for Mercor. I will provide a candidate's resume and a JSON list of open job roles.
+Analyze the candidate's experience and find the top 3 best matching roles for them. 
+Return ONLY a raw JSON array of objects (no markdown, no backticks), where each object has:
+'roleName' (exact match from the list), 'matchScore' (integer 0-100), and 'explanation' (1-2 sentences highly personalized explaining why their specific past experience is a fit).
+
+ROLES:
+${JSON.stringify(roleList)}
+
+RESUME:
+${resumeText.substring(0, 10000)}`;
+
+          const aiResponse = await fetch('/api/generateAiResponse', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { temperature: 0.1 }
+            })
+          });
+          
+          const aiData = await aiResponse.json();
+          let aiText = aiData.candidates[0].content.parts[0].text;
+          
+          // Clean markdown backticks if present
+          aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
+          
+          const matches = JSON.parse(aiText);
+          
+          // Merge with rate/url
+          matches.forEach(m => {
+             const matchedRole = roleList.find(r => r.name === m.roleName);
+             if (matchedRole) {
+                 m.hourlyRate = matchedRole.rate;
+                 m.roleUrl = matchedRole.url;
+             }
+          });
+          
+          statusDiv.innerHTML = '<span style="color:var(--primary); font-weight:700;">✅ AI Analysis Complete! Found your best matches.</span>';
+          
+          
+          // Save to session storage so it persists if they reload
+          sessionStorage.setItem('ai_matches', JSON.stringify(matches));
+          
+          // 4. Render!
+
+          matchedSection.style.display = 'block';
+          matchedTrack.innerHTML = matches.map(m => `
+            <div class="wave-card" style="width: 100%; max-width: 600px; text-align: left; background: white; padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); display:flex; flex-direction:column; align-items:flex-start;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; width:100%;">
+                 <span style="background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:4px 8px; border-radius:4px;">${m.matchScore}% Match</span>
+                 <span style="color:var(--gray-500); font-weight:700; font-size:14px;">${m.hourlyRate || 'Market Rate'}</span>
+              </div>
+              <h3 style="font-size:18px; font-weight:800; color:var(--black); margin-bottom:12px; line-height:1.3;">${m.roleName}</h3>
+              <p style="font-size:14px; color:var(--gray-600); line-height:1.5; margin-bottom:24px; flex-grow:1;"><strong>Why you're a fit:</strong> ${m.explanation}</p>
+              
+                    <div style="background: var(--gray-50); border: 1px dashed var(--gray-300); padding: 12px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 13px; color: var(--gray-700); width: 100%; box-sizing: border-box;">
+                      <span style="font-weight: 700; color: var(--primary-dark);">🔍 How to find this role:</span><br>
+                      <ol style="margin: 8px 0 0 16px; padding: 0; font-size: 13px; line-height: 1.4;">
+                        <li>Copy the role name above.</li>
+                        <li>Click through the 3 tabs (Project-based, One-time, Talent Network) and <strong>paste it into the Search bar</strong>.</li>
+                        <li><em>Optional:</em> Click <strong>Filter -> Domain</strong> and select <strong>${m.domainFilter || 'Software'}</strong> to narrow it down.</li>
+                      </ol>
+                    </div>
+                    <button type="button" onclick="window.open('${m.roleUrl}' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')" data-ignore=" + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : '')" style="background:var(--gray-900); color:white; border:none; padding:12px; border-radius:var(--radius-sm); font-weight:700; cursor:pointer; width:100%; transition:background 0.2s;" onmouseover="this.style.background='var(--primary)'" onmouseout="this.style.background='var(--gray-900)'">Apply for this Role ➔</button>
+            </div>
+          `).join('');
+          
+          // Scroll to results
+          setTimeout(() => matchedSection.scrollIntoView({behavior: 'smooth', block: 'start'}), 100);
+
+        } catch (error) {
+          console.error("Analysis Error:", error);
+          statusDiv.innerHTML = '<span style="color:#ef4444; font-weight:700;">❌ Technical Error: ' + (error.message || JSON.stringify(error) || error) + '<br>Please screenshot this exact text and send it to your developer.</span>';
+          setTimeout(() => {
+              statusDiv.style.display = 'none';
+              uploadZone.style.display = 'flex';
+          }, 3000);
+        }
+      });
+    </script>
+
+  </div>
+</section>
+
+<section class="section" style="padding-top:24px; padding-bottom:64px;">
+  <div class="container">
+    
+    <div style="margin-bottom: 48px; position: relative;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+        <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
+        <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Software & Tech Pipelines</h2>
+      </div>
+      
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-software').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-software').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-software" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
+        <style>
+          /* Hide scrollbar for a cleaner look */
+          div::-webkit-scrollbar { display: none; }
+        </style>
+    
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$150/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Senior Python / ML Evaluator<span onclick="navigator.clipboard.writeText('Senior Python / ML Evaluator'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within senior python / ml evaluator domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$130/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">C++ Systems & Performance<span onclick="navigator.clipboard.writeText('C++ Systems & Performance'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within c++ systems & performance domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$120/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Frontend / React Architecture<span onclick="navigator.clipboard.writeText('Frontend / React Architecture'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within frontend / react architecture domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$150/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Data Engineering / SQL Architect<span onclick="navigator.clipboard.writeText('Data Engineering / SQL Architect'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in data engineering / sql architect.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Security & Cryptography<span onclick="navigator.clipboard.writeText('Security & Cryptography'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for security & cryptography.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">General SWE / Leetcode Master<span onclick="navigator.clipboard.writeText('General SWE / Leetcode Master'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for general swe / leetcode master.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$130/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Rust Backend Engineer<span onclick="navigator.clipboard.writeText('Rust Backend Engineer'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for rust backend engineer.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Go Cloud Infrastructure<span onclick="navigator.clipboard.writeText('Go Cloud Infrastructure'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using go cloud infrastructure expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$150/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">AI Research Scientist<span onclick="navigator.clipboard.writeText('AI Research Scientist'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for ai research scientist tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">DevOps / SRE Architect<span onclick="navigator.clipboard.writeText('DevOps / SRE Architect'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within devops / sre architect domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Blockchain / Web3 Developer<span onclick="navigator.clipboard.writeText('Blockchain / Web3 Developer'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using blockchain / web3 developer expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$150/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">iOS / Swift Engineer<span onclick="navigator.clipboard.writeText('iOS / Swift Engineer'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for ios / swift engineer tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Android / Kotlin Expert<span onclick="navigator.clipboard.writeText('Android / Kotlin Expert'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within android / kotlin expert domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">SOFTWARE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Embedded Systems C/C++<span onclick="navigator.clipboard.writeText('Embedded Systems C/C++'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using embedded systems c/c++ expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Software</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 48px; position: relative;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+        <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
+        <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Medical & Clinical Pipelines</h2>
+      </div>
+      
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-medical').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-medical').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-medical" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
+        <style>
+          /* Hide scrollbar for a cleaner look */
+          div::-webkit-scrollbar { display: none; }
+        </style>
+    
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Oncology AI Reviewer<span onclick="navigator.clipboard.writeText('Oncology AI Reviewer'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for oncology ai reviewer.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Neurology / BCI Annotator<span onclick="navigator.clipboard.writeText('Neurology / BCI Annotator'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in neurology / bci annotator.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">General Practitioner Evaluator<span onclick="navigator.clipboard.writeText('General Practitioner Evaluator'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using general practitioner evaluator expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Pharmacology Expert<span onclick="navigator.clipboard.writeText('Pharmacology Expert'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using pharmacology expert expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Surgical Methodology<span onclick="navigator.clipboard.writeText('Surgical Methodology'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within surgical methodology domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Radiology / MRI Annotator<span onclick="navigator.clipboard.writeText('Radiology / MRI Annotator'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in radiology / mri annotator.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$120/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Cardiology Diagnostic Reviewer<span onclick="navigator.clipboard.writeText('Cardiology Diagnostic Reviewer'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for cardiology diagnostic reviewer.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$150/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Pediatrics Case Specialist<span onclick="navigator.clipboard.writeText('Pediatrics Case Specialist'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in pediatrics case specialist.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Psychiatry / Therapy AI Analyst<span onclick="navigator.clipboard.writeText('Psychiatry / Therapy AI Analyst'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for psychiatry / therapy ai analyst.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$150/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Dermatology Vision Model Expert<span onclick="navigator.clipboard.writeText('Dermatology Vision Model Expert'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in dermatology vision model expert.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">MEDICAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Pathology Slide Reviewer<span onclick="navigator.clipboard.writeText('Pathology Slide Reviewer'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using pathology slide reviewer expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Medical</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 48px; position: relative;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+        <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+        <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Finance & Quant Pipelines</h2>
+      </div>
+      
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-finance').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-finance').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-finance" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
+        <style>
+          /* Hide scrollbar for a cleaner look */
+          div::-webkit-scrollbar { display: none; }
+        </style>
+    
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$130/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Quant Dev / Algo Trader<span onclick="navigator.clipboard.writeText('Quant Dev / Algo Trader'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in quant dev / algo trader.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$120/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Actuarial Science Reviewer<span onclick="navigator.clipboard.writeText('Actuarial Science Reviewer'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for actuarial science reviewer tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Corporate Finance / M&A<span onclick="navigator.clipboard.writeText('Corporate Finance / M&A'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for corporate finance / m&a.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$120/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">PhD Level Mathematician<span onclick="navigator.clipboard.writeText('PhD Level Mathematician'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in phd level mathematician.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Tax Strategy & Compliance<span onclick="navigator.clipboard.writeText('Tax Strategy & Compliance'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for tax strategy & compliance tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Hedge Fund Risk Analyst<span onclick="navigator.clipboard.writeText('Hedge Fund Risk Analyst'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for hedge fund risk analyst.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$130/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Derivatives Pricing Expert<span onclick="navigator.clipboard.writeText('Derivatives Pricing Expert'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within derivatives pricing expert domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$150/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Crypto Economics Researcher<span onclick="navigator.clipboard.writeText('Crypto Economics Researcher'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using crypto economics researcher expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$130/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Venture Capital Analyst<span onclick="navigator.clipboard.writeText('Venture Capital Analyst'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for venture capital analyst tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">FINANCE</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Macroeconomics Forecaster<span onclick="navigator.clipboard.writeText('Macroeconomics Forecaster'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for macroeconomics forecaster tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Finance</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 48px; position: relative;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+        <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">🌍</div>
+        <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Translation & Law Pipelines</h2>
+      </div>
+      
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-translation').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-translation').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-translation" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
+        <style>
+          /* Hide scrollbar for a cleaner look */
+          div::-webkit-scrollbar { display: none; }
+        </style>
+    
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$40/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Legal Document Reviewer (Bilingual)<span onclick="navigator.clipboard.writeText('Legal Document Reviewer (Bilingual)'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in legal document reviewer (bilingual).</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$50/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Japanese/English Cultural Context<span onclick="navigator.clipboard.writeText('Japanese/English Cultural Context'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for japanese/english cultural context tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$50/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Arabic Natural Language Processing<span onclick="navigator.clipboard.writeText('Arabic Natural Language Processing'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for arabic natural language processing.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Spanish / English Localization<span onclick="navigator.clipboard.writeText('Spanish / English Localization'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within spanish / english localization domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$40/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Mandarin Tone & Nuance Evaluator<span onclick="navigator.clipboard.writeText('Mandarin Tone & Nuance Evaluator'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for mandarin tone & nuance evaluator tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$60/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">French Medical Translation<span onclick="navigator.clipboard.writeText('French Medical Translation'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for french medical translation.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$60/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">German Financial Documentation<span onclick="navigator.clipboard.writeText('German Financial Documentation'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for german financial documentation tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$60/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Hindi Speech-to-Text Annotator<span onclick="navigator.clipboard.writeText('Hindi Speech-to-Text Annotator'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in hindi speech-to-text annotator.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$40/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Korean Sentiment Analysis<span onclick="navigator.clipboard.writeText('Korean Sentiment Analysis'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Curate high-quality, expert-level training datasets specifically for korean sentiment analysis.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">TRANSLATION</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$60/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Russian Political Context Reviewer<span onclick="navigator.clipboard.writeText('Russian Political Context Reviewer'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using russian political context reviewer expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Translation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 48px; position: relative;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+        <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:20px;">📋</div>
+        <h2 style="font-size:24px; font-weight:800; color:var(--black); margin:0;">Generalist & Content Pipelines</h2>
+      </div>
+      
+      <button class="carousel-btn" style="left:-20px;" onclick="document.getElementById('carousel-general').scrollBy({left: -320, behavior: 'smooth'})">‹</button>
+      <button class="carousel-btn" style="right:-20px;" onclick="document.getElementById('carousel-general').scrollBy({left: 320, behavior: 'smooth'})">›</button>
+      
+      <div id="carousel-general" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; gap:20px; padding: 12px 16px 24px; margin: -12px -16px -24px; -webkit-overflow-scrolling:touch;">
+        <style>
+          /* Hide scrollbar for a cleaner look */
+          div::-webkit-scrollbar { display: none; }
+        </style>
+    
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">GENERAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$60/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Creative Writer / Fiction Author<span onclick="navigator.clipboard.writeText('Creative Writer / Fiction Author'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in creative writer / fiction author.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">General</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">GENERAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$40/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Journalism Fact Checker<span onclick="navigator.clipboard.writeText('Journalism Fact Checker'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Review AI-generated code/text against domain-specific rubrics for journalism fact checker tasks.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">General</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">GENERAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$100/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">History / Humanities Expert<span onclick="navigator.clipboard.writeText('History / Humanities Expert'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Audit LLM hallucinations and enforce strict safety constraints within history / humanities expert domains.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">General</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">GENERAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$60/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Instruction Following Evaluator<span onclick="navigator.clipboard.writeText('Instruction Following Evaluator'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Evaluate reasoning chains and logic paths for frontier models using instruction following evaluator expertise.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">General</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral' + (localStorage.getItem('affiliate_ref') ? '&ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+        <div class="feature-card opp-card" style="scroll-snap-align: start; min-width: 300px; max-width: 300px; flex: 0 0 auto; background:var(--white); border:1px solid var(--gray-200); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div style="position:absolute; top:-12px; right:20px; background:#ef4444; color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:100px; box-shadow:0 4px 12px rgba(239, 68, 68, 0.3);">HOT ROLE</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+            <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">GENERAL</div>
+            <div style="color:var(--primary); font-weight:800; font-size:18px;">$50/hr</div>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">Prompt Engineering Specialist<span onclick="navigator.clipboard.writeText('Prompt Engineering Specialist'); this.innerText='✅ Copied!'; setTimeout(() => this.innerText='📋', 2000);" style="cursor:pointer; font-size:14px; margin-left:8px; display:inline-block; transition:0.2s;" title="Copy Job Title">📋</span></h3>
+          <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Design complex prompting scenarios and analyze model outputs for accuracy in prompt engineering specialist.</p>
+
+<p style="display:none;"></p>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">
+            <span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">General</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">AI Evaluation</span><span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">Critical Thinking</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="window.open('https://t.mercor.com/wbPMF' + (localStorage.getItem('affiliate_ref') ? '?ref=' + localStorage.getItem('affiliate_ref') : ''), '_blank')">Apply Now</button>
+          <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your resume ready</div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<footer style="background:var(--black); padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <img src="logo.svg" style="height:24px; width:24px; min-width:24px; flex-shrink:0; filter: brightness(0) invert(1);" alt="TrainAIToGain Logo" />
+            <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+          </div>
+          <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <a href="disclosure.html" style="color:var(--gray-500); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-500)'">Affiliate Disclosure</a>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:24px;">
+          <a href="#companies" style="color:var(--gray-400); text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" style="color:var(--gray-400); transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-400)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Global Affiliate Tracker -->
+    <script>
+      (function() {
+        var ref = new URLSearchParams(window.location.search).get('ref');
+        if (ref) localStorage.setItem('affiliate_ref', ref);
+      })();
+    </script>
+  </footer>
+
+<script>
+
+</script>
+
+
+
+<script>
+  // Global Affiliate Tracker
+  (function() {
+    var ref = new URLSearchParams(window.location.search).get('ref');
+    if (ref) localStorage.setItem('affiliate_ref', ref);
+    var activeRef = localStorage.getItem('affiliate_ref');
+    if (activeRef) {
+      document.addEventListener('DOMContentLoaded', function() {
+        var links = document.querySelectorAll('a[href^="https://t.mercor.com"]');
+        links.forEach(function(link) {
+          try {
+            var url = new URL(link.href);
+            url.searchParams.set('ref', activeRef);
+            link.href = url.toString();
+          } catch(e) {}
+        });
+      });
+    }
+  })();
+</script>
+
+<!-- GLOBAL FIREBASE TRACKING (PRIORITY 6) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+      apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
+      authDomain: "trainaitogain-50c19.firebaseapp.com", 
+      projectId: "trainaitogain-50c19", 
+      storageBucket: "trainaitogain-50c19.firebasestorage.app", 
+      messagingSenderId: "637746276432", 
+      appId: "1:637746276432:web:1a7cfa65357b0bc3b90955", 
+      measurementId: "G-RH65NXKCHE" 
+    };
+
+    let app;
+    try { app = initializeApp(firebaseConfig); } catch(e) {}
+    const db = getFirestore(app);
+
+    let sessionId = localStorage.getItem('tgt_session_id');
+    if (!sessionId) {
+        sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('tgt_session_id', sessionId);
+    }
+
+    const currentRef = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || 'organic';
+
+    if (!sessionStorage.getItem('page_view_logged_' + window.location.pathname)) {
+        addDoc(collection(db, "pipeline_events"), {
+            event_type: "page_view",
+            referral_id: currentRef,
+            session_id: sessionId,
+            page_url: window.location.pathname,
+            timestamp: serverTimestamp()
+        }).catch(e => console.error(e));
+        sessionStorage.setItem('page_view_logged_' + window.location.pathname, 'true');
+    }
+
+    document.addEventListener('click', (e) => {
+        let isMercorLink = false;
+        
+        const link = e.target.closest('a');
+        if (link && link.href.includes('t.mercor.com')) {
+            isMercorLink = true;
+        }
+        
+        const btn = e.target.closest('button');
+        if (btn && btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('t.mercor.com')) {
+            isMercorLink = true;
+        }
+
+        if (isMercorLink) {
+            addDoc(collection(db, "pipeline_events"), {
+                event_type: "application_started",
+                referral_id: currentRef,
+                session_id: sessionId,
+                page_url: window.location.pathname,
+                timestamp: serverTimestamp()
+            }).catch(console.error);
+        }
+    });
+</script>
+
+<!-- Exit Intent Pop-up -->
+<div id="exit-intent-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
+  <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out; text-align:center; padding:32px;">
+    <button onclick="document.getElementById('exit-intent-modal').style.display='none'" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
+    <div style="font-size:48px; margin-bottom:16px;">🛑</div>
+    <h3 style="font-size:24px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.2;">Not ready to apply today?</h3>
+    <p style="color:var(--gray-600); line-height:1.6; margin-bottom:24px;">Don't ruin your chances by winging the AI interview later. Download our free <strong>Hiring Blueprint PDF</strong> so you know exactly what to say when you are ready.</p>
+    <a href="/hiring-blueprint.html" class="btn-primary" style="display:inline-block; padding:16px 32px; font-size:16px; width:100%; text-decoration:none;">Get the Free PDF Guide ➔</a>
+    <a href="#" onclick="document.getElementById('exit-intent-modal').style.display='none'; return false;" style="display:inline-block; margin-top:16px; color:var(--gray-500); font-size:13px; font-weight:600; text-decoration:underline;">No thanks, I'll wing it</a>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let exitIntentTriggered = false;
+    
+    function triggerPopup() {
+      if (!exitIntentTriggered && !localStorage.getItem('exitIntentShown')) {
+        document.getElementById('exit-intent-modal').style.display = 'flex';
+        exitIntentTriggered = true;
+        localStorage.setItem('exitIntentShown', 'true');
+      }
+    }
+
+    // Desktop: Mouse leaves top of screen
+    document.addEventListener('mouseleave', (e) => {
+      if (e.clientY < 0) triggerPopup();
+    });
+
+    // Mobile: Rapid scroll up
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      let scrollSpeed = lastScrollY - window.scrollY;
+      lastScrollY = window.scrollY;
+      // If they scroll up more than 80px instantly, trigger popup
+      if (scrollSpeed > 80 && window.scrollY < 200) {
+        triggerPopup();
+      }
+    }, {passive: true});
+  });
+</script>
+
+<script src="render_waves.js?v=1790541209"></script>
+
+
+
+<script src="chat.js?v=16"></script>
+
+    <script>
+      // Automatically restore AI matches if they navigate away and come back
+    </script>
+      
+
+<!-- Navbar Lead Capture Modal -->
+<div id="navbarLeadModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+  <div style="background:white; padding:32px; border-radius:12px; max-width:400px; width:90%; position:relative; box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+    <button onclick="closeNavbarLeadModal()" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:#6b7280;">&times;</button>
+    <div id="navbarLeadModalContent">
+      <h3 style="font-size:22px; font-weight:800; margin-bottom:8px; color:#111827;">Get the Free ATS Blueprint</h3>
+      <p style="color:#4b5563; font-size:14px; margin-bottom:24px; line-height:1.5;">Drop your email below and we'll instantly send you the framework used by candidates to pass the AI screening.</p>
+      <form id="navbarLeadForm" onsubmit="submitNavbarLead(event)" style="display:flex; flex-direction:column; gap:12px;">
+        <input type="text" id="navbarLeadName" placeholder="First Name" required style="padding:14px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; width:100%; box-sizing:border-box;">
+        <input type="email" id="navbarLeadEmail" placeholder="Email Address" required style="padding:14px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; width:100%; box-sizing:border-box;">
+        <button type="submit" id="navbarLeadBtn" style="background:#10b981; color:white; border:none; padding:16px; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; width:100%; margin-top:8px;">Send Me The Guide ➔</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openNavbarLeadModal(e) {
+  e.preventDefault();
+  document.getElementById('navbarLeadModal').style.display = 'flex';
+}
+function closeNavbarLeadModal() {
+  document.getElementById('navbarLeadModal').style.display = 'none';
+}
+function submitNavbarLead(e) {
+  e.preventDefault();
+  var btn = document.getElementById('navbarLeadBtn');
+  var name = document.getElementById('navbarLeadName').value;
+  var email = document.getElementById('navbarLeadEmail').value.trim();
+  if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+  
+  btn.innerHTML = 'Sending...';
+  btn.style.opacity = '0.7';
+  btn.disabled = true;
+
+  fetch('https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec', {
+    method: 'POST',
+    body: JSON.stringify({ firstName: name, email: email, source: 'Navbar Popup Form' })
+  }).catch(e => console.error(e));
+
+  setTimeout(function() {
+    window.location.href = 'hiring-blueprint.html';
+  }, 1000);
+}
+</script>

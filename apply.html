@@ -63,11 +63,27 @@
         <label for="nav-toggle" class="nav-toggle-label">
           <span class="nav-toggle-icon"></span>
         </label>
-        <ul class="nav-links">
-          <li><a href="hiring-pipeline.html" target="_blank" class="nav-link" style="background:var(--primary); color:var(--white); padding:8px 16px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> The Playbook</a></li>
-          <li><a href="apply.html">Opportunities</a></li>
-          <li><a href="saved-roles.html" style="display:flex; align-items:center; gap:6px;">Dashboard</a></li>
-          <li><a href="#" onclick="openNavbarLeadModal(event)" style="display:flex; align-items:center; gap:6px; font-weight:800; color:var(--primary);">🎁 Get Free Blueprint</a></li>
+                <ul class="nav-links" style="align-items:center;">
+          <li class="desktop-only">
+            <a href="hiring-pipeline.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'playbook' })">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> The Playbook
+            </a>
+          </li>
+          <li class="desktop-only">
+            <a href="apply.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'active_roles' })">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> Active Roles
+            </a>
+          </li>
+          <li class="desktop-only">
+            <a href="ai-interview.html" class="nav-link" style="color:var(--gray-700); font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-700)'" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'mock_interview' })">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> Mock Interview
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" style="background:var(--primary); color:var(--white); padding:10px 20px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); transition:all 0.2s; text-decoration:none;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)';" onclick="if(typeof gtag !== 'undefined') gtag('event', 'nav_click', { link_name: 'blueprint_cta' }); openNavbarLeadModal(event)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg> Get Free Blueprint
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -188,7 +204,7 @@
 <section style="padding: 48px 0 24px;">
   <div class="container" style="text-align:center; max-width:800px;">
     <h1 style="font-size:42px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.1;">Active Open Roles</h1>
-    <p style="font-size:16px; color:var(--gray-500); margin-bottom: 32px;">Select your area of expertise below to browse active hiring waves and start your application.</p>
+    <p style="font-size:16px; color:var(--gray-500); margin-bottom: 32px;">Click Apply to be directed to the official Mercor application page. Referrals are tracked automatically.</p>
     
     
 
@@ -197,11 +213,9 @@
       
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
         <div style="flex: 1; min-width: 250px;">
-          <h3 style="font-size:20px; font-weight:800; margin-bottom:8px;">Not sure which role fits you best?</h3>
+          <h3 style="font-size:20px; font-weight:800; margin-bottom:8px;">✨ Check if your resume matches these roles</h3>
           <div style="color:var(--gray-700); font-size:15px; margin: 0; line-height:1.6; display:flex; flex-direction:column; gap:6px;">
-            <div><strong style="color:var(--primary);">1.</strong> Drop your PDF resume here.</div>
-            <div><strong style="color:var(--primary);">2.</strong> Our AI will securely scan your skills in seconds.</div>
-            <div><strong style="color:var(--primary);">3.</strong> We will highlight the exact jobs below that you have the highest chance of winning!</div>
+            <div style="margin-bottom:8px;">Upload your resume to see which roles you have the highest chance of landing.</div>
           </div>
         </div>
         
@@ -395,7 +409,7 @@ ${resumeText.substring(0, 10000)}`;
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
         <div style="max-width:600px; display:flex; flex-direction:column; gap:12px;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <img src="logo.svg" style="height:24px; filter: brightness(0) invert(1);" alt="TrainAIToGain Logo" />
+            <img src="logo.svg" style="height:24px; width:24px; min-width:24px; flex-shrink:0; filter: brightness(0) invert(1);" alt="TrainAIToGain Logo" />
             <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
           </div>
           <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
@@ -640,12 +654,13 @@ function markAsComplete(title, domain, pay, btn) {
 </script>
 
 <script>
-function saveRole(title, domain, pay) {
+function saveRole(title, domain, pay, btn, applyUrl) {
     let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
     const roleId = title + domain;
     if (!saved.some(r => r.id === roleId)) {
-        saved.push({ id: roleId, title: title, domain: domain, pay: pay, date: new Date().toISOString() });
+        saved.push({ id: roleId, title: title, domain: domain, pay: pay, applyUrl: applyUrl, date: new Date().toISOString() });
         localStorage.setItem('savedRoles', JSON.stringify(saved));
+        if (btn) { btn.innerText = '✅'; }
         alert('Role saved! You can view it in the Dashboard in the top menu.');
     } else {
         alert('Role is already in your Pipeline Dashboard.');

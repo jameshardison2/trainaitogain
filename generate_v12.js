@@ -1,0 +1,219 @@
+const fs = require('fs');
+
+const rawJs = `
+(async function() {
+    alert('TrainAIToGain Deep Sync V12 (Link Reaper) Started! Please DO NOT touch your mouse.');
+    
+    let totalSynced = 0;
+    let tabNames = ['Project-based', 'One-time', 'Talent Network'];
+    
+    for (let currentTab of tabNames) {
+        let tabEl = Array.from(document.querySelectorAll('button, a, li, span, div')).find(el => {
+             return el.innerText && el.innerText.trim() === currentTab && el.children.length <= 1 && el.getBoundingClientRect().width > 0;
+        });
+        
+        if (tabEl) {
+            tabEl.scrollIntoView({behavior: "smooth", block: "center"});
+            await new Promise(r => setTimeout(r, 500));
+            tabEl.click();
+            await new Promise(r => setTimeout(r, 3000));
+        }
+        
+        let pageNum = 1;
+        let maxPages = 40;
+        
+        while (pageNum <= maxPages) {
+            console.log("[" + currentTab + "] Scanning Page " + pageNum + "...");
+            window.getSelection().removeAllRanges();
+            
+            let getCards = () => {
+                let cards = Array.from(document.querySelectorAll('div, a, li')).filter(el => {
+                    let style = window.getComputedStyle(el);
+                    if (style.cursor !== 'pointer') return false;
+                    let rect = el.getBoundingClientRect();
+                    if (rect.width < 200 || rect.width > 600) return false;
+                    if (rect.height < 50 || rect.height > 400) return false;
+                    let text = el.innerText || '';
+                    if (!text.match(/\\$|\\d+ hired|New opportunity|1-click apply/i)) return false;
+                    return true;
+                });
+                return cards.filter(c => !cards.some(other => other !== c && other.contains(c)));
+            };
+            
+            let waitCards = 0;
+            let initialCards = [];
+            while (waitCards < 15000) {
+                initialCards = getCards();
+                if (initialCards.length > 0) break;
+                await new Promise(r => setTimeout(r, 1000));
+                waitCards += 1000;
+            }
+            
+            let numCards = initialCards.length;
+            if (numCards === 0) break; // Move to next tab
+            
+            let pageJobs = [];
+            let firstCardTitle = null;
+            
+            for (let i = 0; i < numCards; i++) {
+                let currentCards = getCards();
+                
+                if (currentCards.length <= i) {
+                    let backBtns = Array.from(document.querySelectorAll('a, button')).filter(el => {
+                        let text = el.innerText || '';
+                        return text.includes('View all opportunities') && text.length < 50;
+                    });
+                    if (backBtns.length > 0) {
+                        backBtns[0].click();
+                        let waitB = 0;
+                        while(waitB < 10000) {
+                            await new Promise(r => setTimeout(r, 1000));
+                            currentCards = getCards();
+                            if (currentCards.length > i) break;
+                            waitB += 1000;
+                        }
+                    }
+                }
+                
+                if (currentCards.length <= i) break;
+                
+                let cardElement = currentCards[i];
+                let titleNode = cardElement.querySelector('h1, h2, h3, h4, strong') || cardElement;
+                let title = (titleNode.innerText || '').split('\\n')[0].trim();
+                if (title.includes('$')) title = (cardElement.innerText || '').split('\\n')[0].trim();
+                if (!title) continue;
+                if (i === 0) firstCardTitle = title;
+                
+                let payMatch = (cardElement.innerText || '').match(/\\$(\\d+)\\s*(?:-\\s*\\$(\\d+))?\\s*(?:\\/|per)\\s*(hour|hr|month|mo|year|yr|task)/i);
+                let pay = payMatch ? payMatch[0] : 'Competitive';
+                
+                cardElement.scrollIntoView({behavior: "smooth", block: "center"});
+                await new Promise(r => setTimeout(r, 500));
+                
+                let clickTarget = cardElement.querySelector('a') || cardElement;
+                clickTarget.click();
+                
+                // V12: ULTIMATE LINK REAPER
+                let linkTarget = 'https://t.mercor.com/wbPMF';
+                let waitLink = 0;
+                let foundSpecificLink = false;
+                while (waitLink < 5000) {
+                    let textCorpus = document.body.innerText + ' ' + 
+                                     Array.from(document.querySelectorAll('input, textarea')).map(i => i.value).join(' ') + ' ' +
+                                     Array.from(document.querySelectorAll('a')).map(a => a.href).join(' ');
+                                     
+                    let matches = Array.from(textCorpus.matchAll(/https:\\/\\/t\\.mercor\\.com\\/[a-zA-Z0-9]{4,10}/g));
+                    let uniqueMatches = matches.map(m => m[0]).filter(url => !url.includes('wbPMF'));
+                    
+                    if (uniqueMatches.length > 0) {
+                        linkTarget = uniqueMatches[uniqueMatches.length - 1]; // Get newest one
+                        foundSpecificLink = true;
+                        break;
+                    }
+                    
+                    await new Promise(r => setTimeout(r, 500));
+                    waitLink += 500;
+                }
+                
+                let description = '';
+                let rightPanes = Array.from(document.querySelectorAll('div')).filter(el => {
+                    let r = el.getBoundingClientRect();
+                    return r.width > 300 && r.height > 300 && el.innerText.includes('Application');
+                });
+                if (rightPanes.length > 0) {
+                    rightPanes.sort((a,b) => a.innerText.length - b.innerText.length);
+                    description = rightPanes[0].innerText;
+                } else {
+                    let anyModal = document.querySelector('[role="dialog"]') || document.querySelector('[class*="drawer"]');
+                    if (anyModal) description = anyModal.innerText;
+                }
+                if(!description) description = cardElement.innerText || '';
+                
+                let tagsMatch = description.match(/(Remote|Onsite|Hybrid|US Only|India|LatAm)/ig) || ['Remote'];
+                
+                pageJobs.push({
+                    title: title,
+                    pay: pay,
+                    description: description.substring(0, 350).replace(/\\n/g, ' ') + '...',
+                    tags: [...new Set(tagsMatch)],
+                    linkTarget: linkTarget,
+                    platform: 'Mercor'
+                });
+                
+                console.log("[" + currentTab + "] Grabbed: " + title + " -> " + linkTarget + (foundSpecificLink ? " (UNIQUE)" : " (FALLBACK)"));
+                
+                let backBtns = Array.from(document.querySelectorAll('a, button')).filter(el => {
+                    let text = el.innerText || '';
+                    return text.includes('View all opportunities') && text.length < 50;
+                });
+                if (backBtns.length > 0) {
+                    backBtns[0].click();
+                    let waitB = 0;
+                    while(waitB < 10000) {
+                        await new Promise(r => setTimeout(r, 1000));
+                        let curr = getCards();
+                        if (curr.length > i) break;
+                        waitB += 1000;
+                    }
+                }
+            }
+            
+            if (pageJobs.length > 0) {
+                let uniqueMap = new Map();
+                for (let j of pageJobs) uniqueMap.set(j.title, j);
+                let uniqueJobs = Array.from(uniqueMap.values());
+                
+                try {
+                    let res = await fetch('https://us-central1-trainaitogain-50c19.cloudfunctions.net/directIngestJobs', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ jobs: uniqueJobs, token: 'TRAINAITOGAIN_SYNC_SECURE_2026' })
+                    });
+                    if(res.ok) totalSynced += uniqueJobs.length;
+                } catch(e) {}
+            }
+            
+            let nextBtn = document.querySelector('[aria-label="Next page"], [aria-label*="next"], button[title*="Next"]');
+            if (!nextBtn) {
+                let els = Array.from(document.querySelectorAll('*'));
+                nextBtn = els.find(el => {
+                    if (el.children.length > 2) return false;
+                    let t = (el.textContent || '').trim();
+                    if (t === 'Next' || t === 'Next >' || t === 'Next>') {
+                        let rect = el.getBoundingClientRect();
+                        return rect.width > 0 && window.getComputedStyle(el).opacity !== '0.5' && el.getAttribute('aria-disabled') !== 'true';
+                    }
+                    return false;
+                });
+            }
+            
+            if (!nextBtn) break;
+            
+            nextBtn.scrollIntoView({behavior: "smooth", block: "center"});
+            await new Promise(r => setTimeout(r, 600));
+            
+            let rect = nextBtn.getBoundingClientRect();
+            let ev = new MouseEvent('click', { view: window, bubbles: true, cancelable: true, clientX: rect.left + rect.width/2, clientY: rect.top + rect.height/2 });
+            nextBtn.dispatchEvent(ev);
+            try { nextBtn.click(); } catch(e){}
+            
+            let waited = 0;
+            while(waited < 10000) {
+                await new Promise(r => setTimeout(r, 1000));
+                waited += 1000;
+                let activePill = document.querySelector('button[aria-current="page"], [class*="active"]');
+                if (activePill && activePill.innerText == (pageNum + 1)) {
+                     break;
+                }
+            }
+            pageNum++;
+        }
+    }
+    
+    alert(\`✅ Omni-Sync Complete! Harvested \${totalSynced} unique jobs across all tabs!\`);
+})();
+`;
+
+const bookmarklet = 'javascript:' + encodeURIComponent(rawJs.replace(/\\n\\s*/g, ''));
+fs.writeFileSync('bookmarklet_v12.txt', bookmarklet);
+console.log("Created bookmarklet_v12.txt");
