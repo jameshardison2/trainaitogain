@@ -96,9 +96,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 let tagsHtml = role.tags.map(t => `<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">${t}</span>`).join('');
                 const bg = role.badgeClass === 'orange' ? 'var(--orange)' : 'var(--black)';
-                const safeTitle = role.title.replace(/'/g, "\'");
-                const safeDomain = role.domain.replace(/'/g, "\'");
-                const safePay = role.pay.replace(/'/g, "\'");
+                const safeTitle = role.title.replace(/'/g, "\\'");
+                const safeDomain = role.domain.replace(/'/g, "\\'");
+                const safePay = role.pay.replace(/'/g, "\\'");
                 html += `
           <div class="feature-card opp-card" data-domain="${role.domain}" data-platform="${role.platform || 'Mercor'}" data-pay="${payYearly}" data-location="${loc}" data-index="${index}" style="flex:0 0 320px; order:${index}; scroll-snap-align:start; background:var(--white); border:2px solid #F59E0B; padding:24px; display:flex; flex-direction:column; position:relative; border-radius:12px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
             
