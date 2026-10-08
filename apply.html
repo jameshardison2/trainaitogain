@@ -554,9 +554,25 @@ function saveRole(title, domain, pay, btn, applyUrl) {
 </script>
 <script>
 window.handleApplyClick = function(title, linkTarget, btn) {
-    if (!linkTarget || linkTarget === '#' || linkTarget === 'undefined') {
+    if (!linkTarget || linkTarget === '#' || linkTarget === 'undefined' || linkTarget.includes('apply.html')) {
         linkTarget = 'https://t.mercor.com/wbPMF';
     }
+    
+    try {
+        var activeRef = localStorage.getItem('affiliate_ref');
+        if (activeRef && linkTarget.startsWith('https://t.mercor.com')) {
+            var url = new URL(linkTarget);
+            url.searchParams.set('ref', activeRef);
+            linkTarget = url.toString();
+        }
+    } catch(e) {
+        console.error("Error appending ref:", e);
+    }
+    
+    if(typeof gtag === 'function') {
+        gtag('event', 'apply_click', { link_name: title, destination: linkTarget });
+    }
+    
     window.open(linkTarget, '_blank');
 };
 </script>

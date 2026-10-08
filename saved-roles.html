@@ -493,6 +493,12 @@ function submitNavbarLead(e) {
 <script>
 window.handleApplyClick = function(title, linkTarget, btn) {
     const refCode = localStorage.getItem('affiliate_ref');
+    
+    // Fix linkTarget if it accidentally points to apply.html
+    if (linkTarget && linkTarget.includes('apply.html')) {
+        linkTarget = 'https://t.mercor.com/wbPMF';
+    }
+    
     let targetUrl = linkTarget || 'https://t.mercor.com/wbPMF';
     
     // Append tracking
