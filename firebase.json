@@ -18,6 +18,10 @@
       {
         "source": "/api/directIngestJobs",
         "function": "directIngestJobs"
+      },
+      {
+        "source": "/api/getRoles",
+        "function": "getRoles"
       }
     ],
     "headers": [

@@ -38,11 +38,23 @@ if (!window.handleApplyClick) {
 
 document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void 0, function* () {
     try {
-        const response = yield fetch('waves.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        let data = null;
+        try {
+            const apiRes = yield fetch('/api/getRoles');
+            if (apiRes && apiRes.ok) {
+                const apiData = yield apiRes.json();
+                if (apiData && apiData.roles && apiData.roles.length > 0) {
+                    data = apiData;
+                }
+            }
+        } catch (err) {}
+        if (!data) {
+            const response = yield fetch('waves.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            data = yield response.json();
         }
-        const data = yield response.json();
         // 1. Create the Dynamic Category Carousels
         const carouselWrapper = document.createElement('div');
         carouselWrapper.style.marginBottom = '48px';
