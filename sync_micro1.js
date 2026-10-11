@@ -13,10 +13,14 @@ const path = require('path');
   page.on('response', async (response) => {
     const url = response.url();
     if (url.includes('jobs?page=') && url.includes('micro1.ai/api/v1/job/portal/referral/')) {
+      console.log("Intercepted URL:", url);
       try {
         const json = await response.json();
-        console.log(`Intercepted Micro1 API Response: ${json.data.length} jobs found.`);
-        jobsData = json.data;
+        console.log(`Intercepted Micro1 API Response: ${json.data ? json.data.length : 'unknown'} jobs found. Keys: ${Object.keys(json).join(', ')}`);
+        if (json.meta) console.log("Meta:", JSON.stringify(json.meta));
+        if (json.pagination) console.log("Pagination:", JSON.stringify(json.pagination));
+        if (json.total) console.log("Total:", json.total);
+        jobsData = json.data || json;
       } catch (e) {
         console.error("Failed to parse intercepted JSON", e);
       }
@@ -26,15 +30,41 @@ const path = require('path');
   const url = 'https://refer.micro1.ai/referral/jobs/?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral';
   console.log("Navigating to dashboard to trigger API load...");
   await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-  
-  if (!jobsData) {
-    console.log("Waiting a bit longer for API request...");
-    await new Promise(r => setTimeout(r, 5000));
+
+  let finalJobs = [];
+  try {
+    const allJobs = await page.evaluate(async () => {
+      let combined = [];
+      for (let p = 1; p <= 6; p++) {
+        try {
+          const res = await fetch(`https://prod-api.micro1.ai/api/v1/job/portal/referral/05216c9f-87cc-49af-b448-f9f8a18d2efe/jobs?page=${p}&limit=12`);
+          const json = await res.json();
+          if (json && json.data && json.data.length > 0) {
+            combined.push(...json.data);
+          } else {
+            break;
+          }
+        } catch (e) {
+          break;
+        }
+      }
+      return combined;
+    });
+    if (allJobs && allJobs.length > 0) {
+      finalJobs = allJobs;
+      console.log(`Fetched total ${finalJobs.length} Micro1 jobs across pages.`);
+    }
+  } catch (err) {
+    console.error("Multi-page fetch error:", err);
+  }
+
+  if (finalJobs.length === 0 && jobsData) {
+    finalJobs = jobsData;
   }
 
   await browser.close();
 
-  if (!jobsData || jobsData.length === 0) {
+  if (!finalJobs || finalJobs.length === 0) {
     console.error("Failed to fetch jobs via Puppeteer.");
     process.exit(1);
   }
@@ -48,7 +78,7 @@ const path = require('path');
   waves.roles = waves.roles.filter(r => !r.id.startsWith("micro1-") && r.platform !== "Micro1");
 
   // Take all jobs to inject
-  const topJobs = jobsData;
+  const topJobs = finalJobs;
   
   let newMicro1Jobs = topJobs.map(job => {
     let minPay = job.ideal_hourly_rate ? job.ideal_hourly_rate.min : 0;
@@ -63,13 +93,13 @@ const path = require('path');
 
     const titleLower = job.job_name.toLowerCase();
     let domain = "GENERAL";
-    if (titleLower.includes("software") || titleLower.includes("engineer") || titleLower.includes("developer") || titleLower.includes("data") || titleLower.includes("cybersecurity")) {
+    if (titleLower.includes("software") || titleLower.includes("engineer") || titleLower.includes("developer") || titleLower.includes("data") || titleLower.includes("security") || titleLower.includes("tech") || titleLower.includes("cloud") || titleLower.includes("ai agent") || titleLower.includes("tester")) {
       domain = "SOFTWARE";
-    } else if (titleLower.includes("medical") || titleLower.includes("physician") || titleLower.includes("clinician") || titleLower.includes("epidemiologist") || titleLower.includes("health") || titleLower.includes("pharma") || titleLower.includes("psychiatrist") || titleLower.includes("dermatologist")) {
+    } else if (titleLower.includes("medical") || titleLower.includes("medicine") || titleLower.includes("hospitalist") || titleLower.includes("physician") || titleLower.includes("clinician") || titleLower.includes("epidemiologist") || titleLower.includes("health") || titleLower.includes("pharma") || titleLower.includes("psychiatrist") || titleLower.includes("dermatologist") || titleLower.includes("clinical")) {
       domain = "MEDICAL";
-    } else if (titleLower.includes("legal") || titleLower.includes("lawyer") || titleLower.includes("counsel")) {
+    } else if (titleLower.includes("legal") || titleLower.includes("lawyer") || titleLower.includes("counsel") || titleLower.includes("paralegal")) {
       domain = "LEGAL";
-    } else if (titleLower.includes("finance") || titleLower.includes("financial") || titleLower.includes("equity") || titleLower.includes("investment") || titleLower.includes("revenue")) {
+    } else if (titleLower.includes("finance") || titleLower.includes("financial") || titleLower.includes("equity") || titleLower.includes("investment") || titleLower.includes("revenue") || titleLower.includes("trader") || titleLower.includes("quant") || titleLower.includes("accounting") || titleLower.includes("rates")) {
       domain = "FINANCE";
     }
 
