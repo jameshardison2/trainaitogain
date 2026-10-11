@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "trainaitogain-50c19"
-  }
+  },
+  "targets": {
+    "trainaitogain-50c19": {
+      "hosting": {
+        "app": [
+          "trainaitogain-50c19"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

@@ -8,6 +8,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+if (!window.handleApplyClick) {
+    window.handleApplyClick = function(title, linkTarget, btn) {
+        if (window.event) window.event.stopPropagation();
+        const refCode = localStorage.getItem('affiliate_ref');
+        let targetUrl = linkTarget || 'https://t.mercor.com/wbPMF';
+        
+        if (refCode && targetUrl.includes('mercor')) {
+            if (!targetUrl.includes('ref=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'ref=' + encodeURIComponent(refCode);
+        } else if (refCode && targetUrl.includes('micro1')) {
+            if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode);
+        }
+
+        if (typeof gtag === 'function') {
+            gtag('event', 'apply_click', {
+                'event_category': 'referral',
+                'event_label': title,
+                'link_url': targetUrl
+            });
+        }
+
+        const isGenericMercor = targetUrl.includes('wbPMF');
+        if (isGenericMercor && navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(title).catch(() => {});
+        }
+        window.open(targetUrl, '_blank');
+    };
+}
+
 document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void 0, function* () {
     try {
         const response = yield fetch('waves.json');
@@ -107,11 +135,11 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
                 }
                 let tagsHtml = role.tags.map(t => `<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">${t}</span>`).join('');
                 const bg = role.badgeClass === 'orange' ? 'var(--orange)' : 'var(--black)';
-                const safeTitle = role.title.replace(/'/g, "\'");
-                const safeDomain = role.domain.replace(/'/g, "\'");
-                const safePay = role.pay.replace(/'/g, "\'");
+                const safeTitle = (role.title || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                const safeDomain = (role.domain || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                const safePay = (role.pay || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                 html += `
-          <div class="feature-card opp-card" onclick="window.open(\'${role.linkTarget || \'https://t.mercor.com/wbPMF\'}\', \'_blank\')" data-domain="${role.domain}" data-platform="${role.platform || \'Mercor\'}" data-pay="${payYearly}" data-location="${loc}" data-index="${index}" style="cursor:pointer; width:100%; box-sizing:border-box; order:${index}; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+          <div class="feature-card opp-card" onclick="window.handleApplyClick('${safeTitle}', '${role.linkTarget || 'https://t.mercor.com/wbPMF'}', this)" data-domain="${role.domain}" data-platform="${role.platform || 'Mercor'}" data-pay="${payYearly}" data-location="${loc}" data-index="${index}" style="cursor:pointer; width:100%; box-sizing:border-box; order:${index}; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
             <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
               <div style="display:flex; gap:8px;">
                 <div style="padding:6px 10px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
@@ -127,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
               <button onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${role.linkTarget || 'https://t.mercor.com/wbPMF'}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
               <button onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">✅</button>
               <button onclick="event.stopPropagation(); window.open('resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">🎯</button>
-              
             </div>
             <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your PDF resume ready</div>
           </div>

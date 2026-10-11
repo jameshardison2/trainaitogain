@@ -54,6 +54,68 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 
+exports.directIngestJobs = onRequest(
+  { cors: true, timeoutSeconds: 120, maxInstances: 5 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        if (req.method !== "POST") {
+          return res.status(405).send("Method Not Allowed");
+        }
+
+        const { jobs, token, syncedAt, platform, fullSync } = req.body || {};
+
+        if (token !== "TRAINAITOGAIN_SYNC_SECURE_2026") {
+          logger.warn("Unauthorized sync attempt to directIngestJobs");
+          return res.status(401).json({ error: "Unauthorized: Invalid sync token" });
+        }
+
+        if (!Array.isArray(jobs)) {
+          return res.status(400).json({ error: "Payload must include an array of jobs" });
+        }
+
+        const db = admin.firestore();
+
+        // 1. Update metadata
+        await db.collection("system").doc("sync_metadata").set({
+          platform: platform || "Mercor",
+          syncedAt: syncedAt || new Date().toISOString(),
+          totalJobs: jobs.length,
+          fullSync: !!fullSync,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        // 2. Write jobs into 'roles' collection in batches of up to 400
+        const batchSize = 400;
+        for (let i = 0; i < jobs.length; i += batchSize) {
+          const chunk = jobs.slice(i, i + batchSize);
+          const batch = db.batch();
+          for (const job of chunk) {
+            const rawId = (job.title || "job").toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
+            const docId = rawId.substring(0, 80);
+            const ref = db.collection("roles").doc(docId);
+            batch.set(ref, {
+              ...job,
+              updatedAt: admin.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+          }
+          await batch.commit();
+        }
+
+        logger.info(`directIngestJobs: Synced ${jobs.length} jobs for ${platform || "Mercor"}`);
+        return res.status(200).json({
+          success: true,
+          count: jobs.length,
+          syncedAt: syncedAt || new Date().toISOString()
+        });
+      } catch (error) {
+        logger.error("Error in directIngestJobs:", error);
+        return res.status(500).json({ error: "Internal Server Error", message: error.message });
+      }
+    });
+  }
+);
+
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 
 exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {

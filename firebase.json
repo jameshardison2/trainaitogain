@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "app",
     "public": ".",
     "cleanUrls": true,
     "ignore": [
@@ -13,6 +14,10 @@
       {
         "source": "/api/generateAiResponse",
         "function": "generateAiResponse"
+      },
+      {
+        "source": "/api/directIngestJobs",
+        "function": "directIngestJobs"
       }
     ],
     "headers": [
@@ -27,6 +32,16 @@
       }
     ],
     "redirects": [
+      {
+        "source": "/hiring-pipeline",
+        "destination": "/resume-ats-guide",
+        "type": 301
+      },
+      {
+        "source": "/hiring-pipeline.html",
+        "destination": "/resume-ats-guide",
+        "type": 301
+      },
       {
         "source": "/guide-download",
         "destination": "/trainaitogain-hiring-blueprint.pdf",
