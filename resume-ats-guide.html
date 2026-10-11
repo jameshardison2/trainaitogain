@@ -1040,6 +1040,26 @@ Experience
                 const bestRole = matches[0].role;
                 window.topMatches = matches;
                 
+                try {
+                    const formattedForApply = matches.map(m => {
+                        const rName = m.role || m.roleName;
+                        let rScore = parseInt(m.match || m.matchScore || 90);
+                        if (isNaN(rScore)) rScore = 90;
+                        const matchedRole = window.allRoles ? window.allRoles.find(r => r.title === rName) : null;
+                        return {
+                            roleName: rName,
+                            matchScore: rScore,
+                            explanation: m.explanation || `Your resume shows strong keyword alignment (${rScore}% match) with this target pipeline.`,
+                            hourlyRate: matchedRole ? (matchedRole.pay || matchedRole.hourlyRate) : 'Competitive',
+                            roleUrl: matchedRole ? (matchedRole.linkTarget || matchedRole.url) : 'https://t.mercor.com/wbPMF'
+                        };
+                    });
+                    localStorage.setItem('ai_matches', JSON.stringify(formattedForApply));
+                    sessionStorage.setItem('ai_matches', JSON.stringify(formattedForApply));
+                } catch (e) {
+                    console.error("Failed to store ai_matches:", e);
+                }
+                
                 // Set the role
                 const hiddenSelect = document.getElementById('role-select');
                 const customDisplay = document.getElementById('custom-role-text');

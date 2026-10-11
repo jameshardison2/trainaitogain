@@ -507,15 +507,60 @@ ${resumeText.substring(0, 10000)}`;
   });
 </script>
 
-<script src="render_waves.js?v=1791750000"></script>
-
-
+<script src="render_waves.js?v=1791761000"></script>
 
 <script src="chat.js?v=16"></script>
 
-    <script>
-      // Automatically restore AI matches if they navigate away and come back
-    </script>
+<script>
+  // Automatically restore AI matches from ATS Resume Scan
+  (function() {
+    function restoreMatches() {
+      try {
+        const raw = sessionStorage.getItem('ai_matches') || localStorage.getItem('ai_matches');
+        if (!raw) return;
+        const matches = JSON.parse(raw);
+        if (!Array.isArray(matches) || matches.length === 0) return;
+
+        const matchedSection = document.getElementById('matched-roles-section');
+        const matchedTrack = document.getElementById('matched-waves-track');
+        if (!matchedSection || !matchedTrack) return;
+
+        matchedSection.style.display = 'block';
+        matchedTrack.innerHTML = matches.map(m => {
+          const rName = (m.roleName || m.role || 'Target Role').replace(/'/g, "\\'");
+          const rScore = m.matchScore || m.match || 90;
+          const rRate = m.hourlyRate || 'Competitive';
+          const rUrl = m.roleUrl || m.linkTarget || 'https://t.mercor.com/wbPMF';
+          const rExpl = m.explanation || `High-probability match based on your ATS Resume Scan keywords (${rScore}% match).`;
+          return `
+            <div class="wave-card" style="width: 100%; max-width: 600px; text-align: left; background: white; padding: 24px; border-radius: var(--radius-lg); border: 2px solid var(--primary); box-shadow: var(--shadow-md); display:flex; flex-direction:column; align-items:flex-start;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; width:100%;">
+                 <span style="background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:6px 10px; border-radius:6px;">🌟 ${rScore}% Match</span>
+                 <span style="color:var(--primary); font-weight:800; font-size:16px;">${rRate}</span>
+              </div>
+              <h3 style="font-size:20px; font-weight:800; color:var(--black); margin-bottom:12px; line-height:1.3;">${m.roleName || m.role}</h3>
+              <p style="font-size:14px; color:var(--gray-600); line-height:1.5; margin-bottom:24px; flex-grow:1;"><strong>Why you're a fit:</strong> ${rExpl}</p>
+              
+              <div style="display:flex; gap:8px; width:100%;">
+                <button type="button" onclick="window.handleApplyClick('${rName}', '${rUrl}', this)" style="flex:1; background:var(--primary); color:white; border:none; padding:14px; border-radius:var(--radius-sm); font-weight:800; font-size:15px; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">Apply for this Role ➔</button>
+                <button type="button" onclick="saveRole('${rName}', 'ALL', '${rRate}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer;" title="Save Role">💾</button>
+                <button type="button" onclick="markAsComplete('${rName}', 'ALL', '${rRate}', this)" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer;" title="Mark Applied">✅</button>
+                <button type="button" onclick="window.open('resume-ats-guide?role=' + encodeURIComponent('${rName}'), '_blank');" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer;" title="Practice ATS">🎯</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error("Error restoring AI matches:", e);
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', restoreMatches);
+    } else {
+      restoreMatches();
+    }
+  })();
+</script>
       
 
 <!-- Navbar Lead Capture Modal -->

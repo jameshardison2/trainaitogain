@@ -35,7 +35,7 @@ const path = require('path');
   try {
     const allJobs = await page.evaluate(async () => {
       let combined = [];
-      for (let p = 1; p <= 6; p++) {
+      for (let p = 1; p <= 20; p++) {
         try {
           const res = await fetch(`https://prod-api.micro1.ai/api/v1/job/portal/referral/05216c9f-87cc-49af-b448-f9f8a18d2efe/jobs?page=${p}&limit=12`);
           const json = await res.json();

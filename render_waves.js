@@ -36,25 +36,39 @@ if (!window.handleApplyClick) {
     };
 }
 
-document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void 0, function* () {
-    try {
-        let data = null;
+function renderWavesApp() {
+    return __awaiter(this, void 0, void 0, function* () {
         try {
-            const apiRes = yield fetch('/api/getRoles');
-            if (apiRes && apiRes.ok) {
-                const apiData = yield apiRes.json();
-                if (apiData && apiData.roles && apiData.roles.length > 0) {
-                    data = apiData;
-                }
-            }
-        } catch (err) {}
-        if (!data) {
             const response = yield fetch('waves.json');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            data = yield response.json();
-        }
+            const data = yield response.json();
+
+            try {
+                const apiRes = yield fetch('/api/getRoles');
+                if (apiRes && apiRes.ok) {
+                    const apiData = yield apiRes.json();
+                    if (apiData && apiData.roles && apiData.roles.length > 0) {
+                        const existingTitles = new Set(data.roles.map(r => (r.title || '').toLowerCase()));
+                        apiData.roles.forEach(apiRole => {
+                            if (!apiRole || !apiRole.title) return;
+                            if (!existingTitles.has(apiRole.title.toLowerCase())) {
+                                data.roles.unshift(apiRole);
+                                existingTitles.add(apiRole.title.toLowerCase());
+                            } else {
+                                const match = data.roles.find(r => (r.title || '').toLowerCase() === apiRole.title.toLowerCase());
+                                if (match) {
+                                    if (apiRole.linkTarget) match.linkTarget = apiRole.linkTarget;
+                                    if (apiRole.pay) match.pay = apiRole.pay;
+                                }
+                            }
+                        });
+                    }
+                }
+            } catch (err) {
+                console.warn("Could not fetch /api/getRoles, using baseline waves.json:", err);
+            }
         // 1. Create the Dynamic Category Carousels
         const carouselWrapper = document.createElement('div');
         carouselWrapper.style.marginBottom = '48px';
@@ -138,18 +152,19 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
                         payYearly = val;
                 }
                 let loc = 'ALL';
-                let searchStr = (role.title + ' ' + (role.tags || []).join(' ')).toLowerCase();
+                let tagsList = Array.isArray(role.tags) ? role.tags : (role.tags ? [role.tags] : ['Remote', role.platform || 'Mercor']);
+                let searchStr = (role.title + ' ' + tagsList.join(' ')).toLowerCase();
                 if (searchStr.includes('(us)') || searchStr.includes('us-based') || searchStr.includes('us only') || searchStr.includes('united states')) {
                     loc = 'US';
                 }
                 else if (searchStr.includes('india') || searchStr.includes('latam') || searchStr.includes('uk-based') || searchStr.includes('bilingual')) {
                     loc = 'INTL';
                 }
-                let tagsHtml = role.tags.map(t => `<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">${t}</span>`).join('');
+                let tagsHtml = tagsList.map(t => `<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">${t}</span>`).join('');
                 const bg = role.badgeClass === 'orange' ? 'var(--orange)' : 'var(--black)';
                 const safeTitle = (role.title || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-                const safeDomain = (role.domain || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-                const safePay = (role.pay || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                const safeDomain = (role.domain || 'GENERAL').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                const safePay = (role.pay || 'Competitive').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                 html += `
           <div class="feature-card opp-card" onclick="window.handleApplyClick('${safeTitle}', '${role.linkTarget || 'https://t.mercor.com/wbPMF'}', this)" data-domain="${role.domain}" data-platform="${role.platform || 'Mercor'}" data-pay="${payYearly}" data-location="${loc}" data-index="${index}" style="cursor:pointer; width:100%; box-sizing:border-box; order:${index}; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
             <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
@@ -337,4 +352,11 @@ document.addEventListener('DOMContentLoaded', () => __awaiter(this, void 0, void
     catch (error) {
         console.error("Error rendering waves:", error);
     }
-}));
+});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderWavesApp);
+} else {
+    renderWavesApp();
+}
