@@ -64,17 +64,20 @@ const DOMAINS_MAP = [
   ['CREATIVE', /design|writer|writing|editor|video|creative|art|music|film|game/i]
 ];
 
+const REFERRAL_LEAK_RE = /signed up|application (started|completed)|offer extended|referee|earnings cap|paid to date|vouched|bulk reminder|loaded \d+ of|my referrals|my connections/i;
+
 function sanitizeDescription(desc) {
   if (!desc || typeof desc !== 'string') return '';
-  const JUNK = /steps? completed|submitted on|hired this month|early applicant|1-click apply|new opportunity|posted by|referral|refer |earn \$|bonus|^apply\b|^share\b|copy link|view all opportunities|^\$[\d,]+$|^[A-Z]$|^\d+ hired/i;
+  if (REFERRAL_LEAK_RE.test(desc)) return '';
+  const JUNK = /steps? completed|submitted on|hired this month|early applicant|1-click apply|new opportunity|posted by|referral|refer |earn \$|bonus|^apply\b|^share\b|copy link|view all opportunities|^\$[\d,]+$|^[A-Z]$|^\d+ hired|signed up|application (started|completed)|offer extended|referee|earnings cap|paid to date|vouched|bulk reminder|loaded \d+ of|my referrals|my connections/i;
   const lines = desc.split('\n')
     .map(l => l.trim())
     .filter(l => l.length > 25 && !JUNK.test(l) && !/^\s*\$[\d,]+(?:\.\d+)?(?:\s*[-–to]+\s*\$?[\d,]+)?\s*(?:\/|per)\s*(?:hour|hr|month|mo|year|yr|task)/i.test(l));
   let clean = lines.join(' ').replace(/\s+/g, ' ').trim();
-  if (JUNK.test(clean)) {
-    // If entire string still has leaked phrases, extract safe part or clear
+  if (JUNK.test(clean) || REFERRAL_LEAK_RE.test(clean)) {
     clean = clean.split(JUNK)[0].trim();
   }
+  if (REFERRAL_LEAK_RE.test(clean)) return '';
   return clean.substring(0, 350);
 }
 
@@ -130,7 +133,10 @@ exports.directIngestJobs = onRequest(
           const batch = db.batch();
           for (const job of chunk) {
             // Apply junk filter and resolve domain
-            const cleanDesc = sanitizeDescription(job.description);
+            let cleanDesc = sanitizeDescription(job.description);
+            if (REFERRAL_LEAK_RE.test(job.description || '') || REFERRAL_LEAK_RE.test(cleanDesc)) {
+              cleanDesc = '';
+            }
             const domain = (job.domain && typeof job.domain === 'string' && job.domain.trim())
               ? job.domain.trim().toUpperCase()
               : resolveDomain(job.title, cleanDesc, null);
@@ -144,15 +150,14 @@ exports.directIngestJobs = onRequest(
             
             const ref = db.collection("roles").doc(docId);
             batch.set(ref, {
-              ...job,
-              title: job.title,
-              linkTarget: job.linkTarget, // Kept exactly as sent (Section 6b.1)
-              pay: job.pay,               // Kept exactly as sent (Section 6b.2)
+              title: job.title || "",
+              linkTarget: job.linkTarget || "", // Kept exactly as sent (Section 6b.1)
+              pay: job.pay || "Competitive",     // Kept exactly as sent (Section 6b.2)
               payUnit: job.payUnit || null,
               payMin: job.payMin !== undefined ? job.payMin : null,
               payMax: job.payMax !== undefined ? job.payMax : null,
-              description: cleanDesc,     // Junk-text filtered (Section 14 R2b-1)
-              domain: domain,             // Saved domain (Section 14 R2b-2)
+              description: cleanDesc,           // Junk-text & referral-leak filtered (Section 14 R2b-1, Section 15 R2c-1)
+              domain: domain,                   // Saved domain (Section 14 R2b-2)
               atsKeywords: job.atsKeywords || [],
               tags: job.tags || ['Remote'],
               platform: job.platform || platform || "Mercor",
@@ -186,26 +191,59 @@ exports.getRoles = onRequest(
         const db = admin.firestore();
         const snapshot = await db.collection("roles").get();
         const roles = [];
+        const cleanupBatch = db.batch();
+        let cleanedDocsCount = 0;
+
         snapshot.forEach(doc => {
           const d = doc.data();
           if (doc.id === 'sample-engineer' || (d.title && (d.title.toLowerCase().includes('sample') || d.title.toLowerCase().includes('test')))) {
             return;
           }
+
+          // Check if description has leaked referral text or is the Medicare Advantage role
+          const hasLeakedDesc = (d.description && REFERRAL_LEAK_RE.test(d.description)) ||
+            (d.title && d.title.toLowerCase().includes('medicare advantage brokers survey'));
+
+          if (hasLeakedDesc && d.description) {
+            cleanupBatch.update(doc.ref, { description: "" });
+            cleanedDocsCount++;
+          }
+
           // Sanitize description and classify domain on read
-          const sanitizedDesc = sanitizeDescription(d.description);
+          let sanitizedDesc = hasLeakedDesc ? "" : sanitizeDescription(d.description);
+          if (REFERRAL_LEAK_RE.test(sanitizedDesc)) sanitizedDesc = "";
           const resolvedDom = resolveDomain(d.title, sanitizedDesc, d.domain);
           
+          // Return ONLY the public fields needed by the page (Section 15 R2c-1 item 3)
           roles.push({
-            ...d,
+            id: doc.id,
+            title: d.title || "",
+            pay: d.pay || "Competitive",
+            payUnit: d.payUnit || null,
+            domain: resolvedDom,
+            tags: Array.isArray(d.tags) ? d.tags : ['Remote'],
+            platform: d.platform || "Mercor",
+            linkTarget: d.linkTarget || "",
+            linkIsSpecific: d.linkIsSpecific !== undefined ? d.linkIsSpecific : true,
             description: sanitizedDesc,
-            domain: resolvedDom
+            atsKeywords: Array.isArray(d.atsKeywords) ? d.atsKeywords : []
           });
         });
+
+        if (cleanedDocsCount > 0) {
+          await cleanupBatch.commit();
+          logger.info(`Cleaned description on ${cleanedDocsCount} roles in Firestore`);
+        }
+
         const metaDoc = await db.collection("system").doc("sync_metadata").get();
         const meta = metaDoc.exists ? metaDoc.data() : {};
         return res.json({
           count: roles.length,
-          meta,
+          meta: {
+            platform: meta.platform || "Mercor",
+            syncedAt: meta.syncedAt || null,
+            totalJobs: meta.totalJobs || roles.length
+          },
           roles
         });
       } catch (error) {

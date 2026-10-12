@@ -1,4 +1,4 @@
-// TrainAIToGain Deep Sync V14.1
+// TrainAIToGain Deep Sync V14.2
 // Run on Mercor's referral jobs page (the page your V12 bookmark runs on).
 // Changes from V12:
 //  1. Grabs each role's OWN referral link (catches the link when Mercor copies it
@@ -12,6 +12,7 @@
 //     different "Finance Expert" roles stay separate and true duplicates collapse.
 //  6. Ends with a report: roles found, unique links vs fallback links.
 // V14: description now comes only from the opened job (no personal status, referral bonuses or other cards), and each role gets a domain.
+// V14.2: skips any panel containing referral-dashboard text (signed up, referee, earnings cap, vouched, etc.)
 (async function () {
   if (/mercor\.com/i.test(location.hostname) && !/\/refer/i.test(location.pathname)) {
     alert('Please open work.mercor.com/refer (the Referrals page), then run this bookmark again.');
@@ -21,7 +22,7 @@
     alert('Open your Mercor referral jobs page first, then run this bookmark.');
     return;
   }
-  alert('TrainAIToGain Deep Sync V14.1 started. Please do not touch your mouse until the final message.');
+  alert('TrainAIToGain Deep Sync V14.2 started. Please do not touch your mouse until the final message.');
 
   const FALLBACK_LINK = 'https://t.mercor.com/wbPMF';
   const ENDPOINT = 'https://us-central1-trainaitogain-50c19.cloudfunctions.net/directIngestJobs';
@@ -161,10 +162,11 @@
           if (r.width < 300 || r.height < 200) return false;
           const t = el.innerText || '';
           if (!t.includes(title)) return false;
+          if (/signed up|application started|referee|earnings cap|paid to date|my referrals|my connections|bulk reminder|vouched/i.test(t)) return false;
           return (t.match(PAYLINE) || []).length <= 1;
         });
         if (panes.length) { panes.sort((a, b) => a.innerText.length - b.innerText.length); raw = panes[0].innerText; }
-        const JUNK = /steps? completed|submitted on|hired this month|early applicant|1-click apply|new opportunity|posted by|referral|refer |earn \$|bonus|^apply\b|^share\b|copy link|view all opportunities|^\$[\d,]+$|^[A-Z]$|^\d+ hired/i;
+        const JUNK = /signed up|application (started|completed)|offer extended|referee|earnings cap|paid to date|vouched|bulk reminder|loaded \d+ of|my referrals|my connections|steps? completed|submitted on|hired this month|early applicant|1-click apply|new opportunity|posted by|referral|refer |earn \$|bonus|^apply\b|^share\b|copy link|view all opportunities|^\$[\d,]+$|^[A-Z]$|^\d+ hired/i;
         const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 30 && l !== title && !JUNK.test(l) && !/\$\s*[\d,]+\s*(-|–|to)?\s*\$?[\d,]*\s*(\/|per)\s*(hour|hr|month|mo|year|yr|task)/i.test(l));
         const cleanDesc = lines.join(' ').replace(/\s+/g, ' ').trim();
         if (payInfo.pay === 'Competitive') Object.assign(payInfo, parsePay(raw));
