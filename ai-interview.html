@@ -958,6 +958,8 @@ window.addEventListener('unhandledrejection', function(event) {
   let isTextMode = false;
   let interviewStarted = false;
   let interviewCompleted = false;
+  let sessionTargetKeywords = new Set();
+  let sessionMatchedKeywords = new Set();
 
   const startBtn = document.getElementById('start-btn');
   const startTextBtn = document.getElementById('start-text-btn');
@@ -1334,7 +1336,11 @@ window.addEventListener('unhandledrejection', function(event) {
       let matches = 0;
       if (qData.keywords) {
         qData.keywords.forEach(kw => {
-          if (text.includes(kw.toLowerCase())) matches++;
+          const kLow = kw.toLowerCase().trim();
+          if (text.includes(kLow)) {
+            matches++;
+            sessionMatchedKeywords.add(kLow);
+          }
         });
       }
 
@@ -1649,6 +1655,13 @@ window.addEventListener('unhandledrejection', function(event) {
     domainSelector.value = resolvedDomain;
 
     currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
+    sessionTargetKeywords.clear();
+    sessionMatchedKeywords.clear();
+    currentQuestions.forEach(q => {
+      if (q.keywords && Array.isArray(q.keywords)) {
+        q.keywords.forEach(kw => sessionTargetKeywords.add(kw.toLowerCase().trim()));
+      }
+    });
 
     setupView.style.display = 'none';
 
@@ -1732,6 +1745,20 @@ window.addEventListener('unhandledrejection', function(event) {
       growthSummary += "\n3. Practice pausing silently instead of using filler words ('um', 'like').";
     }
 
+    const kwTotal = sessionTargetKeywords.size;
+    const kwHits = sessionMatchedKeywords.size;
+    const kwMetricHTML = kwTotal > 0
+      ? `<div>
+            <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Keyword Alignment</div>
+            <div style="font-size:22px; font-weight:800; color:var(--primary);">${kwHits} of ${kwTotal} terms</div>
+            <div style="font-size:11px; color:#aaa; margin-top:2px;">used in your answers</div>
+        </div>`
+      : `<div>
+            <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Practice Score</div>
+            <div style="font-size:24px; font-weight:800; color:var(--primary);">${avgScore}%</div>
+            <div style="font-size:11px; color:#aaa; margin-top:2px;">average rating</div>
+        </div>`;
+
     const summaryHTML = `
       <div style="background:var(--black); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:40px 24px; text-align:center; width:100%; box-shadow:0 12px 48px rgba(0,0,0,0.5); animation:fade-up 0.6s ease-out; box-sizing:border-box;">
           <h2 style="color:white; font-size:30px; margin:0 0 8px; font-weight:800;">Practice Complete 🏆</h2>
@@ -1753,10 +1780,7 @@ window.addEventListener('unhandledrejection', function(event) {
                   <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Questions Practiced</div>
                   <div style="font-size:24px; font-weight:800; color:white;">5 of 5</div>
               </div>
-              <div>
-                  <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Keyword Alignment</div>
-                  <div style="font-size:24px; font-weight:800; color:var(--primary);">${avgScore}%</div>
-              </div>
+              ${kwMetricHTML}
               <div>
                   <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Delivery Format</div>
                   <div style="font-size:24px; font-weight:800; color:white;">${isTextMode ? 'Typed' : 'Voice'}</div>
@@ -1819,67 +1843,15 @@ window.addEventListener('unhandledrejection', function(event) {
   })();
 </script>
 
-<!-- GLOBAL FIREBASE TRACKING (PRIORITY 6) -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-    const firebaseConfig = { 
-      apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
-      authDomain: "trainaitogain-50c19.firebaseapp.com", 
-      projectId: "trainaitogain-50c19", 
-      storageBucket: "trainaitogain-50c19.firebasestorage.app", 
-      messagingSenderId: "637746276432", 
-      appId: "1:637746276432:web:1a7cfa65357b0bc3b90955", 
-      measurementId: "G-RH65NXKCHE" 
-    };
-
-    let app;
-    try { app = initializeApp(firebaseConfig); } catch(e) {}
-    const db = getFirestore(app);
-
-    let sessionId = localStorage.getItem('tgt_session_id');
-    if (!sessionId) {
-        sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('tgt_session_id', sessionId);
+<!-- SESSION & AFFILIATE TRACKING -->
+<script>
+  (function() {
+    if (!localStorage.getItem('tgt_session_id')) {
+      localStorage.setItem('tgt_session_id', 'sess_' + Math.random().toString(36).substr(2, 9));
     }
-
-    const currentRef = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || 'organic';
-
-    if (!sessionStorage.getItem('page_view_logged_' + window.location.pathname)) {
-        addDoc(collection(db, "pipeline_events"), {
-            event_type: "page_view",
-            referral_id: currentRef,
-            session_id: sessionId,
-            page_url: window.location.pathname,
-            timestamp: serverTimestamp()
-        }).catch(e => console.error(e));
-        sessionStorage.setItem('page_view_logged_' + window.location.pathname, 'true');
-    }
-
-    document.addEventListener('click', (e) => {
-        let isMercorLink = false;
-        
-        const link = e.target.closest('a');
-        if (link && link.href.includes('t.mercor.com')) {
-            isMercorLink = true;
-        }
-        
-        const btn = e.target.closest('button');
-        if (btn && btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('t.mercor.com')) {
-            isMercorLink = true;
-        }
-
-        if (isMercorLink) {
-            addDoc(collection(db, "pipeline_events"), {
-                event_type: "application_started",
-                referral_id: currentRef,
-                session_id: sessionId,
-                page_url: window.location.pathname,
-                timestamp: serverTimestamp()
-            }).catch(console.error);
-        }
-    });
+    const ref = new URLSearchParams(window.location.search).get('ref');
+    if (ref) localStorage.setItem('affiliate_ref', ref);
+  })();
 </script>
 <script src="chat.js?v=16"></script>
 

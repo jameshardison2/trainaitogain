@@ -527,67 +527,15 @@ if (document.readyState === 'loading') {
   })();
 </script>
 
-<!-- GLOBAL FIREBASE TRACKING (PRIORITY 6) -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-    const firebaseConfig = { 
-      apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
-      authDomain: "trainaitogain-50c19.firebaseapp.com", 
-      projectId: "trainaitogain-50c19", 
-      storageBucket: "trainaitogain-50c19.firebasestorage.app", 
-      messagingSenderId: "637746276432", 
-      appId: "1:637746276432:web:1a7cfa65357b0bc3b90955", 
-      measurementId: "G-RH65NXKCHE" 
-    };
-
-    let app;
-    try { app = initializeApp(firebaseConfig); } catch(e) {}
-    const db = getFirestore(app);
-
-    let sessionId = localStorage.getItem('tgt_session_id');
-    if (!sessionId) {
-        sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('tgt_session_id', sessionId);
+<!-- SESSION & AFFILIATE TRACKING -->
+<script>
+  (function() {
+    if (!localStorage.getItem('tgt_session_id')) {
+      localStorage.setItem('tgt_session_id', 'sess_' + Math.random().toString(36).substr(2, 9));
     }
-
-    const currentRef = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || 'organic';
-
-    if (!sessionStorage.getItem('page_view_logged_' + window.location.pathname)) {
-        addDoc(collection(db, "pipeline_events"), {
-            event_type: "page_view",
-            referral_id: currentRef,
-            session_id: sessionId,
-            page_url: window.location.pathname,
-            timestamp: serverTimestamp()
-        }).catch(e => console.error(e));
-        sessionStorage.setItem('page_view_logged_' + window.location.pathname, 'true');
-    }
-
-    document.addEventListener('click', (e) => {
-        let isMercorLink = false;
-        
-        const link = e.target.closest('a');
-        if (link && link.href.includes('t.mercor.com')) {
-            isMercorLink = true;
-        }
-        
-        const btn = e.target.closest('button');
-        if (btn && btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('t.mercor.com')) {
-            isMercorLink = true;
-        }
-
-        if (isMercorLink) {
-            addDoc(collection(db, "pipeline_events"), {
-                event_type: "application_started",
-                referral_id: currentRef,
-                session_id: sessionId,
-                page_url: window.location.pathname,
-                timestamp: serverTimestamp()
-            }).catch(console.error);
-        }
-    });
+    const ref = new URLSearchParams(window.location.search).get('ref');
+    if (ref) localStorage.setItem('affiliate_ref', ref);
+  })();
 </script>
 <script src="chat.js?v=16"></script>
 
