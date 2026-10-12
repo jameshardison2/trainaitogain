@@ -11,5 +11,11 @@
       }
     }
   },
-  "etags": {}
+  "etags": {
+    "trainaitogain-50c19": {
+      "extensionInstances": {
+        "firestore-send-email": "05c6a5fd26fd4c381bb74adf9d1ca9b1d3b0ead2cd2da2f7ffc08ae16850506d"
+      }
+    }
+  }
 }
