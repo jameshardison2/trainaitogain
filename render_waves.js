@@ -53,14 +53,26 @@ function renderWavesApp() {
                         const existingTitles = new Set(data.roles.map(r => (r.title || '').toLowerCase()));
                         apiData.roles.forEach(apiRole => {
                             if (!apiRole || !apiRole.title) return;
-                            if (!existingTitles.has(apiRole.title.toLowerCase())) {
+                            const tLow = (apiRole.title || '').toLowerCase();
+                            if (tLow.includes('sample') || tLow.includes('test')) return;
+
+                            apiRole.status = apiRole.status || 'ACTIVE';
+                            apiRole.badgeClass = apiRole.badgeClass || 'orange';
+                            apiRole.description = apiRole.description || 'Mercor is actively hiring for this position.';
+                            apiRole.domain = (apiRole.domain || 'SOFTWARE').toUpperCase();
+                            apiRole.pay = apiRole.pay || 'Competitive';
+
+                            if (!existingTitles.has(tLow)) {
                                 data.roles.unshift(apiRole);
-                                existingTitles.add(apiRole.title.toLowerCase());
+                                existingTitles.add(tLow);
                             } else {
-                                const match = data.roles.find(r => (r.title || '').toLowerCase() === apiRole.title.toLowerCase());
+                                const match = data.roles.find(r => (r.title || '').toLowerCase() === tLow);
                                 if (match) {
                                     if (apiRole.linkTarget) match.linkTarget = apiRole.linkTarget;
                                     if (apiRole.pay) match.pay = apiRole.pay;
+                                    if (apiRole.status) match.status = apiRole.status;
+                                    if (apiRole.badgeClass) match.badgeClass = apiRole.badgeClass;
+                                    if (apiRole.description) match.description = apiRole.description;
                                 }
                             }
                         });

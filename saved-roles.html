@@ -217,39 +217,127 @@
   </footer>
 
 <script>
+window.handleApplyClick = function(title, linkTarget, btn) {
+    if (window.event) window.event.stopPropagation();
+    const refCode = localStorage.getItem('affiliate_ref');
+    let targetUrl = linkTarget || 'https://t.mercor.com/wbPMF';
+    
+    // Append tracking
+    if (refCode && targetUrl.includes('mercor')) {
+        if(!targetUrl.includes('ref=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'ref=' + encodeURIComponent(refCode);
+    } else if (refCode && targetUrl.includes('micro1')) {
+        if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode);
+    }
+
+    if (typeof gtag === 'function') {
+        gtag('event', 'apply_click', {
+            'event_category': 'referral',
+            'event_label': title,
+            'link_url': targetUrl
+        });
+    }
+
+    const isGenericMercor = targetUrl.includes('wbPMF');
+    if (isGenericMercor && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(title).catch(() => {});
+    }
+    window.open(targetUrl, '_blank');
+};
+
 function renderSavedRoles() {
     const container = document.getElementById('saved-roles-container');
-    const saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
-    
+    if (!container) return;
+
+    let saved = [];
+    try {
+        const raw = localStorage.getItem('savedRoles');
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+                saved = parsed;
+            } else if (parsed && typeof parsed === 'object') {
+                saved = [parsed];
+            }
+        }
+    } catch (e) {
+        console.warn("Could not parse savedRoles:", e);
+        saved = [];
+    }
+
+    // Filter out invalid/empty items and normalize
+    saved = saved.filter(Boolean).map((role, idx) => {
+        if (typeof role === 'string') {
+            return {
+                id: 'role_' + idx,
+                title: role,
+                domain: 'GENERAL',
+                pay: 'Competitive',
+                linkTarget: 'https://t.mercor.com/wbPMF',
+                date: new Date().toISOString()
+            };
+        }
+        return {
+            id: role.id || ((role.title || '') + '_' + (role.domain || '')) || ('role_' + idx),
+            title: role.title || 'Untitled Role',
+            domain: (role.domain || 'GENERAL').toUpperCase(),
+            pay: role.pay || 'Competitive',
+            linkTarget: role.linkTarget || 'https://t.mercor.com/wbPMF',
+            date: role.date || new Date().toISOString()
+        };
+    });
+
     if (saved.length === 0) {
         container.innerHTML = `
             <div style="text-align:center; padding:48px; background:var(--white); border:1px dashed var(--gray-300); border-radius:var(--radius-lg); color:var(--gray-500);">
                 <div style="font-size:32px; margin-bottom:16px;">📂</div>
                 <h3 style="font-size:20px; color:var(--black); margin-bottom:8px;">No pipelines saved yet.</h3>
                 <p style="margin-bottom:24px;">Browse the opportunities index and bookmark roles to track them here.</p>
-                <a href="apply.html" class="btn-primary">Browse Roles</a>
+                <a href="/apply" class="btn-primary" style="display:inline-block; padding:12px 24px; text-decoration:none;">Browse Roles</a>
             </div>
         `;
         return;
     }
-    
-    container.innerHTML = saved.map(role => `
+
+    window.currentSavedRoles = saved;
+
+    container.innerHTML = saved.map((role, idx) => {
+        let dateFormatted = 'Recently';
+        try {
+            if (role.date) {
+                const d = new Date(role.date);
+                if (!isNaN(d.getTime())) dateFormatted = d.toLocaleDateString();
+            }
+        } catch(e) {}
+
+        const prepUrl = '/ai-interview?role=' + encodeURIComponent(role.title);
+        const safeTitle = (role.title || '').replace(/"/g, '&quot;');
+        const safeDomain = (role.domain || 'GENERAL').toUpperCase();
+        const safePay = (role.pay || 'Competitive');
+
+        return `
         <div style="background:var(--white); border:1px solid var(--gray-200); padding:24px; border-radius:var(--radius-lg); display:flex; justify-content:space-between; align-items:center; box-shadow:var(--shadow-sm); flex-wrap:wrap; gap:16px;">
-            <div>
-                <div style="display:inline-block; padding:4px 8px; background:var(--black); color:var(--white); border-radius:4px; font-size:11px; font-weight:700; margin-bottom:12px; letter-spacing:0.05em; text-transform:uppercase;">${role.domain}</div>
-                <h3 style="font-size:20px; font-weight:700; color:var(--black); margin-bottom:4px;">${role.title}</h3>
-                <div style="color:var(--gray-500); font-size:14px;">Saved: ${new Date(role.date).toLocaleDateString()}</div>
+            <div style="flex:1; min-width:260px;">
+                <div style="display:inline-block; padding:4px 8px; background:var(--black); color:var(--white); border-radius:4px; font-size:11px; font-weight:700; margin-bottom:12px; letter-spacing:0.05em; text-transform:uppercase;">${safeDomain}</div>
+                <h3 style="font-size:20px; font-weight:700; color:var(--black); margin-bottom:4px;">${safeTitle}</h3>
+                <div style="color:var(--gray-500); font-size:14px;">Saved: ${dateFormatted}</div>
             </div>
-            <div style="text-align:right;">
-                <div style="color:var(--primary); font-weight:800; font-size:24px; margin-bottom:12px;">${role.pay}</div>
-                <div style="display:flex; gap:8px;">
-                    <a href="/ai-interview?role=${encodeURIComponent(role.title)}" class="btn-secondary" style="padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center;">Prep for This Role</a>
-                    <button onclick="removeRole('${role.id}')" class="btn-secondary" style="padding:8px 16px;">Remove</button>
-                    <button class="btn-primary" style="cursor:pointer; padding:8px 24px; background:var(--orange, #fb923c); border-color:var(--orange, #fb923c);" onclick="window.handleApplyClick('${(role.title || \'\').replace(/\\\\/g, \'\\\\\\\\\').replace(/\'/g, \"\\\\\'\")}', '${role.linkTarget || \'https://t.mercor.com/wbPMF\'}', this)">Apply</button>
+            <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                <div style="color:var(--primary); font-weight:800; font-size:22px;">${safePay}</div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+                    <a href="${prepUrl}" class="btn-secondary" style="padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center;">Prep for Role</a>
+                    <button onclick="removeRole('${role.id.replace(/'/g, "\\'")}')" class="btn-secondary" style="padding:8px 16px; cursor:pointer;">Remove</button>
+                    <button class="btn-primary" style="cursor:pointer; padding:8px 24px; background:var(--orange, #fb923c); border-color:var(--orange, #fb923c);" onclick="applySavedRole(${idx}, this)">Apply ➔</button>
                 </div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
+}
+
+function applySavedRole(index, btn) {
+    if (!window.currentSavedRoles || !window.currentSavedRoles[index]) return;
+    const role = window.currentSavedRoles[index];
+    window.handleApplyClick(role.title, role.linkTarget, btn);
 }
 
 function clearSavedRoles() {
@@ -260,14 +348,22 @@ function clearSavedRoles() {
 }
 
 function removeRole(id) {
-    let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
-    saved = saved.filter(r => r.id !== id);
-    localStorage.setItem('savedRoles', JSON.stringify(saved));
+    try {
+        let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
+        if (Array.isArray(saved)) {
+            saved = saved.filter(r => r && r.id !== id && ((r.title + '_' + r.domain) !== id));
+            localStorage.setItem('savedRoles', JSON.stringify(saved));
+        }
+    } catch(e) {}
     renderSavedRoles();
 }
 
-// Run on load
-document.addEventListener('DOMContentLoaded', renderSavedRoles);
+// Guarantee execution on both immediate and DOMContentLoaded states
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderSavedRoles);
+} else {
+    renderSavedRoles();
+}
 </script>
 
 
@@ -410,63 +506,7 @@ function submitNavbarLead(e) {
 </script>
 
 
-<script>
-window.handleApplyClick = function(title, linkTarget, btn) {
-    const refCode = localStorage.getItem('affiliate_ref');
-    let targetUrl = linkTarget || 'https://t.mercor.com/wbPMF';
-    
-    // Append tracking
-    if (refCode && targetUrl.includes('mercor')) {
-        if(!targetUrl.includes('ref=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'ref=' + encodeURIComponent(refCode);
-    } else if (refCode && targetUrl.includes('micro1')) {
-        if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode);
-    }
 
-    // Check if it's a generic link
-    const isGenericMercor = targetUrl.includes('wbPMF');
-    
-    if (isGenericMercor) {
-        // Fallback for clipboard api failing (e.g. not over HTTPS in some browsers)
-        const fallbackOpen = () => window.open(targetUrl, '_blank');
-        
-        if (!navigator.clipboard || !navigator.clipboard.writeText) {
-            fallbackOpen();
-            return;
-        }
-
-        navigator.clipboard.writeText(title).then(() => {
-            const toast = document.createElement('div');
-            toast.style.position = 'fixed';
-            toast.style.bottom = '24px';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.background = '#10b981';
-            toast.style.color = 'white';
-            toast.style.padding = '16px 24px';
-            toast.style.borderRadius = '12px';
-            toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
-            toast.style.zIndex = '9999999';
-            toast.style.fontWeight = '700';
-            toast.style.textAlign = 'center';
-            toast.innerHTML = '📋 Job Title copied to clipboard!<br><span style="font-size:14px; font-weight:400; opacity:0.9; margin-top:6px; display:block;">Paste it into the search bar when the portal opens.</span>';
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.transition = 'opacity 0.5s';
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 500);
-            }, 5000);
-            
-            // Open window slightly after
-            setTimeout(fallbackOpen, 600);
-        }).catch(err => {
-            fallbackOpen();
-        });
-    } else {
-        window.open(targetUrl, '_blank');
-    }
-};
-</script>
 </body>
 
 

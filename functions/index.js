@@ -116,6 +116,37 @@ exports.directIngestJobs = onRequest(
   }
 );
 
+exports.getRoles = onRequest(
+  { cors: true, timeoutSeconds: 60, maxInstances: 5 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const db = admin.firestore();
+        const snapshot = await db.collection("roles").get();
+        const roles = [];
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          if (doc.id === 'sample-engineer' || (d.title && (d.title.toLowerCase().includes('sample') || d.title.toLowerCase().includes('test')))) {
+            doc.ref.delete().catch(() => {});
+            return;
+          }
+          roles.push(d);
+        });
+        const metaDoc = await db.collection("system").doc("sync_metadata").get();
+        const meta = metaDoc.exists ? metaDoc.data() : {};
+        return res.json({
+          count: roles.length,
+          meta,
+          roles
+        });
+      } catch (error) {
+        logger.error("Error in getRoles:", error);
+        return res.status(500).json({ error: "Internal Server Error", message: error.message });
+      }
+    });
+  }
+);
+
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 
 exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
