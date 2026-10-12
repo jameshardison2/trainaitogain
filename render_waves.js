@@ -244,7 +244,7 @@ function renderWavesApp() {
               <div style="color:var(--primary); font-weight:800; font-size:18px;">${role.pay}</div>
             </div>
             <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">${role.title}</h3>
-            ${(role.platform === 'Mercor' || !role.description) ? '' : `<p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">${role.description}</p>`}
+            ${(role.description && role.description.trim() && role.platform !== 'Mercor') ? `<p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">${role.description}</p>` : `<p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">Remote, ${role.pay.includes('/hr') ? 'hourly' : (role.pay.includes('/mo') ? 'monthly' : (role.pay.includes('/yr') ? 'annual' : 'flexible'))} role. Direct application on ${role.platform || 'Mercor'}.</p>`}
             <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">${tagsHtml}</div>
             <div style="display:flex; gap:8px;">
               <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${role.linkTarget || 'https://t.mercor.com/wbPMF'}', this)">Apply Now</button>

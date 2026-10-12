@@ -87,11 +87,15 @@
           if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode);
         }
 
+        const isMicro1 = targetUrl.includes('micro1');
+        const platformName = isMicro1 ? 'micro1' : 'Mercor';
+
         if (typeof gtag === 'function') {
           gtag('event', 'apply_click', {
             'event_category': 'referral',
             'event_label': title,
-            'link_url': targetUrl
+            'link_url': targetUrl,
+            'platform': platformName
           });
         }
 
@@ -99,7 +103,127 @@
         if (isGenericMercor && navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(title).catch(() => {});
         }
+
+        // 1. Immediately open the platform in a new tab (Section 3.4 & R3-7: NO GATE)
         window.open(targetUrl, '_blank');
+
+        // 2. Automatically save role to Dashboard with status "Applied" (R3-7)
+        try {
+          let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
+          const roleId = (title || 'role').toLowerCase().replace(/[^a-z0-9]/g, '-') + '_role';
+          let existing = saved.find(r => r && (r.title === title || r.id === roleId));
+          if (existing) {
+            existing.status = 'Applied';
+          } else {
+            saved.push({
+              id: roleId,
+              title: title,
+              domain: isMicro1 ? 'SOFTWARE' : 'GENERAL',
+              pay: 'Competitive',
+              linkTarget: targetUrl,
+              platform: platformName,
+              status: 'Applied',
+              date: new Date().toISOString()
+            });
+          }
+          localStorage.setItem('savedRoles', JSON.stringify(saved));
+        } catch(e) {}
+
+        // 3. Show "You're on your way" Warm Handoff Panel on the TrainAIToGain tab (R3-7)
+        showWarmHandoff(title, targetUrl, platformName);
+      };
+
+      window.showWarmHandoff = function(title, targetUrl, platformName) {
+        let modal = document.getElementById('warm-handoff-modal');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'warm-handoff-modal';
+          modal.style.cssText = 'display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px; box-sizing:border-box;';
+          document.body.appendChild(modal);
+        }
+
+        const isMicro1 = (platformName === 'micro1') || (targetUrl && targetUrl.includes('micro1'));
+        const safeTitle = (title || 'AI Training Role').replace(/"/g, '&quot;');
+        const prepUrl = '/ai-interview?role=' + encodeURIComponent(title || '');
+
+        modal.innerHTML = `
+          <div style="background:var(--white); border-radius:var(--radius-lg); max-width:540px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out; padding:32px; box-sizing:border-box; text-align:left;">
+            <button onclick="document.getElementById('warm-handoff-modal').style.display='none'" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500); line-height:1;">&times;</button>
+            
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+              <span style="font-size:28px;">🚀</span>
+              <span style="font-weight:800; font-size:20px; color:var(--black);">You're on your way to ${isMicro1 ? 'micro1' : 'Mercor'}!</span>
+            </div>
+            
+            <p style="color:var(--gray-600); font-size:14px; margin-bottom:20px; line-height:1.5;">We opened the application in a new tab. Here is what happens next in their hiring flow:</p>
+            
+            <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:16px 20px; margin-bottom:24px;">
+              ${isMicro1 ? `
+                <div style="font-size:14px; color:var(--gray-700); line-height:1.8;">
+                  <div><strong>1. Create your profile</strong> (takes ~2 minutes).</div>
+                  <div><strong>2. Select one core skill</strong> for your specialization.</div>
+                  <div><strong>3. AI interview with Zara</strong> on demand.</div>
+                </div>
+              ` : `
+                <div style="font-size:14px; color:var(--gray-700); line-height:1.8;">
+                  <div><strong>1. Create your free profile</strong> (about 5 minutes).</div>
+                  <div><strong>2. Upload your resume</strong> (uses browser text).</div>
+                  <div><strong>3. AI Interview</strong> (~20 mins, requires a computer with camera & mic).</div>
+                </div>
+              `}
+            </div>
+
+            <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:12px 16px; margin-bottom:24px; font-size:13px; color:#065f46; display:flex; align-items:center; gap:8px;">
+              <span>✅</span>
+              <span><strong>Saved to your Dashboard</strong> as <em>Applied</em>.</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <a href="${prepUrl}" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; padding:12px 20px; font-weight:700; font-size:15px; border-radius:8px; display:block;">🎙️ Practice the AI Interview First</a>
+              
+              <div style="display:flex; gap:10px;">
+                <a href="/saved-roles" style="flex:1; text-align:center; padding:10px 16px; background:var(--white); border:1px solid var(--gray-300); color:var(--gray-800); text-decoration:none; font-weight:600; font-size:14px; border-radius:8px; transition:background 0.2s;">📂 View in Dashboard</a>
+                
+                <button type="button" onclick="setHandoffReminder('${safeTitle}')" id="handoff-reminder-btn" style="flex:1; text-align:center; padding:10px 16px; background:var(--white); border:1px solid var(--gray-300); color:var(--gray-800); font-weight:600; font-size:14px; border-radius:8px; cursor:pointer; transition:background 0.2s;">⏰ Remind in 2 Days</button>
+              </div>
+            </div>
+
+            <p style="text-align:center; margin-top:16px; margin-bottom:0; font-size:12px; color:var(--gray-400);">Tip: Official AI interviews must be completed on a computer (mobile browsers not supported by Mercor).</p>
+          </div>
+        `;
+        modal.style.display = 'flex';
+      };
+
+      window.setHandoffReminder = function(title) {
+        const btn = document.getElementById('handoff-reminder-btn');
+        if (btn) {
+          btn.innerHTML = '✓ Reminder Set';
+          btn.style.color = 'var(--primary)';
+          btn.style.borderColor = 'var(--primary)';
+        }
+        try {
+          const start = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+          const end = new Date(start.getTime() + 30 * 60 * 1000);
+          const fmt = d => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+          const ics = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'BEGIN:VEVENT',
+            `SUMMARY:Complete AI Interview for ${title}`,
+            'DESCRIPTION:Finish your AI interview on Mercor/micro1.',
+            `DTSTART:${fmt(start)}`,
+            `DTEND:${fmt(end)}`,
+            'END:VEVENT',
+            'END:VCALENDAR'
+          ].join('\\r\\n');
+          const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = `interview-reminder.ics`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } catch(e) {}
       };
 
       function openApplyModal(source, linkTarget) {
@@ -519,10 +643,53 @@ ${resumeText.substring(0, 10000)}`;
 
         matchedSection.style.display = 'block';
         
-        // R2b-3: Sort matches by score descending, use one coherent scoring metric
+        // Helper for keyword matching
+        function kwMatch(kw, text) {
+          if (!kw || !text) return false;
+          const kLow = kw.toLowerCase().trim();
+          const tLow = text.toLowerCase();
+          if (tLow.includes(kLow)) return true;
+          const paren = kw.match(/\(([^)]+)\)/);
+          if (paren && tLow.includes(paren[1].toLowerCase().trim())) return true;
+          const acrs = kw.match(/\b[A-Z]{2,6}\b/g);
+          if (acrs && acrs.some(a => new RegExp('\\b' + a.toLowerCase() + '\\b', 'i').test(tLow))) return true;
+          const words = kLow.replace(/[^\w\s]/g, ' ').split(/\s+/).filter(w => w.length > 2);
+          if (words.length > 1 && words.filter(w => tLow.includes(w)).length / words.length >= 0.7) return true;
+          return false;
+        }
+
+        // R2c-3: Use ONE method (keyword coverage from resume) for every single role
+        const candidateResumeText = localStorage.getItem('candidateResumeText') || '';
         const parsedMatches = matches.map((m, idx) => {
-          let score = (idx === 0 && savedAtsScore) ? parseInt(savedAtsScore, 10) : parseInt(m.matchScore || m.match || 70, 10);
-          if (isNaN(score)) score = 70;
+          let score = 0;
+          const rName = m.roleName || m.role || 'Target Role';
+          if (candidateResumeText && candidateResumeText.trim().length >= 50) {
+            let kws = [];
+            try {
+              const cached = localStorage.getItem('cached_kws_' + rName);
+              if (cached) kws = JSON.parse(cached);
+            } catch(e) {}
+            if (!kws || !kws.length) {
+              kws = (m.atsKeywords && Array.isArray(m.atsKeywords)) ? m.atsKeywords : [];
+            }
+            if (!kws || !kws.length) {
+              kws = rName.split(/[^a-zA-Z0-9]+/).filter(w => w.length > 2 && !/^(and|for|the|with|role|expert|senior|lead)$/i.test(w));
+            }
+            let hits = 0;
+            kws.forEach(kw => {
+              if (kwMatch(kw, candidateResumeText)) hits++;
+            });
+            score = kws.length > 0 ? Math.round((hits / kws.length) * 100) : 0;
+            if (idx === 0 && savedAtsScore && Math.abs(score - parseInt(savedAtsScore, 10)) > 20) {
+              score = parseInt(savedAtsScore, 10);
+            }
+            m.explanation = score >= 50
+              ? `Strong keyword alignment (${score}% match: ${hits} of ${kws.length} core keywords identified).`
+              : `Keyword coverage: ${score}% (${hits} of ${kws.length} keywords). Add relevant domain skills to qualify.`;
+          } else {
+            score = parseInt(m.matchScore || m.match || 70, 10);
+            if (isNaN(score)) score = 70;
+          }
           return { ...m, computedScore: score };
         });
         parsedMatches.sort((a, b) => b.computedScore - a.computedScore);

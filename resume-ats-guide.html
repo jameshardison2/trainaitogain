@@ -635,26 +635,40 @@ Experience
         
         
         if (keywordSets[selectedRole] && keywordSets[selectedRole].includes("Evaluation")) {
-            kwListEl.innerHTML = '<div style="font-size:12px; color:var(--primary); font-weight:700;">🤖 AI is generating precise industry keywords for this role...</div>';
-            try {
-                                const prompt = `You are an expert technical recruiter. Based ONLY on the job title '${selectedRole}', provide a comma-separated list of exactly 8 core industry keywords (hard skills, software, methodologies) required for this role. Only output the keywords separated by commas, nothing else.`;
-                
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
-                
-                const response = await fetch('/api/generateAiResponse', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({contents: [{parts: [{text: prompt}]}]}),
-                    signal: controller.signal
-                });
-                clearTimeout(timeoutId);
-                const result = await response.json();
-                const text = result.candidates[0].content.parts[0].text;
-                const kws = text.split(',').map(s => s.trim()).filter(s => s);
-                keywordSets[selectedRole] = kws;
-            } catch (err) {
-                console.error("Gemini failed", err);
+            const cached = localStorage.getItem('cached_kws_' + selectedRole);
+            if (cached) {
+                try {
+                    const parsed = JSON.parse(cached);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        keywordSets[selectedRole] = parsed;
+                    }
+                } catch(e) {}
+            }
+            if (keywordSets[selectedRole].includes("Evaluation")) {
+                kwListEl.innerHTML = '<div style="font-size:12px; color:var(--primary); font-weight:700;">🤖 AI is generating precise industry keywords for this role...</div>';
+                try {
+                    const prompt = `You are an expert technical recruiter. Based ONLY on the job title '${selectedRole}', provide a comma-separated list of exactly 8 core industry keywords (hard skills, software, methodologies) required for this role. Only output the keywords separated by commas, nothing else.`;
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 8000);
+                    
+                    const response = await fetch('/api/generateAiResponse', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({contents: [{parts: [{text: prompt}]}]}),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    const result = await response.json();
+                    const text = result.candidates[0].content.parts[0].text;
+                    const kws = text.split(',').map(s => s.trim()).filter(s => s);
+                    if (kws.length > 0) {
+                        keywordSets[selectedRole] = kws;
+                        localStorage.setItem('cached_kws_' + selectedRole, JSON.stringify(kws));
+                    }
+                } catch (err) {
+                    console.error("Gemini failed", err);
+                }
             }
         }
         

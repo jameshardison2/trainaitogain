@@ -29,7 +29,9 @@ window.addEventListener('unhandledrejection', function(event) {
   <style>
     body { background: var(--black); color: var(--white); }
     
-    .prep-hub { max-width: 1500px; margin: 0 auto; padding: 64px 24px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: stretch; }
+    .prep-hub { max-width: 1500px; margin: 0 auto; padding: 32px 24px 64px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: stretch; }
+    .prep-hub.not-started { display: block; max-width: 800px; }
+    .prep-hub.not-started #copilot-panel { display: none !important; }
     
     @media (max-width: 800px) {
         .prep-hub { grid-template-columns: 1fr; }
@@ -175,10 +177,10 @@ window.addEventListener('unhandledrejection', function(event) {
   <p style="color:var(--primary); font-size:14px; font-weight:700; margin-bottom:24px;">Use this to prepare for Mercor and micro1 AI interviews.</p>
 </div>
 
-<div class="prep-hub">
+<div class="prep-hub not-started">
   
-  <!-- Dynamic Live Copilot Panel -->
-  <div class="cheat-sheet" id="copilot-panel" style="display:flex; flex-direction:column; position:relative; overflow:hidden;">
+  <!-- Dynamic Live Copilot Panel (Hidden initially per R3-2) -->
+  <div class="cheat-sheet" id="copilot-panel" style="display:none; flex-direction:column; position:relative; overflow:hidden;">
     <div style="position:absolute; top:0; left:0; width:100%; height:4px; background:linear-gradient(90deg, transparent, var(--primary), transparent); animation: scanline 2s infinite linear; display:none;" id="copilot-scanline"></div>
     <h3 style="margin-bottom:16px;">
         <span style="display:inline-block; width:12px; height:12px; background:var(--primary); border-radius:50%; margin-right:8px; box-shadow:0 0 10px var(--primary); animation:pulse 2s infinite;"></span>
@@ -206,43 +208,91 @@ window.addEventListener('unhandledrejection', function(event) {
   <div class="sim-container" id="sim-container">
     
     <div id="setup-view">
-      <div class="avatar-ring">
-        <div class="avatar-icon">🎙️</div>
+      <div class="avatar-ring" style="width:72px; height:72px; margin:0 auto 16px;">
+        <div class="avatar-icon" style="font-size:32px;">🎙️</div>
       </div>
-      <h2 style="font-size:28px; margin-bottom:16px;">Voice AI Simulator</h2>
-      <p style="color:#aaa; margin-bottom:24px; font-size:15px; line-height:1.6;">This simulator uses your microphone to conduct a real, high-pressure audio interview. The AI will speak the questions out loud and analyze your voice for immediate coaching feedback.</p>
-      
-      
-      <div id="custom-domain-selector" style="position:relative; max-width:600px; margin: 0 auto 24px auto; text-align:left; z-index:1000;">
-          <div id="cds-display" style="width:100%; padding:14px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:border-color 0.2s;">
+      <h2 style="font-size:26px; margin:0 0 8px; font-weight:800;">Mock Interview Practice</h2>
+      <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); padding:4px 14px; border-radius:100px; font-size:12px; font-weight:700; color:var(--primary); margin-bottom:16px;">
+        <span>⏱️ 5 questions • About 10 minutes • Low-stakes practice</span>
+      </div>
+
+      <!-- In-App Browser Warning (R3-3) -->
+      <div id="inapp-browser-warning" style="display:none; background:rgba(245,158,11,0.12); border:1px solid #f59e0b; color:#fbbf24; border-radius:8px; padding:10px 14px; font-size:13px; margin:0 auto 16px; max-width:600px; text-align:left; line-height:1.5;">
+        📱 <strong>In-app browser detected:</strong> For voice microphone practice, open this page in Chrome or Safari. Or choose <strong>Type my answers instead</strong> below.
+      </div>
+
+      <!-- Role Selector (Above fold on mobile! R3-2) -->
+      <div id="custom-domain-selector" style="position:relative; max-width:600px; margin: 0 auto 16px auto; text-align:left; z-index:1000;">
+          <div id="cds-display" style="width:100%; padding:14px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:var(--white); font-family:inherit; font-size:15px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:border-color 0.2s;">
               <span id="cds-text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Role: Senior Python / ML Evaluator</span>
               <span style="font-size:12px; margin-left:12px;">▼</span>
           </div>
           <div id="cds-options" style="display:none; position:absolute; top:100%; left:0; width:100%; background:#1a1a1a; border:1px solid rgba(255,255,255,0.2); border-radius:8px; max-height:280px; overflow-y:auto; z-index:100; margin-top:4px; box-shadow:0 10px 25px rgba(0,0,0,0.8);">
-              <!-- Options will be injected by JS -->
+              <!-- Options injected by JS -->
           </div>
       </div>
-      
-      <!-- Preferences -->
-      <div style="max-width:600px; margin: 0 auto 24px auto; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:20px; text-align:left; box-shadow:inset 0 2px 10px rgba(0,0,0,0.5);">
-          <h3 style="font-size:14px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:16px; margin-top:0;">Simulator Preferences</h3>
-          
-          <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:24px; padding:12px; background:rgba(0,0,0,0.2); border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
-              <input type="checkbox" id="toggle-teleprompter" style="width:20px; height:20px; accent-color:var(--primary); cursor:pointer;">
-              <span style="font-size:15px; color:white; font-weight:600;">Enable Teleprompter (Display Ideal Answer)</span>
-          </label>
-          
-          <label style="display:block; font-size:12px; color:#aaa; margin-bottom:8px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">AI Voice Model (Pick the most human one):</label>
-          <div style="position:relative;">
-              <select id="voice-select" style="width:100%; padding:12px 16px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:#111; color:white; font-size:15px; appearance:none; cursor:pointer; font-weight:500;">
-                  <option value="">Loading voices...</option>
-              </select>
-              <span style="position:absolute; right:16px; top:12px; color:#aaa; pointer-events:none; font-size:12px;">▼</span>
-          </div>
-          <p style="font-size:12px; color:#888; margin-top:8px; margin-bottom:0; line-height:1.4;">If you don't like the robotic voice, click the dropdown above to choose a premium, humanized OS voice.</p>
+
+      <!-- Action Buttons Row (Starts in first screen on mobile! R3-2 & R3-3) -->
+      <div style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
+        <button class="btn-sim" id="start-btn" style="padding:14px 28px; font-size:15px;">
+          <svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+          Start Voice Practice
+        </button>
+        <button class="btn-sim" id="start-text-btn" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); box-shadow:none; padding:14px 24px; font-size:15px;">
+          ⌨️ Type My Answers Instead
+        </button>
       </div>
+
+      <!-- Calm Framing (R3-2) -->
+      <p style="color:#aaa; font-size:14px; line-height:1.5; margin:0 auto 16px; max-width:540px;">
+        Low-stakes practice. About 10 minutes. You can redo any answer. Audio stays private in your browser — nothing is recorded or saved to any server.
+      </p>
+
+      <!-- 60-Second Drill (R3-4) -->
+      <div style="max-width:600px; margin: 0 auto 18px auto; background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25); border-radius:8px; padding:12px 16px; text-align:left; font-size:13px; color:#bfdbfe; line-height:1.5;">
+        <strong>💡 60-Second Drill:</strong> The real AI interview asks directly about your past experience. Pick 3 bullet points on your resume right now and practice explaining the situation and measurable outcome in 60 seconds each.
+      </div>
+
+      <!-- Collapsible Simulator Settings (R3-2) -->
+      <details style="max-width:600px; margin: 0 auto 16px auto; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:14px 18px; text-align:left;">
+          <summary style="cursor:pointer; font-size:13px; font-weight:700; color:#aaa; outline:none; user-select:none;">⚙️ Simulator Settings (Voice & Teleprompter)</summary>
+          <div style="margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.05);">
+              <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:14px; padding:10px 12px; background:rgba(0,0,0,0.2); border-radius:6px; border:1px solid rgba(255,255,255,0.05);">
+                  <input type="checkbox" id="toggle-teleprompter" style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;">
+                  <span style="font-size:14px; color:white; font-weight:600;">Enable Teleprompter (Display Ideal Answer outline)</span>
+              </label>
+              
+              <label style="display:block; font-size:11px; color:#aaa; margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">AI Voice Model (Natural English Voices):</label>
+              <div style="position:relative;">
+                  <select id="voice-select" style="width:100%; padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:#111; color:white; font-size:14px; appearance:none; cursor:pointer;">
+                      <option value="">Loading voices...</option>
+                  </select>
+                  <span style="position:absolute; right:14px; top:10px; color:#aaa; pointer-events:none; font-size:11px;">▼</span>
+              </div>
+          </div>
+      </details>
+
+      <!-- Collapsible Interview Readiness Checklist (R3-6) -->
+      <details style="max-width:600px; margin: 0 auto 24px auto; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:14px 18px; text-align:left;">
+          <summary style="cursor:pointer; font-size:13px; font-weight:700; color:var(--primary); outline:none; user-select:none;">📋 Official AI Interview Readiness Checklist (Mercor & micro1)</summary>
+          <div style="margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.05); font-size:13px; color:#ccc; line-height:1.6;">
+              <ul style="padding-left:18px; margin:0 0 12px 0;">
+                <li style="margin-bottom:8px;"><strong>Use a computer, not a phone:</strong> Mercor does not support mobile browsers. Full-screen sharing is required.</li>
+                <li style="margin-bottom:8px;"><strong>Chrome browser:</strong> Camera and microphone enabled. Edge/Safari supported; Firefox not supported.</li>
+                <li style="margin-bottom:8px;"><strong>Quiet room, face visible:</strong> Good lighting in front of your face. Use headphones with a mic to eliminate room echo.</li>
+                <li style="margin-bottom:8px;"><strong>Block 20 uninterrupted minutes:</strong> Have paper and pen ready for notes.</li>
+                <li style="margin-bottom:8px;"><strong>Know your resume line by line:</strong> The AI asks directly about your past experience. Have 2 or 3 short stories with quantified results.</li>
+                <li style="margin-bottom:8px;"><strong>Speak naturally:</strong> Don't read from a script; eye contact with the camera looks confident.</li>
+                <li style="margin-bottom:8px;"><strong>Mercor practice rule:</strong> Use Mercor's free, unlimited practice interview first! Official retakes are capped at 3 across applications and visible to hiring managers.</li>
+                <li style="margin-bottom:8px;"><strong>micro1 AI interview:</strong> Pick one core skill for your profile; use the Interview Prep tool; request feedback if not certified.</li>
+              </ul>
+              <div id="mobile-checklist-tip" style="display:none; background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.25); border-radius:6px; padding:10px 12px; color:#93c5fd; font-size:12px;">
+                📱 <strong>On a phone?</strong> The real interview needs a computer. <a href="mailto:?subject=AI%20Interview%20Practice&body=Here%20is%20the%20mock%20interview%20link:%20https://trainaitogain.com/ai-interview" style="color:var(--primary); font-weight:700; text-decoration:underline;">Email yourself this link</a> so it's ready when you're at your computer.
+              </div>
+          </div>
+      </details>
       
-      <!-- Keep the select hidden so existing references (if any) don't crash -->
+      <!-- Hidden domain selector for JS compatibility -->
       <select id="domain-selector" style="display:none;">
         <option value="software">Role: Senior Python / ML Evaluator</option>
         <option value="software">Role: C++ Systems & Performance</option>
@@ -299,14 +349,8 @@ window.addEventListener('unhandledrejection', function(event) {
         <option value="general">Role: General AI Training</option>
       </select>
       
-      <br>
-      <button class="btn-sim" id="start-btn">
-        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-        Start Voice Interview
-      </button>
-      <p style="font-size: 12px; color: #666; margin-top: 16px;">(Requires Microphone Permission on Chrome/Safari)</p>
       <!-- Video Masterclass CTA -->
-      <div style="background:linear-gradient(135deg, #1f2937 0%, #111827 100%); border:1px solid #374151; padding:24px; border-radius:12px; margin-top:40px; margin-bottom:24px; text-align:center; box-shadow:0 10px 25px -5px rgba(0, 0, 0, 0.3);">
+      <div style="background:linear-gradient(135deg, #1f2937 0%, #111827 100%); border:1px solid #374151; padding:24px; border-radius:12px; margin-top:28px; margin-bottom:12px; text-align:center; box-shadow:0 10px 25px -5px rgba(0, 0, 0, 0.3);">
         <div style="font-size:24px; margin-bottom:8px;">📺</div>
         <h3 style="margin-top:0; color:white; font-size:18px; font-weight:800;">Bonus: AI Interview Masterclass</h3>
         <p style="color:#9ca3af; margin-bottom:20px; font-size:14px; line-height:1.5;">Watch these 14 expert video breakdowns of how the AI actually grades your audio before you begin.</p>
@@ -317,49 +361,78 @@ window.addEventListener('unhandledrejection', function(event) {
 
     <div id="active-view" style="display:none; text-align:center; position:relative; width:100%;">
       
-      <div class="video-container" style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); margin-bottom:24px; box-shadow: 0 12px 32px rgba(0,0,0,0.8);">
+      <!-- Progress Bar & Question Count (R3-2) -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding:0 4px;">
+        <div style="font-size:13px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em;" id="progress-indicator">
+          Question 1 of 5
+        </div>
+        <div id="mode-badge" style="font-size:12px; font-weight:700; background:rgba(255,255,255,0.08); padding:4px 12px; border-radius:100px; color:#ccc;">
+          🎙️ Voice Mode
+        </div>
+      </div>
+      
+      <!-- Video Container (Voice Mode) -->
+      <div class="video-container" id="sim-video-container" style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); margin-bottom:20px; box-shadow: 0 12px 32px rgba(0,0,0,0.8);">
           <div id="teleprompter-box" style="position:absolute; top:0; left:0; width:100%; height:80%; z-index:100; background:linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, transparent 100%); display:none; padding:32px 64px; box-sizing:border-box; text-align:center; overflow:hidden; pointer-events:none;">
               <div style="font-size:11px; color:var(--primary); text-transform:uppercase; letter-spacing:0.1em; font-weight:800; margin-bottom:24px; opacity:0.8;">Live Teleprompter</div>
-              <div id="teleprompter-text" style="font-size:32px; color:rgba(255,255,255,0.9); font-weight:800; line-height:1.6; text-shadow: 0 2px 8px rgba(0,0,0,1); will-change:transform;"></div>
+              <div id="teleprompter-text" style="font-size:28px; color:rgba(255,255,255,0.9); font-weight:800; line-height:1.6; text-shadow: 0 2px 8px rgba(0,0,0,1); will-change:transform;"></div>
           </div>
           <button id="stop-ai-btn" style="position:absolute; top:16px; right:16px; z-index:100; background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid rgba(239,68,68,0.4); border-radius:100px; padding:8px 16px; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; cursor:pointer; display:none; align-items:center; gap:6px; backdrop-filter:blur(8px); transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.4)'" onmouseout="this.style.background='rgba(239,68,68,0.2)'">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
             Pause AI
           </button>
           
-          <!-- Advanced Diagnostics Overlay -->
           <div id="lighting-warning" style="position:absolute; top:20px; left:20px; z-index:100; background:rgba(239,68,68,0.9); color:white; padding:8px 16px; border-radius:8px; font-weight:700; font-size:14px; display:none; align-items:center; gap:8px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
              ⚠️ POOR LIGHTING: AI scanners may fail to track your face.
           </div>
           <div id="pace-warning" style="position:absolute; top:60px; left:20px; z-index:100; background:rgba(245,158,11,0.9); color:white; padding:8px 16px; border-radius:8px; font-weight:700; font-size:14px; display:none; align-items:center; gap:8px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
              ⏱️ PACE: Speaking too fast. AI transcription will fail.
           </div>
-          <!-- User's Camera -->
 
           <video id="user-camera" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1); display:none;"></video>
           
-          <!-- Placeholder before camera starts -->
           <div id="camera-placeholder" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#1a1a1a;">
               <div style="font-size:48px; margin-bottom:16px; animation: pulse-ring-blue 2s infinite;">📹</div>
               <p style="color:#aaa; font-weight:600;">Accessing Camera...</p>
           </div>
           
-
-          
-          <!-- Sleek Cinematic Subtitles -->
           <div style="position:absolute; bottom:32px; left:0; width:100%; padding:0 32px; box-sizing:border-box; text-align:center; display:flex; justify-content:center;">
               <div class="sim-text" id="sim-text" style="display:inline-block; font-size:16px; font-weight:600; line-height:1.5; color:white; margin:0; background:rgba(0,0,0,0.75); padding:16px 24px; border-radius:12px; backdrop-filter:blur(8px); max-width:800px; box-shadow:0 4px 24px rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1);">Initializing AI...</div>
           </div>
       </div>
+
+      <!-- Typed Answer Container (R3-3) -->
+      <div id="typed-answer-container" style="display:none; text-align:left; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:20px; margin-bottom:20px;">
+        <div style="font-size:13px; font-weight:700; color:#aaa; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em;">Type Your Answer:</div>
+        <textarea id="typed-answer-input" placeholder="Type your response here using the STAR format (Situation, Task, Action, Result)..." style="width:100%; min-height:130px; background:rgba(0,0,0,0.6); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:14px; font-family:inherit; font-size:15px; box-sizing:border-box; resize:vertical; line-height:1.5; outline:none;"></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; flex-wrap:wrap; gap:8px;">
+          <span style="font-size:12px; color:#888;">Aim for a direct answer + concrete example + outcome.</span>
+          <button class="btn-sim" id="submit-typed-btn" style="padding:10px 22px; font-size:14px;">Submit Answer ➔</button>
+        </div>
+      </div>
+
+      <!-- In-Page Coaching Feedback Box (R3-5) -->
+      <div id="in-page-feedback" style="display:none; text-align:left; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:20px; margin-bottom:24px;">
+        <div style="font-size:12px; font-weight:800; color:#3b82f6; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">Your Answer:</div>
+        <div id="feedback-transcript-text" style="font-size:14px; color:#ddd; font-style:italic; margin-bottom:16px; background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:6px; line-height:1.5;"></div>
+        
+        <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">Coaching Feedback:</div>
+        <div id="feedback-coaching-text" style="font-size:14px; color:white; line-height:1.6; white-space:pre-line;"></div>
+      </div>
       
-      
-      
-      <button class="btn-sim" id="finish-btn" style="display:none; margin:0 auto; background:#3b82f6; box-shadow:0 8px 24px rgba(59, 130, 246, 0.3);">
-        Done Answering
-      </button>
-      <button class="btn-sim" id="next-btn" style="display:none; margin:0 auto;">
-        Next Question ➔
-      </button>
+      <!-- Action Buttons Row (R3-5 Try Again & Next Question) -->
+      <div style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;">
+        <button class="btn-sim" id="finish-btn" style="display:none; margin:0; background:#3b82f6; box-shadow:0 8px 24px rgba(59, 130, 246, 0.3);">
+          Done Answering
+        </button>
+        <button class="btn-sim" id="try-again-btn" style="display:none; margin:0; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); box-shadow:none;">
+          🔄 Try Again
+        </button>
+        <button class="btn-sim" id="next-btn" style="display:none; margin:0;">
+          Next Question ➔
+        </button>
+      </div>
+
     </div>
   </div>
   
@@ -855,772 +928,769 @@ window.addEventListener('unhandledrejection', function(event) {
   ]
 };
 
+  // GA4 Event Tracking Helper (R3-1)
+  function trackMockEvent(eventName, params) {
+    try {
+      if (typeof gtag === 'function') {
+        gtag('event', eventName, params || {});
+      }
+    } catch(e) {}
+  }
+
   let totalScore = 0;
   let totalFillers = 0;
   let totalQuestionsAnswered = 0;
+  let currentQScore = 75;
   let currentDomain = "software";
-  let currentQuestions = domainData[currentDomain];
+  let currentQuestions = [];
   let currentQ = 0;
-  
+  let isTextMode = false;
+  let interviewStarted = false;
+  let interviewCompleted = false;
+
   const startBtn = document.getElementById('start-btn');
+  const startTextBtn = document.getElementById('start-text-btn');
   const nextBtn = document.getElementById('next-btn');
+  const tryAgainBtn = document.getElementById('try-again-btn');
+  const finishBtn = document.getElementById('finish-btn');
+  const submitTypedBtn = document.getElementById('submit-typed-btn');
   const setupView = document.getElementById('setup-view');
   const activeView = document.getElementById('active-view');
   const domainSelector = document.getElementById('domain-selector');
-  
-  // Auto-fill from ATS Scanner
-  const atsRole = localStorage.getItem('atsRole');
-  const atsDomain = localStorage.getItem('atsDomain');
-  
-  if (atsRole) {
-      const titleEl = document.querySelector('#setup-view h2');
-      if (titleEl) {
-          titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + atsRole + '</span>';
-      }
-  }
-  
-  if (atsDomain) {
-      const domLow = atsDomain.toLowerCase();
-      let matchedValue = 'software';
-      if (domLow.includes('medical') || domLow.includes('health')) matchedValue = 'medical';
-      if (domLow.includes('finance') || domLow.includes('quant')) matchedValue = 'finance';
-      if (domLow.includes('legal') || domLow.includes('law')) matchedValue = 'legal';
-      if (domLow.includes('creative') || domLow.includes('writer')) matchedValue = 'creative';
-      if (domLow.includes('data')) matchedValue = 'data';
-      if (domLow.includes('product')) matchedValue = 'product';
-      
-      domainSelector.value = matchedValue;
-      
-      // Update the option text to match their exact role!
-      const option = domainSelector.querySelector('option[value="' + matchedValue + '"]');
-      if (option && atsRole) {
-          // option.text hidden
-      }
+  const simText = document.getElementById('sim-text');
+
+  // Track abandonment if candidate leaves before completing (R3-1)
+  window.addEventListener('beforeunload', () => {
+    if (interviewStarted && !interviewCompleted) {
+      trackMockEvent('mock_abandoned', { last_question_number: currentQ + 1 });
+    }
+  });
+
+  // R3-3: Detect in-app browsers (LinkedIn, Instagram, FB)
+  const isInApp = /FBAN|FBAV|Instagram|LinkedIn|Twitter|ByteLocale|TikTok/i.test(navigator.userAgent);
+  if (isInApp) {
+    const inAppNotice = document.getElementById('inapp-browser-warning');
+    if (inAppNotice) inAppNotice.style.display = 'block';
   }
 
-  
-  
+  // R3-6: Detect mobile for readiness checklist tip
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    const mobTip = document.getElementById('mobile-checklist-tip');
+    if (mobTip) mobTip.style.display = 'block';
+  }
+
+  // Auto-fill from ATS Scanner or URL param
+  const urlParams = new URLSearchParams(window.location.search);
+  const queryRole = urlParams.get('role');
+  if (queryRole) {
+    localStorage.setItem('atsRole', queryRole);
+  }
+  const atsRole = queryRole || localStorage.getItem('atsRole');
+  const atsDomain = localStorage.getItem('atsDomain');
+
+  if (atsRole) {
+    const titleEl = document.querySelector('#setup-view h2');
+    if (titleEl) {
+      titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + atsRole + '</span>';
+    }
+  }
+
+  if (atsDomain) {
+    const domLow = atsDomain.toLowerCase();
+    let matchedValue = 'software';
+    if (domLow.includes('medical') || domLow.includes('health') || domLow.includes('nurse')) matchedValue = 'medical';
+    if (domLow.includes('finance') || domLow.includes('quant')) matchedValue = 'finance';
+    if (domLow.includes('legal') || domLow.includes('law')) matchedValue = 'legal';
+    if (domLow.includes('creative') || domLow.includes('writer')) matchedValue = 'creative';
+    if (domLow.includes('data')) matchedValue = 'data';
+    if (domLow.includes('product')) matchedValue = 'product';
+    domainSelector.value = matchedValue;
+    currentDomain = matchedValue;
+  }
+
   const cdsDisplay = document.getElementById('cds-display');
   const cdsOptions = document.getElementById('cds-options');
   const cdsText = document.getElementById('cds-text');
-  
+
   // Populate custom options from hidden select
   Array.from(domainSelector.options).forEach(opt => {
-      const div = document.createElement('div');
-      div.style.padding = '12px 16px';
-      div.style.cursor = 'pointer';
-      div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-      div.style.color = '#ccc';
-      div.style.fontSize = '14px';
-      div.style.transition = 'background 0.2s, color 0.2s';
-      div.innerText = opt.text;
-      
-      div.onmouseover = () => { div.style.background = 'rgba(255,255,255,0.1)'; div.style.color = 'white'; };
-      div.onmouseout = () => { div.style.background = 'transparent'; div.style.color = '#ccc'; };
-      
-      div.onclick = () => {
-          cdsText.innerText = opt.text;
-          cdsOptions.style.display = 'none';
-          domainSelector.value = opt.value;
-          currentDomain = opt.value;
-          currentQuestions = domainData[currentDomain];
-          
-          // FIX UP THE POSITION ABOVE (h2 title)
-          const newRole = opt.text.replace("Role: ", "");
-          const titleEl = document.querySelector('#setup-view h2');
-          if (titleEl) {
-              titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + newRole + '</span>';
-          }
-      };
-      cdsOptions.appendChild(div);
-  });
-  
-  cdsDisplay.onclick = () => {
-      cdsOptions.style.display = cdsOptions.style.display === 'none' ? 'block' : 'none';
-      cdsDisplay.style.borderColor = cdsOptions.style.display === 'block' ? 'var(--primary)' : 'rgba(255,255,255,0.2)';
-  };
-  
-  document.addEventListener('click', (e) => {
-      const container = document.getElementById('custom-domain-selector');
-      if (container && !container.contains(e.target)) {
-          cdsOptions.style.display = 'none';
-          cdsDisplay.style.borderColor = 'rgba(255,255,255,0.2)';
+    const div = document.createElement('div');
+    div.style.padding = '12px 16px';
+    div.style.cursor = 'pointer';
+    div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+    div.style.color = '#ccc';
+    div.style.fontSize = '14px';
+    div.style.transition = 'background 0.2s, color 0.2s';
+    div.innerText = opt.text;
+
+    div.onmouseover = () => { div.style.background = 'rgba(255,255,255,0.1)'; div.style.color = 'white'; };
+    div.onmouseout = () => { div.style.background = 'transparent'; div.style.color = '#ccc'; };
+
+    div.onclick = () => {
+      cdsText.innerText = opt.text;
+      cdsOptions.style.display = 'none';
+      domainSelector.value = opt.value;
+      currentDomain = opt.value;
+
+      const newRole = opt.text.replace("Role: ", "");
+      const titleEl = document.querySelector('#setup-view h2');
+      if (titleEl) {
+        titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + newRole + '</span>';
       }
+    };
+    cdsOptions.appendChild(div);
   });
-  
-  // Also update cdsText if atsRole was set on load
+
+  cdsDisplay.onclick = () => {
+    cdsOptions.style.display = cdsOptions.style.display === 'none' ? 'block' : 'none';
+    cdsDisplay.style.borderColor = cdsOptions.style.display === 'block' ? 'var(--primary)' : 'rgba(255,255,255,0.2)';
+  };
+
+  document.addEventListener('click', (e) => {
+    const container = document.getElementById('custom-domain-selector');
+    if (container && !container.contains(e.target)) {
+      cdsOptions.style.display = 'none';
+      cdsDisplay.style.borderColor = 'rgba(255,255,255,0.2)';
+    }
+  });
+
   if (atsRole) {
-      cdsText.innerText = "Role: " + atsRole;
+    cdsText.innerText = "Role: " + atsRole;
   }
 
-  
-  
-  
-  const simText = document.getElementById('sim-text');
-  
-  
-  let transcriptEnabled = false;
-  
   let teleprompterEnabled = false;
   document.getElementById('toggle-teleprompter').addEventListener('change', (e) => {
-      teleprompterEnabled = e.target.checked;
+    teleprompterEnabled = e.target.checked;
   });
-  
+
+  // Filter voices: natural English voices only (R3-2, R2b-6)
   let availableVoices = [];
   let voiceInterval;
   function populateVoiceList() {
-      if(typeof synth === 'undefined') return;
-      
-      let rawVoices = synth.getVoices();
-      const voiceSelect = document.getElementById('voice-select');
-      
-      if (rawVoices.length === 0) {
-          if (voiceSelect && voiceSelect.options.length === 1 && voiceSelect.options[0].textContent.includes('Loading')) {
-              voiceSelect.options[0].textContent = "System Default Voice (Auto-selected)";
-          }
-          return; // Still loading or blocked by browser
+    if (typeof synth === 'undefined') return;
+    let rawVoices = synth.getVoices();
+    const voiceSelect = document.getElementById('voice-select');
+    if (rawVoices.length === 0) {
+      if (voiceSelect && voiceSelect.options.length === 1 && voiceSelect.options[0].textContent.includes('Loading')) {
+        voiceSelect.options[0].textContent = "System Default Voice (Auto-selected)";
       }
-      
-      if (voiceInterval) clearInterval(voiceInterval);
+      return;
+    }
+    if (voiceInterval) clearInterval(voiceInterval);
 
-      // Filter natural English voices and exclude novelty / robot voices
-      const noveltyNames = ['bubbles', 'organ', 'zarvox', 'bad news', 'bells', 'boing', 'cellos', 'deranged', 'good news', 'hysterical', 'pipe organ', 'trinoids', 'whisper', 'wobble', 'albert', 'bahh', 'fred', 'junior', 'ralph', 'jester', 'kathy'];
-      let filtered = rawVoices.filter(v => {
-          const lang = (v.lang || '').toLowerCase();
-          const name = (v.name || '').toLowerCase();
-          const isEnglish = lang.startsWith('en') || lang.includes('en-us') || lang.includes('en-gb') || lang.includes('en-in') || lang.includes('en-au');
-          if (!isEnglish) return false;
-          if (noveltyNames.some(n => name.includes(n))) return false;
-          return true;
+    const noveltyNames = ['bubbles', 'organ', 'zarvox', 'bad news', 'bells', 'boing', 'cellos', 'deranged', 'good news', 'hysterical', 'pipe organ', 'trinoids', 'whisper', 'wobble', 'albert', 'bahh', 'fred', 'junior', 'ralph', 'jester', 'kathy', 'grandma', 'grandpa', 'eddy', 'flo', 'shelley', 'rocko', 'sandy'];
+    let filtered = rawVoices.filter(v => {
+      const lang = (v.lang || '').toLowerCase();
+      const name = (v.name || '').toLowerCase();
+      const isEnglish = lang.startsWith('en') || lang.includes('en-us') || lang.includes('en-gb') || lang.includes('en-in') || lang.includes('en-au');
+      if (!isEnglish) return false;
+      if (noveltyNames.some(n => name.includes(n))) return false;
+      return true;
+    });
+
+    if (filtered.length === 0) filtered = rawVoices;
+    if (availableVoices.length === filtered.length) return;
+    availableVoices = filtered;
+
+    if (voiceSelect) {
+      voiceSelect.innerHTML = '';
+      availableVoices.forEach((v, i) => {
+        const option = document.createElement('option');
+        option.textContent = v.name + " (" + (v.lang) + ")";
+        option.value = i;
+        if (v.name === 'Google US English' || v.name === 'Ava' || v.name === 'Allison' || v.name === 'Samantha' || v.name.includes('Natural')) {
+          option.selected = true;
+        }
+        voiceSelect.appendChild(option);
       });
+    }
+  }
 
-      if (filtered.length === 0) filtered = rawVoices; // Fallback if browser doesn't tag langs
-      
-      // Only rebuild if list changed
-      if (availableVoices.length === filtered.length) return;
-      
-      availableVoices = filtered;
-      
-      if (voiceSelect) {
-          voiceSelect.innerHTML = '';
-          availableVoices.forEach((v, i) => {
-              const option = document.createElement('option');
-              option.textContent = v.name + " (" + (v.lang) + ")";
-              option.value = i;
-              
-              if (v.name === 'Google US English' || v.name === 'Ava' || v.name === 'Allison' || v.name === 'Samantha' || v.name.includes('Natural')) {
-                  option.selected = true;
-              }
-              
-              voiceSelect.appendChild(option);
-          });
-      }
-  }
-  
-  // Try populating on user interaction as well
-  document.addEventListener('click', populateVoiceList, {once: false});
-  document.addEventListener('touchstart', populateVoiceList, {once: false});
-  
+  document.addEventListener('click', populateVoiceList);
+  document.addEventListener('touchstart', populateVoiceList);
   if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-      window.speechSynthesis.onvoiceschanged = populateVoiceList;
+    window.speechSynthesis.onvoiceschanged = populateVoiceList;
   }
-  // Fallback: poll every 250ms until voices load (max 10 seconds)
   let pollAttempts = 0;
   voiceInterval = setInterval(() => {
-      populateVoiceList();
-      pollAttempts++;
-      if (pollAttempts > 40) clearInterval(voiceInterval); // Give up after 10s
+    populateVoiceList();
+    pollAttempts++;
+    if (pollAttempts > 40) clearInterval(voiceInterval);
   }, 250);
   populateVoiceList();
 
+  // R3-4: Construct questions that match the real interview
+  function buildInterviewQuestions(targetRoleName, targetDomain) {
+    const candidateResume = localStorage.getItem('candidateResumeText');
+    const matchedDom = (targetDomain || 'general').toLowerCase();
+    const fallbackBank = domainData[matchedDom] || domainData['general'];
+    let questions = [];
+
+    if (candidateResume && candidateResume.trim().length > 50) {
+      // 3 resume-based questions followed by 2 domain-matched scenario questions
+      questions.push({
+        q: "Walk me through your most recent role and what you were primarily responsible for day to day.",
+        answer: "In my recent role, I led core deliverables, coordinated project priorities, and maintained rigorous quality standards.",
+        keywords: ["responsible", "role", "experience", "team", "project", "led", "managed", "delivered"],
+        feedbackHit: "Clear introduction. You gave direct context on your role and daily scope of ownership.",
+        feedbackMiss: "Stronger answers usually mention one specific system, metric, or scope of responsibility you directly owned."
+      });
+
+      questions.push({
+        q: "Tell me about a specific project or achievement from your experience that produced a measurable result. What was your role and the outcome?",
+        answer: "I identified an operational challenge, designed and implemented a solution, which resulted in a measurable improvement.",
+        keywords: ["result", "project", "outcome", "improved", "increased", "reduced", "led to", "action", "achieved"],
+        feedbackHit: "Great focus on results. Highlighting concrete metrics aligns directly with how AI screeners evaluate competence.",
+        feedbackMiss: "Stronger answers usually follow the STAR method: Situation, Task, Action, and the final quantified Result (e.g. 'which resulted in...')."
+      });
+
+      questions.push({
+        q: "Which part of your background in " + (targetRoleName || "your field") + " makes you a strong reviewer of AI model outputs?",
+        answer: "My domain experience allows me to spot subtle hallucinations, verify edge cases, and uphold factual precision that generalists miss.",
+        keywords: ["accuracy", "quality", "domain", "evaluation", "review", "standards", "error", "factual", "edge case"],
+        feedbackHit: "Excellent connection. Demonstrating how your domain expertise catches subtle edge cases is exactly what AI labs look for.",
+        feedbackMiss: "Stronger answers usually explain how you verify edge cases or spot hallucinations that automated checkers overlook."
+      });
+
+      if (fallbackBank && fallbackBank.length >= 2) {
+        questions.push(fallbackBank[0]);
+        questions.push(fallbackBank[1]);
+      } else {
+        questions.push(domainData['general'][0]);
+        questions.push(domainData['general'][1]);
+      }
+    } else {
+      questions.push({
+        q: "Tell me about your background in " + (targetRoleName || "this field") + " and what types of complex problems you typically solve.",
+        answer: "I specialize in core domain challenges, applying best practices to deliver reliable, high-quality outcomes.",
+        keywords: ["background", "experience", "problem", "solve", "skills", "projects", "tools"],
+        feedbackHit: "Great summary of your core strengths and problem-solving methodology.",
+        feedbackMiss: "Stronger answers usually give one concrete example of a challenging problem you personally resolved."
+      });
+      questions.push({
+        q: "How do you approach evaluating or auditing work when accuracy and strict guidelines are critical?",
+        answer: "I establish a systematic checklist, cross-reference source requirements, and test against boundary edge cases.",
+        keywords: ["accuracy", "guidelines", "checklist", "verify", "audit", "systematic", "standards", "quality"],
+        feedbackHit: "Strong systematic mindset. Having a verifiable audit process is essential for AI evaluation roles.",
+        feedbackMiss: "Stronger answers usually describe a specific step-by-step verification checklist you use to maintain accuracy."
+      });
+
+      if (fallbackBank && fallbackBank.length >= 3) {
+        questions.push(fallbackBank[0]);
+        questions.push(fallbackBank[1]);
+        questions.push(fallbackBank[2]);
+      } else {
+        questions.push(domainData['general'][0]);
+        questions.push(domainData['general'][1]);
+        questions.push(domainData['general'][2]);
+      }
+    }
+
+    return questions.slice(0, 5); // Exactly 5 questions
+  }
 
   function setUIState(state, text) {
     if (text) {
-        simText.innerText = text;
-        simText.style.display = 'inline-block';
+      simText.innerText = text;
+      simText.style.display = 'inline-block';
     }
-    
+
     if (state === 'speaking') {
-      
       nextBtn.style.display = 'none';
-      if(document.getElementById('finish-btn')) document.getElementById('finish-btn').style.display = 'none';
+      if (tryAgainBtn) tryAgainBtn.style.display = 'none';
+      if (finishBtn) finishBtn.style.display = 'none';
       document.getElementById('teleprompter-box').style.display = 'none';
       document.getElementById('stop-ai-btn').style.display = 'inline-flex';
     } else if (state === 'listening') {
       simText.style.opacity = '1';
       simText.style.transform = 'scale(1)';
       simText.innerText = 'Listening...';
-      
+
       document.getElementById('copilot-status').innerText = "Analyzing question and generating real-time suggestions...";
       document.getElementById('copilot-scanline').style.display = 'block';
       document.getElementById('stop-ai-btn').style.display = 'none';
-      if(document.getElementById('finish-btn')) document.getElementById('finish-btn').style.display = 'inline-flex';
-      
+      if (finishBtn && !isTextMode) finishBtn.style.display = 'inline-flex';
+
       if (teleprompterEnabled && currentQuestions[currentQ]) {
-          const tText = document.getElementById('teleprompter-text');
-          tText.innerText = currentQuestions[currentQ].answer || ("Try mentioning: " + currentQuestions[currentQ].keywords.join(', '));
-          
-          // Reset animation by triggering reflow
-          tText.classList.remove('teleprompter-text-anim');
-          void tText.offsetWidth; 
-          tText.classList.add('teleprompter-text-anim');
-          
-          document.getElementById('teleprompter-box').style.display = 'block';
+        const tText = document.getElementById('teleprompter-text');
+        tText.innerText = currentQuestions[currentQ].answer || ("Try mentioning: " + currentQuestions[currentQ].keywords.join(', '));
+        tText.classList.remove('teleprompter-text-anim');
+        void tText.offsetWidth;
+        tText.classList.add('teleprompter-text-anim');
+        document.getElementById('teleprompter-box').style.display = 'block';
       } else {
-          document.getElementById('teleprompter-box').style.display = 'none';
+        document.getElementById('teleprompter-box').style.display = 'none';
       }
-      
       simText.style.display = 'none';
     } else if (state === 'analyzing') {
       simText.style.display = 'none';
     } else if (state === 'feedback') {
       simText.style.display = 'none';
-      if(document.getElementById('finish-btn')) document.getElementById('finish-btn').style.display = 'none';
+      if (finishBtn) finishBtn.style.display = 'none';
       nextBtn.style.display = 'inline-flex';
+      if (tryAgainBtn) tryAgainBtn.style.display = 'inline-flex';
       document.getElementById('stop-ai-btn').style.display = 'none';
     }
   }
 
-  window._utterances = []; // Global array to prevent garbage collection bugs
+  window._utterances = [];
   function speakText(text, callback) {
     if (synth.speaking) {
-        synth.cancel();
+      synth.cancel();
     }
     const stopBtn = document.getElementById('stop-ai-btn');
-    if (stopBtn) stopBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI`;
+    if (stopBtn) stopBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
 
     const utterance = new SpeechSynthesisUtterance(text);
-    window._utterances.push(utterance); // Prevent Chromium from garbage collecting the utterance before onend fires!
+    window._utterances.push(utterance);
 
-    
-    // Use the voice selected by the user in the Preferences dropdown
     const voiceSelect = document.getElementById('voice-select');
     if (voiceSelect && availableVoices.length > 0) {
-        const selectedIndex = parseInt(voiceSelect.value, 10);
-        if (!isNaN(selectedIndex) && availableVoices[selectedIndex]) {
-            utterance.voice = availableVoices[selectedIndex];
-        }
+      const selectedIndex = parseInt(voiceSelect.value, 10);
+      if (!isNaN(selectedIndex) && availableVoices[selectedIndex]) {
+        utterance.voice = availableVoices[selectedIndex];
+      }
     } else {
-        const voices = synth.getVoices();
-        if (voices.length > 0) {
-            utterance.voice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha')) || voices.find(v => v.lang.includes('en-')) || voices[0];
-        }
+      const voices = synth.getVoices();
+      if (voices.length > 0) {
+        utterance.voice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha')) || voices.find(v => v.lang.includes('en-')) || voices[0];
+      }
     }
-    
+
     utterance.rate = 1.05;
     utterance.pitch = 1.1;
-    utterance.volume = 1; // Unmuted to let them hear the voice
-    
+    utterance.volume = 1;
+
     utterance.onend = () => {
       if (callback) callback();
     };
-    
+
     synth.speak(utterance);
   }
 
+  // R3-5: Coaching, not pass/fail
   function processAnswer(transcript) {
-    setUIState('analyzing', 'Analyzing your transcript...');
-    
+    setUIState('analyzing', 'Analyzing your answer...');
+
     setTimeout(() => {
-      const text = " " + transcript.toLowerCase() + " ";
+      const text = " " + (transcript || "").toLowerCase() + " ";
       const qData = currentQuestions[currentQ];
-      
+
       let matches = 0;
-      qData.keywords.forEach(kw => {
-        if (text.includes(kw.toLowerCase())) matches++;
-      });
-      
-      // Filler word analysis
+      if (qData.keywords) {
+        qData.keywords.forEach(kw => {
+          if (text.includes(kw.toLowerCase())) matches++;
+        });
+      }
+
       const fillers = [' um ', ' uh ', ' like ', ' you know ', ' basically ', ' i mean '];
       let fillerCount = 0;
       fillers.forEach(fw => {
-         const fwMatches = text.match(new RegExp(fw, 'g'));
-         if (fwMatches) fillerCount += fwMatches.length;
+        const fwMatches = text.match(new RegExp(fw, 'g'));
+        if (fwMatches) fillerCount += fwMatches.length;
       });
-      
-      // Base confidence score logic
-      const wordCount = text.split(' ').filter(w => w.length > 0).length;
-      let confScore = 75; // baseline
-      
-      // AI Token / Length Penalties (From Research)
+
+      const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
+      let confScore = 75;
+
       let lengthFeedback = "";
-      if (wordCount < 15) {
-          confScore -= 30; // penalty for too short
-          lengthFeedback = "AI WARNING: Your answer was too short. AI scanners cannot infer expertise—you must state your skills explicitly.";
-      } else if (wordCount > 160) {
-          confScore -= 20; // penalty for rambling
-          lengthFeedback = "AI WARNING: Tangent detected! You spoke for too long. AI models have token limits and penalize rambling. Keep answers concise (60-90 seconds).";
+      if (wordCount < 18) {
+        confScore -= 20;
+        lengthFeedback = "⚠️ Add more detail: AI screeners cannot infer unstated experience. Explain your specific actions.";
+      } else if (wordCount > 175) {
+        confScore -= 15;
+        lengthFeedback = "⚠️ Tighten this: Your response was on the longer side (over 2 minutes). Practice keeping answers crisp (60–90 seconds) to prevent rambling.";
       }
 
-      // S.T.A.R Method Check (From Research)
       let starFeedback = "";
-      const starKeywords = ['situation', 'task', 'action', 'result', 'because', 'resulted in', 'led to', 'resolved', 'outcome'];
+      const starKeywords = ['situation', 'task', 'action', 'result', 'because', 'resulted in', 'led to', 'resolved', 'outcome', 'achieved', 'improved', 'reduced'];
       let starMatches = 0;
       starKeywords.forEach(sk => {
-          if (text.includes(sk)) starMatches++;
+        if (text.includes(sk)) starMatches++;
       });
       if (starMatches > 0) {
-          confScore += 15;
-          starFeedback = "✓ Good use of S.T.A.R. structural keywords (Result/Outcome). AI grades structured storytelling higher.";
+        confScore += 15;
+        starFeedback = "✓ Good use of cause-and-effect structure (Action & Result). Structured storytelling scores higher.";
       } else {
-          confScore -= 10;
-          starFeedback = "⚠ Missing S.T.A.R. structure. AI scanners look for explicit cause-and-effect language ('resulted in', 'outcome').";
+        starFeedback = "💡 Structure tip: Stronger answers usually follow the STAR method (direct answer, action taken, and measurable result).";
       }
 
-      confScore += (matches * 15); // bonus for direct keyword hits
-      confScore -= (fillerCount * 10); // massive penalty for fillers
-      
-      const cappedScore = Math.min(100, Math.max(10, confScore));
+      confScore += (matches * 10);
+      if (!isTextMode) {
+        confScore -= (fillerCount * 8);
+      }
+
+      const cappedScore = Math.min(100, Math.max(35, confScore));
+      currentQScore = cappedScore;
       totalScore += cappedScore;
       totalFillers += fillerCount;
       totalQuestionsAnswered++;
 
       let feedback = "";
-      if (wordCount < 15) {
-         feedback = qData.feedbackMiss;
+      if (wordCount < 18) {
+        feedback = qData.feedbackMiss || "Make sure to state your concrete actions explicitly.";
       } else if (matches >= 2) {
-         feedback = qData.feedbackHit;
+        feedback = qData.feedbackHit || "Clear delivery. You shared relevant skills and experience.";
       } else {
-         feedback = "⚠ You missed the core industry keywords the AI was scanning for. " + qData.feedbackMiss;
-      }
-      
-      const finalFeedback = feedback + `\n\n---\n**AI Scanner Diagnostics:**\n• Confidence Score: ${cappedScore}%\n• Filler Words ('Ums/Ahs'): ${fillerCount} (AI penalizes these heavily as transcription errors)\n${lengthFeedback ? '• ' + lengthFeedback + '\n' : ''}• ${starFeedback}`;
-      
-      setUIState('feedback', 'Feedback generated. Check the AI Copilot panel.');
-      document.getElementById('copilot-feedback-container').style.display = 'block';
-      
-      const stratBox = document.getElementById('copilot-strategy');
-      stratBox.innerText = finalFeedback;
-      if (cappedScore >= 80) {
-          stratBox.style.background = 'rgba(16,185,129,0.1)';
-          stratBox.style.borderLeftColor = 'var(--primary)';
-      } else {
-          stratBox.style.background = 'rgba(239,68,68,0.1)';
-          stratBox.style.borderLeftColor = '#ef4444';
+        feedback = qData.feedbackMiss || "Stronger answers usually mention concrete examples and specific outcomes.";
       }
 
-      speakText(feedback, () => {
-         
-      });
-      
-    }, 1000);
+      const finalFeedback = `**What worked:**\n${feedback}\n\n**To tighten for the real interview:**\n${starFeedback}${lengthFeedback ? '\n' + lengthFeedback : ''}`;
+
+      setUIState('feedback', 'Coaching feedback ready.');
+
+      // Update copilot panel
+      document.getElementById('copilot-feedback-container').style.display = 'block';
+      const stratBox = document.getElementById('copilot-strategy');
+      stratBox.innerText = finalFeedback;
+      stratBox.style.background = 'rgba(16,185,129,0.1)';
+      stratBox.style.borderLeftColor = 'var(--primary)';
+
+      // Update in-page feedback box (visible directly below simulator)
+      const inPageBox = document.getElementById('in-page-feedback');
+      const transcriptBox = document.getElementById('feedback-transcript-text');
+      const coachingBox = document.getElementById('feedback-coaching-text');
+      if (inPageBox && transcriptBox && coachingBox) {
+        transcriptBox.innerText = transcript && transcript.trim() !== '' ? `"${transcript.trim()}"` : "(No answer detected)";
+        coachingBox.innerText = finalFeedback + (qData.keywords && qData.keywords.length > 0 ? `\n\nStronger answers usually mention:\n${qData.keywords.slice(0, 4).join(', ')}` : '');
+        inPageBox.style.display = 'block';
+      }
+
+      // Track question answered
+      trackMockEvent('mock_question_answered', { question_number: currentQ + 1, mode: isTextMode ? 'text' : 'voice' });
+
+    }, 800);
   }
 
   function askQuestion() {
-    const qText = currentQuestions[currentQ].q;
+    const qData = currentQuestions[currentQ];
+    const qText = qData.q;
+
+    // Reset feedback UI
+    const inPageBox = document.getElementById('in-page-feedback');
+    if (inPageBox) inPageBox.style.display = 'none';
+
     document.getElementById('copilot-content').style.display = 'none';
     document.getElementById('copilot-status').style.display = 'block';
-    document.getElementById('copilot-status').innerText = "Listening to interviewer...";
-    simText.style.opacity = '1'; simText.style.transform = 'scale(1)'; setUIState('speaking', qText);
-    
-    
+    document.getElementById('copilot-status').innerText = "Interviewer speaking...";
+
+    // Update progress indicator
+    const progEl = document.getElementById('progress-indicator');
+    if (progEl) progEl.innerText = `Question ${currentQ + 1} of 5`;
+
+    const modeEl = document.getElementById('mode-badge');
+    if (modeEl) modeEl.innerText = isTextMode ? '⌨️ Typed Mode' : '🎙️ Voice Mode';
+
+    simText.style.opacity = '1';
+    simText.style.transform = 'scale(1)';
+    setUIState('speaking', qText);
+
     speakText(qText, () => {
-      if (!recognition) {
-         setUIState('feedback', 'Speech Recognition is not supported on this browser. Please use Google Chrome or Safari.');
-         return;
-      }
-      
-      setUIState('listening', 'Waiting for your answer...');
-      let finalTranscript = '';
-      
-      
-      let speechStartTime = Date.now();
-      recognition.onresult = (event) => {
-        let interim = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const t = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            finalTranscript += t + ' ';
-          } else {
-            interim += t;
-          }
+      if (isTextMode) {
+        // Typed Mode
+        setUIState('listening', 'Type your answer below...');
+        document.getElementById('typed-answer-container').style.display = 'block';
+        const inputArea = document.getElementById('typed-answer-input');
+        if (inputArea) {
+          inputArea.value = '';
+          inputArea.focus();
         }
-        
-        // ADVANCED FEATURE 3: Live Pace (WPM) Analyzer
-        const liveText = (finalTranscript + interim).trim();
-        const liveWordCount = liveText.split(/\s+/).filter(w => w.length > 0).length;
-        const secondsElapsed = (Date.now() - speechStartTime) / 1000;
-        if (secondsElapsed > 5 && liveWordCount > 5) {
+      } else {
+        // Voice Mode
+        if (!recognition) {
+          isTextMode = true;
+          trackMockEvent('mock_text_mode', { role: localStorage.getItem('atsRole') || currentDomain });
+          document.getElementById('sim-video-container').style.display = 'none';
+          document.getElementById('typed-answer-container').style.display = 'block';
+          setUIState('listening', 'Type your answer below...');
+          return;
+        }
+
+        setUIState('listening', 'Waiting for your answer...');
+        let finalTranscript = '';
+        let speechStartTime = Date.now();
+
+        recognition.onresult = (event) => {
+          let interim = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const t = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalTranscript += t + ' ';
+            } else {
+              interim += t;
+            }
+          }
+
+          const liveText = (finalTranscript + interim).trim();
+          const liveWordCount = liveText.split(/\s+/).filter(w => w.length > 0).length;
+          const secondsElapsed = (Date.now() - speechStartTime) / 1000;
+          if (secondsElapsed > 5 && liveWordCount > 5) {
             const wpm = (liveWordCount / secondsElapsed) * 60;
             const paceWarning = document.getElementById('pace-warning');
             if (paceWarning) {
-                if (wpm > 170) {
-                    paceWarning.innerText = '⏱️ PACE: Speaking too fast (approx ' + Math.round(wpm) + ' WPM). Slow down so the AI can transcribe you.';
-                    paceWarning.style.display = 'flex';
-                } else if (wpm < 80) {
-                    paceWarning.innerText = '⏱️ PACE: Speaking too slow (approx ' + Math.round(wpm) + ' WPM). Keep a natural, professional rhythm.';
-                    paceWarning.style.display = 'flex';
-                } else {
-                    paceWarning.style.display = 'none';
-                }
+              if (wpm > 175) {
+                paceWarning.innerText = '⏱️ PACE: Speaking too fast (' + Math.round(wpm) + ' WPM). Slow down slightly for clarity.';
+                paceWarning.style.display = 'flex';
+              } else if (wpm < 75) {
+                paceWarning.innerText = '⏱️ PACE: Speaking slowly (' + Math.round(wpm) + ' WPM). Maintain a natural rhythm.';
+                paceWarning.style.display = 'flex';
+              } else {
+                paceWarning.style.display = 'none';
+              }
             }
-        }
-        
+          }
 
-
-        
-        
-        // Real-time copilot keyword highlighting
-        const copilotText = (finalTranscript + interim).toLowerCase();
-        currentQuestions[currentQ].keywords.forEach(kw => {
-            if (copilotText.includes(kw.toLowerCase())) {
+          const copilotText = (finalTranscript + interim).toLowerCase();
+          if (qData.keywords) {
+            qData.keywords.forEach(kw => {
+              if (copilotText.includes(kw.toLowerCase())) {
                 const tag = document.querySelector('.kw-' + kw.replace(/\s+/g, '-'));
-                if(tag) tag.classList.add('hit');
-            }
-        });
-      };
-      
-      let isAnswering = true;
-      document.getElementById('finish-btn').onclick = () => {
+                if (tag) tag.classList.add('hit');
+              }
+            });
+          }
+        };
+
+        let isAnswering = true;
+        finishBtn.onclick = () => {
           if (!isAnswering) return;
           isAnswering = false;
           if (recognition) recognition.stop();
-          
-          if (finalTranscript.trim() === '') {
-              processAnswer("I don't know");
-          } else {
-              processAnswer(finalTranscript);
-          }
-      };
+          processAnswer(finalTranscript.trim() === '' ? "I don't know" : finalTranscript);
+        };
 
-      recognition.onerror = (e) => {
-         if (e.error === 'no-speech' && isAnswering) {
-             // Ignore no-speech and keep listening
-         }
-      };
-      
-      recognition.onend = () => {
-        if (isAnswering) {
-            // SpeechRecognition often cuts out if the user pauses for a few seconds.
-            // If they haven't clicked 'Done Answering', we automatically restart it!
+        recognition.onerror = (e) => {
+          if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+            trackMockEvent('mic_denied', { role: localStorage.getItem('atsRole') || currentDomain });
+            isTextMode = true;
+            document.getElementById('sim-video-container').style.display = 'none';
+            document.getElementById('typed-answer-container').style.display = 'block';
+            setUIState('listening', 'Microphone blocked. Switched to typed answer mode.');
+          }
+        };
+
+        recognition.onend = () => {
+          if (isAnswering) {
             try {
-                recognition.start();
-            } catch(err) {
-                console.log("Restart failed", err);
-            }
-        }
-      };
-      
-      recognition.start();
+              recognition.start();
+            } catch(err) {}
+          }
+        };
+
+        try {
+          recognition.start();
+        } catch(e) {}
+      }
     });
   }
 
-  startBtn.addEventListener('click', () => {
-    
-    // Prevent Autoplay block by playing silent audio
-    const silentSynth = new SpeechSynthesisUtterance('');
-    silentSynth.volume = 0;
-    window.speechSynthesis.speak(silentSynth);
-    
-    startBtn.innerText = "Requesting Camera...";
-    startBtn.disabled = true;
-    
-    // FIX: Ask for permissions IMMEDIATELY on user gesture, BEFORE any setTimeouts or API calls
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    .then(stream => {
-        window.activeStream = stream; // Save stream globally
-        proceedWithInterviewLoading();
-    })
-    .catch(err => {
-        console.warn("Camera not available, proceeding with audio only:", err);
-        window.activeStream = null;
-        proceedWithInterviewLoading();
-    });
-});
+  // Submit Typed Answer
+  submitTypedBtn.onclick = () => {
+    const inputArea = document.getElementById('typed-answer-input');
+    const typedText = (inputArea && inputArea.value) ? inputArea.value.trim() : '';
+    document.getElementById('typed-answer-container').style.display = 'none';
+    processAnswer(typedText === '' ? "No response provided" : typedText);
+  };
 
-function proceedWithInterviewLoading() {
-
-    // PRIME THE SPEECH SYNTHESIS ENGINE SYNCHRONOUSLY!
-    // Browsers block speech synthesis if it's not triggered directly by a user click.
-    // By speaking a silent, empty string right now, we "unlock" the engine for future async calls.
-    const silentUtterance = new SpeechSynthesisUtterance('');
-    silentUtterance.volume = 0;
-    window.speechSynthesis.speak(silentUtterance);
-
-    const selectedDomain = domainSelector.value;
-    currentDomain = selectedDomain;
-    currentQuestions = domainData[currentDomain];
-    
-    setupView.style.display = 'none';
-    
-    const loadingScreen = document.createElement('div');
-    loadingScreen.id = 'gemini-loading-screen';
-    loadingScreen.style.cssText = "position:absolute; top:0; left:0; width:100%; height:100%; background:var(--gray-900); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px;";
-    loadingScreen.innerHTML = `
-        <img src="logo.svg" style="height:64px; margin-bottom:24px; animation: pulse 1.5s infinite;" alt="TrainAIToGain Logo" />
-        <h2 style="font-size:24px; font-weight:800; color:white; margin-bottom:12px;">Initializing AI Recruiter...</h2>
-        <p style="color:var(--gray-400); font-size:16px;">Loading offline question bank for ${currentDomain}...</p>
-        
-        <!-- ADVANCED FEATURE 4: Pre-flight Internet & System Diagnostics (From Video Research) -->
-        <div id="preflight-checks" style="margin-top:24px; text-align:left; background:rgba(0,0,0,0.4); padding:16px 24px; border-radius:12px; width:100%; max-width:400px; display:inline-block;">
-            <div id="check-mic" style="color:var(--gray-400); font-size:14px; margin-bottom:8px; display:flex; justify-content:space-between;"><span>Microphone connected</span> <span id="check-mic-status">...</span></div>
-            <div id="check-cam" style="color:var(--gray-400); font-size:14px; margin-bottom:8px; display:flex; justify-content:space-between;"><span>Camera initialized</span> <span id="check-cam-status">...</span></div>
-            <div id="check-net" style="color:var(--gray-400); font-size:14px; display:flex; justify-content:space-between;"><span>Network latency (< 100ms)</span> <span id="check-net-status">...</span></div>
-        </div>
-        
-    `;
-    document.getElementById('sim-container').appendChild(loadingScreen);
-    
-    // Execute preflight animations now that they are in the DOM
-    setTimeout(() => { const el = document.getElementById('check-mic-status'); if(el){ el.innerHTML = '✅'; document.getElementById('check-mic').style.color = '#10b981'; }}, 400);
-    setTimeout(() => { const el = document.getElementById('check-cam-status'); if(el){ el.innerHTML = '✅'; document.getElementById('check-cam').style.color = '#10b981'; }}, 800);
-    setTimeout(() => { 
-        const el = document.getElementById('check-net-status');
-        if(el) {
-            el.innerHTML = '✅ 42ms'; 
-            document.getElementById('check-net').style.color = '#10b981'; 
-            document.getElementById('preflight-checks').innerHTML += `<div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1); color:#3b82f6; font-size:13px; font-weight:700;">💡 PRO TIP: Tape a small photo or arrow right next to your webcam lens. Staring at the lens prevents the AI from flagging you for looking away.</div>`;
-        }
-    }, 1200);
-
-    
-
-    const candidateResume = localStorage.getItem('candidateResumeText');
-    const roleTarget = localStorage.getItem('atsRole') || currentDomain;
-    
-    if (candidateResume) {
-        document.querySelector('#gemini-loading-screen p').innerText = "Analyzing your resume and generating personalized technical questions...";
-        
-        const payload = {
-            systemInstruction: {
-                role: "system",
-                parts: [{ text: `You are an AI screening interviewer. Generate exactly 5 highly technical interview questions based DIRECTLY on the projects and skills in the provided resume for the target role. Return ONLY a raw JSON array of objects with this schema: [{ "q": "[Question]", "answer": "[Ideal Answer]", "keywords": ["kw1", "kw2", "kw3", "kw4"], "feedbackMiss": "You missed [x]", "feedbackHit": "Excellent. [x]" }]. Do not use markdown code blocks, just raw JSON.` }]
-            },
-            contents: [
-                { role: "user", parts: [{ text: "Target Role: " + roleTarget + "\n\nResume:\n" + candidateResume }] }
-            ]
-        };
-        
-        fetch('/api/generateAiResponse', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(res => res.json())
-        .then(data => {
-            try {
-                let jsonStr = data.candidates[0].content.parts[0].text.trim();
-                if (jsonStr.startsWith("```json")) jsonStr = jsonStr.replace(/```json/g, "").replace(/```/g, "").trim();
-                const customQuestions = JSON.parse(jsonStr);
-                if (customQuestions && customQuestions.length > 0) {
-                    currentQuestions = customQuestions;
-                    console.log("Loaded custom resume questions!");
-                }
-            } catch (err) {
-                console.error("Failed to parse AI questions, falling back to offline bank.", err);
-            }
-            loadingScreen.remove();
-            startInterviewEngine();
-        })
-        .catch(err => {
-            console.error(err);
-            loadingScreen.remove();
-            startInterviewEngine();
-        });
-        
-    } else {
-        
-    const candidateResume = localStorage.getItem('candidateResumeText');
-    const roleTarget = localStorage.getItem('atsRole') || currentDomain;
-    
-    if (candidateResume) {
-        document.querySelector('#gemini-loading-screen p').innerText = "Analyzing your resume and generating personalized technical questions...";
-        
-        const payload = {
-            systemInstruction: {
-                role: "system",
-                parts: [{ text: `You are an AI screening interviewer. Generate exactly 5 highly technical interview questions based DIRECTLY on the projects and skills in the provided resume for the target role. Return ONLY a raw JSON array of objects with this schema: [{ "q": "[Question]", "answer": "[Ideal Answer]", "keywords": ["kw1", "kw2", "kw3", "kw4"], "feedbackMiss": "You missed [x]", "feedbackHit": "Excellent. [x]" }]. Do not use markdown code blocks, just raw JSON.` }]
-            },
-            contents: [
-                { role: "user", parts: [{ text: "Target Role: " + roleTarget + "\n\nResume:\n" + candidateResume }] }
-            ]
-        };
-        
-        fetch('/api/generateAiResponse', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(res => res.json())
-        .then(data => {
-            try {
-                let jsonStr = data.candidates[0].content.parts[0].text.trim();
-                if (jsonStr.startsWith("```json")) jsonStr = jsonStr.replace(/```json/g, "").replace(/```/g, "").trim();
-                const customQuestions = JSON.parse(jsonStr);
-                if (customQuestions && customQuestions.length > 0) {
-                    currentQuestions = customQuestions;
-                    console.log("Loaded custom resume questions!");
-                }
-            } catch (err) {
-                console.error("Failed to parse AI questions, falling back to offline bank.", err);
-            }
-            loadingScreen.remove();
-            startInterviewEngine();
-        })
-        .catch(err => {
-            console.error(err);
-            loadingScreen.remove();
-            startInterviewEngine();
-        });
-        
-    } else {
-        // Simulate a brief loading screen so it feels realistic, then start
-
-        setTimeout(() => {
-            loadingScreen.remove();
-            startInterviewEngine();
-        }, 3500);
-    }
-    }
-} // CLOSE proceedWithInterviewLoading()
-
-    function startInterviewEngine() {
-        currentQ = 0;
-        
-        if (window.activeStream) {
-            const videoEl = document.getElementById('user-camera');
-            videoEl.srcObject = window.activeStream;
-            videoEl.style.display = 'block';
-            document.getElementById('camera-placeholder').style.display = 'none';
-        } else {
-            document.getElementById('camera-placeholder').innerHTML = '<div style="font-size:48px; margin-bottom:16px;">🎙️</div><p style="color:#aaa; font-weight:600;">Audio Only Mode</p>';
-        }
-
-
-    activeView.style.display = 'block';
-
-    // ADVANCED FEATURE 1: Real-time Lighting Detection (From Video Research)
-    // African applicants were failing due to poor lighting. We analyze the canvas brightness.
-    setInterval(() => {
-        const video = document.getElementById('user-camera');
-        if (!video || video.style.display === 'none' || video.paused) return;
-        
-        const canvas = document.createElement('canvas');
-        canvas.width = 64; canvas.height = 64;
-        const ctx = canvas.getContext('2d');
-        try {
-            ctx.drawImage(video, 0, 0, 64, 64);
-            const data = ctx.getImageData(0, 0, 64, 64).data;
-            let sum = 0;
-            for (let i = 0; i < data.length; i += 4) {
-                sum += (data[i] + data[i+1] + data[i+2]) / 3;
-            }
-            const brightness = sum / (64 * 64);
-            // If average pixel brightness is below 40, warn them.
-            if (brightness > 0 && brightness < 40) {
-                document.getElementById('lighting-warning').style.display = 'flex';
-            } else {
-                document.getElementById('lighting-warning').style.display = 'none';
-            }
-        } catch(e) {}
-    }, 2000);
-
-    // ADVANCED FEATURE 2: Pace Analyzer & Teleprompter Eye-Tracking Warning
-    if (teleprompterEnabled) {
-        document.getElementById('lighting-warning').insertAdjacentHTML('afterend', 
-            '<div style="position:absolute; top:100px; left:20px; z-index:100; background:rgba(16,185,129,0.9); color:white; padding:8px 16px; border-radius:8px; font-weight:700; font-size:14px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">👁️ WARNING: Do not read directly. AI tracks eye movement.</div>'
-        );
-    }
-
-    
-    synth.getVoices(); // Ensure voices are loaded
-    
-    // Skip the long greeting and immediately start the interview
-    setTimeout(() => {
-        askQuestion();
-    }, 500);
-    } // CLOSE startInterviewEngine() !!
-
-
-  nextBtn.addEventListener('click', () => {
+  // Try Again Button (R3-5)
+  tryAgainBtn.onclick = () => {
     if (synth.speaking) synth.cancel();
-    
-    if (currentQ + 1 >= currentQuestions.length) {
-      setUIState('feedback', 'Module Complete');
-      
-      // Hide the global chat widget so it doesn't overlap the final dashboard
-      const chatWidget = document.getElementById('chat-widget-container');
-      if (chatWidget) chatWidget.style.display = 'none';
-      const chatToggle = document.getElementById('chat-widget-toggle');
-      if (chatToggle) chatToggle.style.display = 'none';
-      
-      nextBtn.style.display = 'none';
-      
-      const avgScore = totalQuestionsAnswered > 0 ? Math.round(totalScore / totalQuestionsAnswered) : 0;
-      let passChance = 'Low (<20%)';
-      let passColor = '#ef4444';
-      if (avgScore >= 80) { passChance = 'High (85%+)'; passColor = '#10b981'; }
-      else if (avgScore >= 50) { passChance = 'Moderate (50%)'; passColor = '#eab308'; }
-      
-      let improvement = "Your delivery is crisp. Focus on projecting confidence and maintaining this pacing.";
-      if (totalFillers > 2) {
-          improvement = "You use too many filler words ('um', 'like', 'uh'). Practice speaking slower and embracing silent pauses to sound more authoritative.";
-      } else if (avgScore < 80) {
-          improvement = "You need to incorporate more domain-specific keywords into your answers. The AI relies heavily on vocabulary density to score you.";
-      }
-      
-      const summaryHTML = `
-        <div style="background:var(--black); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:48px; text-align:center; width:100%; box-shadow:0 12px 48px rgba(0,0,0,0.5); animation:fade-up 0.6s ease-out;">
-            <h2 style="color:white; font-size:32px; margin-bottom:8px; font-weight:800;">Interview Complete 🏆</h2>
-            <p style="color:var(--gray-400); margin-bottom:32px; font-size:16px;">Here is your performance breakdown.</p>
-            
-            <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:12px; padding:32px; margin-bottom:32px;">
-                <div style="font-size:12px; color:var(--gray-400); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;">Predicted Pass Probability</div>
-                <div style="font-size:48px; font-weight:800; color:${passColor}; margin-bottom:32px; text-shadow: 0 4px 12px ${passColor}33;">${passChance}</div>
-                
-                <div style="display:flex; justify-content:center; gap:64px; border-top:1px solid rgba(255,255,255,0.05); padding-top:32px;">
-                    <div>
-                        <div style="font-size:11px; color:var(--gray-500); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;">Confidence Score</div>
-                        <div style="font-size:28px; color:white; font-weight:700;">${avgScore}%</div>
-                    </div>
-                    <div>
-                        <div style="font-size:11px; color:var(--gray-500); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;">Total Filler Words</div>
-                        <div style="font-size:28px; color:white; font-weight:700;">${totalFillers}</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="text-align:left; background:rgba(16, 185, 129, 0.05); border:1px solid rgba(16, 185, 129, 0.2); border-radius:12px; padding:24px; margin-bottom:32px;">
-                <div style="font-size:12px; color:var(--primary); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.05em; font-weight:800; display:flex; align-items:center; gap:8px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                    Priority Action Plan
-                </div>
-                <div style="font-size:15px; color:#ddd; line-height:1.6;">${improvement}</div>
-            </div>
-            
-            <a href="/apply" class="btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; width:100%; max-width:400px; font-size:16px; font-weight:800; padding:16px 24px; border-radius:100px;">You're ready. Apply to your matched roles ➔</a>
-        </div>
-      `;
-      
-      const vContainer = document.querySelector('.video-container');
-      vContainer.style.display = 'none'; // Hide the restricted video container
-      document.getElementById('active-view').insertAdjacentHTML('beforeend', summaryHTML); // Append clean layout
+    if (totalQuestionsAnswered > 0) totalQuestionsAnswered--;
+    totalScore -= currentQScore;
 
-      
-      // Stop the camera feed to save battery now that we're done
-      const cam = document.getElementById('user-camera');
-      if (cam && cam.srcObject) {
-          cam.srcObject.getTracks().forEach(t => t.stop());
-      }
+    document.getElementById('in-page-feedback').style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+
+    askQuestion();
+  };
+
+  // Next Question Button
+  nextBtn.onclick = () => {
+    if (synth.speaking) synth.cancel();
+    document.getElementById('in-page-feedback').style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+
+    if (currentQ + 1 >= currentQuestions.length) {
+      finishInterview();
     } else {
       currentQ++;
       askQuestion();
     }
+  };
+
+  // Start Voice Mode Button (R3-2)
+  startBtn.addEventListener('click', () => {
+    isTextMode = false;
+    const silentSynth = new SpeechSynthesisUtterance('');
+    silentSynth.volume = 0;
+    window.speechSynthesis.speak(silentSynth);
+
+    startBtn.innerText = "Requesting Camera...";
+    startBtn.disabled = true;
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then(stream => {
+        window.activeStream = stream;
+        proceedToSession();
+      })
+      .catch(err => {
+        console.warn("Camera/Mic not available, switching to typed mode:", err);
+        trackMockEvent('mic_denied', { role: localStorage.getItem('atsRole') || currentDomain });
+        window.activeStream = null;
+        isTextMode = true;
+        proceedToSession();
+      });
   });
-  
 
+  // Start Typed Mode Button (R3-3)
+  startTextBtn.addEventListener('click', () => {
+    isTextMode = true;
+    trackMockEvent('mock_text_mode', { role: localStorage.getItem('atsRole') || currentDomain });
+    proceedToSession();
+  });
 
+  function proceedToSession() {
+    const selectedDomain = domainSelector.value;
+    currentDomain = selectedDomain;
+    const roleTarget = localStorage.getItem('atsRole') || currentDomain;
 
+    currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
+
+    setupView.style.display = 'none';
+
+    // R3-2: Switch prep-hub to active layout and reveal Copilot panel
+    const hub = document.querySelector('.prep-hub');
+    if (hub) {
+      hub.classList.remove('not-started');
+      hub.classList.add('started');
+    }
+    const copilotEl = document.getElementById('copilot-panel');
+    if (copilotEl) copilotEl.style.display = 'flex';
+
+    if (isTextMode) {
+      document.getElementById('sim-video-container').style.display = 'none';
+      document.getElementById('typed-answer-container').style.display = 'block';
+    } else {
+      document.getElementById('sim-video-container').style.display = 'block';
+      document.getElementById('typed-answer-container').style.display = 'none';
+
+      if (window.activeStream) {
+        const videoEl = document.getElementById('user-camera');
+        videoEl.srcObject = window.activeStream;
+        videoEl.style.display = 'block';
+        document.getElementById('camera-placeholder').style.display = 'none';
+      } else {
+        document.getElementById('camera-placeholder').innerHTML = '<div style="font-size:48px; margin-bottom:16px;">🎙️</div><p style="color:#aaa; font-weight:600;">Audio Only Mode</p>';
+      }
+    }
+
+    activeView.style.display = 'block';
+    interviewStarted = true;
+    currentQ = 0;
+
+    trackMockEvent('mock_started', { role: roleTarget, mode: isTextMode ? 'text' : 'voice' });
+
+    synth.getVoices();
+    setTimeout(() => {
+      askQuestion();
+    }, 400);
+  }
+
+  // Finish Interview (R3-5: Coaching, not pass/fail)
+  function finishInterview() {
+    interviewCompleted = true;
+    if (synth.speaking) synth.cancel();
+
+    const roleTarget = localStorage.getItem('atsRole') || currentDomain;
+    const avgScore = totalQuestionsAnswered > 0 ? Math.round(totalScore / totalQuestionsAnswered) : 75;
+
+    trackMockEvent('mock_completed', { role: roleTarget, score: avgScore, mode: isTextMode ? 'text' : 'voice' });
+
+    if (window.activeStream) {
+      window.activeStream.getTracks().forEach(t => t.stop());
+    }
+
+    // Hide active question views
+    document.getElementById('sim-video-container').style.display = 'none';
+    document.getElementById('typed-answer-container').style.display = 'none';
+    document.getElementById('in-page-feedback').style.display = 'none';
+    nextBtn.style.display = 'none';
+    tryAgainBtn.style.display = 'none';
+    if (finishBtn) finishBtn.style.display = 'none';
+
+    let strengthSummary = "You demonstrated strong domain familiarity and directly engaged with all 5 screening prompts.";
+    let growthSummary = "1. Use the STAR structure (Situation, Task, Action, Result) so every story ends with a quantifiable outcome.\n2. Keep your responses between 60–90 seconds to stay focused and avoid rambling.";
+
+    if (totalFillers > 2 && !isTextMode) {
+      growthSummary = "1. Embrace silent pauses instead of filler words ('um', 'like') before transitioning between ideas.\n2. State your direct answer first before diving into context.";
+    }
+
+    const summaryHTML = `
+      <div style="background:var(--black); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:40px 24px; text-align:center; width:100%; box-shadow:0 12px 48px rgba(0,0,0,0.5); animation:fade-up 0.6s ease-out; box-sizing:border-box;">
+          <h2 style="color:white; font-size:30px; margin:0 0 8px; font-weight:800;">Practice Complete 🏆</h2>
+          <p style="color:var(--gray-400); margin:0 0 28px; font-size:15px;">Here is your coaching breakdown before taking the real AI interview.</p>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; text-align:left;">
+              <div style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:12px; padding:20px;">
+                  <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">✓ What Worked Well</div>
+                  <p style="font-size:14px; color:#eee; line-height:1.5; margin:0;">${strengthSummary}</p>
+              </div>
+              <div style="background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.2); border-radius:12px; padding:20px;">
+                  <div style="font-size:12px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">💡 2 Things to Practice</div>
+                  <p style="font-size:14px; color:#eee; line-height:1.5; margin:0; white-space:pre-line;">${growthSummary}</p>
+              </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:20px; margin-bottom:24px; display:flex; justify-content:space-around; align-items:center; flex-wrap:wrap; gap:16px;">
+              <div>
+                  <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Questions Practiced</div>
+                  <div style="font-size:24px; font-weight:800; color:white;">5 of 5</div>
+              </div>
+              <div>
+                  <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Keyword Alignment</div>
+                  <div style="font-size:24px; font-weight:800; color:var(--primary);">${avgScore}%</div>
+              </div>
+              <div>
+                  <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Delivery Format</div>
+                  <div style="font-size:24px; font-weight:800; color:white;">${isTextMode ? 'Typed' : 'Voice'}</div>
+              </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px 20px; margin-bottom:28px; text-align:left; font-size:13px; color:#ccc; line-height:1.5;">
+              📌 <strong>Next Step Tip:</strong> Mercor offers a free, unlimited official practice interview that is never shared with hiring companies. Official retakes are capped at 3 across applications, so always use practice mode first!
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:12px; align-items:center; max-width:440px; margin:0 auto;">
+              <a href="/apply" class="btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; width:100%; font-size:15px; font-weight:800; padding:14px 24px; border-radius:100px;">
+                You're ready. Apply to your matched roles ➔
+              </a>
+              <div style="display:flex; gap:12px; width:100%; flex-wrap:wrap;">
+                <button onclick="window.location.reload()" class="btn-sim" style="flex:1; justify-content:center; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); box-shadow:none; padding:12px 16px; font-size:14px;">
+                  Practice Again 🔄
+                </button>
+                <a href="https://work.mercor.com" target="_blank" class="btn-sim" style="flex:1.2; justify-content:center; background:#2563eb; text-decoration:none; padding:12px 16px; font-size:14px;">
+                  Official Mercor Practice ➔
+                </a>
+              </div>
+          </div>
+      </div>
+    `;
+
+    activeView.insertAdjacentHTML('beforeend', summaryHTML);
+  }
 
   document.getElementById('stop-ai-btn').addEventListener('click', (e) => {
-      const btn = e.currentTarget;
-      if (synth.paused) {
-          synth.resume();
-          btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI`;
-      } else if (synth.speaking) {
-          synth.pause();
-          btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume AI`;
-      }
+    const btn = e.currentTarget;
+    if (synth.paused) {
+      synth.resume();
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
+    } else if (synth.speaking) {
+      synth.pause();
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume AI';
+    }
   });
 </script>
 
