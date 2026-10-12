@@ -338,6 +338,13 @@
             <input type="text" id="ref-input" placeholder="Enter your Ref Code (e.g., james2024)" required style="flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font); font-size:16px;">
             <button type="submit" id="load-btn" class="btn-primary">Load Pipeline</button>
         </form>
+        <div id="admin-auth-bar" style="margin-top:16px; padding-top:14px; border-top:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; font-size:13px; color:var(--gray-600);">
+          <span id="admin-auth-status">🔒 Admin sign-in for full pipeline access</span>
+          <button type="button" id="admin-login-btn" onclick="signInAdminGoogle()" style="background:white; border:1px solid var(--gray-300); border-radius:6px; padding:6px 12px; font-weight:700; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M12.24 10.285V13.4h6.887C18.2 16.14 15.645 18 12.24 18c-3.315 0-6-2.685-6-6s2.685-6 6-6c1.47 0 2.82.54 3.87 1.425l2.43-2.43C16.89 3.48 14.7 2.6 12.24 2.6 7.02 2.6 2.79 6.83 2.79 12.05s4.23 9.45 9.45 9.45c5.46 0 9.12-3.84 9.12-9.285 0-.63-.06-1.23-.18-1.935H12.24z"/></svg>
+            Sign In with Google
+          </button>
+        </div>
     </div>
   </div>
 </section>
@@ -486,8 +493,146 @@
         </div>
 
     </div>
-    
-    
+
+    <!-- Section 21.4: Weekly Scoreboard (Platform Sync) -->
+    <div id="weekly-scoreboard-section" style="margin-top:56px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:32px; box-shadow:var(--shadow-sm);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:24px;">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:22px;">📊</span>
+            <h3 style="font-size:22px; font-weight:800; color:var(--black); margin:0;">Weekly Scoreboard (Platform Sync)</h3>
+            <span style="background:rgba(16,185,129,0.1); color:var(--primary); font-size:12px; font-weight:700; padding:3px 10px; border-radius:12px;">Section 21.4</span>
+          </div>
+          <p style="font-size:14px; color:var(--gray-500); margin:4px 0 0;">
+            Manual weekly sync of Mercor and micro1 referral numbers, comparing week-over-week growth against GA4 Apply Clicks &amp; Leads.
+          </p>
+        </div>
+        <button id="toggle-scoreboard-btn" onclick="toggleScoreboardForm()" class="btn-primary" style="padding:10px 18px; font-size:14px; display:inline-flex; align-items:center; gap:6px;">
+          <span>+</span> Record Friday Metrics
+        </button>
+      </div>
+
+      <!-- Friday Input Form (Collapsible) -->
+      <div id="scoreboard-form-container" style="display:none; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius); padding:24px; margin-bottom:28px;">
+        <h4 style="font-size:16px; font-weight:800; margin:0 0 16px; color:var(--black);">Enter Week's Metrics</h4>
+        <form id="scoreboard-entry-form" onsubmit="handleScoreboardSubmit(event)">
+          <div style="margin-bottom:16px;">
+            <label style="display:block; font-size:13px; font-weight:700; color:var(--gray-700); margin-bottom:4px;">Week Ending Date</label>
+            <input type="date" id="sb-week-date" required style="padding:10px 14px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-size:14px; background:white;">
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:20px;">
+            <!-- Mercor Card -->
+            <div style="background:white; border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:16px;">
+              <div style="font-weight:800; font-size:14px; color:var(--black); margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                <span style="color:var(--primary);">●</span> Mercor Platform Metrics
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:13px;">
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Signed Up</label>
+                  <input type="number" id="sb-mercor-signed-up" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Started</label>
+                  <input type="number" id="sb-mercor-started" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Completed</label>
+                  <input type="number" id="sb-mercor-completed" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Offer</label>
+                  <input type="number" id="sb-mercor-offer" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Hired</label>
+                  <input type="number" id="sb-mercor-hired" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Paid ($)</label>
+                  <input type="number" step="0.01" id="sb-mercor-paid" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+              </div>
+            </div>
+
+            <!-- micro1 Card -->
+            <div style="background:white; border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:16px;">
+              <div style="font-weight:800; font-size:14px; color:var(--black); margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                <span style="color:#6366f1;">●</span> micro1 Platform Metrics
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:13px;">
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Total Referrals</label>
+                  <input type="number" id="sb-micro1-total" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Valid</label>
+                  <input type="number" id="sb-micro1-valid" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">AI Interview</label>
+                  <input type="number" id="sb-micro1-interview" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Certified</label>
+                  <input type="number" id="sb-micro1-certified" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">Matched</label>
+                  <input type="number" id="sb-micro1-matched" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+              </div>
+            </div>
+
+            <!-- GA4 Funnel & Notes -->
+            <div style="background:white; border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:16px;">
+              <div style="font-weight:800; font-size:14px; color:var(--black); margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                <span style="color:#f59e0b;">●</span> GA4 Analytics &amp; Notes
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:13px; margin-bottom:10px;">
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">GA apply_click</label>
+                  <input type="number" id="sb-ga-apply" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="color:var(--gray-600); font-size:12px;">GA generate_lead</label>
+                  <input type="number" id="sb-ga-leads" value="0" min="0" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+                </div>
+              </div>
+              <div>
+                <label style="color:var(--gray-600); font-size:12px;">Notes / Observations</label>
+                <input type="text" id="sb-notes" placeholder="e.g., Launched Round 4 preview, high engineering demand" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:4px; box-sizing:border-box;">
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:12px;">
+            <button type="button" onclick="toggleScoreboardForm(false)" style="padding:10px 18px; border:1px solid var(--gray-300); background:white; border-radius:var(--radius-sm); font-weight:600; cursor:pointer;">Cancel</button>
+            <button type="submit" id="sb-save-btn" class="btn-primary" style="padding:10px 24px; font-size:14px;">Save Week Metrics</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Scoreboard Table -->
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;">
+          <thead>
+            <tr style="background:var(--gray-50); border-bottom:2px solid var(--gray-200); color:var(--gray-700); text-transform:uppercase; font-size:11px; letter-spacing:0.05em;">
+              <th style="padding:12px 14px;">Week</th>
+              <th style="padding:12px 14px;">Mercor (Sign / Start / Comp / Offer / Hire / Paid)</th>
+              <th style="padding:12px 14px;">micro1 (Tot / Val / AI / Cert / Match)</th>
+              <th style="padding:12px 14px;">GA4 (Applies / Leads)</th>
+              <th style="padding:12px 14px;">WoW Growth &amp; Notes</th>
+            </tr>
+          </thead>
+          <tbody id="scoreboard-table-body">
+            <tr>
+              <td colspan="5" style="padding:24px; text-align:center; color:var(--gray-400);">Loading weekly scoreboard entries...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -502,6 +647,7 @@
             <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
           </div>
           <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <p style="color:var(--gray-400); font-size:12px; margin:4px 0 0;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
           <a href="disclosure.html" style="color:var(--gray-500); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-500)'">Affiliate Disclosure</a>
         </div>
 
@@ -527,14 +673,68 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getFirestore, collection, query, where, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    projectId: "trainaitogain-50c19"
+  const firebaseConfig = { 
+    apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
+    authDomain: "trainaitogain-50c19.firebaseapp.com", 
+    projectId: "trainaitogain-50c19", 
+    storageBucket: "trainaitogain-50c19.firebasestorage.app", 
+    messagingSenderId: "637746276432", 
+    appId: "1:637746276432:web:1a7cfa65357b0bc3b90955", 
+    measurementId: "G-RH65NXKCHE" 
   };
 
   const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
   const db = getFirestore(app);
   let globalLeads = []; // Store leads in memory
+  let currentAuthUser = null;
+
+  const AUTHORIZED_ADMIN_EMAILS = [
+    'james.hardison2@gmail.com',
+    'trainaitogain@gmail.com'
+  ];
+
+  onAuthStateChanged(auth, (user) => {
+    currentAuthUser = user;
+    const statusEl = document.getElementById('admin-auth-status');
+    const loginBtn = document.getElementById('admin-login-btn');
+    if (user && AUTHORIZED_ADMIN_EMAILS.includes((user.email || '').toLowerCase())) {
+      if (statusEl) statusEl.innerHTML = `🛡️ Admin: <strong>${user.email}</strong>`;
+      if (loginBtn) {
+        loginBtn.innerText = "Sign Out";
+        loginBtn.onclick = () => signOut(auth);
+      }
+      const refInput = document.getElementById('ref-input');
+      if (refInput && (!refInput.value || refInput.value === 'admin_all')) {
+        refInput.value = 'admin_all';
+        window.loadDashboard();
+      }
+    } else if (user) {
+      if (statusEl) statusEl.innerHTML = `⚠️ ${user.email} (Not Admin)`;
+      if (loginBtn) {
+        loginBtn.innerText = "Switch Account";
+        loginBtn.onclick = () => signOut(auth);
+      }
+    } else {
+      if (statusEl) statusEl.innerText = "🔒 Admin sign-in for full pipeline access";
+      if (loginBtn) {
+        loginBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M12.24 10.285V13.4h6.887C18.2 16.14 15.645 18 12.24 18c-3.315 0-6-2.685-6-6s2.685-6 6-6c1.47 0 2.82.54 3.87 1.425l2.43-2.43C16.89 3.48 14.7 2.6 12.24 2.6 7.02 2.6 2.79 6.83 2.79 12.05s4.23 9.45 9.45 9.45c5.46 0 9.12-3.84 9.12-9.285 0-.63-.06-1.23-.18-1.935H12.24z"/></svg> Sign In with Google`;
+        loginBtn.onclick = window.signInAdminGoogle;
+      }
+    }
+  });
+
+  window.signInAdminGoogle = async function() {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      console.error("Sign-in error", err);
+      alert("Sign-in error: " + (err.message || err));
+    }
+  };
 
   function maskEmail(email) {
     return email || "Unknown";
@@ -859,7 +1059,11 @@
       
     } catch (err) {
       console.error(err);
-      alert("Error loading dashboard data.");
+      if (err.code === 'permission-denied') {
+        alert("🔒 Access Denied: You must sign in with an authorized Google account (james.hardison2@gmail.com) to view this pipeline.");
+      } else {
+        alert("Error loading dashboard data: " + (err.message || err));
+      }
     } finally {
       btn.innerHTML = origText;
       btn.disabled = false;
@@ -1004,6 +1208,161 @@
       document.body.removeChild(link);
   };
 
+  // ===============================================================
+  // Section 21.4 Weekly Scoreboard Logic
+  // ===============================================================
+  window.toggleScoreboardForm = function(force) {
+    const el = document.getElementById('scoreboard-form-container');
+    if (!el) return;
+    if (typeof force === 'boolean') {
+      el.style.display = force ? 'block' : 'none';
+    } else {
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+    const dateInput = document.getElementById('sb-week-date');
+    if (dateInput && !dateInput.value) {
+      const now = new Date();
+      dateInput.value = now.toISOString().split('T')[0];
+    }
+  };
+
+  function escapeScoreboardHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, function(m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+    });
+  }
+
+  window.renderScoreboardRows = function(entries) {
+    const tbody = document.getElementById('scoreboard-table-body');
+    if (!tbody) return;
+    if (!entries || entries.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="padding:24px; text-align:center; color:var(--gray-400);">No entries recorded yet. Click "+ Record Friday Metrics" to add.</td></tr>';
+      return;
+    }
+
+    const sorted = [...entries].sort((a,b) => (b.weekStartDate || '').localeCompare(a.weekStartDate || ''));
+
+    tbody.innerHTML = sorted.map((entry, idx) => {
+      const prev = sorted[idx + 1];
+      const m = entry.mercor || {};
+      const u = entry.micro1 || {};
+      const ga = entry.ga || {};
+
+      let wowText = '';
+      if (prev && prev.mercor) {
+        const dHired = (m.hired || 0) - (prev.mercor.hired || 0);
+        const dPaid = (m.paid || 0) - (prev.mercor.paid || 0);
+        const hireBadge = dHired >= 0 ? `+${dHired}` : `${dHired}`;
+        wowText = `<span style="color:${dHired >= 0 ? '#10b981' : '#ef4444'}; font-weight:700;">Hires: ${hireBadge}</span> &bull; <span style="color:#059669; font-weight:700;">+$${Math.max(0, dPaid).toFixed(0)}</span>`;
+      } else {
+        wowText = '<span style="color:var(--gray-400);">Baseline Snapshot</span>';
+      }
+
+      return `
+        <tr style="border-bottom:1px solid var(--gray-200);">
+          <td style="padding:14px; font-weight:700; white-space:nowrap; color:var(--black);">
+            📅 ${entry.weekStartDate || 'Unknown'}
+          </td>
+          <td style="padding:14px; line-height:1.5;">
+            <div><strong>${m.signedUp || 0}</strong> signed &bull; <strong>${m.started || 0}</strong> started &bull; <strong>${m.completed || 0}</strong> comp</div>
+            <div style="color:var(--gray-600); font-size:12px;">${m.offer || 0} offer &bull; <strong style="color:var(--primary);">${m.hired || 0} hired</strong> &bull; <span style="color:#059669; font-weight:700;">$${Number(m.paid || 0).toLocaleString()} paid</span></div>
+          </td>
+          <td style="padding:14px; line-height:1.5;">
+            <div><strong>${u.total || 0}</strong> total &bull; <strong>${u.valid || 0}</strong> valid</div>
+            <div style="color:var(--gray-600); font-size:12px;">${u.interview || 0} AI int &bull; ${u.certified || 0} cert &bull; <strong style="color:#6366f1;">${u.matched || 0} matched</strong></div>
+          </td>
+          <td style="padding:14px; line-height:1.5;">
+            <div><span style="color:var(--gray-700);">Applies:</span> <strong>${ga.applyClicks || 0}</strong></div>
+            <div style="color:var(--gray-600); font-size:12px;"><span style="color:var(--gray-700);">Leads:</span> <strong>${ga.leads || 0}</strong></div>
+          </td>
+          <td style="padding:14px; line-height:1.4;">
+            <div>${wowText}</div>
+            <div style="font-size:11px; color:var(--gray-500); margin-top:2px;">${entry.notes ? escapeScoreboardHtml(entry.notes) : ''}</div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  };
+
+  window.loadScoreboardData = async function() {
+    const tbody = document.getElementById('scoreboard-table-body');
+    if (!tbody) return;
+    try {
+      const res = await fetch('/api/getScoreboard');
+      const data = await res.json();
+      if (data && data.success && data.entries && data.entries.length > 0) {
+        window.renderScoreboardRows(data.entries);
+        return;
+      }
+    } catch(e) {
+      console.warn("Could not fetch remote scoreboard, using baseline:", e);
+    }
+
+    // Default baseline data from Section 21.1 spec
+    window.renderScoreboardRows([
+      {
+        weekStartDate: '2026-10-12',
+        mercor: { signedUp: 12, started: 25, completed: 4, offer: 1, hired: 3, paid: 1458.92 },
+        micro1: { total: 3, valid: 2, interview: 1, certified: 1, matched: 0 },
+        ga: { applyClicks: 73, leads: 40 },
+        notes: "Baseline snapshot (Section 21.1 live dashboard data)"
+      }
+    ]);
+  };
+
+  window.handleScoreboardSubmit = async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('sb-save-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+
+    const weekStartDate = document.getElementById('sb-week-date').value;
+    const mercor = {
+      signedUp: parseInt(document.getElementById('sb-mercor-signed-up').value, 10) || 0,
+      started: parseInt(document.getElementById('sb-mercor-started').value, 10) || 0,
+      completed: parseInt(document.getElementById('sb-mercor-completed').value, 10) || 0,
+      offer: parseInt(document.getElementById('sb-mercor-offer').value, 10) || 0,
+      hired: parseInt(document.getElementById('sb-mercor-hired').value, 10) || 0,
+      paid: parseFloat(document.getElementById('sb-mercor-paid').value) || 0
+    };
+    const micro1 = {
+      total: parseInt(document.getElementById('sb-micro1-total').value, 10) || 0,
+      valid: parseInt(document.getElementById('sb-micro1-valid').value, 10) || 0,
+      interview: parseInt(document.getElementById('sb-micro1-interview').value, 10) || 0,
+      certified: parseInt(document.getElementById('sb-micro1-certified').value, 10) || 0,
+      matched: parseInt(document.getElementById('sb-micro1-matched').value, 10) || 0
+    };
+    const ga = {
+      applyClicks: parseInt(document.getElementById('sb-ga-apply').value, 10) || 0,
+      leads: parseInt(document.getElementById('sb-ga-leads').value, 10) || 0
+    };
+    const notes = document.getElementById('sb-notes').value || '';
+
+    try {
+      const res = await fetch('/api/saveScoreboard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ weekStartDate, mercor, micro1, ga, notes })
+      });
+      const resData = await res.json();
+      if (resData.success) {
+        alert('Scoreboard week successfully saved!');
+        window.toggleScoreboardForm(false);
+        window.loadScoreboardData();
+      } else {
+        alert('Error saving scoreboard: ' + (resData.error || 'Unknown error'));
+      }
+    } catch(err) {
+      console.error(err);
+      alert('Network error saving scoreboard: ' + err.message);
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Save Week Metrics'; }
+    }
+  };
+
+  // Load scoreboard whenever dashboard loads
+  document.addEventListener('DOMContentLoaded', () => {
+    window.loadScoreboardData();
+  });
 </script>
 
 <!-- Navbar Lead Capture Modal -->

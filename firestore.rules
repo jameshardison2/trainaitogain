@@ -1,0 +1,95 @@
+rules_version = '2';
+
+// ===============================================================
+// TrainAIToGain - Production Firestore Security Rules
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------
+    // Helper Functions
+    // -------------------------------------------------------------
+    function isAuthorizedTeam() {
+      return request.auth != null &&
+        request.auth.token.email != null &&
+        (request.auth.token.email == 'james.hardison2@gmail.com' ||
+         request.auth.token.email == 'trainaitogain@gmail.com');
+    }
+
+    // -------------------------------------------------------------
+    // 1. Mail Collection (Trigger Email Extension)
+    // -------------------------------------------------------------
+    // CRITICAL: The browser must NEVER be allowed to read or write
+    // to the 'mail' collection. All emails must be queued exclusively
+    // by trusted Cloud Functions using the Firebase Admin SDK.
+    match /mail/{docId} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------
+    // 2. Subscribers Collection
+    // -------------------------------------------------------------
+    // Managed exclusively server-side via Cloud Functions
+    // (/api/subscribeRoleAlerts, /api/recordUnsubscribe).
+    match /subscribers/{docId} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------
+    // 3. System Configuration & Sync Metadata
+    // -------------------------------------------------------------
+    match /system/{docId} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------
+    // 4. Job Roles Collection
+    // -------------------------------------------------------------
+    // Public read-only access for applicants and visitors.
+    // Client writes are blocked; synced via directIngestJobs Cloud Function.
+    match /roles/{roleId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // -------------------------------------------------------------
+    // 5. Analytics & Leads Collections
+    // -------------------------------------------------------------
+    // Read access is restricted to authorized team members only.
+    // Client writes are blocked (ingested server-side via Cloud Functions).
+    match /pipeline_events/{docId} {
+      allow read: if isAuthorizedTeam();
+      allow write: if false;
+    }
+
+    match /leads/{docId} {
+      allow read: if isAuthorizedTeam();
+      allow write: if false;
+    }
+
+    // -------------------------------------------------------------
+    // 6. Outreach CRM Collections
+    // -------------------------------------------------------------
+    // Read and write access restricted to authorized team members.
+    match /outreach_contacts/{docId} {
+      allow read, write: if isAuthorizedTeam();
+    }
+
+    match /outreach_chunks/{docId} {
+      allow read, write: if isAuthorizedTeam();
+    }
+
+    match /outreach_meta/{docId} {
+      allow read, write: if isAuthorizedTeam();
+    }
+
+    // -------------------------------------------------------------
+    // 7. Global Default Deny
+    // -------------------------------------------------------------
+    // Block all other unspecified collections and paths.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

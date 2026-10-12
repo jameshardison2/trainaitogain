@@ -26,6 +26,38 @@
       {
         "source": "/api/logPipelineEvent",
         "function": "logPipelineEvent"
+      },
+      {
+        "source": "/api/sendMockResultsEmail",
+        "function": "sendMockResultsEmail"
+      },
+      {
+        "source": "/api/subscribeRoleAlerts",
+        "function": "subscribeRoleAlerts"
+      },
+      {
+        "source": "/api/sendRoleAlertsDigest",
+        "function": "sendRoleAlertsDigest"
+      },
+      {
+        "source": "/api/recordUnsubscribe",
+        "function": "recordUnsubscribe"
+      },
+      {
+        "source": "/api/setRoleReminder",
+        "function": "setRoleReminder"
+      },
+      {
+        "source": "/api/processRoleReminders",
+        "function": "processRoleReminders"
+      },
+      {
+        "source": "/api/getScoreboard",
+        "function": "getScoreboard"
+      },
+      {
+        "source": "/api/saveScoreboard",
+        "function": "saveScoreboard"
       }
     ],
     "headers": [
@@ -71,7 +103,23 @@
     "source": "functions",
     "runtime": "nodejs20"
   },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
   "extensions": {
     "firestore-send-email": "firebase/firestore-send-email@0.2.10"
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "TrainAIToGain",
+        "supportEmail": "trainaitogain@gmail.com",
+        "authorizedRedirectUris": [
+          "https://trainaitogain.com/__/auth/handler",
+          "https://www.trainaitogain.com/__/auth/handler",
+          "https://trainaitogain-50c19--round4-preview-dntt6qfk.web.app/__/auth/handler"
+        ]
+      }
+    }
   }
 }

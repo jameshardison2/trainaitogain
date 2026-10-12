@@ -221,23 +221,79 @@
 <body>
 
   <div class="navbar">
-    <h1><span style="background:var(--primary); color:white; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center;">O</span> Outreach CRM</h1>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <h1 style="margin:0; display:flex; align-items:center; gap:8px;"><span style="background:var(--primary); color:white; width:32px; height:32px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center;">O</span> Outreach CRM</h1>
+      <span id="auth-user-chip" style="display:none; background:var(--gray-100); border:1px solid var(--gray-300); padding:4px 10px; border-radius:100px; font-size:12px; font-weight:600; color:var(--gray-700);"></span>
+    </div>
     
     <div id="nav-tabs" style="display:none; background:var(--gray-100); padding:4px; border-radius:8px; flex:0 1 auto; position:absolute; left:50%; transform:translateX(-50%);">
         <button class="btn" id="tab-queue" style="background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.1); margin-right:4px;" onclick="switchTab('queue')">Queue</button>
         <button class="btn" id="tab-dashboard" style="background:transparent; color:var(--gray-600);" onclick="switchTab('dashboard')">Dashboard</button>
     </div>
 
-    <div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="btn btn-outline" onclick="downloadBackup()" id="backupBtn" style="display:none; padding:8px 14px; font-size:13px; font-weight:700;">💾 Download Backup</button>
       <button class="btn btn-outline" onclick="exportCSV()" id="exportBtn" style="display:none;">Export CSV</button>
       <button class="btn btn-outline" onclick="resetData()">Reset</button>
+      <button class="btn btn-outline" id="signout-btn" onclick="handleSignOut()" style="display:none; padding:8px 12px; font-size:12px;">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- 7-day Backup Reminder Banner -->
+  <div id="backup-reminder-banner" style="display:none; background:#fffbeb; border-bottom:1px solid #fde68a; padding:12px 24px; color:#92400e; font-size:13px; font-weight:600; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+    <div>⚠️ <strong>Backup Reminder:</strong> You haven&#39;t downloaded an outreach queue backup in over 7 days.</div>
+    <div style="display:flex; gap:8px;">
+      <button onclick="downloadBackup()" style="background:#d97706; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Download Backup Now</button>
+      <button onclick="dismissBackupBanner()" style="background:transparent; border:1px solid #d97706; color:#92400e; padding:6px 10px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">Dismiss</button>
+    </div>
+  </div>
+
+  <!-- First Sign-in Cloud Migration Banner -->
+  <div id="cloud-import-banner" style="display:none; background:#ecfdf5; border-bottom:1px solid #a7f3d0; padding:12px 24px; color:#065f46; font-size:13px; font-weight:600; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+    <div>☁️ <strong>Cloud Sync Available:</strong> You have <span id="cloud-import-count">0</span> contacts in your local browser cache. Import them to secure Firestore cloud storage?</div>
+    <div style="display:flex; gap:8px;">
+      <button id="cloud-import-btn" onclick="importLocalToFirestore()" style="background:#10b981; color:white; border:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Import to Cloud Storage</button>
+      <button onclick="dismissCloudImportBanner()" style="background:transparent; border:1px solid #10b981; color:#065f46; padding:6px 10px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">Keep Local Only</button>
+    </div>
+  </div>
+
+  <!-- Google Auth Overlay Wall -->
+  <div id="auth-wall" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(17,24,39,0.95); z-index:99999; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(6px);">
+    <div style="background:var(--white); padding:40px; border-radius:16px; max-width:440px; width:90%; text-align:center; box-shadow:0 25px 50px rgba(0,0,0,0.3);">
+      <div style="width:56px; height:56px; background:#10b981; color:white; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; font-size:28px; margin-bottom:16px;">O</div>
+      <h2 style="font-size:24px; font-weight:800; margin:0 0 8px; color:var(--black);">Outreach CRM</h2>
+      <p style="color:var(--gray-600); font-size:14px; margin:0 0 24px; line-height:1.5;">Authorized team access only. Sign in with Google to view and manage candidate queues.</p>
+      <button id="google-login-btn" onclick="signInWithGoogle()" style="width:100%; display:inline-flex; align-items:center; justify-content:center; gap:12px; padding:14px 20px; background:#111827; color:white; border:none; border-radius:8px; font-weight:700; font-size:15px; cursor:pointer; transition:background 0.2s;">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M12.24 10.285V13.4h6.887C18.2 16.14 15.645 18 12.24 18c-3.315 0-6-2.685-6-6s2.685-6 6-6c1.47 0 2.82.54 3.87 1.425l2.43-2.43C16.89 3.48 14.7 2.6 12.24 2.6 7.02 2.6 2.79 6.83 2.79 12.05s4.23 9.45 9.45 9.45c5.46 0 9.12-3.84 9.12-9.285 0-.63-.06-1.23-.18-1.935H12.24z"/></svg>
+        Sign in with Google
+      </button>
+      <div id="auth-error-msg" style="display:none; margin-top:16px; color:#dc2626; font-size:13px; font-weight:600; line-height:1.4;"></div>
     </div>
   </div>
 
   <!-- Screen 1: Upload -->
   <div id="screen-upload">
     <h2 style="margin-top:0;">Upload Outreach Queue</h2>
-    <p style="color:var(--gray-500);">Upload the ranked CSV from the LinkedIn export tool to begin.</p>
+    <p style="color:var(--gray-500);">Upload your ranked export, Apollo leads, or LinkedIn connections to begin.</p>
+
+    <!-- Upload Mode Selector -->
+    <div style="margin-bottom:20px; background:var(--white); border:1px solid var(--gray-200); border-radius:10px; padding:16px 20px; text-align:left; max-width:540px; margin-left:auto; margin-right:auto; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+      <div style="font-weight:700; font-size:13px; color:var(--gray-800); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.05em;">Upload Mode:</div>
+      <label style="display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--gray-700); cursor:pointer; margin-bottom:12px;">
+        <input type="radio" name="upload-mode" id="mode-merge" value="merge" checked style="margin-top:3px; accent-color:var(--primary);">
+        <div>
+          <strong style="color:var(--black);">Merge into existing queue (Default)</strong>
+          <div style="font-size:12px; color:var(--gray-500); margin-top:2px;">De-duplicates by LinkedIn URL (or Name + Company). Preserves existing status, notes, email, and messages. Only brand-new contacts are added as READY.</div>
+        </div>
+      </label>
+      <label style="display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--gray-700); cursor:pointer;">
+        <input type="radio" name="upload-mode" id="mode-replace" value="replace" style="margin-top:3px; accent-color:#ef4444;">
+        <div>
+          <strong style="color:#b91c1c;">Replace entire queue</strong>
+          <div style="font-size:12px; color:var(--gray-500); margin-top:2px;">Wipes the entire current queue and replaces it. Requires confirmation showing exact count deleted.</div>
+        </div>
+      </label>
+    </div>
     
     <div class="drop-zone" id="drop-zone">
       <div style="font-size:32px; margin-bottom:12px;">📁</div>
@@ -418,354 +474,687 @@
   </div>
 
   
-  <script>
-    // LinkedIn Scraper Bookmarklet Listener
-    window.addEventListener('message', (event) => {
-        if (event.origin !== 'https://www.linkedin.com' && event.origin !== 'http://localhost:5000') {
-            // Depending on strictness, we might want to check origin, but the bookmarklet executes on linkedin.com
-        }
-        
-        if (event.data && event.data.type === 'LINKEDIN_SCRAPE') {
-            console.log("Received LinkedIn Data!");
-            
-            // Open the AI box if it's hidden
-            document.getElementById('ai-magic-box').style.display = 'block';
-            
-            // Populate the text area
-            const profileInput = document.getElementById('ai-profile-input');
-            profileInput.value = event.data.text;
-            
-            // Provide visual feedback
-            profileInput.style.background = '#dcfce7';
-            setTimeout(() => { profileInput.style.background = 'white'; }, 1000);
-            
-            // Auto-trigger the generation
-            const btn = document.getElementById('ai-generate-btn');
-            if(btn && typeof generateDeepAIPitch === 'function') {
-                btn.innerHTML = 'Auto-Generating Pitch...';
-                generateDeepAIPitch();
-            }
-        }
-    });
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { 
+    getAuth, 
+    signInWithPopup, 
+    GoogleAuthProvider, 
+    signOut, 
+    onAuthStateChanged 
+  } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+  import { 
+    getFirestore, 
+    collection, 
+    doc, 
+    getDoc, 
+    setDoc, 
+    getDocs, 
+    deleteDoc, 
+    writeBatch, 
+    serverTimestamp,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    let wavesData = [];
-    let contacts = [];
-    let currentContactIndex = -1;
-    let currentContactGlobalIndex = -1;
+  const firebaseConfig = { 
+    apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
+    authDomain: "trainaitogain-50c19.firebaseapp.com", 
+    projectId: "trainaitogain-50c19", 
+    storageBucket: "trainaitogain-50c19.firebasestorage.app", 
+    messagingSenderId: "637746276432", 
+    appId: "1:637746276432:web:1a7cfa65357b0bc3b90955", 
+    measurementId: "G-RH65NXKCHE" 
+  };
 
-    const REFLINK = "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe";
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    const templates = {
-      "medical": "Hi [Name] -- I came across your profile and noticed your background in [Specialty]. I help healthcare professionals find AI evaluation work that pays well and fits around clinical schedules. Micro1 is hiring licensed clinicians to review and rate AI-generated medical content -- fully remote, flexible hours, $40-80/hr. Would a quick overview be worth 10 minutes?\n\nReferral Link: " + REFLINK,
-      
-      "aviation": "Hi [Name] -- Your background caught my attention. I place pilots and aviation professionals into AI evaluation roles where your technical expertise is specifically what they're paying for. Micro1 is looking for people with real-world aviation experience to review AI outputs -- remote, flexible, competitive pay. Worth a quick conversation?\n\nReferral Link: " + REFLINK,
-      
-      "legal": "Hi [Name] -- I work with attorneys and legal professionals who are interested in AI evaluation work on the side. Micro1 pays well for licensed legal professionals to review AI-generated legal content for accuracy. Fully remote, no commitment to hours. Would this be worth 10 minutes to explore?\n\nReferral Link: " + REFLINK,
-      
-      "finance": "Hi [Name] -- I noticed your background in finance. Micro1 is hiring finance professionals to evaluate AI-generated financial analysis and content -- remote, flexible, solid pay. Your domain expertise is exactly what they're looking for. Want a quick overview?\n\nReferral Link: " + REFLINK,
-      
-      "tech": "Hi [Name] -- I help software engineers and tech professionals find AI evaluation work that pays well and fits around their schedule. Mercor and Micro1 are both hiring -- remote, flexible hours, no commitment. Worth a quick look?\n\nReferral Link: " + REFLINK,
-      
-      "other": "Hi [Name] -- I help professionals find AI evaluation work that pays well and fits around their schedule. Mercor and Micro1 are both hiring domain experts to evaluate AI models -- remote, flexible hours, no commitment. Worth a quick look?\n\nReferral Link: " + REFLINK
-    };
+  const AUTHORIZED_EMAILS = [
+    'james.hardison2@gmail.com',
+    'trainaitogain@gmail.com'
+  ];
 
-    document.addEventListener('DOMContentLoaded', async () => {
+  function isAuthorized(email) {
+    if (!email) return false;
+    return AUTHORIZED_EMAILS.includes(email.toLowerCase().trim());
+  }
 
-      try {
-        const res = await fetch('/waves.json');
-        const d = await res.json();
-        wavesData = d.roles || [];
-      } catch (e) { console.error("Waves fetch error", e); }
+  let currentUser = null;
+  let wavesData = [];
+  let contacts = [];
+  let currentContactGlobalIndex = -1;
+  const CHUNK_SIZE = 400;
+  const REFLINK = "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe";
 
-      localforage.getItem('outreach_contacts').then((saved) => {
-        if (saved) {
-          contacts = saved;
-          showQueue();
-        }
-      });
+  const templates = {
+    "medical": "Hi [Name] -- I came across your profile and noticed your background in [Specialty]. I help healthcare professionals find AI evaluation work that pays well and fits around clinical schedules. Micro1 is hiring licensed clinicians to review and rate AI-generated medical content -- fully remote, flexible hours, $40-80/hr. Would a quick overview be worth 10 minutes?\n\nReferral Link: " + REFLINK,
+    "aviation": "Hi [Name] -- Your background caught my attention. I place pilots and aviation professionals into AI evaluation roles where your technical expertise is specifically what they're paying for. Micro1 is looking for people with real-world aviation experience to review AI outputs -- remote, flexible, competitive pay. Worth a quick conversation?\n\nReferral Link: " + REFLINK,
+    "legal": "Hi [Name] -- I work with attorneys and legal professionals who are interested in AI evaluation work on the side. Micro1 pays well for licensed legal professionals to review AI-generated legal content for accuracy. Fully remote, no commitment to hours. Would this be worth 10 minutes to explore?\n\nReferral Link: " + REFLINK,
+    "finance": "Hi [Name] -- I noticed your background in finance. Micro1 is hiring finance professionals to evaluate AI-generated financial analysis and content -- remote, flexible, solid pay. Your domain expertise is exactly what they're looking for. Want a quick overview?\n\nReferral Link: " + REFLINK,
+    "tech": "Hi [Name] -- I help software engineers and tech professionals find AI evaluation work that pays well and fits around their schedule. Mercor and Micro1 are both hiring -- remote, flexible hours, no commitment. Worth a quick look?\n\nReferral Link: " + REFLINK,
+    "other": "Hi [Name] -- I help professionals find AI evaluation work that pays well and fits around their schedule. Mercor and Micro1 are both hiring domain experts to evaluate AI models -- remote, flexible hours, no commitment. Worth a quick look?\n\nReferral Link: " + REFLINK
+  };
 
-      // Drag and Drop
-      const dropZone = document.getElementById('drop-zone');
-      const fileInput = document.getElementById('file-input');
+  // Auth State Listener
+  onAuthStateChanged(auth, async (user) => {
+    const authWall = document.getElementById('auth-wall');
+    const authErrorMsg = document.getElementById('auth-error-msg');
+    const authUserChip = document.getElementById('auth-user-chip');
+    const signoutBtn = document.getElementById('signout-btn');
 
-      dropZone.addEventListener('click', () => fileInput.click());
-      
-      dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-      });
-      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-      
-      dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        if (e.dataTransfer.files.length) {
-          parseFile(e.dataTransfer.files[0]);
-        }
-      });
-
-      fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length) {
-          parseFile(e.target.files[0]);
-        }
-      });
-    });
-
-    function parseFile(file) {
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          const required = ['name', 'linkedin_url', 'domain', 'priority_score', 'outreach_status'];
-          const fields = results.meta.fields || [];
-          
-          // Auto-map Apollo & LinkedIn CSVs
-          let isApollo = fields.includes('First Name') && fields.includes('Person Linkedin Url');
-          let isLinkedIn = fields.includes('First Name') && fields.includes('URL') && fields.includes('Position');
-          let isMessages = fields.includes('CONTENT') && (fields.includes('FROM') || fields.includes('SENDER PROFILE URL'));
-          
-          if (isMessages) {
-              if (contacts.length === 0) {
-                  alert("Please upload your Connections.csv FIRST to build the CRM queue, then upload Messages.csv to attach message history to those contacts!");
-                  return;
-              }
-              let matchedCount = 0;
-              // Sort messages by date or just iterate
-              results.data.forEach(row => {
-                  let msgContent = row['CONTENT'] || '';
-                  if (!msgContent) return;
-                  
-                  let sender = row['FROM'] || '';
-                  let to = row['TO'] || '';
-                  
-                  // Try to find the contact by name in our CRM (we don't know if they are sender or recipient)
-                  let contact = contacts.find(c => c.name && (sender.includes(c.name) || to.includes(c.name)));
-                  
-                  if (contact) {
-                      if (!contact.notes.includes(msgContent.substring(0, 20))) {
-                          contact.notes += "\n\n[PAST MESSAGE]: " + msgContent;
-                          matchedCount++;
-                      }
-                  }
-              });
-              saveData();
-              alert("Successfully attached " + matchedCount + " past messages to your CRM contacts!");
-              showQueue();
-              return;
-          }
-          
-          if (isLinkedIn) {
-              contacts = results.data.filter(r => r['First Name'] && r['URL']).map((row, i) => {
-                  return {
-                      _id: i,
-                      name: (row['First Name'] || '') + ' ' + (row['Last Name'] || ''),
-                      linkedin_url: row['URL'] || '',
-                      title: row['Position'] || '',
-                      company: row['Company'] || '',
-                      email: row['Email Address'] || '',
-                      domain: 'Other',
-                      priority_score: 50,
-                      outreach_status: 'READY',
-                      notes: 'Connected on: ' + (row['Connected On'] || '')
-                  };
-              });
-              saveData();
-              showQueue();
-              return;
-          }
-          
-          if (isApollo) {
-              contacts = results.data.filter(r => r['First Name']).map((row, i) => {
-                  return {
-                      _id: i,
-                      name: (row['First Name'] || '') + ' ' + (row['Last Name'] || ''),
-                      linkedin_url: row['Person Linkedin Url'] || '',
-                      title: row['Title'] || '',
-                      company: row['Company Name'] || '',
-                      email: row['Email'] || '',
-                      domain: row['Industry'] || 'Other',
-                      priority_score: 50,
-                      outreach_status: 'READY',
-                      notes: row['Notes'] || ''
-                  };
-              });
-          } else {
-              let missing = required.filter(r => !fields.includes(r));
-              if (missing.length > 0) {
-                alert("Error: Missing required columns: " + missing.join(", ") + "\n\nTip: You can upload a raw Apollo.io export and it will auto-format it!");
-                return;
-              }
-              contacts = results.data.map((row, i) => {
-                row._id = i;
-                if(!row.notes) row.notes = "";
-                return row;
-              });
-          }
-          
-          saveData();
-          showQueue();
-        }
-      });
-    }
-
-    async function saveData() {
-      try {
-        await localforage.setItem('outreach_contacts', contacts);
-      } catch (e) {
-        console.error("Storage error", e);
+    if (user && isAuthorized(user.email)) {
+      currentUser = user;
+      authWall.style.display = 'none';
+      if (authUserChip) {
+        authUserChip.innerText = user.email;
+        authUserChip.style.display = 'inline-block';
       }
-    }
+      if (signoutBtn) signoutBtn.style.display = 'inline-block';
 
-    function showQueue() {
+      await loadWaves();
+      await syncOnAuth();
+      checkBackupReminder();
+    } else if (user) {
+      currentUser = null;
+      authWall.style.display = 'flex';
+      authErrorMsg.innerHTML = `⚠️ Access Denied: <strong>${user.email}</strong> is not authorized to access the Outreach CRM.<br><br><button onclick="handleSignOut()" class="btn btn-outline" style="font-size:12px; padding:6px 12px; margin-top:6px;">Sign Out &amp; Switch Account</button>`;
+      authErrorMsg.style.display = 'block';
+      if (authUserChip) authUserChip.style.display = 'none';
+      if (signoutBtn) signoutBtn.style.display = 'none';
+    } else {
+      currentUser = null;
+      authWall.style.display = 'flex';
+      authErrorMsg.style.display = 'none';
+      if (authUserChip) authUserChip.style.display = 'none';
+      if (signoutBtn) signoutBtn.style.display = 'none';
+      contacts = [];
+      showUploadScreen();
       document.getElementById('screen-upload').style.display = 'none';
-      document.getElementById('nav-tabs').style.display = 'flex';
-      document.getElementById('exportBtn').style.display = 'inline-block';
-      switchTab('queue');
     }
-    
-    function switchTab(tab) {
-        if(tab === 'queue') {
-            document.getElementById('screen-queue').style.display = 'block';
-            document.getElementById('screen-dashboard').style.display = 'none';
-            document.getElementById('tab-queue').style.cssText = "background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.1); margin-right:4px;";
-            document.getElementById('tab-dashboard').style.cssText = "background:transparent; color:var(--gray-600);";
-            renderTable();
-        } else {
-            document.getElementById('screen-queue').style.display = 'none';
-            document.getElementById('screen-dashboard').style.display = 'block';
-            document.getElementById('tab-dashboard').style.cssText = "background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.1);";
-            document.getElementById('tab-queue').style.cssText = "background:transparent; color:var(--gray-600); margin-right:4px;";
-            renderDashboard();
-        }
-    }
-    
-    function renderDashboard() {
-        let total = contacts.length;
-        const engagedStatuses = ['CONTACTED', 'REPLIED', 'APP STARTED', 'COMPLETED', 'HIRED', 'NO RESPONSE', 'APPLYING', 'AI INTERVIEW COMPLETED', 'MCC MET', 'CERTIFIED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
-        const repliedStatuses = ['REPLIED', 'APP STARTED', 'COMPLETED', 'HIRED', 'APPLYING', 'AI INTERVIEW COMPLETED', 'MCC MET', 'CERTIFIED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
-        const hiredStatuses = ['HIRED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
-        
-        let contacted = contacts.filter(c => engagedStatuses.includes((c.outreach_status||'').toUpperCase())).length;
-        let replied = contacts.filter(c => repliedStatuses.includes((c.outreach_status||'').toUpperCase())).length;
-        let hired = contacts.filter(c => hiredStatuses.includes((c.outreach_status||'').toUpperCase())).length;
-        
-        document.getElementById('dash-total').innerText = total;
-        document.getElementById('dash-contacted').innerText = contacted;
-        document.getElementById('dash-replied').innerText = replied;
-        document.getElementById('dash-hired').innerText = hired;
-    }
+  });
 
-    function renderTable() {
-      const statusFilter = document.getElementById('filter-status').value;
-      const domainFilter = document.getElementById('filter-domain').value;
-      
-      let filtered = contacts.filter(c => {
-        let matchStatus = false;
-        if(statusFilter === 'ALL') {
-            matchStatus = true;
-        } else if(statusFilter === 'FOLLOWUP') {
-            if (c.outreach_status && c.outreach_status.toUpperCase() === 'FOLLOWUP') {
-                matchStatus = true;
-            } else if (c.outreach_status && c.outreach_status.toUpperCase() === 'CONTACTED' && c.last_updated) {
-                let diff = (new Date() - new Date(c.last_updated)) / (1000 * 60 * 60 * 24);
-                if(diff >= 3) matchStatus = true;
-            }
-        } else {
-            matchStatus = (c.outreach_status && c.outreach_status.toUpperCase() === statusFilter.toUpperCase());
+  window.signInWithGoogle = async function() {
+    const provider = new GoogleAuthProvider();
+    const btn = document.getElementById('google-login-btn');
+    const origHTML = btn.innerHTML;
+    btn.innerHTML = 'Connecting to Google...';
+    btn.disabled = true;
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      console.error("Sign-in error", err);
+      const authErrorMsg = document.getElementById('auth-error-msg');
+      authErrorMsg.innerText = "Sign in error: " + (err.message || err);
+      authErrorMsg.style.display = 'block';
+    } finally {
+      btn.innerHTML = origHTML;
+      btn.disabled = false;
+    }
+  };
+
+  window.handleSignOut = async function() {
+    try {
+      await signOut(auth);
+      location.reload();
+    } catch (err) {
+      console.error("Sign-out error", err);
+    }
+  };
+
+  // Firestore Sync & Chunked Storage
+  async function loadFromFirestore() {
+    try {
+      const metaRef = doc(db, 'outreach_meta', 'main');
+      const metaSnap = await getDoc(metaRef);
+      if (!metaSnap.exists()) return null;
+
+      const meta = metaSnap.data();
+      if (!meta.chunk_count || meta.chunk_count === 0) return [];
+
+      const chunksColl = collection(db, 'outreach_chunks');
+      const qChunks = query(chunksColl, orderBy('index', 'asc'));
+      const chunkSnaps = await getDocs(qChunks);
+
+      let loaded = [];
+      chunkSnaps.forEach(docSnap => {
+        const data = docSnap.data();
+        if (Array.isArray(data.contacts)) {
+          loaded = loaded.concat(data.contacts);
         }
-        
-        let matchDomain = domainFilter === 'ALL' || (c.domain && c.domain.toLowerCase() === domainFilter.toLowerCase());
-        return matchStatus && matchDomain;
       });
 
-      // Sort by priority_score desc
-      filtered.sort((a, b) => (parseFloat(b.priority_score) || 0) - (parseFloat(a.priority_score) || 0));
-
-      const tbody = document.getElementById('table-body');
-      tbody.innerHTML = '';
-
-      filtered.forEach(c => {
-        const tr = document.createElement('tr');
-        tr.onclick = () => openDrawer(c._id);
-        
-        let statusClass = 'badge-skip';
-        let st = (c.outreach_status || '').toUpperCase();
-        if(st === 'READY') statusClass = 'badge-ready';
-        if(st === 'CONTACTED') statusClass = 'badge-contacted';
-        if(st === 'REPLIED' || st === 'APP STARTED' || st === 'COMPLETED' || st === 'HIRED') statusClass = 'badge-replied';
-
-        tr.innerHTML = `
-          <td style="font-weight:700;">${c.priority_score || 0}</td>
-          <td style="font-weight:600;">${c.name}</td>
-          <td style="color:var(--gray-500); max-width:250px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.title || ''}</td>
-          <td><span style="background:var(--gray-100); padding:2px 8px; border-radius:4px; font-size:12px;">${(c.domain || 'other').toUpperCase()}</span></td>
-          <td><span class="badge ${statusClass}">${c.outreach_status}</span></td>
-        `;
-        tbody.appendChild(tr);
+      loaded.forEach((c, idx) => {
+        c._id = idx;
       });
-
-      document.getElementById('queue-stats').innerText = `${filtered.length} contacts`;
+      return loaded;
+    } catch (err) {
+      console.error("Failed to load from Firestore:", err);
+      return null;
     }
+  }
 
-    function openDrawer(globalId) {
-      const c = contacts.find(x => x._id === globalId);
-      if(!c) return;
-      currentContactGlobalIndex = globalId;
+  let saveTimeout = null;
+  function debouncedSaveToFirestore() {
+    if (saveTimeout) clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+      saveToFirestore();
+    }, 1500);
+  }
 
-      document.getElementById('drawer-name').innerText = c.name;
-      document.getElementById('drawer-title').innerText = `${c.title || 'Unknown Role'} @ ${c.company || 'Unknown Company'}`;
-      
-      let badge = document.getElementById('drawer-badge');
-      badge.innerText = c.outreach_status;
-      badge.className = 'badge';
-      let st = (c.outreach_status || '').toUpperCase();
-      if(st === 'READY') badge.classList.add('badge-ready');
-      else if(st === 'CONTACTED') badge.classList.add('badge-contacted');
-      else if(st === 'REPLIED' || st === 'APP STARTED' || st === 'HIRED') badge.classList.add('badge-replied');
-      else badge.classList.add('badge-skip');
+  async function saveToFirestore() {
+    if (!currentUser || !isAuthorized(currentUser.email)) return;
+    try {
+      const total = contacts.length;
+      const numChunks = Math.ceil(total / CHUNK_SIZE);
 
-      document.getElementById('referral-warning').style.display = (st === 'REPLIED' || st === 'APP STARTED') ? 'block' : 'none';
-      if(c.linkedin_url && c.linkedin_url.trim() !== '') {
-        document.getElementById('drawer-linkedin-btn').setAttribute('data-url', c.linkedin_url);
-        document.getElementById('drawer-linkedin-btn').style.display = 'block';
-      } else {
-        document.getElementById('drawer-linkedin-btn').style.display = 'none';
+      const metaRef = doc(db, 'outreach_meta', 'main');
+      const metaSnap = await getDoc(metaRef);
+      const prevChunkCount = metaSnap.exists() ? (metaSnap.data().chunk_count || 0) : 0;
+
+      let currentBatch = writeBatch(db);
+      let opCount = 0;
+
+      for (let i = 0; i < numChunks; i++) {
+        const chunkContacts = contacts.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+        const chunkRef = doc(db, 'outreach_chunks', `chunk_${i}`);
+        currentBatch.set(chunkRef, {
+          index: i,
+          contacts: chunkContacts,
+          count: chunkContacts.length,
+          updated_at: serverTimestamp()
+        });
+        opCount++;
+
+        if (opCount >= 200) {
+          await currentBatch.commit();
+          currentBatch = writeBatch(db);
+          opCount = 0;
+        }
       }
 
-      // Load Dynamic Template
-      
-      
-      
-      let domainKey = (c.domain || 'other').toUpperCase();
-      let matchedJobs = wavesData.filter(w => w.domain === domainKey);
-      let generalJobs = wavesData.filter(w => w.domain === 'GENERAL');
-      
-      let allJobsPool = matchedJobs.concat(generalJobs);
-      
-      let top4Jobs = allJobsPool.slice(0, 4);
-      
-      let jobListings = "";
-      let percentages = [100, 95, 98, 92];
-      
-      top4Jobs.forEach((job, index) => {
-         let company = "Mercor";
-         let s = JSON.stringify(job).toLowerCase();
-         if (s.includes("micro1") || s.includes("refer.micro1.ai")) {
-            company = "Micro1";
-         }
-         jobListings += "• " + percentages[index] + "% Match - " + job.title + " (" + company + ") | " + job.pay + "\n\n";
+      if (prevChunkCount > numChunks) {
+        for (let j = numChunks; j < prevChunkCount; j++) {
+          const excessRef = doc(db, 'outreach_chunks', `chunk_${j}`);
+          currentBatch.delete(excessRef);
+          opCount++;
+          if (opCount >= 200) {
+            await currentBatch.commit();
+            currentBatch = writeBatch(db);
+            opCount = 0;
+          }
+        }
+      }
+
+      currentBatch.set(metaRef, {
+        total_count: total,
+        chunk_count: numChunks,
+        updated_at: serverTimestamp(),
+        updated_by: currentUser.email
       });
+      opCount++;
 
+      await currentBatch.commit();
+      console.log(`Saved ${total} contacts across ${numChunks} chunks to Firestore.`);
+    } catch (err) {
+      console.error("Failed to save to Firestore:", err);
+    }
+  }
 
-      let domainWorker = "professionals";
-      let domainAdjective = "";
-      if(domainKey === 'MEDICAL') { domainWorker = "clinicians"; domainAdjective = "clinical "; }
-      else if(domainKey === 'SOFTWARE') { domainWorker = "engineers"; domainAdjective = "coding "; }
-      else if(domainKey === 'LEGAL') { domainWorker = "attorneys"; domainAdjective = "legal "; }
-      else if(domainKey === 'FINANCE') { domainWorker = "experts"; domainAdjective = "financial "; }
-      
-      let firstName = c.name.split(' ')[0];
-      let msg = `Hey ${firstName}, it was great connecting with you! My name is James Hardison and I'm the founder of TrainAIToGain.
+  async function syncOnAuth() {
+    let localContacts = null;
+    try {
+      localContacts = await localforage.getItem('outreach_contacts');
+    } catch (e) {
+      console.error("Localforage read error:", e);
+    }
+    const localCount = (localContacts && Array.isArray(localContacts)) ? localContacts.length : 0;
+
+    const cloudContacts = await loadFromFirestore();
+
+    if (cloudContacts && cloudContacts.length > 0) {
+      contacts = cloudContacts;
+      await localforage.setItem('outreach_contacts', contacts);
+      showQueue();
+    } else if (localCount > 0) {
+      contacts = localContacts;
+      showQueue();
+      const cloudImportBanner = document.getElementById('cloud-import-banner');
+      const cloudImportCount = document.getElementById('cloud-import-count');
+      if (cloudImportBanner && cloudImportCount) {
+        cloudImportCount.innerText = localCount.toLocaleString();
+        cloudImportBanner.style.display = 'flex';
+      }
+    } else {
+      showUploadScreen();
+    }
+  }
+
+  window.importLocalToFirestore = async function() {
+    const btn = document.getElementById('cloud-import-btn');
+    const origText = btn.innerText;
+    btn.innerText = 'Importing to Firestore...';
+    btn.disabled = true;
+    try {
+      await saveToFirestore();
+      document.getElementById('cloud-import-banner').style.display = 'none';
+      alert(`Successfully synced ${contacts.length.toLocaleString()} contacts to secure Firestore cloud storage!`);
+    } catch (err) {
+      alert("Error importing to cloud: " + err.message);
+    } finally {
+      btn.innerText = origText;
+      btn.disabled = false;
+    }
+  };
+
+  window.dismissCloudImportBanner = function() {
+    document.getElementById('cloud-import-banner').style.display = 'none';
+  };
+
+  // Backup & 7-Day Reminder
+  window.downloadBackup = function() {
+    if (!contacts || contacts.length === 0) {
+      alert("No contacts in queue to back up.");
+      return;
+    }
+    const cleanData = contacts.map(c => {
+      let copy = { ...c };
+      delete copy._id;
+      return copy;
+    });
+    const csv = Papa.unparse(cleanData);
+    const now = new Date();
+    const dateStr = now.toISOString().slice(0, 10);
+    const timeStr = now.toTimeString().slice(0, 5).replace(':', '');
+    const filename = `outreach_backup_${dateStr}_${timeStr}.csv`;
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    localStorage.setItem('outreach_last_backup', Date.now().toString());
+    const banner = document.getElementById('backup-reminder-banner');
+    if (banner) banner.style.display = 'none';
+  };
+
+  function checkBackupReminder() {
+    const banner = document.getElementById('backup-reminder-banner');
+    if (!banner) return;
+    if (!contacts || contacts.length === 0) {
+      banner.style.display = 'none';
+      return;
+    }
+    const lastBackup = localStorage.getItem('outreach_last_backup');
+    const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+    if (!lastBackup || (Date.now() - parseInt(lastBackup, 10)) > SEVEN_DAYS_MS) {
+      banner.style.display = 'flex';
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
+  window.dismissBackupBanner = function() {
+    const banner = document.getElementById('backup-reminder-banner');
+    if (banner) banner.style.display = 'none';
+  };
+
+  // De-duplication Helpers
+  function cleanLinkedInUrl(url) {
+    if (!url || typeof url !== 'string') return '';
+    let cleaned = url.trim().toLowerCase();
+    cleaned = cleaned.replace(/^https?:\/\//, '');
+    cleaned = cleaned.replace(/^www\./, '');
+    cleaned = cleaned.replace(/\/+$/, '');
+    cleaned = cleaned.split('?')[0].split('#')[0];
+    cleaned = cleaned.replace(/\/+$/, '');
+    if (cleaned.includes('linkedin.com')) {
+      return cleaned;
+    }
+    return '';
+  }
+
+  function cleanNameCompanyKey(name, company) {
+    const cleanName = (name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    const cleanComp = (company || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    if (!cleanName) return '';
+    return `${cleanName}|${cleanComp}`;
+  }
+
+  // File Upload & Merge Parser
+  function parseFile(file) {
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async function(results) {
+        const required = ['name', 'linkedin_url', 'domain', 'priority_score', 'outreach_status'];
+        const fields = results.meta.fields || [];
+
+        let isApollo = fields.includes('First Name') && fields.includes('Person Linkedin Url');
+        let isLinkedIn = fields.includes('First Name') && fields.includes('URL') && fields.includes('Position');
+        let isMessages = fields.includes('CONTENT') && (fields.includes('FROM') || fields.includes('SENDER PROFILE URL'));
+
+        if (isMessages) {
+          if (contacts.length === 0) {
+            alert("Please upload your Connections.csv FIRST to build the CRM queue, then upload Messages.csv to attach message history to those contacts!");
+            return;
+          }
+          let matchedCount = 0;
+          results.data.forEach(row => {
+            let msgContent = row['CONTENT'] || '';
+            if (!msgContent) return;
+            let sender = row['FROM'] || '';
+            let to = row['TO'] || '';
+            let contact = contacts.find(c => c.name && (sender.includes(c.name) || to.includes(c.name)));
+            if (contact) {
+              if (!contact.notes) contact.notes = '';
+              if (!contact.notes.includes(msgContent.substring(0, 20))) {
+                contact.notes += "\n\n[PAST MESSAGE]: " + msgContent;
+                matchedCount++;
+              }
+            }
+          });
+          await saveData();
+          await saveToFirestore();
+          alert("Successfully attached " + matchedCount + " past messages to your CRM contacts!");
+          showQueue();
+          return;
+        }
+
+        let parsedRows = [];
+        if (isLinkedIn) {
+          parsedRows = results.data.filter(r => r['First Name'] && r['URL']).map((row, i) => {
+            return {
+              name: (row['First Name'] || '') + ' ' + (row['Last Name'] || ''),
+              linkedin_url: row['URL'] || '',
+              title: row['Position'] || '',
+              company: row['Company'] || '',
+              email: row['Email Address'] || '',
+              domain: 'Other',
+              priority_score: 50,
+              outreach_status: (row['outreach_status'] && row['outreach_status'].trim()) ? row['outreach_status'].trim() : 'READY',
+              notes: 'Connected on: ' + (row['Connected On'] || '')
+            };
+          });
+        } else if (isApollo) {
+          parsedRows = results.data.filter(r => r['First Name']).map((row, i) => {
+            return {
+              name: (row['First Name'] || '') + ' ' + (row['Last Name'] || ''),
+              linkedin_url: row['Person Linkedin Url'] || '',
+              title: row['Title'] || '',
+              company: row['Company Name'] || '',
+              email: row['Email'] || '',
+              domain: row['Industry'] || 'Other',
+              priority_score: 50,
+              outreach_status: (row['outreach_status'] && row['outreach_status'].trim()) ? row['outreach_status'].trim() : 'READY',
+              notes: row['Notes'] || ''
+            };
+          });
+        } else {
+          // Standard / Exported CRM CSV
+          let missing = required.filter(r => !fields.includes(r));
+          if (missing.length > 0 && !fields.includes('name') && !fields.includes('Name')) {
+            alert("Error: Missing required columns: " + missing.join(", ") + "\n\nTip: You can upload a raw Apollo.io export or LinkedIn connections and it will auto-format it!");
+            return;
+          }
+          parsedRows = results.data.filter(r => (r.name || r.Name || r.linkedin_url || r.URL)).map((row, i) => {
+            let status = (row['outreach_status'] && row['outreach_status'].trim()) 
+              ? row['outreach_status'].trim() 
+              : ((row['Status'] && row['Status'].trim()) ? row['Status'].trim() : 'READY');
+            return {
+              name: row['name'] || row['Name'] || '',
+              linkedin_url: row['linkedin_url'] || row['LinkedIn URL'] || row['URL'] || '',
+              title: row['title'] || row['Title'] || row['Position'] || '',
+              company: row['company'] || row['Company'] || '',
+              email: row['email'] || row['Email'] || '',
+              domain: row['domain'] || row['Domain'] || 'Other',
+              priority_score: parseFloat(row['priority_score'] || row['Priority Score']) || 50,
+              outreach_status: status,
+              notes: row['notes'] || row['Notes'] || '',
+              last_updated: row['last_updated'] || '',
+              last_message: row['last_message'] || ''
+            };
+          });
+        }
+
+        const isReplaceMode = document.getElementById('mode-replace') && document.getElementById('mode-replace').checked;
+
+        if (isReplaceMode && contacts.length > 0) {
+          const confirmMsg = `WARNING: You are about to replace the entire queue. This will permanently delete ${contacts.length.toLocaleString()} existing contact${contacts.length === 1 ? '' : 's'}. Are you sure you want to proceed?`;
+          if (!confirm(confirmMsg)) {
+            return;
+          }
+          contacts = parsedRows.map((r, i) => ({ ...r, _id: i }));
+        } else if (contacts.length === 0) {
+          contacts = parsedRows.map((r, i) => ({ ...r, _id: i }));
+        } else {
+          // Merge by default: de-duplicate by LinkedIn URL (then by name + company)
+          const existingByLinkedIn = new Map();
+          const existingByNameCompany = new Map();
+
+          contacts.forEach(c => {
+            const liKey = cleanLinkedInUrl(c.linkedin_url);
+            if (liKey) existingByLinkedIn.set(liKey, c);
+            const ncKey = cleanNameCompanyKey(c.name, c.company);
+            if (ncKey) existingByNameCompany.set(ncKey, c);
+          });
+
+          parsedRows.forEach(newRow => {
+            let match = null;
+            const newLiKey = cleanLinkedInUrl(newRow.linkedin_url);
+            if (newLiKey && existingByLinkedIn.has(newLiKey)) {
+              match = existingByLinkedIn.get(newLiKey);
+            } else {
+              const newNcKey = cleanNameCompanyKey(newRow.name, newRow.company);
+              if (newNcKey && existingByNameCompany.has(newNcKey)) {
+                match = existingByNameCompany.get(newNcKey);
+              }
+            }
+
+            if (match) {
+              // Existing contacts keep their status, notes, email and last message
+              if (!match.email && newRow.email) match.email = newRow.email;
+              if (newRow.title && !match.title) match.title = newRow.title;
+              if (newRow.company && !match.company) match.company = newRow.company;
+              if (newRow.domain && (!match.domain || match.domain === 'Other')) match.domain = newRow.domain;
+              if (newRow.priority_score && !match.priority_score) match.priority_score = newRow.priority_score;
+            } else {
+              // Only brand-new contacts are added as READY (unless explicit status from export is present)
+              const status = (newRow.outreach_status && newRow.outreach_status.trim()) ? newRow.outreach_status.trim() : 'READY';
+              const newContact = {
+                ...newRow,
+                outreach_status: status,
+                _id: contacts.length
+              };
+              contacts.push(newContact);
+              if (newLiKey) existingByLinkedIn.set(newLiKey, newContact);
+              const newNcKey = cleanNameCompanyKey(newRow.name, newRow.company);
+              if (newNcKey) existingByNameCompany.set(newNcKey, newContact);
+            }
+          });
+
+          contacts.forEach((c, idx) => {
+            c._id = idx;
+          });
+        }
+
+        await saveData();
+        await saveToFirestore();
+        checkBackupReminder();
+        showQueue();
+      }
+    });
+  }
+
+  async function saveData() {
+    try {
+      await localforage.setItem('outreach_contacts', contacts);
+      debouncedSaveToFirestore();
+    } catch (e) {
+      console.error("Storage error", e);
+    }
+  }
+
+  function showQueue() {
+    document.getElementById('screen-upload').style.display = 'none';
+    document.getElementById('nav-tabs').style.display = 'flex';
+    document.getElementById('exportBtn').style.display = 'inline-block';
+    document.getElementById('backupBtn').style.display = 'inline-block';
+    window.switchTab('queue');
+  }
+
+  function showUploadScreen() {
+    document.getElementById('screen-upload').style.display = 'block';
+    document.getElementById('screen-queue').style.display = 'none';
+    document.getElementById('screen-dashboard').style.display = 'none';
+    document.getElementById('nav-tabs').style.display = 'none';
+    document.getElementById('exportBtn').style.display = 'none';
+    document.getElementById('backupBtn').style.display = 'none';
+  }
+
+  window.switchTab = function(tab) {
+    if (tab === 'queue') {
+      document.getElementById('screen-queue').style.display = 'block';
+      document.getElementById('screen-dashboard').style.display = 'none';
+      document.getElementById('tab-queue').style.cssText = "background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.1); margin-right:4px;";
+      document.getElementById('tab-dashboard').style.cssText = "background:transparent; color:var(--gray-600);";
+      window.renderTable();
+    } else {
+      document.getElementById('screen-queue').style.display = 'none';
+      document.getElementById('screen-dashboard').style.display = 'block';
+      document.getElementById('tab-dashboard').style.cssText = "background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.1);";
+      document.getElementById('tab-queue').style.cssText = "background:transparent; color:var(--gray-600); margin-right:4px;";
+      renderDashboard();
+    }
+  };
+
+  function renderDashboard() {
+    let total = contacts.length;
+    const engagedStatuses = ['CONTACTED', 'REPLIED', 'APP STARTED', 'COMPLETED', 'HIRED', 'NO RESPONSE', 'APPLYING', 'AI INTERVIEW COMPLETED', 'MCC MET', 'CERTIFIED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
+    const repliedStatuses = ['REPLIED', 'APP STARTED', 'COMPLETED', 'HIRED', 'APPLYING', 'AI INTERVIEW COMPLETED', 'MCC MET', 'CERTIFIED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
+    const hiredStatuses = ['HIRED', 'MATCHED TO PROJECT', 'REWARD ASSIGNED', 'PAYMENT RELEASED', 'PAYMENT SENT', 'PAID'];
+
+    let contacted = contacts.filter(c => engagedStatuses.includes((c.outreach_status || '').toUpperCase())).length;
+    let replied = contacts.filter(c => repliedStatuses.includes((c.outreach_status || '').toUpperCase())).length;
+    let hired = contacts.filter(c => hiredStatuses.includes((c.outreach_status || '').toUpperCase())).length;
+
+    document.getElementById('dash-total').innerText = total;
+    document.getElementById('dash-contacted').innerText = contacted;
+    document.getElementById('dash-replied').innerText = replied;
+    document.getElementById('dash-hired').innerText = hired;
+  }
+
+  window.renderTable = function() {
+    const statusFilter = document.getElementById('filter-status').value;
+    const domainFilter = document.getElementById('filter-domain').value;
+
+    let filtered = contacts.filter(c => {
+      let matchStatus = false;
+      let st = (c.outreach_status || '').trim();
+      let stUpper = st.toUpperCase();
+      if (statusFilter === 'ALL') {
+        matchStatus = true;
+      } else if (statusFilter === 'FOLLOWUP') {
+        if (stUpper === 'FOLLOWUP') {
+          matchStatus = true;
+        } else if (stUpper === 'CONTACTED' && c.last_updated) {
+          let diff = (new Date() - new Date(c.last_updated)) / (1000 * 60 * 60 * 24);
+          if (diff >= 3) matchStatus = true;
+        }
+      } else {
+        matchStatus = (stUpper === statusFilter.toUpperCase());
+      }
+
+      let matchDomain = domainFilter === 'ALL' || (c.domain && c.domain.toLowerCase() === domainFilter.toLowerCase());
+      return matchStatus && matchDomain;
+    });
+
+    filtered.sort((a, b) => (parseFloat(b.priority_score) || 0) - (parseFloat(a.priority_score) || 0));
+
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    filtered.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.onclick = () => window.openDrawer(c._id);
+
+      let statusClass = 'badge-skip';
+      let stUpper = (c.outreach_status || '').toUpperCase();
+      if (stUpper === 'READY') statusClass = 'badge-ready';
+      else if (stUpper === 'CONTACTED') statusClass = 'badge-contacted';
+      else if (stUpper === 'REPLIED' || stUpper === 'APP STARTED' || stUpper === 'COMPLETED' || stUpper === 'HIRED') statusClass = 'badge-replied';
+
+      tr.innerHTML = `
+        <td style="font-weight:700;">${c.priority_score || 0}</td>
+        <td style="font-weight:600;">${c.name}</td>
+        <td style="color:var(--gray-500); max-width:250px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.title || ''}</td>
+        <td><span style="background:var(--gray-100); padding:2px 8px; border-radius:4px; font-size:12px;">${(c.domain || 'other').toUpperCase()}</span></td>
+        <td><span class="badge ${statusClass}">${c.outreach_status || 'READY'}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('queue-stats').innerText = `${filtered.length} contacts`;
+  };
+
+  window.openDrawer = function(globalId) {
+    const c = contacts.find(x => x._id === globalId);
+    if (!c) return;
+    currentContactGlobalIndex = globalId;
+
+    document.getElementById('drawer-name').innerText = c.name;
+    document.getElementById('drawer-title').innerText = `${c.title || 'Unknown Role'} @ ${c.company || 'Unknown Company'}`;
+
+    let badge = document.getElementById('drawer-badge');
+    badge.innerText = c.outreach_status || 'READY';
+    badge.className = 'badge';
+    let st = (c.outreach_status || '').toUpperCase();
+    if (st === 'READY') badge.classList.add('badge-ready');
+    else if (st === 'CONTACTED') badge.classList.add('badge-contacted');
+    else if (st === 'REPLIED' || st === 'APP STARTED' || st === 'HIRED') badge.classList.add('badge-replied');
+    else badge.classList.add('badge-skip');
+
+    document.getElementById('referral-warning').style.display = (st === 'REPLIED' || st === 'APP STARTED') ? 'block' : 'none';
+    if (c.linkedin_url && c.linkedin_url.trim() !== '') {
+      document.getElementById('drawer-linkedin-btn').setAttribute('data-url', c.linkedin_url);
+      document.getElementById('drawer-linkedin-btn').style.display = 'block';
+    } else {
+      document.getElementById('drawer-linkedin-btn').style.display = 'none';
+    }
+
+    let domainKey = (c.domain || 'other').toUpperCase();
+    let matchedJobs = wavesData.filter(w => w.domain === domainKey);
+    let generalJobs = wavesData.filter(w => w.domain === 'GENERAL');
+    let allJobsPool = matchedJobs.concat(generalJobs);
+    let top4Jobs = allJobsPool.slice(0, 4);
+
+    let jobListings = "";
+    let percentages = [100, 95, 98, 92];
+
+    top4Jobs.forEach((job, index) => {
+      let company = "Mercor";
+      let s = JSON.stringify(job).toLowerCase();
+      if (s.includes("micro1") || s.includes("refer.micro1.ai")) {
+        company = "Micro1";
+      }
+      jobListings += "• " + percentages[index] + "% Match - " + job.title + " (" + company + ") | " + job.pay + "\n\n";
+    });
+
+    let domainWorker = "professionals";
+    let domainAdjective = "";
+    if (domainKey === 'MEDICAL') { domainWorker = "clinicians"; domainAdjective = "clinical "; }
+    else if (domainKey === 'SOFTWARE') { domainWorker = "engineers"; domainAdjective = "coding "; }
+    else if (domainKey === 'LEGAL') { domainWorker = "attorneys"; domainAdjective = "legal "; }
+    else if (domainKey === 'FINANCE') { domainWorker = "experts"; domainAdjective = "financial "; }
+
+    let firstName = (c.name || 'there').split(' ')[0];
+    let msg = `Hey ${firstName}, it was great connecting with you! My name is James Hardison and I'm the founder of TrainAIToGain.
 
 https://trainaitogain.com/apply
 
@@ -782,164 +1171,150 @@ Looking forward to hearing from you!
 
 Best,
 James`;
-      
-      document.getElementById('drawer-message').value = msg;
-      document.getElementById('drawer-notes').value = c.notes || "";
 
-      document.getElementById('drawer').classList.add('open');
-      document.getElementById('drawer-overlay').classList.add('open');
+    document.getElementById('drawer-message').value = msg;
+    document.getElementById('drawer-notes').value = c.notes || "";
+
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawer-overlay').classList.add('open');
+  };
+
+  window.closeDrawer = function() {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawer-overlay').classList.remove('open');
+  };
+
+  function syncToGoogleSheets(contact) {
+    const url = "https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec";
+    const formData = new URLSearchParams();
+    formData.append('action', 'outreach_sync');
+    formData.append('name', contact.name || '');
+    formData.append('title', contact.title || '');
+    formData.append('domain', contact.domain || '');
+    formData.append('priority_score', contact.priority_score || '');
+    formData.append('outreach_status', contact.outreach_status || '');
+    formData.append('notes', contact.notes || '');
+    formData.append('linkedin_url', contact.linkedin_url || '');
+    formData.append('email', contact.email || '');
+
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    }).catch(err => console.error("Sync error:", err));
+  }
+
+  window.updateStatus = function(newStatus) {
+    if (currentContactGlobalIndex === -1) return;
+    const c = contacts.find(x => x._id === currentContactGlobalIndex);
+    if (c) {
+      c.outreach_status = newStatus;
+      c.last_updated = new Date().toISOString();
+      c.notes = document.getElementById('drawer-notes').value;
+      saveData();
+      window.renderTable();
+      window.closeDrawer();
+      syncToGoogleSheets(c);
     }
+  };
 
-    function closeDrawer() {
-      document.getElementById('drawer').classList.remove('open');
-      document.getElementById('drawer-overlay').classList.remove('open');
+  window.saveNotes = function() {
+    if (currentContactGlobalIndex === -1) return;
+    const c = contacts.find(x => x._id === currentContactGlobalIndex);
+    if (c) {
+      c.notes = document.getElementById('drawer-notes').value;
+      saveData();
     }
+  };
 
-    function syncToGoogleSheets(contact) {
-      const url = "https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec";
-      
-      const formData = new URLSearchParams();
-      formData.append('action', 'outreach_sync');
-      formData.append('name', contact.name || '');
-      formData.append('title', contact.title || '');
-      formData.append('domain', contact.domain || '');
-      formData.append('priority_score', contact.priority_score || '');
-      formData.append('outreach_status', contact.outreach_status || '');
-      formData.append('notes', contact.notes || '');
-      formData.append('linkedin_url', contact.linkedin_url || '');
-      formData.append('email', contact.email || '');
+  window.copyAndMessage = function() {
+    window.copyMessage();
+    window.updateStatus('Contacted');
+    window.openLinkedIn();
+  };
 
-      fetch(url, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-      }).catch(err => console.error("Sync error:", err));
-    }
-
-    function updateStatus(newStatus) {
-      if(currentContactGlobalIndex === -1) return;
-      const c = contacts.find(x => x._id === currentContactGlobalIndex);
-      if(c) {
-        c.outreach_status = newStatus;
-        c.last_updated = new Date().toISOString();
-        c.notes = document.getElementById('drawer-notes').value;
-        saveData();
-        renderTable();
-        closeDrawer();
-        
-        // Quietly sync this contact to Google Sheets in the background!
-        syncToGoogleSheets(c);
-      }
-    }
-
-    function saveNotes() {
-      if(currentContactGlobalIndex === -1) return;
-      const c = contacts.find(x => x._id === currentContactGlobalIndex);
-      if(c) {
-        c.notes = document.getElementById('drawer-notes').value;
-        saveData();
-      }
-    }
-
-    
-    function copyAndMessage() {
-      copyMessage();
-      updateStatus('Contacted');
-      openLinkedIn();
-    }
-
-    function copyMessage() {
-      const msg = document.getElementById('drawer-message');
-      msg.select();
-      document.execCommand('copy');
-      const btn = event.target;
+  window.copyMessage = function() {
+    const msg = document.getElementById('drawer-message');
+    msg.select();
+    document.execCommand('copy');
+    if (window.event && window.event.target) {
+      const btn = window.event.target;
       const oldTxt = btn.innerText;
       btn.innerText = "Copied!";
       setTimeout(() => btn.innerText = oldTxt, 2000);
     }
+  };
 
-    function exportCSV() {
-      const cleanData = contacts.map(c => {
-        let copy = {...c};
-        delete copy._id;
-        return copy;
-      });
-      const csv = Papa.unparse(cleanData);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", "outreach_queue_updated.csv");
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    function resetData() {
-      if(confirm("Are you sure? This will delete all local progress and return to the upload screen.")) {
-        localforage.removeItem('outreach_contacts');
-        location.reload();
-      }
-    }
-
-    let currentAIImageBase64 = null;
-    
-    function handleAIImageSelect(event) {
-        const file = event.target.files[0];
-        if(file) processAIImage(file);
-    }
-    
-    function processAIImage(file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            currentAIImageBase64 = e.target.result.split(',')[1];
-            document.getElementById('ai-image-preview').src = e.target.result;
-            document.getElementById('ai-image-preview-container').style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    function clearAIImage() {
-        currentAIImageBase64 = null;
-        document.getElementById('ai-image-preview').src = '';
-        document.getElementById('ai-image-preview-container').style.display = 'none';
-        document.getElementById('ai-image-upload').value = '';
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const ta = document.getElementById('ai-profile-input');
-        if(ta) {
-            ta.addEventListener('paste', (e) => {
-                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-                for (let index in items) {
-                    const item = items[index];
-                    if (item.kind === 'file') {
-                        const blob = item.getAsFile();
-                        processAIImage(blob);
-                    }
-                }
-            });
-        }
+  window.exportCSV = function() {
+    const cleanData = contacts.map(c => {
+      let copy = { ...c };
+      delete copy._id;
+      return copy;
     });
+    const csv = Papa.unparse(cleanData);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "outreach_queue_updated.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
-    async function generateDeepAIPitch() {
-      const profileText = document.getElementById('ai-profile-input').value;
-      if ((!profileText || profileText.trim().length < 20) && !currentAIImageBase64) {
-        alert("Please paste text or an image of the candidate's LinkedIn profile first!");
-        return;
+  window.resetData = async function() {
+    if (confirm("Are you sure? This will delete all local progress and return to the upload screen.")) {
+      contacts = [];
+      await localforage.removeItem('outreach_contacts');
+      if (currentUser && isAuthorized(currentUser.email)) {
+        await saveToFirestore();
       }
-      
-      const btn = document.getElementById('ai-generate-btn');
-      btn.innerHTML = '<span style="animation: pulse 1s infinite;">⚙️ Analyzing Profile...</span>';
-      btn.disabled = true;
-      
-      const c = contacts.find(x => x._id === currentContactGlobalIndex);
-      const firstName = c ? c.name.split(' ')[0] : '[Name]';
-      const affiliateRef = localStorage.getItem('affiliate_ref');
-      const applyUrl = affiliateRef ? `https://trainaitogain.com/apply?ref=${affiliateRef}` : `https://trainaitogain.com/apply`;
+      location.reload();
+    }
+  };
 
-      const prompt = `You are James Hardison, founder of TrainAIToGain. 
+  let currentAIImageBase64 = null;
+
+  window.handleAIImageSelect = function(event) {
+    const file = event.target.files[0];
+    if (file) processAIImage(file);
+  };
+
+  function processAIImage(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      currentAIImageBase64 = e.target.result.split(',')[1];
+      document.getElementById('ai-image-preview').src = e.target.result;
+      document.getElementById('ai-image-preview-container').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  window.clearAIImage = function() {
+    currentAIImageBase64 = null;
+    document.getElementById('ai-image-preview').src = '';
+    document.getElementById('ai-image-preview-container').style.display = 'none';
+    document.getElementById('ai-image-upload').value = '';
+  };
+
+  window.generateDeepAIPitch = async function() {
+    const profileText = document.getElementById('ai-profile-input').value;
+    if ((!profileText || profileText.trim().length < 20) && !currentAIImageBase64) {
+      alert("Please paste text or an image of the candidate's LinkedIn profile first!");
+      return;
+    }
+
+    const btn = document.getElementById('ai-generate-btn');
+    btn.innerHTML = '<span style="animation: pulse 1s infinite;">⚙️ Analyzing Profile...</span>';
+    btn.disabled = true;
+
+    const c = contacts.find(x => x._id === currentContactGlobalIndex);
+    const firstName = c ? c.name.split(' ')[0] : '[Name]';
+    const affiliateRef = localStorage.getItem('affiliate_ref');
+    const applyUrl = affiliateRef ? `https://trainaitogain.com/apply?ref=${affiliateRef}` : `https://trainaitogain.com/apply`;
+
+    const prompt = `You are James Hardison, founder of TrainAIToGain. 
 Your goal is to write a highly persuasive, customized outreach message for a candidate named ${firstName}.
 
 Here is the candidate's full profile:
@@ -980,98 +1355,146 @@ Best,
 James
 `;
 
-      try {
-        const parts = [{ text: prompt }];
-        if (currentAIImageBase64) {
-            parts.push({
-                inlineData: {
-                    mimeType: "image/jpeg",
-                    data: currentAIImageBase64
-                }
-            });
-        }
-
-        const response = await fetch('https://trainaitogain-50c19.web.app/api/generateAiResponse', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ role: 'user', parts: parts }]
-          })
+    try {
+      const parts = [{ text: prompt }];
+      if (currentAIImageBase64) {
+        parts.push({
+          inlineData: {
+            mimeType: "image/jpeg",
+            data: currentAIImageBase64
+          }
         });
-        
-        const data = await response.json();
-        if(data.error) throw new Error(data.error.message || data.error);
-        
-        let aiText = data.candidates[0].content.parts[0].text;
-        document.getElementById('drawer-message').value = aiText.trim();
-        document.getElementById('ai-magic-box').style.display = 'none';
-        
-      } catch (err) {
-        console.error(err);
-        alert("AI Generation failed: " + err.message);
-      } finally {
-        btn.innerHTML = 'Run ATS Analysis & Generate';
-        btn.disabled = false;
-        document.getElementById('ai-profile-input').value = '';
       }
+
+      const response = await fetch('https://trainaitogain-50c19.web.app/api/generateAiResponse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: parts }]
+        })
+      });
+
+      const data = await response.json();
+      if (data.error) throw new Error(data.error.message || data.error);
+
+      let aiText = data.candidates[0].content.parts[0].text;
+      document.getElementById('drawer-message').value = aiText.trim();
+      document.getElementById('ai-magic-box').style.display = 'none';
+
+    } catch (err) {
+      console.error(err);
+      alert("AI Generation failed: " + err.message);
+    } finally {
+      btn.innerHTML = 'Run ATS Analysis & Generate';
+      btn.disabled = false;
+      document.getElementById('ai-profile-input').value = '';
     }
+  };
 
-
-    function openGmail() {
-      if(currentContactGlobalIndex === -1) return;
-      const c = contacts.find(x => x._id === currentContactGlobalIndex);
-      if(c && c.email) {
-        const bodyText = document.getElementById('drawer-message').value;
-        const subject = encodeURIComponent("TrainAIToGain / Opportunities for your background");
-        const body = encodeURIComponent(bodyText);
-        window.open(`mailto:${c.email}?subject=${subject}&body=${body}`);
-      }
+  window.openGmail = function() {
+    if (currentContactGlobalIndex === -1) return;
+    const c = contacts.find(x => x._id === currentContactGlobalIndex);
+    if (c && c.email) {
+      const bodyText = document.getElementById('drawer-message').value;
+      const subject = encodeURIComponent("TrainAIToGain / Opportunities for your background");
+      const body = encodeURIComponent(bodyText);
+      window.open(`mailto:${c.email}?subject=${subject}&body=${body}`);
     }
+  };
 
-
-    let linkedInWindow = null;
-    function openLinkedIn() {
-      const url = document.getElementById('drawer-linkedin-btn').getAttribute('data-url');
-      if (url) {
-         linkedInWindow = window.open(url, 'linkedin_window');
-      }
+  let linkedInWindow = null;
+  window.openLinkedIn = function() {
+    const url = document.getElementById('drawer-linkedin-btn').getAttribute('data-url');
+    if (url) {
+      linkedInWindow = window.open(url, 'linkedin_window');
     }
+  };
 
-    // Listen for bookmarklet messages from the LinkedIn tab
-    window.addEventListener("message", (event) => {
-        if (event.data && event.data.type === "LINKEDIN_SCRAPE") {
-            // Un-hide the AI box
-            document.getElementById("ai-magic-box").style.display = "block";
-            // Populate the input with the scraped text
-            document.getElementById("ai-profile-input").value = event.data.text;
-            // Optionally bring focus back to the CRM (doesn't always work due to browser security, but good to try)
-            window.focus();
-            // Automatically trigger the AI!
-            generateDeepAIPitch();
-            
-            // Show a nice temporary toast or update
-            const btn = document.getElementById('ai-generate-btn');
-            const oldText = btn.innerHTML;
-            btn.innerHTML = "✅ Profile received! Running AI...";
-            setTimeout(() => { btn.innerHTML = oldText; }, 3000);
+  async function loadWaves() {
+    try {
+      const res = await fetch('/waves.json');
+      const d = await res.json();
+      wavesData = d.roles || [];
+    } catch (e) {
+      console.error("Waves fetch error", e);
+    }
+  }
+
+  // Drag and drop / file input listeners
+  function initDropZone() {
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+
+    if (dropZone && fileInput) {
+      dropZone.addEventListener('click', () => fileInput.click());
+
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+          parseFile(e.dataTransfer.files[0]);
         }
-    });
+      });
 
-
-    // Auto-trigger AI on paste
-    document.addEventListener('DOMContentLoaded', () => {
-        const input = document.getElementById('ai-profile-input');
-        if (input) {
-            input.addEventListener('paste', (e) => {
-                setTimeout(() => {
-                    if(input.value.length > 50) {
-                        generateDeepAIPitch();
-                    }
-                }, 100);
-            });
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+          parseFile(e.target.files[0]);
         }
-    });
+      });
+    }
 
+    const ta = document.getElementById('ai-profile-input');
+    if (ta) {
+      ta.addEventListener('paste', (e) => {
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        for (let index in items) {
+          const item = items[index];
+          if (item.kind === 'file') {
+            const blob = item.getAsFile();
+            processAIImage(blob);
+          }
+        }
+        setTimeout(() => {
+          if (ta.value.length > 50) {
+            window.generateDeepAIPitch();
+          }
+        }, 100);
+      });
+    }
+  }
+
+  // LinkedIn Scraper Bookmarklet Listener
+  window.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "LINKEDIN_SCRAPE") {
+      document.getElementById("ai-magic-box").style.display = "block";
+      const profileInput = document.getElementById("ai-profile-input");
+      profileInput.value = event.data.text;
+      profileInput.style.background = '#dcfce7';
+      setTimeout(() => { profileInput.style.background = 'white'; }, 1000);
+      window.focus();
+      window.generateDeepAIPitch();
+
+      const btn = document.getElementById('ai-generate-btn');
+      if (btn) {
+        const oldText = btn.innerHTML;
+        btn.innerHTML = "✅ Profile received! Running AI...";
+        setTimeout(() => { btn.innerHTML = oldText; }, 3000);
+      }
+    }
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDropZone);
+  } else {
+    initDropZone();
+  }
   </script>
+
 </body>
 </html>
