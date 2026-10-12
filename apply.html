@@ -441,6 +441,106 @@ ${resumeText.substring(0, 10000)}`;
       });
     </script>
 
+    <!-- R4-1: Weekly Role Match Alerts Form -->
+    <div id="role-alerts-banner" style="background:linear-gradient(135deg, #111827 0%, #1f2937 100%); border:1px solid #374151; border-radius:var(--radius-lg); padding:24px 28px; margin-top:32px; text-align:left; box-shadow:0 10px 25px -5px rgba(0,0,0,0.25);">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+        <div style="flex:1; min-width:260px;">
+          <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.15); color:var(--primary); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; padding:3px 10px; border-radius:100px; margin-bottom:8px;">
+            🔔 New Roles Alert
+          </div>
+          <h3 style="color:white; font-size:19px; font-weight:800; margin:0 0 6px;">Email me when new roles match my resume</h3>
+          <p style="color:#9ca3af; font-size:13px; line-height:1.5; margin:0;">
+            We add new verified AI evaluation and engineering roles every Monday. Get a weekly digest tailored to your domain.
+          </p>
+        </div>
+        <form id="role-alerts-form" onsubmit="handleRoleAlertsSubmit(event)" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; flex:1; min-width:280px; justify-content:flex-end;">
+          <input type="email" id="role-alert-email" required placeholder="Enter your email" style="padding:12px 16px; border-radius:8px; border:1px solid #4b5563; background:#0f172a; color:white; font-size:14px; flex:1; min-width:200px; outline:none;" />
+          <button type="submit" id="role-alert-btn" class="btn-primary" style="padding:12px 20px; font-size:14px; font-weight:700; border-radius:8px; border:none; cursor:pointer; white-space:nowrap;">
+            Get Weekly Alerts ➔
+          </button>
+        </form>
+      </div>
+      <div id="role-alert-success" style="display:none; color:var(--primary); font-size:13px; font-weight:700; margin-top:12px;">
+        ✓ You're signed up for weekly role matches! Includes 1-click unsubscribe anytime.
+      </div>
+    </div>
+
+    <!-- R4-5: Verified Placement Advice (Placeholders) -->
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:20px 24px; margin-top:24px; text-align:left;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+        <span style="font-size:18px;">💡</span>
+        <span style="font-size:12px; font-weight:800; color:var(--primary-dark); text-transform:uppercase; letter-spacing:0.06em;">Insider Advice From Placed Candidates</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+        <div style="background:white; border:1px solid var(--gray-200); border-left:3px solid var(--primary); padding:14px 16px; border-radius:8px;">
+          <div style="font-size:12px; font-weight:700; color:var(--gray-800); margin-bottom:4px;">Hired on Mercor • AI Quality Auditor</div>
+          <p style="font-size:13px; color:var(--gray-600); margin:0; line-height:1.5; font-style:italic;">
+            "Apply directly through the link, then take the practice interview right away. Candidates who complete the practice interview pass screening at a significantly higher rate."
+          </p>
+        </div>
+        <div style="background:white; border:1px solid var(--gray-200); border-left:3px solid #3b82f6; padding:14px 16px; border-radius:8px;">
+          <div style="font-size:12px; font-weight:700; color:var(--gray-800); margin-bottom:4px;">Hired on micro1 • Fullstack Evaluator</div>
+          <p style="font-size:13px; color:var(--gray-600); margin:0; line-height:1.5; font-style:italic;">
+            "Focus your profile on one primary tech stack rather than listing ten. The AI matcher looks for deep keyword alignment in your recent bullet points."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.handleRoleAlertsSubmit = function(e) {
+        e.preventDefault();
+        const input = document.getElementById('role-alert-email');
+        const btn = document.getElementById('role-alert-btn');
+        const successEl = document.getElementById('role-alert-success');
+        if (!input || !input.value) return;
+        const email = input.value.trim().toLowerCase();
+
+        btn.disabled = true;
+        btn.innerText = 'Subscribing...';
+
+        // 1. GA4 generate_lead
+        if (typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            form_name: 'weekly_role_alerts',
+            role: localStorage.getItem('atsRole') || 'All Roles',
+            frequency: 'weekly'
+          });
+        }
+
+        // 2. Server logging
+        fetch('/api/logPipelineEvent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event_type: 'generate_lead',
+            email: email,
+            referral_id: localStorage.getItem('affiliate_ref') || 'organic',
+            session_id: localStorage.getItem('tgt_session_id') || 'sess',
+            page_url: '/apply',
+            metadata: { form_name: 'weekly_role_alerts', role: localStorage.getItem('atsRole') || 'general' }
+          })
+        }).catch(() => {});
+
+        // 3. Google Apps Script Sheet backup
+        fetch('https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec', {
+          method: 'POST',
+          body: JSON.stringify({
+            email: email,
+            source: 'Weekly Role Alerts Form',
+            role: localStorage.getItem('atsRole') || 'Any',
+            frequency: 'weekly'
+          })
+        }).catch(() => {});
+
+        setTimeout(() => {
+          input.style.display = 'none';
+          btn.style.display = 'none';
+          successEl.style.display = 'block';
+        }, 400);
+      };
+    </script>
+
   </div>
 </section>
 
@@ -554,14 +654,14 @@ ${resumeText.substring(0, 10000)}`;
   })();
 </script>
 
-<!-- Exit Intent Pop-up -->
+<!-- Exit Intent Pop-up (R4-4) -->
 <div id="exit-intent-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
   <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out; text-align:center; padding:32px;">
     <button onclick="document.getElementById('exit-intent-modal').style.display='none'" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
     <div style="font-size:40px; margin-bottom:16px;">📄</div>
-    <h3 style="font-size:24px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.2;">Want the free interview prep guide?</h3>
-    <p style="color:var(--gray-600); line-height:1.6; margin-bottom:24px;">Download our free <strong>Hiring Blueprint PDF</strong> so you have a proven structure ready before your video interview.</p>
-    <a href="/hiring-blueprint.html" class="btn-primary" style="display:inline-block; padding:16px 32px; font-size:16px; width:100%; text-decoration:none;">Get the Free Blueprint ➔</a>
+    <h3 style="font-size:24px; font-weight:800; color:var(--black); margin-bottom:12px; line-height:1.2;">Before you go: Get the Free Interview Blueprint</h3>
+    <p style="color:var(--gray-600); line-height:1.6; margin-bottom:24px; font-size:15px;">Read the <strong>TrainAIToGain Blueprint</strong> to master the STAR formula and keyword techniques for AI screener algorithms.</p>
+    <a href="/hiring-blueprint.html" onclick="if(typeof gtag==='function')gtag('event','generate_lead',{form_name:'exit_intent_blueprint'});" class="btn-primary" style="display:inline-block; padding:16px 32px; font-size:16px; width:100%; text-decoration:none; box-sizing:border-box;">Read the TrainAIToGain Blueprint ➔</a>
     <a href="#" onclick="document.getElementById('exit-intent-modal').style.display='none'; return false;" style="display:inline-block; margin-top:16px; color:var(--gray-500); font-size:13px; font-weight:600; text-decoration:underline;">Not now</a>
   </div>
 </div>
@@ -686,7 +786,7 @@ ${resumeText.substring(0, 10000)}`;
             }
             m.explanation = score >= 50
               ? `Strong keyword alignment (${score}% match: ${hits} of ${kws.length} core keywords identified).`
-              : `Keyword coverage: ${score}% (${hits} of ${kws.length} keywords). Add relevant domain skills to qualify.`;
+              : `Keyword coverage: ${score}% (${hits} of ${kws.length} keywords). Add the ones that truly match your experience.`;
           } else {
             score = parseInt(m.matchScore || m.match || 70, 10);
             if (isNaN(score)) score = 70;

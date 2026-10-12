@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official AI Interview Readiness Checklist | TrainAIToGain</title>
+  <meta name="description" content="Free, printable readiness checklist for Mercor and micro1 AI interviews. Hardware, environment, STAR formulas, and platform rules cited from official guidelines.">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7Z54KYTV6B');
+  </script>
+
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --primary-light: #ecfdf5;
+      --black: #111827;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--gray-50); color: var(--black); line-height: 1.6; }
+    
+    /* Screen Styles */
+    .checklist-nav { background: white; border-bottom: 1px solid var(--gray-200); padding: 16px 24px; position: sticky; top: 0; z-index: 100; }
+    .checklist-nav-inner { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    
+    .checklist-page { max-width: 900px; margin: 40px auto 80px; padding: 0 20px; }
+    .checklist-card { background: white; border-radius: 16px; border: 1px solid var(--gray-200); box-shadow: 0 10px 30px rgba(0,0,0,0.04); padding: 48px; }
+    
+    .header-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--primary-light); color: var(--primary-dark); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 14px; border-radius: 100px; margin-bottom: 16px; }
+    h1 { font-size: 32px; font-weight: 900; letter-spacing: -0.02em; color: var(--black); margin-bottom: 12px; line-height: 1.2; }
+    .subtitle { font-size: 16px; color: var(--gray-600); margin-bottom: 32px; max-width: 740px; }
+    
+    .action-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--gray-200); }
+    .btn-print { background: var(--black); color: white; border: none; padding: 12px 24px; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s; }
+    .btn-print:hover { background: #374151; }
+    .btn-secondary { background: white; border: 1px solid var(--gray-300); color: var(--gray-700); padding: 12px 20px; font-size: 14px; font-weight: 600; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-secondary:hover { background: var(--gray-50); }
+    
+    .section-block { margin-bottom: 36px; page-break-inside: avoid; }
+    .section-title { font-size: 19px; font-weight: 800; color: var(--black); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--gray-100); padding-bottom: 8px; }
+    .section-icon { font-size: 20px; }
+    
+    .item-list { display: flex; flex-direction: column; gap: 12px; }
+    .item-row { display: flex; align-items: flex-start; gap: 14px; padding: 12px 16px; border-radius: 8px; background: var(--gray-50); border: 1px solid var(--gray-200); transition: all 0.2s; cursor: pointer; }
+    .item-row:hover { background: #f3f4f6; }
+    .item-row.checked { background: var(--primary-light); border-color: #a7f3d0; }
+    .item-row.checked .item-text { color: #065f46; }
+    .item-row.checked .item-title { text-decoration: line-through; color: #047857; }
+    
+    .checkbox-custom { width: 20px; height: 20px; border: 2px solid var(--gray-400); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; background: white; transition: all 0.2s; }
+    .item-row.checked .checkbox-custom { background: var(--primary); border-color: var(--primary); color: white; }
+    .checkbox-custom svg { display: none; width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 3; }
+    .item-row.checked .checkbox-custom svg { display: block; }
+    
+    .item-body { flex: 1; }
+    .item-title { font-size: 15px; font-weight: 700; color: var(--black); margin-bottom: 4px; line-height: 1.4; }
+    .item-text { font-size: 13px; color: var(--gray-600); line-height: 1.5; }
+    .item-source { display: inline-block; font-size: 11px; font-weight: 700; color: var(--gray-400); margin-top: 4px; }
+    
+    .sources-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-top: 40px; }
+    .sources-title { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-700); margin-bottom: 12px; }
+    .sources-list { font-size: 12px; color: var(--gray-600); line-height: 1.6; padding-left: 20px; }
+    .sources-list li { margin-bottom: 6px; }
+    
+    /* Print Styles */
+    @media print {
+      body { background: white !important; color: black !important; font-size: 12pt; }
+      .checklist-nav, .action-bar, .no-print { display: none !important; }
+      .checklist-page { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+      .checklist-card { border: none !important; box-shadow: none !important; padding: 0 !important; }
+      h1 { font-size: 22pt !important; margin-bottom: 8pt !important; }
+      .subtitle { font-size: 11pt !important; margin-bottom: 16pt !important; color: #333 !important; }
+      .section-block { margin-bottom: 18pt !important; page-break-inside: avoid !important; }
+      .section-title { font-size: 14pt !important; border-bottom: 1pt solid #000 !important; padding-bottom: 4pt !important; margin-bottom: 8pt !important; }
+      .item-row { background: white !important; border: 1pt solid #ccc !important; padding: 6pt 10pt !important; margin-bottom: 4pt !important; page-break-inside: avoid !important; }
+      .checkbox-custom { border: 1.5pt solid #000 !important; width: 14pt !important; height: 14pt !important; background: white !important; }
+      .item-title { font-size: 11pt !important; color: black !important; }
+      .item-text { font-size: 9.5pt !important; color: #222 !important; }
+      .sources-box { border: 1pt solid #ccc !important; padding: 12pt !important; margin-top: 16pt !important; page-break-inside: avoid !important; }
+      @page { margin: 0.5in; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation (Screen Only) -->
+  <header class="checklist-nav no-print">
+    <div class="checklist-nav-inner">
+      <a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+        <img src="logo.svg" alt="TrainAIToGain Logo" style="height:36px; width:36px;">
+        <span style="font-weight:800; font-size:17px; color:var(--black); letter-spacing:-0.02em;">TrainAIToGain</span>
+      </a>
+      <div style="display:flex; gap:16px; align-items:center;">
+        <a href="/ai-interview" style="font-size:14px; font-weight:700; color:var(--gray-700); text-decoration:none;">Practice Interview</a>
+        <a href="/apply" style="font-size:14px; font-weight:700; color:var(--primary-dark); text-decoration:none;">Browse Roles</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="checklist-page">
+    <div class="checklist-card">
+      
+      <div class="header-badge">📋 Official Candidate Preparation Guide</div>
+      <h1>AI Interview Readiness Checklist</h1>
+      <p class="subtitle">
+        Everything you must verify before taking an AI interview on <strong>Mercor</strong> or <strong>micro1</strong>. Print this sheet or check items off digitally before starting your real screening.
+      </p>
+
+      <div class="action-bar no-print">
+        <button class="btn-print" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print Checklist (1 Page PDF)
+        </button>
+        <a href="/ai-interview" class="btn-secondary">
+          🎙️ Run 5-Question Mock Practice First
+        </a>
+        <a href="/apply" class="btn-secondary">
+          💼 Open Active Roles
+        </a>
+      </div>
+
+      <!-- Section 1: Hardware & System -->
+      <div class="section-block">
+        <div class="section-title">
+          <span class="section-icon">💻</span>
+          1. Hardware & System Setup
+        </div>
+        <div class="item-list">
+          <div class="item-row" onclick="toggleCheck(this, 'c1')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Desktop or Laptop Computer Only (No Phones or Tablets)</div>
+              <div class="item-text">Mercor does not support mobile browsers. Full-screen sharing is required throughout the assessment.</div>
+              <div class="item-source">Source: Mercor Candidate FAQ (work.mercor.com)</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c2')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Google Chrome Browser (Updated to Latest Version)</div>
+              <div class="item-text">Chrome provides the most reliable WebRTC audio/video and screen share pipelines. Safari and Edge are supported; Firefox is NOT supported.</div>
+              <div class="item-source">Source: Mercor & micro1 Technical Requirements</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c3')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Wired Headset / Earphones with Dedicated Microphone</div>
+              <div class="item-text">Built-in laptop microphones pick up room echo and keyboard clicks, confusing automated speech-to-text parsers. Use wired headphones with a mic.</div>
+              <div class="item-source">Source: TrainAIToGain Audio Transcription Analysis</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c4')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">High-Speed, Stable Internet (Minimum 15 Mbps Download / 5 Mbps Upload)</div>
+              <div class="item-text">Close streaming apps, VPNs, downloads, and heavy background tabs before starting to prevent video stutter or audio drops.</div>
+              <div class="item-source">Source: Mercor System Check Requirements</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Environment & Lighting -->
+      <div class="section-block">
+        <div class="section-title">
+          <span class="section-icon">💡</span>
+          2. Physical Space & Lighting
+        </div>
+        <div class="item-list">
+          <div class="item-row" onclick="toggleCheck(this, 'c5')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Front-Facing Light Source (No Backlighting)</div>
+              <div class="item-text">Position light or a window directly in front of your face. Windows behind you cast you in shadow and trigger automated lighting warnings.</div>
+              <div class="item-source">Source: Computer Vision Facial Landmark Guidelines</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c6')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Quiet, Closed Room with Zero Distractions</div>
+              <div class="item-text">Notify household members and close windows. AI screeners penalize background human voices as potential collaboration or cheating.</div>
+              <div class="item-source">Source: Mercor Honor Code & Proctoring Rules</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c7')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">20 Uninterrupted Minutes Scheduled</div>
+              <div class="item-text">Mute phone, silence computer Slack/Discord notifications, and close secondary communication windows.</div>
+              <div class="item-source">Source: Mercor Candidate Walkthrough</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Official Retake & Practice Rules -->
+      <div class="section-block">
+        <div class="section-title">
+          <span class="section-icon">⚖️</span>
+          3. Platform Rules & Retake Policies
+        </div>
+        <div class="item-list">
+          <div class="item-row" onclick="toggleCheck(this, 'c8')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Take the Free Mercor Practice Interview First!</div>
+              <div class="item-text">Mercor provides an official, unlimited practice interview that is completely private and never shared with hiring managers. Test your audio and pacing there first.</div>
+              <div class="item-source">Source: Mercor Official Candidate Portal (work.mercor.com)</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c9')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Protect Your 3 Official Retakes</div>
+              <div class="item-text">Mercor limits candidates to 3 official recorded interviews across applications. Once submitted, your scores and videos are attached to your profile for hiring companies to review.</div>
+              <div class="item-source">Source: Mercor Retake Policy (2026 Guidelines)</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c10')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">micro1: Target One Core Skill & Use Zara Prep</div>
+              <div class="item-text">On micro1, specialize your profile in one primary tech stack or evaluation domain. Use the micro1 prep tool to familiarize yourself with Zara's evaluation rubrics.</div>
+              <div class="item-source">Source: micro1 AI Recruiter Guidelines (micro1.ai)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Answer Structuring & Pacing -->
+      <div class="section-block">
+        <div class="section-title">
+          <span class="section-icon">🎯</span>
+          4. Answer Structure & Pacing Formula
+        </div>
+        <div class="item-list">
+          <div class="item-row" onclick="toggleCheck(this, 'c11')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Target Answer Duration: 60 to 90 Seconds</div>
+              <div class="item-text">Responses under 30 seconds lack sufficient keyword signals for the transcription scorer. Responses over 2 minutes risk rambling. Aim for 70–120 words per question.</div>
+              <div class="item-source">Source: TrainAIToGain Rubric Analysis</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c12')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Strict STAR Framework: Situation, Task, Action, Result</div>
+              <div class="item-text">State the challenge (10s), your assigned task (10s), the exact actions you owned (30s), and end with a quantified, measurable outcome (15s).</div>
+              <div class="item-source">Source: Industry Standard AI Evaluation Benchmark</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c13')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Prepare 3 Quantified Stories From Your Resume</div>
+              <div class="item-text">Have numbers ready: % reduction in latency, dollars saved, patient volumes handled, or accuracy benchmarks achieved. AI screeners weight concrete metrics heavily.</div>
+              <div class="item-source">Source: Mercor Technical Rubric Criteria</div>
+            </div>
+          </div>
+
+          <div class="item-row" onclick="toggleCheck(this, 'c14')">
+            <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="item-body">
+              <div class="item-title">Look at the Camera Lens, Do Not Read From a Hidden Script</div>
+              <div class="item-text">Eye-tracking algorithms flag candidates reading pre-written notes on secondary screens. Natural pauses and eye contact with the webcam build credibility.</div>
+              <div class="item-source">Source: AI Interview Proctoring Analysis</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verified Sources -->
+      <div class="sources-box">
+        <div class="sources-title">Verified Sources & Citations</div>
+        <ol class="sources-list">
+          <li><strong>Mercor Platform Documentation:</strong> Official candidate guides, system check specifications, and retake policies at <a href="https://work.mercor.com" target="_blank" style="color:var(--primary-dark); font-weight:700;">work.mercor.com</a>.</li>
+          <li><strong>micro1 Candidate Help Center:</strong> Zara AI Interviewer instructions and skill verification guidelines at <a href="https://micro1.ai" target="_blank" style="color:var(--primary-dark); font-weight:700;">micro1.ai</a>.</li>
+          <li><strong>TrainAIToGain Analysis:</strong> Proprietary coaching evaluations, speech-to-text benchmark rubrics, and candidate placements across top AI training labs.</li>
+        </ol>
+      </div>
+
+      <div style="margin-top:40px; text-align:center;" class="no-print">
+        <a href="/ai-interview" class="btn-print" style="text-decoration:none; padding:14px 28px; font-size:15px; display:inline-flex;">
+          Ready to Practice? Open the Free Mock Interview ➔
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer style="background:var(--black); padding:40px 0; color:#888; font-size:13px; text-align:center;" class="no-print">
+    <div style="max-width:900px; margin:0 auto; padding:0 20px;">
+      <p style="margin-bottom:8px;">&copy; 2026 TrainAIToGain. All rights reserved. Free and ungated candidate preparation resource.</p>
+      <p><a href="/ai-interview" style="color:#aaa; text-decoration:underline;">Mock Interview</a> • <a href="/apply" style="color:#aaa; text-decoration:underline;">Active Roles</a> • <a href="/hiring-blueprint.html" style="color:#aaa; text-decoration:underline;">Blueprint</a> • <a href="/unsubscribe" style="color:#aaa; text-decoration:underline;">Unsubscribe</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // LocalStorage persistence for digital checkboxes
+    function toggleCheck(el, id) {
+      el.classList.toggle('checked');
+      const isChecked = el.classList.contains('checked');
+      try {
+        localStorage.setItem('checklist_' + id, isChecked ? '1' : '0');
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const rows = document.querySelectorAll('.item-row');
+      rows.forEach((row, idx) => {
+        const id = 'c' + (idx + 1);
+        if (localStorage.getItem('checklist_' + id) === '1') {
+          row.classList.add('checked');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

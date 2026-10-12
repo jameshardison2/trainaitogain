@@ -410,7 +410,7 @@
   <div style="background:white; padding:32px; border-radius:12px; max-width:400px; width:90%; position:relative; box-shadow:0 20px 40px rgba(0,0,0,0.2);">
     <button onclick="closeBlueprintModal()" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:#6b7280;">&times;</button>
     <div id="navbarBlueprintModalContent">
-      <h3 style="font-size:22px; font-weight:800; margin-bottom:8px; color:#111827;">Get the AI Interview Blueprint + a free mock interview</h3>
+      <h3 style="font-size:22px; font-weight:800; margin-bottom:8px; color:#111827;">Get the TrainAIToGain Blueprint</h3>
       <p style="color:#4b5563; font-size:14px; margin-bottom:24px; line-height:1.5;">Drop your email below and we'll instantly send you the framework used by candidates to pass the AI screening.</p>
       <form id="navbarBlueprintForm" onsubmit="submitBlueprintForm(event)" style="display:flex; flex-direction:column; gap:12px;">
         <input type="text" id="navbarBlueprintName" placeholder="First Name" required style="padding:14px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; width:100%; box-sizing:border-box;">
@@ -443,9 +443,25 @@ function submitBlueprintForm(e) {
   
   btn.innerHTML = 'Sending...';
   localStorage.setItem('hasEnteredEmailForBlueprint', 'true');
-  if(typeof gtag === 'function') gtag('event', 'email_captured', {'source': 'door_b'});
+  if(typeof gtag === 'function') {
+    gtag('event', 'generate_lead', { form_name: 'blueprint_modal', email: email });
+    gtag('event', 'email_captured', {'source': 'door_b'});
+  }
   btn.style.opacity = '0.7';
   btn.disabled = true;
+
+  fetch('/api/logPipelineEvent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      event_type: 'generate_lead',
+      email: email,
+      referral_id: localStorage.getItem('affiliate_ref') || 'organic',
+      session_id: localStorage.getItem('tgt_session_id') || 'sess',
+      page_url: '/',
+      metadata: { form_name: 'blueprint_modal' }
+    })
+  }).catch(function() {});
 
   fetch('https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec', {
     method: 'POST',

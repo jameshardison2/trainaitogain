@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unsubscribe | TrainAIToGain</title>
+  <meta name="description" content="Manage your email preferences and unsubscribe from TrainAIToGain notifications.">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7Z54KYTV6B');
+  </script>
+
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --black: #111827;
+      --gray-50: #f9fafb;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    body {
+      font-family: var(--font);
+      background-color: var(--gray-50);
+      color: var(--black);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 540px;
+      margin: 80px auto 40px;
+      background: white;
+      padding: 48px 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+      text-align: center;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--black);
+      margin: 16px 0 8px;
+    }
+    p {
+      color: var(--gray-600);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    input[type="email"] {
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--gray-300);
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    input[type="email"]:focus {
+      border-color: var(--primary);
+    }
+    .btn-unsub {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    .btn-unsub:hover {
+      background: #dc2626;
+    }
+    .success-box {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+      padding: 20px;
+      color: #065f46;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+    .back-links {
+      margin-top: 24px;
+      font-size: 13px;
+    }
+    .back-links a {
+      color: var(--primary-dark);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a href="/" style="display:inline-block; text-decoration:none;">
+      <img src="logo.svg" alt="TrainAIToGain Logo" style="height:44px; width:44px; display:block; margin:0 auto;" />
+    </a>
+    <h1>Email Preferences</h1>
+    <p>Manage your notifications and subscriptions for TrainAIToGain role alerts and interview reports.</p>
+
+    <div id="unsub-form-container">
+      <form id="unsub-form" onsubmit="handleUnsubscribe(event)">
+        <div class="input-group">
+          <label for="unsub-email" style="font-size:12px; font-weight:700; color:var(--gray-700); text-transform:uppercase; letter-spacing:0.05em;">Email Address</label>
+          <input type="email" id="unsub-email" required placeholder="name@example.com" />
+        </div>
+        <button type="submit" id="unsub-btn" class="btn-unsub">Unsubscribe from All Emails</button>
+      </form>
+    </div>
+
+    <div id="unsub-success" class="success-box">
+      <div style="font-size:28px; margin-bottom:8px;">✓</div>
+      <strong>You have been unsubscribed.</strong>
+      <p style="margin:8px 0 0; color:#047857; font-size:13px;">
+        Your email has been removed from all role alerts, mock interview summaries, and reminder lists.
+      </p>
+    </div>
+
+    <div class="back-links">
+      <a href="/apply">Browse Active Roles</a> • <a href="/ai-interview">Practice Interview</a> • <a href="/">Home</a>
+    </div>
+  </div>
+
+  <footer style="margin-top:auto; padding:24px; text-align:center; font-size:12px; color:#9ca3af;">
+    &copy; 2026 TrainAIToGain. All rights reserved.
+  </footer>
+
+  <script>
+    // Pre-fill email from query parameter if present
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const email = params.get('email');
+      if (email) {
+        document.getElementById('unsub-email').value = email;
+      }
+    });
+
+    function handleUnsubscribe(e) {
+      e.preventDefault();
+      const input = document.getElementById('unsub-email');
+      const btn = document.getElementById('unsub-btn');
+      const formContainer = document.getElementById('unsub-form-container');
+      const successBox = document.getElementById('unsub-success');
+      
+      const email = input.value.trim().toLowerCase();
+      if (!email || !email.includes('@')) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Processing...';
+
+      // 1. GA4 event
+      if (typeof gtag === 'function') {
+        gtag('event', 'unsubscribe', { email: email });
+      }
+
+      // 2. Server logging
+      fetch('/api/logPipelineEvent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_type: 'unsubscribe',
+          email: email,
+          referral_id: localStorage.getItem('affiliate_ref') || 'organic',
+          session_id: localStorage.getItem('tgt_session_id') || 'sess',
+          page_url: '/unsubscribe'
+        })
+      }).catch(() => {});
+
+      // 3. Sheet logging
+      fetch('https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec', {
+        method: 'POST',
+        body: JSON.stringify({ email: email, source: 'Unsubscribe Page' })
+      }).catch(() => {});
+
+      localStorage.setItem('unsubscribed_' + email, 'true');
+
+      setTimeout(() => {
+        formContainer.style.display = 'none';
+        successBox.style.display = 'block';
+      }, 500);
+    }
+  </script>
+
+</body>
+</html>

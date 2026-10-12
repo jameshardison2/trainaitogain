@@ -286,11 +286,37 @@ window.addEventListener('unhandledrejection', function(event) {
                 <li style="margin-bottom:8px;"><strong>Mercor practice rule:</strong> Use Mercor's free, unlimited practice interview first! Official retakes are capped at 3 across applications and visible to hiring managers.</li>
                 <li style="margin-bottom:8px;"><strong>micro1 AI interview:</strong> Pick one core skill for your profile; use the Interview Prep tool; request feedback if not certified.</li>
               </ul>
-              <div id="mobile-checklist-tip" style="display:none; background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.25); border-radius:6px; padding:10px 12px; color:#93c5fd; font-size:12px;">
+              <div id="mobile-checklist-tip" style="display:none; background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.25); border-radius:6px; padding:10px 12px; color:#93c5fd; font-size:12px; margin-top:8px;">
                 📱 <strong>On a phone?</strong> The real interview needs a computer. <a href="mailto:?subject=AI%20Interview%20Practice&body=Here%20is%20the%20mock%20interview%20link:%20https://trainaitogain.com/ai-interview" style="color:var(--primary); font-weight:700; text-decoration:underline;">Email yourself this link</a> so it's ready when you're at your computer.
+              </div>
+              <div style="margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <span style="color:#aaa; font-size:12px;">Need a printable 1-page version for your desk?</span>
+                <a href="/readiness-checklist" target="_blank" style="color:var(--primary); font-weight:700; text-decoration:underline; font-size:12px;">Printable Readiness Checklist ➔</a>
               </div>
           </div>
       </details>
+      
+      <!-- R4-5: Placed Candidates' Tips (Placeholders) -->
+      <div style="max-width:600px; margin: 0 auto 24px auto; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:16px 18px; text-align:left;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <span style="font-size:16px;">💡</span>
+          <span style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.06em;">Candidate Insights (Placed via TrainAIToGain)</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="background:rgba(0,0,0,0.3); border-left:3px solid var(--primary); padding:10px 14px; border-radius:6px;">
+            <div style="font-size:11px; font-weight:700; color:#fff; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.04em;">Domain Specialist • AI Evaluator</div>
+            <p style="font-size:13px; color:#bbb; margin:0; line-height:1.4; font-style:italic;">
+              "The AI screener paused after my first answer. I made sure every answer highlighted a specific metric and system I worked with, which helped me pass on the first attempt."
+            </p>
+          </div>
+          <div style="background:rgba(0,0,0,0.3); border-left:3px solid #3b82f6; padding:10px 14px; border-radius:6px;">
+            <div style="font-size:11px; font-weight:700; color:#fff; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.04em;">Technical Reviewer • Code Assessment</div>
+            <p style="font-size:13px; color:#bbb; margin:0; line-height:1.4; font-style:italic;">
+              "Do not over-explain. Stick to STAR and stop talking once you deliver the result. Rambling hurts the automated transcript score."
+            </p>
+          </div>
+        </div>
+      </div>
       
       <!-- Hidden domain selector for JS compatibility -->
       <select id="domain-selector" style="display:none;">
@@ -939,6 +965,27 @@ window.addEventListener('unhandledrejection', function(event) {
   ]
 };
 
+  // Section 19: Natural Interviewer Voice (Chirp 3 HD Audio for fixed questions)
+  const domainAudioMap = {
+    software: ['/audio/q_software_1.mp3', '/audio/q_software_2.mp3'],
+    data: ['/audio/q_data_1.mp3', '/audio/q_data_2.mp3'],
+    medical: ['/audio/q_medical_1.mp3', '/audio/q_medical_2.mp3'],
+    legal: ['/audio/q_legal_1.mp3', '/audio/q_legal_2.mp3'],
+    finance: ['/audio/q_finance_1.mp3', '/audio/q_finance_2.mp3'],
+    language: ['/audio/q_language_1.mp3', '/audio/q_language_2.mp3'],
+    general: ['/audio/q_general_1.mp3', '/audio/q_general_2.mp3', '/audio/q_general_3.mp3']
+  };
+
+  Object.keys(domainAudioMap).forEach(dom => {
+    if (domainData[dom]) {
+      domainAudioMap[dom].forEach((audioPath, idx) => {
+        if (domainData[dom][idx]) {
+          domainData[dom][idx].audio = audioPath;
+        }
+      });
+    }
+  });
+
   // GA4 Event Tracking Helper (R3-1)
   function trackMockEvent(eventName, params) {
     try {
@@ -1186,6 +1233,7 @@ window.addEventListener('unhandledrejection', function(event) {
       // 3 resume-based questions followed by 2 domain-matched scenario questions
       questions.push({
         q: "Walk me through your most recent role and what you were primarily responsible for day to day.",
+        audio: "/audio/q_resume_1.mp3",
         answer: "In my recent role, I led core deliverables, coordinated project priorities, and maintained rigorous quality standards.",
         keywords: ["responsible", "role", "experience", "team", "project", "led", "managed", "delivered"],
         feedbackHit: "Clear introduction. You gave direct context on your role and daily scope of ownership.",
@@ -1194,6 +1242,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
       questions.push({
         q: "Tell me about a specific project or achievement from your experience that produced a measurable result. What was your role and the outcome?",
+        audio: "/audio/q_resume_2.mp3",
         answer: "I identified an operational challenge, designed and implemented a solution, which resulted in a measurable improvement.",
         keywords: ["result", "project", "outcome", "improved", "increased", "reduced", "led to", "action", "achieved"],
         feedbackHit: "Great focus on results. Highlighting concrete metrics aligns directly with how AI screeners evaluate competence.",
@@ -1225,6 +1274,7 @@ window.addEventListener('unhandledrejection', function(event) {
       });
       questions.push({
         q: "How do you approach evaluating or auditing work when accuracy and strict guidelines are critical?",
+        audio: "/audio/q_no_resume_2.mp3",
         answer: "I establish a systematic checklist, cross-reference source requirements, and test against boundary edge cases.",
         keywords: ["accuracy", "guidelines", "checklist", "verify", "audit", "systematic", "standards", "quality"],
         feedbackHit: "Strong systematic mindset. Having a verifiable audit process is essential for AI evaluation roles.",
@@ -1289,7 +1339,67 @@ window.addEventListener('unhandledrejection', function(event) {
     }
   }
 
+  let activeAudio = null;
   window._utterances = [];
+
+  function stopAllSpeech() {
+    if (activeAudio) {
+      try {
+        activeAudio.pause();
+        activeAudio.currentTime = 0;
+      } catch(e) {}
+      activeAudio = null;
+    }
+    if (typeof synth !== 'undefined' && synth.speaking) {
+      synth.cancel();
+    }
+    const stopBtn = document.getElementById('stop-ai-btn');
+    if (stopBtn) {
+      stopBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
+    }
+  }
+
+  function playQuestionSpeech(qData, onEndCallback) {
+    stopAllSpeech();
+
+    const stopBtn = document.getElementById('stop-ai-btn');
+    if (stopBtn) {
+      stopBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
+    }
+
+    if (qData && qData.audio) {
+      try {
+        const audio = new Audio(qData.audio);
+        activeAudio = audio;
+
+        let hasEnded = false;
+        const finish = () => {
+          if (hasEnded) return;
+          hasEnded = true;
+          activeAudio = null;
+          if (onEndCallback) onEndCallback();
+        };
+
+        audio.onended = finish;
+        audio.onerror = (e) => {
+          console.warn("Audio file failed to load, falling back to browser voice:", e);
+          activeAudio = null;
+          speakText(qData.q, onEndCallback);
+        };
+
+        audio.play().catch((e) => {
+          console.warn("Audio autoplay blocked or failed, falling back to browser voice:", e);
+          activeAudio = null;
+          speakText(qData.q, onEndCallback);
+        });
+      } catch(e) {
+        speakText(qData.q, onEndCallback);
+      }
+    } else {
+      speakText(qData ? qData.q : '', onEndCallback);
+    }
+  }
+
   function speakText(text, callback) {
     if (synth.speaking) {
       synth.cancel();
@@ -1481,7 +1591,7 @@ window.addEventListener('unhandledrejection', function(event) {
     simText.style.transform = 'scale(1)';
     setUIState('speaking', qText);
 
-    speakText(qText, () => {
+    playQuestionSpeech(qData, () => {
       if (isTextMode) {
         // Typed Mode
         setUIState('listening', 'Type your answer below...');
@@ -1590,7 +1700,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
   // Try Again Button (R3-5)
   tryAgainBtn.onclick = () => {
-    if (synth.speaking) synth.cancel();
+    stopAllSpeech();
     if (totalQuestionsAnswered > 0) totalQuestionsAnswered--;
     totalScore -= currentQScore;
 
@@ -1603,7 +1713,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
   // Next Question Button
   nextBtn.onclick = () => {
-    if (synth.speaking) synth.cancel();
+    stopAllSpeech();
     document.getElementById('in-page-feedback').style.display = 'none';
     tryAgainBtn.style.display = 'none';
     nextBtn.style.display = 'none';
@@ -1706,7 +1816,7 @@ window.addEventListener('unhandledrejection', function(event) {
   // Finish Interview (R3-5: Coaching, not pass/fail)
   function finishInterview() {
     interviewCompleted = true;
-    if (synth.speaking) synth.cancel();
+    stopAllSpeech();
 
     const roleTarget = localStorage.getItem('atsRole') || currentDomain;
     const avgScore = totalQuestionsAnswered > 0 ? Math.round(totalScore / totalQuestionsAnswered) : 70;
@@ -1727,13 +1837,17 @@ window.addEventListener('unhandledrejection', function(event) {
     tryAgainBtn.style.display = 'none';
     if (finishBtn) finishBtn.style.display = 'none';
 
+    const kwTotal = sessionTargetKeywords.size;
+    const kwHits = sessionMatchedKeywords.size;
+
     let strengthSummary = "";
     let growthSummary = "";
 
-    if (avgScore >= 80) {
+    // Ground "What worked well" strictly in actual keyword hits and content
+    if (avgScore >= 80 && kwHits >= 4) {
       strengthSummary = "Strong domain familiarity and structured delivery. Your answers included specific actions and aligned with AI recruiter criteria.";
       growthSummary = "1. Keep practicing concrete, quantified metrics for your projects.\n2. In the real interview, maintain confident eye contact with the camera.";
-    } else if (avgScore >= 60) {
+    } else if (avgScore >= 60 || kwHits >= 2) {
       strengthSummary = "Good overall foundation. You engaged with all screening questions and shared relevant background.";
       growthSummary = "1. Structure answers using STAR (Situation, Task, Action, Result) so every example concludes with a measurable outcome.\n2. Mention specific tools, methodologies, and edge cases you handled.";
     } else {
@@ -1744,9 +1858,6 @@ window.addEventListener('unhandledrejection', function(event) {
     if (totalFillers > 3 && !isTextMode) {
       growthSummary += "\n3. Practice pausing silently instead of using filler words ('um', 'like').";
     }
-
-    const kwTotal = sessionTargetKeywords.size;
-    const kwHits = sessionMatchedKeywords.size;
     const kwMetricHTML = kwTotal > 0
       ? `<div>
             <div style="font-size:11px; color:#888; text-transform:uppercase; font-weight:700; margin-bottom:4px;">Keyword Alignment</div>
@@ -1787,6 +1898,26 @@ window.addEventListener('unhandledrejection', function(event) {
               </div>
           </div>
 
+          <!-- R4-2: Email My Practice Report -->
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:22px 24px; margin-bottom:24px; text-align:left;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                  <span style="font-size:20px;">📧</span>
+                  <div style="font-size:15px; font-weight:800; color:#fff;">Email Me My Practice Report</div>
+              </div>
+              <p style="color:#aaa; font-size:13px; line-height:1.5; margin:0 0 14px;">
+                  Receive your complete scoring rubric, keyword breakdown, and recommended STAR answers to review before the real interview.
+              </p>
+              <form id="mock-report-form" onsubmit="handleMockReportSubmit(event)" style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <input type="email" id="mock-report-email" required placeholder="Enter your email address" style="flex:1; min-width:220px; padding:12px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.5); color:white; font-size:14px; outline:none;" />
+                  <button type="submit" id="mock-report-btn" class="btn-primary" style="padding:12px 22px; font-size:14px; font-weight:800; border-radius:8px; border:none; cursor:pointer;">
+                      Send My Report ➔
+                  </button>
+              </form>
+              <div id="mock-report-success" style="display:none; color:var(--primary); font-size:13px; font-weight:700; margin-top:10px;">
+                  ✓ Practice report queued! Check your inbox shortly. Includes 1-click unsubscribe.
+              </div>
+          </div>
+
           <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px 20px; margin-bottom:28px; text-align:left; font-size:13px; color:#ccc; line-height:1.5;">
               📌 <strong>Next Step Tip:</strong> Mercor offers a free, unlimited official practice interview that is never shared with hiring companies. Official retakes are capped at 3 across applications, so always use practice mode first!
           </div>
@@ -1808,10 +1939,68 @@ window.addEventListener('unhandledrejection', function(event) {
     `;
 
     activeView.insertAdjacentHTML('beforeend', summaryHTML);
+
+    window.handleMockReportSubmit = function(e) {
+      e.preventDefault();
+      const input = document.getElementById('mock-report-email');
+      const btn = document.getElementById('mock-report-btn');
+      const successEl = document.getElementById('mock-report-success');
+      if (!input || !input.value) return;
+      const email = input.value.trim().toLowerCase();
+
+      btn.disabled = true;
+      btn.innerText = 'Sending...';
+
+      // GA4 Lead event
+      if (typeof gtag === 'function') {
+        gtag('event', 'generate_lead', {
+          form_name: 'mock_interview_report',
+          score: avgScore,
+          role: roleTarget,
+          domain: currentDomain
+        });
+      }
+
+      // Server pipeline logging
+      fetch('/api/logPipelineEvent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_type: 'generate_lead',
+          email: email,
+          referral_id: localStorage.getItem('affiliate_ref') || 'organic',
+          session_id: localStorage.getItem('tgt_session_id') || 'sess',
+          page_url: '/ai-interview',
+          metadata: { form_name: 'mock_interview_report', role: roleTarget, score: avgScore }
+        })
+      }).catch(() => {});
+
+      // Google Apps Script sheet backup
+      fetch('https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec', {
+        method: 'POST',
+        body: JSON.stringify({ email: email, role: roleTarget, source: 'Mock Report Form' })
+      }).catch(() => {});
+
+      setTimeout(() => {
+        input.style.display = 'none';
+        btn.style.display = 'none';
+        successEl.style.display = 'block';
+      }, 400);
+    };
   }
 
   document.getElementById('stop-ai-btn').addEventListener('click', (e) => {
     const btn = e.currentTarget;
+    if (activeAudio) {
+      if (activeAudio.paused) {
+        activeAudio.play().catch(() => {});
+        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
+      } else {
+        activeAudio.pause();
+        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume AI';
+      }
+      return;
+    }
     if (synth.paused) {
       synth.resume();
       btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
@@ -1896,12 +2085,12 @@ window.addEventListener('unhandledrejection', function(event) {
   <div style="background:white; padding:32px; border-radius:12px; max-width:400px; width:90%; position:relative; box-shadow:0 20px 40px rgba(0,0,0,0.2);">
     <button onclick="closeNavbarLeadModal()" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:#6b7280;">&times;</button>
     <div id="navbarLeadModalContent">
-      <h3 style="font-size:22px; font-weight:800; margin-bottom:8px; color:#111827;">Get the Free ATS Blueprint</h3>
+      <h3 style="font-size:22px; font-weight:800; margin-bottom:8px; color:#111827;">Get the TrainAIToGain Blueprint</h3>
       <p style="color:#4b5563; font-size:14px; margin-bottom:24px; line-height:1.5;">Drop your email below and we'll instantly send you the framework used by candidates to pass the AI screening.</p>
       <form id="navbarLeadForm" onsubmit="submitNavbarLead(event)" style="display:flex; flex-direction:column; gap:12px;">
         <input type="text" id="navbarLeadName" placeholder="First Name" required style="padding:14px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; width:100%; box-sizing:border-box;">
         <input type="email" id="navbarLeadEmail" placeholder="Email Address" required style="padding:14px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; width:100%; box-sizing:border-box;">
-        <button type="submit" id="navbarLeadBtn" style="background:#10b981; color:white; border:none; padding:16px; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; width:100%; margin-top:8px;">Send Me The Guide ➔</button>
+        <button type="submit" id="navbarLeadBtn" style="background:#10b981; color:white; border:none; padding:16px; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; width:100%; margin-top:8px;">Send Me The Blueprint ➔</button>
       </form>
     </div>
   </div>
@@ -1926,6 +2115,23 @@ function submitNavbarLead(e) {
   btn.style.opacity = '0.7';
   btn.disabled = true;
 
+  if (typeof gtag === 'function') {
+    gtag('event', 'generate_lead', { form_name: 'navbar_blueprint_modal', email: email });
+  }
+
+  fetch('/api/logPipelineEvent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      event_type: 'generate_lead',
+      email: email,
+      referral_id: localStorage.getItem('affiliate_ref') || 'organic',
+      session_id: localStorage.getItem('tgt_session_id') || 'sess',
+      page_url: '/ai-interview',
+      metadata: { form_name: 'navbar_blueprint_modal' }
+    })
+  }).catch(function() {});
+
   fetch('https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec', {
     method: 'POST',
     body: JSON.stringify({ firstName: name, email: email, source: 'Navbar Popup Form' })
@@ -1936,8 +2142,8 @@ function submitNavbarLead(e) {
       <div style="text-align:center;">
         <div style="width:64px; height:64px; background:#10b981; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 16px;">✓</div>
         <h3 style="font-size:22px; font-weight:800; color:#111827; margin-bottom:8px;">Success!</h3>
-        <p style="color:#4b5563; font-size:14px; margin-bottom:24px;">Your guide has been unlocked.</p>
-        <a href="/ai-interview" style="display:block; background:#10b981; color:white; text-decoration:none; padding:16px; font-size:16px; font-weight:700; border-radius:8px; width:100%; box-sizing:border-box;">View Blueprint & Start Practice ➔</a>
+        <p style="color:#4b5563; font-size:14px; margin-bottom:24px;">Your guide is ready to read.</p>
+        <a href="/hiring-blueprint.html" style="display:block; background:#10b981; color:white; text-decoration:none; padding:16px; font-size:16px; font-weight:700; border-radius:8px; width:100%; box-sizing:border-box;">Read TrainAIToGain Blueprint ➔</a>
       </div>
     `;
   }, 1000);
