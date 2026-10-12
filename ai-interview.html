@@ -1145,7 +1145,78 @@ window.addEventListener('unhandledrejection', function(event) {
 
   if (atsRole) {
     cdsText.innerText = "Role: " + atsRole;
+    const existing = Array.from(domainSelector.options).some(o => o.text.replace("Role: ", "").trim().toLowerCase() === atsRole.trim().toLowerCase());
+    if (!existing) {
+      const customDiv = document.createElement('div');
+      customDiv.style.padding = '12px 16px';
+      customDiv.style.cursor = 'pointer';
+      customDiv.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      customDiv.style.color = 'var(--primary)';
+      customDiv.style.fontWeight = '700';
+      customDiv.style.fontSize = '14px';
+      customDiv.innerText = "Role: " + atsRole + " (Your Target Role)";
+      customDiv.onmouseover = () => { customDiv.style.background = 'rgba(16,185,129,0.15)'; };
+      customDiv.onmouseout = () => { customDiv.style.background = 'transparent'; };
+      customDiv.onclick = () => {
+        cdsText.innerText = "Role: " + atsRole;
+        cdsOptions.style.display = 'none';
+        const titleEl = document.querySelector('#setup-view h2');
+        if (titleEl) {
+          titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + atsRole + '</span>';
+        }
+      };
+      cdsOptions.insertBefore(customDiv, cdsOptions.firstChild);
+    }
   }
+
+  // Dynamically load active pipeline roles from waves.json into dropdown
+  fetch('waves.json').then(r => r.json()).then(data => {
+    if (data && data.roles) {
+      const existingTitles = new Set(Array.from(domainSelector.options).map(o => o.text.replace("Role: ", "").trim().toLowerCase()));
+      if (atsRole) existingTitles.add(atsRole.trim().toLowerCase());
+
+      const optGroup = document.createElement('div');
+      optGroup.style.padding = '8px 16px';
+      optGroup.style.fontSize = '11px';
+      optGroup.style.fontWeight = '800';
+      optGroup.style.color = '#9ca3af';
+      optGroup.style.textTransform = 'uppercase';
+      optGroup.style.letterSpacing = '0.05em';
+      optGroup.style.background = 'rgba(255,255,255,0.03)';
+      optGroup.innerText = 'Active Pipeline Roles';
+      cdsOptions.appendChild(optGroup);
+
+      data.roles.forEach(role => {
+        if (!role || !role.title) return;
+        const tLow = role.title.trim().toLowerCase();
+        if (!existingTitles.has(tLow)) {
+          existingTitles.add(tLow);
+          const div = document.createElement('div');
+          div.style.padding = '12px 16px';
+          div.style.cursor = 'pointer';
+          div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+          div.style.color = '#ccc';
+          div.style.fontSize = '14px';
+          div.innerText = "Role: " + role.title;
+          div.onmouseover = () => { div.style.background = 'rgba(255,255,255,0.1)'; div.style.color = 'white'; };
+          div.onmouseout = () => { div.style.background = 'transparent'; div.style.color = '#ccc'; };
+          div.onclick = () => {
+            cdsText.innerText = div.innerText;
+            cdsOptions.style.display = 'none';
+            const rDomain = (role.domain || 'general').toLowerCase();
+            domainSelector.value = rDomain;
+            currentDomain = rDomain;
+            localStorage.setItem('atsRole', role.title);
+            const titleEl = document.querySelector('#setup-view h2');
+            if (titleEl) {
+              titleEl.innerHTML = 'Mock Interview:<br><span style="color:var(--primary); font-size:22px;">' + role.title + '</span>';
+            }
+          };
+          cdsOptions.appendChild(div);
+        }
+      });
+    }
+  }).catch(() => {});
 
   let teleprompterEnabled = false;
   document.getElementById('toggle-teleprompter').addEventListener('change', (e) => {
