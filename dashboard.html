@@ -345,6 +345,8 @@
             Sign In with Google
           </button>
         </div>
+        <div id="dashboard-error-msg" style="display:none; margin-top:16px; padding:14px 16px; background:#fef2f2; border:1.5px solid #fecaca; border-radius:8px; color:#991b1b; font-size:13px; line-height:1.5; text-align:left;">
+        </div>
     </div>
   </div>
 </section>
@@ -982,6 +984,9 @@
     url.searchParams.set('ref', refCode);
     window.history.pushState({}, '', url);
     
+    const errorMsgEl = document.getElementById('dashboard-error-msg');
+    if (errorMsgEl) errorMsgEl.style.display = 'none';
+
     const btn = document.getElementById('load-btn');
     const origText = btn.innerHTML;
     btn.innerHTML = 'Loading...';
@@ -1065,10 +1070,29 @@
       
     } catch (err) {
       console.error(err);
-      if (err.code === 'permission-denied') {
-        alert("🔒 Access Denied: You must sign in with an authorized Google account (james.hardison2@gmail.com) to view this pipeline.");
-      } else {
-        alert("Error loading dashboard data: " + (err.message || err));
+      if (errorMsgEl) {
+        if (err.code === 'permission-denied') {
+          errorMsgEl.innerHTML = `
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+              <span style="font-size:20px;">🔒</span>
+              <div>
+                <strong style="display:block; font-size:14px; color:#991b1b; margin-bottom:2px;">Access Denied</strong>
+                <span>You must sign in with an authorized Google account (<code>james.hardison2@gmail.com</code>) to view this pipeline. Please click <strong>Sign In with Google</strong> above.</span>
+              </div>
+            </div>
+          `;
+        } else {
+          errorMsgEl.innerHTML = `
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+              <span style="font-size:20px;">⚠️</span>
+              <div>
+                <strong style="display:block; font-size:14px; color:#991b1b; margin-bottom:2px;">Unable to Load Pipeline</strong>
+                <span>${err.message || String(err)}</span>
+              </div>
+            </div>
+          `;
+        }
+        errorMsgEl.style.display = 'block';
       }
     } finally {
       btn.innerHTML = origText;

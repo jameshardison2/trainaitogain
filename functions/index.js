@@ -703,13 +703,25 @@ exports.sendRoleAlertsDigest = onRequest(
           .where("subscribedToAlerts", "==", true)
           .get();
 
-        const activeSubscribers = [];
+        // TEST MODE FOR DIGEST & REMINDERS (Strictly send ONLY to approved test recipient until postal address is configured)
+        const DIGEST_TEST_MODE = true;
+        const APPROVED_TEST_RECIPIENT = "james.hardison2@gmail.com";
+
+        let activeSubscribers = [];
         subsSnapshot.forEach((doc) => {
           const d = doc.data();
           if (!d.unsubscribed && d.email) {
             activeSubscribers.push({ id: doc.id, ...d });
           }
         });
+
+        // Test mode restriction: strictly send only to james.hardison2@gmail.com until postal address provided
+        if (DIGEST_TEST_MODE) {
+          activeSubscribers = activeSubscribers.filter(s => s.email && s.email.toLowerCase() === APPROVED_TEST_RECIPIENT.toLowerCase());
+          if (activeSubscribers.length === 0) {
+            activeSubscribers = [{ id: "test-admin", email: APPROVED_TEST_RECIPIENT, unsubToken: "test-admin-token" }];
+          }
+        }
 
         if (activeSubscribers.length === 0) {
           return res.status(200).json({
@@ -1046,6 +1058,13 @@ exports.processRoleReminders = onRequest(
         let sentCount = 0;
         for (const doc of remindersSnapshot.docs) {
           const r = doc.data();
+          if (!r || !r.email) continue;
+
+          // Test mode restriction: strictly send only to james.hardison2@gmail.com until postal address provided
+          if (DIGEST_TEST_MODE && r.email.toLowerCase() !== APPROVED_TEST_RECIPIENT.toLowerCase()) {
+            continue;
+          }
+
           const subQuery = await db.collection("subscribers").where("email", "==", r.email).limit(1).get();
           if (!subQuery.empty && subQuery.docs[0].data().unsubscribed) {
             await doc.ref.update({ sent: true, cancelled: true, reason: "unsubscribed" });

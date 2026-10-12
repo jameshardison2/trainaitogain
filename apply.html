@@ -97,13 +97,16 @@
         let applyNumber = applyCount === 1 ? '1st' : (applyCount === 2 ? '2nd' : (applyCount === 3 ? '3rd' : applyCount + 'th'));
 
         const computedRoleId = roleId || (title || 'role').toLowerCase().replace(/[^a-z0-9]/g, '-');
+        const isMobileDevice = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+        const deviceType = isMobileDevice ? 'mobile' : (window.innerWidth <= 1024 ? 'tablet' : 'desktop');
 
         if (typeof gtag === 'function') {
           gtag('event', 'apply_click', {
             platform: platformName,
             role_title: title,
             role_id: computedRoleId,
-            match_score: matchScore !== undefined ? matchScore : null,
+            match_score: matchScore !== undefined && matchScore !== null ? matchScore : null,
+            device_type: deviceType,
             from_page: 'active_roles',
             apply_number: applyNumber,
             link_url: targetUrl
@@ -115,18 +118,59 @@
           navigator.clipboard.writeText(title).catch(() => {});
         }
 
-        // 1. Immediately open the platform in a new tab (Section 3.4 & Section 21: NO POPUP, NO GATE)
+        // 1. Immediately open the platform in a new tab (Never blocks click)
         window.open(targetUrl, '_blank');
 
-        // 2. Locate card element
+        // 2. Locate card element and expand with Soft Landing
         const cardEl = btn ? (btn.closest('.opp-card') || btn.closest('.wave-card')) : null;
 
-        // 3. Section 21.2: Apply to more than one: after a first apply click, show "Roles like this one" under the card
+        if (cardEl && !cardEl.querySelector('.apply-soft-landing')) {
+          const softLandingEl = document.createElement('div');
+          softLandingEl.className = 'apply-soft-landing';
+          softLandingEl.style.cssText = 'background:#f0fdf4; border:1.5px solid #10b981; border-radius:10px; padding:18px; margin-top:16px; text-align:left; animation:slideUp 0.3s ease; box-sizing:border-box; width:100%;';
+
+          const safeTitleStr = (title || 'Role').replace(/'/g, "\\'");
+          const safeTargetStr = (targetUrl || '').replace(/'/g, "\\'");
+          const safePlatformStr = platformName;
+
+          softLandingEl.innerHTML = `
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+              <span style="font-size:22px;">🚀</span>
+              <h4 style="margin:0; font-size:16px; font-weight:800; color:#065f46;">You’re headed to ${platformName}. Here’s what’s next:</h4>
+            </div>
+            <ol style="margin:0 0 16px 0; padding-left:20px; font-size:13px; color:#166534; line-height:1.6;">
+              <li style="margin-bottom:6px;"><strong>Create your free account</strong> in this same browser so your referral carries over.</li>
+              <li style="margin-bottom:6px;"><strong>The AI interview takes about 20 minutes</strong>, so practice first if you like: 
+                <a href="/ai-interview" target="_blank" onclick="trackHandoffMock('${safeTitleStr}', '${safePlatformStr}')" style="color:#059669; font-weight:700; text-decoration:underline;">[mock interview]</a> &bull; 
+                <a href="/readiness-checklist" target="_blank" style="color:#059669; font-weight:700; text-decoration:underline;">[readiness checklist]</a>
+              </li>
+              <li><strong>Matching can take a few days</strong>, and silence doesn’t mean no.</li>
+            </ol>
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; border-top:1px solid #bbf7d0; padding-top:12px;">
+              <span style="font-size:12px; color:#15803d; font-weight:600;">Track in Dashboard & set reminder:</span>
+              <button type="button" onclick="event.stopPropagation(); markCardStarted('${safeTitleStr}', '${safeTargetStr}', '${safePlatformStr}', this)" style="background:#10b981; color:white; border:none; padding:8px 16px; border-radius:6px; font-weight:700; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                Mark as Started ✓
+              </button>
+            </div>
+          `;
+          cardEl.appendChild(softLandingEl);
+
+          if (typeof gtag === 'function') {
+            gtag('event', 'handoff_shown', {
+              platform: platformName,
+              role_title: title,
+              role_id: computedRoleId,
+              device_type: deviceType
+            });
+          }
+        }
+
+        // 3. Section 21.2: Show "Roles like this one" under card
         if (cardEl && !cardEl.querySelector('.roles-like-this-one')) {
           showRolesLikeThisOne(cardEl, domain || 'SOFTWARE', title);
         }
 
-        // 4. Record last clicked apply for non-blocking return prompt
+        // 4. Record last clicked apply
         window.lastClickedApply = {
           title: title,
           targetUrl: targetUrl,
@@ -135,6 +179,16 @@
           cardEl: cardEl,
           prompted: false
         };
+      };
+
+      window.trackHandoffMock = function(title, platform) {
+        if (typeof gtag === 'function') {
+          gtag('event', 'handoff_mock_click', {
+            role_title: title,
+            platform: platform,
+            target: 'mock_interview'
+          });
+        }
       };
 
       // Section 21.2: "After an Apply click: when the person comes back to the tab, show a small inline (non-blocking) bar on the card: 'Started your application? Mark it Started and we'll help you finish.' One tap saves the status. Never block the page."
@@ -456,7 +510,7 @@ ${resumeText.substring(0, 10000)}`;
               
                     
                     <div style="display:flex; gap:8px; width:100%;">
-                      <button type="button" onclick="window.handleApplyClick('${m.roleName.replace(/'/g, "\\'")}', '${m.roleUrl || 'https://t.mercor.com/wbPMF'}', this)" style="flex:1; background:var(--gray-900); color:white; border:none; padding:12px; border-radius:var(--radius-sm); font-weight:700; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--primary)'" onmouseout="this.style.background='var(--gray-900)'">Apply for this Role ➔</button>
+                      <button type="button" onclick="window.handleApplyClick('${m.roleName.replace(/'/g, "\\'")}', '${m.roleUrl || 'https://t.mercor.com/wbPMF'}', this, null, ${m.matchScore || 'null'}, '${m.domainFilter || 'ALL'}')" style="flex:1; background:var(--gray-900); color:white; border:none; padding:12px; border-radius:var(--radius-sm); font-weight:700; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--primary)'" onmouseout="this.style.background='var(--gray-900)'">Apply for this Role ➔</button>
                       <button type="button" onclick="saveRole('${m.roleName.replace(/'/g, "\\'")}', '${m.domainFilter || 'ALL'}', '${m.hourlyRate || 'Market Rate'}', this, '${m.roleUrl || 'https://t.mercor.com/wbPMF'}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
                       <button type="button" onclick="markAsComplete('${m.roleName.replace(/'/g, "\\'")}', '${m.domainFilter || 'ALL'}', '${m.hourlyRate || 'Market Rate'}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">✅</button>
                       <button type="button" onclick="window.open('resume-ats-guide?role=' + encodeURIComponent('${m.roleName.replace(/'/g, "\\'")}'), '_blank');" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">🎯</button>
@@ -690,48 +744,8 @@ ${resumeText.substring(0, 10000)}`;
   })();
 </script>
 
-<!-- Exit Intent Pop-up (R4-4) -->
-<div id="exit-intent-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
-  <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out; text-align:center; padding:32px;">
-    <button onclick="document.getElementById('exit-intent-modal').style.display='none'" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
-    <div style="font-size:40px; margin-bottom:16px;">📄</div>
-    <h3 style="font-size:24px; font-weight:800; color:var(--black); margin-bottom:12px; line-height:1.2;">Before you go: Get the Free Interview Blueprint</h3>
-    <p style="color:var(--gray-600); line-height:1.6; margin-bottom:24px; font-size:15px;">Read the <strong>TrainAIToGain Blueprint</strong> to master the STAR formula and keyword techniques for AI screener algorithms.</p>
-    <a href="/hiring-blueprint.html" onclick="if(typeof gtag==='function')gtag('event','generate_lead',{form_name:'exit_intent_blueprint'});" class="btn-primary" style="display:inline-block; padding:16px 32px; font-size:16px; width:100%; text-decoration:none; box-sizing:border-box;">Read the TrainAIToGain Blueprint ➔</a>
-    <a href="#" onclick="document.getElementById('exit-intent-modal').style.display='none'; return false;" style="display:inline-block; margin-top:16px; color:var(--gray-500); font-size:13px; font-weight:600; text-decoration:underline;">Not now</a>
-  </div>
-</div>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    let exitIntentTriggered = false;
-    
-    function triggerPopup() {
-      if (!exitIntentTriggered && !localStorage.getItem('exitIntentShown')) {
-        document.getElementById('exit-intent-modal').style.display = 'flex';
-        exitIntentTriggered = true;
-        localStorage.setItem('exitIntentShown', 'true');
-      }
-    }
+<script src="render_waves.js?v=1791846000"></script>
 
-    // Desktop: Mouse leaves top of screen
-    document.addEventListener('mouseleave', (e) => {
-      if (e.clientY < 0) triggerPopup();
-    });
-
-    // Mobile: Rapid scroll up
-    let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', () => {
-      let scrollSpeed = lastScrollY - window.scrollY;
-      lastScrollY = window.scrollY;
-      // If they scroll up more than 80px instantly, trigger popup
-      if (scrollSpeed > 80 && window.scrollY < 200) {
-        triggerPopup();
-      }
-    }, {passive: true});
-  });
-</script>
-
-<script src="render_waves.js?v=1791804000"></script>
 
 <script src="chat.js?v=16"></script>
 
@@ -854,7 +868,7 @@ ${resumeText.substring(0, 10000)}`;
               <p style="font-size:14px; color:var(--gray-600); line-height:1.5; margin-bottom:24px; flex-grow:1;"><strong>${fitLabel}</strong> ${rExpl}</p>
               
               <div style="display:flex; gap:8px; width:100%;">
-                <button type="button" onclick="window.handleApplyClick('${rName}', '${rUrl}', this)" style="flex:1; background:var(--primary); color:white; border:none; padding:14px; border-radius:var(--radius-sm); font-weight:800; font-size:15px; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">Apply for this Role ➔</button>
+                <button type="button" onclick="window.handleApplyClick('${rName}', '${rUrl}', this, null, ${rScore}, 'ALL')" style="flex:1; background:var(--primary); color:white; border:none; padding:14px; border-radius:var(--radius-sm); font-weight:800; font-size:15px; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">Apply for this Role ➔</button>
                 <button type="button" onclick="saveRole('${rName}', 'ALL', '${rRate}', this, '${rUrl}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer;" title="Save Role" aria-label="Save Role">💾</button>
                 <button type="button" onclick="markAsComplete('${rName}', 'ALL', '${rRate}', this)" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer;" title="Mark Applied" aria-label="Mark Applied">✅</button>
                 <button type="button" onclick="window.open('/resume-ats-guide?role=' + encodeURIComponent('${rName}'), '_blank');" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer;" title="Practice ATS" aria-label="Practice ATS">🎯</button>
