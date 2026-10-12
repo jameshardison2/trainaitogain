@@ -54,6 +54,43 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 
+const DOMAINS_MAP = [
+  ['MEDICAL', /nurse|physician|medical|clinical|health|doctor|md\b|pharm|oncolog|neurolog|urolog|radiolog|hospital|dental|patient|biomed|preclinical/i],
+  ['LEGAL', /legal|lawyer|attorney|law\b|paralegal|litigation|j\.d|counsel/i],
+  ['FINANCE', /financ|accounting|banking|investment|equity|quant|trading|actuar|tax|economic|cpa|cfa|private equity|venture/i],
+  ['LANGUAGE', /voice actor|language|translat|linguist|spanish|french|german|japanese|korean|chinese|arabic|hindi|portuguese|italian|native speaker/i],
+  ['SOFTWARE', /software|engineer|developer|swe\b|coding|code|data scien|machine learning|\bml\b|\bai\b|devops|security|cyber|backend|frontend|full.?stack|mobile|qa\b/i],
+  ['SCIENCE', /chemist|physic|biolog|math|scien|research|materials|nuclear|energetic/i],
+  ['CREATIVE', /design|writer|writing|editor|video|creative|art|music|film|game/i]
+];
+
+function sanitizeDescription(desc) {
+  if (!desc || typeof desc !== 'string') return '';
+  const JUNK = /steps? completed|submitted on|hired this month|early applicant|1-click apply|new opportunity|posted by|referral|refer |earn \$|bonus|^apply\b|^share\b|copy link|view all opportunities|^\$[\d,]+$|^[A-Z]$|^\d+ hired/i;
+  const lines = desc.split('\n')
+    .map(l => l.trim())
+    .filter(l => l.length > 25 && !JUNK.test(l) && !/^\s*\$[\d,]+(?:\.\d+)?(?:\s*[-–to]+\s*\$?[\d,]+)?\s*(?:\/|per)\s*(?:hour|hr|month|mo|year|yr|task)/i.test(l));
+  let clean = lines.join(' ').replace(/\s+/g, ' ').trim();
+  if (JUNK.test(clean)) {
+    // If entire string still has leaked phrases, extract safe part or clear
+    clean = clean.split(JUNK)[0].trim();
+  }
+  return clean.substring(0, 350);
+}
+
+function resolveDomain(title, desc, existingDomain) {
+  if (existingDomain && existingDomain !== 'SOFTWARE' && existingDomain !== 'GENERAL') {
+    return existingDomain.toUpperCase();
+  }
+  for (const [dom, re] of DOMAINS_MAP) {
+    if (re.test(title || '')) return dom;
+  }
+  for (const [dom, re] of DOMAINS_MAP) {
+    if (re.test(desc || '')) return dom;
+  }
+  return (existingDomain || 'GENERAL').toUpperCase();
+}
+
 exports.directIngestJobs = onRequest(
   { cors: true, timeoutSeconds: 120, maxInstances: 5 },
   (req, res) => {
@@ -91,11 +128,23 @@ exports.directIngestJobs = onRequest(
           const chunk = jobs.slice(i, i + batchSize);
           const batch = db.batch();
           for (const job of chunk) {
-            const rawId = (job.title || "job").toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
+            // Clean description and classify domain
+            const cleanDesc = sanitizeDescription(job.description);
+            const domain = resolveDomain(job.title, cleanDesc, job.domain);
+            
+            // Unique slug from title + pay or linkTarget per Section 6b.6
+            const paySlug = (job.pay || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const linkSlug = (job.linkTarget || '').split('/').pop() || '';
+            const titleSlug = (job.title || "job").toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
+            const rawId = `${titleSlug}-${paySlug || linkSlug || 'role'}`;
             const docId = rawId.substring(0, 80);
+            
             const ref = db.collection("roles").doc(docId);
             batch.set(ref, {
               ...job,
+              description: cleanDesc,
+              domain: domain,
+              lastUpdated: syncedAt || new Date().toISOString(),
               updatedAt: admin.firestore.FieldValue.serverTimestamp()
             }, { merge: true });
           }
@@ -127,10 +176,17 @@ exports.getRoles = onRequest(
         snapshot.forEach(doc => {
           const d = doc.data();
           if (doc.id === 'sample-engineer' || (d.title && (d.title.toLowerCase().includes('sample') || d.title.toLowerCase().includes('test')))) {
-            doc.ref.delete().catch(() => {});
             return;
           }
-          roles.push(d);
+          // Sanitize description and classify domain on read
+          const sanitizedDesc = sanitizeDescription(d.description);
+          const resolvedDom = resolveDomain(d.title, sanitizedDesc, d.domain);
+          
+          roles.push({
+            ...d,
+            description: sanitizedDesc,
+            domain: resolvedDom
+          });
         });
         const metaDoc = await db.collection("system").doc("sync_metadata").get();
         const meta = metaDoc.exists ? metaDoc.data() : {};

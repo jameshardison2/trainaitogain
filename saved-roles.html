@@ -61,8 +61,8 @@
           <div style="font-size:32px; font-weight:800; color:var(--black);" id="stat-count">0</div>
         </div>
         <div style="flex:1; min-width:180px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; justify-content:center;">
-          <div style="font-size:12px; color:var(--gray-500); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Avg Potential Pay</div>
-          <div style="font-size:32px; font-weight:800; color:var(--accent);" id="stat-pay">$0/hr</div>
+          <div style="font-size:12px; color:var(--gray-500); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Avg Potential Pay <span style="font-size:10px; font-weight:500; text-transform:none;">(hourly roles)</span></div>
+          <div style="font-size:32px; font-weight:800; color:var(--primary);" id="stat-pay">$0/hr</div>
         </div>
         <div style="flex:2; min-width:280px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; justify-content:center;">
           <div style="font-size:12px; color:var(--gray-500); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">Conversion Funnel</div>
@@ -76,7 +76,7 @@
               <span style="font-size:11px; font-weight:600; color:var(--gray-500);">ATS SCANNED</span>
             </div>
             <div style="flex:1; text-align:center;">
-              <div style="height:8px; background:var(--gray-200); border-radius:4px; margin-bottom:8px; overflow:hidden;"><div id="bar-applied" style="height:100%; width:0%; background:var(--accent); transition:width 0.5s;"></div></div>
+              <div style="height:8px; background:var(--gray-200); border-radius:4px; margin-bottom:8px; overflow:hidden;"><div id="bar-applied" style="height:100%; width:0%; background:#10b981; transition:width 0.5s;"></div></div>
               <span style="font-size:11px; font-weight:600; color:var(--gray-500);">APPLIED</span>
             </div>
           </div>
@@ -153,14 +153,23 @@ window.handleApplyClick = function(title, linkTarget, btn) {
 
 function parsePayToNum(payStr) {
     if(!payStr) return 0;
-    let clean = payStr.replace(/,/g, '');
+    let clean = payStr.replace(/,/g, '').toLowerCase();
+    if (clean.includes('/task') || clean.includes('/project') || clean.includes('per task')) {
+        return 0; // Exclude per-task roles from hourly average per R2b-4
+    }
     let matches = clean.match(/\$(\d+)/);
     if(matches && matches[1]) {
         let val = parseInt(matches[1], 10);
         if (clean.includes('/yr') || val > 1000) {
             return Math.round(val / 2000);
         }
-        return val;
+        if (clean.includes('/mo')) {
+            return Math.round(val / 160);
+        }
+        if (clean.includes('/hr') || clean.includes('/hour')) {
+            return val;
+        }
+        if (val <= 500) return val;
     }
     return 0;
 }
@@ -218,11 +227,19 @@ function changeRoleStatus(id, newStatus) {
 }
 
 function runMatchScore(btn, id) {
+    let existingScore = localStorage.getItem('atsScore');
+    let hasResume = localStorage.getItem('candidateResumeText') || localStorage.getItem('candidateResumeFileName');
+    if (!existingScore && !hasResume) {
+        btn.innerHTML = '⚠️ <a href="/resume-ats-guide" style="color:inherit; text-decoration:underline; font-weight:700;">Scan resume first</a>';
+        btn.style.background = '#fef3c7';
+        btn.style.color = '#92400e';
+        btn.style.borderColor = '#fde68a';
+        return;
+    }
     btn.innerHTML = 'Scanning...';
     btn.disabled = true;
     setTimeout(() => {
-        let existingScore = localStorage.getItem('atsScore');
-        let score = existingScore ? parseInt(existingScore, 10) : (Math.floor(Math.random() * 15) + 82);
+        let score = existingScore ? parseInt(existingScore, 10) : 85;
         btn.innerHTML = `🎯 Match: ${score}%`;
         btn.style.background = 'rgba(16, 185, 129, 0.1)';
         btn.style.color = 'var(--primary)';

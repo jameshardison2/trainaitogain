@@ -902,17 +902,30 @@ Experience
                 try {
                     const formattedForApply = matches.map(m => {
                         const rName = m.role || m.roleName;
-                        let rScore = parseInt(m.match || m.matchScore || 90);
-                        if (isNaN(rScore)) rScore = 90;
+                        let rScore = parseInt(m.match || m.matchScore || 70);
+                        if (isNaN(rScore)) rScore = 70;
+                        if (typeof keywordSets !== 'undefined' && keywordSets[rName] && keywordSets[rName].length > 0) {
+                            const kws = keywordSets[rName];
+                            let hits = 0;
+                            kws.forEach(kw => {
+                                if (keywordMatchesText(kw, resumeText)) hits++;
+                            });
+                            rScore = Math.round((hits / kws.length) * 100);
+                        }
                         const matchedRole = window.allRoles ? window.allRoles.find(r => r.title === rName) : null;
+                        const expl = rScore >= 50
+                            ? `Strong keyword alignment (${rScore}% match) with this target role.`
+                            : `Keyword coverage: ${rScore}%. Add relevant experience to qualify.`;
                         return {
                             roleName: rName,
                             matchScore: rScore,
-                            explanation: m.explanation || `Your resume shows strong keyword alignment (${rScore}% match) with this target pipeline.`,
+                            explanation: expl,
                             hourlyRate: matchedRole ? (matchedRole.pay || matchedRole.hourlyRate) : 'Competitive',
                             roleUrl: matchedRole ? (matchedRole.linkTarget || matchedRole.url) : 'https://t.mercor.com/wbPMF'
                         };
                     });
+                    // Sort descending by matchScore
+                    formattedForApply.sort((a, b) => b.matchScore - a.matchScore);
                     localStorage.setItem('ai_matches', JSON.stringify(formattedForApply));
                     sessionStorage.setItem('ai_matches', JSON.stringify(formattedForApply));
                 } catch (e) {
@@ -1090,19 +1103,35 @@ Experience
             if (beforeParen.length > 3 && resumeText.includes(beforeParen)) return true;
         }
 
+        // Check standalone acronym in keyword: e.g. "EHR" in "EHR Systems", "AWS", "SQL", "RN"
+        const acronyms = rawKw.match(/\b[A-Z]{2,6}\b/g);
+        if (acronyms) {
+            for (const acr of acronyms) {
+                const acrRe = new RegExp('\\b' + acr.toLowerCase() + '\\b', 'i');
+                if (acrRe.test(resumeText)) return true;
+            }
+        }
+
         // Clean punctuation and check cleaned version
         const cleanKw = kwLower.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
         const cleanText = resumeText.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ');
         if (cleanText.includes(cleanKw)) return true;
 
-        // Multi-word phrase matching (e.g. "Patient Assessment", "Medication Administration")
+        // Check core significant words (ignore generic trailing words like systems, tools, experience, management)
+        const genericWords = new Set(['systems', 'system', 'tools', 'tool', 'practices', 'practice', 'skills', 'skill', 'experience', 'knowledge', 'methods', 'method']);
         const words = cleanKw.split(' ').filter(w => w.length > 2);
+        const coreWords = words.filter(w => !genericWords.has(w));
+        if (coreWords.length > 0 && coreWords.every(w => new RegExp('\\b' + w + '\\b', 'i').test(resumeText))) {
+            return true;
+        }
+
+        // Multi-word phrase matching: at least 70% of words match
         if (words.length >= 2) {
-            const allWordsFound = words.every(w => {
-                const re = new RegExp('\\b' + w + '\\b', 'i');
-                return re.test(resumeText);
+            let matchedWords = 0;
+            words.forEach(w => {
+                if (new RegExp('\\b' + w + '\\b', 'i').test(resumeText)) matchedWords++;
             });
-            if (allWordsFound) return true;
+            if (matchedWords / words.length >= 0.7) return true;
         }
 
         return false;

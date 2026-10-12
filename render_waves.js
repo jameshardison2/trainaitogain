@@ -74,7 +74,29 @@ function renderWavesApp() {
                             apiRole.status = apiRole.status || 'ACTIVE';
                             apiRole.badgeClass = apiRole.badgeClass || 'orange';
                             apiRole.description = apiRole.description || 'Mercor is actively hiring for this position.';
-                            apiRole.domain = (apiRole.domain || 'SOFTWARE').toUpperCase();
+                            
+                            // R2b-2: Resolve domain for all incoming roles
+                            const domMap = [
+                                ['MEDICAL', /nurse|physician|medical|clinical|health|doctor|md\b|pharm|oncolog|neurolog|urolog|radiolog|hospital|dental|patient|biomed|preclinical/i],
+                                ['LEGAL', /legal|lawyer|attorney|law\b|paralegal|litigation|j\.d|counsel/i],
+                                ['FINANCE', /financ|accounting|banking|investment|equity|quant|trading|actuar|tax|economic|cpa|cfa|private equity|venture/i],
+                                ['LANGUAGE', /voice actor|language|translat|linguist|spanish|french|german|japanese|korean|chinese|arabic|hindi|portuguese|italian|native speaker/i],
+                                ['SOFTWARE', /software|engineer|developer|swe\b|coding|code|data scien|machine learning|\bml\b|\bai\b|devops|security|cyber|backend|frontend|full.?stack|mobile|qa\b/i],
+                                ['SCIENCE', /chemist|physic|biolog|math|scien|research|materials|nuclear|energetic/i],
+                                ['CREATIVE', /design|writer|writing|editor|video|creative|art|music|film|game/i]
+                            ];
+                            let resolvedDom = (apiRole.domain || '').toUpperCase();
+                            if (!resolvedDom || resolvedDom === 'SOFTWARE' || resolvedDom === 'GENERAL') {
+                                for (const [d, re] of domMap) {
+                                    if (re.test(apiRole.title || '')) { resolvedDom = d; break; }
+                                }
+                                if (!resolvedDom || resolvedDom === 'SOFTWARE') {
+                                    for (const [d, re] of domMap) {
+                                        if (re.test(apiRole.description || '')) { resolvedDom = d; break; }
+                                    }
+                                }
+                            }
+                            apiRole.domain = resolvedDom || 'GENERAL';
                             apiRole.pay = pStr;
                             apiRole.platform = apiRole.platform || 'Mercor';
 
@@ -89,6 +111,7 @@ function renderWavesApp() {
                                     if (apiRole.status) match.status = apiRole.status;
                                     if (apiRole.badgeClass) match.badgeClass = apiRole.badgeClass;
                                     if (apiRole.description) match.description = apiRole.description;
+                                    if (apiRole.domain) match.domain = apiRole.domain;
                                 }
                             }
                         });
@@ -120,6 +143,8 @@ function renderWavesApp() {
             { id: 'carousel-finance', name: 'Finance & Quant Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>', domain: 'FINANCE' },
             { id: 'carousel-legal', name: 'Legal & Compliance Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>', domain: 'LEGAL' },
             { id: 'carousel-language', name: 'Translation & Voice Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>', domain: 'LANGUAGE' },
+            { id: 'carousel-science', name: 'Science & Research Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10 2v7.31L4.35 18A2 2 0 0 0 6 21h12a2 2 0 0 0 1.65-3L14 9.31V2"></path><line x1="8.5" y1="2" x2="15.5" y2="2"></line></svg>', domain: 'SCIENCE' },
+            { id: 'carousel-creative', name: 'Creative, Writing & Media Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon><line x1="3" y1="22" x2="21" y2="22"></line></svg>', domain: 'CREATIVE' },
             { id: 'carousel-sales', name: 'Sales & Growth Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 19l16-16"></path><path d="M4 19l3-3"></path><path d="M20 3l-3 3"></path></svg>', domain: 'SALES' },
             { id: 'carousel-general', name: 'General & Domain Expert Pipelines', icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>', domain: 'GENERAL' }
         ];
@@ -139,10 +164,13 @@ function renderWavesApp() {
         <select id="jobDomainFilter" style="appearance:none; -webkit-appearance:none; background-color:white; background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat:no-repeat; background-position:right 12px center; padding:12px 36px 12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
             <option value="ALL">All Categories</option>
             <option value="SOFTWARE">Software & Engineering</option>
-            <option value="GENERAL">General & Expert</option>
             <option value="MEDICAL">Medical & Clinical</option>
             <option value="FINANCE">Finance & Economics</option>
             <option value="LEGAL">Legal & Compliance</option>
+            <option value="LANGUAGE">Language & Translation</option>
+            <option value="SCIENCE">Science & Research</option>
+            <option value="CREATIVE">Creative & Media</option>
+            <option value="GENERAL">General & Expert</option>
             <option value="MICRO1">Micro1 Roles</option>
             <option value="MERCOR">Mercor Roles</option>
         </select>
@@ -216,7 +244,7 @@ function renderWavesApp() {
               <div style="color:var(--primary); font-weight:800; font-size:18px;">${role.pay}</div>
             </div>
             <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">${role.title}</h3>
-            <p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">${role.description}</p>
+            ${(role.platform === 'Mercor' || !role.description) ? '' : `<p style="color:var(--gray-500); font-size:14px; margin-bottom:20px; flex-grow:1; line-height:1.6;">${role.description}</p>`}
             <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">${tagsHtml}</div>
             <div style="display:flex; gap:8px;">
               <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${role.linkTarget || 'https://t.mercor.com/wbPMF'}', this)">Apply Now</button>

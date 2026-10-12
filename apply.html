@@ -446,11 +446,11 @@ ${resumeText.substring(0, 10000)}`;
 <div id="exit-intent-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
   <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out; text-align:center; padding:32px;">
     <button onclick="document.getElementById('exit-intent-modal').style.display='none'" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
-    <div style="font-size:48px; margin-bottom:16px;">🛑</div>
-    <h3 style="font-size:24px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.2;">Not ready to apply today?</h3>
-    <p style="color:var(--gray-600); line-height:1.6; margin-bottom:24px;">Don't ruin your chances by winging the AI interview later. Download our free <strong>Hiring Blueprint PDF</strong> so you know exactly what to say when you are ready.</p>
-    <a href="/hiring-blueprint.html" class="btn-primary" style="display:inline-block; padding:16px 32px; font-size:16px; width:100%; text-decoration:none;">Get the Free PDF Guide ➔</a>
-    <a href="#" onclick="document.getElementById('exit-intent-modal').style.display='none'; return false;" style="display:inline-block; margin-top:16px; color:var(--gray-500); font-size:13px; font-weight:600; text-decoration:underline;">No thanks, I'll wing it</a>
+    <div style="font-size:40px; margin-bottom:16px;">📄</div>
+    <h3 style="font-size:24px; font-weight:800; color:var(--black); margin-bottom:16px; line-height:1.2;">Want the free interview prep guide?</h3>
+    <p style="color:var(--gray-600); line-height:1.6; margin-bottom:24px;">Download our free <strong>Hiring Blueprint PDF</strong> so you have a proven structure ready before your video interview.</p>
+    <a href="/hiring-blueprint.html" class="btn-primary" style="display:inline-block; padding:16px 32px; font-size:16px; width:100%; text-decoration:none;">Get the Free Blueprint ➔</a>
+    <a href="#" onclick="document.getElementById('exit-intent-modal').style.display='none'; return false;" style="display:inline-block; margin-top:16px; color:var(--gray-500); font-size:13px; font-weight:600; text-decoration:underline;">Not now</a>
   </div>
 </div>
 <script>
@@ -518,20 +518,36 @@ ${resumeText.substring(0, 10000)}`;
         const savedAtsScore = localStorage.getItem('atsScore');
 
         matchedSection.style.display = 'block';
-        matchedTrack.innerHTML = matches.map((m, idx) => {
+        
+        // R2b-3: Sort matches by score descending, use one coherent scoring metric
+        const parsedMatches = matches.map((m, idx) => {
+          let score = (idx === 0 && savedAtsScore) ? parseInt(savedAtsScore, 10) : parseInt(m.matchScore || m.match || 70, 10);
+          if (isNaN(score)) score = 70;
+          return { ...m, computedScore: score };
+        });
+        parsedMatches.sort((a, b) => b.computedScore - a.computedScore);
+
+        matchedTrack.innerHTML = parsedMatches.map((m) => {
           const rName = (m.roleName || m.role || 'Target Role').replace(/'/g, "\\'");
-          const rScore = (idx === 0 && savedAtsScore) ? parseInt(savedAtsScore, 10) : (m.matchScore || m.match || 90);
+          const rScore = m.computedScore;
           const rRate = m.hourlyRate || 'Competitive';
           const rUrl = m.roleUrl || m.linkTarget || 'https://t.mercor.com/wbPMF';
-          const rExpl = m.explanation || `High-probability match based on your ATS Resume Scan keywords (${rScore}% match).`;
+          
+          // R2b-3: Don't label under 50% "a fit", show honest keyword coverage
+          const fitLabel = rScore >= 50 ? "Why you're a fit:" : "Keyword alignment:";
+          const rExpl = m.explanation || (rScore >= 50 ? `Strong keyword alignment (${rScore}% match) with this target role.` : `Your resume covers ${rScore}% of the keywords for this role.`);
+          const badgeIcon = rScore >= 50 ? '🌟' : '📊';
+          const badgeBg = rScore >= 50 ? 'var(--primary-light)' : 'var(--gray-100)';
+          const badgeColor = rScore >= 50 ? 'var(--primary-dark)' : 'var(--gray-700)';
+
           return `
-            <div class="wave-card" style="width: 100%; max-width: 600px; text-align: left; background: white; padding: 24px; border-radius: var(--radius-lg); border: 2px solid var(--primary); box-shadow: var(--shadow-md); display:flex; flex-direction:column; align-items:flex-start;">
+            <div class="wave-card" style="width: 100%; max-width: 600px; text-align: left; background: white; padding: 24px; border-radius: var(--radius-lg); border: 2px solid ${rScore >= 50 ? 'var(--primary)' : 'var(--gray-300)'}; box-shadow: var(--shadow-md); display:flex; flex-direction:column; align-items:flex-start;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; width:100%;">
-                 <span style="background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:800; padding:6px 10px; border-radius:6px;">🌟 ${rScore}% Match</span>
+                 <span style="background:${badgeBg}; color:${badgeColor}; font-size:12px; font-weight:800; padding:6px 10px; border-radius:6px;">${badgeIcon} ${rScore}% Match</span>
                  <span style="color:var(--primary); font-weight:800; font-size:16px;">${rRate}</span>
               </div>
               <h3 style="font-size:20px; font-weight:800; color:var(--black); margin-bottom:12px; line-height:1.3;">${m.roleName || m.role}</h3>
-              <p style="font-size:14px; color:var(--gray-600); line-height:1.5; margin-bottom:24px; flex-grow:1;"><strong>Why you're a fit:</strong> ${rExpl}</p>
+              <p style="font-size:14px; color:var(--gray-600); line-height:1.5; margin-bottom:24px; flex-grow:1;"><strong>${fitLabel}</strong> ${rExpl}</p>
               
               <div style="display:flex; gap:8px; width:100%;">
                 <button type="button" onclick="window.handleApplyClick('${rName}', '${rUrl}', this)" style="flex:1; background:var(--primary); color:white; border:none; padding:14px; border-radius:var(--radius-sm); font-weight:800; font-size:15px; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">Apply for this Role ➔</button>
