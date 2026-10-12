@@ -79,8 +79,9 @@ function sanitizeDescription(desc) {
 }
 
 function resolveDomain(title, desc, existingDomain) {
-  if (existingDomain && existingDomain !== 'SOFTWARE' && existingDomain !== 'GENERAL') {
-    return existingDomain.toUpperCase();
+  if (existingDomain && typeof existingDomain === 'string' && existingDomain.trim()) {
+    const dUpper = existingDomain.trim().toUpperCase();
+    if (dUpper !== 'GENERAL') return dUpper;
   }
   for (const [dom, re] of DOMAINS_MAP) {
     if (re.test(title || '')) return dom;
@@ -88,7 +89,7 @@ function resolveDomain(title, desc, existingDomain) {
   for (const [dom, re] of DOMAINS_MAP) {
     if (re.test(desc || '')) return dom;
   }
-  return (existingDomain || 'GENERAL').toUpperCase();
+  return 'GENERAL';
 }
 
 exports.directIngestJobs = onRequest(
@@ -128,9 +129,11 @@ exports.directIngestJobs = onRequest(
           const chunk = jobs.slice(i, i + batchSize);
           const batch = db.batch();
           for (const job of chunk) {
-            // Clean description and classify domain
+            // Apply junk filter and resolve domain
             const cleanDesc = sanitizeDescription(job.description);
-            const domain = resolveDomain(job.title, cleanDesc, job.domain);
+            const domain = (job.domain && typeof job.domain === 'string' && job.domain.trim())
+              ? job.domain.trim().toUpperCase()
+              : resolveDomain(job.title, cleanDesc, null);
             
             // Unique slug from title + pay or linkTarget per Section 6b.6
             const paySlug = (job.pay || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -142,8 +145,18 @@ exports.directIngestJobs = onRequest(
             const ref = db.collection("roles").doc(docId);
             batch.set(ref, {
               ...job,
-              description: cleanDesc,
-              domain: domain,
+              title: job.title,
+              linkTarget: job.linkTarget, // Kept exactly as sent (Section 6b.1)
+              pay: job.pay,               // Kept exactly as sent (Section 6b.2)
+              payUnit: job.payUnit || null,
+              payMin: job.payMin !== undefined ? job.payMin : null,
+              payMax: job.payMax !== undefined ? job.payMax : null,
+              description: cleanDesc,     // Junk-text filtered (Section 14 R2b-1)
+              domain: domain,             // Saved domain (Section 14 R2b-2)
+              atsKeywords: job.atsKeywords || [],
+              tags: job.tags || ['Remote'],
+              platform: job.platform || platform || "Mercor",
+              linkIsSpecific: job.linkIsSpecific !== undefined ? job.linkIsSpecific : true,
               lastUpdated: syncedAt || new Date().toISOString(),
               updatedAt: admin.firestore.FieldValue.serverTimestamp()
             }, { merge: true });

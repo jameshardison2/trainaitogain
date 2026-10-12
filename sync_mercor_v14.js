@@ -1,16 +1,36 @@
-// TrainAIToGain Deep Sync V14
+// TrainAIToGain Deep Sync V14.1
+// Run on Mercor's referral jobs page (the page your V12 bookmark runs on).
+// Changes from V12:
+//  1. Grabs each role's OWN referral link (catches the link when Mercor copies it
+//     to the clipboard, and clicks Share / Copy link / Refer if needed).
+//  2. Reads pay correctly: commas, ranges, and the real unit (/hr, /mo, /yr, /task).
+//     No more $50000/hr.
+//  3. Collects every tab and page first, then sends ONE update at the end, so a
+//     later page can never overwrite earlier pages.
+//  4. Adds ATS keywords from the title and description, so the ATS scanner can match.
+//  5. Sends a real sync date, and dedupes by link (or title + pay), so two
+//     different "Finance Expert" roles stay separate and true duplicates collapse.
+//  6. Ends with a report: roles found, unique links vs fallback links.
+// V14: description now comes only from the opened job (no personal status, referral bonuses or other cards), and each role gets a domain.
 (async function () {
+  if (/mercor\.com/i.test(location.hostname) && !/\/refer/i.test(location.pathname)) {
+    alert('Please open work.mercor.com/refer (the Referrals page), then run this bookmark again.');
+    return;
+  }
   if (!/mercor\.com/i.test(location.hostname)) {
     alert('Open your Mercor referral jobs page first, then run this bookmark.');
     return;
   }
-  alert('TrainAIToGain Deep Sync V14 started. Please do not touch your mouse until the final message.');
+  alert('TrainAIToGain Deep Sync V14.1 started. Please do not touch your mouse until the final message.');
+
   const FALLBACK_LINK = 'https://t.mercor.com/wbPMF';
   const ENDPOINT = 'https://us-central1-trainaitogain-50c19.cloudfunctions.net/directIngestJobs';
   const TOKEN = 'TRAINAITOGAIN_SYNC_SECURE_2026'; // rotate this (see notes)
   const TABS = ['Project-based', 'One-time', 'Talent Network'];
   const MAX_PAGES = 40;
   const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  // ---- 1. Catch referral links Mercor copies to the clipboard ----
   let lastCopied = '';
   try {
     const origWrite = navigator.clipboard && navigator.clipboard.writeText
@@ -25,6 +45,7 @@
       if (t) lastCopied = t;
     } catch (err) {}
   }, true);
+
   const LINK_RE = /https:\/\/t\.mercor\.com\/[a-zA-Z0-9]{4,12}/g;
   const findSpecificLink = () => {
     const corpus = [
@@ -36,6 +57,7 @@
     const hits = Array.from(corpus.matchAll(LINK_RE)).map(m => m[0]).filter(u => !u.includes('wbPMF'));
     return hits.length ? hits[hits.length - 1] : null;
   };
+
   const clickShareButton = () => {
     const btn = Array.from(document.querySelectorAll('button, a, [role="button"]')).find(el => {
       const t = (el.innerText || el.getAttribute('aria-label') || '').trim();
@@ -44,6 +66,8 @@
     if (btn) { try { btn.click(); } catch (e) {} return true; }
     return false;
   };
+
+  // ---- 2. Pay parsing ----
   const parsePay = text => {
     const re = /\$\s*([\d,]+(?:\.\d+)?)(?:\s*[-–to]+\s*\$?\s*([\d,]+(?:\.\d+)?))?\s*(?:\/|per)\s*(hour|hr|month|mo|year|yr|task)/i;
     const m = (text || '').match(re);
@@ -56,6 +80,8 @@
     const pay = '$' + fmt(min) + (max ? '–' + fmt(max) : '') + '/' + unit;
     return { pay, payUnit: unit, payMin: min, payMax: max || min };
   };
+
+  // ---- 4. ATS keywords ----
   const SKILLS = ['python','java','javascript','typescript','c++','c#','go','rust','sql','react','node','aws','gcp','azure',
     'machine learning','deep learning','nlp','llm','data science','data analysis','statistics','excel','tableau','power bi',
     'firmware','embedded','systems integration','devops','kubernetes','docker','security','networking','qa','testing',
@@ -67,6 +93,8 @@
     const text = (title + ' ' + desc).toLowerCase();
     return SKILLS.filter(k => text.includes(k)).slice(0, 15);
   };
+
+  // ---- Card finding (same rules as V12) ----
   const getCards = () => {
     const cards = Array.from(document.querySelectorAll('div, a, li')).filter(el => {
       if (window.getComputedStyle(el).cursor !== 'pointer') return false;
@@ -83,16 +111,20 @@
     back.click();
     for (let w = 0; w < 10000; w += 1000) { await sleep(1000); if (getCards().length > i) break; }
   };
+
   const allJobs = [];
   let uniqueLinks = 0, fallbackLinks = 0;
+
   for (const tab of TABS) {
     const tabEl = Array.from(document.querySelectorAll('button, a, li, span, div')).find(el =>
       el.innerText && el.innerText.trim() === tab && el.children.length <= 1 && el.getBoundingClientRect().width > 0);
     if (tabEl) { tabEl.scrollIntoView({ block: 'center' }); await sleep(500); tabEl.click(); await sleep(3000); }
+
     for (let pageNum = 1; pageNum <= MAX_PAGES; pageNum++) {
       let initial = [];
       for (let w = 0; w < 15000; w += 1000) { initial = getCards(); if (initial.length) break; await sleep(1000); }
       if (!initial.length) break;
+
       for (let i = 0; i < initial.length; i++) {
         let cards = getCards();
         if (cards.length <= i) { await goBack(i); cards = getCards(); }
@@ -104,10 +136,13 @@
         if (title.includes('$')) title = cardText.split('\n')[0].trim();
         if (!title) continue;
         const payInfo = parsePay(cardText);
+
         card.scrollIntoView({ block: 'center' });
         await sleep(500);
         lastCopied = '';
         (card.querySelector('a') || card).click();
+
+        // Wait for a specific link; after 2.5s try the Share / Copy link button once.
         let link = null, triedShare = false;
         for (let w = 0; w < 8000; w += 500) {
           link = findSpecificLink();
@@ -116,15 +151,21 @@
           await sleep(500);
         }
         if (link) uniqueLinks++; else { fallbackLinks++; link = FALLBACK_LINK; }
+
+        // V14: read ONLY the opened job's detail, and strip anything personal or from other cards
         let raw = '';
+        // Fast: one pass, and skip any block that contains more than one job's pay line (that's the list, not the job)
+        const PAYLINE = /\$\s*[\d,]+[^\n]{0,20}(\/|per)\s*(hour|hr|month|mo|year|yr|task)/gi;
         const panes = Array.from(document.querySelectorAll('div, section, [role="dialog"]')).filter(el => {
           const r = el.getBoundingClientRect();
+          if (r.width < 300 || r.height < 200) return false;
           const t = el.innerText || '';
-          return r.width > 300 && r.height > 200 && t.includes(title) && !getCards().some(c => el.contains(c) || c.contains(el));
+          if (!t.includes(title)) return false;
+          return (t.match(PAYLINE) || []).length <= 1;
         });
         if (panes.length) { panes.sort((a, b) => a.innerText.length - b.innerText.length); raw = panes[0].innerText; }
         const JUNK = /steps? completed|submitted on|hired this month|early applicant|1-click apply|new opportunity|posted by|referral|refer |earn \$|bonus|^apply\b|^share\b|copy link|view all opportunities|^\$[\d,]+$|^[A-Z]$|^\d+ hired/i;
-        const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 30 && l !== title && !JUNK.test(l) && !/\$\s*[\d,]+(?:\s*[-–to]+\s*\$?\s*[\d,]+)*\s*(?:\/|per)\s*(hour|hr|month|mo|year|yr|task)/i.test(l));
+        const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 30 && l !== title && !JUNK.test(l) && !/\$\s*[\d,]+\s*(-|–|to)?\s*\$?[\d,]*\s*(\/|per)\s*(hour|hr|month|mo|year|yr|task)/i.test(l));
         const cleanDesc = lines.join(' ').replace(/\s+/g, ' ').trim();
         if (payInfo.pay === 'Competitive') Object.assign(payInfo, parsePay(raw));
         const DOMAINS = [
@@ -137,8 +178,10 @@
           ['CREATIVE', /design|writer|writing|editor|video|creative|art|music|film|game/i]
         ];
         const domain = (DOMAINS.find(([, re]) => re.test(title)) || DOMAINS.find(([, re]) => re.test(cleanDesc)) || ['GENERAL'])[0];
+
         const tags = [...new Set((cleanDesc.match(/\b(Remote|Onsite|Hybrid|US Only|India|LatAm)\b/ig) || ['Remote'])
           .map(t => t[0].toUpperCase() + t.slice(1)))];
+
         allJobs.push({
           title,
           pay: payInfo.pay,
@@ -157,6 +200,8 @@
         console.log('[' + tab + '] ' + title + ' | ' + payInfo.pay + ' | ' + link);
         await goBack(i);
       }
+
+      // Next page
       let next = document.querySelector('[aria-label="Next page"], [aria-label*="next"], button[title*="Next"]');
       if (!next) {
         next = Array.from(document.querySelectorAll('*')).find(el => {
@@ -178,12 +223,16 @@
       }
     }
   }
+
+  // ---- 5. Dedupe: by specific link, otherwise by title + pay ----
   const byKey = new Map();
   for (const j of allJobs) {
     const key = j.linkIsSpecific ? j.linkTarget : (j.title + '|' + j.pay);
     if (!byKey.has(key)) byKey.set(key, j);
   }
   const jobs = Array.from(byKey.values());
+
+  // ---- 3. One update at the end ----
   let ok = false, status = '';
   try {
     const res = await fetch(ENDPOINT, {
@@ -193,6 +242,7 @@
     });
     ok = res.ok; status = res.status;
   } catch (e) { status = e.message; }
+
   alert((ok ? 'Sync complete. ' : 'Sync FAILED (' + status + '). Nothing was saved. ') +
     jobs.length + ' roles found. ' + uniqueLinks + ' with their own referral link, ' +
     fallbackLinks + ' using the general link.');
