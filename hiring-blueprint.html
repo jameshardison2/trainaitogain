@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrainAIToGain Blueprint | AI Interview Strategy Guide</title>
-  <meta name="description" content="The TrainAIToGain Blueprint: The complete framework to optimize your resume for AI parsers and deliver high-scoring STAR responses on Mercor and micro1.">
+  <title>The TrainAIToGain Blueprint | Practical AI Candidate Roadmap</title>
+  <meta name="description" content="The practical, step-by-step candidate roadmap to pass AI screening algorithms, optimize resumes for parsers, and deliver high-scoring STAR responses on Mercor and micro1.">
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
@@ -20,119 +21,562 @@
   </script>
 
   <style>
-    :root { --primary: #10b981; --primary-dark: #059669; --black: #111827; --gray-50: #f9fafb; --gray-200: #e5e7eb; --gray-800: #1f2937; --font: 'Inter', system-ui, sans-serif; }
-    body { font-family: var(--font); background-color: var(--gray-50); color: var(--black); margin: 0; padding: 0; line-height: 1.6; }
-    .container { max-width: 800px; margin: 40px auto; background: white; padding: 60px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-    h1 { font-size: 36px; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 8px; }
-    h2 { font-size: 24px; font-weight: 800; margin-top: 48px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--gray-200); }
-    h3 { font-size: 18px; font-weight: 700; margin-top: 24px; }
-    p { color: #4b5563; font-size: 16px; margin-bottom: 16px; }
-    .badge { display: inline-block; background: var(--primary); color: white; padding: 6px 12px; border-radius: 100px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
-    .alert { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 0 8px 8px 0; margin: 32px 0; }
-    .good-bad { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 24px 0; }
-    .box { padding: 20px; border-radius: 8px; border: 1px solid var(--gray-200); }
-    .box.bad { background: #fef2f2; border-color: #fecaca; }
-    .box.good { background: #ecfdf5; border-color: #a7f3d0; }
-    .box-title { font-weight: 800; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; }
-    .script-box { background: var(--black); color: white; padding: 32px; border-radius: 12px; margin: 32px 0; }
-    .script-box p { color: #9ca3af; }
-    .script-box strong { color: var(--primary); }
-    .cta-btn { display: block; width: 100%; text-align: center; background: var(--primary); color: white; text-decoration: none; padding: 18px; font-size: 16px; font-weight: 800; border-radius: 12px; margin-top: 20px; transition: background 0.2s; box-sizing: border-box; }
-    .cta-btn:hover { background: var(--primary-dark); }
-    @media (max-width: 600px) { .container { padding: 30px 20px; margin: 20px; } h1 { font-size: 28px; } }
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --black: #111827;
+      --gray-900: #111827;
+      --gray-700: #374151;
+      --gray-500: #6b7280;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --gray-50: #f9fafb;
+      --white: #ffffff;
+      --font: 'Outfit', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--gray-50);
+      color: var(--black);
+      line-height: 1.6;
+    }
+
+    .blueprint-hero {
+      background: linear-gradient(180deg, #ffffff 0%, var(--gray-50) 100%);
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--gray-200);
+      text-align: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(5, 150, 105, 0.1);
+      color: var(--primary);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .blueprint-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Practical Roadmap Stepper */
+    .roadmap-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      margin: 48px 0;
+    }
+
+    .phase-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      position: relative;
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid var(--gray-100);
+      padding-bottom: 16px;
+    }
+
+    .phase-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    .badge-p1 { background: #ecfdf5; color: #047857; }
+    .badge-p2 { background: #eff6ff; color: #1d4ed8; }
+    .badge-p3 { background: #fef3c7; color: #b45309; }
+    .badge-p4 { background: #f3e8ff; color: #7e22ce; }
+
+    .time-est {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-500);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .phase-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    .phase-intro {
+      font-size: 15px;
+      color: var(--gray-700);
+      margin-bottom: 24px;
+    }
+
+    /* Comparison Grids */
+    .example-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0 24px;
+    }
+
+    @media (max-width: 680px) {
+      .example-grid { grid-template-columns: 1fr; }
+      .phase-card { padding: 24px 20px; }
+    }
+
+    .example-box {
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .box-bad {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+
+    .box-good {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+
+    .box-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Spoken Script Box */
+    .script-container {
+      background: #0f172a;
+      color: #f8fafc;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 24px 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .script-step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+
+    .script-step:last-child {
+      margin-bottom: 0;
+    }
+
+    .time-tag {
+      background: rgba(255,255,255,0.12);
+      color: #38bdf8;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .script-content {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+
+    .script-content strong {
+      color: #34d399;
+    }
+
+    /* Action Callout Box inside each phase */
+    .phase-action {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .action-text {
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .action-label {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .action-desc {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--black);
+      margin: 0;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 100px;
+      font-weight: 800;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-green {
+      background: var(--primary);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    }
+    .btn-green:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-dark {
+      background: var(--black);
+      color: var(--white);
+    }
+    .btn-dark:hover {
+      background: #27272a;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--black);
+      border: 1.5px solid var(--gray-200);
+    }
+    .btn-outline:hover {
+      border-color: var(--black);
+      transform: translateY(-2px);
+    }
+
+    .btn-blue {
+      background: #2563eb;
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+    .btn-blue:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    /* Bonus Masterclass Banner */
+    .masterclass-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: var(--white);
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin: 40px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .banner-text {
+      flex: 1;
+      min-width: 280px;
+    }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div style="text-align: center; margin-bottom: 48px;">
-      <a href="/" style="display:inline-block; text-decoration:none;">
-        <img src="logo.svg" style="height:48px; width:48px; margin:0 auto 20px auto; display:block;" alt="TrainAIToGain Logo" />
+  <!-- Standard Primary Navigation -->
+  <nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="/" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="logo.svg?v=2" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; flex-direction:column; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+            <span style="color:var(--primary); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">We Get You Hired.</span>
+          </div>
+        </a>
+        <input type="checkbox" id="nav-toggle" style="display:none;" />
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span class="nav-toggle-icon"></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="/resume-ats-guide" class="nav-link">ATS Resume Scan</a></li>
+          <li><a href="/ai-interview" class="nav-link">Mock Interview</a></li>
+          <li><a href="/apply" class="nav-link">Active Roles</a></li>
+          <li><a href="/saved-roles" class="nav-link" style="display:flex; align-items:center; gap:6px;">Dashboard</a></li>
+          <li><a href="/readiness-checklist" class="nav-link" style="color:var(--primary); font-weight:700;">Print Checklist</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Header -->
+  <header class="blueprint-hero">
+    <div class="blueprint-container">
+      <div class="badge-pill">📋 Candidate Framework</div>
+      <h1 style="font-size: 40px; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15;">
+        The TrainAIToGain Blueprint
+      </h1>
+      <p style="font-size: 17px; color: var(--gray-700); max-width: 660px; margin: 0 auto 20px;">
+        A practical, 4-phase execution guide to passing AI screening algorithms, calibrating your speech transcripts, and securing remote contracts on <strong>Mercor</strong> and <strong>micro1</strong>.
+      </p>
+      <div style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+        <button onclick="window.print()" class="action-btn btn-outline" style="font-size: 13px; padding: 8px 18px;">
+          🖨️ Print / Save as PDF
+        </button>
+        <a href="#phase-1" class="action-btn btn-dark" style="font-size: 13px; padding: 8px 18px;">
+          Start Phase 1 ➔
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Roadmap Content -->
+  <main class="blueprint-container">
+    <div class="roadmap-timeline">
+
+      <!-- PHASE 1 -->
+      <section class="phase-card" id="phase-1">
+        <div class="phase-header">
+          <span class="phase-badge badge-p1">Phase 01 · Resume Calibration</span>
+          <span class="time-est">⏱️ Estimated: 5 Minutes</span>
+        </div>
+        <h2 class="phase-title">The "Keyword Context" Strategy</h2>
+        <p class="phase-intro">
+          AI applicant screeners do not read like humans. They run semantic extraction algorithms that weigh terms <em>embedded directly inside accomplishments</em> far higher than isolated skill lists at the bottom of a page.
+        </p>
+
+        <div class="example-grid">
+          <div class="example-box box-bad">
+            <div class="box-title">❌ Weak Skill List (Low Score)</div>
+            <p style="margin: 0;"><em>"Built internal tools and worked on database tasks. Skills: Python, SQL, REST APIs, Git."</em></p>
+            <div style="margin-top: 10px; font-size: 12px; color: #b91c1c; font-weight: 600;">
+              Parser verdict: Passive construction, unquantified impact, disconnected skills dump.
+            </div>
+          </div>
+          <div class="example-box box-good">
+            <div class="box-title">✅ Embedded Context (High Score)</div>
+            <p style="margin: 0;"><em>"Architected an automated data ingestion pipeline using Python and SQL, decreasing model evaluation turnaround by 42% across 10,000 weekly samples."</em></p>
+            <div style="margin-top: 10px; font-size: 12px; color: #047857; font-weight: 600;">
+              Parser verdict: Clear action verb, domain keywords in context, concrete scale and percentage.
+            </div>
+          </div>
+        </div>
+
+        <div style="background: var(--gray-50); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+          <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; color: var(--black);">
+            High-Signal Action Verbs to Lead Every Bullet:
+          </h3>
+          <p style="font-size: 13px; color: var(--gray-700); margin: 0; line-height: 1.6;">
+            <strong>Ownership:</strong> Spearheaded, Directed, Architected, Refactored, Evaluated, Benchmarked.<br>
+            <strong>Execution:</strong> Engineered, Deployed, Calibrated, Validated, Fine-tuned, Audited.<br>
+            <strong>Measurable Impact:</strong> Accelerated, Increased, Reduced, Compressed, Optimized.
+          </p>
+        </div>
+
+        <!-- Practical Action Card -->
+        <div class="phase-action">
+          <div class="action-text">
+            <div class="action-label">Action Step 1</div>
+            <div class="action-desc">Upload your PDF resume to check your exact match score against 240 live roles.</div>
+          </div>
+          <a href="/resume-ats-guide" class="action-btn btn-green">
+            Launch ATS Resume Scanner ➔
+          </a>
+        </div>
+      </section>
+
+      <!-- PHASE 2 -->
+      <section class="phase-card" id="phase-2">
+        <div class="phase-header">
+          <span class="phase-badge badge-p2">Phase 02 · One-Way Screening</span>
+          <span class="time-est">⏱️ Estimated: 10 Minutes</span>
+        </div>
+        <h2 class="phase-title">The Spoken STAR Impact Formula</h2>
+        <p class="phase-intro">
+          During automated video screens on Mercor or micro1 (Zara), speech-to-text models transcribe your voice in real time. If your answers wander without structure, your score drops. Target <strong>60 to 90 seconds per answer</strong> using this exact timing formula:
+        </p>
+
+        <div class="script-container">
+          <div class="script-step">
+            <span class="time-tag">10 SECONDS</span>
+            <div class="script-content">
+              <strong>Situation:</strong> "In my most recent role at [Company/Project], our team was tasked with [Specific Objective or Bottleneck]."
+            </div>
+          </div>
+          <div class="script-step">
+            <span class="time-tag">10 SECONDS</span>
+            <div class="script-content">
+              <strong>Task:</strong> "My direct ownership was to [Clear Measurable Goal] before the end of the quarter."
+            </div>
+          </div>
+          <div class="script-step">
+            <span class="time-tag">35 SECONDS</span>
+            <div class="script-content">
+              <strong>Action:</strong> "I spearheaded the implementation of [System/Methodology], specifically leveraging [Key Domain Skill] to resolve edge-case failures."
+            </div>
+          </div>
+          <div class="script-step">
+            <span class="time-tag">15 SECONDS</span>
+            <div class="script-content">
+              <strong>Result:</strong> "As a direct result, we achieved [Quantifiable Metric: e.g. 38% latency reduction or $50K savings], exceeding our target."
+            </div>
+          </div>
+          <div class="script-step">
+            <span class="time-tag">10 SECONDS</span>
+            <div class="script-content">
+              <strong>Tie-In:</strong> "This experience prepared me directly to evaluate complex prompts with high precision in this role."
+            </div>
+          </div>
+        </div>
+
+        <!-- Practical Action Card -->
+        <div class="phase-action">
+          <div class="action-text">
+            <div class="action-label">Action Step 2</div>
+            <div class="action-desc">Run a 5-question practice mock interview with natural voice audio and instant feedback.</div>
+          </div>
+          <a href="/ai-interview" class="action-btn btn-dark">
+            Practice 5-Question Mock Interview ➔
+          </a>
+        </div>
+      </section>
+
+      <!-- PHASE 3 -->
+      <section class="phase-card" id="phase-3">
+        <div class="phase-header">
+          <span class="phase-badge badge-p3">Phase 03 · Environment Calibration</span>
+          <span class="time-est">⏱️ Estimated: 5 Minutes</span>
+        </div>
+        <h2 class="phase-title">Technical Setup & Retake Rules</h2>
+        <p class="phase-intro">
+          Both Mercor and micro1 enforce strict technical protocols. Minor issues like browser incompatibilities or poor microphone levels can trigger automatic screening failures before you finish.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 18px;">
+            <div style="font-weight: 800; font-size: 14px; margin-bottom: 6px; color: var(--black);">🌐 Browser & WebRTC</div>
+            <div style="font-size: 13px; color: var(--gray-700);">Always use Google Chrome updated to latest. Firefox is unsupported on both platforms. Safari and Edge are fallback only.</div>
+          </div>
+          <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 18px;">
+            <div style="font-weight: 800; font-size: 14px; margin-bottom: 6px; color: var(--black);">🎙️ Audio & Lighting</div>
+            <div style="font-size: 13px; color: var(--gray-700);">A dedicated wired or USB headset prevents room echo. Face natural light or a lamp directly; avoid backlighting.</div>
+          </div>
+          <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 18px;">
+            <div style="font-weight: 800; font-size: 14px; margin-bottom: 6px; color: var(--black);">🔄 Platform Retake Rules</div>
+            <div style="font-size: 13px; color: var(--gray-700);"><strong>Mercor:</strong> Free unlimited practice on work.mercor.com. Official retakes capped at 3.<br><strong>micro1:</strong> Test your video and audio with Zara before live application.</div>
+          </div>
+        </div>
+
+        <!-- Practical Action Card -->
+        <div class="phase-action">
+          <div class="action-text">
+            <div class="action-label">Action Step 3</div>
+            <div class="action-desc">Verify your setup with our complete, printable pre-interview readiness checklist.</div>
+          </div>
+          <a href="/readiness-checklist" class="action-btn btn-outline">
+            Open Printable Checklist ➔
+          </a>
+        </div>
+      </section>
+
+      <!-- PHASE 4 -->
+      <section class="phase-card" id="phase-4">
+        <div class="phase-header">
+          <span class="phase-badge badge-p4">Phase 04 · Targeted Wave Application</span>
+          <span class="time-est">⏱️ Estimated: Ongoing</span>
+        </div>
+        <h2 class="phase-title">Active Waves & Post-Hire Quality</h2>
+        <p class="phase-intro">
+          Partner contract waves move rapidly. High-demand domain roles often fill quotas within 48 to 72 hours. Once accepted, maintaining contract longevity requires rigorous quality standards:
+        </p>
+
+        <ul style="padding-left: 20px; font-size: 14px; color: var(--gray-700); margin-bottom: 24px;">
+          <li style="margin-bottom: 8px;"><strong>Fact-Checking Sensitivity:</strong> Hallucination spotting is the #1 requested skill. Always cite explicit source references for factual evaluations.</li>
+          <li style="margin-bottom: 8px;"><strong>Evidence-Based Justifications:</strong> Write concise, rubric-backed rationales explaining exactly why a prompt response failed or succeeded.</li>
+          <li style="margin-bottom: 8px;"><strong>Consistent Pacing:</strong> Speed-rushing evaluations triggers automated accuracy audits. Thoroughness ensures recurring contract renewals.</li>
+        </ul>
+
+        <!-- Practical Action Card -->
+        <div class="phase-action">
+          <div class="action-text">
+            <div class="action-label">Action Step 4</div>
+            <div class="action-desc">Browse 240+ live remote opportunities across Software, Medical, Finance, and General domains.</div>
+          </div>
+          <a href="/apply" class="action-btn btn-blue">
+            Explore 240+ Active Roles ➔
+          </a>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Masterclass Spotlight Banner -->
+    <div class="masterclass-banner">
+      <div class="banner-text">
+        <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #34d399; margin-bottom: 6px;">Deep-Dive Resource</div>
+        <h3 style="font-size: 22px; font-weight: 900; margin: 0 0 8px; color: white;">Want to see live interviews in action?</h3>
+        <p style="font-size: 14px; color: #cbd5e1; margin: 0; line-height: 1.5;">
+          Watch 14 expert breakdowns, real candidate question recordings, and scoring rubrics in the AI Interview Masterclass.
+        </p>
+      </div>
+      <a href="/video-guides" class="action-btn btn-green" style="font-size: 14px;">
+        Access Video Masterclass ➔
       </a>
-      <div class="badge">Official Strategy Guide</div>
-      <h1>The TrainAIToGain Blueprint</h1>
-      <p style="font-size: 19px; color: var(--gray-800); font-weight: 600;">Your framework for passing AI recruiter screenings and winning roles on Mercor and micro1.</p>
     </div>
 
-    <div class="alert">
-      <h3 style="margin-top:0; color: #b45309;">🛑 How AI Gatekeepers Evaluate You</h3>
-      <p style="color: #92400e; margin-bottom:0;">Modern hiring platforms use automated models to scan resumes and transcribe one-way video interviews. If your resume lacks keyword alignment, or if your spoken responses lack structure, automated screeners score your submission lower. <strong>You aren't just presenting to a recruiter—you are optimizing for an evaluation rubric.</strong> Here is exactly how to succeed.</p>
-    </div>
-
-    <h2>1. The "Keyword Context" Strategy</h2>
-    <p>The first hurdle is getting past automated resume parsers. Do not just list skills at the bottom of your resume in a generic list. Evaluation models give higher weight to skills mentioned <em>inside</em> the context of your specific experience bullets.</p>
-    <div class="good-bad">
-      <div class="box bad">
-        <div class="box-title" style="color: #dc2626;">❌ Weak Context</div>
-        <p style="color: #991b1b; margin:0;">"Built a web app. Skills: React, Node.js"</p>
-      </div>
-      <div class="box good">
-        <div class="box-title" style="color: #059669;">✅ Strong Context</div>
-        <p style="color: #065f46; margin:0;">"Architected a scalable web application using React and Node.js, decreasing load times by 40%."</p>
-      </div>
-    </div>
-
-    <h2>2. High-Impact Action Verbs</h2>
-    <p>Ensure your bullet points start with clear action verbs that indicate ownership and leadership:</p>
-    <ul style="padding-left: 20px; color: #4b5563;">
-      <li style="margin-bottom:6px;"><strong>Leadership:</strong> Spearheaded, Directed, Championed, Coordinated, Mentored</li>
-      <li style="margin-bottom:6px;"><strong>Technical Execution:</strong> Architected, Engineered, Deployed, Refactored, Evaluated</li>
-      <li style="margin-bottom:6px;"><strong>Impact & Outcomes:</strong> Accelerated, Streamlined, Increased, Reduced, Generated</li>
-    </ul>
-
-    <h2>3. The "STAR Impact" Spoken Script</h2>
-    <p>During one-way video interviews, speech-to-text parsers analyze your transcript for structure. Keep answers between 60 and 90 seconds using this structure:</p>
-    <div class="script-box">
-      <p><strong>Situation (10s):</strong> "In my recent role at [Organization], our team needed to address [Specific Bottleneck or Objective]."</p>
-      <p><strong>Task (10s):</strong> "My direct responsibility was to [Goal] within a strict deadline."</p>
-      <p><strong>Action (30s):</strong> "I took the initiative by [Action 1]. Specifically, I implemented [System / Methodology] focusing on [Key Skill]."</p>
-      <p><strong>Result (15s):</strong> "As a result, we successfully [Quantifiable Metric - e.g., reduced processing latency by 35%]."</p>
-      <p style="margin-bottom:0;"><strong>Application (10s):</strong> "This experience directly prepares me to evaluate model accuracy in [Domain]."</p>
-    </div>
-
-    <h2>4. Spoken Answer Evaluation Breakdown</h2>
-    <p>Analysis of AI evaluation criteria reveals common pitfalls and winning patterns:</p>
-    <div class="box bad" style="margin-bottom:16px;">
-      <div class="box-title" style="color: #dc2626;">❌ The "Rambler" (Low Score)</div>
-      <p style="color: #991b1b; margin-bottom: 8px;"><em>"Yeah, so we had this bug in our system and nobody knew how to fix it, so I spent like three weeks looking at the code and I finally figured out it was a database issue, so I fixed it and my manager was really happy."</em></p>
-      <p style="color: #7f1d1d; margin:0; font-size:14px;"><strong>AI Feedback:</strong> Lacks technical keywords, zero quantifiable metrics, unstructured. Flagged for low clarity.</p>
-    </div>
-    <div class="box" style="background:#f3f4f6; border-color:#d1d5db; margin-bottom:16px;">
-      <div class="box-title" style="color: #4b5563;">⚠️ The "Vague Summary" (Borderline Score)</div>
-      <p style="color: #374151; margin-bottom: 8px;"><em>"I was tasked with improving our data pipeline. I used Python to rewrite the scripts and made everything run much faster. It saved the company a lot of money and improved our efficiency."</em></p>
-      <p style="color: #4b5563; margin:0; font-size:14px;"><strong>AI Feedback:</strong> Good intent, but impact is unverifiable. Phrases like "much faster" and "a lot of money" lack scoring signal.</p>
-    </div>
-    <div class="box good">
-      <div class="box-title" style="color: #059669;">✅ The "STAR Master" (High Score)</div>
-      <p style="color: #065f46; margin-bottom: 8px;"><em>"Our data pipeline was bottlenecking, causing 2-hour delays. My objective was to reduce latency before our Q3 launch. I spearheaded a refactor of the ingestion pipeline using Python and Kafka. As a result, we decreased processing time by 85% and saved $40,000 monthly."</em></p>
-      <p style="color: #064e3b; margin:0; font-size:14px;"><strong>AI Feedback:</strong> Clear action verbs (spearheaded, refactored), domain keywords (Python, Kafka), and concrete metrics (85%, $40,000, Q3).</p>
-    </div>
-
-    <h2>5. Maintaining Quality Standards (Post-Hire Verification)</h2>
-    <p>Once accepted into partner networks, platforms maintain continuous quality control to ensure high-accuracy model training. Adhere to these proven practices:</p>
-    <ul style="padding-left: 20px; color: #4b5563;">
-      <li style="margin-bottom:12px;"><strong>Thorough Fact-Checking:</strong> Always cross-reference facts against primary sources. Verifying edge cases and subtle inaccuracies is the primary skill valued in human-in-the-loop evaluation.</li>
-      <li style="margin-bottom:12px;"><strong>Provide Detailed Justifications:</strong> When rating responses, write concise, evidence-based rationales citing specific criteria, code logic, or guidelines.</li>
-      <li style="margin-bottom:12px;"><strong>Thoughtful Pacing:</strong> Spend sufficient time thoroughly analyzing each prompt and boundary case. Rushing through evaluations leads to lower accuracy and flagged submissions.</li>
-    </ul>
-
-    <div style="background:linear-gradient(135deg, #1f2937 0%, #111827 100%); border:1px solid #374151; padding:32px 24px; border-radius:16px; margin-top:48px; text-align:center;">
-      <div style="font-size:32px; margin-bottom:12px;">📺</div>
-      <h3 style="margin-top:0; color:white; font-size:22px; font-weight:800; letter-spacing:-0.02em;">Next Step: Video Masterclass</h3>
-      <p style="color:#9ca3af; margin-bottom:24px; font-size:15px; max-width:440px; margin-left:auto; margin-right:auto;">Watch expert breakdowns of how automated evaluation rubrics score your speech before your interview.</p>
-      <a href="video-guides.html" style="display:inline-block; background:var(--primary); color:white; font-weight:800; text-decoration:none; padding:14px 28px; border-radius:100px; font-size:15px;">Unlock the Video Library ➔</a>
-    </div>
-
-    <div style="margin-top: 36px;">
-      <a href="/resume-ats-guide" class="cta-btn" style="background: var(--black);">Step 1: Scan Your Resume Against Live Roles ➔</a>
-      <a href="/ai-interview" class="cta-btn" style="background: var(--primary);">Step 2: Run a 5-Question Mock Interview ➔</a>
-      <a href="/readiness-checklist" class="cta-btn" style="background: white; color: var(--black); border: 2px solid var(--black);">Step 3: Print the Readiness Checklist ➔</a>
-      <a href="/apply" class="cta-btn" style="background: #2563eb;">Step 4: Browse Open Active Roles ➔</a>
-    </div>
-
-    <div style="text-align: center; margin-top: 60px; color: #9ca3af; font-size: 14px;">
-      &copy; 2026 TrainAIToGain. All rights reserved. Free and ungated candidate guide.
-    </div>
-  </div>
+    <footer style="text-align: center; padding: 24px 0 60px; color: var(--gray-500); font-size: 13px;">
+      &copy; 2026 TrainAIToGain. All rights reserved. Free and ungated candidate preparation blueprint.
+    </footer>
+  </main>
 </body>
 </html>
