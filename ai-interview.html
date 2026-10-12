@@ -975,6 +975,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
   let totalScore = 0;
   let totalFillers = 0;
+  let totalMetricsAnswered = 0;
   let totalQuestionsAnswered = 0;
   let currentQScore = 75;
   let currentDomain = "software";
@@ -1213,16 +1214,16 @@ window.addEventListener('unhandledrejection', function(event) {
         q: "Walk me through your most recent role and what you were primarily responsible for day to day.",
         audio: "/audio/q_resume_1.mp3",
         answer: "In my recent role, I led core deliverables, coordinated project priorities, and maintained rigorous quality standards.",
-        keywords: ["responsible", "role", "experience", "team", "project", "led", "managed", "delivered"],
+        keywords: ["ownership", "deliverables", "architecture", "cross-functional", "workflow", "standards", "execution"],
         feedbackHit: "Clear introduction. You gave direct context on your role and daily scope of ownership.",
-        feedbackMiss: "Stronger answers usually mention one specific system, metric, or scope of responsibility you directly owned."
+        feedbackMiss: "Stronger answers usually mention one specific system, technical tool, or scope of responsibility you directly owned."
       });
 
       questions.push({
         q: "Tell me about a specific project or achievement from your experience that produced a measurable result. What was your role and the outcome?",
         audio: "/audio/q_resume_2.mp3",
         answer: "I identified an operational challenge, designed and implemented a solution, which resulted in a measurable improvement.",
-        keywords: ["result", "project", "outcome", "improved", "increased", "reduced", "led to", "action", "achieved"],
+        keywords: ["quantifiable", "metric", "outcome", "improved", "increased", "reduced", "optimization", "achieved"],
         feedbackHit: "Great focus on results. Highlighting concrete metrics aligns directly with how AI screeners evaluate competence.",
         feedbackMiss: "Stronger answers usually follow the STAR method: Situation, Task, Action, and the final quantified Result (e.g. 'which resulted in...')."
       });
@@ -1246,7 +1247,7 @@ window.addEventListener('unhandledrejection', function(event) {
       questions.push({
         q: "Tell me about your background " + formatBackgroundInRole(targetRoleName) + " and what types of complex problems you typically solve.",
         answer: "I specialize in core domain challenges, applying best practices to deliver reliable, high-quality outcomes.",
-        keywords: ["background", "experience", "problem", "solve", "skills", "projects", "tools"],
+        keywords: ["methodology", "troubleshooting", "framework", "analysis", "implementation", "best practices", "technical solutions"],
         feedbackHit: "Great summary of your core strengths and problem-solving methodology.",
         feedbackMiss: "Stronger answers usually give one concrete example of a challenging problem you personally resolved."
       });
@@ -1468,6 +1469,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
         if (hasNumbersOrMetrics) {
           confScore += 10;
+          totalMetricsAnswered++;
         }
 
         if (starMatches >= 2) {
@@ -1492,7 +1494,11 @@ window.addEventListener('unhandledrejection', function(event) {
         } else {
           whatWorked = "You addressed the prompt directly and engaged with the core question.";
           if (hasNumbersOrMetrics) whatWorked += " Strong inclusion of specific numbers and quantifiable results.";
-          toTighten += (qData.feedbackMiss || "Include more specific technical terms and methodologies. ");
+          let missTip = qData.feedbackMiss || "Include more specific technical terms and methodologies. ";
+          if (hasNumbersOrMetrics) {
+            missTip = missTip.replace(/, metric,/gi, '').replace(/\bmetric\b/gi, 'system').replace(/\bmetrics\b/gi, 'technical details');
+          }
+          toTighten += missTip;
         }
 
         if (fillerCount > 2 && !isTextMode) {
@@ -1501,7 +1507,11 @@ window.addEventListener('unhandledrejection', function(event) {
       }
 
       if (qData.keywords && qData.keywords.length > 0 && wordCount >= 15) {
-        toTighten += `\n🎯 <strong>Key domain terms to consider:</strong> ${qData.keywords.slice(0, 4).join(', ')}`;
+        const genericFilter = new Set(['responsible', 'role', 'experience', 'team', 'background', 'project', 'projects', 'problem', 'solve', 'skills', 'tools', 'action', 'led', 'managed', 'delivered']);
+        const meaningfulKws = qData.keywords.filter(k => !genericFilter.has(k.toLowerCase().trim()));
+        if (meaningfulKws.length > 0) {
+          toTighten += `\n🎯 <strong>Key domain terms to consider:</strong> ${meaningfulKws.slice(0, 4).join(', ')}`;
+        }
       }
 
       const cappedScore = Math.min(100, Math.max(30, confScore));
@@ -1836,13 +1846,17 @@ window.addEventListener('unhandledrejection', function(event) {
     // Ground "What worked well" strictly in actual keyword hits and content
     if (avgScore >= 80 && kwHits >= 5) {
       strengthSummary = "Strong domain familiarity and structured delivery. Your answers included specific actions and aligned with AI recruiter criteria.";
-      growthSummary = "1. Keep practicing concrete, quantified metrics for your projects.\n2. In the real interview, maintain confident eye contact with the camera.";
+      growthSummary = (totalMetricsAnswered >= 3)
+        ? "1. Continue anchoring your technical scope to the concrete business impact.\n2. In the real interview, maintain confident eye contact with the camera."
+        : "1. Keep practicing concrete, quantified metrics for your projects.\n2. In the real interview, maintain confident eye contact with the camera.";
     } else if (kwHits >= 3) {
       strengthSummary = "Good overall foundation. You engaged with all screening questions and shared relevant domain background.";
-      growthSummary = "1. Structure answers using STAR (Situation, Task, Action, Result) so every example concludes with a measurable outcome.\n2. Mention specific tools, methodologies, and edge cases you handled.";
+      growthSummary = (totalMetricsAnswered >= 2)
+        ? "1. Structure answers using STAR (Situation, Task, Action, Result) to connect your metrics directly to your actions.\n2. Mention specific tools, methodologies, and edge cases you handled."
+        : "1. Structure answers using STAR (Situation, Task, Action, Result) so every example concludes with a measurable outcome.\n2. Mention specific tools, methodologies, and edge cases you handled.";
     } else {
       strengthSummary = "You completed all 5 practice prompts with structured pacing and clear enunciation. Completing the drill is the first step to building confidence.";
-      growthSummary = "1. Weave in more specific domain keywords matching the role (e.g. tools, frameworks, and metrics).\n2. Expand on short answers: AI screeners cannot score unstated experience. Aim for 60–90 seconds per response.";
+      growthSummary = "1. Weave in more specific domain keywords matching the role (e.g. tools, frameworks, and core methodologies).\n2. Expand on short answers: AI screeners cannot score unstated experience. Aim for 60–90 seconds per response.";
     }
 
     if (totalFillers > 3 && !isTextMode) {

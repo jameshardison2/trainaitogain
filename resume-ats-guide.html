@@ -484,6 +484,24 @@
     try {
       const response = await fetch('waves.json?v=' + new Date().getTime());
       const data = await response.json();
+      try {
+        const apiRes = await fetch('/api/getRoles');
+        if (apiRes && apiRes.ok) {
+          const apiData = await apiRes.json();
+          if (apiData && apiData.roles && apiData.roles.length > 0) {
+            const existingTitles = new Set(data.roles.map(r => (r.title || '').toLowerCase()));
+            apiData.roles.forEach(apiRole => {
+              if (!apiRole || !apiRole.title) return;
+              const tLow = (apiRole.title || '').toLowerCase();
+              if (tLow.includes('sample') || tLow.includes('test')) return;
+              if (!existingTitles.has(tLow)) {
+                data.roles.push(apiRole);
+                existingTitles.add(tLow);
+              }
+            });
+          }
+        }
+      } catch(e) {}
       window.allRoles = data.roles;
       
       // Clear existing hardcoded options

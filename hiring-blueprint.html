@@ -427,7 +427,7 @@
         <div class="phase-action">
           <div class="action-text">
             <div class="action-label">Action Step 1</div>
-            <div class="action-desc">Upload your PDF resume to check your exact match score against <span class="live-role-count">240+</span> live roles.</div>
+            <div class="action-desc">Upload your PDF resume to check your exact match score against <span class="live-role-count">all</span> live roles.</div>
           </div>
           <a href="/resume-ats-guide" class="action-btn btn-green">
             Launch ATS Resume Scanner ➔
@@ -580,10 +580,32 @@
   </main>
 
   <script>
-    fetch('waves.json').then(r => r.json()).then(data => {
-      const count = (data && data.roles) ? data.roles.length : 241;
-      document.querySelectorAll('.live-role-count').forEach(el => el.textContent = count + '+');
-    }).catch(() => {});
+    (async function() {
+      try {
+        const r = await fetch('waves.json?v=' + Date.now());
+        const data = await r.json();
+        let total = (data && data.roles) ? data.roles.length : 240;
+        try {
+          const apiRes = await fetch('/api/getRoles');
+          if (apiRes && apiRes.ok) {
+            const apiData = await apiRes.json();
+            if (apiData && apiData.roles && apiData.roles.length > 0) {
+              const existingTitles = new Set(data.roles.map(x => (x.title || '').toLowerCase()));
+              apiData.roles.forEach(ar => {
+                if (!ar || !ar.title) return;
+                const tLow = ar.title.toLowerCase();
+                if (tLow.includes('sample') || tLow.includes('test')) return;
+                if (!existingTitles.has(tLow)) {
+                  total++;
+                  existingTitles.add(tLow);
+                }
+              });
+            }
+          }
+        } catch(e) {}
+        document.querySelectorAll('.live-role-count').forEach(el => el.textContent = total + '+');
+      } catch(e) {}
+    })();
   </script>
 </body>
 </html>
