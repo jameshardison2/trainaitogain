@@ -1843,14 +1843,50 @@ window.addEventListener('unhandledrejection', function(event) {
   })();
 </script>
 
-<!-- SESSION & AFFILIATE TRACKING -->
+<!-- SESSION & AFFILIATE TRACKING (Restored via secure write-only server endpoint) -->
 <script>
   (function() {
-    if (!localStorage.getItem('tgt_session_id')) {
-      localStorage.setItem('tgt_session_id', 'sess_' + Math.random().toString(36).substr(2, 9));
+    let sessId = localStorage.getItem('tgt_session_id');
+    if (!sessId) {
+      sessId = 'sess_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('tgt_session_id', sessId);
     }
-    const ref = new URLSearchParams(window.location.search).get('ref');
-    if (ref) localStorage.setItem('affiliate_ref', ref);
+    const currentRef = new URLSearchParams(window.location.search).get('ref') || localStorage.getItem('affiliate_ref') || 'organic';
+    if (new URLSearchParams(window.location.search).get('ref')) {
+      localStorage.setItem('affiliate_ref', currentRef);
+    }
+
+    function sendPipelineEvent(eventType) {
+      try {
+        fetch('/api/logPipelineEvent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event_type: eventType,
+            referral_id: currentRef,
+            session_id: sessId,
+            page_url: window.location.pathname
+          }),
+          keepalive: true
+        }).catch(() => {});
+      } catch(e) {}
+    }
+
+    if (!sessionStorage.getItem('page_view_logged_' + window.location.pathname)) {
+      sendPipelineEvent('page_view');
+      sessionStorage.setItem('page_view_logged_' + window.location.pathname, 'true');
+    }
+
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      const btn = e.target.closest('button');
+      let isApply = false;
+      if (link && (link.href.includes('t.mercor.com') || link.href.includes('micro1.ai'))) isApply = true;
+      if (btn && btn.getAttribute('onclick') && (btn.getAttribute('onclick').includes('t.mercor.com') || btn.getAttribute('onclick').includes('micro1.ai') || btn.getAttribute('onclick').includes('handleApplyClick'))) isApply = true;
+      if (isApply) {
+        sendPipelineEvent('application_started');
+      }
+    });
   })();
 </script>
 <script src="chat.js?v=16"></script>

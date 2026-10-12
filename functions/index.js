@@ -254,6 +254,44 @@ exports.getRoles = onRequest(
   }
 );
 
+exports.logPipelineEvent = onRequest(
+  { cors: true, timeoutSeconds: 15, maxInstances: 10 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        if (req.method !== "POST") {
+          return res.status(405).json({ error: "Method Not Allowed" });
+        }
+
+        const { event_type, referral_id, session_id, page_url } = req.body || {};
+        
+        const ALLOWED_EVENTS = new Set(["page_view", "application_started"]);
+        if (!event_type || !ALLOWED_EVENTS.has(event_type)) {
+          return res.status(400).json({ error: "Invalid event_type" });
+        }
+
+        const safeSessionId = typeof session_id === "string" ? session_id.substring(0, 64) : "sess_unknown";
+        const safeReferralId = typeof referral_id === "string" ? referral_id.substring(0, 64) : "organic";
+        const safePageUrl = typeof page_url === "string" ? page_url.substring(0, 128) : "/";
+
+        const db = admin.firestore();
+        await db.collection("pipeline_events").add({
+          event_type,
+          referral_id: safeReferralId,
+          session_id: safeSessionId,
+          page_url: safePageUrl,
+          timestamp: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        return res.status(200).json({ success: true });
+      } catch (error) {
+        logger.error("Error in logPipelineEvent:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+    });
+  }
+);
+
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 
 exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
