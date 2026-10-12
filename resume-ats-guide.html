@@ -116,145 +116,6 @@
       </div>
     </div>
     
-    <!-- Application Interceptor Modal -->
-    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
-      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
-        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
-          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
-          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
-        </div>
-        <div style="padding:24px;">
-          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official portal. <strong style="color: #10b981; font-weight: 800;">(IMPORTANT: If you already have an account, you must SIGN OUT first, then come back and click this button to ensure proper routing).</strong></p>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:24px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
-          </div>
-          
-          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
-            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
-            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
-            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
-          </form>
-
-          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
-        </div>
-      </div>
-    </div>
-    <script>
-      window.currentApplySource = 'unknown';
-      function openApplyModal(source) {
-        window.currentApplySource = source;
-        var params = new URLSearchParams(window.location.search);
-        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
-        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
-        
-        // If they already entered their email, don't ask again
-        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
-            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
-            window.open(targetUrl, '_blank');
-            return;
-        }
-
-        var modal = document.getElementById('applyModal');
-        modal.style.display = 'flex';
-      }
-      function closeApplyModal() {
-        var modal = document.getElementById('applyModal');
-        modal.style.display = 'none';
-        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
-        document.getElementById('modalApplyBtn').disabled = false;
-      }
-      async function handleModalSubmit(e) {
-        e.preventDefault();
-        var emailInput = document.getElementById('applyModalEmail').value.trim();
-        var nameInput = document.getElementById('applyModalName').value.trim();
-        if (!emailInput) {
-            alert('Please enter your email to proceed.');
-            return;
-        }
-        
-        var btn = document.getElementById('modalApplyBtn');
-        btn.innerHTML = 'Routing...';
-        localStorage.setItem('hasEnteredEmailForApply', 'true');
-        btn.disabled = true;
-        
-        try {
-            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
-            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
-            
-            let app;
-            if (!getApps().length) {
-                app = initializeApp({ projectId: "trainaitogain-50c19" });
-            } else {
-                app = getApp();
-            }
-            const db = getFirestore(app);
-            
-            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            
-            
-            const targetRole = localStorage.getItem('atsRole') || 'Unspecified Role';
-            
-            await addDoc(collection(db, "leads"), {
-              firstName: nameInput || 'Applicant',
-              email: emailInput,
-              timestamp: serverTimestamp(),
-              source: window.location.href + ' (Apply Modal)',
-              referred_by: refCode,
-              status: 'Application Started', // They are applying right now
-              target_role: targetRole
-            });
-            
-            localStorage.setItem('hasEnteredEmailForApply', 'true');
-            
-            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
-            
-            var baseTargetUrl = localStorage.getItem('atsLinkTarget') || "https://t.mercor.com/wbPMF";
-            var targetUrl = baseTargetUrl;
-            
-            if (refCode && targetUrl.includes('mercor')) {
-                if(!targetUrl.includes('ref=')) {
-                    targetUrl += (targetUrl.includes('?') ? '&' : '?') + "ref=" + encodeURIComponent(refCode);
-                }
-            } else if (refCode && targetUrl.includes('micro1')) {
-                if (!targetUrl.includes('referralCode=')) {
-                    targetUrl += (targetUrl.includes('?') ? '&' : '?') + "referralCode=" + encodeURIComponent(refCode);
-                }
-            }
-            window.open(targetUrl, '_blank');
-            closeApplyModal();
-            
-        } catch (err) {
-            console.error(err);
-            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
-            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            var baseTargetUrl = localStorage.getItem('atsLinkTarget') || "https://t.mercor.com/wbPMF";
-            var targetUrl = baseTargetUrl;
-            
-            if (refCode && targetUrl.includes('mercor')) {
-                if(!targetUrl.includes('ref=')) {
-                    targetUrl += (targetUrl.includes('?') ? '&' : '?') + "ref=" + encodeURIComponent(refCode);
-                }
-            } else if (refCode && targetUrl.includes('micro1')) {
-                if (!targetUrl.includes('referralCode=')) {
-                    targetUrl += (targetUrl.includes('?') ? '&' : '?') + "referralCode=" + encodeURIComponent(refCode);
-                }
-            }
-            window.open(targetUrl, '_blank');
-            closeApplyModal();
-        }
-      }
-    </script>
     <style>
     @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
     
@@ -321,6 +182,7 @@
       </div>
       <input type="file" id="ats-file-input" title="" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 999; display: block;" />
       </div>
+      <div style="font-size:12px; color:var(--gray-500); margin-top:-16px; margin-bottom:20px; text-align:center;">🔒 Privacy: Your resume stays in your browser. We never store or upload your resume text to any external server.</div>
       <!-- fileCard will be injected here -->
       <div id="injected-file-container"></div>
       
@@ -380,9 +242,9 @@
     
     <div class="feedback-box" id="feedback-box">
       <h4>Awaiting Scan...</h4>
-      <p>Upload your resume on the left and we will automatically scan it for you.</p>
+      <p>Upload your resume and we will automatically scan it for you.</p>
     </div>
-    <button class="btn-apply" id="apply-btn" style="cursor:not-allowed; opacity:0.6;" disabled onclick="openApplyModal('content_button');">You must score 80%+ to Apply</button>
+    <a href="/apply" class="btn-apply ready" id="apply-btn" style="text-decoration:none; display:block; text-align:center; padding:14px; font-weight:700; font-size:15px; border-radius:var(--radius-sm); margin-top:16px;">See Matching Roles & Apply ➔</a>
     
   </div>
 </div>
@@ -449,9 +311,10 @@
         const divider = document.getElementById('paste-text-divider');
         if(divider) divider.style.display = 'none';
         
+        const savedFileName = localStorage.getItem('candidateResumeFileName') || 'My_Resume.pdf';
         const labelEl = document.getElementById('resume-label');
         if (labelEl) {
-            labelEl.innerHTML = '1. ✅ Resume Loaded from Memory';
+            labelEl.innerHTML = '1. ✅ Resume Loaded (Saved locally in your browser)';
         }
         
         // Hide the ugly textarea
@@ -471,7 +334,7 @@
         fileCard.innerHTML = `
           <div style="display:flex; align-items:center; gap:12px;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--primary)"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg> 
-            <span style="font-weight:600; color:var(--black);">saved_resume_profile.txt</span>
+            <span style="font-weight:600; color:var(--black);">${savedFileName}</span>
           </div>
         `;
         
@@ -758,13 +621,13 @@ Experience
         
         const feedbackBox = document.getElementById('feedback-box');
         if(feedbackBox) {
-            feedbackBox.innerHTML = '<h4>Awaiting Scan...</h4><p>Upload your resume on the left and we will automatically scan it for you.</p>';
+            feedbackBox.innerHTML = '<h4>Awaiting Scan...</h4><p>Upload your resume and we will automatically scan it for you.</p>';
         }
         
         if(applyBtn) {
-            applyBtn.className = 'btn-apply';
-            applyBtn.innerText = 'You must score 80%+ to Apply';
-            applyBtn.onclick = null;
+            applyBtn.className = 'btn-apply ready';
+            applyBtn.innerText = 'See Matching Roles & Apply ➔';
+            applyBtn.onclick = () => window.location.href = '/apply';
         }
         
         scanBtn.innerText = 'Scan My Resume';
@@ -812,13 +675,13 @@ Experience
         
         const feedbackBox = document.getElementById('feedback-box');
         if(feedbackBox) {
-            feedbackBox.innerHTML = '<h4>Awaiting Scan...</h4><p>Upload your resume on the left and we will automatically scan it for you.</p>';
+            feedbackBox.innerHTML = '<h4>Awaiting Scan...</h4><p>Upload your resume and we will automatically scan it for you.</p>';
         }
         
         if(applyBtn) {
-            applyBtn.className = 'btn-apply';
-            applyBtn.innerText = 'You must score 80%+ to Apply';
-            applyBtn.onclick = null;
+            applyBtn.className = 'btn-apply ready';
+            applyBtn.innerText = 'See Matching Roles & Apply ➔';
+            applyBtn.onclick = () => window.location.href = '/apply';
         }
         
 
@@ -922,12 +785,8 @@ Experience
           fileCard.style.marginBottom = '8px'; // reduce margin since we have actions below it
           
           window.atsUploadCount = (window.atsUploadCount || 0) + 1;
-          const ext = file.name.includes('.') ? file.name.substring(file.name.lastIndexOf('.')) : '.pdf';
-          let displayFileName = `My_Resume${ext}`;
-          if (window.atsUploadCount > 1) {
-              const versionNumber = window.atsUploadCount - 1;
-              displayFileName = `My_Resume_Optimized_v${versionNumber}${ext}`;
-          }
+          const displayFileName = file.name || 'My_Resume.pdf';
+          localStorage.setItem('candidateResumeFileName', displayFileName);
 
           fileCard.innerHTML = `
             <div style="display:flex; align-items:center; gap:12px;">
@@ -1066,7 +925,7 @@ Experience
                 
                 if (jobDescriptions[bestRole]) {
                     hiddenSelect.value = bestRole;
-                    customDisplay.innerText = `${bestRole} (${matches[0].match} AI Fit)`;
+                    customDisplay.innerText = `${bestRole} (Suggested Match)`;
                     customDisplay.style.color = 'var(--black)';
                     
                     // Inject top matches into the custom dropdown visually
@@ -1084,7 +943,7 @@ Experience
                     title.style.color = '#065f46';
                     title.style.fontSize = '11px';
                     title.style.fontWeight = '800';
-                    title.innerText = '🌟 YOUR TOP AI MATCHES';
+                    title.innerText = '🌟 YOUR TOP MATCHES';
                     aiMatchesContainer.appendChild(title);
                     
                     matches.forEach(match => {
@@ -1098,11 +957,11 @@ Experience
                             opt.style.alignItems = 'center';
                             opt.style.background = '#f8fafc';
                             
-                            opt.innerHTML = `<div style="font-weight:700;">${match.role}</div><div style="background:var(--primary); color:white; padding:2px 8px; border-radius:12px; font-size:12px; font-weight:800; white-space:nowrap; flex-shrink:0;">${match.match} AI Fit</div>`;
+                            opt.innerHTML = `<div style="font-weight:700;">${match.role}</div><div style="background:var(--primary); color:white; padding:2px 8px; border-radius:12px; font-size:12px; font-weight:800; white-space:nowrap; flex-shrink:0;">Top Match</div>`;
                             
                             opt.onclick = () => {
                               hiddenSelect.value = match.role;
-                              customDisplay.innerText = `${match.role} (${match.match} AI Fit)`;
+                              customDisplay.innerText = `${match.role} (Suggested Match)`;
                               customDisplay.style.color = 'var(--black)';
                               customOptionsDiv.style.display = 'none';
                               hiddenSelect.dispatchEvent(new Event('change'));
@@ -1135,7 +994,7 @@ Experience
                         if(typeof gtag === 'function') gtag('event', 'auto_matched_role', {'event_category': 'funnel', 'event_label': matches[0].role, 'value': parseInt(matches[0].match)});
                         const bestMatch = matches[0];
                         hiddenSelect.value = bestMatch.role;
-                        customDisplay.innerText = `${bestMatch.role} (${bestMatch.match} AI Fit)`;
+                        customDisplay.innerText = `${bestMatch.role} (Suggested Match)`;
                         customDisplay.style.color = 'var(--black)';
                         
                         // Now it is safe to trigger the change event, which will trigger the scan
@@ -1216,6 +1075,39 @@ Experience
         return;
       }
 
+      function keywordMatchesText(rawKw, resumeText) {
+        if (!rawKw || !resumeText) return false;
+        const kwLower = rawKw.toLowerCase().trim();
+        if (resumeText.includes(kwLower)) return true;
+
+        // Check parentheses acronym: e.g. "Electronic Health Records (EHR) Systems" -> "ehr"
+        const parenMatch = rawKw.match(/\(([^)]+)\)/);
+        if (parenMatch) {
+            const insideParen = parenMatch[1].toLowerCase().trim();
+            const re = new RegExp('\\b' + insideParen.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+            if (re.test(resumeText)) return true;
+            const beforeParen = rawKw.split('(')[0].toLowerCase().trim();
+            if (beforeParen.length > 3 && resumeText.includes(beforeParen)) return true;
+        }
+
+        // Clean punctuation and check cleaned version
+        const cleanKw = kwLower.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
+        const cleanText = resumeText.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ');
+        if (cleanText.includes(cleanKw)) return true;
+
+        // Multi-word phrase matching (e.g. "Patient Assessment", "Medication Administration")
+        const words = cleanKw.split(' ').filter(w => w.length > 2);
+        if (words.length >= 2) {
+            const allWordsFound = words.every(w => {
+                const re = new RegExp('\\b' + w + '\\b', 'i');
+                return re.test(resumeText);
+            });
+            if (allWordsFound) return true;
+        }
+
+        return false;
+      }
+
       if(typeof gtag === 'function') gtag('event', 'clicked_scan_button', {'event_category': 'funnel', 'event_label': selectedRole});
       scanBtn.innerText = 'Scanning...';
       scanBtn.disabled = true;
@@ -1231,8 +1123,8 @@ Experience
         let missingKWs = [];
         
         chips.forEach(chip => {
-          const kw = chip.innerText.toLowerCase();
-          if (text.includes(kw)) {
+          const kw = chip.innerText;
+          if (keywordMatchesText(kw, text)) {
             chip.className = 'kw-chip found';
             matches++;
           } else {
@@ -1243,12 +1135,27 @@ Experience
         
         const score = Math.round((matches / total) * 100);
         
-        // Save to localStorage for the Guide Assistant to use
+        // Save to localStorage for the Guide Assistant and Active Roles
         localStorage.setItem('atsScore', score);
         localStorage.setItem('atsRole', selectedRole);
+        sessionStorage.setItem('atsScore', score);
+        sessionStorage.setItem('atsRole', selectedRole);
         const selectedDomain = document.getElementById('role-select').getAttribute('data-domain') || 'Software Engineering';
         localStorage.setItem('atsDomain', selectedDomain);
         localStorage.setItem('atsMissing', missingKWs.join(', '));
+        
+        try {
+            let existingMatches = JSON.parse(sessionStorage.getItem('ai_matches') || localStorage.getItem('ai_matches') || '[]');
+            if (Array.isArray(existingMatches)) {
+                const currentMatch = existingMatches.find(m => (m.roleName || m.role) === selectedRole);
+                if (currentMatch) {
+                    currentMatch.matchScore = score;
+                    currentMatch.explanation = `Your resume covers ${matches} of ${total} keywords (${score}%) for this role.`;
+                }
+                localStorage.setItem('ai_matches', JSON.stringify(existingMatches));
+                sessionStorage.setItem('ai_matches', JSON.stringify(existingMatches));
+            }
+        } catch(e) {}
         
         const resumeRawText = document.getElementById('resume-text').value;
         if (resumeRawText) {
@@ -1290,36 +1197,13 @@ Experience
         scoreText.style.color = meterColor;
         
         if (applyBtn) {
-            if (score >= 100) {
-                const s5 = document.getElementById('step-5-container');
-                const successMsg = document.getElementById('success-container');
-                if(s5) s5.style.display = 'none';
-                if(successMsg) successMsg.style.display = 'block';
-            } else {
-                const s5 = document.getElementById('step-5-container');
-                const successMsg = document.getElementById('success-container');
-                if(s5) s5.style.display = 'block';
-                if(successMsg) successMsg.style.display = 'none';
-            }
-            if (score >= 80) {
-                applyBtn.disabled = false;
-                applyBtn.style.opacity = '1';
-                applyBtn.style.cursor = 'pointer';
-                applyBtn.style.background = 'var(--primary)';
-                applyBtn.style.color = 'white';
-                applyBtn.innerHTML = 'Apply Now ➔';
-                // Trigger celebratory animation
-                applyBtn.style.boxShadow = '0 0 0 4px rgba(16,185,129,0.4)';
-                setTimeout(() => applyBtn.style.boxShadow = 'none', 1500);
-                
-                applyBtn.onclick = () => openApplyModal('content_button');
-            } else {
-                applyBtn.disabled = true;
-                applyBtn.style.opacity = '0.6';
-                applyBtn.style.cursor = 'not-allowed';
-                applyBtn.style.background = 'var(--gray-400)';
-                applyBtn.innerHTML = 'You must score 80%+ to Apply';
-            }
+            applyBtn.disabled = false;
+            applyBtn.style.opacity = '1';
+            applyBtn.style.cursor = 'pointer';
+            applyBtn.style.background = 'var(--primary)';
+            applyBtn.style.color = 'white';
+            applyBtn.innerHTML = 'See Matching Roles & Apply ➔';
+            applyBtn.onclick = () => window.location.href = '/apply';
         }
         
         const escapedPrompt = `Persona: Act as an expert executive resume writer specializing in AI industry hiring and ATS optimization. 
@@ -1382,11 +1266,6 @@ ${resumeBox.value}
               }
             }, 1000);
             
-            // AUTOMATICALLY REVEAL STEP 5 PASTE BOX FOR THE USER!
-            
-            
-            
-            
             const scanBtn = document.getElementById('scan-btn');
             if (scanBtn) scanBtn.innerText = 'Scan Updated Resume';
             
@@ -1416,7 +1295,7 @@ ${resumeBox.value}
           <div style="margin-top:0;">
             <label style="display:block; font-weight:700; margin-bottom:8px; color:var(--black);">3. AI Prompt to Fix Resume:</label>
             <div style="background: var(--gray-50); border: 1px solid var(--gray-300); border-radius: var(--radius); padding: 16px;">
-                <p style="margin:0 0 16px 0; color:var(--gray-600); font-size:13px; line-height:1.5;"><strong>How to get 100%:</strong> Copy the prompt below and paste it into ChatGPT or Claude. The AI will completely rewrite your resume to include your missing keywords! Then, upload your new resume at Step 1.<br><br><span style="font-size:12px; color:var(--primary); font-weight:600;">💡 Tip: Re-scan and repeat until you hit 100%!</span></p>
+                <p style="margin:0 0 16px 0; color:var(--gray-600); font-size:13px; line-height:1.5;"><strong>How to improve:</strong> Copy the prompt below and paste it into ChatGPT or Claude. The AI will provide targeted bullet points to include your missing keywords! Then, update and upload your resume at Step 1.<br><br><span style="font-size:12px; color:var(--primary); font-weight:600;">💡 Tip: Re-scan anytime to check your updated score.</span></p>
                 <button id="copy-prompt-btn" data-prompt='${escapedPrompt}' onclick="window.startAITimer(this);" style="background:var(--gray-900); color:white; border-radius:6px; padding:12px 16px; font-weight:700; font-size:14px; border:none; cursor:pointer; width:100%; box-shadow:0 2px 4px rgba(0,0,0,0.1); transition: background 0.2s;" onmouseover="this.style.background='var(--black)';" onmouseout="this.style.background='var(--gray-900)';">
                   Copy AI Prompt 🪄
                 </button>
@@ -1430,45 +1309,22 @@ ${resumeBox.value}
         const item4Container = document.getElementById('item-4-container');
         if(item4Container) { item4Container.innerHTML = ''; item4Container.style.display = 'none'; }
         if(item4Container) item4Container.style.display = 'block';
-        // ATS TRAP ALERT LOGIC
-        let atsTrapMessage = '';
-        let showAtsTrap = false;
-        const customDisp = document.getElementById('custom-role-display');
-        if (customDisp && customDisp.innerText.includes('AI Fit') && score < 80) {
-            const matchMatch = customDisp.innerText.match(/\((\d+)%/);
-            if (matchMatch) {
-                const aiScore = parseInt(matchMatch[1]);
-                if (aiScore > score + 10) { // Only show if there's a significant gap
-                    showAtsTrap = true;
-                    atsTrapMessage = `<div style="background:#fff1f2; border:1px solid #fecdd3; padding:16px; border-radius:8px; margin-bottom:0; box-shadow:0 2px 4px rgba(0,0,0,0.05);"><h4 style="color:#be123c; font-size:16px; margin:0 0 12px 0;">🚨 The "ATS Trap" Detected!</h4><div style="background:white; border:1px solid #fecdd3; border-radius:6px; padding:12px; margin-bottom:12px;"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-weight:700; color:var(--gray-700);">Your Human Skill Level:</span><span style="font-weight:800; color:#10b981;">${aiScore}% Fit</span></div><div style="display:flex; justify-content:space-between;"><span style="font-weight:700; color:var(--gray-700);">ATS Robot Score:</span><span style="font-weight:800; color:#ef4444;">${score}% (Auto-Reject)</span></div></div><p style="color:#9f1239; font-size:13px; margin:0 0 12px 0; line-height:1.5;">You are highly qualified for this role, but because your resume is missing exact keywords, an automated ATS scanner will auto-reject you.</p><p style="color:#9f1239; font-size:14px; margin:0; font-weight:800;">Action Required: Go to Step 3 below to fix this.</p></div>`;
-                }
-            }
+
+        feedbackBox.innerHTML = `<h4>Keyword Coverage: ${matches} of ${total} (${score}%)</h4><p style="margin:0; line-height:1.5;">Your resume covers ${matches} of ${total} keywords for this role. Add the ones that truly match your experience.</p>`;
+        
+        if (score < 100) {
+            item4Container.innerHTML = nudgeCTA;
+        } else {
+            if (item4Container) item4Container.style.display = 'none';
         }
         
-        if (score < 50) {
-           feedbackBox.innerHTML = showAtsTrap ? atsTrapMessage : `<h4>Low Match Probability 🔴</h4><p>Your resume is missing critical AI industry keywords and will be auto-rejected by the ATS.<br><br><span style="color:var(--black); font-weight:700;">Action Required:</span> Go to <strong>Step 3</strong> and use the Optimization Payload to generate a prompt that will rewrite your resume.</p>`;
-           item4Container.innerHTML = nudgeCTA;
-           applyBtn.className = 'btn-apply';
-           applyBtn.innerText = 'You must score 80%+ to Apply';
-        } else if (score < 80) {
-           feedbackBox.innerHTML = showAtsTrap ? atsTrapMessage : `<h4>Medium Match Probability 🟡</h4><p>You have a solid foundation, but you are still missing a few required keywords. The automated scanner might reject this depending on the applicant pool.<br><br><span style="color:var(--black); font-weight:700;">Action Required:</span> Go to <strong>Step 3</strong> and use the AI Prompt to weave in the remaining keywords.</p>`;
-           item4Container.innerHTML = nudgeCTA;
-           applyBtn.className = 'btn-apply';
-           applyBtn.innerText = 'You must score 80%+ to Apply';
-        } else if (score < 100) {
-           feedbackBox.innerHTML = '<h4>High Match Probability 🟢</h4><p>Excellent work. Your resume is dense with high-value AI keywords. You have a very high probability of passing the automated screening phase.</p>';
-           item4Container.innerHTML = nudgeCTA;
-           applyBtn.className = 'btn-apply ready';
-           applyBtn.disabled = false;
-           applyBtn.innerText = 'Apply Now ➔';
-           applyBtn.onclick = () => openApplyModal('content_button');
-        } else {
-           feedbackBox.innerHTML = '<h4>Flawless 100% Match! 🏆</h4><p>Your resume is fully optimized and guaranteed to pass the ATS filter. Now that your resume is perfect, you are ready to apply for the role.</p>';
-           if(item4Container) item4Container.style.display = 'none';
-           applyBtn.className = 'btn-apply ready';
-           applyBtn.disabled = false;
-           applyBtn.innerText = 'Apply Now ➔';
-           applyBtn.onclick = () => openApplyModal('content_button');
+        if (applyBtn) {
+            applyBtn.className = 'btn-apply ready';
+            applyBtn.disabled = false;
+            applyBtn.style.opacity = '1';
+            applyBtn.style.cursor = 'pointer';
+            applyBtn.innerText = 'See Matching Roles & Apply ➔';
+            applyBtn.onclick = () => window.location.href = '/apply';
         }
         
         scanBtn.innerText = 'Scan Again';

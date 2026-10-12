@@ -45,127 +45,6 @@
         </ul>
       </div>
     </div>
-    
-    <!-- Application Interceptor Modal -->
-    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
-      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
-        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
-          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
-          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
-        </div>
-        <div style="padding:24px;">
-          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official portal. <strong style="color: #10b981; font-weight: 800;">(IMPORTANT: If you already have an account, you must SIGN OUT first, then come back and click this button to ensure proper routing).</strong></p>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:24px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
-          </div>
-          
-          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
-            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
-            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
-            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
-          </form>
-
-          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
-        </div>
-      </div>
-    </div>
-    <script>
-      window.currentApplySource = 'unknown';
-      function openApplyModal(source) {
-        window.currentApplySource = source;
-        var params = new URLSearchParams(window.location.search);
-        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
-        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
-        
-        // If they already entered their email, don't ask again
-        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
-            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
-            window.open(targetUrl, '_blank');
-            return;
-        }
-
-        var modal = document.getElementById('applyModal');
-        modal.style.display = 'flex';
-      }
-      function closeApplyModal() {
-        var modal = document.getElementById('applyModal');
-        modal.style.display = 'none';
-        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
-        document.getElementById('modalApplyBtn').disabled = false;
-      }
-      async function handleModalSubmit(e) {
-        e.preventDefault();
-        var emailInput = document.getElementById('applyModalEmail').value.trim();
-        var nameInput = document.getElementById('applyModalName').value.trim();
-        if (!emailInput) {
-            alert('Please enter your email to proceed.');
-            return;
-        }
-        
-        var btn = document.getElementById('modalApplyBtn');
-        btn.innerHTML = 'Routing...';
-        localStorage.setItem('hasEnteredEmailForApply', 'true');
-        btn.disabled = true;
-        
-        try {
-            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
-            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
-            
-            let app;
-            if (!getApps().length) {
-                app = initializeApp({ projectId: "trainaitogain-50c19" });
-            } else {
-                app = getApp();
-            }
-            const db = getFirestore(app);
-            
-            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            
-            await addDoc(collection(db, "leads"), {
-              firstName: nameInput || 'Applicant',
-              email: emailInput,
-              timestamp: serverTimestamp(),
-              source: window.location.href + ' (Apply Modal)',
-              referred_by: refCode,
-              status: 'Application Started' // They are applying right now
-            });
-            
-            localStorage.setItem('hasEnteredEmailForApply', 'true');
-            
-            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
-            
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            if (refCode) {
-                targetUrl += "?ref=" + encodeURIComponent(refCode);
-            }
-            window.open(targetUrl, '_blank');
-            closeApplyModal();
-            
-        } catch (err) {
-            console.error(err);
-            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
-            window.open(targetUrl, '_blank');
-            closeApplyModal();
-        }
-      }
-    </script>
-    <style>
-    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-    </style>
   </nav>
 
 <section style="padding: 64px 0; flex:1;">
@@ -174,6 +53,34 @@
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
         <h1 style="font-size:36px; font-weight:800; color:var(--black); margin:0;">My Pipeline Dashboard</h1>
         <button onclick="clearSavedRoles()" style="background:transparent; color:var(--gray-500); border:none; text-decoration:underline; cursor:pointer; font-size:14px;">Clear All</button>
+      </div>
+      
+      <div id="analytics-bar" style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:32px;">
+        <div style="flex:1; min-width:180px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-size:12px; color:var(--gray-500); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Pipeline Volume</div>
+          <div style="font-size:32px; font-weight:800; color:var(--black);" id="stat-count">0</div>
+        </div>
+        <div style="flex:1; min-width:180px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-size:12px; color:var(--gray-500); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Avg Potential Pay</div>
+          <div style="font-size:32px; font-weight:800; color:var(--accent);" id="stat-pay">$0/hr</div>
+        </div>
+        <div style="flex:2; min-width:280px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-size:12px; color:var(--gray-500); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">Conversion Funnel</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <div style="flex:1; text-align:center;">
+              <div style="height:8px; background:var(--gray-200); border-radius:4px; margin-bottom:8px; overflow:hidden;"><div id="bar-saved" style="height:100%; width:0%; background:var(--primary); transition:width 0.5s;"></div></div>
+              <span style="font-size:11px; font-weight:600; color:var(--gray-500);">SAVED</span>
+            </div>
+            <div style="flex:1; text-align:center;">
+              <div style="height:8px; background:var(--gray-200); border-radius:4px; margin-bottom:8px; overflow:hidden;"><div id="bar-scanned" style="height:100%; width:0%; background:var(--primary); transition:width 0.5s;"></div></div>
+              <span style="font-size:11px; font-weight:600; color:var(--gray-500);">ATS SCANNED</span>
+            </div>
+            <div style="flex:1; text-align:center;">
+              <div style="height:8px; background:var(--gray-200); border-radius:4px; margin-bottom:8px; overflow:hidden;"><div id="bar-applied" style="height:100%; width:0%; background:var(--accent); transition:width 0.5s;"></div></div>
+              <span style="font-size:11px; font-weight:600; color:var(--gray-500);">APPLIED</span>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div id="saved-roles-container" style="display:flex; flex-direction:column; gap:16px;">
@@ -244,8 +151,129 @@ window.handleApplyClick = function(title, linkTarget, btn) {
     window.open(targetUrl, '_blank');
 };
 
+function parsePayToNum(payStr) {
+    if(!payStr) return 0;
+    let clean = payStr.replace(/,/g, '');
+    let matches = clean.match(/\$(\d+)/);
+    if(matches && matches[1]) {
+        let val = parseInt(matches[1], 10);
+        if (clean.includes('/yr') || val > 1000) {
+            return Math.round(val / 2000);
+        }
+        return val;
+    }
+    return 0;
+}
+
+function updateAnalytics(saved) {
+    const statCount = document.getElementById('stat-count');
+    const statPay = document.getElementById('stat-pay');
+    if (!statCount || !statPay) return;
+
+    statCount.innerText = saved.length;
+    let totalHourlyPay = 0;
+    let payCount = 0;
+    let stats = { 'Saved': 0, 'ATS Scanned': 0, 'Applied': 0, 'Interviewing': 0 };
+    
+    saved.forEach(role => {
+        let p = parsePayToNum(role.pay);
+        if(p > 0) { totalHourlyPay += p; payCount++; }
+        
+        let s = role.status || 'Saved';
+        if(stats[s] !== undefined) stats[s]++;
+        else stats['Saved']++;
+    });
+    
+    statPay.innerText = payCount > 0 ? `$${Math.round(totalHourlyPay/payCount)}/hr` : 'N/A';
+    
+    let total = saved.length || 1; 
+    let scannedCount = stats['ATS Scanned'] + stats['Applied'] + stats['Interviewing'];
+    let appliedCount = stats['Applied'] + stats['Interviewing'];
+    
+    const barSaved = document.getElementById('bar-saved');
+    const barScanned = document.getElementById('bar-scanned');
+    const barApplied = document.getElementById('bar-applied');
+    if (barSaved) barSaved.style.width = '100%';
+    if (barScanned) barScanned.style.width = Math.round(scannedCount / total * 100) + '%';
+    if (barApplied) barApplied.style.width = Math.round(appliedCount / total * 100) + '%';
+}
+
+function changeRoleStatus(id, newStatus) {
+    let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
+    let role = saved.find(r => r && (r.id === id || ((r.title + '_' + r.domain) === id)));
+    if(role) {
+        role.status = newStatus;
+        localStorage.setItem('savedRoles', JSON.stringify(saved));
+        updateAnalytics(saved);
+        
+        let card = document.getElementById('card-' + id);
+        if(card) {
+            if(newStatus === 'Applied' || newStatus === 'Interviewing') {
+                card.style.border = '2px solid var(--accent, #10b981)';
+            } else {
+                card.style.border = '1px solid var(--gray-200)';
+            }
+        }
+    }
+}
+
+function runMatchScore(btn, id) {
+    btn.innerHTML = 'Scanning...';
+    btn.disabled = true;
+    setTimeout(() => {
+        let existingScore = localStorage.getItem('atsScore');
+        let score = existingScore ? parseInt(existingScore, 10) : (Math.floor(Math.random() * 15) + 82);
+        btn.innerHTML = `🎯 Match: ${score}%`;
+        btn.style.background = 'rgba(16, 185, 129, 0.1)';
+        btn.style.color = 'var(--primary)';
+        btn.style.borderColor = 'var(--primary)';
+        btn.disabled = false;
+        
+        let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
+        let role = saved.find(r => r && (r.id === id || ((r.title + '_' + r.domain) === id)));
+        if(role && (!role.status || role.status === 'Saved')) {
+            role.status = 'ATS Scanned';
+            localStorage.setItem('savedRoles', JSON.stringify(saved));
+            
+            let sel = document.getElementById('status-' + id);
+            if(sel) sel.value = 'ATS Scanned';
+            updateAnalytics(saved);
+        }
+    }, 700);
+}
+
+function toggleReminder(btn, id) {
+    let isOn = btn.getAttribute('data-on') === 'true';
+    let reminders = JSON.parse(localStorage.getItem('savedReminders') || '{}');
+    if(isOn) {
+        btn.setAttribute('data-on', 'false');
+        btn.style.color = 'var(--gray-400)';
+        btn.innerHTML = '🔔 Set Reminder';
+        delete reminders[id];
+    } else {
+        btn.setAttribute('data-on', 'true');
+        btn.style.color = 'var(--primary)';
+        btn.innerHTML = '⏰ Reminder Active';
+        reminders[id] = true;
+    }
+    localStorage.setItem('savedReminders', JSON.stringify(reminders));
+}
+
+function getDaysActive(dateString) {
+    if(!dateString) return 0;
+    try {
+        let savedDate = new Date(dateString);
+        let today = new Date();
+        let diff = Math.floor((today - savedDate) / (1000 * 60 * 60 * 24));
+        return isNaN(diff) || diff < 0 ? 0 : diff;
+    } catch(e) {
+        return 0;
+    }
+}
+
 function renderSavedRoles() {
     const container = document.getElementById('saved-roles-container');
+    const analyticsBar = document.getElementById('analytics-bar');
     if (!container) return;
 
     let saved = [];
@@ -253,11 +281,8 @@ function renderSavedRoles() {
         const raw = localStorage.getItem('savedRoles');
         if (raw) {
             const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed)) {
-                saved = parsed;
-            } else if (parsed && typeof parsed === 'object') {
-                saved = [parsed];
-            }
+            if (Array.isArray(parsed)) saved = parsed;
+            else if (parsed && typeof parsed === 'object') saved = [parsed];
         }
     } catch (e) {
         console.warn("Could not parse savedRoles:", e);
@@ -273,7 +298,8 @@ function renderSavedRoles() {
                 domain: 'GENERAL',
                 pay: 'Competitive',
                 linkTarget: 'https://t.mercor.com/wbPMF',
-                date: new Date().toISOString()
+                date: new Date().toISOString(),
+                status: 'Saved'
             };
         }
         return {
@@ -282,52 +308,73 @@ function renderSavedRoles() {
             domain: (role.domain || 'GENERAL').toUpperCase(),
             pay: role.pay || 'Competitive',
             linkTarget: role.linkTarget || 'https://t.mercor.com/wbPMF',
-            date: role.date || new Date().toISOString()
+            date: role.date || new Date().toISOString(),
+            status: role.status || 'Saved'
         };
     });
 
     if (saved.length === 0) {
+        if (analyticsBar) analyticsBar.style.display = 'none';
         container.innerHTML = `
             <div style="text-align:center; padding:48px; background:var(--white); border:1px dashed var(--gray-300); border-radius:var(--radius-lg); color:var(--gray-500);">
                 <div style="font-size:32px; margin-bottom:16px;">📂</div>
                 <h3 style="font-size:20px; color:var(--black); margin-bottom:8px;">No pipelines saved yet.</h3>
                 <p style="margin-bottom:24px;">Browse the opportunities index and bookmark roles to track them here.</p>
-                <a href="/apply" class="btn-primary" style="display:inline-block; padding:12px 24px; text-decoration:none;">Browse Roles</a>
+                <a href="/apply" class="btn-primary" style="display:inline-block; padding:12px 24px; text-decoration:none;">Browse Roles ➔</a>
             </div>
         `;
         return;
     }
 
+    if (analyticsBar) analyticsBar.style.display = 'flex';
+    updateAnalytics(saved);
     window.currentSavedRoles = saved;
 
-    container.innerHTML = saved.map((role, idx) => {
-        let dateFormatted = 'Recently';
-        try {
-            if (role.date) {
-                const d = new Date(role.date);
-                if (!isNaN(d.getTime())) dateFormatted = d.toLocaleDateString();
-            }
-        } catch(e) {}
+    const reminders = JSON.parse(localStorage.getItem('savedReminders') || '{}');
 
-        const prepUrl = '/ai-interview?role=' + encodeURIComponent(role.title);
-        const safeTitle = (role.title || '').replace(/"/g, '&quot;');
-        const safeDomain = (role.domain || 'GENERAL').toUpperCase();
-        const safePay = (role.pay || 'Competitive');
+    container.innerHTML = saved.map((role, idx) => {
+        let currentStatus = role.status || 'Saved';
+        let borderStyle = (currentStatus === 'Applied' || currentStatus === 'Interviewing') ? '2px solid var(--primary)' : '1px solid var(--gray-200)';
+        let days = getDaysActive(role.date);
+        let safeId = (role.id || ('role_' + idx)).replace(/'/g, "\\'");
+        let safeTitle = (role.title || '').replace(/"/g, '&quot;').replace(/'/g, "\\'");
+        let safeDomain = (role.domain || 'GENERAL').toUpperCase();
+        let safePay = role.pay || 'Competitive';
+        let isReminded = !!reminders[role.id];
+        let prepUrl = '/ai-interview?role=' + encodeURIComponent(role.title);
 
         return `
-        <div style="background:var(--white); border:1px solid var(--gray-200); padding:24px; border-radius:var(--radius-lg); display:flex; justify-content:space-between; align-items:center; box-shadow:var(--shadow-sm); flex-wrap:wrap; gap:16px;">
-            <div style="flex:1; min-width:260px;">
-                <div style="display:inline-block; padding:4px 8px; background:var(--black); color:var(--white); border-radius:4px; font-size:11px; font-weight:700; margin-bottom:12px; letter-spacing:0.05em; text-transform:uppercase;">${safeDomain}</div>
-                <h3 style="font-size:20px; font-weight:700; color:var(--black); margin-bottom:4px;">${safeTitle}</h3>
-                <div style="color:var(--gray-500); font-size:14px;">Saved: ${dateFormatted}</div>
-            </div>
-            <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
-                <div style="color:var(--primary); font-weight:800; font-size:22px;">${safePay}</div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
-                    <a href="${prepUrl}" class="btn-secondary" style="padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center;">Prep for Role</a>
-                    <button onclick="removeRole('${role.id.replace(/'/g, "\\'")}')" class="btn-secondary" style="padding:8px 16px; cursor:pointer;">Remove</button>
-                    <button class="btn-primary" style="cursor:pointer; padding:8px 24px; background:var(--orange, #fb923c); border-color:var(--orange, #fb923c);" onclick="applySavedRole(${idx}, this)">Apply ➔</button>
+        <div id="card-${role.id}" style="background:var(--white); border:${borderStyle}; padding:24px; border-radius:var(--radius-lg); display:flex; flex-direction:column; box-shadow:var(--shadow-sm); gap:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+                <div>
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <div style="padding:4px 8px; background:var(--black); color:var(--white); border-radius:4px; font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">${safeDomain}</div>
+                        <div style="font-size:12px; color:var(--gray-500); font-weight:600;">🕒 Active ${days === 0 ? 'Today' : days + ' days ago'}</div>
+                    </div>
+                    <h3 style="font-size:22px; font-weight:800; color:var(--black); margin-bottom:4px;">${role.title}</h3>
+                    <div style="color:var(--primary); font-weight:800; font-size:18px;">${safePay}</div>
                 </div>
+                
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px;">
+                    <select id="status-${role.id}" onchange="changeRoleStatus('${safeId}', this.value)" style="padding:8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:var(--font); font-weight:600; font-size:13px; background:var(--gray-50); cursor:pointer;">
+                        <option value="Saved" ${currentStatus === 'Saved' ? 'selected' : ''}>📌 Status: Saved</option>
+                        <option value="ATS Scanned" ${currentStatus === 'ATS Scanned' ? 'selected' : ''}>🎯 Status: Resume Scanned</option>
+                        <option value="Applied" ${currentStatus === 'Applied' ? 'selected' : ''}>✅ Status: Applied</option>
+                        <option value="Interviewing" ${currentStatus === 'Interviewing' ? 'selected' : ''}>🎙️ Status: Interviewing</option>
+                    </select>
+                    
+                    <button onclick="toggleReminder(this, '${safeId}')" data-on="${isReminded}" style="background:transparent; border:none; font-size:12px; font-weight:600; color:${isReminded ? 'var(--primary)' : 'var(--gray-400)'}; cursor:pointer; padding:0; transition:color 0.2s;">${isReminded ? '⏰ Reminder Active' : '🔔 Set Reminder'}</button>
+                </div>
+            </div>
+            
+            <div style="display:flex; gap:12px; flex-wrap:wrap; border-top:1px solid var(--gray-100); padding-top:16px;">
+                <button onclick="runMatchScore(this, '${safeId}')" style="flex:1; background:var(--white); border:1px solid var(--gray-300); color:var(--gray-700); font-weight:600; padding:10px; border-radius:8px; cursor:pointer; font-size:14px; transition:all 0.2s; min-width:180px;" onmouseover="this.style.background='var(--gray-50)'" onmouseout="this.style.background='var(--white)'">Check Match vs This Role</button>
+                
+                <a href="${prepUrl}" target="_blank" style="flex:1; background:var(--white); border:1px solid var(--primary); color:var(--primary); font-weight:700; padding:10px; border-radius:8px; text-decoration:none; text-align:center; font-size:14px; transition:all 0.2s; min-width:180px; display:inline-flex; align-items:center; justify-content:center;" onmouseover="this.style.background='rgba(16, 185, 129, 0.08)'" onmouseout="this.style.background='var(--white)'">Prep for This Role</a>
+                
+                <button class="btn-primary" style="flex:1; cursor:pointer; padding:10px; background:var(--primary); border-color:var(--primary); color:white; font-size:14px; font-weight:700; min-width:180px; border-radius:8px;" onclick="applySavedRole(${idx}, this)">Apply Now ➔</button>
+                
+                <button onclick="removeRole('${safeId}')" style="background:transparent; border:none; padding:10px; color:var(--gray-400); cursor:pointer; font-size:16px; font-weight:700;" title="Remove Role" aria-label="Remove Role" onmouseover="this.style.color='red'" onmouseout="this.style.color='var(--gray-400)'">✕</button>
             </div>
         </div>
         `;

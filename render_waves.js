@@ -56,11 +56,27 @@ function renderWavesApp() {
                             const tLow = (apiRole.title || '').toLowerCase();
                             if (tLow.includes('sample') || tLow.includes('test')) return;
 
+                            // R2-1: Never render a Mercor role whose linkTarget is wbPMF unless linkIsSpecific is false
+                            const isWbPMF = (apiRole.linkTarget || '').includes('wbPMF');
+                            if ((apiRole.platform === 'Mercor' || !apiRole.platform) && isWbPMF && apiRole.linkIsSpecific !== false) {
+                                return;
+                            }
+
+                            // R2-5: Pay guard for /hr over 500
+                            let pStr = apiRole.pay || 'Competitive';
+                            if (pStr.toLowerCase().includes('/hr')) {
+                                const m = pStr.match(/\d[\d,]*/);
+                                if (m && parseInt(m[0].replace(/,/g, '')) > 500) {
+                                    pStr = pStr.replace(/\/hr/i, '/yr');
+                                }
+                            }
+
                             apiRole.status = apiRole.status || 'ACTIVE';
                             apiRole.badgeClass = apiRole.badgeClass || 'orange';
                             apiRole.description = apiRole.description || 'Mercor is actively hiring for this position.';
                             apiRole.domain = (apiRole.domain || 'SOFTWARE').toUpperCase();
-                            apiRole.pay = apiRole.pay || 'Competitive';
+                            apiRole.pay = pStr;
+                            apiRole.platform = apiRole.platform || 'Mercor';
 
                             if (!existingTitles.has(tLow)) {
                                 data.roles.unshift(apiRole);
@@ -81,6 +97,19 @@ function renderWavesApp() {
             } catch (err) {
                 console.warn("Could not fetch /api/getRoles, using baseline waves.json:", err);
             }
+
+            // R2-5: Pay guard for all roles
+            data.roles.forEach(role => {
+                if (!role || !role.pay) return;
+                let pStr = role.pay;
+                if (pStr.toLowerCase().includes('/hr')) {
+                    const m = pStr.match(/\d[\d,]*/);
+                    if (m && parseInt(m[0].replace(/,/g, ''), 10) > 500) {
+                        role.pay = pStr.replace(/\/hr/i, '/yr');
+                    }
+                }
+            });
+
         // 1. Create the Dynamic Category Carousels
         const carouselWrapper = document.createElement('div');
         carouselWrapper.style.marginBottom = '48px';
@@ -191,9 +220,9 @@ function renderWavesApp() {
             <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;">${tagsHtml}</div>
             <div style="display:flex; gap:8px;">
               <button style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${role.linkTarget || 'https://t.mercor.com/wbPMF'}', this)">Apply Now</button>
-              <button onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${role.linkTarget || 'https://t.mercor.com/wbPMF'}')" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
-              <button onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">✅</button>
-              <button onclick="event.stopPropagation(); window.open('resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">🎯</button>
+              <button onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${role.linkTarget || 'https://t.mercor.com/wbPMF'}')" title="Save to Dashboard" aria-label="Save to Dashboard" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
+              <button onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" title="Mark as applied" aria-label="Mark as applied" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">✅</button>
+              <button onclick="event.stopPropagation(); window.open('resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" title="Check match" aria-label="Check match" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 14px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">🎯</button>
             </div>
             <div style="text-align:center; font-size:11px; color:var(--gray-500); margin-top:8px; font-weight:600;">Takes 3 mins • Have your PDF resume ready</div>
           </div>

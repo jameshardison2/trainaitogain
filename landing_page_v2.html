@@ -154,122 +154,18 @@
       </div>
     </div>
     
-    <!-- Application Interceptor Modal -->
-    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
-      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
-        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
-          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
-          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
-        </div>
-        <div style="padding:24px;">
-          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official portal. <strong style="color: #10b981; font-weight: 800;">(IMPORTANT: If you already have an account, you must SIGN OUT first, then come back and click this button to ensure proper routing).</strong></p>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:24px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
-          </div>
-          
-          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
-            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
-            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
-            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
-          </form>
-
-          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
-        </div>
-      </div>
-    </div>
     <script>
       window.currentApplySource = 'unknown';
-      function openApplyModal(source) {
-        window.currentApplySource = source;
+      function openApplyModal(source, linkTarget) {
         var params = new URLSearchParams(window.location.search);
         var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
         if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
-        
-        // If they already entered their email, don't ask again
-        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
-            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
-            window.open(targetUrl, '_blank');
-            return;
-        }
-
-        var modal = document.getElementById('applyModal');
-        modal.style.display = 'flex';
+        if (typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
+        var targetUrl = linkTarget || "https://t.mercor.com/wbPMF";
+        if (ref && targetUrl.includes('mercor') && !targetUrl.includes('ref=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + "ref=" + encodeURIComponent(ref);
+        window.open(targetUrl, '_blank');
       }
-      function closeApplyModal() {
-        var modal = document.getElementById('applyModal');
-        modal.style.display = 'none';
-        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
-        document.getElementById('modalApplyBtn').disabled = false;
-      }
-      async function handleModalSubmit(e) {
-        e.preventDefault();
-        var emailInput = document.getElementById('applyModalEmail').value.trim();
-        var nameInput = document.getElementById('applyModalName').value.trim();
-        if (!emailInput) {
-            alert('Please enter your email to proceed.');
-            return;
-        }
-        
-        var btn = document.getElementById('modalApplyBtn');
-        btn.innerHTML = 'Routing...';
-        localStorage.setItem('hasEnteredEmailForApply', 'true');
-        btn.disabled = true;
-        
-        try {
-            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
-            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
-            
-            let app;
-            if (!getApps().length) {
-                app = initializeApp({ projectId: "trainaitogain-50c19" });
-            } else {
-                app = getApp();
-            }
-            const db = getFirestore(app);
-            
-            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            
-            await addDoc(collection(db, "leads"), {
-              firstName: nameInput || 'Applicant',
-              email: emailInput,
-              timestamp: serverTimestamp(),
-              source: window.location.href + ' (Apply Modal)',
-              referred_by: refCode,
-              status: 'Application Started' // They are applying right now
-            });
-            
-            localStorage.setItem('hasEnteredEmailForApply', 'true');
-            
-            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
-            
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            if (refCode) {
-                targetUrl += "?ref=" + encodeURIComponent(refCode);
-            }
-            window.open(targetUrl, '_blank');
-            closeApplyModal();
-            
-        } catch (err) {
-            console.error(err);
-            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
-            window.open(targetUrl, '_blank');
-            closeApplyModal();
-        }
-      }
+      function closeApplyModal() {}
     </script>
     <style>
     @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }

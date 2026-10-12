@@ -128,128 +128,39 @@ window.addEventListener('unhandledrejection', function(event) {
       </div>
     </div>
     
-    <!-- Application Interceptor Modal -->
-    <div id="applyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px;">
-      <div style="background:var(--white); border-radius:var(--radius-lg); max-width:500px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out;">
-        <div style="padding:24px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center;">
-          <h3 style="font-size:20px; font-weight:800; color:var(--black); margin:0;">Application Next Steps</h3>
-          <button onclick="closeApplyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500);">&times;</button>
-        </div>
-        <div style="padding:24px;">
-          <p style="margin-bottom:16px; color:var(--gray-700); line-height:1.6;">You are about to enter the <strong>Mercor Universal Talent Network</strong>. To ensure your application is successful and you are properly routed, please follow these 3 steps closely:</p>
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">1</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Create an Account:</strong> Click the button below to enter the official portal. <strong style="color: #10b981; font-weight: 800;">(IMPORTANT: If you already have an account, you must SIGN OUT first, then come back and click this button to ensure proper routing).</strong></p>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">2</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Upload Your Resume:</strong> Ensure your background and skills are up to date.</p>
-          </div>
-          <div style="display:flex; gap:12px; margin-bottom:24px;">
-            <div style="width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; flex-shrink:0;">3</div>
-            <p style="margin:0; color:var(--gray-700); line-height:1.5;"><strong>Automatic AI Routing:</strong> Instead of searching for this job manually, Mercor's AI will automatically scan your profile and fast-track you into the correct pipeline.</p>
-          </div>
-          
-          <form id="applyModalForm" style="display:flex; flex-direction:column; gap:12px; background:var(--gray-50); padding:16px; border-radius:var(--radius); border:1px solid var(--gray-200); margin-bottom:16px;">
-            <div style="font-size:13px; font-weight:700; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em;">Verify your email to continue</div>
-            <input type="email" id="applyModalEmail" placeholder="Your Email Address" required style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
-            <input type="text" id="applyModalName" placeholder="Your Full Name (Optional)" style="padding:12px; border:1px solid var(--gray-300); border-radius:var(--radius-sm); font-family:var(--font); font-size:15px; width:100%; box-sizing:border-box;" />
-          </form>
-
-          <button id="modalApplyBtn" class="btn-primary" style="display:block; text-align:center; width:100%; box-sizing:border-box; border:none; font-family:var(--font); cursor:pointer; font-size:16px; padding:16px;" onclick="handleModalSubmit(event)">Proceed to Application Portal ➔</button>
-        </div>
-      </div>
-    </div>
     <script>
       window.currentApplySource = 'unknown';
-      function openApplyModal(source) {
-        window.currentApplySource = source;
-        var params = new URLSearchParams(window.location.search);
-        var ref = params.get('ref') || localStorage.getItem('affiliate_ref') || '';
-        if (params.get('ref')) localStorage.setItem('affiliate_ref', params.get('ref'));
+      window.handleApplyClick = function(title, linkTarget, btn) {
+        if (window.event) window.event.stopPropagation();
+        const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
+        let targetUrl = linkTarget || 'https://t.mercor.com/wbPMF';
         
-        // If they already entered their email, don't ask again
-        if (localStorage.getItem('hasEnteredEmailForApply') === 'true') {
-            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':source});
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            if (ref) targetUrl += "?ref=" + encodeURIComponent(ref);
-            window.open(targetUrl, '_blank');
-            return;
+        if (refCode && targetUrl.includes('mercor')) {
+          if (!targetUrl.includes('ref=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'ref=' + encodeURIComponent(refCode);
+        } else if (refCode && targetUrl.includes('micro1')) {
+          if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode);
         }
 
-        var modal = document.getElementById('applyModal');
-        modal.style.display = 'flex';
+        if (typeof gtag === 'function') {
+          gtag('event', 'apply_click', {
+            'event_category': 'referral',
+            'event_label': title,
+            'link_url': targetUrl
+          });
+        }
+
+        const isGenericMercor = targetUrl.includes('wbPMF');
+        if (isGenericMercor && navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(title).catch(() => {});
+        }
+        window.open(targetUrl, '_blank');
+      };
+
+      function openApplyModal(source) {
+        window.handleApplyClick(source || 'Mercor Role', 'https://t.mercor.com/wbPMF', null);
       }
       function closeApplyModal() {
-        var modal = document.getElementById('applyModal');
-        modal.style.display = 'none';
-        document.getElementById('modalApplyBtn').innerHTML = 'Proceed to Application Portal ➔';
-        document.getElementById('modalApplyBtn').disabled = false;
-      }
-      async function handleModalSubmit(e) {
-        e.preventDefault();
-        var emailInput = document.getElementById('applyModalEmail').value.trim();
-        var nameInput = document.getElementById('applyModalName').value.trim();
-        if (!emailInput) {
-            alert('Please enter your email to proceed.');
-            return;
-        }
-        
-        var btn = document.getElementById('modalApplyBtn');
-        btn.innerHTML = 'Routing...';
-        localStorage.setItem('hasEnteredEmailForApply', 'true');
-        btn.disabled = true;
-        
-        try {
-            const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
-            const { getApp, getApps, initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
-            
-            let app;
-            if (!getApps().length) {
-                app = initializeApp({ 
-                    apiKey: "AIzaSyD54pf1L7RK3uc4y8qK_gsY38BHzXJwb_A", 
-                    authDomain: "trainaitogain-50c19.firebaseapp.com", 
-                    projectId: "trainaitogain-50c19", 
-                    storageBucket: "trainaitogain-50c19.firebasestorage.app", 
-                    messagingSenderId: "637746276432", 
-                    appId: "1:637746276432:web:1a7cfa65357b0bc3b90955"
-                });
-            } else {
-                app = getApp();
-            }
-            const db = getFirestore(app);
-            
-            const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            
-            await addDoc(collection(db, "leads"), {
-              firstName: nameInput || 'Applicant',
-              email: emailInput,
-              timestamp: serverTimestamp(),
-              source: window.location.href + ' (Apply Modal)',
-              referred_by: refCode,
-              status: 'Application Started' // They are applying right now
-            });
-            
-            localStorage.setItem('hasEnteredEmailForApply', 'true');
-            
-            if(typeof gtag === 'function') gtag('event', 'apply_click', {'event_category':'referral', 'event_label':window.currentApplySource});
-            
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            if (refCode) {
-                targetUrl += "?ref=" + encodeURIComponent(refCode);
-            }
-            window.open(targetUrl, '_blank');
-            closeApplyModal();
-            
-        } catch (err) {
-            console.error(err);
-            localStorage.setItem('hasEnteredEmailForApply', 'true'); // Even if db fails, don't ask again
-            var targetUrl = "https://t.mercor.com/wbPMF";
-            var refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
-            if (refCode) targetUrl += "?ref=" + encodeURIComponent(refCode);
-            window.open(targetUrl, '_blank');
-            closeApplyModal();
-        }
+        // Modal eliminated in R2-2
       }
     </script>
     <style>
@@ -260,7 +171,8 @@ window.addEventListener('unhandledrejection', function(event) {
 <div style="text-align:center; padding: 48px 16px 16px; max-width:800px; margin:0 auto;">
   <div style="display:inline-block; background:rgba(16,185,129,0.15); color:var(--primary); font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:0.1em; padding:6px 16px; border-radius:100px; margin-bottom:12px;">Step 2 (optional): Practice before your AI interview</div>
   <h1 style="font-size:36px; font-weight:800; color:var(--white); margin:0 0 12px; letter-spacing:-0.02em;">Interactive AI Mock Interview</h1>
-  <p style="color:#aaa; font-size:16px; line-height:1.6; margin:0 auto;">Simulate the exact audio and behavioral screening used by AI labs before you apply.</p>
+  <p style="color:#aaa; font-size:16px; line-height:1.6; margin:0 auto 12px;">Simulate the exact audio and behavioral screening used by AI labs before you apply.</p>
+  <p style="color:var(--primary); font-size:14px; font-weight:700; margin-bottom:24px;">Use this to prepare for Mercor and micro1 AI interviews.</p>
 </div>
 
 <div class="prep-hub">
@@ -1059,10 +971,10 @@ window.addEventListener('unhandledrejection', function(event) {
   function populateVoiceList() {
       if(typeof synth === 'undefined') return;
       
-      let voices = synth.getVoices();
+      let rawVoices = synth.getVoices();
       const voiceSelect = document.getElementById('voice-select');
       
-      if (voices.length === 0) {
+      if (rawVoices.length === 0) {
           if (voiceSelect && voiceSelect.options.length === 1 && voiceSelect.options[0].textContent.includes('Loading')) {
               voiceSelect.options[0].textContent = "System Default Voice (Auto-selected)";
           }
@@ -1070,11 +982,24 @@ window.addEventListener('unhandledrejection', function(event) {
       }
       
       if (voiceInterval) clearInterval(voiceInterval);
+
+      // Filter natural English voices and exclude novelty / robot voices
+      const noveltyNames = ['bubbles', 'organ', 'zarvox', 'bad news', 'bells', 'boing', 'cellos', 'deranged', 'good news', 'hysterical', 'pipe organ', 'trinoids', 'whisper', 'wobble', 'albert', 'bahh', 'fred', 'junior', 'ralph', 'jester', 'kathy'];
+      let filtered = rawVoices.filter(v => {
+          const lang = (v.lang || '').toLowerCase();
+          const name = (v.name || '').toLowerCase();
+          const isEnglish = lang.startsWith('en') || lang.includes('en-us') || lang.includes('en-gb') || lang.includes('en-in') || lang.includes('en-au');
+          if (!isEnglish) return false;
+          if (noveltyNames.some(n => name.includes(n))) return false;
+          return true;
+      });
+
+      if (filtered.length === 0) filtered = rawVoices; // Fallback if browser doesn't tag langs
       
-      // Only rebuild if we haven't already
-      if (availableVoices.length === voices.length) return;
+      // Only rebuild if list changed
+      if (availableVoices.length === filtered.length) return;
       
-      availableVoices = voices;
+      availableVoices = filtered;
       
       if (voiceSelect) {
           voiceSelect.innerHTML = '';
@@ -1083,7 +1008,7 @@ window.addEventListener('unhandledrejection', function(event) {
               option.textContent = v.name + " (" + (v.lang) + ")";
               option.value = i;
               
-              if (v.name === 'Google US English' || v.name === 'Ava' || v.name === 'Allison' || v.name === 'Samantha') {
+              if (v.name === 'Google US English' || v.name === 'Ava' || v.name === 'Allison' || v.name === 'Samantha' || v.name.includes('Natural')) {
                   option.selected = true;
               }
               
