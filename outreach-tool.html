@@ -272,7 +272,7 @@
   </div>
 
   <!-- Screen 1: Upload -->
-  <div id="screen-upload">
+  <div id="screen-upload" style="display:none;">
     <h2 style="margin-top:0;">Upload Outreach Queue</h2>
     <p style="color:var(--gray-500);">Upload your ranked export, Apollo leads, or LinkedIn connections to begin.</p>
 
@@ -300,6 +300,12 @@
       <p style="margin:0; font-weight:600; color:var(--gray-700);">Drag and drop CSV file here</p>
       <p style="margin:8px 0 0 0; font-size:13px; color:var(--gray-500);">or click to browse</p>
       <input type="file" id="file-input" accept=".csv" style="display:none;">
+    </div>
+
+    <div style="margin-top:20px; text-align:center;">
+      <button class="btn btn-outline" id="skip-to-queue-btn" onclick="skipToQueue()" style="font-weight:600; font-size:14px; padding:10px 20px; display:inline-flex; align-items:center; gap:8px;">
+        Skip, go to my queue ➔
+      </button>
     </div>
   </div>
 
@@ -337,7 +343,10 @@
         <option value="tech">Tech / General</option>
       </select>
       <div style="flex:1;"></div>
-      <div style="display:flex; align-items:center; color:var(--gray-500); font-size:14px;">
+      <div style="display:flex; align-items:center; gap:12px; color:var(--gray-500); font-size:14px;">
+        <button class="btn btn-outline" id="queue-upload-btn" onclick="showUploadScreen()" style="padding:6px 14px; font-size:13px; font-weight:700; background:var(--white); border:1px solid var(--gray-300); display:inline-flex; align-items:center; gap:6px;">
+          <span>📁</span> Upload / merge CSV
+        </button>
         <span id="queue-stats">0 contacts</span>
       </div>
     </div>
@@ -1004,8 +1013,8 @@
   function showQueue() {
     document.getElementById('screen-upload').style.display = 'none';
     document.getElementById('nav-tabs').style.display = 'flex';
-    document.getElementById('exportBtn').style.display = 'inline-block';
-    document.getElementById('backupBtn').style.display = 'inline-block';
+    document.getElementById('exportBtn').style.display = contacts.length > 0 ? 'inline-block' : 'none';
+    document.getElementById('backupBtn').style.display = contacts.length > 0 ? 'inline-block' : 'none';
     window.switchTab('queue');
   }
 
@@ -1017,6 +1026,12 @@
     document.getElementById('exportBtn').style.display = 'none';
     document.getElementById('backupBtn').style.display = 'none';
   }
+
+  window.showQueue = showQueue;
+  window.showUploadScreen = showUploadScreen;
+  window.skipToQueue = function() {
+    showQueue();
+  };
 
   window.switchTab = function(tab) {
     if (tab === 'queue') {
@@ -1054,6 +1069,26 @@
     const statusFilter = document.getElementById('filter-status').value;
     const domainFilter = document.getElementById('filter-domain').value;
 
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    if (contacts.length === 0) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td colspan="5" style="text-align:center; padding:56px 20px; color:var(--gray-500);">
+          <div style="font-size:32px; margin-bottom:12px;">📭</div>
+          <div style="font-weight:700; font-size:16px; color:var(--black); margin-bottom:6px;">No contacts yet</div>
+          <div style="font-size:13px; color:var(--gray-500); margin-bottom:18px;">Your outreach queue is currently empty.</div>
+          <button class="btn btn-primary" onclick="showUploadScreen()" style="padding:9px 18px; font-size:13px; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+            <span>📁</span> Upload / merge CSV
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      document.getElementById('queue-stats').innerText = '0 contacts';
+      return;
+    }
+
     let filtered = contacts.filter(c => {
       let matchStatus = false;
       let st = (c.outreach_status || '').trim();
@@ -1075,10 +1110,20 @@
       return matchStatus && matchDomain;
     });
 
-    filtered.sort((a, b) => (parseFloat(b.priority_score) || 0) - (parseFloat(a.priority_score) || 0));
+    if (filtered.length === 0) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td colspan="5" style="text-align:center; padding:40px 20px; color:var(--gray-500);">
+          <div style="font-weight:700; font-size:14px; color:var(--gray-700); margin-bottom:4px;">No contacts match the selected filters</div>
+          <div style="font-size:12px; color:var(--gray-500);">Try changing your status or domain filter.</div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      document.getElementById('queue-stats').innerText = '0 contacts';
+      return;
+    }
 
-    const tbody = document.getElementById('table-body');
-    tbody.innerHTML = '';
+    filtered.sort((a, b) => (parseFloat(b.priority_score) || 0) - (parseFloat(a.priority_score) || 0));
 
     filtered.forEach(c => {
       const tr = document.createElement('tr');
