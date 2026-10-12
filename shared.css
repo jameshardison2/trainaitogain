@@ -31,7 +31,13 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  width: 100%;
+}
 
 body {
   font-family: var(--font);
@@ -39,10 +45,42 @@ body {
   background: var(--white);
   line-height: 1.6;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
 }
 
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
+pre, code, table { max-width: 100%; }
+
+
+/* Universal Footer & Logo Image Scaling Constraints */
+footer img[alt="TrainAIToGain Logo"],
+.site-footer img[alt="TrainAIToGain Logo"],
+footer .footer-logo-img,
+.site-footer .footer-logo-img {
+  width: 24px !important;
+  height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  flex-shrink: 0 !important;
+  object-fit: contain !important;
+  display: inline-block !important;
+}
+
+/* Nav logo fixed constraint */
+.nav-logo img,
+a.nav-logo img {
+  height: 44px !important;
+  width: auto !important;
+  max-height: 44px !important;
+  max-width: 44px !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+}
 button { cursor: pointer; border: none; background: none; font-family: var(--font); }
 
 :focus-visible {
@@ -2119,9 +2157,62 @@ html { scroll-behavior: smooth; }
   h1 { font-size: clamp(32px, 8vw, 42px) !important; }
   h2 { font-size: clamp(28px, 6vw, 36px) !important; }
   
-  /* Make images responsive */
-  img {
+  /* Make images responsive while protecting logos */
+  img:not(.footer-logo-img):not(.nav-logo img):not([alt*="Logo"]):not([src*="logo.svg"]) {
     max-width: 100% !important;
     height: auto !important;
+  }
+}
+
+/* ============================================================
+   STRICT FOOTER & LOGO SCALING ENFORCEMENT
+   ============================================================ */
+img.footer-logo-img,
+footer img.footer-logo-img,
+.site-footer img.footer-logo-img,
+footer img[alt="TrainAIToGain Logo"],
+.site-footer img[alt="TrainAIToGain Logo"],
+footer img[src*="logo.svg"],
+.site-footer img[src*="logo.svg"],
+footer img,
+.site-footer img {
+  width: 24px !important;
+  height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  flex-shrink: 0 !important;
+  object-fit: contain !important;
+  display: inline-block !important;
+}
+
+/* Nav Logo Fixed Constraints */
+.nav-logo img,
+a.nav-logo img,
+nav .nav-logo img,
+header .nav-logo img {
+  width: auto !important;
+  height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  min-height: 44px !important;
+  flex-shrink: 0 !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+@media (max-width: 640px) {
+  .site-footer {
+    padding: 40px 0 !important;
+  }
+  .site-footer .footer-inner {
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+  .nav-logo img,
+  a.nav-logo img {
+    height: 38px !important;
+    max-height: 38px !important;
   }
 }
