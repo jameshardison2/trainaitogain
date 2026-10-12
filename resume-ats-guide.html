@@ -297,6 +297,41 @@
   let resumePlaceholders = {};
   let previousScore = null;
 
+  function detectDomain(role, domainHint, resumeText) {
+    const r = (role || '').toLowerCase();
+    const d = (domainHint || '').toLowerCase();
+    const res = (resumeText || '').toLowerCase();
+
+    // 1. Check role title first
+    if (/nurse|nursing|medical|clinical|health|doctor|physician|oncolog|pharma|pediatric|biomed|hospital|radiolog|cardio|patholog|therapy|psychiatr|patient/i.test(r)) return 'medical';
+    if (/quant|finance|financial|accounting|actuar|trader|trading|hedge|equity|banking|audit|economic|invest|portfolio/i.test(r)) return 'finance';
+    if (/legal|compliance|attorney|lawyer|regulatory|paralegal|contract/i.test(r)) return 'legal';
+    if (/writer|creative|fiction|journalis|editor|author|copywrit|content/i.test(r)) return 'creative';
+    if (/japanese|spanish|arabic|german|french|hindi|korean|russian|translation|linguist|localization/i.test(r)) return 'language';
+    if (/data engineer|data science|data analyst|machine learning|deep learning|\bml\b|nlp|sql architect/i.test(r)) return 'data';
+    if (/product manager|product owner|technical pm/i.test(r)) return 'product';
+    if (/\bmath|mathematician|statistic/i.test(r)) return 'math';
+    if (/software|engineer|developer|frontend|backend|fullstack|react|python|c\+\+|rust|golang|devops|sre|cloud|system|architect|web3|blockchain|android|ios|swift|kotlin/i.test(r)) return 'software';
+
+    // 2. Check domain hint if provided
+    if (/medical|health|nurse|clinical/i.test(d)) return 'medical';
+    if (/finance|quant/i.test(d)) return 'finance';
+    if (/legal|law/i.test(d)) return 'legal';
+    if (/creative|writing/i.test(d)) return 'creative';
+    if (/language|linguist|translation/i.test(d)) return 'language';
+    if (/data/i.test(d)) return 'data';
+    if (/product/i.test(d)) return 'product';
+    if (/math/i.test(d)) return 'math';
+    if (/software|tech|developer|engineering/i.test(d)) return 'software';
+
+    // 3. Check resume content
+    if (/nurse|nursing|patient care|clinical|hospital|vital signs|rn\b|bsn\b|triage|medication administration|icu\b|er\b|healthcare/i.test(res)) return 'medical';
+    if (/financial model|dcf|ebitda|valuation|portfolio|hedge fund|trading strategy|p&l/i.test(res)) return 'finance';
+    if (/litigation|compliance policy|sec filing|contract negotiation|regulatory compliance/i.test(res)) return 'legal';
+
+    return 'software';
+  }
+
   document.addEventListener('DOMContentLoaded', async function() {
     const roleSelect = document.getElementById('role-select');
 
@@ -598,6 +633,12 @@ Experience
 
     roleSelect.addEventListener('change', async function() {
       const selectedRole = this.value;
+      if (selectedRole) {
+        localStorage.setItem('atsRole', selectedRole);
+        sessionStorage.setItem('atsRole', selectedRole);
+        const rDom = detectDomain(selectedRole, this.getAttribute('data-domain'), localStorage.getItem('candidateResumeText') || (document.getElementById('resume-text') ? document.getElementById('resume-text').value : ''));
+        localStorage.setItem('atsDomain', rDom);
+      }
       if (window.allRoles) {
           const roleObj = window.allRoles.find(r => r.title === selectedRole);
           if (roleObj && roleObj.linkTarget) {
@@ -801,6 +842,7 @@ Experience
           window.atsUploadCount = (window.atsUploadCount || 0) + 1;
           const displayFileName = file.name || 'My_Resume.pdf';
           localStorage.setItem('candidateResumeFileName', displayFileName);
+          localStorage.setItem('candidateResumeText', resumeBox.value);
 
           fileCard.innerHTML = `
             <div style="display:flex; align-items:center; gap:12px;">
@@ -942,6 +984,7 @@ Experience
                     formattedForApply.sort((a, b) => b.matchScore - a.matchScore);
                     localStorage.setItem('ai_matches', JSON.stringify(formattedForApply));
                     sessionStorage.setItem('ai_matches', JSON.stringify(formattedForApply));
+                    localStorage.setItem('candidateResumeText', resumeText);
                 } catch (e) {
                     console.error("Failed to store ai_matches:", e);
                 }
@@ -951,7 +994,12 @@ Experience
                 const customDisplay = document.getElementById('custom-role-text');
                 
                 if (jobDescriptions[bestRole]) {
+                    const inferredDom = detectDomain(bestRole, '', resumeText);
                     hiddenSelect.value = bestRole;
+                    hiddenSelect.setAttribute('data-domain', inferredDom);
+                    localStorage.setItem('atsRole', bestRole);
+                    sessionStorage.setItem('atsRole', bestRole);
+                    localStorage.setItem('atsDomain', inferredDom);
                     customDisplay.innerText = `${bestRole} (Suggested Match)`;
                     customDisplay.style.color = 'var(--black)';
                     
@@ -1020,8 +1068,14 @@ Experience
                     if (matches && matches.length > 0) {
                         if(typeof gtag === 'function') gtag('event', 'auto_matched_role', {'event_category': 'funnel', 'event_label': matches[0].role, 'value': parseInt(matches[0].match)});
                         const bestMatch = matches[0];
-                        hiddenSelect.value = bestMatch.role;
-                        customDisplay.innerText = `${bestMatch.role} (Suggested Match)`;
+                        const bestRoleName = bestMatch.role;
+                        const inferredDom = detectDomain(bestRoleName, '', resumeText);
+                        hiddenSelect.value = bestRoleName;
+                        hiddenSelect.setAttribute('data-domain', inferredDom);
+                        localStorage.setItem('atsRole', bestRoleName);
+                        sessionStorage.setItem('atsRole', bestRoleName);
+                        localStorage.setItem('atsDomain', inferredDom);
+                        customDisplay.innerText = `${bestRoleName} (Suggested Match)`;
                         customDisplay.style.color = 'var(--black)';
                         
                         // Now it is safe to trigger the change event, which will trigger the scan
@@ -1183,8 +1237,12 @@ Experience
         localStorage.setItem('atsRole', selectedRole);
         sessionStorage.setItem('atsScore', score);
         sessionStorage.setItem('atsRole', selectedRole);
-        const selectedDomain = document.getElementById('role-select').getAttribute('data-domain') || 'Software Engineering';
-        localStorage.setItem('atsDomain', selectedDomain);
+        const resumeRawText = document.getElementById('resume-text') ? document.getElementById('resume-text').value : '';
+        const roleEl = document.getElementById('role-select');
+        const roleDataDomain = roleEl ? roleEl.getAttribute('data-domain') : '';
+        const inferredDomain = detectDomain(selectedRole, roleDataDomain, resumeRawText);
+        localStorage.setItem('atsDomain', inferredDomain);
+        localStorage.setItem('candidateResumeText', resumeRawText);
         localStorage.setItem('atsMissing', missingKWs.join(', '));
         
         try {

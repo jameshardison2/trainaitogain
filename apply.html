@@ -160,7 +160,7 @@
             <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:16px 20px; margin-bottom:24px;">
               ${isMicro1 ? `
                 <div style="font-size:14px; color:var(--gray-700); line-height:1.8;">
-                  <div><strong>1. Create your profile</strong> (takes ~2 minutes).</div>
+                  <div><strong>1. Create your profile</strong> (about 5 minutes).</div>
                   <div><strong>2. Select one core skill</strong> for your specialization.</div>
                   <div><strong>3. AI interview with Zara</strong> on demand.</div>
                 </div>
@@ -396,8 +396,11 @@ ${resumeText.substring(0, 10000)}`;
           statusDiv.innerHTML = '<span style="color:var(--primary); font-weight:700;">✅ AI Analysis Complete! Found your best matches.</span>';
           
           
-          // Save to session storage so it persists if they reload
+          // Save to storage so it persists if they reload
+          localStorage.setItem('ai_matches', JSON.stringify(matches));
           sessionStorage.setItem('ai_matches', JSON.stringify(matches));
+          localStorage.setItem('candidateResumeText', resumeText);
+          localStorage.setItem('candidateResumeFileName', file.name || 'My_Resume.pdf');
           
           // 4. Render!
 
@@ -617,7 +620,7 @@ ${resumeText.substring(0, 10000)}`;
     function restoreMatches() {
       try {
         const candidateResumeFileName = localStorage.getItem('candidateResumeFileName');
-        const candidateResumeText = localStorage.getItem('candidateResumeText');
+        const candidateResumeText = localStorage.getItem('candidateResumeText') || '';
         const uploadZone = document.getElementById('aws-upload-zone');
         if ((candidateResumeFileName || candidateResumeText) && uploadZone) {
             const fileName = candidateResumeFileName || 'Your Scanned Resume';
@@ -659,7 +662,6 @@ ${resumeText.substring(0, 10000)}`;
         }
 
         // R2c-3: Use ONE method (keyword coverage from resume) for every single role
-        const candidateResumeText = localStorage.getItem('candidateResumeText') || '';
         const parsedMatches = matches.map((m, idx) => {
           let score = 0;
           const rName = m.roleName || m.role || 'Target Role';

@@ -370,6 +370,17 @@ window.addEventListener('unhandledrejection', function(event) {
           🎙️ Voice Mode
         </div>
       </div>
+
+      <!-- Dedicated Question Card (Visible in both Voice and Typed Mode! R3-3 & R3-4) -->
+      <div id="current-question-card" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:18px 22px; margin-bottom:18px; text-align:left; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.08em;">Interviewer Question</span>
+          <span id="question-domain-pill" style="font-size:11px; font-weight:700; background:rgba(16,185,129,0.12); color:var(--primary); padding:3px 10px; border-radius:100px;"></span>
+        </div>
+        <div id="current-question-text" style="font-size:17px; font-weight:700; color:#ffffff; line-height:1.5;">
+          Initializing AI interviewer...
+        </div>
+      </div>
       
       <!-- Video Container (Voice Mode) -->
       <div class="video-container" id="sim-video-container" style="position:relative; width:100%; aspect-ratio:16/9; background:#111; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); margin-bottom:20px; box-shadow: 0 12px 32px rgba(0,0,0,0.8);">
@@ -488,7 +499,7 @@ window.addEventListener('unhandledrejection', function(event) {
   const domainData = {
   "software": [
     {
-      "q": "I see you have experience with distributed systems. Explain how you would handle network partitions in a microservices architecture to ensure high availability.",
+      "q": "Explain how you would handle network partitions in a microservices architecture to ensure high availability and prevent cascading failures.",
       "answer": "I would implement the Circuit Breaker pattern to prevent cascading failures, use fallback mechanisms for degraded functionality, and design the system with eventual consistency in mind using asynchronous event queues.",
       "keywords": [
         "circuit breaker",
@@ -980,6 +991,56 @@ window.addEventListener('unhandledrejection', function(event) {
     if (mobTip) mobTip.style.display = 'block';
   }
 
+  function detectDomain(role, domainHint, resumeText) {
+    const r = (role || '').toLowerCase();
+    const d = (domainHint || '').toLowerCase();
+    const res = (resumeText || '').toLowerCase();
+
+    // 1. Check role title first (most specific signal)
+    if (/nurse|nursing|medical|clinical|health|doctor|physician|oncolog|pharma|pediatric|biomed|hospital|radiolog|cardio|patholog|therapy|psychiatr|patient/i.test(r)) return 'medical';
+    if (/quant|finance|financial|accounting|actuar|trader|trading|hedge|equity|banking|audit|economic|invest|portfolio/i.test(r)) return 'finance';
+    if (/legal|compliance|attorney|lawyer|regulatory|paralegal|contract/i.test(r)) return 'legal';
+    if (/writer|creative|fiction|journalis|editor|author|copywrit|content/i.test(r)) return 'creative';
+    if (/japanese|spanish|arabic|german|french|hindi|korean|russian|translation|linguist|localization/i.test(r)) return 'language';
+    if (/data engineer|data science|data analyst|machine learning|deep learning|\bml\b|nlp|sql architect/i.test(r)) return 'data';
+    if (/product manager|product owner|technical pm/i.test(r)) return 'product';
+    if (/\bmath|mathematician|statistic/i.test(r)) return 'math';
+    if (/software|engineer|developer|frontend|backend|fullstack|react|python|c\+\+|rust|golang|devops|sre|cloud|system|architect|web3|blockchain|android|ios|swift|kotlin/i.test(r)) return 'software';
+
+    // 2. Check domain hint if provided
+    if (/medical|health|nurse|clinical/i.test(d)) return 'medical';
+    if (/finance|quant/i.test(d)) return 'finance';
+    if (/legal|law/i.test(d)) return 'legal';
+    if (/creative|writing/i.test(d)) return 'creative';
+    if (/language|linguist|translation/i.test(d)) return 'language';
+    if (/data/i.test(d)) return 'data';
+    if (/product/i.test(d)) return 'product';
+    if (/math/i.test(d)) return 'math';
+    if (/software|tech|developer|engineering/i.test(d)) return 'software';
+
+    // 3. Check resume content
+    if (/nurse|nursing|patient care|clinical|hospital|vital signs|rn\b|bsn\b|triage|medication administration|icu\b|er\b|healthcare/i.test(res)) return 'medical';
+    if (/financial model|dcf|ebitda|valuation|portfolio|hedge fund|trading strategy|p&l/i.test(res)) return 'finance';
+    if (/litigation|compliance policy|sec filing|contract negotiation|regulatory compliance/i.test(res)) return 'legal';
+
+    return 'software';
+  }
+
+  function formatBackgroundInRole(roleName) {
+    if (!roleName) return "in your field";
+    const rClean = roleName.trim();
+    const rLower = rClean.toLowerCase();
+    if (rLower.startsWith('a ') || rLower.startsWith('an ')) return "as " + rClean;
+    if (rLower.startsWith('as a ') || rLower.startsWith('as an ') || rLower.startsWith('in ')) return rClean;
+    if (/^(registered nurse|nurse|physician|doctor|pharmacist|therapist|surgeon|practitioner)/i.test(rClean)) {
+      return "as a " + rClean;
+    }
+    if (/^(software engineer|engineer|developer|architect|designer|manager|specialist|analyst|scientist|consultant|evaluator|reviewer|writer|auditor|expert|lead)/i.test(rClean)) {
+      return "as a " + rClean;
+    }
+    return "in " + rClean;
+  }
+
   // Auto-fill from ATS Scanner or URL param
   const urlParams = new URLSearchParams(window.location.search);
   const queryRole = urlParams.get('role');
@@ -988,6 +1049,7 @@ window.addEventListener('unhandledrejection', function(event) {
   }
   const atsRole = queryRole || localStorage.getItem('atsRole');
   const atsDomain = localStorage.getItem('atsDomain');
+  const candidateResumeText = localStorage.getItem('candidateResumeText') || '';
 
   if (atsRole) {
     const titleEl = document.querySelector('#setup-view h2');
@@ -996,18 +1058,9 @@ window.addEventListener('unhandledrejection', function(event) {
     }
   }
 
-  if (atsDomain) {
-    const domLow = atsDomain.toLowerCase();
-    let matchedValue = 'software';
-    if (domLow.includes('medical') || domLow.includes('health') || domLow.includes('nurse')) matchedValue = 'medical';
-    if (domLow.includes('finance') || domLow.includes('quant')) matchedValue = 'finance';
-    if (domLow.includes('legal') || domLow.includes('law')) matchedValue = 'legal';
-    if (domLow.includes('creative') || domLow.includes('writer')) matchedValue = 'creative';
-    if (domLow.includes('data')) matchedValue = 'data';
-    if (domLow.includes('product')) matchedValue = 'product';
-    domainSelector.value = matchedValue;
-    currentDomain = matchedValue;
-  }
+  const detectedDomain = detectDomain(atsRole, atsDomain, candidateResumeText);
+  domainSelector.value = detectedDomain;
+  currentDomain = detectedDomain;
 
   const cdsDisplay = document.getElementById('cds-display');
   const cdsOptions = document.getElementById('cds-options');
@@ -1079,7 +1132,7 @@ window.addEventListener('unhandledrejection', function(event) {
     }
     if (voiceInterval) clearInterval(voiceInterval);
 
-    const noveltyNames = ['bubbles', 'organ', 'zarvox', 'bad news', 'bells', 'boing', 'cellos', 'deranged', 'good news', 'hysterical', 'pipe organ', 'trinoids', 'whisper', 'wobble', 'albert', 'bahh', 'fred', 'junior', 'ralph', 'jester', 'kathy', 'grandma', 'grandpa', 'eddy', 'flo', 'shelley', 'rocko', 'sandy'];
+    const noveltyNames = ['bubbles', 'organ', 'zarvox', 'bad news', 'bells', 'boing', 'cellos', 'deranged', 'good news', 'hysterical', 'pipe organ', 'trinoids', 'whisper', 'wobble', 'albert', 'bahh', 'fred', 'junior', 'ralph', 'jester', 'kathy', 'grandma', 'grandpa', 'eddy', 'flo', 'shelley', 'rocko', 'sandy', 'superstar', 'super star'];
     let filtered = rawVoices.filter(v => {
       const lang = (v.lang || '').toLowerCase();
       const name = (v.name || '').toLowerCase();
@@ -1122,8 +1175,8 @@ window.addEventListener('unhandledrejection', function(event) {
 
   // R3-4: Construct questions that match the real interview
   function buildInterviewQuestions(targetRoleName, targetDomain) {
-    const candidateResume = localStorage.getItem('candidateResumeText');
-    const matchedDom = (targetDomain || 'general').toLowerCase();
+    const candidateResume = localStorage.getItem('candidateResumeText') || '';
+    const matchedDom = detectDomain(targetRoleName, targetDomain, candidateResume);
     const fallbackBank = domainData[matchedDom] || domainData['general'];
     let questions = [];
 
@@ -1146,7 +1199,7 @@ window.addEventListener('unhandledrejection', function(event) {
       });
 
       questions.push({
-        q: "Which part of your background in " + (targetRoleName || "your field") + " makes you a strong reviewer of AI model outputs?",
+        q: "Which part of your background " + formatBackgroundInRole(targetRoleName) + " makes you a strong reviewer of AI model outputs?",
         answer: "My domain experience allows me to spot subtle hallucinations, verify edge cases, and uphold factual precision that generalists miss.",
         keywords: ["accuracy", "quality", "domain", "evaluation", "review", "standards", "error", "factual", "edge case"],
         feedbackHit: "Excellent connection. Demonstrating how your domain expertise catches subtle edge cases is exactly what AI labs look for.",
@@ -1162,7 +1215,7 @@ window.addEventListener('unhandledrejection', function(event) {
       }
     } else {
       questions.push({
-        q: "Tell me about your background in " + (targetRoleName || "this field") + " and what types of complex problems you typically solve.",
+        q: "Tell me about your background " + formatBackgroundInRole(targetRoleName) + " and what types of complex problems you typically solve.",
         answer: "I specialize in core domain challenges, applying best practices to deliver reliable, high-quality outcomes.",
         keywords: ["background", "experience", "problem", "solve", "skills", "projects", "tools"],
         feedbackHit: "Great summary of your core strengths and problem-solving methodology.",
@@ -1274,8 +1327,9 @@ window.addEventListener('unhandledrejection', function(event) {
     setUIState('analyzing', 'Analyzing your answer...');
 
     setTimeout(() => {
-      const text = " " + (transcript || "").toLowerCase() + " ";
-      const qData = currentQuestions[currentQ];
+      const rawText = (transcript || "").trim();
+      const text = " " + rawText.toLowerCase() + " ";
+      const qData = currentQuestions[currentQ] || {};
 
       let matches = 0;
       if (qData.keywords) {
@@ -1291,76 +1345,101 @@ window.addEventListener('unhandledrejection', function(event) {
         if (fwMatches) fillerCount += fwMatches.length;
       });
 
-      const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
-      let confScore = 75;
+      const words = rawText.split(/\s+/).filter(w => w.length > 0);
+      const wordCount = words.length;
 
-      let lengthFeedback = "";
-      if (wordCount < 18) {
-        confScore -= 20;
-        lengthFeedback = "⚠️ Add more detail: AI screeners cannot infer unstated experience. Explain your specific actions.";
-      } else if (wordCount > 175) {
-        confScore -= 15;
-        lengthFeedback = "⚠️ Tighten this: Your response was on the longer side (over 2 minutes). Practice keeping answers crisp (60–90 seconds) to prevent rambling.";
-      }
+      let confScore = 70;
+      let whatWorked = "";
+      let toTighten = "";
 
-      let starFeedback = "";
-      const starKeywords = ['situation', 'task', 'action', 'result', 'because', 'resulted in', 'led to', 'resolved', 'outcome', 'achieved', 'improved', 'reduced'];
-      let starMatches = 0;
-      starKeywords.forEach(sk => {
-        if (text.includes(sk)) starMatches++;
-      });
-      if (starMatches > 0) {
-        confScore += 15;
-        starFeedback = "✓ Good use of cause-and-effect structure (Action & Result). Structured storytelling scores higher.";
+      // Strict short-answer check: DO NOT praise 1-line or hollow answers
+      if (wordCount < 15 || rawText === "No response provided" || rawText === "I don't know") {
+        confScore = Math.max(30, Math.min(45, 30 + wordCount));
+        whatWorked = "⚠️ <strong>Response too brief:</strong> AI interview screeners evaluate specific details, technical depth, and outcomes. A one-line answer does not provide sufficient signals for an automated evaluator to verify your experience.";
+        toTighten = "Aim for 45–90 seconds (around 60–120 words). Structure your response using STAR: describe the specific Situation, the exact Action you took, and the quantifiable Result.";
       } else {
-        starFeedback = "💡 Structure tip: Stronger answers usually follow the STAR method (direct answer, action taken, and measurable result).";
+        // Evaluate answers with genuine substance
+        if (wordCount > 175) {
+          confScore -= 12;
+          toTighten += "⏱️ <strong>Keep it concise:</strong> Your response was on the longer side (over 2 minutes). Practice keeping answers crisp (60–90 seconds) to prevent rambling. ";
+        }
+
+        const starKeywords = ['situation', 'task', 'action', 'result', 'because', 'resulted in', 'led to', 'resolved', 'outcome', 'achieved', 'improved', 'reduced', 'metric', 'percent'];
+        let starMatches = 0;
+        starKeywords.forEach(sk => {
+          if (text.includes(sk)) starMatches++;
+        });
+
+        if (starMatches >= 2) {
+          confScore += 15;
+        } else {
+          toTighten += "💡 <strong>Structure tip:</strong> Frame your answer using clear cause-and-effect: state the challenge, the exact step you took, and the measurable outcome. ";
+        }
+
+        confScore += Math.min(20, matches * 7);
+
+        if (!isTextMode) {
+          confScore -= Math.min(20, fillerCount * 6);
+        }
+
+        if (matches >= 2) {
+          whatWorked = qData.feedbackHit || "Clear delivery. You shared relevant domain skills and concrete context.";
+        } else {
+          whatWorked = "You addressed the prompt directly and engaged with the core question.";
+          toTighten += (qData.feedbackMiss || "Include more specific technical terms and methodologies. ");
+        }
+
+        if (fillerCount > 2 && !isTextMode) {
+          toTighten += `\n🗣️ <strong>Pacing note:</strong> Detected ${fillerCount} filler words ('um', 'like'). Pause silently before transitioning thoughts.`;
+        }
       }
 
-      confScore += (matches * 10);
-      if (!isTextMode) {
-        confScore -= (fillerCount * 8);
+      if (qData.keywords && qData.keywords.length > 0 && wordCount >= 15) {
+        toTighten += `\n🎯 <strong>Key domain terms to consider:</strong> ${qData.keywords.slice(0, 4).join(', ')}`;
       }
 
-      const cappedScore = Math.min(100, Math.max(35, confScore));
+      const cappedScore = Math.min(100, Math.max(30, confScore));
       currentQScore = cappedScore;
       totalScore += cappedScore;
       totalFillers += fillerCount;
       totalQuestionsAnswered++;
 
-      let feedback = "";
-      if (wordCount < 18) {
-        feedback = qData.feedbackMiss || "Make sure to state your concrete actions explicitly.";
-      } else if (matches >= 2) {
-        feedback = qData.feedbackHit || "Clear delivery. You shared relevant skills and experience.";
-      } else {
-        feedback = qData.feedbackMiss || "Stronger answers usually mention concrete examples and specific outcomes.";
-      }
-
-      const finalFeedback = `**What worked:**\n${feedback}\n\n**To tighten for the real interview:**\n${starFeedback}${lengthFeedback ? '\n' + lengthFeedback : ''}`;
-
       setUIState('feedback', 'Coaching feedback ready.');
+
+      // Render clean HTML into coaching feedback containers (NO raw markdown asterisks!)
+      const feedbackHTML = `
+        <div style="background:rgba(16,185,129,0.08); border-left:3px solid var(--primary); padding:14px 18px; border-radius:8px; margin-bottom:12px;">
+          <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">✓ What Worked:</div>
+          <div style="color:#ffffff; font-size:14px; line-height:1.5;">${whatWorked}</div>
+        </div>
+        <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3b82f6; padding:14px 18px; border-radius:8px;">
+          <div style="font-size:12px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">💡 To Tighten for the Real Interview:</div>
+          <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
+        </div>
+      `;
 
       // Update copilot panel
       document.getElementById('copilot-feedback-container').style.display = 'block';
       const stratBox = document.getElementById('copilot-strategy');
-      stratBox.innerText = finalFeedback;
-      stratBox.style.background = 'rgba(16,185,129,0.1)';
-      stratBox.style.borderLeftColor = 'var(--primary)';
+      stratBox.innerHTML = feedbackHTML;
+      stratBox.style.background = 'transparent';
+      stratBox.style.borderLeft = 'none';
+      stratBox.style.padding = '0';
 
       // Update in-page feedback box (visible directly below simulator)
       const inPageBox = document.getElementById('in-page-feedback');
       const transcriptBox = document.getElementById('feedback-transcript-text');
       const coachingBox = document.getElementById('feedback-coaching-text');
       if (inPageBox && transcriptBox && coachingBox) {
-        transcriptBox.innerText = transcript && transcript.trim() !== '' ? `"${transcript.trim()}"` : "(No answer detected)";
-        coachingBox.innerText = finalFeedback + (qData.keywords && qData.keywords.length > 0 ? `\n\nStronger answers usually mention:\n${qData.keywords.slice(0, 4).join(', ')}` : '');
+        transcriptBox.innerText = rawText !== '' ? `"${rawText}"` : "(No answer provided)";
+        coachingBox.innerHTML = feedbackHTML;
         inPageBox.style.display = 'block';
       }
 
       // Track question answered
-      trackMockEvent('mock_question_answered', { question_number: currentQ + 1, mode: isTextMode ? 'text' : 'voice' });
+      trackMockEvent('mock_question_answered', { question_number: currentQ + 1, mode: isTextMode ? 'text' : 'voice', score: cappedScore });
 
-    }, 800);
+    }, 600);
   }
 
   function askQuestion() {
@@ -1381,6 +1460,16 @@ window.addEventListener('unhandledrejection', function(event) {
 
     const modeEl = document.getElementById('mode-badge');
     if (modeEl) modeEl.innerText = isTextMode ? '⌨️ Typed Mode' : '🎙️ Voice Mode';
+
+    // Prominently update dedicated question card (visible in both Voice and Typed mode!)
+    const qCard = document.getElementById('current-question-card');
+    if (qCard) qCard.style.display = 'block';
+    const qCardText = document.getElementById('current-question-text');
+    if (qCardText) qCardText.innerText = qText;
+    const domPill = document.getElementById('question-domain-pill');
+    if (domPill) {
+      domPill.innerText = (currentDomain || 'general').toUpperCase();
+    }
 
     simText.style.opacity = '1';
     simText.style.transform = 'scale(1)';
@@ -1553,9 +1642,11 @@ window.addEventListener('unhandledrejection', function(event) {
   });
 
   function proceedToSession() {
-    const selectedDomain = domainSelector.value;
-    currentDomain = selectedDomain;
     const roleTarget = localStorage.getItem('atsRole') || currentDomain;
+    const resumeTxt = localStorage.getItem('candidateResumeText') || '';
+    const resolvedDomain = detectDomain(roleTarget, domainSelector.value || currentDomain, resumeTxt);
+    currentDomain = resolvedDomain;
+    domainSelector.value = resolvedDomain;
 
     currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
 
@@ -1605,7 +1696,7 @@ window.addEventListener('unhandledrejection', function(event) {
     if (synth.speaking) synth.cancel();
 
     const roleTarget = localStorage.getItem('atsRole') || currentDomain;
-    const avgScore = totalQuestionsAnswered > 0 ? Math.round(totalScore / totalQuestionsAnswered) : 75;
+    const avgScore = totalQuestionsAnswered > 0 ? Math.round(totalScore / totalQuestionsAnswered) : 70;
 
     trackMockEvent('mock_completed', { role: roleTarget, score: avgScore, mode: isTextMode ? 'text' : 'voice' });
 
@@ -1617,15 +1708,28 @@ window.addEventListener('unhandledrejection', function(event) {
     document.getElementById('sim-video-container').style.display = 'none';
     document.getElementById('typed-answer-container').style.display = 'none';
     document.getElementById('in-page-feedback').style.display = 'none';
+    const qCard = document.getElementById('current-question-card');
+    if (qCard) qCard.style.display = 'none';
     nextBtn.style.display = 'none';
     tryAgainBtn.style.display = 'none';
     if (finishBtn) finishBtn.style.display = 'none';
 
-    let strengthSummary = "You demonstrated strong domain familiarity and directly engaged with all 5 screening prompts.";
-    let growthSummary = "1. Use the STAR structure (Situation, Task, Action, Result) so every story ends with a quantifiable outcome.\n2. Keep your responses between 60–90 seconds to stay focused and avoid rambling.";
+    let strengthSummary = "";
+    let growthSummary = "";
 
-    if (totalFillers > 2 && !isTextMode) {
-      growthSummary = "1. Embrace silent pauses instead of filler words ('um', 'like') before transitioning between ideas.\n2. State your direct answer first before diving into context.";
+    if (avgScore >= 80) {
+      strengthSummary = "Strong domain familiarity and structured delivery. Your answers included specific actions and aligned with AI recruiter criteria.";
+      growthSummary = "1. Keep practicing concrete, quantified metrics for your projects.\n2. In the real interview, maintain confident eye contact with the camera.";
+    } else if (avgScore >= 60) {
+      strengthSummary = "Good overall foundation. You engaged with all screening questions and shared relevant background.";
+      growthSummary = "1. Structure answers using STAR (Situation, Task, Action, Result) so every example concludes with a measurable outcome.\n2. Mention specific tools, methodologies, and edge cases you handled.";
+    } else {
+      strengthSummary = "You completed all 5 practice prompts. Completing the drill is the first step to building confidence.";
+      growthSummary = "1. Expand on short answers: AI screeners cannot score unstated experience. Aim for 60–90 seconds per response.\n2. Pick 3 specific stories from your resume and practice walking through your exact actions and results.";
+    }
+
+    if (totalFillers > 3 && !isTextMode) {
+      growthSummary += "\n3. Practice pausing silently instead of using filler words ('um', 'like').";
     }
 
     const summaryHTML = `
