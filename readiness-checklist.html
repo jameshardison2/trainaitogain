@@ -136,7 +136,7 @@
       </p>
 
       <div class="action-bar no-print">
-        <button class="btn-print" onclick="window.print()">
+        <button class="btn-print" onclick="printChecklist()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
           Print Checklist (1 Page PDF)
         </button>
@@ -331,12 +331,22 @@
 
   <footer style="background:var(--black); padding:40px 0; color:#888; font-size:13px; text-align:center;" class="no-print">
     <div style="max-width:900px; margin:0 auto; padding:0 20px;">
-      <p style="margin-bottom:8px;">&copy; 2026 TrainAIToGain. All rights reserved. Free and ungated candidate preparation resource.</p>
+      <p style="margin-bottom:6px;">&copy; 2026 TrainAIToGain. All rights reserved. Free and ungated candidate preparation resource.</p>
+      <p style="margin-bottom:8px; color:#666; font-size:12px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
       <p><a href="/ai-interview" style="color:#aaa; text-decoration:underline;">Mock Interview</a> • <a href="/apply" style="color:#aaa; text-decoration:underline;">Active Roles</a> • <a href="/hiring-blueprint.html" style="color:#aaa; text-decoration:underline;">Blueprint</a> • <a href="/unsubscribe" style="color:#aaa; text-decoration:underline;">Unsubscribe</a></p>
     </div>
   </footer>
 
   <script>
+    const fromPage = new URLSearchParams(window.location.search).get('from') || (document.referrer ? (new URL(document.referrer, window.location.origin).pathname || 'direct') : 'direct');
+
+    function printChecklist() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'checklist_printed', { from_page: fromPage });
+      }
+      window.print();
+    }
+
     // LocalStorage persistence for digital checkboxes
     function toggleCheck(el, id) {
       el.classList.toggle('checked');
@@ -347,6 +357,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      if (typeof gtag === 'function') {
+        gtag('event', 'checklist_opened', { from_page: fromPage });
+      }
       const rows = document.querySelectorAll('.item-row');
       rows.forEach((row, idx) => {
         const id = 'c' + (idx + 1);

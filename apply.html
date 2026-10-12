@@ -75,7 +75,9 @@
     
     <script>
       window.currentApplySource = 'unknown';
-      window.handleApplyClick = function(title, linkTarget, btn) {
+      window.lastClickedApply = null;
+
+      window.handleApplyClick = function(title, linkTarget, btn, roleId, matchScore, domain) {
         if (window.event) window.event.stopPropagation();
         const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
         let targetUrl = linkTarget || 'https://t.mercor.com/wbPMF';
@@ -90,12 +92,21 @@
         const isMicro1 = targetUrl.includes('micro1');
         const platformName = isMicro1 ? 'micro1' : 'Mercor';
 
+        let applyCount = parseInt(localStorage.getItem('tgt_apply_count') || '0', 10) + 1;
+        localStorage.setItem('tgt_apply_count', String(applyCount));
+        let applyNumber = applyCount === 1 ? '1st' : (applyCount === 2 ? '2nd' : (applyCount === 3 ? '3rd' : applyCount + 'th'));
+
+        const computedRoleId = roleId || (title || 'role').toLowerCase().replace(/[^a-z0-9]/g, '-');
+
         if (typeof gtag === 'function') {
           gtag('event', 'apply_click', {
-            'event_category': 'referral',
-            'event_label': title,
-            'link_url': targetUrl,
-            'platform': platformName
+            platform: platformName,
+            role_title: title,
+            role_id: computedRoleId,
+            match_score: matchScore !== undefined ? matchScore : null,
+            from_page: 'active_roles',
+            apply_number: applyNumber,
+            link_url: targetUrl
           });
         }
 
@@ -104,133 +115,161 @@
           navigator.clipboard.writeText(title).catch(() => {});
         }
 
-        // 1. Immediately open the platform in a new tab (Section 3.4 & R3-7: NO GATE)
+        // 1. Immediately open the platform in a new tab (Section 3.4 & Section 21: NO POPUP, NO GATE)
         window.open(targetUrl, '_blank');
 
-        // 2. Automatically save role to Dashboard with status "Applied" (R3-7)
-        try {
-          let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
-          const roleId = (title || 'role').toLowerCase().replace(/[^a-z0-9]/g, '-') + '_role';
-          let existing = saved.find(r => r && (r.title === title || r.id === roleId));
-          if (existing) {
-            existing.status = 'Applied';
-          } else {
-            saved.push({
-              id: roleId,
-              title: title,
-              domain: isMicro1 ? 'SOFTWARE' : 'GENERAL',
-              pay: 'Competitive',
-              linkTarget: targetUrl,
-              platform: platformName,
-              status: 'Applied',
-              date: new Date().toISOString()
-            });
-          }
-          localStorage.setItem('savedRoles', JSON.stringify(saved));
-        } catch(e) {}
+        // 2. Locate card element
+        const cardEl = btn ? (btn.closest('.opp-card') || btn.closest('.wave-card')) : null;
 
-        // 3. Show "You're on your way" Warm Handoff Panel on the TrainAIToGain tab (R3-7)
-        showWarmHandoff(title, targetUrl, platformName);
-      };
-
-      window.showWarmHandoff = function(title, targetUrl, platformName) {
-        let modal = document.getElementById('warm-handoff-modal');
-        if (!modal) {
-          modal = document.createElement('div');
-          modal.id = 'warm-handoff-modal';
-          modal.style.cssText = 'display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:20px; box-sizing:border-box;';
-          document.body.appendChild(modal);
+        // 3. Section 21.2: Apply to more than one: after a first apply click, show "Roles like this one" under the card
+        if (cardEl && !cardEl.querySelector('.roles-like-this-one')) {
+          showRolesLikeThisOne(cardEl, domain || 'SOFTWARE', title);
         }
 
-        const isMicro1 = (platformName === 'micro1') || (targetUrl && targetUrl.includes('micro1'));
-        const safeTitle = (title || 'AI Training Role').replace(/"/g, '&quot;');
-        const prepUrl = '/ai-interview?role=' + encodeURIComponent(title || '');
+        // 4. Record last clicked apply for non-blocking return prompt
+        window.lastClickedApply = {
+          title: title,
+          targetUrl: targetUrl,
+          platform: platformName,
+          domain: domain,
+          cardEl: cardEl,
+          prompted: false
+        };
+      };
 
-        modal.innerHTML = `
-          <div style="background:var(--white); border-radius:var(--radius-lg); max-width:540px; width:100%; box-shadow:var(--shadow-lg); overflow:hidden; position:relative; animation: slideUp 0.3s ease-out; padding:32px; box-sizing:border-box; text-align:left;">
-            <button onclick="document.getElementById('warm-handoff-modal').style.display='none'" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-500); line-height:1;">&times;</button>
-            
-            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-              <span style="font-size:28px;">🚀</span>
-              <span style="font-weight:800; font-size:20px; color:var(--black);">You're on your way to ${isMicro1 ? 'micro1' : 'Mercor'}!</span>
-            </div>
-            
-            <p style="color:var(--gray-600); font-size:14px; margin-bottom:20px; line-height:1.5;">We opened the application in a new tab. Here is what happens next in their hiring flow:</p>
-            
-            <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:16px 20px; margin-bottom:24px;">
-              ${isMicro1 ? `
-                <div style="font-size:14px; color:var(--gray-700); line-height:1.8;">
-                  <div><strong>1. Create your profile</strong> (about 5 minutes).</div>
-                  <div><strong>2. Select one core skill</strong> for your specialization.</div>
-                  <div><strong>3. AI interview with Zara</strong> on demand.</div>
-                </div>
-              ` : `
-                <div style="font-size:14px; color:var(--gray-700); line-height:1.8;">
-                  <div><strong>1. Create your free profile</strong> (about 5 minutes).</div>
-                  <div><strong>2. Upload your resume</strong> (uses browser text).</div>
-                  <div><strong>3. AI Interview</strong> (~20 mins, requires a computer with camera & mic).</div>
-                </div>
-              `}
-            </div>
+      // Section 21.2: "After an Apply click: when the person comes back to the tab, show a small inline (non-blocking) bar on the card: 'Started your application? Mark it Started and we'll help you finish.' One tap saves the status. Never block the page."
+      window.addEventListener('focus', function() {
+        if (window.lastClickedApply && !window.lastClickedApply.prompted && window.lastClickedApply.cardEl) {
+          window.lastClickedApply.prompted = true;
+          showInlineReturnPrompt(window.lastClickedApply);
+        }
+      });
 
-            <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:12px 16px; margin-bottom:24px; font-size:13px; color:#065f46; display:flex; align-items:center; gap:8px;">
-              <span>✅</span>
-              <span><strong>Saved to your Dashboard</strong> as <em>Applied</em>.</span>
-            </div>
+      function showInlineReturnPrompt(info) {
+        if (!info.cardEl || info.cardEl.querySelector('.inline-return-prompt')) return;
+        const promptBar = document.createElement('div');
+        promptBar.className = 'inline-return-prompt';
+        promptBar.style.cssText = 'background:#ecfdf5; border:1.5px solid #10b981; border-radius:8px; padding:10px 14px; margin-top:12px; display:flex; align-items:center; justify-content:space-between; gap:10px; animation:slideUp 0.3s ease; box-sizing:border-box;';
+        
+        const safeTitle = (info.title || 'Role').replace(/'/g, "\\'");
+        const safeTarget = (info.targetUrl || '').replace(/'/g, "\\'");
+        const safePlatform = info.platform || 'Mercor';
 
-            <div style="display:flex; flex-direction:column; gap:10px;">
-              <a href="${prepUrl}" target="_blank" class="btn-primary" style="text-decoration:none; text-align:center; padding:12px 20px; font-weight:700; font-size:15px; border-radius:8px; display:block;">🎙️ Practice the AI Interview First</a>
-              
-              <div style="display:flex; gap:10px;">
-                <a href="/saved-roles" style="flex:1; text-align:center; padding:10px 16px; background:var(--white); border:1px solid var(--gray-300); color:var(--gray-800); text-decoration:none; font-weight:600; font-size:14px; border-radius:8px; transition:background 0.2s;">📂 View in Dashboard</a>
-                
-                <button type="button" onclick="setHandoffReminder('${safeTitle}')" id="handoff-reminder-btn" style="flex:1; text-align:center; padding:10px 16px; background:var(--white); border:1px solid var(--gray-300); color:var(--gray-800); font-weight:600; font-size:14px; border-radius:8px; cursor:pointer; transition:background 0.2s;">⏰ Remind in 2 Days</button>
+        promptBar.innerHTML = `
+          <div style="font-size:13px; font-weight:700; color:#065f46; display:flex; align-items:center; gap:6px;">
+            <span>📋</span>
+            <span>Started your application? Mark it Started and we'll help you finish.</span>
+          </div>
+          <button type="button" onclick="markCardStarted('${safeTitle}', '${safeTarget}', '${safePlatform}', this)" style="background:#10b981; color:white; border:none; padding:6px 14px; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer; white-space:nowrap; transition:background 0.2s;">
+            Mark Started ✓
+          </button>
+        `;
+        info.cardEl.appendChild(promptBar);
+      }
+
+      window.markCardStarted = function(title, targetUrl, platform, btn) {
+        let saved = JSON.parse(localStorage.getItem('savedRoles') || '[]');
+        const roleId = (title || 'role').toLowerCase().replace(/[^a-z0-9]/g, '-') + '_role';
+        let existing = saved.find(r => r && (r.title === title || r.id === roleId));
+        if (existing) {
+          existing.status = 'Started';
+        } else {
+          saved.push({
+            id: roleId,
+            title: title,
+            domain: platform === 'micro1' ? 'SOFTWARE' : 'GENERAL',
+            pay: 'Competitive',
+            linkTarget: targetUrl,
+            platform: platform,
+            status: 'Started',
+            date: new Date().toISOString()
+          });
+        }
+        localStorage.setItem('savedRoles', JSON.stringify(saved));
+
+        if (typeof gtag === 'function') {
+          gtag('event', 'pipeline_status_changed', {
+            status: 'Started',
+            role: title,
+            platform: platform
+          });
+        }
+
+        // Section 20.5 & 21.2: Check if email exists to schedule reminder
+        let email = localStorage.getItem('user_email');
+        if (!email || !email.includes('@')) {
+          email = prompt("Enter your email address so we can send a reminder if you get stuck:");
+          if (email && email.includes('@')) {
+            email = email.trim().toLowerCase();
+            localStorage.setItem('user_email', email);
+            if (typeof gtag === 'function') {
+              gtag('event', 'generate_lead', {
+                lead_type: 'reminder',
+                email: email,
+                role: title
+              });
+            }
+            fetch('/api/setRoleReminder', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: email,
+                roleId: roleId,
+                roleTitle: title,
+                rolePay: 'Competitive',
+                linkTarget: targetUrl,
+                platform: platform,
+                status: 'Started'
+              })
+            }).catch(() => {});
+          }
+        }
+
+        if (btn) {
+          btn.innerText = 'Marked Started ✓';
+          btn.style.background = '#047857';
+          btn.disabled = true;
+        }
+      };
+
+      function showRolesLikeThisOne(cardEl, domain, currentTitle) {
+        if (!cardEl) return;
+        const all = (window.allRoles && window.allRoles.length > 0) ? window.allRoles : (window.dynamicRoles || []);
+        let list = all.filter(r => r && r.title !== currentTitle && (r.domain === domain || (!domain && r.domain === 'SOFTWARE')));
+        if (list.length === 0 && all.length > 0) {
+          list = all.filter(r => r && r.title !== currentTitle);
+        }
+        const similarRoles = list.slice(0, 3);
+        if (similarRoles.length === 0) return;
+
+        const rolesHtml = similarRoles.map(r => {
+          const sTitle = (r.title || '').replace(/'/g, "\\'");
+          const sPay = r.pay || 'Competitive';
+          const sTarget = r.linkTarget || 'https://t.mercor.com/wbPMF';
+          const sPlatform = r.platform || (sTarget.includes('micro1') ? 'micro1' : 'Mercor');
+          return `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#ffffff; border:1px solid var(--gray-200); border-radius:6px; padding:8px 12px; gap:8px;">
+              <div style="min-width:0; flex:1;">
+                <div style="font-size:13px; font-weight:700; color:var(--black); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.title}</div>
+                <div style="font-size:11px; color:var(--gray-500);"><strong style="color:var(--primary);">${sPay}</strong> &bull; ${sPlatform}</div>
               </div>
+              <button type="button" onclick="event.stopPropagation(); window.handleApplyClick('${sTitle}', '${sTarget}', this, '', null, '${r.domain || ''}')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap;">Apply ➔</button>
             </div>
+          `;
+        }).join('');
 
-            <p style="text-align:center; margin-top:16px; margin-bottom:0; font-size:12px; color:var(--gray-400);">Tip: Official AI interviews must be completed on a computer (mobile browsers not supported by Mercor).</p>
+        const box = document.createElement('div');
+        box.className = 'roles-like-this-one';
+        box.style.cssText = 'background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:8px; padding:12px; margin-top:12px; width:100%; box-sizing:border-box; animation:slideUp 0.3s ease;';
+        box.innerHTML = `
+          <div style="font-size:12px; font-weight:800; color:var(--gray-700); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+            <span>💡 Roles like this one</span> <span style="font-size:11px; font-weight:500; color:var(--gray-500); text-transform:none;">(apply to 2 or 3 to increase match rate)</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            ${rolesHtml}
           </div>
         `;
-        modal.style.display = 'flex';
-      };
-
-      window.setHandoffReminder = function(title) {
-        const btn = document.getElementById('handoff-reminder-btn');
-        if (btn) {
-          btn.innerHTML = '✓ Reminder Set';
-          btn.style.color = 'var(--primary)';
-          btn.style.borderColor = 'var(--primary)';
-        }
-        try {
-          const start = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
-          const end = new Date(start.getTime() + 30 * 60 * 1000);
-          const fmt = d => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-          const ics = [
-            'BEGIN:VCALENDAR',
-            'VERSION:2.0',
-            'BEGIN:VEVENT',
-            `SUMMARY:Complete AI Interview for ${title}`,
-            'DESCRIPTION:Finish your AI interview on Mercor/micro1.',
-            `DTSTART:${fmt(start)}`,
-            `DTEND:${fmt(end)}`,
-            'END:VEVENT',
-            'END:VCALENDAR'
-          ].join('\\r\\n');
-          const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = `interview-reminder.ics`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        } catch(e) {}
-      };
-
-      function openApplyModal(source, linkTarget) {
-        window.handleApplyClick(source || 'Mercor Role', linkTarget || 'https://t.mercor.com/wbPMF', null);
-      }
-      function closeApplyModal() {
-        // Modal eliminated in R2-2
+        cardEl.appendChild(box);
       }
     </script>
     <style>
@@ -481,10 +520,22 @@ ${resumeText.substring(0, 10000)}`;
         if (typeof gtag === 'function') {
           gtag('event', 'generate_lead', {
             form_name: 'weekly_role_alerts',
+            lead_type: 'role_alerts',
             role: localStorage.getItem('atsRole') || 'All Roles',
             frequency: 'weekly'
           });
         }
+
+        // 1. Subscribe in database with unique unsubscribe token
+        fetch('/api/subscribeRoleAlerts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            role: localStorage.getItem('atsRole') || 'All Roles',
+            domain: localStorage.getItem('atsDomain') || ''
+          })
+        }).catch((err) => console.error("Subscribe error:", err));
 
         // 2. Server logging
         fetch('/api/logPipelineEvent', {
@@ -536,6 +587,7 @@ ${resumeText.substring(0, 10000)}`;
             <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
           </div>
           <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <p style="color:var(--gray-500); font-size:13px; margin:0;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
           <a href="disclosure.html" style="color:var(--gray-500); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-500)'">Affiliate Disclosure</a>
         </div>
 
@@ -890,6 +942,13 @@ function saveRole(title, domain, pay, btn, linkTarget) {
                 date: new Date().toISOString()
             });
             localStorage.setItem('savedRoles', JSON.stringify(saved));
+            const rolePlatform = (safeTarget && safeTarget.includes('micro1')) ? 'micro1' : 'Mercor';
+            if (typeof gtag === 'function') {
+                gtag('event', 'role_saved', {
+                    role: safeTitle,
+                    platform: rolePlatform
+                });
+            }
             if (btn && btn.tagName) {
                 const orig = btn.innerHTML;
                 btn.innerHTML = '✓';

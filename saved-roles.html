@@ -101,6 +101,7 @@
             <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
           </div>
           <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <p style="color:var(--gray-500); font-size:12px; margin:4px 0 0;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
           <a href="disclosure.html" style="color:var(--gray-500); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-500)'">Affiliate Disclosure</a>
         </div>
 
@@ -124,7 +125,7 @@
   </footer>
 
 <script>
-window.handleApplyClick = function(title, linkTarget, btn) {
+window.handleApplyClick = function(title, linkTarget, btn, roleId, matchScore) {
     if (window.event) window.event.stopPropagation();
     const refCode = localStorage.getItem('affiliate_ref');
     let targetUrl = linkTarget || 'https://t.mercor.com/wbPMF';
@@ -136,11 +137,20 @@ window.handleApplyClick = function(title, linkTarget, btn) {
         if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(refCode);
     }
 
+    const platformName = targetUrl.includes('micro1') ? 'micro1' : 'Mercor';
+    let applyCount = parseInt(localStorage.getItem('tgt_apply_count') || '0', 10) + 1;
+    localStorage.setItem('tgt_apply_count', String(applyCount));
+    let applyNumber = applyCount === 1 ? '1st' : (applyCount === 2 ? '2nd' : (applyCount === 3 ? '3rd' : applyCount + 'th'));
+
     if (typeof gtag === 'function') {
         gtag('event', 'apply_click', {
-            'event_category': 'referral',
-            'event_label': title,
-            'link_url': targetUrl
+            platform: platformName,
+            role_title: title,
+            role_id: roleId || (title ? title.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'unknown'),
+            match_score: matchScore !== undefined ? matchScore : null,
+            from_page: 'dashboard',
+            apply_number: applyNumber,
+            link_url: targetUrl
         });
     }
 
@@ -149,6 +159,14 @@ window.handleApplyClick = function(title, linkTarget, btn) {
         navigator.clipboard.writeText(title).catch(() => {});
     }
     window.open(targetUrl, '_blank');
+};
+
+window.trackPrepClick = function(roleTitle) {
+    if (typeof gtag === 'function') {
+        gtag('event', 'prep_for_role_click', {
+            role: roleTitle
+        });
+    }
 };
 
 function parsePayToNum(payStr) {
@@ -182,29 +200,31 @@ function updateAnalytics(saved) {
     statCount.innerText = saved.length;
     let totalHourlyPay = 0;
     let payCount = 0;
-    let stats = { 'Saved': 0, 'ATS Scanned': 0, 'Applied': 0, 'Interviewing': 0 };
+    let stats = { 'Saved': 0, 'Started': 0, 'Completed': 0, 'Offer': 0, 'Hired': 0 };
     
     saved.forEach(role => {
         let p = parsePayToNum(role.pay);
         if(p > 0) { totalHourlyPay += p; payCount++; }
         
         let s = role.status || 'Saved';
-        if(stats[s] !== undefined) stats[s]++;
+        if (s === 'ATS Scanned' || s === 'Interviewing') s = 'Started';
+        if (s === 'Applied') s = 'Completed';
+        if (stats[s] !== undefined) stats[s]++;
         else stats['Saved']++;
     });
     
     statPay.innerText = payCount > 0 ? `$${Math.round(totalHourlyPay/payCount)}/hr` : 'N/A';
     
     let total = saved.length || 1; 
-    let scannedCount = stats['ATS Scanned'] + stats['Applied'] + stats['Interviewing'];
-    let appliedCount = stats['Applied'] + stats['Interviewing'];
+    let startedCount = stats['Started'] + stats['Completed'] + stats['Offer'] + stats['Hired'];
+    let completedCount = stats['Completed'] + stats['Offer'] + stats['Hired'];
     
     const barSaved = document.getElementById('bar-saved');
     const barScanned = document.getElementById('bar-scanned');
     const barApplied = document.getElementById('bar-applied');
     if (barSaved) barSaved.style.width = '100%';
-    if (barScanned) barScanned.style.width = Math.round(scannedCount / total * 100) + '%';
-    if (barApplied) barApplied.style.width = Math.round(appliedCount / total * 100) + '%';
+    if (barScanned) barScanned.style.width = Math.round(startedCount / total * 100) + '%';
+    if (barApplied) barApplied.style.width = Math.round(completedCount / total * 100) + '%';
 }
 
 function changeRoleStatus(id, newStatus) {
@@ -215,14 +235,36 @@ function changeRoleStatus(id, newStatus) {
         localStorage.setItem('savedRoles', JSON.stringify(saved));
         updateAnalytics(saved);
         
-        let card = document.getElementById('card-' + id);
-        if(card) {
-            if(newStatus === 'Applied' || newStatus === 'Interviewing') {
-                card.style.border = '2px solid var(--accent, #10b981)';
-            } else {
-                card.style.border = '1px solid var(--gray-200)';
+        // Section 21.3: pipeline_status_changed event
+        if (typeof gtag === 'function') {
+            gtag('event', 'pipeline_status_changed', {
+                status: newStatus,
+                role: role.title || id,
+                platform: role.platform || (role.linkTarget && role.linkTarget.includes('micro1') ? 'micro1' : 'Mercor')
+            });
+        }
+
+        // Section 21.2: If set to Started and email exists, register reminder
+        if (newStatus === 'Started') {
+            const userEmail = localStorage.getItem('user_email');
+            if (userEmail) {
+                fetch('/api/setRoleReminder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: userEmail,
+                        roleId: role.id || id,
+                        roleTitle: role.title,
+                        rolePay: role.pay,
+                        linkTarget: role.linkTarget,
+                        platform: role.platform || (role.linkTarget && role.linkTarget.includes('micro1') ? 'micro1' : 'Mercor'),
+                        status: 'Started'
+                    })
+                }).catch(() => {});
             }
         }
+
+        renderSavedRoles();
     }
 }
 
@@ -337,18 +379,64 @@ function runMatchScore(btn, id) {
 function toggleReminder(btn, id) {
     let isOn = btn.getAttribute('data-on') === 'true';
     let reminders = JSON.parse(localStorage.getItem('savedReminders') || '{}');
+    let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
+    let role = saved.find(r => r && (r.id === id || ((r.title + '_' + r.domain) === id))) || { id: id, title: 'Saved Role' };
+
     if(isOn) {
         btn.setAttribute('data-on', 'false');
         btn.style.color = 'var(--gray-400)';
         btn.innerHTML = '🔔 Set Reminder';
         delete reminders[id];
+        localStorage.setItem('savedReminders', JSON.stringify(reminders));
+        renderSavedRoles();
     } else {
+        // Section 20.5: Ask for email once (skip if already stored)
+        let email = localStorage.getItem('user_email');
+        if (!email || !email.includes('@')) {
+            email = prompt("Enter your email address to receive this reminder in 2 days:");
+            if (!email || !email.includes('@')) {
+                alert("A valid email address is required to set a reminder.");
+                return;
+            }
+            email = email.trim().toLowerCase();
+            localStorage.setItem('user_email', email);
+        }
+
+        // Section 20.5 & 21.3: Fire generate_lead and reminder_set
+        if (typeof gtag === 'function') {
+            gtag('event', 'generate_lead', {
+                lead_type: 'reminder',
+                email: email,
+                role: role.title
+            });
+            gtag('event', 'reminder_set', {
+                role: role.title,
+                platform: role.platform || (role.linkTarget && role.linkTarget.includes('micro1') ? 'micro1' : 'Mercor')
+            });
+        }
+
+        // Send to server
+        fetch('/api/setRoleReminder', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                roleId: role.id || id,
+                roleTitle: role.title,
+                rolePay: role.pay,
+                linkTarget: role.linkTarget,
+                platform: role.platform || (role.linkTarget && role.linkTarget.includes('micro1') ? 'micro1' : 'Mercor'),
+                status: role.status || 'Saved'
+            })
+        }).catch(() => {});
+
         btn.setAttribute('data-on', 'true');
         btn.style.color = 'var(--primary)';
-        btn.innerHTML = '⏰ Reminder Active';
+        btn.innerHTML = '⏰ Reminder Active<div style="font-size:11px; color:var(--gray-500); font-weight:500;">Email in 2 days</div>';
         reminders[id] = true;
+        localStorage.setItem('savedReminders', JSON.stringify(reminders));
+        renderSavedRoles();
     }
-    localStorage.setItem('savedReminders', JSON.stringify(reminders));
 }
 
 function getDaysActive(dateString) {
@@ -426,7 +514,9 @@ function renderSavedRoles() {
 
     container.innerHTML = saved.map((role, idx) => {
         let currentStatus = role.status || 'Saved';
-        let borderStyle = (currentStatus === 'Applied' || currentStatus === 'Interviewing') ? '2px solid var(--primary)' : '1px solid var(--gray-200)';
+        if (currentStatus === 'ATS Scanned' || currentStatus === 'Interviewing') currentStatus = 'Started';
+        if (currentStatus === 'Applied') currentStatus = 'Completed';
+        let borderStyle = (currentStatus === 'Completed' || currentStatus === 'Offer' || currentStatus === 'Hired') ? '2px solid var(--primary)' : '1px solid var(--gray-200)';
         let days = getDaysActive(role.date);
         let safeId = (role.id || ('role_' + idx)).replace(/'/g, "\\'");
         let safeTitle = (role.title || '').replace(/"/g, '&quot;').replace(/'/g, "\\'");
@@ -450,19 +540,36 @@ function renderSavedRoles() {
                 <div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px;">
                     <select id="status-${role.id}" onchange="changeRoleStatus('${safeId}', this.value)" style="padding:8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:var(--font); font-weight:600; font-size:13px; background:var(--gray-50); cursor:pointer;">
                         <option value="Saved" ${currentStatus === 'Saved' ? 'selected' : ''}>📌 Status: Saved</option>
-                        <option value="ATS Scanned" ${currentStatus === 'ATS Scanned' ? 'selected' : ''}>🎯 Status: Resume Scanned</option>
-                        <option value="Applied" ${currentStatus === 'Applied' ? 'selected' : ''}>✅ Status: Applied</option>
-                        <option value="Interviewing" ${currentStatus === 'Interviewing' ? 'selected' : ''}>🎙️ Status: Interviewing</option>
+                        <option value="Started" ${currentStatus === 'Started' ? 'selected' : ''}>🚀 Status: Started</option>
+                        <option value="Completed" ${currentStatus === 'Completed' ? 'selected' : ''}>✅ Status: Completed</option>
+                        <option value="Offer" ${currentStatus === 'Offer' ? 'selected' : ''}>💼 Status: Offer</option>
+                        <option value="Hired" ${currentStatus === 'Hired' ? 'selected' : ''}>🎉 Status: Hired</option>
                     </select>
                     
-                    <button onclick="toggleReminder(this, '${safeId}')" data-on="${isReminded}" style="background:transparent; border:none; font-size:12px; font-weight:600; color:${isReminded ? 'var(--primary)' : 'var(--gray-400)'}; cursor:pointer; padding:0; transition:color 0.2s;">${isReminded ? '⏰ Reminder Active' : '🔔 Set Reminder'}</button>
+                    <button onclick="toggleReminder(this, '${safeId}')" data-on="${isReminded}" style="background:transparent; border:none; font-size:12px; font-weight:600; color:${isReminded ? 'var(--primary)' : 'var(--gray-400)'}; cursor:pointer; padding:0; text-align:right; transition:color 0.2s;">
+                        ${isReminded ? '⏰ Reminder Active' : '🔔 Set Reminder'}
+                        <div style="font-size:11px; color:var(--gray-500); font-weight:500;">Email in 2 days</div>
+                    </button>
                 </div>
             </div>
+
+            ${currentStatus === 'Started' ? `
+            <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:16px; margin-top:4px;">
+                <div style="font-size:14px; font-weight:800; color:#065f46; margin-bottom:4px;">Finish your AI interview</div>
+                <p style="font-size:13px; color:#047857; margin:0 0 10px; line-height:1.4;">
+                    Use each platform&#39;s official practice option first before your real interview.
+                </p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <a href="${prepUrl}" target="_blank" onclick="trackPrepClick('${safeTitle}')" style="background:#10b981; color:#ffffff; font-size:12px; font-weight:700; padding:6px 14px; border-radius:6px; text-decoration:none;">Practice 5 Questions ➔</a>
+                    <a href="/readiness-checklist" target="_blank" style="background:#ffffff; color:#065f46; border:1px solid #10b981; font-size:12px; font-weight:700; padding:6px 14px; border-radius:6px; text-decoration:none;">Open Pre-Interview Checklist</a>
+                </div>
+            </div>
+            ` : ''}
             
             <div style="display:flex; gap:12px; flex-wrap:wrap; border-top:1px solid var(--gray-100); padding-top:16px;">
                 <button onclick="runMatchScore(this, '${safeId}')" style="flex:1; background:var(--white); border:1px solid var(--gray-300); color:var(--gray-700); font-weight:600; padding:10px; border-radius:8px; cursor:pointer; font-size:14px; transition:all 0.2s; min-width:180px;" onmouseover="this.style.background='var(--gray-50)'" onmouseout="this.style.background='var(--white)'">Check Match vs This Role</button>
                 
-                <a href="${prepUrl}" target="_blank" style="flex:1; background:var(--white); border:1px solid var(--primary); color:var(--primary); font-weight:700; padding:10px; border-radius:8px; text-decoration:none; text-align:center; font-size:14px; transition:all 0.2s; min-width:180px; display:inline-flex; align-items:center; justify-content:center;" onmouseover="this.style.background='rgba(16, 185, 129, 0.08)'" onmouseout="this.style.background='var(--white)'">Prep for This Role</a>
+                <a href="${prepUrl}" target="_blank" onclick="trackPrepClick('${safeTitle}')" style="flex:1; background:var(--white); border:1px solid var(--primary); color:var(--primary); font-weight:700; padding:10px; border-radius:8px; text-decoration:none; text-align:center; font-size:14px; transition:all 0.2s; min-width:180px; display:inline-flex; align-items:center; justify-content:center;" onmouseover="this.style.background='rgba(16, 185, 129, 0.08)'" onmouseout="this.style.background='var(--white)'">Prep for This Role</a>
                 
                 <button class="btn-primary" style="flex:1; cursor:pointer; padding:10px; background:var(--primary); border-color:var(--primary); color:white; font-size:14px; font-weight:700; min-width:180px; border-radius:8px;" onclick="applySavedRole(${idx}, this)">Apply Now ➔</button>
                 
@@ -476,7 +583,7 @@ function renderSavedRoles() {
 function applySavedRole(index, btn) {
     if (!window.currentSavedRoles || !window.currentSavedRoles[index]) return;
     const role = window.currentSavedRoles[index];
-    window.handleApplyClick(role.title, role.linkTarget, btn);
+    window.handleApplyClick(role.title, role.linkTarget, btn, role.id, role.matchScore);
 }
 
 function clearSavedRoles() {

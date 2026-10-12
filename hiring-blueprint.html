@@ -370,7 +370,7 @@
         A practical, 4-phase execution guide to passing AI screening algorithms, calibrating your speech transcripts, and securing remote contracts on <strong>Mercor</strong> and <strong>micro1</strong>.
       </p>
       <div style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-        <button onclick="window.print()" class="action-btn btn-outline" style="font-size: 13px; padding: 8px 18px;">
+        <button onclick="saveBlueprintPdf()" class="action-btn btn-outline" style="font-size: 13px; padding: 8px 18px;">
           🖨️ Save This Guide as PDF
         </button>
         <a href="#phase-1" class="action-btn btn-dark" style="font-size: 13px; padding: 8px 18px;">
@@ -575,11 +575,25 @@
     </div>
 
     <footer style="text-align: center; padding: 24px 0 60px; color: var(--gray-500); font-size: 13px;">
-      &copy; 2026 TrainAIToGain. All rights reserved. Free and ungated candidate preparation blueprint.
+      <p style="margin:0 0 6px;">&copy; 2026 TrainAIToGain. All rights reserved. Free and ungated candidate preparation blueprint.</p>
+      <p style="margin:0; color:#94a3b8; font-size:12px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
     </footer>
   </main>
 
   <script>
+    function saveBlueprintPdf() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'blueprint_pdf');
+      }
+      window.print();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof gtag === 'function') {
+        gtag('event', 'blueprint_viewed');
+      }
+    });
+
     (async function() {
       try {
         const r = await fetch('waves.json?v=' + Date.now());

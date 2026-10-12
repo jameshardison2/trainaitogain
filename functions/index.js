@@ -1,6 +1,7 @@
 const { onRequest } = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const cors = require("cors")({ origin: true });
+const crypto = require("crypto");
 
 exports.generateAiResponse = onRequest(
   { secrets: ["GEMINI_API_KEY"], cors: true, timeoutSeconds: 60 },
@@ -292,6 +293,599 @@ exports.logPipelineEvent = onRequest(
   }
 );
 
+// ===============================================================
+// EMAIL SYSTEM & SUBSCRIBER SECURITY HELPERS
+// ===============================================================
+
+const rateLimitMap = new Map();
+function isRateLimited(key, maxLimit = 3, windowMs = 10 * 60 * 1000) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(key);
+  if (!entry || (now - entry.startTime) > windowMs) {
+    rateLimitMap.set(key, { count: 1, startTime: now });
+    return false;
+  }
+  if (entry.count >= maxLimit) {
+    return true;
+  }
+  entry.count++;
+  return false;
+}
+
+function generateToken() {
+  return crypto.randomBytes(16).toString("hex");
+}
+
+function escapeHtml(str) {
+  if (!str || typeof str !== "string") return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+async function getOrCreateSubscriber(db, email, subscribeToAlerts = false) {
+  const cleanEmail = email.trim().toLowerCase();
+  const subsRef = db.collection("subscribers");
+  const q = await subsRef.where("email", "==", cleanEmail).limit(1).get();
+
+  if (!q.empty) {
+    const doc = q.docs[0];
+    const data = doc.data();
+    let unsubToken = data.unsubToken;
+    const updates = { updatedAt: admin.firestore.FieldValue.serverTimestamp() };
+    if (!unsubToken) {
+      unsubToken = generateToken();
+      updates.unsubToken = unsubToken;
+    }
+    if (subscribeToAlerts) {
+      updates.subscribedToAlerts = true;
+      updates.unsubscribed = false;
+    }
+    await doc.ref.update(updates);
+    return { id: doc.id, ...data, unsubToken };
+  } else {
+    const unsubToken = generateToken();
+    const newDoc = {
+      email: cleanEmail,
+      unsubToken,
+      subscribedToAlerts: !!subscribeToAlerts,
+      unsubscribed: false,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    };
+    const ref = await subsRef.add(newDoc);
+    return { id: ref.id, ...newDoc };
+  }
+}
+
+// ===============================================================
+// 1. sendMockResultsEmail (Server Function with Rate Limiting)
+// ===============================================================
+exports.sendMockResultsEmail = onRequest(
+  { cors: true, timeoutSeconds: 30, maxInstances: 10 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        if (req.method !== "POST") {
+          return res.status(405).json({ error: "Method Not Allowed" });
+        }
+
+        const { email, targetRole, score, strengthSummary, growthSummary } = req.body || {};
+
+        if (!email || typeof email !== "string" || !email.includes("@") || email.length > 100) {
+          return res.status(400).json({ error: "Valid email address is required" });
+        }
+
+        const cleanEmail = email.trim().toLowerCase();
+        const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown_ip";
+
+        // Rate limiting: max 5 requests per IP and max 3 requests per email per 10 minutes
+        if (isRateLimited(`mock_ip_${clientIp}`, 5, 10 * 60 * 1000) ||
+            isRateLimited(`mock_email_${cleanEmail}`, 3, 10 * 60 * 1000)) {
+          return res.status(429).json({ error: "Rate limit exceeded. Please wait a few minutes before requesting another report." });
+        }
+
+        const db = admin.firestore();
+
+        // Retrieve or generate subscriber token. IMPORTANT: DO NOT subscribe to role alerts.
+        const subscriber = await getOrCreateSubscriber(db, cleanEmail, false);
+        const unsubToken = subscriber.unsubToken || generateToken();
+
+        const safeRole = escapeHtml((targetRole || "General AI Talent").substring(0, 80));
+        const safeScore = Math.max(0, Math.min(100, parseInt(score, 10) || 75));
+        const safeStrengths = escapeHtml((strengthSummary || "Structured pacing and clear communication.").substring(0, 1000));
+        const safeGrowth = escapeHtml((growthSummary || "Continue incorporating STAR principles and measurable metrics.").substring(0, 1000));
+
+        const unsubUrl = `https://trainaitogain.com/unsubscribe?token=${encodeURIComponent(unsubToken)}`;
+
+        const subject = `Your AI Practice Interview Results: ${safeRole} (Score: ${safeScore}/100)`;
+        const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${subject}</title>
+</head>
+<body style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color:#f9fafb; margin:0; padding:24px; color:#111827;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:12px; border:1px solid #e5e7eb; overflow:hidden;">
+    <tr>
+      <td style="padding:24px 32px; background:#111827; text-align:center;">
+        <span style="color:#ffffff; font-size:20px; font-weight:800; letter-spacing:-0.02em;">TrainAIToGain</span>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:32px;">
+        <h2 style="font-size:22px; font-weight:800; color:#111827; margin:0 0 12px;">Your AI Practice Interview Summary</h2>
+        <p style="color:#4b5563; font-size:15px; line-height:1.6; margin:0 0 24px;">
+          Here are your mock interview performance metrics and coaching breakdown for <strong>${safeRole}</strong>.
+        </p>
+
+        <!-- Score Card -->
+        <table width="100%" style="background:#f3f4f6; border-radius:8px; padding:20px; margin-bottom:24px; text-align:center;">
+          <tr>
+            <td>
+              <div style="font-size:12px; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Overall Drill Score</div>
+              <div style="font-size:44px; font-weight:900; color:#10b981;">${safeScore}<span style="font-size:22px; font-weight:600; color:#6b7280;">/100</span></div>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Strengths -->
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:15px; font-weight:700; color:#065f46; margin:0 0 6px;">Key Strengths</h3>
+          <p style="color:#374151; font-size:14px; line-height:1.6; margin:0; white-space:pre-line;">${safeStrengths}</p>
+        </div>
+
+        <!-- Growth Areas -->
+        <div style="margin-bottom:24px;">
+          <h3 style="font-size:15px; font-weight:700; color:#92400e; margin:0 0 6px;">Areas for Growth</h3>
+          <p style="color:#374151; font-size:14px; line-height:1.6; margin:0; white-space:pre-line;">${safeGrowth}</p>
+        </div>
+
+        <!-- Next Steps Advice -->
+        <div style="background:#ecfdf5; border-left:4px solid #10b981; padding:14px 16px; border-radius:4px; margin-bottom:28px;">
+          <strong style="color:#065f46; font-size:14px;">Next Step:</strong>
+          <p style="color:#047857; font-size:14px; line-height:1.5; margin:4px 0 0;">
+            Use each platform&#39;s official practice option before your real interview.
+          </p>
+        </div>
+
+        <div style="text-align:center; margin-bottom:24px;">
+          <a href="https://trainaitogain.com/apply" style="display:inline-block; background:#10b981; color:#ffffff; font-size:15px; font-weight:700; text-decoration:none; padding:14px 28px; border-radius:8px;">
+            Explore Active Matching Roles ➔
+          </a>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 32px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#6b7280; line-height:1.6;">
+        <p style="margin:0 0 8px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+        <p style="margin:0 0 8px;">You received this report because you requested your practice interview results.</p>
+        <p style="margin:0;">
+          <a href="${unsubUrl}" style="color:#6b7280; text-decoration:underline;">Unsubscribe</a> &bull; 
+          <a href="https://trainaitogain.com/disclosure.html" style="color:#6b7280; text-decoration:underline;">Affiliate Disclosure</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+        const text = `TrainAIToGain - Your AI Practice Interview Summary\n\nTarget Role: ${safeRole}\nOverall Score: ${safeScore}/100\n\nKey Strengths:\n${safeStrengths}\n\nAreas for Growth:\n${safeGrowth}\n\nNext Step: Use each platform's official practice option before your real interview.\n\nExplore Active Roles: https://trainaitogain.com/apply\n\nTrainAIToGain • [Postal Address Pending] • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
+
+        // Write directly to mail collection for Trigger Email extension (Admin SDK only)
+        await db.collection("mail").add({
+          to: cleanEmail,
+          message: {
+            subject,
+            html,
+            text
+          },
+          createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Record telemetry event in pipeline_events
+        await db.collection("pipeline_events").add({
+          event_type: "email_sent_mock_results",
+          email: cleanEmail,
+          targetRole: safeRole,
+          score: safeScore,
+          timestamp: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        return res.status(200).json({ success: true, message: "Mock results email queued successfully" });
+      } catch (error) {
+        logger.error("Error in sendMockResultsEmail:", error);
+        return res.status(500).json({ error: "Internal Server Error", message: error.message });
+      }
+    });
+  }
+);
+
+// ===============================================================
+// 2. subscribeRoleAlerts (Explicit Opt-In for Role Alerts)
+// ===============================================================
+exports.subscribeRoleAlerts = onRequest(
+  { cors: true, timeoutSeconds: 30, maxInstances: 10 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        if (req.method !== "POST") {
+          return res.status(405).json({ error: "Method Not Allowed" });
+        }
+
+        const { email, role, domain } = req.body || {};
+        if (!email || typeof email !== "string" || !email.includes("@") || email.length > 100) {
+          return res.status(400).json({ error: "Valid email address is required" });
+        }
+
+        const cleanEmail = email.trim().toLowerCase();
+        const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown_ip";
+
+        if (isRateLimited(`role_alert_ip_${clientIp}`, 5, 10 * 60 * 1000) ||
+            isRateLimited(`role_alert_email_${cleanEmail}`, 3, 10 * 60 * 1000)) {
+          return res.status(429).json({ error: "Rate limit exceeded. Please wait a few minutes." });
+        }
+
+        const db = admin.firestore();
+        const subscriber = await getOrCreateSubscriber(db, cleanEmail, true);
+
+        const updates = {
+          subscribedToAlerts: true,
+          unsubscribed: false,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        };
+        if (role) updates.preferredRole = String(role).substring(0, 80);
+        if (domain) updates.preferredDomain = String(domain).substring(0, 50);
+
+        await db.collection("subscribers").doc(subscriber.id).update(updates);
+
+        // Section 20.1: Send Welcome Email instantly on signup
+        const unsubToken = subscriber.unsubToken || generateToken();
+        const unsubUrl = `https://trainaitogain.com/unsubscribe?token=${encodeURIComponent(unsubToken)}`;
+        const welcomeSubject = "You're on the list for new AI evaluation roles";
+        const welcomeHtml = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>${welcomeSubject}</title></head>
+<body style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color:#f9fafb; margin:0; padding:24px; color:#111827;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:12px; border:1px solid #e5e7eb; overflow:hidden;">
+    <tr>
+      <td style="padding:24px 32px; background:#111827; text-align:center;">
+        <span style="color:#ffffff; font-size:20px; font-weight:800; letter-spacing:-0.02em;">TrainAIToGain</span>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:32px;">
+        <h2 style="font-size:20px; font-weight:800; color:#111827; margin:0 0 16px;">You&#39;re on the list for new AI evaluation roles</h2>
+        <p style="color:#4b5563; font-size:15px; line-height:1.6; margin:0 0 16px;">
+          Hi there, thanks for signing up. Each Friday, if new roles match your field, we&#39;ll email them to you with direct links to apply. No match that week, no email.
+        </p>
+        <p style="color:#4b5563; font-size:15px; line-height:1.6; margin:0 0 24px;">
+          While you wait, you can check your resume against the roles open right now:
+        </p>
+        <div style="margin-bottom:28px;">
+          <a href="https://trainaitogain.com/resume-ats-guide" style="display:inline-block; background:#10b981; color:#ffffff; font-size:14px; font-weight:700; text-decoration:none; padding:12px 24px; border-radius:6px;">
+            Check Open Roles on ATS Scanner ➔
+          </a>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 32px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#6b7280; line-height:1.6;">
+        <p style="margin:0 0 8px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+        <p style="margin:0;">
+          <a href="${unsubUrl}" style="color:#6b7280; text-decoration:underline;">Unsubscribe</a> &bull; 
+          <a href="https://trainaitogain.com/disclosure.html" style="color:#6b7280; text-decoration:underline;">Affiliate Disclosure</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+        const welcomeText = `Hi there, thanks for signing up. Each Friday, if new roles match your field, we'll email them to you with direct links to apply. No match that week, no email. While you wait, you can check your resume against the roles open right now: https://trainaitogain.com/resume-ats-guide\n\nTrainAIToGain • [Postal Address Pending] • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
+
+        await db.collection("mail").add({
+          to: cleanEmail,
+          message: {
+            subject: welcomeSubject,
+            html: welcomeHtml,
+            text: welcomeText
+          },
+          createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        return res.status(200).json({
+          success: true,
+          message: "Subscribed to role alerts successfully"
+        });
+      } catch (error) {
+        logger.error("Error in subscribeRoleAlerts:", error);
+        return res.status(500).json({ error: "Internal Server Error", message: error.message });
+      }
+    });
+  }
+);
+
+// ===============================================================
+// 3. recordUnsubscribe (Token-Based Opt-Out)
+// ===============================================================
+exports.recordUnsubscribe = onRequest(
+  { cors: true, timeoutSeconds: 15, maxInstances: 10 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const token = (req.method === "POST" ? req.body?.token : req.query?.token) || "";
+        const email = (req.method === "POST" ? req.body?.email : req.query?.email) || "";
+
+        if (!token && !email) {
+          return res.status(400).json({ error: "Token or email is required" });
+        }
+
+        const db = admin.firestore();
+        let targetDoc = null;
+
+        if (token && typeof token === "string") {
+          const q = await db.collection("subscribers").where("unsubToken", "==", token.trim()).limit(1).get();
+          if (!q.empty) {
+            targetDoc = q.docs[0];
+          }
+        }
+
+        if (!targetDoc && email && typeof email === "string" && email.includes("@")) {
+          const q = await db.collection("subscribers").where("email", "==", email.trim().toLowerCase()).limit(1).get();
+          if (!q.empty) {
+            targetDoc = q.docs[0];
+          }
+        }
+
+        if (targetDoc) {
+          await targetDoc.ref.update({
+            unsubscribed: true,
+            subscribedToAlerts: false,
+            unsubscribedAt: admin.firestore.FieldValue.serverTimestamp()
+          });
+          return res.status(200).json({
+            success: true,
+            email: targetDoc.data().email || email,
+            message: "Successfully unsubscribed"
+          });
+        }
+
+        // If not found in subscribers collection, log the opt-out anyway
+        if (email && typeof email === "string" && email.includes("@")) {
+          await db.collection("subscribers").add({
+            email: email.trim().toLowerCase(),
+            unsubToken: token || generateToken(),
+            unsubscribed: true,
+            subscribedToAlerts: false,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            unsubscribedAt: admin.firestore.FieldValue.serverTimestamp()
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          message: "Unsubscribe recorded successfully"
+        });
+      } catch (error) {
+        logger.error("Error in recordUnsubscribe:", error);
+        return res.status(500).json({ error: "Internal Server Error", message: error.message });
+      }
+    });
+  }
+);
+
+// ===============================================================
+// 4. sendRoleAlertsDigest (Manual Trigger Post-Sync, No Schedule)
+// ===============================================================
+exports.sendRoleAlertsDigest = onRequest(
+  { cors: true, timeoutSeconds: 300, maxInstances: 1 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const authSecret = (req.headers.authorization || "").replace(/^Bearer\s+/i, "") ||
+          req.query.key ||
+          req.body?.key;
+        const EXPECTED_SECRET = process.env.ADMIN_SYNC_SECRET || "TRAINAITOGAIN_SYNC_SECURE_2026";
+
+        if (!authSecret || authSecret !== EXPECTED_SECRET) {
+          return res.status(401).json({ error: "Unauthorized: Invalid or missing sync secret key" });
+        }
+
+        const db = admin.firestore();
+
+        // 1. Fetch active subscribers who opted in to role alerts
+        const subsSnapshot = await db.collection("subscribers")
+          .where("subscribedToAlerts", "==", true)
+          .get();
+
+        const activeSubscribers = [];
+        subsSnapshot.forEach((doc) => {
+          const d = doc.data();
+          if (!d.unsubscribed && d.email) {
+            activeSubscribers.push({ id: doc.id, ...d });
+          }
+        });
+
+        if (activeSubscribers.length === 0) {
+          return res.status(200).json({
+            success: true,
+            subscribersCount: 0,
+            emailsQueued: 0,
+            message: "No active subscribers found for role alerts digest."
+          });
+        }
+
+        // 2. Fetch available roles from Firestore (or fallback to local waves)
+        const rolesSnapshot = await db.collection("roles").get();
+        const allRoles = [];
+        rolesSnapshot.forEach((doc) => {
+          const d = doc.data();
+          if (doc.id === "sample-engineer") return;
+          allRoles.push({ id: doc.id, ...d });
+        });
+
+        let availableRoles = allRoles;
+        if (availableRoles.length === 0) {
+          try {
+            const wavesData = require("./waves.json");
+            availableRoles = Array.isArray(wavesData) ? wavesData : [];
+          } catch (e) {
+            availableRoles = [];
+          }
+        }
+
+        if (availableRoles.length === 0) {
+          return res.status(200).json({
+            success: true,
+            subscribersCount: activeSubscribers.length,
+            emailsQueued: 0,
+            message: "No roles available to send."
+          });
+        }
+
+        // Format role cards with strict referral link rules
+        function formatRoleUrl(role) {
+          const isMicro1 = (role.platform && role.platform.toLowerCase() === "micro1") ||
+            (role.linkTarget && role.linkTarget.includes("micro1"));
+          
+          if (isMicro1) {
+            const base = role.linkTarget || "https://refer.micro1.ai/referral/jobs/";
+            const code = "05216c9f-87cc-49af-b448-f9f8a18d2efe";
+            if (base.includes(code)) return base;
+            return base.includes("?") ? `${base}&referralCode=${code}` : `${base}?referralCode=${code}`;
+          }
+
+          // Mercor link (t.mercor.com)
+          let target = role.linkTarget || "https://t.mercor.com";
+          if (!target.startsWith("http")) target = `https://t.mercor.com/${target}`;
+          return target;
+        }
+
+        let queuedCount = 0;
+        const now = admin.firestore.FieldValue.serverTimestamp();
+
+        for (const sub of activeSubscribers) {
+          const unsubToken = sub.unsubToken || generateToken();
+          const unsubUrl = `https://trainaitogain.com/unsubscribe?token=${encodeURIComponent(unsubToken)}`;
+
+          // Select top 3 matched or latest roles
+          let selectedRoles = availableRoles;
+          if (sub.preferredDomain) {
+            const domainFiltered = availableRoles.filter(r => r.domain === sub.preferredDomain);
+            if (domainFiltered.length > 0) selectedRoles = domainFiltered;
+          }
+          const rolesForEmail = selectedRoles.slice(0, 3);
+
+          const roleCardsHtml = rolesForEmail.map((r) => {
+            const url = formatRoleUrl(r);
+            const platformName = r.platform || (url.includes("micro1") ? "micro1" : "Mercor");
+            return `
+              <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:8px; padding:18px; margin-bottom:14px; text-align:left;">
+                <div style="font-size:12px; font-weight:700; color:#10b981; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">
+                  ${escapeHtml(platformName)} &bull; ${escapeHtml(r.domain || "AI Talent")}
+                </div>
+                <h4 style="font-size:16px; font-weight:800; color:#111827; margin:0 0 6px;">${escapeHtml(r.title || "AI Specialist Role")}</h4>
+                <div style="font-size:14px; font-weight:700; color:#059669; margin-bottom:8px;">${escapeHtml(r.pay || "Competitive")}</div>
+                <div style="margin-top:10px;">
+                  <a href="${url}" style="display:inline-block; background:#10b981; color:#ffffff; font-size:13px; font-weight:700; text-decoration:none; padding:10px 18px; border-radius:6px;">
+                    View & Apply on ${escapeHtml(platformName)} ➔
+                  </a>
+                </div>
+              </div>
+            `;
+          }).join("");
+
+          const subject = `Weekly AI Role Matches: ${rolesForEmail.length} New Openings`;
+          const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${subject}</title>
+</head>
+<body style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color:#f9fafb; margin:0; padding:24px; color:#111827;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:12px; border:1px solid #e5e7eb; overflow:hidden;">
+    <tr>
+      <td style="padding:24px 32px; background:#111827; text-align:center;">
+        <span style="color:#ffffff; font-size:20px; font-weight:800; letter-spacing:-0.02em;">TrainAIToGain</span>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:32px;">
+        <h2 style="font-size:22px; font-weight:800; color:#111827; margin:0 0 8px;">Weekly AI Role Digest</h2>
+        <p style="color:#4b5563; font-size:15px; line-height:1.6; margin:0 0 24px;">
+          Here are this week&#39;s newly synced opportunities matching active remote AI trainer, reviewer, and engineering requirements.
+        </p>
+
+        <!-- Role Cards -->
+        <div style="margin-bottom:24px;">
+          ${roleCardsHtml}
+        </div>
+
+        <div style="background:#ecfdf5; border-left:4px solid #10b981; padding:14px 16px; border-radius:4px; margin-bottom:28px;">
+          <strong style="color:#065f46; font-size:14px;">Preparation Tip:</strong>
+          <p style="color:#047857; font-size:14px; line-height:1.5; margin:4px 0 0;">
+            Use each platform&#39;s official practice option before your real interview.
+          </p>
+        </div>
+
+        <div style="text-align:center; margin-bottom:20px;">
+          <a href="https://trainaitogain.com/apply" style="display:inline-block; background:#111827; color:#ffffff; font-size:14px; font-weight:700; text-decoration:none; padding:12px 24px; border-radius:6px;">
+            Browse All Active Roles ➔
+          </a>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 32px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#6b7280; line-height:1.6;">
+        <p style="margin:0 0 8px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+        <p style="margin:0 0 8px;">You are receiving this digest because you subscribed to weekly AI role alerts.</p>
+        <p style="margin:0;">
+          <a href="${unsubUrl}" style="color:#6b7280; text-decoration:underline;">Unsubscribe</a> &bull; 
+          <a href="https://trainaitogain.com/disclosure.html" style="color:#6b7280; text-decoration:underline;">Affiliate Disclosure</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+          const text = `TrainAIToGain - Weekly AI Role Digest\n\nTop Newly Synced Openings:\n${rolesForEmail.map(r => `- ${r.title} (${r.pay || 'Competitive'}) on ${r.platform || 'Mercor'}: ${formatRoleUrl(r)}`).join('\n')}\n\nPreparation Tip: Use each platform's official practice option before your real interview.\n\nBrowse All Active Roles: https://trainaitogain.com/apply\n\nTrainAIToGain • [Postal Address Pending] • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
+
+          await db.collection("mail").add({
+            to: sub.email,
+            message: {
+              subject,
+              html,
+              text
+            },
+            createdAt: now
+          });
+          queuedCount++;
+        }
+
+        return res.status(200).json({
+          success: true,
+          subscribersCount: activeSubscribers.length,
+          emailsQueued: queuedCount,
+          message: `Successfully queued ${queuedCount} role alert emails.`
+        });
+      } catch (error) {
+        logger.error("Error in sendRoleAlertsDigest:", error);
+        return res.status(500).json({ error: "Internal Server Error", message: error.message });
+      }
+    });
+  }
+);
+
+// ===============================================================
+// 5. sendFollowUpEmails (PAUSED PENDING APPROVAL - NO SCHEDULE EXECUTION)
+// ===============================================================
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 
 exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
@@ -321,11 +915,9 @@ exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
 
     snapshot.forEach((doc) => {
       const data = doc.data();
-      // Skip if we already sent it
       if (data.followUpSent) return;
       if (!data.email) return;
 
-      // 1. Create the email document to trigger the Firebase Extension
       const mailRef = db.collection("mail").doc();
       batch.set(mailRef, {
         to: data.email,
@@ -333,7 +925,7 @@ exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
           subject: "Did you finish your Mercor application?",
           html: `<p>Hi ${data.firstName || 'there'},</p>
                  <p>We noticed you started the process to join the AI Talent Network. Did you finish your application?</p>
-                 <p>Here are the 3 steps people miss that guarantee proper routing to the high-paying roles:</p>
+                 <p>Here are the 3 steps people miss for proper routing to the high-paying roles:</p>
                  <ol>
                    <li>Complete the initial profile setup.</li>
                    <li>Take the 15-minute AI voice interview.</li>
@@ -341,11 +933,12 @@ exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
                  </ol>
                  <p>You can resume your application here: <a href="https://trainaitogain.com/apply">https://trainaitogain.com/apply</a></p>
                  <p>Let us know if you need any help!</p>
-                 <p>- The TrainAIToGain Team</p>`
+                 <p>- The TrainAIToGain Team</p>
+                 <hr style="border:none; border-top:1px solid #eee; margin:20px 0;" />
+                 <p style="font-size:12px; color:#999;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>`
         }
       });
 
-      // 2. Mark the lead so we don't email them again
       batch.update(doc.ref, { followUpSent: true });
       count++;
     });
@@ -358,3 +951,239 @@ exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
     logger.error("Error processing follow-up emails:", error);
   }
 });
+
+// ===============================================================
+// 6. setRoleReminder (Section 20.5 - Saves Real Role Reminder)
+// ===============================================================
+exports.setRoleReminder = onRequest(
+  { cors: true, timeoutSeconds: 15, maxInstances: 10 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        if (req.method !== "POST") {
+          return res.status(405).json({ error: "Method Not Allowed" });
+        }
+
+        const { email, roleId, roleTitle, rolePay, linkTarget, platform, status } = req.body || {};
+        if (!email || typeof email !== "string" || !email.includes("@") || email.length > 100) {
+          return res.status(400).json({ error: "Valid email address is required" });
+        }
+
+        const cleanEmail = email.trim().toLowerCase();
+        const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown_ip";
+
+        if (isRateLimited(`reminder_ip_${clientIp}`, 10, 10 * 60 * 1000) ||
+            isRateLimited(`reminder_email_${cleanEmail}`, 10, 10 * 60 * 1000)) {
+          return res.status(429).json({ error: "Rate limit exceeded. Please wait a few minutes." });
+        }
+
+        const db = admin.firestore();
+        const subscriber = await getOrCreateSubscriber(db, cleanEmail, false);
+
+        const safeRoleId = String(roleId || "unknown_role").substring(0, 80);
+        const existing = await db.collection("reminders")
+          .where("email", "==", cleanEmail)
+          .where("roleId", "==", safeRoleId)
+          .limit(1)
+          .get();
+
+        if (existing.empty) {
+          // Schedule for 2 days from now (Section 20.5)
+          const scheduledDate = new Date(Date.now() + 48 * 60 * 60 * 1000);
+          await db.collection("reminders").add({
+            email: cleanEmail,
+            unsubToken: subscriber.unsubToken,
+            roleId: safeRoleId,
+            roleTitle: String(roleTitle || "AI Specialist Role").substring(0, 120),
+            rolePay: String(rolePay || "Competitive").substring(0, 60),
+            linkTarget: String(linkTarget || "https://t.mercor.com").substring(0, 256),
+            platform: String(platform || "Mercor").substring(0, 40),
+            status: String(status || "Saved").substring(0, 40),
+            scheduledFor: scheduledDate,
+            sent: false,
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+          });
+        }
+
+        return res.status(200).json({ success: true, message: "Reminder scheduled successfully" });
+      } catch (error) {
+        logger.error("Error in setRoleReminder:", error);
+        return res.status(500).json({ error: "Internal Server Error", message: error.message });
+      }
+    });
+  }
+);
+
+// ===============================================================
+// 7. processRoleReminders (Section 20.5 - Manual or Automated Trigger)
+// ===============================================================
+exports.processRoleReminders = onRequest(
+  { cors: true, timeoutSeconds: 120, maxInstances: 1 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const authSecret = (req.headers.authorization || "").replace(/^Bearer\s+/i, "") ||
+          req.query.key ||
+          req.body?.key;
+        const EXPECTED_SECRET = process.env.ADMIN_SYNC_SECRET || "TRAINAITOGAIN_SYNC_SECURE_2026";
+
+        if (!authSecret || authSecret !== EXPECTED_SECRET) {
+          return res.status(401).json({ error: "Unauthorized: Invalid or missing sync secret key" });
+        }
+
+        const db = admin.firestore();
+        const now = new Date();
+
+        const remindersSnapshot = await db.collection("reminders")
+          .where("sent", "==", false)
+          .where("scheduledFor", "<=", now)
+          .get();
+
+        if (remindersSnapshot.empty) {
+          return res.status(200).json({ success: true, count: 0, message: "No pending reminders ready to send." });
+        }
+
+        let sentCount = 0;
+        for (const doc of remindersSnapshot.docs) {
+          const r = doc.data();
+          const subQuery = await db.collection("subscribers").where("email", "==", r.email).limit(1).get();
+          if (!subQuery.empty && subQuery.docs[0].data().unsubscribed) {
+            await doc.ref.update({ sent: true, cancelled: true, reason: "unsubscribed" });
+            continue;
+          }
+
+          if (r.status === "Applied" || r.status === "Completed" || r.status === "Hired") {
+            await doc.ref.update({ sent: true, cancelled: true, reason: "already_applied" });
+            continue;
+          }
+
+          const unsubToken = r.unsubToken || generateToken();
+          const unsubUrl = `https://trainaitogain.com/unsubscribe?token=${encodeURIComponent(unsubToken)}`;
+          const subject = `Still interested in ${r.roleTitle}?`;
+          const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>${subject}</title></head>
+<body style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color:#f9fafb; margin:0; padding:24px; color:#111827;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:12px; border:1px solid #e5e7eb; overflow:hidden;">
+    <tr>
+      <td style="padding:24px 32px; background:#111827; text-align:center;">
+        <span style="color:#ffffff; font-size:20px; font-weight:800; letter-spacing:-0.02em;">TrainAIToGain</span>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:32px;">
+        <h2 style="font-size:20px; font-weight:800; color:#111827; margin:0 0 14px;">Still interested in ${escapeHtml(r.roleTitle)}?</h2>
+        <p style="color:#4b5563; font-size:15px; line-height:1.6; margin:0 0 20px;">
+          You saved <strong>${escapeHtml(r.roleTitle)}</strong> (${escapeHtml(r.rolePay)}) on TrainAIToGain.
+        </p>
+        <p style="color:#4b5563; font-size:15px; line-height:1.6; margin:0 0 24px;">
+          If you&#39;re ready, you can apply directly:
+        </p>
+        <div style="margin-bottom:28px;">
+          <a href="${r.linkTarget}" style="display:inline-block; background:#10b981; color:#ffffff; font-size:15px; font-weight:700; text-decoration:none; padding:12px 24px; border-radius:8px;">
+            Apply on ${escapeHtml(r.platform || 'Platform')} ➔
+          </a>
+        </div>
+        <p style="color:#4b5563; font-size:14px; line-height:1.6; margin:0 0 8px;">
+          If you want to warm up first, try the free mock interview:
+        </p>
+        <p style="margin:0 0 24px;">
+          <a href="https://trainaitogain.com/ai-interview" style="color:#059669; font-weight:700; text-decoration:underline;">https://trainaitogain.com/ai-interview</a>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 32px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#6b7280; line-height:1.6;">
+        <p style="margin:0 0 8px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+        <p style="margin:0;">
+          <a href="${unsubUrl}" style="color:#6b7280; text-decoration:underline;">Unsubscribe</a> &bull; 
+          <a href="https://trainaitogain.com/disclosure.html" style="color:#6b7280; text-decoration:underline;">Affiliate Disclosure</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+          const text = `Hi there,\n\nYou saved ${r.roleTitle} (${r.rolePay}) on TrainAIToGain. If you're ready, you can apply here: ${r.linkTarget}.\n\nIf you want to warm up first, try the free mock interview: https://trainaitogain.com/ai-interview.\n\nTrainAIToGain • [Postal Address Pending] • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
+
+          await db.collection("mail").add({
+            to: r.email,
+            message: {
+              subject,
+              html,
+              text
+            },
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+          });
+
+          await doc.ref.update({
+            sent: true,
+            sentAt: admin.firestore.FieldValue.serverTimestamp()
+          });
+          sentCount++;
+        }
+
+        return res.status(200).json({
+          success: true,
+          count: sentCount,
+          message: `Successfully processed ${sentCount} reminders.`
+        });
+      } catch (error) {
+        logger.error("Error in processRoleReminders:", error);
+        return res.status(500).json({ error: "Internal Server Error", message: error.message });
+      }
+    });
+  }
+);
+
+// ===============================================================
+// 8. Scoreboard API (Section 21.4 - Weekly Scoreboard Persistence)
+// ===============================================================
+exports.getScoreboard = onRequest(
+  { cors: true, timeoutSeconds: 15, maxInstances: 5 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const db = admin.firestore();
+        const snapshot = await db.collection("scoreboard").orderBy("weekStartDate", "desc").limit(12).get();
+        const entries = [];
+        snapshot.forEach(doc => entries.push({ id: doc.id, ...doc.data() }));
+        return res.json({ success: true, entries });
+      } catch (error) {
+        logger.error("Error in getScoreboard:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+    });
+  }
+);
+
+exports.saveScoreboard = onRequest(
+  { cors: true, timeoutSeconds: 15, maxInstances: 5 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
+        const { weekStartDate, mercor, micro1, notes } = req.body || {};
+        if (!weekStartDate) return res.status(400).json({ error: "weekStartDate is required" });
+
+        const db = admin.firestore();
+        const docRef = db.collection("scoreboard").doc(String(weekStartDate).substring(0, 20));
+        await docRef.set({
+          weekStartDate,
+          mercor: mercor || {},
+          micro1: micro1 || {},
+          notes: notes || "",
+          updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        return res.json({ success: true, message: "Scoreboard saved successfully" });
+      } catch (error) {
+        logger.error("Error in saveScoreboard:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+    });
+  }
+);
+
+

@@ -151,19 +151,56 @@
     </div>
   </div>
 
-  <footer style="margin-top:auto; padding:24px; text-align:center; font-size:12px; color:#9ca3af;">
-    &copy; 2026 TrainAIToGain. All rights reserved.
+  <footer style="margin-top:auto; padding:24px; text-align:center; font-size:12px; color:#9ca3af; line-height:1.6;">
+    <p style="margin:0 0 6px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+    <p style="margin:0;">&copy; 2026 TrainAIToGain. All rights reserved. &bull; <a href="/disclosure.html" style="color:#9ca3af; text-decoration:underline;">Affiliate Disclosure</a></p>
   </footer>
 
   <script>
-    // Pre-fill email from query parameter if present
+    let activeToken = null;
+
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
       const email = params.get('email');
-      if (email) {
+
+      if (token) {
+        activeToken = token;
+        // Auto-process 1-click unsubscribe via token
+        autoUnsubscribeByToken(token);
+      } else if (email) {
         document.getElementById('unsub-email').value = email;
       }
     });
+
+    function autoUnsubscribeByToken(token) {
+      const formContainer = document.getElementById('unsub-form-container');
+      const successBox = document.getElementById('unsub-success');
+      const btn = document.getElementById('unsub-btn');
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'Unsubscribing...';
+      }
+
+      fetch('/api/recordUnsubscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: token })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (formContainer) formContainer.style.display = 'none';
+        if (successBox) successBox.style.display = 'block';
+
+        if (typeof gtag === 'function') {
+          gtag('event', 'unsubscribe', { token: token, email: data.email || 'token_user' });
+        }
+      })
+      .catch(err => {
+        console.error("Auto unsubscribe error:", err);
+      });
+    }
 
     function handleUnsubscribe(e) {
       e.preventDefault();
@@ -178,12 +215,22 @@
       btn.disabled = true;
       btn.innerText = 'Processing...';
 
-      // 1. GA4 event
+      // 1. Server opt-out in Firestore
+      fetch('/api/recordUnsubscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: activeToken || '',
+          email: email
+        })
+      }).catch(() => {});
+
+      // 2. GA4 event
       if (typeof gtag === 'function') {
         gtag('event', 'unsubscribe', { email: email });
       }
 
-      // 2. Server logging
+      // 3. Server telemetry logging
       fetch('/api/logPipelineEvent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -196,7 +243,7 @@
         })
       }).catch(() => {});
 
-      // 3. Sheet logging
+      // 4. Sheet logging backup
       fetch('https://script.google.com/macros/s/AKfycbymXTe1ePaiA33w_q1DnCrixUi_ZiFbWxFXL7bBCKP-Z-hvyI_EyKPyajSaB1oqPltS2Q/exec', {
         method: 'POST',
         body: JSON.stringify({ email: email, source: 'Unsubscribe Page' })

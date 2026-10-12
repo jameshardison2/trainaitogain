@@ -466,6 +466,7 @@ window.addEventListener('unhandledrejection', function(event) {
             <span style="color:white; font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
           </div>
           <p style="color:var(--gray-400); font-size:14px; margin:0;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <p style="color:var(--gray-400); font-size:12px; margin:4px 0 0;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
           <a href="disclosure.html" style="color:var(--gray-500); text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--gray-500)'">Affiliate Disclosure</a>
         </div>
 
@@ -1958,17 +1959,34 @@ window.addEventListener('unhandledrejection', function(event) {
       btn.disabled = true;
       btn.innerText = 'Sending...';
 
-      // GA4 Lead event
+      // GA4 Lead & Mock Emailed events (Section 21.3)
       if (typeof gtag === 'function') {
         gtag('event', 'generate_lead', {
           form_name: 'email_my_mock_results',
+          lead_type: 'mock_results',
           score: avgScore,
           role: roleTarget,
           domain: currentDomain
         });
+        gtag('event', 'mock_results_emailed', {
+          score: avgScore
+        });
       }
 
-      // Server pipeline logging
+      // 1. Dispatch email via secure server endpoint
+      fetch('/api/sendMockResultsEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          targetRole: roleTarget,
+          score: avgScore,
+          strengthSummary: strengthSummary,
+          growthSummary: growthSummary
+        })
+      }).catch((err) => console.error("Mock results email dispatch error:", err));
+
+      // 2. Server pipeline logging
       fetch('/api/logPipelineEvent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
