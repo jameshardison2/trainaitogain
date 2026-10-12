@@ -226,29 +226,104 @@ function changeRoleStatus(id, newStatus) {
     }
 }
 
+function keywordMatchesText(kw, text) {
+    if (!kw || !text) return false;
+    const rawKw = String(kw).trim();
+    const kwLower = rawKw.toLowerCase();
+    const resumeText = String(text).toLowerCase();
+
+    if (resumeText.includes(kwLower)) return true;
+
+    // Check parenthetical acronym: e.g. "Electronic Health Records (EHR)" -> "EHR"
+    const parenMatch = rawKw.match(/\(([^)]+)\)/);
+    if (parenMatch) {
+        const insideParen = parenMatch[1].toLowerCase().trim();
+        const re = new RegExp('\\b' + insideParen.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+        if (re.test(resumeText)) return true;
+        const beforeParen = rawKw.split('(')[0].toLowerCase().trim();
+        if (beforeParen.length > 3 && resumeText.includes(beforeParen)) return true;
+    }
+
+    // Check standalone acronym in keyword: e.g. "EHR" in "EHR Systems", "AWS", "SQL", "RN"
+    const acronyms = rawKw.match(/\b[A-Z]{2,6}\b/g);
+    if (acronyms) {
+        for (const acr of acronyms) {
+            const acrRe = new RegExp('\\b' + acr.toLowerCase() + '\\b', 'i');
+            if (acrRe.test(resumeText)) return true;
+        }
+    }
+
+    // Clean punctuation and check cleaned version
+    const cleanKw = kwLower.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const cleanText = resumeText.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ');
+    if (cleanText.includes(cleanKw)) return true;
+
+    // Check core significant words
+    const genericWords = new Set(['systems', 'system', 'tools', 'tool', 'practices', 'practice', 'skills', 'skill', 'experience', 'knowledge', 'methods', 'method']);
+    const words = cleanKw.split(' ').filter(w => w.length > 2);
+    const coreWords = words.filter(w => !genericWords.has(w));
+    if (coreWords.length > 0 && coreWords.every(w => new RegExp('\\b' + w + '\\b', 'i').test(resumeText))) {
+        return true;
+    }
+
+    // Multi-word phrase matching: at least 70% of words match
+    if (words.length >= 2) {
+        let matchedWords = 0;
+        words.forEach(w => {
+            if (new RegExp('\\b' + w + '\\b', 'i').test(resumeText)) matchedWords++;
+        });
+        if (matchedWords / words.length >= 0.7) return true;
+    }
+
+    return false;
+}
+
 function runMatchScore(btn, id) {
-    let existingScore = localStorage.getItem('atsScore');
-    let hasResume = localStorage.getItem('candidateResumeText') || localStorage.getItem('candidateResumeFileName');
-    if (!existingScore && !hasResume) {
-        btn.innerHTML = '⚠️ <a href="/resume-ats-guide" style="color:inherit; text-decoration:underline; font-weight:700;">Scan resume first</a>';
+    const resumeText = localStorage.getItem('candidateResumeText');
+    // Strict requirement: A scanned resume MUST exist in candidateResumeText (>= 50 chars).
+    // Never invent a score or read fallback scores when no resume was scanned (Section 15 R2c-2)
+    if (!resumeText || typeof resumeText !== 'string' || resumeText.trim().length < 50) {
+        btn.innerHTML = '⚠️ <a href="/resume-ats-guide" style="color:inherit; text-decoration:underline; font-weight:700;">Scan your resume first</a>';
         btn.style.background = '#fef3c7';
         btn.style.color = '#92400e';
         btn.style.borderColor = '#fde68a';
         return;
     }
+
     btn.innerHTML = 'Scanning...';
     btn.disabled = true;
+
     setTimeout(() => {
-        let score = existingScore ? parseInt(existingScore, 10) : 85;
-        btn.innerHTML = `🎯 Match: ${score}%`;
-        btn.style.background = 'rgba(16, 185, 129, 0.1)';
-        btn.style.color = 'var(--primary)';
-        btn.style.borderColor = 'var(--primary)';
-        btn.disabled = false;
-        
         let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
         let role = saved.find(r => r && (r.id === id || ((r.title + '_' + r.domain) === id)));
-        if(role && (!role.status || role.status === 'Saved')) {
+        
+        let keywords = (role && Array.isArray(role.atsKeywords) && role.atsKeywords.length > 0)
+            ? role.atsKeywords
+            : [];
+        
+        if (keywords.length === 0 && role && role.title) {
+            keywords = role.title.split(/[^a-zA-Z0-9]+/).filter(w => w.length > 2 && !/^(and|for|the|with|role|expert|senior|lead)$/i.test(w));
+        }
+
+        let score = 0;
+        if (keywords.length > 0) {
+            let hits = 0;
+            keywords.forEach(kw => {
+                if (keywordMatchesText(kw, resumeText)) hits++;
+            });
+            score = Math.round((hits / keywords.length) * 100);
+        } else {
+            score = 0;
+        }
+        if (score > 100) score = 100;
+
+        btn.innerHTML = `🎯 Match: ${score}%`;
+        btn.style.background = score >= 50 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.08)';
+        btn.style.color = score >= 50 ? 'var(--primary)' : '#b91c1c';
+        btn.style.borderColor = score >= 50 ? 'var(--primary)' : '#fca5a5';
+        btn.disabled = false;
+        
+        if (role && (!role.status || role.status === 'Saved')) {
             role.status = 'ATS Scanned';
             localStorage.setItem('savedRoles', JSON.stringify(saved));
             
@@ -256,7 +331,7 @@ function runMatchScore(btn, id) {
             if(sel) sel.value = 'ATS Scanned';
             updateAnalytics(saved);
         }
-    }, 700);
+    }, 500);
 }
 
 function toggleReminder(btn, id) {
