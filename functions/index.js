@@ -295,6 +295,9 @@ exports.logPipelineEvent = onRequest(
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 
 exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
+  logger.info("sendFollowUpEmails is paused pending review.");
+  return;
+
   const db = admin.firestore();
   const now = new Date();
   
