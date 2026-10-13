@@ -1,5 +1,29 @@
 # Release Log
 
+## Release: v2026.10.12-platform-warnings-live
+- **Date:** October 12, 2026
+- **Git Commit:** `3f4f91d5`
+- **Git Tag:** `v2026.10.12-platform-warnings-live`
+- **Firebase Project:** `trainaitogain-50c19`
+- **Live Domains:** `https://trainaitogain.com`, `https://trainaitogain-50c19.web.app`
+
+### Summary of Changes Released:
+1. **Platform Indicator Badges (`apply.html`, `render_waves.js`, `saved-roles.html`):**
+   - Distinctive badges on every role card: `⚡ Mercor` (emerald green badge) vs `🌐 micro1` (indigo badge).
+2. **Pre-Apply Warning Box:**
+   - Every role card displays a clear, non-blocking warning notice box above the Apply button *before* clicking:
+     `ℹ️ Applying on [Platform] — Requires creating a free [Platform] account & completing their AI evaluation.`
+3. **Different-Platform Switching Alert:**
+   - If a candidate previously clicked Apply on one platform (e.g., Mercor) and is now looking at or applying to a role on a different platform (e.g., micro1), a highlighted alert is displayed:
+     `🚨 DIFFERENT PLATFORM WARNING: You previously applied to a [Previous Platform] role. This position is on [Current Platform], which requires a separate account and application.`
+   - Updates dynamically in real-time across all visible role cards as soon as an Apply click is registered without needing a page refresh (`window.updateAllPlatformWarnings`).
+4. **Platform Guidance Banner:**
+   - Added a top-of-jobs guidance banner on `/apply` detailing what to expect when applying to Mercor vs. micro1 roles.
+5. **Dashboard Consistency (`saved-roles.html`):**
+   - Mirrored platform badges, different platform warning alerts, and pre-apply notice blocks on all saved and started roles in candidate dashboards.
+
+---
+
 ## Release: v2026.10.12-round4-live
 - **Date:** October 12, 2026
 - **Git Commit:** `e2b35f4e`
