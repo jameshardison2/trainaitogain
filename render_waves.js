@@ -10,6 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 // Fallback Soft Landing & Apply Click
+if (!window.updateAllPlatformWarnings) {
+    window.updateAllPlatformWarnings = function(currentPlatform) {
+        document.querySelectorAll('.diff-platform-alert').forEach(function(el) {
+            var rolePlatform = el.getAttribute('data-role-platform');
+            if (rolePlatform && rolePlatform !== currentPlatform) {
+                el.style.display = 'block';
+                var prevEl = el.querySelector('.prev-platform-name');
+                if (prevEl) prevEl.innerText = currentPlatform;
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    };
+}
+
 if (!window.handleApplyClick) {
     window.handleApplyClick = function(title, linkTarget, btn, roleId, matchScore, domain) {
         if (window.event) window.event.stopPropagation();
@@ -24,6 +39,12 @@ if (!window.handleApplyClick) {
 
         const isMicro1 = targetUrl.includes('micro1');
         const platformName = isMicro1 ? 'micro1' : 'Mercor';
+        const prevPlatform = localStorage.getItem('tgt_last_applied_platform') || '';
+        localStorage.setItem('tgt_last_applied_platform', platformName);
+
+        if (typeof window.updateAllPlatformWarnings === 'function') {
+            window.updateAllPlatformWarnings(platformName);
+        }
 
         let applyCount = parseInt(localStorage.getItem('tgt_apply_count') || '0', 10) + 1;
         localStorage.setItem('tgt_apply_count', String(applyCount));
@@ -66,7 +87,20 @@ if (!window.handleApplyClick) {
             const safeTargetStr = (targetUrl || '').replace(/'/g, "\\'");
             const safePlatformStr = platformName;
 
+            let diffPlatformBannerHtml = '';
+            if (prevPlatform && prevPlatform !== platformName) {
+                diffPlatformBannerHtml = `
+                    <div style="background:#fee2e2; border:1.5px solid #ef4444; border-radius:8px; padding:10px 12px; margin-bottom:12px; color:#991b1b; font-size:12px; line-height:1.45;">
+                        <div style="display:flex; align-items:center; gap:6px; font-weight:800; color:#dc2626; margin-bottom:3px; font-size:11px; text-transform:uppercase;">
+                            <span>🚨 DIFFERENT PLATFORM WARNING</span>
+                        </div>
+                        You switched from <strong>${prevPlatform}</strong> to <strong>${platformName}</strong>! Remember: your ${prevPlatform} credentials will not work here. You must create a new account on ${platformName} in this browser.
+                    </div>
+                `;
+            }
+
             softLandingEl.innerHTML = `
+                ${diffPlatformBannerHtml}
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
                     <span style="font-size:22px;">🚀</span>
                     <h4 style="margin:0; font-size:16px; font-weight:800; color:#065f46;">You’re headed to ${platformName}. Here’s what’s next:</h4>
@@ -514,6 +548,48 @@ function renderWavesApp() {
                         }
                     }
 
+                    const isMicro1Role = (role.platform === 'micro1' || safeLink.includes('micro1'));
+                    const rolePlatform = isMicro1Role ? 'micro1' : 'Mercor';
+                    const lastAppliedPlatform = typeof localStorage !== 'undefined' ? (localStorage.getItem('tgt_last_applied_platform') || '') : '';
+                    const isDifferentPlatform = (lastAppliedPlatform && lastAppliedPlatform !== rolePlatform);
+
+                    const platformBadgeHtml = isMicro1Role
+                        ? `<span class="platform-badge" style="padding:5px 8px; background:#4338ca; color:#ffffff; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.04em; display:inline-flex; align-items:center; gap:4px;">🌐 micro1</span>`
+                        : `<span class="platform-badge" style="padding:5px 8px; background:#065f46; color:#ffffff; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.04em; display:inline-flex; align-items:center; gap:4px;">⚡ Mercor</span>`;
+
+                    const diffAlertHtml = `
+                        <div class="diff-platform-alert" data-role-platform="${rolePlatform}" style="background:#fef2f2; border:1.5px solid #ef4444; border-radius:8px; padding:10px 12px; margin-bottom:12px; font-size:12px; line-height:1.45; text-align:left; display:${isDifferentPlatform ? 'block' : 'none'};">
+                            <div style="display:flex; align-items:center; gap:6px; color:#dc2626; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">
+                                <span>🚨 DIFFERENT PLATFORM WARNING</span>
+                            </div>
+                            <div style="color:#991b1b;">
+                                You previously applied on <strong class="prev-platform-name">${lastAppliedPlatform}</strong>. This role is on <strong>${rolePlatform}</strong>. <strong>Your ${lastAppliedPlatform} credentials will NOT work here</strong> — you must create a new account on ${rolePlatform}.
+                            </div>
+                        </div>
+                    `;
+
+                    const preApplyWarningHtml = isMicro1Role ? `
+                        <div class="pre-apply-warning" style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:10px 12px; margin-bottom:12px; font-size:12px; line-height:1.45; text-align:left;">
+                            <div style="display:flex; align-items:center; gap:6px; color:#b45309; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">
+                                <span>⚠️ Notice Before Applying (micro1)</span>
+                            </div>
+                            <div style="color:#78350f;">
+                                • <strong>Account Required:</strong> Redirects to micro1. Create your account in this same browser so your referral is recorded.<br>
+                                • <strong>Technical Screen:</strong> Evaluated live by Zara AI on your primary skill.
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="pre-apply-warning" style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:10px 12px; margin-bottom:12px; font-size:12px; line-height:1.45; text-align:left;">
+                            <div style="display:flex; align-items:center; gap:6px; color:#b45309; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">
+                                <span>⚠️ Notice Before Applying (Mercor)</span>
+                            </div>
+                            <div style="color:#78350f;">
+                                • <strong>Account Required:</strong> Redirects to Mercor. Create your free account in this same browser so your progress is saved.<br>
+                                • <strong>AI Interview:</strong> ~20 min audio/video interview. <a href="/ai-interview" target="_blank" onclick="event.stopPropagation();" style="color:#b45309; font-weight:700; text-decoration:underline;">Practice mock first ➔</a>
+                            </div>
+                        </div>
+                    `;
+
                     // Requirements block
                     const reqHtml = `
                         <div class="role-requirements" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; padding:8px 12px; margin-bottom:14px; font-size:12px; line-height:1.4;">
@@ -578,22 +654,26 @@ function renderWavesApp() {
                     }
 
                     html += `
-                        <div class="feature-card opp-card" onclick="window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}')" data-domain="${role.domain}" data-platform="${role.platform || 'Mercor'}" data-pay="${payYearly}" data-location="${req.locKey}" data-index="${index}" style="cursor:pointer; width:100%; box-sizing:border-box; order:${index}; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+                        <div class="feature-card opp-card" onclick="window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}')" data-domain="${role.domain}" data-platform="${rolePlatform}" data-pay="${payYearly}" data-location="${req.locKey}" data-index="${index}" style="cursor:pointer; width:100%; box-sizing:border-box; order:${index}; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
                             <div style="display:flex; justify-content:space-between; margin-bottom:14px; align-items:center; flex-wrap:wrap; gap:8px;">
                                 <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
                                     <div style="padding:5px 8px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
                                     <div style="padding:5px 8px; background:${bg}; color:white; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">${role.status}</div>
+                                    ${platformBadgeHtml}
                                     ${matchBadgeHtml}
                                 </div>
                                 <div style="color:var(--primary); font-weight:800; font-size:18px;">${role.pay}</div>
                             </div>
                             <h3 style="font-size:18px; margin-bottom:8px; color:var(--black); line-height:1.2;">${role.title}</h3>
-                            ${(role.description && role.description.trim() && role.platform !== 'Mercor') ? `<p style="color:var(--gray-500); font-size:14px; margin-bottom:14px; flex-grow:1; line-height:1.6;">${role.description}</p>` : `<p style="color:var(--gray-500); font-size:14px; margin-bottom:14px; flex-grow:1; line-height:1.6;">Remote, ${role.pay.includes('/hr') ? 'hourly' : (role.pay.includes('/mo') ? 'monthly' : (role.pay.includes('/yr') ? 'annual' : 'flexible'))} role. Direct application on ${role.platform || 'Mercor'}.</p>`}
+                            ${(role.description && role.description.trim() && role.platform !== 'Mercor') ? `<p style="color:var(--gray-500); font-size:14px; margin-bottom:14px; flex-grow:1; line-height:1.6;">${role.description}</p>` : `<p style="color:var(--gray-500); font-size:14px; margin-bottom:14px; flex-grow:1; line-height:1.6;">Remote, ${role.pay.includes('/hr') ? 'hourly' : (role.pay.includes('/mo') ? 'monthly' : (role.pay.includes('/yr') ? 'annual' : 'flexible'))} role. Direct application on ${rolePlatform}.</p>`}
                             
                             ${reqHtml}
 
-                            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px;">${tagsHtml}</div>
+                            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px;">${tagsHtml}</div>
                             
+                            ${diffAlertHtml}
+                            ${preApplyWarningHtml}
+
                             ${desktopButtonsHtml}
                             ${mobileButtonsHtml}
                             
