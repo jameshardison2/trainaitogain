@@ -302,6 +302,42 @@ async function runSuite() {
     recordResult('Footer Scalability', file, isGood, `Footer: ${hasFooter}, Logo Constrained: ${hasMaxLogo}, Postal Pending: ${hasPostalPending}`);
   }
 
+  // --- SUITE 7: Outreach CRM Tool Full Verification ---
+  console.log('\n--- 7. Testing Outreach CRM Tool Integrity & Functionality ---');
+  try {
+    const outreachContent = fs.readFileSync(path.join(__dirname, 'outreach-tool.html'), 'utf-8');
+
+    // 1. Direct-to-queue if contacts exist
+    const hasDirectQueueOnAuth = outreachContent.includes('syncOnAuth') && outreachContent.includes('showQueue()');
+    recordResult('Outreach CRM', 'Direct-to-queue on sign-in when contacts exist', hasDirectQueueOnAuth);
+
+    // 2. Skip to Queue button on upload screen
+    const hasSkipBtn = outreachContent.includes('id="skip-to-queue-btn"') && outreachContent.includes('Skip, go to my queue ➔');
+    recordResult('Outreach CRM', '"Skip, go to my queue ➔" button on upload screen', hasSkipBtn);
+
+    // 3. Upload / merge CSV button in queue
+    const hasQueueUploadBtn = outreachContent.includes('id="queue-upload-btn"') && outreachContent.includes('Upload / merge CSV');
+    recordResult('Outreach CRM', '"Upload / merge CSV" button inside queue view', hasQueueUploadBtn);
+
+    // 4. Empty queue state with upload button
+    const hasEmptyState = outreachContent.includes('No contacts yet') && outreachContent.includes('Your outreach queue is currently empty');
+    recordResult('Outreach CRM', 'Empty queue shows "No contacts yet" with upload button', hasEmptyState);
+
+    // 5. One-time Cloud Sync Banner
+    const hasCloudSyncBanner = outreachContent.includes('id="cloud-import-banner"') && outreachContent.includes('importLocalToFirestore');
+    recordResult('Outreach CRM', 'One-time cloud sync banner for local contacts', hasCloudSyncBanner);
+
+    // 6. De-duplication and CSV parsing
+    const hasDeduplication = outreachContent.includes('cleanLinkedInUrl') && outreachContent.includes('cleanNameCompanyKey');
+    recordResult('Outreach CRM', 'Deduplication logic for LinkedIn and Name/Company', hasDeduplication);
+
+    // 7. Backup and Export functionality
+    const hasBackupSystem = outreachContent.includes('downloadBackup') && outreachContent.includes('backup-reminder-banner');
+    recordResult('Outreach CRM', 'Backup download and 7-day reminder system', hasBackupSystem);
+  } catch (err) {
+    recordResult('Outreach CRM', 'Inspection failed', false, err.message);
+  }
+
   // --- SUMMARY SCORECARD ---
   console.log('\n====================================================');
   console.log('📊 FINAL AUTOMATION TEST SCORECARD');

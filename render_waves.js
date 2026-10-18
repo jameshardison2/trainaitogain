@@ -300,14 +300,14 @@ function getRoleMatchScore(role) {
 }
 
 function formatSyncDate(dateStr) {
-    if (!dateStr) return 'Oct 12, 2026';
+    if (!dateStr) return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     try {
         const d = new Date(dateStr);
         if (!isNaN(d.getTime())) {
             return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
     } catch (e) {}
-    return 'Oct 12, 2026';
+    return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 function renderWavesApp() {
@@ -318,7 +318,7 @@ function renderWavesApp() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = yield response.json();
-            let syncDate = data.lastUpdated || '2026-10-12T12:00:00Z';
+            let syncDate = (data && data.meta && data.meta.syncedAt) || data.lastUpdated || new Date().toISOString();
 
             try {
                 const apiRes = yield fetch('/api/getRoles');
