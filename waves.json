@@ -2,6 +2,1552 @@
   "lastUpdated": "2026-10-12T12:37:18.413Z",
   "roles": [
     {
+      "id": "micro1-254e0a96-f823-486f-b0f5-cc82dca09427",
+      "title": "Investment Banking Associate",
+      "domain": "FINANCE",
+      "pay": "$120-$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 8+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "financial modeling",
+        "valuation analysis",
+        "deal execution",
+        "market analysis",
+        "financial statement analysis",
+        "written communication",
+        "attention to detail",
+        "feedback delivery"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/254e0a96-f823-486f-b0f5-cc82dca09427?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-f5e8360f-b6b5-4674-9b5d-798082e223ec",
+      "title": "CAD Expert",
+      "domain": "GENERAL",
+      "pay": "$80-$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "AutoCAD",
+        "AutoDesk",
+        "Fusion 360",
+        "FreeCAD",
+        "CAD"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/f5e8360f-b6b5-4674-9b5d-798082e223ec?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-00276647-e6e5-467b-92d8-1018fe2c7278",
+      "title": "US-Licensed Physician",
+      "domain": "MEDICAL",
+      "pay": "$80-$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Hospitalist Experience",
+        "Internal Medicine",
+        "Pediatrics",
+        "Family Medicine",
+        "Board Certification"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/00276647-e6e5-467b-92d8-1018fe2c7278?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-43008047-95cf-492d-84de-5ea1cb04b779",
+      "title": "Enterprise Client Partner, Enterprise AI",
+      "domain": "GENERAL",
+      "pay": "$2-$3/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Client Acquisition",
+        "Outbound Prospecting",
+        "Enterprise Parnerships",
+        "Enterprise AI"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/43008047-95cf-492d-84de-5ea1cb04b779?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-71c67e07-6f80-43af-95c6-ae18cbed6c38",
+      "title": "Bilingual Mental Health Expert",
+      "domain": "MEDICAL",
+      "pay": "$100-$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "clinical psychology",
+        "bilingual communication",
+        "ethical decision-making",
+        "cultural sensitivity",
+        "analytical evaluation",
+        "case study development",
+        "written and verbal communication",
+        "interdisciplinary collaboration"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/71c67e07-6f80-43af-95c6-ae18cbed6c38?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-ab08cc42-f7e0-4565-b306-11e55beb613f",
+      "title": "PhysioNet Competitor (Biomedical Signal Processing & ML)",
+      "domain": "MEDICAL",
+      "pay": "$60-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Biotechnology",
+        "Biology",
+        "Machine Learning"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/ab08cc42-f7e0-4565-b306-11e55beb613f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-44fc17a0-8964-4970-979b-dd975baad36d",
+      "title": "Mechanical Engineering Expert (MSc. or PhD)",
+      "domain": "SOFTWARE",
+      "pay": "$60-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "Mechanical Engineering"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/44fc17a0-8964-4970-979b-dd975baad36d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-99ef9e98-e4de-4503-b2e3-980390dab872",
+      "title": "Aerodynamics Expert (MSc. or PhD)",
+      "domain": "GENERAL",
+      "pay": "$80-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "Aerodynamics"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/99ef9e98-e4de-4503-b2e3-980390dab872?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-aa1993c5-2079-40ac-ad0a-09ebfd77960d",
+      "title": "Hardware Expert (MSc. or PhD)",
+      "domain": "GENERAL",
+      "pay": "$60-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "RTL",
+        "Hardware"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/aa1993c5-2079-40ac-ad0a-09ebfd77960d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-1fdcfc88-24fa-4378-9e5a-2ca0ac983f8e",
+      "title": "Puzzle Solver (Coding)",
+      "domain": "GENERAL",
+      "pay": "$60-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "C++"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/1fdcfc88-24fa-4378-9e5a-2ca0ac983f8e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-be0ac227-30ab-4126-bde8-e1e0660c940f",
+      "title": "ML Engineer (MSc. or PhD)",
+      "domain": "SOFTWARE",
+      "pay": "$60-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Machine Learning"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/be0ac227-30ab-4126-bde8-e1e0660c940f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-7944c9e5-73a0-45a0-b298-d93be3db08ed",
+      "title": "STEM Expert (MSc./PhD)",
+      "domain": "GENERAL",
+      "pay": "$60-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Biology"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/7944c9e5-73a0-45a0-b298-d93be3db08ed?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-79170f82-64d2-4029-9233-c39f1081e709",
+      "title": "AI Product Evaluator",
+      "domain": "GENERAL",
+      "pay": "$14-$36/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "AI Models",
+        "AI Agents",
+        "Following Instructions",
+        "Attention to Detail"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/79170f82-64d2-4029-9233-c39f1081e709?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-26044f07-dc45-4a01-8a5e-8154914a1267",
+      "title": "Japanese Language Expert",
+      "domain": "GENERAL",
+      "pay": "$65-$98/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/26044f07-dc45-4a01-8a5e-8154914a1267?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-40ace067-cec8-4998-bb75-067a565c23b3",
+      "title": "Korean Language Expert",
+      "domain": "GENERAL",
+      "pay": "$65-$98/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Communication",
+        "Bilingual",
+        "Linguists"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/40ace067-cec8-4998-bb75-067a565c23b3?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-0733d72e-0d2a-4420-9f18-f2bb3d889d47",
+      "title": "STEM Expert – Chemistry & Computational Chemistry (PhD)",
+      "domain": "GENERAL",
+      "pay": "$45-$90/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Computational Chemistry",
+        "Structural Bioinformatics",
+        "Cheminformatics",
+        "Proteomics & Metabolomics",
+        "Documentation",
+        "Verbal communication",
+        "Biology",
+        "organic chemistry"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/0733d72e-0d2a-4420-9f18-f2bb3d889d47?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d7372be7-b297-494d-9f74-20f297d6792a",
+      "title": "STEM Expert – Biology & Bioinformatics (PhD)",
+      "domain": "GENERAL",
+      "pay": "$45-$90/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "scientific software configuration",
+        "ai/ml-assisted chemistry workflows",
+        "quantitative analysis",
+        "analytical reasoning",
+        "scientific programming",
+        "written communication",
+        "verbal communication",
+        "documentation"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/d7372be7-b297-494d-9f74-20f297d6792a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-9f07b919-4451-402f-ae2d-ccec576dbdc1",
+      "title": "QA Engineer",
+      "domain": "SOFTWARE",
+      "pay": "$63-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 120+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "software quality assurance",
+        "test case design",
+        "test execution",
+        "defect reporting",
+        "data annotation",
+        "data labeling",
+        "ai model evaluation",
+        "documentation"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/9f07b919-4451-402f-ae2d-ccec576dbdc1?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-8648356b-1e04-4d62-bfcc-c72c3d5993b0",
+      "title": "English Voice Recording",
+      "domain": "GENERAL",
+      "pay": "$20-$70/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Native English",
+        "Sound recording",
+        "Clear and Natural spoken english",
+        "Attention to detail",
+        "Read Written text aloud smoothly"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/8648356b-1e04-4d62-bfcc-c72c3d5993b0?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-5ba40f6e-b9a0-4a61-91fd-004516fb27f8",
+      "title": "App Security Expert",
+      "domain": "SOFTWARE",
+      "pay": "$40-$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "OSWE",
+        "LLM security",
+        "AI-SAST evaluation",
+        "AppSec",
+        "Agent security architecture"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/5ba40f6e-b9a0-4a61-91fd-004516fb27f8?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-dfb2a79d-fb7a-4b6f-b867-733289e253c7",
+      "title": "Life Sciences Research Scientist (PhD): Wet Lab & Computational Biology",
+      "domain": "GENERAL",
+      "pay": "$45-$90/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "computational chemistry",
+        "molecular simulations",
+        "python",
+        "gaussian",
+        "gromacs",
+        "lammps",
+        "amber",
+        "orca"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/dfb2a79d-fb7a-4b6f-b867-733289e253c7?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-22ab4fe5-f39d-4d8a-97f7-db7c16ff79e2",
+      "title": "Clinical, Microbiome & Translational Research Scientist (PhD)",
+      "domain": "MEDICAL",
+      "pay": "$45-$90/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "computational chemistry",
+        "molecular simulations",
+        "python",
+        "gaussian",
+        "gromacs",
+        "lammps",
+        "amber",
+        "orca"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/22ab4fe5-f39d-4d8a-97f7-db7c16ff79e2?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-7365d348-e98a-4999-a018-2415a6a737ca",
+      "title": "Computational Chemistry, Structural Biology & Drug Discovery Scientist (PhD)",
+      "domain": "GENERAL",
+      "pay": "$45-$90/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Computational Chemistry",
+        "Structural Bioinformatics",
+        "Cheminformatics",
+        "Proteomics & Metabolomics",
+        "Documentation",
+        "Verbal communication",
+        "Drug Discovery",
+        "Biology"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/7365d348-e98a-4999-a018-2415a6a737ca?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-29120525-ef73-4aa9-9a77-9fa59009d4d3",
+      "title": "Computational Biology & Bioinformatics Expert (PhD)",
+      "domain": "GENERAL",
+      "pay": "$45-$90/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "computational chemistry",
+        "molecular simulations",
+        "python",
+        "gaussian",
+        "gromacs",
+        "lammps",
+        "amber",
+        "orca"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/29120525-ef73-4aa9-9a77-9fa59009d4d3?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a58e1af4-14c2-42a6-8e48-301448d8e61c",
+      "title": "Applied Scientist",
+      "domain": "GENERAL",
+      "pay": "$245-$280/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "Machine Learning",
+        "Statistics",
+        "Data Analysis",
+        "Experimentation",
+        "Pandas",
+        "Data Modeling"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/a58e1af4-14c2-42a6-8e48-301448d8e61c?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c3af6520-9ea8-4717-b8c6-2b9dee8ee470",
+      "title": "Education Practitioner - Learning & Assessment Specialist",
+      "domain": "GENERAL",
+      "pay": "$90-$130/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "instructional designers",
+        "educators"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c3af6520-9ea8-4717-b8c6-2b9dee8ee470?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-84c0959f-ea1b-4bf3-8783-4d74373bb4b7",
+      "title": "Software Engineer, Platform Engineering",
+      "domain": "SOFTWARE",
+      "pay": "$8-$9/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "JS/TS",
+        "AI-Native Engineering",
+        "End-to-End Product Ownership",
+        "Backend Architecture & Scalability"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/84c0959f-ea1b-4bf3-8783-4d74373bb4b7?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d484ab8c-eb8b-4b2f-b742-3d00719ca143",
+      "title": "Lawyer",
+      "domain": "LEGAL",
+      "pay": "$100-$170/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "legal reasoning",
+        "issue-spotting",
+        "legal writing",
+        "document review",
+        "attention to detail",
+        "written communication",
+        "independent work",
+        "legal research"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/d484ab8c-eb8b-4b2f-b742-3d00719ca143?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-abdb5807-b650-4eb8-b4e4-20a5a834301d",
+      "title": "Tax Attorney",
+      "domain": "GENERAL",
+      "pay": "$100-$170/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "tax law",
+        "legal research and analysis",
+        "legal document review",
+        "issue spotting",
+        "legal reasoning",
+        "written communication",
+        "attention to detail",
+        "tax compliance"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/abdb5807-b650-4eb8-b4e4-20a5a834301d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-68d31799-41cb-4899-987b-527eba2ef40a",
+      "title": "Employment Lawyer",
+      "domain": "LEGAL",
+      "pay": "$100-$170/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "employment law expertise",
+        "legal analysis",
+        "legal document review",
+        "issue spotting",
+        "legal reasoning",
+        "written communication",
+        "attention to detail",
+        "ai evaluation"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/68d31799-41cb-4899-987b-527eba2ef40a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-47ae77fa-cc3b-40f5-bdc6-eca4d11cc73e",
+      "title": "Personal Injury Lawyer",
+      "domain": "LEGAL",
+      "pay": "$100-$170/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "legal reasoning",
+        "issue-spotting",
+        "document review",
+        "personal injury law",
+        "civil litigation",
+        "written communication",
+        "attention to detail",
+        "ai-generated content evaluation"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/47ae77fa-cc3b-40f5-bdc6-eca4d11cc73e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d8efbdbf-cb11-428d-bcef-7d9d8d197dfa",
+      "title": "Bilingual Medical Doctor (Japanese)",
+      "domain": "MEDICAL",
+      "pay": "$125-$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Diagnostic Analysis",
+        "Medicine",
+        "Physiology",
+        "Healthcare Protocols",
+        "Clinical Terminology",
+        "Japanese language proficiency"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/d8efbdbf-cb11-428d-bcef-7d9d8d197dfa?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c81e832c-d6fd-4d6e-9f40-3df9bedbf18f",
+      "title": "Bilingual Medical Doctor (Korean)",
+      "domain": "MEDICAL",
+      "pay": "$125-$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Diagnostic Analysis",
+        "Medicine",
+        "Physiology",
+        "Healthcare Protocols",
+        "Clinical Terminology",
+        "Korean language fluency"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c81e832c-d6fd-4d6e-9f40-3df9bedbf18f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-678001af-5fc0-4173-8320-3b0dc183651d",
+      "title": "Retail Trade & Operations Expert",
+      "domain": "GENERAL",
+      "pay": "$40-$70/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 15+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Retail"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/678001af-5fc0-4173-8320-3b0dc183651d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-f65069d1-f642-4b92-b8f2-76685acbe473",
+      "title": "Agriculture, Forestry & Environmental Experts",
+      "domain": "GENERAL",
+      "pay": "$40-$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 15+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Agricultural Engineering",
+        "Environmental Conservation"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/f65069d1-f642-4b92-b8f2-76685acbe473?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-473cffff-4779-4826-840d-f8b6ae4b3c63",
+      "title": "Accountant / Auditor",
+      "domain": "GENERAL",
+      "pay": "$50-$70/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 15+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Financial Reporting",
+        "GAAP/IFRS",
+        "Audit Procedures",
+        "Excel/Financial Modeling",
+        "Tax Compliance"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/473cffff-4779-4826-840d-f8b6ae4b3c63?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-1a90eb63-30e8-4c77-9996-94dc4b02d909",
+      "title": "IT Manager",
+      "domain": "GENERAL",
+      "pay": "$60-$75/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 5+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "IT Strategy",
+        "Systems Architecture",
+        "Team Leadership",
+        "Vendor Management",
+        "Security Compliance"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/1a90eb63-30e8-4c77-9996-94dc4b02d909?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-6fc6311d-f159-46ad-90c9-df1c42c9765b",
+      "title": "Lawyer",
+      "domain": "LEGAL",
+      "pay": "$60-$70/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 5+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Contract Review",
+        "Legal Research",
+        "Regulatory Compliance",
+        "Legal Writing"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/6fc6311d-f159-46ad-90c9-df1c42c9765b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-92b81bda-6c3f-42c1-9cad-9e3cdb911ad9",
+      "title": "Software Developer",
+      "domain": "SOFTWARE",
+      "pay": "$50-$70/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 15+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "JavaScript",
+        "JAVA",
+        "Node.js",
+        "Full - Stack",
+        "Code Review",
+        "Technical Documentation",
+        "Software Architecture"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/92b81bda-6c3f-42c1-9cad-9e3cdb911ad9?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-7159a597-764f-48c0-b8ee-1f5f60846f16",
+      "title": "Generalist, US Personal Finance",
+      "domain": "FINANCE",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Attention to Detail",
+        "Written Communication",
+        "Instruction Following",
+        "Personal Tax Filing Experience (2025 US Return)",
+        "Personal Finance/Household Budgeting",
+        "Online Banking & Financial Apps",
+        "Data Entry & Accuracy",
+        "Task Management/Deadline Delivery"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/7159a597-764f-48c0-b8ee-1f5f60846f16?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-f29dc369-f46f-443e-986b-7120eebe9225",
+      "title": "Software Engineer (Open Source Contributor)",
+      "domain": "SOFTWARE",
+      "pay": "$50-$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python3",
+        "JAVA",
+        "Rust",
+        "Algorithms",
+        "Basics C++",
+        "Typescript",
+        "codebase refactoring",
+        "GitHub"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/f29dc369-f46f-443e-986b-7120eebe9225?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-51d28c89-faea-4ff7-8ea5-181b4a6dce86",
+      "title": "Investment Banking – M&A Advisory.",
+      "domain": "FINANCE",
+      "pay": "$175-$300/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 25+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "financial modeling",
+        "excel",
+        "company and industry research",
+        "comparable company analysis",
+        "pitchbook preparation",
+        "transaction analysis",
+        "valuation methodologies",
+        "analytical review"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/51d28c89-faea-4ff7-8ea5-181b4a6dce86?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-168285a8-8063-447f-b55b-222c1da4c7c2",
+      "title": "Software Engineer (GitHub Contributor)",
+      "domain": "SOFTWARE",
+      "pay": "$50-$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python3",
+        "JAVA",
+        "Rust",
+        "Algorithms",
+        "Basics C++",
+        "Typescript",
+        "codebase refactoring",
+        "GitHub"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/168285a8-8063-447f-b55b-222c1da4c7c2?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2623e26a-77a6-4e1f-891e-eff91cf455f1",
+      "title": "Personal Financial Advisor",
+      "domain": "FINANCE",
+      "pay": "$90-$110/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 45+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "personal financial planning",
+        "investment strategies",
+        "regulatory compliance",
+        "written and verbal communication",
+        "analytical skills"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/2623e26a-77a6-4e1f-891e-eff91cf455f1?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-831b4af6-d352-4e04-8aeb-c857c1feea98",
+      "title": "Licensed Dietitian",
+      "domain": "GENERAL",
+      "pay": "$50-$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Nutrition Counseling",
+        "Dietary Assessment",
+        "Meal Planning",
+        "Clinical Nutrition",
+        "Client Communication"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/831b4af6-d352-4e04-8aeb-c857c1feea98?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-3cfe73e9-28fa-4b8f-a0b7-bdba2b00f3ef",
+      "title": "Research Scientist - Computer Science & Computational Physics",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 4+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Computational rigor",
+        "Complex problem solving - Research",
+        "Problem framing"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/3cfe73e9-28fa-4b8f-a0b7-bdba2b00f3ef?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-83ed9d66-130e-4c8f-8e9f-b1d18acdcf98",
+      "title": "Principal Research Scientist (Computer Science / Computational Physics)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 4+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Novelty judgment",
+        "Research direction",
+        "Computational rigor",
+        "Complex problem solving - Research"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/83ed9d66-130e-4c8f-8e9f-b1d18acdcf98?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-30cdcad1-c75b-412d-94b6-2af95f118549",
+      "title": "Recruiter (San Francisco based)",
+      "domain": "GENERAL",
+      "pay": "$50-$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Sourcing",
+        "Recruitment pipeline",
+        "Remote work self-management",
+        "Stakeholder communication"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/30cdcad1-c75b-412d-94b6-2af95f118549?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-612ae8d5-8e3d-4750-b779-b3a0e3e02a52",
+      "title": "Privacy Analyst",
+      "domain": "GENERAL",
+      "pay": "$31-$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "PII",
+        "Data Privacy",
+        "Document Review",
+        "Quality Assurance"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/612ae8d5-8e3d-4750-b779-b3a0e3e02a52?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-64592ac1-f184-4c0f-9e5d-796cccdd499b",
+      "title": "Data Partnerships Manager",
+      "domain": "SOFTWARE",
+      "pay": "$20-$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Negotiation",
+        "Prospecting",
+        "Closing",
+        "Partnerships"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/64592ac1-f184-4c0f-9e5d-796cccdd499b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-f397a599-7705-480b-a90a-f40e009b8c90",
+      "title": "Enterprise Client Partner, U.S. Government",
+      "domain": "GENERAL",
+      "pay": "$2-$3/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Client Acquisition",
+        "Outbound Prospecting",
+        "Enterprise Parnerships",
+        "Enterprise AI"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/f397a599-7705-480b-a90a-f40e009b8c90?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-0406acdc-9e38-4f22-a8b5-9e9e228c9bb1",
+      "title": "Competitive Data Scientist (Kaggle)",
+      "domain": "SOFTWARE",
+      "pay": "$60-$120/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "ML Engineering",
+        "Data Science",
+        "Mathematics",
+        "Coding"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/0406acdc-9e38-4f22-a8b5-9e9e228c9bb1?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d34e7bec-c2e6-434a-94cf-06355b71ea45",
+      "title": "Postal Clerk",
+      "domain": "GENERAL",
+      "pay": "$30-$45/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Postage",
+        "Shipping",
+        "Customs"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/d34e7bec-c2e6-434a-94cf-06355b71ea45?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2332e3d6-3b9a-4f09-be33-a21b73150544",
+      "title": "Usability Tester",
+      "domain": "SOFTWARE",
+      "pay": "$20-$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/2332e3d6-3b9a-4f09-be33-a21b73150544?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a3f69448-b7a9-46b1-9104-17461122ca66",
+      "title": "Spanish-Language Consumer Reviewer",
+      "domain": "GENERAL",
+      "pay": "$20-$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/a3f69448-b7a9-46b1-9104-17461122ca66?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-f6338e16-d6aa-4fab-bedc-f93a0c594294",
+      "title": "Consumer Reviewer",
+      "domain": "GENERAL",
+      "pay": "$20-$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/f6338e16-d6aa-4fab-bedc-f93a0c594294?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-5baacaee-bc03-4184-ba84-9b5fc84b3351",
+      "title": "211 Specialist",
+      "domain": "GENERAL",
+      "pay": "$30-$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/5baacaee-bc03-4184-ba84-9b5fc84b3351?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-dd877e32-2969-494a-af25-c40b2bb96abc",
+      "title": "Bilingual (Spanish) Benefits Counselor",
+      "domain": "LEGAL",
+      "pay": "$35-$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Medicare",
+        "Spanish",
+        "Benefits",
+        "Outreach"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/dd877e32-2969-494a-af25-c40b2bb96abc?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c7ffca93-f98e-41e6-96db-a17c89b8606d",
+      "title": "National Park Ranger",
+      "domain": "GENERAL",
+      "pay": "$30-$45/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Permits",
+        "Reservations",
+        "Safety"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c7ffca93-f98e-41e6-96db-a17c89b8606d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-bb117da1-3d6d-41d7-9bb5-69beff1f1104",
+      "title": "Financial Aid Advisor",
+      "domain": "FINANCE",
+      "pay": "$30-$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Repayment",
+        "PSLF",
+        "Default"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/bb117da1-3d6d-41d7-9bb5-69beff1f1104?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-657dcfd9-f374-4371-bf9b-9ba13557fe6f",
+      "title": "VA Eligibility Specialist",
+      "domain": "GENERAL",
+      "pay": "$30-$50/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Eligibility",
+        "Enrollment",
+        "Healthcare"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/657dcfd9-f374-4371-bf9b-9ba13557fe6f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2582f414-1be9-4ac0-9375-01d2f3187217",
+      "title": "Veterans Service Officer",
+      "domain": "GENERAL",
+      "pay": "$40-$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Claims",
+        "Accreditation",
+        "Compensation",
+        "Survivors",
+        "Appeals"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/2582f414-1be9-4ac0-9375-01d2f3187217?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-cf02a995-bac4-4503-b872-cb8cdbc536de",
+      "title": "Consular Officer / Passport Specialist",
+      "domain": "GENERAL",
+      "pay": "$50-$70/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/cf02a995-bac4-4503-b872-cb8cdbc536de?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c3c2db93-38c2-4a62-8f9f-81b65cdb5c10",
+      "title": "Passport Acceptance Agent",
+      "domain": "GENERAL",
+      "pay": "$30-$40/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c3c2db93-38c2-4a62-8f9f-81b65cdb5c10?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-a6091fe2-e1e0-4460-b9db-6a513ceead46",
+      "title": "Medicare Enrollment Specialist",
+      "domain": "GENERAL",
+      "pay": "$40-$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Medicare",
+        "Enrollment",
+        "Coordination",
+        "Coverage",
+        "COBRA"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/a6091fe2-e1e0-4460-b9db-6a513ceead46?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-10b91117-cedd-42c0-a468-b056ad004ec3",
+      "title": "SHIP Medicare Counselor",
+      "domain": "LEGAL",
+      "pay": "$30-$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Medicare",
+        "Medigap"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/10b91117-cedd-42c0-a468-b056ad004ec3?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-622203dd-c0fa-49fc-aae4-6bd742196597",
+      "title": "Junior Data Scientist",
+      "domain": "SOFTWARE",
+      "pay": "$150-$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "Machine Learning",
+        "Statistics",
+        "Data Analysis",
+        "Experimentation",
+        "Pandas",
+        "Data Modeling"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/622203dd-c0fa-49fc-aae4-6bd742196597?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-29ba0d51-2d9f-412e-ad19-5f28a76ca96e",
+      "title": "Junior Software Engineer",
+      "domain": "SOFTWARE",
+      "pay": "$150-$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "System Design",
+        "Code Review",
+        "Debugging",
+        "Algorithms",
+        "Data Structures",
+        "Software Architecture"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/29ba0d51-2d9f-412e-ad19-5f28a76ca96e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-9f949afd-0b76-43d9-93aa-d94a6b479943",
+      "title": "Physician AI Trainer – Hospital Medicine",
+      "domain": "MEDICAL",
+      "pay": "$80-$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Hospitalist Experience",
+        "Internal Medicine",
+        "Pediatrics",
+        "Family Medicine",
+        "Board Certification"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/9f949afd-0b76-43d9-93aa-d94a6b479943?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-fc2b7fdd-2071-416b-8985-23c2976b7d1b",
+      "title": "Locum Tenens Hospitalist",
+      "domain": "MEDICAL",
+      "pay": "$80-$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Hospitalist Experience",
+        "Internal Medicine",
+        "Pediatrics",
+        "Family Medicine",
+        "Board Certification"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/fc2b7fdd-2071-416b-8985-23c2976b7d1b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-dc6478b1-00fc-4fd8-929a-6658e39f8553",
+      "title": "Medical Specialist",
+      "domain": "MEDICAL",
+      "pay": "$80-$125/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Hospitalist Experience",
+        "Internal Medicine",
+        "Pediatrics",
+        "Family Medicine",
+        "Board Certification"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/dc6478b1-00fc-4fd8-929a-6658e39f8553?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-8f201c75-ddff-42d1-93a6-c88bb330b7cf",
+      "title": "Data Privacy Analyst",
+      "domain": "SOFTWARE",
+      "pay": "$31-$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 60+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "PII",
+        "Attention to Detail",
+        "Document Review",
+        "Spot Checks",
+        "Data Privacy",
+        "eDiscovery"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/8f201c75-ddff-42d1-93a6-c88bb330b7cf?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
       "id": "micro1-ec0bccad-838c-44ff-8945-0a6d409453df",
       "title": "Forward Deployed Engineer, U.S. Government",
       "domain": "SOFTWARE",
@@ -139,31 +1685,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/ff33f551-ce15-4d0f-96a7-1b03b53776e4?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-c7a75cc1-1c92-408a-8d8d-c62aebb0c634",
-      "title": "Financial Expert",
-      "domain": "FINANCE",
-      "pay": "$30-$40/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "finance domain expertise",
-        "accounting",
-        "fp&a",
-        "banking",
-        "consulting",
-        "microsoft excel",
-        "microsoft word",
-        "microsoft powerpoint"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/c7a75cc1-1c92-408a-8d8d-c62aebb0c634?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-2fea94b5-2f19-4287-b776-f061b413a00f",
       "title": "AI Agent Evaluator",
       "domain": "SOFTWARE",
@@ -294,7 +1815,7 @@
       "id": "micro1-0c6952e3-b783-407c-a451-b92996992038",
       "title": "Litigation Attorney",
       "domain": "GENERAL",
-      "pay": "$80-$150/hr",
+      "pay": "$80-$170/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -336,27 +1857,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/c00af525-54b0-4e97-ad41-b6339638d1e9?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-9ebedb7a-9911-4b0c-b771-13f3325bdc7d",
-      "title": "Primary Care Physician",
-      "domain": "MEDICAL",
-      "pay": "$80-$285/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Primary Care",
-        "Clinical Medicine",
-        "Patient Assessment",
-        "Diagnosis & Treatment Planning"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/9ebedb7a-9911-4b0c-b771-13f3325bdc7d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-9461932b-7cfe-41c8-b7db-4d0b0d599187",
@@ -479,51 +1979,10 @@
       "linkTarget": "https://jobs.micro1.ai/post/190225df-d67a-402d-bd7f-d9c7c40bb693?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-2d965a0c-d9e1-41eb-99f5-c65ca7b5d4f2",
-      "title": "Filmmaker",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Attention to Detail",
-        "Video Annotation",
-        "Video Editing",
-        "Cinematography"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/2d965a0c-d9e1-41eb-99f5-c65ca7b5d4f2?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-c5f03d74-f6cd-47e2-bdad-3d0da851320e",
-      "title": "Sound Designer",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Sound Editing",
-        "Attention to Detail",
-        "Audio Restoration"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/c5f03d74-f6cd-47e2-bdad-3d0da851320e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-0f607154-b56d-4894-9415-9cc861f24d17",
       "title": "Senior Data Analyst",
       "domain": "SOFTWARE",
-      "pay": "$50-$80/hr",
+      "pay": "$50-$60/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -613,7 +2072,7 @@
       "id": "micro1-0c4c3fc4-e5e3-4d70-9436-4e2c873091a1",
       "title": "QA Engineer – 2D & Creative Applications",
       "domain": "SOFTWARE",
-      "pay": "$90-$175/hr",
+      "pay": "$63-$84/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -823,31 +2282,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/69c7fdc3-5040-48aa-9de9-a3870e1b3069?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-0174b525-afc3-42a5-9b5f-a0b9d2791762",
-      "title": "Equity Research Analyst / Associate",
-      "domain": "FINANCE",
-      "pay": "$180-$220/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "equity research",
-        "financial analysis",
-        "sell-side research publishing",
-        "ai tools for financial research",
-        "analytical rigor",
-        "attention to detail",
-        "written communication",
-        "verbal communication"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/0174b525-afc3-42a5-9b5f-a0b9d2791762?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-9a648ee0-2d83-4453-89f5-19df3deb295c",
       "title": "SaaS Contracts Counsel",
       "domain": "LEGAL",
@@ -893,244 +2327,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/7cb06da3-8e02-4bd1-8a53-46a573e92907?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-eff6f38f-dfab-4333-9e4c-a5610de93e84",
-      "title": "Italian Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english (b2+)",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "Italian bilingual proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/eff6f38f-dfab-4333-9e4c-a5610de93e84?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-f8f1211f-ba15-4718-96a1-591ddf115111",
-      "title": "Thai Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english (b2+)",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "Thai native proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/f8f1211f-ba15-4718-96a1-591ddf115111?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-6ae61a82-e891-46b2-ab5a-1496e25265b9",
-      "title": "Turkish Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english (b2+)",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "turkish native proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/6ae61a82-e891-46b2-ab5a-1496e25265b9?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-7e5bac29-cf45-4072-ad7e-9c7574c94bc5",
-      "title": "Voice Recorder (German + English)",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 80+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "German Proficiency",
-        "Speech Data Collection",
-        "AI Workflows",
-        "Transcription",
-        "Annotation Skills",
-        "Phonetics",
-        "Pronunciation"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/7e5bac29-cf45-4072-ad7e-9c7574c94bc5?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-5c02f61b-b2b2-46a6-a058-26a1f6e64cf7",
-      "title": "Polish Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english (b2+)",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "polish native proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/5c02f61b-b2b2-46a6-a058-26a1f6e64cf7?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-28d9685a-7802-4179-933e-ad510bc60938",
-      "title": "Bengali Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english (b2+)",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "Bengali native proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/28d9685a-7802-4179-933e-ad510bc60938?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-382cf385-16da-4536-8a32-95947e0197a7",
-      "title": "Dutch Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english b2+",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "Dutch native proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/382cf385-16da-4536-8a32-95947e0197a7?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-b8ed43ea-dc5c-4da1-80f4-633cb15d94a9",
-      "title": "British English Voice Expert",
-      "domain": "GENERAL",
-      "pay": "$40-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/b8ed43ea-dc5c-4da1-80f4-633cb15d94a9?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-bc12ec0b-3bc8-449a-b09e-4122eadce55a",
-      "title": "Tamil Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english (b2+)",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "Tamil native proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/bc12ec0b-3bc8-449a-b09e-4122eadce55a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-961df5fb-620c-4443-a3af-86bc225da2cd",
-      "title": "Hebrew Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english (b2+)",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "Hebrew native proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/961df5fb-620c-4443-a3af-86bc225da2cd?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-c732f04d-3d0e-410f-ba42-781cd9f09915",
-      "title": "Russian Bilingual Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "english (b2+)",
-        "attention to detail",
-        "written communication",
-        "verbal communication",
-        "Russian native proficiency"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/c732f04d-3d0e-410f-ba42-781cd9f09915?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-cbbe4909-70e3-4917-a26b-bc82d89fbb1b",
       "title": "Swiss German Transcription Expert",
       "domain": "GENERAL",
@@ -1149,22 +2345,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/cbbe4909-70e3-4917-a26b-bc82d89fbb1b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-83b89d5d-866e-46ab-b1ae-7c87fbcd1c75",
-      "title": "Spanish Voice Actor (Mexico)",
-      "domain": "GENERAL",
-      "pay": "$20-$65/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/83b89d5d-866e-46ab-b1ae-7c87fbcd1c75?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-6634c1b6-553f-4d60-a692-be005464a798",
@@ -1324,28 +2504,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/941cd9a0-94f3-442e-a24a-24d37ca1aa43?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-b7222393-60d2-4a14-b038-52eb7493c50b",
-      "title": "Litigation Attorney",
-      "domain": "GENERAL",
-      "pay": "$80-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Litigation Strategy",
-        "Legal Writing",
-        "Issue Spotting",
-        "Legal Research",
-        "Civil Procedure"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/b7222393-60d2-4a14-b038-52eb7493c50b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-6955441d-2506-4d09-8f85-9ef1a2d23ea2",
       "title": "Software Engineer, New Grad",
       "domain": "SOFTWARE",
@@ -1389,25 +2547,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/cf33e75a-c1e5-4255-a96c-81f2b7a52947?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-159f218d-0ea1-4fdb-8bf5-693cb3a55a1c",
-      "title": "Developmental Psychology (PhD)",
-      "domain": "GENERAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 101+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "child development expertise",
-        "developmental psychology"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/159f218d-0ea1-4fdb-8bf5-693cb3a55a1c?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-09891468-1722-465f-b47e-f420c9f1e154",
       "title": "Research Marketing Lead",
       "domain": "GENERAL",
@@ -1427,31 +2566,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/09891468-1722-465f-b47e-f420c9f1e154?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-333fddbb-5e71-406c-aa0c-e88d0a33b538",
-      "title": "Simulation Expert — Real-to-Sim 3D Environments & Assets",
-      "domain": "GENERAL",
-      "pay": "$60-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 5+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "isaac sim",
-        "gazebo",
-        "mujoco",
-        "unity",
-        "unreal",
-        "pybullet",
-        "3d modeling",
-        "cad"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/333fddbb-5e71-406c-aa0c-e88d0a33b538?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-d358fe3a-3fa1-4673-b90a-99293655405d",
@@ -1529,42 +2643,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/408aec84-c947-475b-801c-0a88074c547b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-40ace067-cec8-4998-bb75-067a565c23b3",
-      "title": "Korean Language Expert",
-      "domain": "GENERAL",
-      "pay": "$65-$98/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Communication",
-        "Bilingual",
-        "Linguists"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/40ace067-cec8-4998-bb75-067a565c23b3?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-26044f07-dc45-4a01-8a5e-8154914a1267",
-      "title": "Japanese Language Expert",
-      "domain": "GENERAL",
-      "pay": "$65-$98/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/26044f07-dc45-4a01-8a5e-8154914a1267?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-8d04e5c4-2539-4394-a8e3-7f46953d5f4e",
       "title": "Bilingual Vietnamese Psychiatrist",
       "domain": "MEDICAL",
@@ -1634,81 +2712,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/3a4a3726-ae6d-44a5-9937-d7d7c90fefdc?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-ecde148a-7dc7-47d7-8bd7-1f0f686ade19",
-      "title": "Bilingual Russian Psychiatrist",
-      "domain": "MEDICAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/ecde148a-7dc7-47d7-8bd7-1f0f686ade19?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-6bb54de0-10d7-42eb-9d8d-02213a9f28a4",
-      "title": "Bilingual Russian Psychologist (PhD)",
-      "domain": "GENERAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/6bb54de0-10d7-42eb-9d8d-02213a9f28a4?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-7c6cf443-f2b6-4311-90f3-cfc344075814",
-      "title": "Investment Banking Associate",
-      "domain": "FINANCE",
-      "pay": "$150-$220/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "investment banking",
-        "financial modeling",
-        "equity research",
-        "ai platforms for finance (e.g., rogo, hebbia, model ml, claude)",
-        "data analysis",
-        "ai integration in finance",
-        "financial analysis",
-        "deal process management"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/7c6cf443-f2b6-4311-90f3-cfc344075814?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-07ce7f57-ef0c-4b2e-aac2-5837c2c9c004",
@@ -2055,7 +3058,7 @@
       "id": "micro1-01c797e9-0eab-4a2f-988b-a0206e84f21d",
       "title": "Bankruptcy Attorney",
       "domain": "GENERAL",
-      "pay": "$100-$160/hr",
+      "pay": "$100-$170/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 45+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -2077,7 +3080,7 @@
       "id": "micro1-306236e1-0ca6-4096-a8b2-4495678ff1ef",
       "title": "Compliance Attorney",
       "domain": "GENERAL",
-      "pay": "$100-$160/hr",
+      "pay": "$100-$170/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -2097,297 +3100,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/306236e1-0ca6-4096-a8b2-4495678ff1ef?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-106a1938-b587-4e53-8d54-4b6eba20343a",
-      "title": "Corporate Attorney",
-      "domain": "GENERAL",
-      "pay": "$100-$160/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "US Law",
-        "Transactional document analysis",
-        "Corporate law accuracy",
-        "Written legal reasoning"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/106a1938-b587-4e53-8d54-4b6eba20343a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-5f72a4d0-b364-47f7-a034-5021cbdc0e51",
-      "title": "Audiovisual Producer",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Audiovisual Production",
-        "Video Editing",
-        "Video Quality Assurance",
-        "Attention to Detail"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/5f72a4d0-b364-47f7-a034-5021cbdc0e51?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-bb3e957b-b767-4771-bfb7-bfa34d74632a",
-      "title": "Bilingual Malay Psychiatrist",
-      "domain": "MEDICAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/bb3e957b-b767-4771-bfb7-bfa34d74632a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-0dd2f7fe-0069-40b0-bf55-0a8048206fa7",
-      "title": "Photographer",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Video Annotation",
-        "Data Labeling",
-        "Attention to detail",
-        "Spotting Visual Details in Footage",
-        "Photography Knowledge Applied to Judging Images",
-        "Following Rules the Same Way Every Time"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/0dd2f7fe-0069-40b0-bf55-0a8048206fa7?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-ba494132-925b-4cb6-adc7-45c9f3e2ac0a",
-      "title": "Robotics Expert",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Video Annotation",
-        "Data Labeling",
-        "Attention to detail",
-        "Robot System Integration",
-        "Perception and Sensors",
-        "Motion Control and Kinematics"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/ba494132-925b-4cb6-adc7-45c9f3e2ac0a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-6d9c4e06-dbf7-4e16-a3c5-32d2b9afe6ff",
-      "title": "Music Editor",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Video Annotation",
-        "Data Labeling",
-        "Attention to detail",
-        "Music and Picture Sync",
-        "Editing Music to Fit a Scene",
-        "Music and video annotation accuracy"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/6d9c4e06-dbf7-4e16-a3c5-32d2b9afe6ff?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-0401a620-2950-4ec7-b657-a4aba61fb2a6",
-      "title": "Mechatronics Engineer",
-      "domain": "SOFTWARE",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Video Annotation",
-        "Data Labeling",
-        "Attention to detail",
-        "Spotting Mechanical and Control Problems",
-        "Knowing Why Machines Fail",
-        "Understanding How Machines Move"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/0401a620-2950-4ec7-b657-a4aba61fb2a6?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-cdbf1324-7e7b-49bf-9a78-ef9d2e8b22ab",
-      "title": "VFX Artist / 3D Animator",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "VFX",
-        "3D Animation",
-        "Video Annotation",
-        "Analytical Skills"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/cdbf1324-7e7b-49bf-9a78-ef9d2e8b22ab?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-c0b9887c-24cd-4e93-9b09-b7b78e3571f7",
-      "title": "Video Editor",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Video Editing",
-        "Video Annotation",
-        "Analytical Skills"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/c0b9887c-24cd-4e93-9b09-b7b78e3571f7?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-43c43368-acf4-42f8-8351-74173291c5ac",
-      "title": "Game Designer / Gameplay Developer",
-      "domain": "SOFTWARE",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 250+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Game Development",
-        "Video Annotation",
-        "Analytical Skills"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/43c43368-acf4-42f8-8351-74173291c5ac?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-03946ab0-118f-4acf-9ff5-05fc752ec0af",
-      "title": "Audio Engineer",
-      "domain": "SOFTWARE",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 60+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Audio QA",
-        "Audio Tools Proficiency",
-        "Attention to Detail",
-        "Audio Restoration"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/03946ab0-118f-4acf-9ff5-05fc752ec0af?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-1391b761-0b83-41a0-8100-d44f18ede8cc",
-      "title": "Tagalog Speaking Psychologist (PhD)",
-      "domain": "GENERAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/1391b761-0b83-41a0-8100-d44f18ede8cc?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-fc9f627a-cfc1-47df-8617-5749988640c4",
-      "title": "Tagalog Speaking Psychiatrist",
-      "domain": "MEDICAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/fc9f627a-cfc1-47df-8617-5749988640c4?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-fded0ebb-c241-4245-9b2d-c656e6f703d2",
@@ -2438,56 +3150,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/193724fb-2847-47f6-9f5d-59a53769e40f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-386270dc-1c21-4207-96f5-4b9302ebcda4",
-      "title": "Lithuanian Speaking Psychiatrist",
-      "domain": "MEDICAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/386270dc-1c21-4207-96f5-4b9302ebcda4?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-1e2e8042-9c89-4dc9-bdeb-5de767eb45a8",
-      "title": "Lithuanian Speaking Psychologist (PhD)",
-      "domain": "GENERAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/1e2e8042-9c89-4dc9-bdeb-5de767eb45a8?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-3bc1ec11-392d-4d52-afe4-d5bc6badcbc1",
@@ -2696,56 +3358,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/1e1e771b-bfaf-479a-8c5d-83637c346603?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-068bc3c8-4c0b-4b1b-afa2-e7ddcce6dd8b",
-      "title": "Bilingual Indonesian Psychologist (PhD)",
-      "domain": "GENERAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/068bc3c8-4c0b-4b1b-afa2-e7ddcce6dd8b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-6d98998f-fa08-4a82-9f91-c9fdc51cdf84",
-      "title": "Bilingual Indonesian Psychiatrist",
-      "domain": "MEDICAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration",
-        "psychological assessment"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/6d98998f-fa08-4a82-9f91-c9fdc51cdf84?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-f3ca9a77-ffd0-4eb7-b4ba-10deb5c71abb",
       "title": "Bilingual Japanese Psychiatrist",
       "domain": "MEDICAL",
@@ -2915,7 +3527,7 @@
       "id": "micro1-e107daa7-2cc8-4153-94c2-ff7806bb9d6e",
       "title": "Finance Specialist",
       "domain": "FINANCE",
-      "pay": "$150-$350/hr",
+      "pay": "Competitive",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 5+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -2940,7 +3552,7 @@
       "id": "micro1-b4ce7861-a888-4f57-bb63-c50fb01ae65d",
       "title": "Software Engineering Specialist",
       "domain": "SOFTWARE",
-      "pay": "$150-$350/hr",
+      "pay": "Competitive",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 7+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -2965,7 +3577,7 @@
       "id": "micro1-7e08e6c8-6e8a-46bb-a594-1bfae53c743b",
       "title": "Consulting Specialist",
       "domain": "GENERAL",
-      "pay": "$150-$350/hr",
+      "pay": "Competitive",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 15+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -2990,7 +3602,7 @@
       "id": "micro1-34374189-05e8-4eb2-8506-a831931459c9",
       "title": "Data Science Specialist",
       "domain": "SOFTWARE",
-      "pay": "$150-$350/hr",
+      "pay": "Competitive",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 7+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -3085,7 +3697,7 @@
       "id": "micro1-eefa6ece-b107-4896-b13c-a1d0c455680a",
       "title": "Brand & Creative Strategy Expert",
       "domain": "GENERAL",
-      "pay": "$150-$350/hr",
+      "pay": "Competitive",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 15+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -3175,76 +3787,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/5a5f50f0-b43a-4cdd-8ba4-b3bfe06dd8b6?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-0187300a-eb10-491c-9bf8-7a260b3578db",
-      "title": "Robot Whisperer — Skills & Data",
-      "domain": "SOFTWARE",
-      "pay": "$10-$20/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Fine motor skills / dexterity",
-        "Ability to follow detailed instructions exactly",
-        "Consistency under repetition",
-        "Attention to detail",
-        "Clear communication"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/0187300a-eb10-491c-9bf8-7a260b3578db?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-a5c83e89-00e6-4b7d-8f9b-5304af76cbf1",
-      "title": "Break-It-To-Build-It — Hardware Tester",
-      "domain": "SOFTWARE",
-      "pay": "$10-$20/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Basic electrical/mechanical knowledge",
-        "clear communication",
-        "attention to detail",
-        "physical stamina",
-        "Reliability & follow-through",
-        "Follows instructions exactly"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/a5c83e89-00e6-4b7d-8f9b-5304af76cbf1?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-02deec8c-9f85-4d9d-a1ae-c61a3a1bedfc",
-      "title": "Robot Wrangler - Operations",
-      "domain": "GENERAL",
-      "pay": "$10-$20/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "fine motor control",
-        "attention to detail",
-        "ability to follow instructions",
-        "repetitive tasks",
-        "clear communication",
-        "hands-on work",
-        "physical stamina",
-        "Basic mechanical aptitude"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/02deec8c-9f85-4d9d-a1ae-c61a3a1bedfc?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-4256a2e1-877f-42d5-8fef-20147a0b2db7",
       "title": "Video Data Annotation Specialist",
       "domain": "SOFTWARE",
@@ -3271,8 +3813,8 @@
     },
     {
       "id": "micro1-b2aea41e-8dff-41f5-9b92-b199dc0b1bb9",
-      "title": "Member of Technical Staff, Legal Research",
-      "domain": "SOFTWARE",
+      "title": "Domain Researcher, Legal",
+      "domain": "LEGAL",
       "pay": "$7-$8/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
@@ -3292,8 +3834,8 @@
     },
     {
       "id": "micro1-d83eb4ea-612b-4232-a83d-896364625827",
-      "title": "Member of Technical Staff, Medical Research",
-      "domain": "SOFTWARE",
+      "title": "Domain Researcher, Medical",
+      "domain": "MEDICAL",
       "pay": "$7-$8/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
@@ -3428,30 +3970,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/15fe5ebb-b057-4a33-b0c3-14510fe1065e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-d02122f3-eaec-42b2-ad3f-edc218b94294",
-      "title": "UX/UI Designer",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 300+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "video annotation",
-        "data labeling",
-        "attention to detail",
-        "written communication",
-        "time management",
-        "video annotation tools",
-        "collaboration"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/d02122f3-eaec-42b2-ad3f-edc218b94294?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-ca1d0b6d-cac6-43a8-996f-d9dc73a68e15",
       "title": "Military Operations & Reporting SME",
       "domain": "GENERAL",
@@ -3550,31 +4068,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/7e1fcbca-de56-4423-8ef4-3d5106ab9e6e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-6da7a95c-8ab7-4b76-a835-b1a6554da382",
-      "title": "Medical Writer (Pharmaceutical)",
-      "domain": "MEDICAL",
-      "pay": "$30-$60/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 30+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "regulatory medical writing",
-        "clinical study report authoring",
-        "ich e3 guidelines",
-        "scientific accuracy assessment",
-        "source data verification",
-        "clinical protocol interpretation",
-        "tfl (tables, figures, listings) analysis",
-        "written communication"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/6da7a95c-8ab7-4b76-a835-b1a6554da382?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-d130c45f-c85a-4ce6-9a12-53c980a63be7",
@@ -3836,7 +4329,7 @@
       "id": "micro1-64cd60c3-9666-4f4d-8008-b132b839b15f",
       "title": "Corporate Attorney",
       "domain": "GENERAL",
-      "pay": "$140-$350/hr",
+      "pay": "Competitive",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
@@ -4138,31 +4631,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/b1316606-46fb-4c3d-a4f9-5a2368e88d70?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-71c67e07-6f80-43af-95c6-ae18cbed6c38",
-      "title": "Bilingual Mental Health Expert",
-      "domain": "MEDICAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 70+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "clinical psychology",
-        "bilingual communication",
-        "ethical decision-making",
-        "cultural sensitivity",
-        "analytical evaluation",
-        "case study development",
-        "written and verbal communication",
-        "interdisciplinary collaboration"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/71c67e07-6f80-43af-95c6-ae18cbed6c38?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-44668e06-3191-4b5f-a41c-b19e05f46eb7",
       "title": "Forward Deployed Engineer",
       "domain": "SOFTWARE",
@@ -4181,10 +4649,7 @@
         "Micro1"
       ],
       "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/44668e06-3191-4b5f-a41c-b19e05f46eb7?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral",
-      "payUnit": "yr",
-      "payMin": 250000,
-      "payMax": 400000
+      "linkTarget": "https://jobs.micro1.ai/post/44668e06-3191-4b5f-a41c-b19e05f46eb7?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-4c2fd0a7-0457-4d95-b2af-e91e1dc78e13",
@@ -4390,31 +4855,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/59fc8961-1c55-4822-883b-242f80920ab9?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-90be13ee-3d18-4eb5-a5ce-87705f4419a3",
-      "title": "Robotics Trainer - Internship",
-      "domain": "GENERAL",
-      "pay": "$30-$30/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "fine motor control",
-        "attention to detail",
-        "ability to follow instructions exactly",
-        "comfort with repetitive tasks",
-        "hands-on work",
-        "Physical stamina",
-        "reliabilitty and punctuality",
-        "quick to learn basic software"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/90be13ee-3d18-4eb5-a5ce-87705f4419a3?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-8811c1b3-efa7-4a5e-b332-50743f90a05a",
       "title": "Video Annotation Specialist",
       "domain": "GENERAL",
@@ -4440,59 +4880,9 @@
       "linkTarget": "https://jobs.micro1.ai/post/8811c1b3-efa7-4a5e-b332-50743f90a05a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-1d56a6b2-5545-4029-998a-cb798d61eb18",
-      "title": "Robot Training Operator",
-      "domain": "GENERAL",
-      "pay": "$30-$30/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "fine motor control",
-        "Attention to detail",
-        "Ability to follow instructions exactly",
-        "Comfort with repetitive",
-        "hands-on work",
-        "Physical stamina",
-        "Reliability and punctuality",
-        "Quick to learn basic hardware"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/1d56a6b2-5545-4029-998a-cb798d61eb18?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-11b7f45c-2cff-4a3a-b64e-cf691babfe51",
-      "title": "Trauma Psychologist/Psychiatrist",
-      "domain": "MEDICAL",
-      "pay": "$100-$200/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 8+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "trauma-informed care",
-        "clinical assessment",
-        "case analysis",
-        "ethical decision-making",
-        "content development",
-        "feedback and evaluation",
-        "youth abuse expertise",
-        "cross-disciplinary collaboration"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/11b7f45c-2cff-4a3a-b64e-cf691babfe51?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-d2321880-8435-45d5-98c6-c8340aae8c9f",
-      "title": "Member of Technical Staff, Finance Research",
-      "domain": "SOFTWARE",
+      "title": "Domain Researcher, Finance",
+      "domain": "FINANCE",
       "pay": "$6-$8/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
@@ -4509,43 +4899,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/d2321880-8435-45d5-98c6-c8340aae8c9f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-76dbade2-b58e-4a60-ac78-18226940213c",
-      "title": "ML Engineer",
-      "domain": "SOFTWARE",
-      "pay": "$80-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Machine Learning"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/76dbade2-b58e-4a60-ac78-18226940213c?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-b162a0c4-a88f-462f-ad8d-ecfa32292586",
-      "title": "Puzzle Solver (Coding)",
-      "domain": "GENERAL",
-      "pay": "$50-$80/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Python",
-        "C++"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/b162a0c4-a88f-462f-ad8d-ecfa32292586?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-8ea4b6c0-bc6d-43ce-9e3a-212d4a32bfc3",
@@ -4681,28 +5034,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/e8249392-42b6-4b8c-b8b7-8a58367984c5?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-21b6f2ad-63a8-47d4-9fd7-31667bf3dbb1",
-      "title": "Senior AI Trainer",
-      "domain": "GENERAL",
-      "pay": "$21-$35/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 1000+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Video Annotation",
-        "Attention to Detail",
-        "Data Labeling",
-        "Video Annotation Tools",
-        "Time Management"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/21b6f2ad-63a8-47d4-9fd7-31667bf3dbb1?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-912dac5d-2d0b-4c32-a67b-89404bcf195b",
       "title": "Software Engineer, Data Platforms",
       "domain": "SOFTWARE",
@@ -4817,17 +5148,17 @@
     },
     {
       "id": "micro1-5c4d1820-c59b-43c1-aad3-c069fd4c1c4d",
-      "title": "Software Engineer, Internal Platforms",
+      "title": "Software Engineer, Product Engineering",
       "domain": "SOFTWARE",
       "pay": "$8-$9/hr",
       "status": "ACTIVE",
       "badgeClass": "blue",
       "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
       "atsKeywords": [
-        "React",
-        "Node.js",
-        "PostgreSQL",
-        "AWS"
+        "JS/TS",
+        "AI-Native Engineering",
+        "End-to-End Product Ownership",
+        "Backend Architecture & Scalability"
       ],
       "tags": [
         "Remote",
@@ -4880,82 +5211,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/d65941c5-6aff-4e80-b3d6-4f56c9aede18?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-d55f38c6-6fa4-420a-a184-cb4130eb5fcf",
-      "title": "Aerodynamics Expert",
-      "domain": "GENERAL",
-      "pay": "$80-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Python",
-        "Aerodynamics"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/d55f38c6-6fa4-420a-a184-cb4130eb5fcf?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-ee7c4e95-fa17-410c-a0a9-5d05155a5405",
-      "title": "Materials Science Expert",
-      "domain": "GENERAL",
-      "pay": "$80-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Python",
-        "Materials Science"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/ee7c4e95-fa17-410c-a0a9-5d05155a5405?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-40ed9a70-5415-4571-9f7b-6840f0db924a",
-      "title": "Circuit Design Expert",
-      "domain": "GENERAL",
-      "pay": "$80-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Python",
-        "Circuit Design"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/40ed9a70-5415-4571-9f7b-6840f0db924a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-9ece7cf2-3d00-497e-ab11-4793d1858646",
-      "title": "Mechanical Engineering Expert",
-      "domain": "SOFTWARE",
-      "pay": "$80-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Python",
-        "Mechanical Engineering"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/9ece7cf2-3d00-497e-ab11-4793d1858646?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-1e8c2077-7a9d-4a91-adcd-f96404dc8226",
@@ -5062,31 +5317,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/d98ab3b0-dfc2-43d6-986a-e75b0d4c35f9?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-52829d52-bcb5-4c84-a2e7-a5b3dc73bf15",
-      "title": "GitHub Contributor",
-      "domain": "GENERAL",
-      "pay": "$50-$100/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Python3",
-        "JAVA",
-        "Rust",
-        "Algorithms",
-        "Basics C++",
-        "Typescript",
-        "bug fixing",
-        "feature implementation"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/52829d52-bcb5-4c84-a2e7-a5b3dc73bf15?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-a5de9ba8-ba95-4737-b985-327e48c2b8d9",
@@ -5214,28 +5444,6 @@
       "linkTarget": "https://jobs.micro1.ai/post/9d57fd44-b189-41ca-a0d4-2fe3903eec41?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
-      "id": "micro1-f5e8360f-b6b5-4674-9b5d-798082e223ec",
-      "title": "CAD Expert",
-      "domain": "GENERAL",
-      "pay": "$80-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 50+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "AutoCAD",
-        "AutoDesk",
-        "Fusion 360",
-        "FreeCAD",
-        "CAD"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/f5e8360f-b6b5-4674-9b5d-798082e223ec?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
       "id": "micro1-04955b6f-5026-498a-8143-5ec852cbd526",
       "title": "Exocentric Video Recorder",
       "domain": "GENERAL",
@@ -5278,46 +5486,6 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/afddf4b4-2a89-4848-9826-708eff6a3c7c?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-43067af3-efeb-435d-aeb9-6d1de8c2af0a",
-      "title": "Music & Sound Annotation Expert",
-      "domain": "GENERAL",
-      "pay": "$30-$45/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "analytical listening",
-        "music theory knowledge",
-        "audio annotation",
-        "attention to detail",
-        "written communication"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/43067af3-efeb-435d-aeb9-6d1de8c2af0a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
-    },
-    {
-      "id": "micro1-46d40ceb-c9b5-4b76-a595-6d74ecf7107e",
-      "title": "STEM Expert",
-      "domain": "GENERAL",
-      "pay": "$80-$150/hr",
-      "status": "ACTIVE",
-      "badgeClass": "blue",
-      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
-      "atsKeywords": [
-        "Biology"
-      ],
-      "tags": [
-        "Remote",
-        "Micro1"
-      ],
-      "platform": "Micro1",
-      "linkTarget": "https://jobs.micro1.ai/post/46d40ceb-c9b5-4b76-a595-6d74ecf7107e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     },
     {
       "id": "micro1-4537e9e8-68fc-40c5-bb2d-53de5b5f6eee",
@@ -5408,7 +5576,662 @@
       ],
       "platform": "Micro1",
       "linkTarget": "https://jobs.micro1.ai/post/aeda6c13-c58d-4e11-bf6a-edcb9fdf65c2?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-f55c5e8b-d0e2-427c-b84f-7642e66e263f",
+      "title": "Backend C#/.NET Developer",
+      "domain": "SOFTWARE",
+      "pay": "$60-$110/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 2+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "C#",
+        ".NET",
+        "MySQL"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/f55c5e8b-d0e2-427c-b84f-7642e66e263f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-3751d160-6ea1-45e9-8c40-7af439059844",
+      "title": "Machine Learning Engineer",
+      "domain": "SOFTWARE",
+      "pay": "$80-$140/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 35+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "Machine Learning",
+        "MongoDB"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/3751d160-6ea1-45e9-8c40-7af439059844?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c23e27f9-f0a5-4165-9f1c-255f78da2a79",
+      "title": "Member of Legal Staff, Corporate Counsel",
+      "domain": "LEGAL",
+      "pay": "$50-$55/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Venture Financings",
+        "Corporate Governance",
+        "Equity Administration",
+        "Transaction Execution",
+        "Legal Automation"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c23e27f9-f0a5-4165-9f1c-255f78da2a79?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-9c3be41a-3d6d-4a1e-a917-5234b2b19c14",
+      "title": "Tamil Transcription Expert",
+      "domain": "GENERAL",
+      "pay": "$10-$24/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "tamil language proficiency",
+        "audio transcription",
+        "linguistic annotation",
+        "attention to detail",
+        "transcription software",
+        "digital collaboration tools",
+        "written communication",
+        "verbal communication"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/9c3be41a-3d6d-4a1e-a917-5234b2b19c14?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d49df3cc-52f9-4da6-9c84-a4f9ddb6c553",
+      "title": "Telugu Transcription Expert",
+      "domain": "GENERAL",
+      "pay": "$10-$24/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "telugu language proficiency",
+        "transcription",
+        "linguistic annotation",
+        "editing and proofreading",
+        "cultural competency",
+        "attention to detail",
+        "annotation tools",
+        "remote work discipline"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/d49df3cc-52f9-4da6-9c84-a4f9ddb6c553?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-eb959833-f2b5-4401-95e0-cb698f0f199f",
+      "title": "German Transcription Expert",
+      "domain": "GENERAL",
+      "pay": "$20-$30/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "german language proficiency",
+        "audio transcription",
+        "attention to detail",
+        "linguistic annotation",
+        "audio playback tools"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/eb959833-f2b5-4401-95e0-cb698f0f199f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-3b1f3a6f-51b3-4622-8baa-28b88e58f3d4",
+      "title": "Investment & Finance Expert",
+      "domain": "FINANCE",
+      "pay": "$245-$280/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Financial Modeling",
+        "Valuation",
+        "Investment Analysis",
+        "Due Diligence",
+        "Capital Markets",
+        "Financial Analysis",
+        "Excel"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/3b1f3a6f-51b3-4622-8baa-28b88e58f3d4?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d3fbfdeb-eb0e-44b1-80a3-20b0baa07bf5",
+      "title": "Management Consultant",
+      "domain": "GENERAL",
+      "pay": "$245-$280/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Business Strategy",
+        "Problem Solving",
+        "Business Analysis",
+        "Market Research",
+        "Financial Analysis",
+        "Stakeholder Management",
+        "Business Writing"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/d3fbfdeb-eb0e-44b1-80a3-20b0baa07bf5?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-3d79ba82-926b-48c0-9d15-8791a364ea81",
+      "title": "Senior Software Engineer",
+      "domain": "SOFTWARE",
+      "pay": "$245-$280/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "System Design",
+        "Code Review",
+        "Debugging",
+        "Algorithms",
+        "Data Structures",
+        "Software Architecture"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/3d79ba82-926b-48c0-9d15-8791a364ea81?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-dc71a0c0-527b-474b-96e3-022c63e7012d",
+      "title": "Data Scientist",
+      "domain": "SOFTWARE",
+      "pay": "$245-$280/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "Machine Learning",
+        "Statistics",
+        "Data Analysis",
+        "Experimentation",
+        "Pandas",
+        "Data Modeling"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/dc71a0c0-527b-474b-96e3-022c63e7012d?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c5772db7-51b9-4a96-8f7d-6afbdf7b7f85",
+      "title": "Litigation Attorney (Commercial Real Estate)",
+      "domain": "GENERAL",
+      "pay": "$100-$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 3+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "US Law",
+        "Legal drafting",
+        "Litigation mastery",
+        "Case theory application",
+        "Commercial Real Estate litigation"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c5772db7-51b9-4a96-8f7d-6afbdf7b7f85?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-02a97913-db10-4060-a35f-113c69637d1a",
+      "title": "Litigation Attorney (Commercial contract)",
+      "domain": "GENERAL",
+      "pay": "$100-$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "US Law",
+        "Legal drafting",
+        "Litigation mastery",
+        "Case theory application"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/02a97913-db10-4060-a35f-113c69637d1a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-9dd9c76c-51d7-4e19-81fd-3b3c093edef2",
+      "title": "Litigation Attorney (Shareholder / LLC)",
+      "domain": "GENERAL",
+      "pay": "$100-$100/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "US Law",
+        "Legal drafting",
+        "Litigation mastery",
+        "Case theory application",
+        "Shareholder / LLC legal mastery"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/9dd9c76c-51d7-4e19-81fd-3b3c093edef2?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-01f86047-2c74-46bb-a6fc-a00e1be3dd5b",
+      "title": "Product Owner",
+      "domain": "GENERAL",
+      "pay": "$7-$9/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Product Ownership & Execution",
+        "Data-Driven Product Management",
+        "Scope Triage & Prioritization",
+        "Speed",
+        "Ambiguity & Async Execution"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/01f86047-2c74-46bb-a6fc-a00e1be3dd5b?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-d1faea65-4f6a-4bfb-8616-fbfbdd997474",
+      "title": "AI/ML Engineer",
+      "domain": "SOFTWARE",
+      "pay": "$70-$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "LLMs",
+        "RAG",
+        "AWS"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/d1faea65-4f6a-4bfb-8616-fbfbdd997474?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c4289f4e-1884-4dd0-bdae-af3757d84daf",
+      "title": "Member of Technical Staff, Forward Deployed (US Gov)",
+      "domain": "SOFTWARE",
+      "pay": "$40-$60/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Python",
+        "LLM Systems",
+        "Data Pipelines",
+        "Distributed Systems"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c4289f4e-1884-4dd0-bdae-af3757d84daf?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-2752b340-47ec-4cfa-8197-999460c07a6e",
+      "title": "SalesOps & Business Analytics Specialist",
+      "domain": "GENERAL",
+      "pay": "$7-$8/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Data Analytics & Business Intelligence",
+        "CRM Administration & Optimization",
+        "Sales Operations & Pipeline Management",
+        "Forecasting & Data Modeling"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/2752b340-47ec-4cfa-8197-999460c07a6e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-c521a888-16fc-4d97-83de-ea601e01fec8",
+      "title": "Immigration Attorney",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "immigration law expertise",
+        "legal writing",
+        "document review",
+        "case management software",
+        "legal research tools",
+        "attention to detail",
+        "written communication",
+        "verbal communication"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/c521a888-16fc-4d97-83de-ea601e01fec8?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-bd70678c-f7bd-4c23-959d-9b5cd6748410",
+      "title": "Family Law Attorney (AAML Registered)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 10+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "family law expertise",
+        "legal research",
+        "legal writing",
+        "case analysis",
+        "document review",
+        "summarization",
+        "attention to detail",
+        "verbal communication"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/bd70678c-f7bd-4c23-959d-9b5cd6748410?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-4b2e063b-ad86-429f-a54a-c50e0dd99b8c",
+      "title": "Litigation Associate Attorney (BigLaw Firms)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "m&a",
+        "drafting contracts",
+        "private equity",
+        "remote collaboration",
+        "multidisciplinay teamwork",
+        "capital markets",
+        "data privacy"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/4b2e063b-ad86-429f-a54a-c50e0dd99b8c?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-fa297c7f-e5d5-4e52-a4ad-ec74c4763e17",
+      "title": "Corporate Attorney (BigLaw Firms)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Mergers & Acquisitions",
+        "Corporate law",
+        "Commerical Litigation",
+        "attention to detail",
+        "private equity",
+        "capital markets"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/fa297c7f-e5d5-4e52-a4ad-ec74c4763e17?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-78a9efa0-b074-4dd8-9e3e-c0cd5675c74a",
+      "title": "Mergers & Acquisitions (M&A) Attorney (BigLaw Firms)",
+      "domain": "GENERAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 99+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Mergers & Acquisitions (M&A)",
+        "Corporate law",
+        "litigation",
+        "multidisciplinary teamwork",
+        "legal research",
+        "remote collaboration",
+        "quality assurance",
+        "private equity"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/78a9efa0-b074-4dd8-9e3e-c0cd5675c74a?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-6d7b9372-c7ad-4ea6-a017-95e6e80a33a5",
+      "title": "BigLaw lawyers",
+      "domain": "LEGAL",
+      "pay": "Competitive",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 100+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "legal analysis",
+        "legal research",
+        "legal drafting",
+        "written communication",
+        "verbal communication",
+        "content review",
+        "quality assurance",
+        "attention to detail"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/6d7b9372-c7ad-4ea6-a017-95e6e80a33a5?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-8944ed79-063d-43e2-a244-bd3185fbfb43",
+      "title": "Smartphone Video Recorder",
+      "domain": "GENERAL",
+      "pay": "$14-$15/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 4000+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Household Task",
+        "Attention to detail",
+        "Video Recording",
+        "Smartphone"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/8944ed79-063d-43e2-a244-bd3185fbfb43?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-15313f3d-5600-4d96-b45f-b8dfafbee976",
+      "title": "Gravador(a) de Vídeos com Smartphone",
+      "domain": "GENERAL",
+      "pay": "$6-$6/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1000+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Captura de Vídeo",
+        "Atenção a Detalhes",
+        "Taréfas Domésticas"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/15313f3d-5600-4d96-b45f-b8dfafbee976?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-8afd8c08-4f6f-4d96-9a1e-19c532c48e91",
+      "title": "Avid Media Composer Editor",
+      "domain": "GENERAL",
+      "pay": "$15-$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Avid Media Composer",
+        "Professional Video Editing",
+        "Broadcast/Film Workflows",
+        "Media & Project Management"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/8afd8c08-4f6f-4d96-9a1e-19c532c48e91?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-7c662ce4-ccf8-4cae-b71d-f904a5ca171e",
+      "title": "Final Cut Pro Video Editor",
+      "domain": "GENERAL",
+      "pay": "$15-$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Final Cut Pro",
+        "Professional Video Editing",
+        "macOS Editing Workflows",
+        "Video Post-Production & Delivery"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/7c662ce4-ccf8-4cae-b71d-f904a5ca171e?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-7215c6e9-6f35-4cf8-86b2-afccebe3722f",
+      "title": "DaVinci Resolve Editor / Colorist",
+      "domain": "GENERAL",
+      "pay": "$15-$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "DaVinci Resolve",
+        "Video Editing",
+        "Color Correction & Grading",
+        "Audiovisual Post-Production"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/7215c6e9-6f35-4cf8-86b2-afccebe3722f?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
+    },
+    {
+      "id": "micro1-60d397a2-fa5a-4a90-afd0-4ce1b5223472",
+      "title": "Adobe Video Editor (Premiere Pro & After Effects)",
+      "domain": "GENERAL",
+      "pay": "$15-$80/hr",
+      "status": "ACTIVE",
+      "badgeClass": "blue",
+      "description": "Micro1 is aggressively hiring 1+ candidates for this role. Top-tier candidates will pass the AI interview to proceed.",
+      "atsKeywords": [
+        "Adobe Premiere Pro",
+        "Adobe After Effects",
+        "Motion Graphics y Compositing",
+        "Professional Video Editing"
+      ],
+      "tags": [
+        "Remote",
+        "Micro1"
+      ],
+      "platform": "Micro1",
+      "linkTarget": "https://jobs.micro1.ai/post/60d397a2-fa5a-4a90-afd0-4ce1b5223472?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral"
     }
   ],
-  "closedRoles": []
+  "closedRoles": [],
+  "meta": {
+    "syncedAt": "2026-10-18T16:47:51.191Z",
+    "totalRoles": 279
+  }
 }

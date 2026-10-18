@@ -113,3 +113,26 @@ firebase hosting:clone trainaitogain-50c19:backup-oct12 trainaitogain-50c19:live
 git checkout v2026.10.12-before-round4-live
 firebase deploy --only hosting,functions,firestore:rules --project trainaitogain-50c19
 ```
+
+---
+
+## Release: v2026.10.18-match-sort-and-sync-fix
+- **Date:** October 18, 2026
+- **Git Tag:** `v2026.10.18-match-sort-and-sync-fix`
+- **Firebase Project:** `trainaitogain-50c19`
+- **Preview Channel:** `https://trainaitogain-50c19--round4-preview-dntt6qfk.web.app`
+- **Live Domains:** `https://trainaitogain.com`, `https://trainaitogain-50c19.web.app`
+
+### Summary of Changes:
+1. **Match % Filter & Sort (`apply.html` & `render_waves.js`):**
+   - Added `jobMatchFilter` dropdown: `All Match Scores`, `🌟 70%+ Match (High Fit)`, `📊 50%+ Match (Good Fit)`, `🎯 Scanned Matches Only`.
+   - Added `MATCH_HIGH` sort option: `🌟 Highest Match %`.
+   - Populated `data-match` dynamically on each opportunity card from candidate resume ATS scan or AI matches.
+2. **Dashboard Match % Sorting & Badging (`saved-roles.html`):**
+   - Added toolbar with `Sort: Recently Saved`, `🌟 Highest Match %`, `💰 Highest Pay`.
+   - Dynamically calculates ATS Match % for saved roles and displays `🎯 XX% Match` badge.
+3. **GitHub Actions Auto-Sync Micro1 Fix (`sync_micro1.js` & `.github/workflows/auto-sync-jobs.yml`):**
+   - Replaced fragile headless Puppeteer/Chromium dependency with direct native Node 22 `fetch()` against Micro1's public referral API endpoint (`https://prod-api.micro1.ai/api/v1/job/portal/referral/05216c9f-87cc-49af-b448-f9f8a18d2efe/jobs`).
+   - Syncs all 279 live jobs in 3 seconds.
+   - Updated GitHub Actions workflow with `permissions: contents: write` so the workflow can commit updated `waves.json` back to GitHub.
+

@@ -83,6 +83,17 @@
         </div>
       </div>
       
+      <div id="saved-toolbar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div style="font-size:14px; font-weight:700; color:var(--gray-700);">My Saved Pipelines</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <select id="savedSortFilter" onchange="renderSavedRoles()" style="appearance:none; -webkit-appearance:none; background-color:white; background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat:no-repeat; background-position:right 12px center; padding:8px 32px 8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-weight:600; font-size:13px; cursor:pointer;">
+            <option value="DATE">Sort: Recently Saved</option>
+            <option value="MATCH_HIGH">🌟 Highest Match %</option>
+            <option value="PAY_HIGH">💰 Highest Pay</option>
+          </select>
+        </div>
+      </div>
+      
       <div id="saved-roles-container" style="display:flex; flex-direction:column; gap:16px;">
         <div style="text-align:center; padding:48px; background:var(--white); border:1px dashed var(--gray-300); border-radius:var(--radius-lg); color:var(--gray-500);">
           Loading your saved pipelines...
@@ -347,6 +358,41 @@ function keywordMatchesText(kw, text) {
     return false;
 }
 
+function getRoleMatchScore(role) {
+    try {
+        const raw = sessionStorage.getItem('ai_matches') || localStorage.getItem('ai_matches');
+        if (raw) {
+            const matches = JSON.parse(raw);
+            if (Array.isArray(matches)) {
+                const found = matches.find(m => (m.roleName || m.role || '').toLowerCase() === (role.title || '').toLowerCase());
+                if (found) {
+                    let sc = parseInt(found.computedScore || found.matchScore || found.match, 10);
+                    if (!isNaN(sc)) return sc;
+                }
+            }
+        }
+        const resumeText = localStorage.getItem('candidateResumeText');
+        if (resumeText && typeof resumeText === 'string' && resumeText.trim().length >= 50) {
+            let keywords = (role && Array.isArray(role.atsKeywords) && role.atsKeywords.length > 0)
+                ? role.atsKeywords
+                : [];
+            if (keywords.length === 0 && role && role.title) {
+                keywords = role.title.split(/[^a-zA-Z0-9]+/).filter(w => w.length > 2 && !/^(and|for|the|with|role|expert|senior|lead)$/i.test(w));
+            }
+            if (keywords.length > 0) {
+                let hits = 0;
+                keywords.forEach(kw => {
+                    if (keywordMatchesText(kw, resumeText)) hits++;
+                });
+                let score = Math.round((hits / keywords.length) * 100);
+                if (score > 100) score = 100;
+                return score;
+            }
+        }
+    } catch (e) {}
+    return null;
+}
+
 function runMatchScore(btn, id) {
     const resumeText = localStorage.getItem('candidateResumeText');
     // Strict requirement: A scanned resume MUST exist in candidateResumeText (>= 50 chars).
@@ -498,27 +544,39 @@ function renderSavedRoles() {
 
     // Filter out invalid/empty items and normalize
     saved = saved.filter(Boolean).map((role, idx) => {
-        if (typeof role === 'string') {
-            return {
-                id: 'role_' + idx,
-                title: role,
-                domain: 'GENERAL',
-                pay: 'Competitive',
-                linkTarget: 'https://t.mercor.com/wbPMF',
-                date: new Date().toISOString(),
-                status: 'Saved'
-            };
-        }
-        return {
+        let normRole = (typeof role === 'string') ? {
+            id: 'role_' + idx,
+            title: role,
+            domain: 'GENERAL',
+            pay: 'Competitive',
+            linkTarget: 'https://t.mercor.com/wbPMF',
+            date: new Date().toISOString(),
+            status: 'Saved',
+            platform: 'Mercor',
+            atsKeywords: []
+        } : {
             id: role.id || ((role.title || '') + '_' + (role.domain || '')) || ('role_' + idx),
             title: role.title || 'Untitled Role',
             domain: (role.domain || 'GENERAL').toUpperCase(),
             pay: role.pay || 'Competitive',
             linkTarget: role.linkTarget || 'https://t.mercor.com/wbPMF',
             date: role.date || new Date().toISOString(),
-            status: role.status || 'Saved'
+            status: role.status || 'Saved',
+            platform: role.platform || ((role.linkTarget && role.linkTarget.includes('micro1')) ? 'micro1' : 'Mercor'),
+            atsKeywords: role.atsKeywords || []
         };
+        normRole.matchScore = getRoleMatchScore(normRole);
+        return normRole;
     });
+
+    const sortOption = (document.getElementById('savedSortFilter') && document.getElementById('savedSortFilter').value) || 'DATE';
+    if (sortOption === 'MATCH_HIGH') {
+        saved.sort((a, b) => ((b.matchScore !== null ? b.matchScore : -1) - (a.matchScore !== null ? a.matchScore : -1)));
+    } else if (sortOption === 'PAY_HIGH') {
+        saved.sort((a, b) => parsePayToNum(b.pay) - parsePayToNum(a.pay));
+    } else {
+        saved.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+    }
 
     if (saved.length === 0) {
         if (analyticsBar) analyticsBar.style.display = 'none';
@@ -573,6 +631,14 @@ function renderSavedRoles() {
             ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:4px; font-size:11px; font-weight:800; letter-spacing:0.04em;">🌐 micro1</span>`
             : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:4px; font-size:11px; font-weight:800; letter-spacing:0.04em;">⚡ Mercor</span>`;
 
+        let matchBadgeHtml = '';
+        if (role.matchScore !== null) {
+            let bg = role.matchScore >= 70 ? '#ecfdf5' : (role.matchScore >= 50 ? '#eff6ff' : '#fef2f2');
+            let color = role.matchScore >= 70 ? '#065f46' : (role.matchScore >= 50 ? '#1e40af' : '#991b1b');
+            let border = role.matchScore >= 70 ? '#a7f3d0' : (role.matchScore >= 50 ? '#bfdbfe' : '#fecaca');
+            matchBadgeHtml = `<span style="background:${bg}; color:${color}; font-size:11px; font-weight:800; padding:3px 8px; border-radius:4px; border:1px solid ${border};">🎯 ${role.matchScore}% Match</span>`;
+        }
+
         let diffAlertHtml = `
             <div class="diff-platform-alert" data-role-platform="${rolePlatform}" style="background:#f8fafc; border:1px solid #cbd5e1; border-left:3px solid #6366f1; border-radius:6px; padding:6px 10px; margin-bottom:8px; font-size:12px; line-height:1.4; text-align:left; width:100%; box-sizing:border-box; display:${isDiff ? 'block' : 'none'};">
                 <div style="color:#334155; font-size:11.5px;">
@@ -588,6 +654,7 @@ function renderSavedRoles() {
                     <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
                         <div style="padding:4px 8px; background:var(--black); color:var(--white); border-radius:4px; font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">${safeDomain}</div>
                         ${platformBadge}
+                        ${matchBadgeHtml}
                         <span style="background:#ecfdf5; color:#065f46; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; border:1px solid #a7f3d0;">🔥 Actively Reviewing</span>
                         <div style="font-size:12px; color:var(--gray-500); font-weight:600;">🕒 Active ${days === 0 ? 'Today' : days + ' days ago'}</div>
                     </div>

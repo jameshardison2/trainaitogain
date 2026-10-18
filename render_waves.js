@@ -489,9 +489,16 @@ function renderWavesApp() {
                         <option value="LATAM">Latin America (LatAm)</option>
                         <option value="EUROPE">Europe / UK</option>
                     </select>
+                    <select id="jobMatchFilter" style="appearance:none; -webkit-appearance:none; background-color:white; background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat:no-repeat; background-position:right 12px center; padding:12px 36px 12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
+                        <option value="ALL">All Match Scores</option>
+                        <option value="70">🌟 70%+ Match (High Fit)</option>
+                        <option value="50">📊 50%+ Match (Good Fit)</option>
+                        <option value="SCANNED">🎯 Scanned Matches Only</option>
+                    </select>
                     <select id="jobSortFilter" style="appearance:none; -webkit-appearance:none; background-color:white; background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat:no-repeat; background-position:right 12px center; padding:12px 36px 12px 16px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-size:15px; box-shadow:inset 0 1px 2px rgba(0,0,0,0.05);">
                         <option value="DEFAULT">Recommended Sort</option>
-                        <option value="PAY_HIGH">Highest Paying</option>
+                        <option value="MATCH_HIGH">🌟 Highest Match %</option>
+                        <option value="PAY_HIGH">💰 Highest Paying</option>
                     </select>
                 </div>
             `;
@@ -624,7 +631,7 @@ function renderWavesApp() {
                     `;
 
                     html += `
-                        <div class="feature-card opp-card" onclick="window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}')" data-domain="${role.domain}" data-platform="${rolePlatform}" data-pay="${payYearly}" data-location="${req.locKey}" data-index="${index}" style="cursor:pointer; width:100%; box-sizing:border-box; order:${index}; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
+                        <div class="feature-card opp-card" onclick="window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}')" data-domain="${role.domain}" data-platform="${rolePlatform}" data-pay="${payYearly}" data-match="${matchScore !== null ? matchScore : 0}" data-location="${req.locKey}" data-index="${index}" style="cursor:pointer; width:100%; box-sizing:border-box; order:${index}; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
                             <div style="display:flex; justify-content:space-between; margin-bottom:14px; align-items:center; flex-wrap:wrap; gap:8px;">
                                 <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
                                     <div style="padding:5px 8px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
@@ -670,12 +677,14 @@ function renderWavesApp() {
             const searchInput = document.getElementById('jobSearchInput');
             const domainFilter = document.getElementById('jobDomainFilter');
             const locationFilter = document.getElementById('jobLocationFilter');
+            const matchFilter = document.getElementById('jobMatchFilter');
             const sortFilter = document.getElementById('jobSortFilter');
 
             function filterJobs() {
                 const term = searchInput ? searchInput.value.toLowerCase() : '';
                 const domain = domainFilter ? domainFilter.value : 'ALL';
                 const loc = locationFilter ? locationFilter.value : 'ALL';
+                const matchVal = matchFilter ? matchFilter.value : 'ALL';
                 const sort = sortFilter ? sortFilter.value : 'DEFAULT';
 
                 const cards = carouselWrapper.querySelectorAll('.opp-card');
@@ -686,6 +695,7 @@ function renderWavesApp() {
                     const cardDomain = card.getAttribute('data-domain');
                     const cardPlatform = (card.getAttribute('data-platform') || '').toUpperCase();
                     const cardLoc = card.getAttribute('data-location') || 'ALL';
+                    const cardMatch = parseInt(card.getAttribute('data-match') || '0', 10);
 
                     let matchesSearch = text.includes(term);
                     let matchesDomain = true;
@@ -711,7 +721,17 @@ function renderWavesApp() {
                         matchesLoc = (cardLoc === 'EUROPE' || cardLoc === 'INTL' || cardLoc === 'ALL');
                     }
 
-                    if (matchesSearch && matchesDomain && matchesLoc) {
+                    // Match % Filter logic
+                    let matchesMatch = true;
+                    if (matchVal === '70') {
+                        matchesMatch = (cardMatch >= 70);
+                    } else if (matchVal === '50') {
+                        matchesMatch = (cardMatch >= 50);
+                    } else if (matchVal === 'SCANNED') {
+                        matchesMatch = (cardMatch > 0);
+                    }
+
+                    if (matchesSearch && matchesDomain && matchesLoc && matchesMatch) {
                         card.style.display = 'flex';
                     } else {
                         card.style.display = 'none';
@@ -722,7 +742,9 @@ function renderWavesApp() {
                 const containerWrappers = carouselWrapper.querySelectorAll('[id^="carousel-"]');
                 containerWrappers.forEach((container) => {
                     const containerCards = Array.from(container.querySelectorAll('.opp-card'));
-                    if (sort === 'PAY_HIGH') {
+                    if (sort === 'MATCH_HIGH') {
+                        containerCards.sort((a, b) => parseInt(b.getAttribute('data-match') || '0', 10) - parseInt(a.getAttribute('data-match') || '0', 10));
+                    } else if (sort === 'PAY_HIGH') {
                         containerCards.sort((a, b) => parseInt(b.getAttribute('data-pay') || '0', 10) - parseInt(a.getAttribute('data-pay') || '0', 10));
                     } else {
                         containerCards.sort((a, b) => parseInt(a.getAttribute('data-index') || '0', 10) - parseInt(b.getAttribute('data-index') || '0', 10));
@@ -762,6 +784,7 @@ function renderWavesApp() {
             if (searchInput) searchInput.addEventListener('input', filterJobs);
             if (domainFilter) domainFilter.addEventListener('change', filterJobs);
             if (locationFilter) locationFilter.addEventListener('change', filterJobs);
+            if (matchFilter) matchFilter.addEventListener('change', filterJobs);
             if (sortFilter) sortFilter.addEventListener('change', filterJobs);
 
         } catch (error) {
