@@ -1,0 +1,393 @@
+// TrainAIToGain Deep Sync V15.0 (Optimized for work.mercor.com/explore)
+// Scans Project-based and One-time opportunities, extracts 1-click referral links, full job descriptions, and syncs to TrainAIToGain
+(async function () {
+  // 1. URL Validation & Guided Navigation
+  if (!/mercor\.com/i.test(location.hostname)) {
+    alert('Please open work.mercor.com/explore (Explore opportunities) in your browser, then run this bookmark again.');
+    return;
+  }
+  if (!/\/explore/i.test(location.pathname)) {
+    const goToExplore = confirm(
+      'Mercor hosts all active job opportunities on the "Explore opportunities" page (work.mercor.com/explore).\n\n' +
+      'Click OK to navigate to work.mercor.com/explore now, then click this bookmark again to start the sync.'
+    );
+    if (goToExplore) {
+      location.href = 'https://work.mercor.com/explore';
+    }
+    return;
+  }
+
+  // 2. Start Notification
+  alert('🚀 TrainAIToGain Deep Sync V15 started!\n\nScanning "Project-based" and "One-time" opportunities...\nPlease keep this tab open and do not click or scroll while it runs.');
+
+  const FALLBACK_LINK = 'https://t.mercor.com/wbPMF';
+  const ENDPOINT = 'https://us-central1-trainaitogain-50c19.cloudfunctions.net/directIngestJobs';
+  const TOKEN = 'TRAINAITOGAIN_SYNC_SECURE_2026';
+  const MAX_PAGES = 30;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  // 3. Clipboard & Link Sniffing
+  let lastCopied = '';
+  try {
+    const origWrite = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText.bind(navigator.clipboard) : null;
+    if (origWrite) {
+      navigator.clipboard.writeText = t => {
+        lastCopied = String(t || '');
+        return origWrite(t);
+      };
+    }
+  } catch (e) {}
+
+  document.addEventListener('copy', e => {
+    try {
+      const t = (e.clipboardData && e.clipboardData.getData('text/plain')) || String(window.getSelection());
+      if (t) lastCopied = t;
+    } catch (err) {}
+  }, true);
+
+  const LINK_RE = /https:\/\/t\.mercor\.com\/[a-zA-Z0-9]{4,16}/g;
+  const findSpecificLink = () => {
+    const corpus = [
+      lastCopied,
+      document.body.innerText,
+      ...Array.from(document.querySelectorAll('input, textarea')).map(i => i.value),
+      ...Array.from(document.querySelectorAll('a')).map(a => a.href)
+    ].join(' ');
+    const hits = Array.from(corpus.matchAll(LINK_RE)).map(m => m[0]).filter(u => !u.includes('wbPMF'));
+    return hits.length ? hits[hits.length - 1] : null;
+  };
+
+  // 4. Pay & Compensation Parsing
+  const parsePay = text => {
+    const re = /\$\s*([\d,]+(?:\.\d+)?)(?:\s*[-–to]+\s*\$?\s*([\d,]+(?:\.\d+)?))?\s*(?:\/|per)\s*(hour|hr|month|mo|year|yr|task)/i;
+    const m = (text || '').match(re);
+    if (!m) return { pay: 'Competitive', payUnit: null, payMin: null, payMax: null };
+    const n = s => s ? Number(s.replace(/,/g, '')) : null;
+    const unitMap = { hour: 'hr', hr: 'hr', month: 'mo', mo: 'mo', year: 'yr', yr: 'yr', task: 'task' };
+    const unit = unitMap[m[3].toLowerCase()];
+    const min = n(m[1]), max = n(m[2]);
+    const fmt = v => v.toLocaleString('en-US');
+    const pay = '$' + fmt(min) + (max ? '–' + fmt(max) : '') + '/' + unit;
+    return { pay, payUnit: unit, payMin: min, payMax: max || min };
+  };
+
+  // 5. Skill Keywords & Taxonomy
+  const SKILLS = [
+    'python','java','javascript','typescript','c++','c#','go','rust','sql','react','node','aws','gcp','azure',
+    'machine learning','deep learning','nlp','llm','data science','data analysis','statistics','excel','tableau','power bi',
+    'firmware','embedded','systems integration','devops','kubernetes','docker','security','networking','qa','testing',
+    'finance','accounting','cfa','cpa','investment','banking','quant','trading','actuarial','economics',
+    'legal','law','attorney','paralegal','compliance','regulatory',
+    'medical','clinical','physician','nurse','nursing','pharmacy','healthcare','biology','chemistry','physics','mathematics',
+    'forensics','toxicology','materials','energetic','chemical defense','ballistics',
+    'writing','editing','translation','customer success','operations','sales','marketing','design','education','teaching'
+  ];
+
+  const keywordsFor = (title, desc) => {
+    const text = (title + ' ' + desc).toLowerCase();
+    return SKILLS.filter(k => text.includes(k)).slice(0, 15);
+  };
+
+  const DOMAINS = [
+    ['MEDICAL', /nurse|physician|medical|clinical|health|doctor|md\b|pharm|oncolog|neurolog|urolog|radiolog|hospital|dental|patient|biomed|preclinical/i],
+    ['LEGAL', /legal|lawyer|attorney|law\b|paralegal|litigation|j\.d|counsel/i],
+    ['FINANCE', /financ|accounting|banking|investment|equity|quant|trading|actuar|tax|economic|cpa|cfa|private equity|venture/i],
+    ['LANGUAGE', /voice actor|language|translat|linguist|spanish|french|german|japanese|korean|chinese|arabic|hindi|portuguese|italian|native speaker/i],
+    ['SOFTWARE', /software|engineer|developer|swe\b|coding|code|data scien|machine learning|\bml\b|\bai\b|devops|security|cyber|backend|frontend|full.?stack|mobile|qa\b/i],
+    ['SCIENCE', /chemist|physic|biolog|math|scien|research|materials|nuclear|energetic|forensic|toxicolog|ballistic|hazardous|defense/i],
+    ['CREATIVE', /design|writer|writing|editor|video|creative|art|music|film|game/i]
+  ];
+
+  // 6. Card Finder on work.mercor.com/explore
+  const getCards = () => {
+    const candidates = Array.from(document.querySelectorAll('div, article, li, a')).filter(el => {
+      const r = el.getBoundingClientRect();
+      if (r.width < 180 || r.width > 700 || r.height < 70 || r.height > 500) return false;
+      const text = el.innerText || '';
+      const hasPay = /\$\s*[\d,]+.*(\/|per)\s*(hour|hr|task|month|mo|year|yr)/i.test(text);
+      const hasReferralOrHired = /\+\s*\$\d+|\b\d+\s*hired\b|new opportunity|1-click apply|apply\s*↗|submitted on/i.test(text);
+      return hasPay && hasReferralOrHired;
+    });
+    // Keep only the innermost matching leaf elements
+    return candidates.filter(c => !candidates.some(o => o !== c && o.contains(c)));
+  };
+
+  // Find the referral button directly on the card (+ $250 / + $240 button)
+  const findCardReferralBtn = card => {
+    return Array.from(card.querySelectorAll('button, a, div, span')).find(el => {
+      const t = (el.innerText || el.getAttribute('aria-label') || el.getAttribute('title') || '').trim();
+      if (/\+\s*\$\d+|&\s*\$\d+|\$\d+\s*referral/i.test(t)) return true;
+      if (/copy (referral )?link|earn up to \$/i.test(el.getAttribute('title') || el.getAttribute('aria-label') || '')) return true;
+      return false;
+    });
+  };
+
+  // 7. Tabs on Explore Page: "Project-based" and "One-time"
+  const TARGET_TABS = ['Project-based', 'One-time'];
+  const allJobs = [];
+  let uniqueLinks = 0, fallbackLinks = 0;
+
+  for (const tabName of TARGET_TABS) {
+    console.log(`[Mercor Sync] Switching to tab: ${tabName}`);
+    const tabEl = Array.from(document.querySelectorAll('button, a, [role="tab"], div, span')).find(el =>
+      el.innerText && el.innerText.trim() === tabName && el.getBoundingClientRect().width > 0 && el.children.length <= 2
+    );
+
+    if (tabEl) {
+      tabEl.scrollIntoView({ block: 'center' });
+      await sleep(400);
+      tabEl.click();
+      await sleep(2500);
+    }
+
+    let scannedCardKeys = new Set();
+    let consecutiveNoNewCards = 0;
+
+    for (let pageNum = 1; pageNum <= MAX_PAGES; pageNum++) {
+      let cards = [];
+      for (let w = 0; w < 10000; w += 800) {
+        cards = getCards();
+        if (cards.length) break;
+        await sleep(800);
+      }
+
+      if (!cards.length) {
+        console.log(`[Mercor Sync] No cards found on tab ${tabName}`);
+        break;
+      }
+
+      let newCardsOnThisPass = 0;
+
+      for (let i = 0; i < cards.length; i++) {
+        // Refresh cards reference in case of DOM updates
+        const currentCards = getCards();
+        if (i >= currentCards.length) break;
+        const card = currentCards[i];
+        const cardText = card.innerText || '';
+
+        // Extract title - prefer explicit heading or non-truncated attribute
+        const titleEl = card.querySelector('h1, h2, h3, h4, h5, [class*="title" i], strong') || card;
+        let rawTitle = titleEl.getAttribute('title') || titleEl.getAttribute('aria-label') || titleEl.innerText || '';
+        let title = rawTitle.split('\n')[0].replace(/^(submitted on|1-click apply|new opportunity|apply\s*↗)\s*/i, '').trim();
+        if (title.includes('$')) {
+          title = cardText.split('\n')[0].trim();
+        }
+        title = title.replace(/\s+/g, ' ').trim();
+        if (!title || title.length < 3) continue;
+
+        const payInfo = parsePay(cardText);
+        const dedupeKey = title.toLowerCase().replace(/[^a-z0-9]/g, '') + '|' + payInfo.pay;
+        if (scannedCardKeys.has(dedupeKey)) continue;
+        scannedCardKeys.add(dedupeKey);
+        newCardsOnThisPass++;
+
+        card.scrollIntoView({ block: 'center' });
+        await sleep(300);
+
+        // --- Step A: Click the referral icon button right on the card ---
+        lastCopied = '';
+        let link = null;
+        const refBtn = findCardReferralBtn(card);
+        if (refBtn) {
+          try {
+            refBtn.click();
+            await sleep(400);
+            link = findSpecificLink();
+          } catch (e) {}
+        }
+
+        // --- Step B: Open Job Details (Drawer / Modal) for Full Description & Title ---
+        let cleanDesc = '';
+        let fullTitle = title;
+        try {
+          const clickTarget = card.querySelector('h1, h2, h3, h4, [class*="title" i], a:not([href^="mailto"])') || card;
+          clickTarget.click();
+
+          // Wait for drawer / modal to appear
+          let detailPane = null;
+          for (let w = 0; w < 1400; w += 200) {
+            await sleep(200);
+            detailPane = Array.from(document.querySelectorAll('[role="dialog"], [class*="drawer" i], [class*="modal" i], [class*="sheet" i], aside, section')).find(el => {
+              const r = el.getBoundingClientRect();
+              return r.width > 280 && r.height > 250 && (el.innerText || '').includes(title.slice(0, 15));
+            });
+            if (detailPane) break;
+          }
+
+          if (detailPane) {
+            const rawPaneText = detailPane.innerText || '';
+
+            // Check if drawer has full unabbreviated title
+            const drawerHeading = detailPane.querySelector('h1, h2, h3, [class*="title" i]');
+            if (drawerHeading && drawerHeading.innerText && drawerHeading.innerText.trim().length > fullTitle.length) {
+              const candTitle = drawerHeading.innerText.trim().split('\n')[0];
+              if (!candTitle.includes('$') && candTitle.length > 3) fullTitle = candTitle;
+            }
+
+            // If we didn't get referral link yet, click share/refer button inside drawer
+            if (!link) {
+              const drawerShareBtn = Array.from(detailPane.querySelectorAll('button, a, [role="button"]')).find(el => {
+                const t = (el.innerText || el.getAttribute('aria-label') || '').trim();
+                return /copy (referral )?link|share|refer/i.test(t);
+              });
+              if (drawerShareBtn) {
+                drawerShareBtn.click();
+                await sleep(500);
+                link = findSpecificLink();
+              }
+            }
+
+            // Extract pay if card was competitive
+            if (payInfo.pay === 'Competitive') {
+              Object.assign(payInfo, parsePay(rawPaneText));
+            }
+
+            // Clean description lines
+            const JUNK = /signed up|application (started|completed)|offer extended|referee|earnings cap|paid to date|vouched|bulk reminder|loaded \d+ of|my referrals|my connections|steps? completed|submitted on|hired this month|early applicant|1-click apply|new opportunity|posted by|referral|refer |earn \$|bonus|^apply\b|^share\b|copy link|view all opportunities|^\$[\d,]+$|^[A-Z]$|^\d+ hired/i;
+            const lines = rawPaneText.split('\n')
+              .map(l => l.trim())
+              .filter(l => l.length > 25 && l !== fullTitle && !JUNK.test(l) && !/\$\s*[\d,]+\s*(-|–|to)?\s*\$?[\d,]*\s*(\/|per)\s*(hour|hr|month|mo|year|yr|task)/i.test(l));
+            cleanDesc = lines.join(' ').replace(/\s+/g, ' ').trim();
+
+            // Close the detail drawer
+            const closeBtn = detailPane.querySelector('button[aria-label*="close" i], button[title*="close" i], [data-icon="xmark"]');
+            if (closeBtn) {
+              closeBtn.click();
+            }
+            // Universal ESC key to dismiss modal/drawer
+            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
+            await sleep(250);
+          } else if (!location.pathname.endsWith('/explore')) {
+            // If clicking navigated the whole page, go back
+            window.history.back();
+            await sleep(1500);
+          }
+        } catch (err) {
+          console.warn('[Mercor Sync] Error opening card detail:', err);
+        }
+
+        // Fallback description from card text if drawer didn't provide one
+        if (!cleanDesc || cleanDesc.length < 20) {
+          cleanDesc = `Active ${tabName} role on Mercor. Position pays ${payInfo.pay}. Verified hiring on Mercor explore catalog.`;
+        }
+
+        if (link) {
+          uniqueLinks++;
+        } else {
+          fallbackLinks++;
+          link = FALLBACK_LINK;
+        }
+
+        // --- Step C: Domain Categorization ---
+        const domainMatch = DOMAINS.find(([, re]) => re.test(fullTitle)) || DOMAINS.find(([, re]) => re.test(cleanDesc)) || ['GENERAL'];
+        const domain = domainMatch[0];
+
+        // --- Step D: Tags & Skills ---
+        const tags = [...new Set((cleanDesc.match(/\b(Remote|Onsite|Hybrid|US Only|India|LatAm)\b/ig) || ['Remote']).map(t => t[0].toUpperCase() + t.slice(1)))];
+
+        allJobs.push({
+          title: fullTitle,
+          pay: payInfo.pay,
+          payUnit: payInfo.payUnit,
+          payMin: payInfo.payMin,
+          payMax: payInfo.payMax,
+          description: cleanDesc.substring(0, 350) + (cleanDesc.length > 350 ? '...' : ''),
+          atsKeywords: keywordsFor(fullTitle, cleanDesc),
+          tags,
+          linkTarget: link,
+          linkIsSpecific: link !== FALLBACK_LINK,
+          domain,
+          platform: 'Mercor',
+          sourceTab: tabName
+        });
+
+        console.log(`[Mercor Sync] [${tabName}] ${fullTitle} | ${payInfo.pay} | ${link}`);
+      }
+
+      // Check if we found new cards
+      if (newCardsOnThisPass === 0) {
+        consecutiveNoNewCards++;
+        if (consecutiveNoNewCards >= 2) {
+          console.log(`[Mercor Sync] Finished tab ${tabName} after ${pageNum} passes.`);
+          break;
+        }
+      } else {
+        consecutiveNoNewCards = 0;
+      }
+
+      // --- Step E: Pagination or Infinite Scroll to Next Set ---
+      const nextPageNum = pageNum + 1;
+      let nextBtn = Array.from(document.querySelectorAll('button, a, [role="button"]')).find(el =>
+        el.innerText && el.innerText.trim() === String(nextPageNum) && el.getBoundingClientRect().width > 0 && !el.disabled
+      ) || document.querySelector('[aria-label*="next page" i], [aria-label*="next" i], [title*="next" i]') ||
+      Array.from(document.querySelectorAll('button, a')).find(el => {
+        const t = (el.innerText || el.getAttribute('aria-label') || '').trim();
+        return (/^(next|>|→|»)$/i.test(t) || t.toLowerCase().includes('next')) && el.getBoundingClientRect().width > 0 && !el.disabled;
+      });
+
+      if (nextBtn) {
+        console.log(`[Mercor Sync] Clicking Next page (${nextPageNum})...`);
+        nextBtn.scrollIntoView({ block: 'center' });
+        await sleep(500);
+        nextBtn.click();
+        await sleep(2500);
+      } else {
+        // Try scrolling to load more cards
+        const beforeHeight = document.body.scrollHeight;
+        window.scrollTo(0, document.body.scrollHeight);
+        await sleep(1500);
+        if (document.body.scrollHeight <= beforeHeight) {
+          // No more scroll content
+          console.log(`[Mercor Sync] No further pages or scroll items on ${tabName}.`);
+          break;
+        }
+      }
+    }
+  }
+
+  // 8. Deduplication
+  const byKey = new Map();
+  for (const j of allJobs) {
+    const key = j.linkIsSpecific ? j.linkTarget : (j.title.toLowerCase().replace(/[^a-z0-9]/g, '') + '|' + j.pay);
+    if (!byKey.has(key)) byKey.set(key, j);
+  }
+  const jobs = Array.from(byKey.values());
+
+  if (!jobs.length) {
+    alert('⚠️ No Mercor jobs could be found on this page.\n\nPlease ensure you are at work.mercor.com/explore and logged in.');
+    return;
+  }
+
+  // 9. Ingest to TrainAIToGain Cloud Functions
+  let ok = false, status = '';
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jobs,
+        token: TOKEN,
+        syncedAt: new Date().toISOString(),
+        platform: 'Mercor',
+        fullSync: true
+      })
+    });
+    ok = res.ok;
+    status = res.status;
+  } catch (e) {
+    status = e.message;
+  }
+
+  // 10. Completion Summary Alert
+  if (ok) {
+    alert(
+      `🎉 Sync Complete!\n\n` +
+      `✅ Successfully synced ${jobs.length} Mercor opportunities to TrainAIToGain.\n` +
+      `🔗 ${uniqueLinks} roles with dedicated 1-click referral links.\n` +
+      `📎 ${fallbackLinks} roles with general referral link.\n\n` +
+      `Your live catalog at trainaitogain.com/apply is now up-to-date!`
+    );
+  } else {
+    alert(`❌ Sync Failed (Status: ${status}). Cloud function did not accept the data. Please check connection.`);
+  }
+})();
