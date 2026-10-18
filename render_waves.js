@@ -325,7 +325,11 @@ function renderWavesApp() {
                 if (apiRes && apiRes.ok) {
                     const apiData = yield apiRes.json();
                     if (apiData && apiData.meta && apiData.meta.syncedAt) {
-                        syncDate = apiData.meta.syncedAt;
+                        const prevTime = new Date(syncDate).getTime();
+                        const mercorTime = new Date(apiData.meta.syncedAt).getTime();
+                        if (!isNaN(mercorTime) && (isNaN(prevTime) || mercorTime > prevTime)) {
+                            syncDate = apiData.meta.syncedAt;
+                        }
                     }
                     if (apiData && apiData.roles && apiData.roles.length > 0) {
                         const existingTitles = new Set(data.roles.map(r => (r.title || '').toLowerCase()));
