@@ -83,7 +83,19 @@ const path = require('path');
   let newMicro1Jobs = topJobs.map(job => {
     let minPay = job.ideal_hourly_rate ? job.ideal_hourly_rate.min : 0;
     let maxPay = job.ideal_hourly_rate ? job.ideal_hourly_rate.max : 0;
-    let payStr = maxPay ? `$${minPay}-$${maxPay}/hr` : "Competitive";
+    let payStr = "Competitive";
+    if (maxPay > 0) {
+      if (maxPay <= 300) {
+        payStr = minPay ? `$${minPay}-$${maxPay}/hr` : `$${maxPay}/hr`;
+      } else if (maxPay >= 15000 && maxPay <= 600000) {
+        // Annual compensation (e.g. 250,000 -> $250k)
+        let minK = minPay ? Math.round(minPay / 1000) : 0;
+        let maxK = Math.round(maxPay / 1000);
+        payStr = minK ? `$${minK}k–$${maxK}k/yr` : `$${maxK}k/yr`;
+      } else {
+        payStr = "Competitive";
+      }
+    }
     
     let defaultUrl = "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral";
     let linkTarget = job.apply_url ? job.apply_url : defaultUrl;

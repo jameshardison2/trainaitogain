@@ -167,15 +167,18 @@ window.handleApplyClick = function(title, linkTarget, btn, roleId, matchScore) {
     let applyNumber = applyCount === 1 ? '1st' : (applyCount === 2 ? '2nd' : (applyCount === 3 ? '3rd' : applyCount + 'th'));
 
     if (typeof gtag === 'function') {
-        gtag('event', 'apply_click', {
+        const eventPayload = {
             platform: platformName,
             role_title: title,
             role_id: roleId || (title ? title.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'unknown'),
             match_score: matchScore !== undefined ? matchScore : null,
             from_page: 'dashboard',
             apply_number: applyNumber,
-            link_url: targetUrl
-        });
+            link_url: targetUrl,
+            outbound: true
+        };
+        gtag('event', 'apply_click', eventPayload);
+        gtag('event', 'job_apply_click', eventPayload);
     }
 
     const isGenericMercor = targetUrl.includes('wbPMF');
@@ -545,7 +548,19 @@ function renderSavedRoles() {
         let safeId = (role.id || ('role_' + idx)).replace(/'/g, "\\'");
         let safeTitle = (role.title || '').replace(/"/g, '&quot;').replace(/'/g, "\\'");
         let safeDomain = (role.domain || 'GENERAL').toUpperCase();
-        let safePay = role.pay || 'Competitive';
+        let rawPay = role.pay || 'Competitive';
+        if (rawPay.includes('/hr')) {
+            let nums = rawPay.match(/\d[\d,]*/g);
+            if (nums) {
+                let maxVal = Math.max(...nums.map(n => parseInt(n.replace(/,/g, ''), 10)));
+                if (maxVal > 300) {
+                    rawPay = (maxVal >= 15000 && maxVal <= 600000) ? rawPay.replace('/hr', '/yr') : 'Competitive';
+                }
+            }
+        } else if (rawPay === ',000–,000/yr') {
+            rawPay = (role.payMin && role.payMax) ? `$${Math.round(role.payMin/1000)}k–$${Math.round(role.payMax/1000)}k/yr` : 'Competitive';
+        }
+        let safePay = rawPay;
         let isReminded = !!reminders[role.id];
         let prepUrl = '/ai-interview?role=' + encodeURIComponent(role.title);
 
@@ -555,38 +570,13 @@ function renderSavedRoles() {
         let isDiff = (lastApplied && lastApplied !== rolePlatform);
 
         let platformBadge = isMicro1Role
-            ? `<span class="platform-badge" style="padding:4px 8px; background:#4338ca; color:#ffffff; border-radius:4px; font-size:11px; font-weight:800; letter-spacing:0.04em;">🌐 micro1</span>`
-            : `<span class="platform-badge" style="padding:4px 8px; background:#065f46; color:#ffffff; border-radius:4px; font-size:11px; font-weight:800; letter-spacing:0.04em;">⚡ Mercor</span>`;
+            ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:4px; font-size:11px; font-weight:800; letter-spacing:0.04em;">🌐 micro1</span>`
+            : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:4px; font-size:11px; font-weight:800; letter-spacing:0.04em;">⚡ Mercor</span>`;
 
         let diffAlertHtml = `
-            <div class="diff-platform-alert" data-role-platform="${rolePlatform}" style="background:#fef2f2; border:1.5px solid #ef4444; border-radius:8px; padding:10px 12px; font-size:12px; line-height:1.45; text-align:left; width:100%; box-sizing:border-box; display:${isDiff ? 'block' : 'none'};">
-                <div style="display:flex; align-items:center; gap:6px; color:#dc2626; font-weight:800; font-size:11px; text-transform:uppercase; margin-bottom:3px;">
-                    <span>🚨 DIFFERENT PLATFORM WARNING</span>
-                </div>
-                <div style="color:#991b1b;">
-                    You previously applied on <strong class="prev-platform-name">${lastApplied}</strong>. This role is on <strong>${rolePlatform}</strong>. <strong>Your ${lastApplied} credentials will NOT work here</strong> — you must create a new account on ${rolePlatform}.
-                </div>
-            </div>
-        `;
-
-        let preApplyNoticeHtml = isMicro1Role ? `
-            <div class="pre-apply-warning" style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:10px 12px; font-size:12px; line-height:1.45; text-align:left; width:100%; box-sizing:border-box;">
-                <div style="display:flex; align-items:center; gap:6px; color:#b45309; font-weight:800; font-size:11px; text-transform:uppercase; margin-bottom:4px;">
-                    <span>⚠️ Notice Before Applying (micro1)</span>
-                </div>
-                <div style="color:#78350f;">
-                    • <strong>Account Required:</strong> Redirects to micro1. Create your account in this same browser so your referral is recorded.<br>
-                    • <strong>Technical Screen:</strong> Evaluated live by Zara AI on your primary skill.
-                </div>
-            </div>
-        ` : `
-            <div class="pre-apply-warning" style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:10px 12px; font-size:12px; line-height:1.45; text-align:left; width:100%; box-sizing:border-box;">
-                <div style="display:flex; align-items:center; gap:6px; color:#b45309; font-weight:800; font-size:11px; text-transform:uppercase; margin-bottom:4px;">
-                    <span>⚠️ Notice Before Applying (Mercor)</span>
-                </div>
-                <div style="color:#78350f;">
-                  • <strong>Account Required:</strong> Redirects to Mercor. Create your free account in this same browser so your progress is saved.<br>
-                  • <strong>AI Interview:</strong> ~20 min audio/video interview. <a href="/ai-interview" target="_blank" onclick="event.stopPropagation();" style="color:#b45309; font-weight:700; text-decoration:underline;">Practice mock first ➔</a>
+            <div class="diff-platform-alert" data-role-platform="${rolePlatform}" style="background:#f8fafc; border:1px solid #cbd5e1; border-left:3px solid #6366f1; border-radius:6px; padding:6px 10px; margin-bottom:8px; font-size:12px; line-height:1.4; text-align:left; width:100%; box-sizing:border-box; display:${isDiff ? 'block' : 'none'};">
+                <div style="color:#334155; font-size:11.5px;">
+                    💡 Note: This role is on <strong>${rolePlatform}</strong> (requires a separate free account from <span class="prev-platform-name">${lastApplied || 'other platforms'}</span>).
                 </div>
             </div>
         `;
@@ -595,13 +585,15 @@ function renderSavedRoles() {
         <div id="card-${role.id}" style="background:var(--white); border:${borderStyle}; padding:24px; border-radius:var(--radius-lg); display:flex; flex-direction:column; box-shadow:var(--shadow-sm); gap:16px;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
                 <div>
-                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
                         <div style="padding:4px 8px; background:var(--black); color:var(--white); border-radius:4px; font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">${safeDomain}</div>
                         ${platformBadge}
+                        <span style="background:#ecfdf5; color:#065f46; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; border:1px solid #a7f3d0;">🔥 Actively Reviewing</span>
                         <div style="font-size:12px; color:var(--gray-500); font-weight:600;">🕒 Active ${days === 0 ? 'Today' : days + ' days ago'}</div>
                     </div>
                     <h3 style="font-size:22px; font-weight:800; color:var(--black); margin-bottom:4px;">${role.title}</h3>
                     <div style="color:var(--primary); font-weight:800; font-size:18px;">${safePay}</div>
+                    <div style="font-size:12px; color:#6b7280; margin-top:2px;">⏳ Rolling applications — priority consideration for early applicants.</div>
                 </div>
                 
                 <div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px;">
@@ -620,30 +612,17 @@ function renderSavedRoles() {
                 </div>
             </div>
 
-            ${currentStatus === 'Started' ? `
-            <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:16px; margin-top:4px;">
-                <div style="font-size:14px; font-weight:800; color:#065f46; margin-bottom:4px;">Finish your AI interview</div>
-                <p style="font-size:13px; color:#047857; margin:0 0 10px; line-height:1.4;">
-                    Use each platform&#39;s official practice option first before your real interview.
-                </p>
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <a href="${prepUrl}" target="_blank" onclick="trackPrepClick('${safeTitle}')" style="background:#10b981; color:#ffffff; font-size:12px; font-weight:700; padding:6px 14px; border-radius:6px; text-decoration:none;">Practice 5 Questions ➔</a>
-                    <a href="/readiness-checklist" target="_blank" style="background:#ffffff; color:#065f46; border:1px solid #10b981; font-size:12px; font-weight:700; padding:6px 14px; border-radius:6px; text-decoration:none;">Open Pre-Interview Checklist</a>
-                </div>
-            </div>
-            ` : ''}
-            
             ${diffAlertHtml}
-            ${preApplyNoticeHtml}
 
-            <div style="display:flex; gap:12px; flex-wrap:wrap; border-top:1px solid var(--gray-100); padding-top:16px;">
-                <button onclick="runMatchScore(this, '${safeId}')" style="flex:1; background:var(--white); border:1px solid var(--gray-300); color:var(--gray-700); font-weight:600; padding:10px; border-radius:8px; cursor:pointer; font-size:14px; transition:all 0.2s; min-width:180px;" onmouseover="this.style.background='var(--gray-50)'" onmouseout="this.style.background='var(--white)'">Check Match vs This Role</button>
-                
-                <a href="${prepUrl}" target="_blank" onclick="trackPrepClick('${safeTitle}')" style="flex:1; background:var(--white); border:1px solid var(--primary); color:var(--primary); font-weight:700; padding:10px; border-radius:8px; text-decoration:none; text-align:center; font-size:14px; transition:all 0.2s; min-width:180px; display:inline-flex; align-items:center; justify-content:center;" onmouseover="this.style.background='rgba(16, 185, 129, 0.08)'" onmouseout="this.style.background='var(--white)'">Prep for This Role</a>
-                
-                <button class="btn-primary" style="flex:1; cursor:pointer; padding:10px; background:var(--primary); border-color:var(--primary); color:white; font-size:14px; font-weight:700; min-width:180px; border-radius:8px;" onclick="applySavedRole(${idx}, this)">Apply Now ➔</button>
-                
-                <button onclick="removeRole('${safeId}')" style="background:transparent; border:none; padding:10px; color:var(--gray-400); cursor:pointer; font-size:16px; font-weight:700;" title="Remove Role" aria-label="Remove Role" onmouseover="this.style.color='red'" onmouseout="this.style.color='var(--gray-400)'">✕</button>
+            <div style="display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--gray-100); padding-top:14px; width:100%;">
+                <div style="display:flex; gap:8px; width:100%; align-items:center;">
+                    <button class="btn-primary" style="flex:1; cursor:pointer; padding:12px 16px; background:var(--primary); border:none; color:white; font-size:15px; font-weight:800; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1); transition:all 0.2s;" onclick="applySavedRole(${idx}, this)" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='var(--primary)'">Apply Now on ${rolePlatform} ➔</button>
+                    <button onclick="removeRole('${safeId}')" style="background:var(--gray-100); border:1px solid var(--gray-200); border-radius:8px; padding:11px 14px; color:var(--gray-500); cursor:pointer; font-size:14px; font-weight:700;" title="Remove from Dashboard" aria-label="Remove Role" onmouseover="this.style.color='#ef4444'; this.style.background='#fef2f2'" onmouseout="this.style.color='var(--gray-500)'; this.style.background='var(--gray-100)'">✕</button>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:2px;">
+                    <a href="${prepUrl}" target="_blank" onclick="trackPrepClick('${safeTitle}')" style="color:var(--gray-500); font-size:12px; font-weight:600; text-decoration:underline;">Want a quick practice run? Try the 2-minute mock interview ➔</a>
+                    <span style="font-size:11px; color:#059669; font-weight:600;">⚡ Direct referral fast-track</span>
+                </div>
             </div>
         </div>
         `;

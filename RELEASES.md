@@ -1,5 +1,29 @@
 # Release Log
 
+## Release: v2026.10.18-conversion-optimization
+- **Date:** October 18, 2026
+- **Git Tag:** `v2026.10.18-conversion-optimization`
+- **Firebase Project:** `trainaitogain-50c19`
+- **Live Domains:** `https://trainaitogain.com`, `https://trainaitogain-50c19.web.app`
+
+### Summary of Changes Released:
+1. **Eliminated "Wall of Warnings" (Low-Friction UI):**
+   - De-escalated the red siren alert (`🚨 DIFFERENT PLATFORM WARNING`) into a clean, reassuring informational note (`💡 Note: This role is on [Platform] (separate free account)`).
+   - Removed anxiety-inducing yellow hazard blocks (`~20 min video interview required`) from card faces prior to click. Comprehensive interview preparation guidance remains inside the post-click soft landing card.
+2. **Fixed CTA Hierarchy & Eliminated "Prep Loop":**
+   - Made `Apply Now on [Platform] ➔` the single prominent, full-width, solid emerald green primary button across Desktop, Mobile, and the Dashboard.
+   - Removed competing action clutter (Check match, Prep for role, Practice 5 questions, Open checklist) from the dashboard cards, replacing them with a single subtle secondary text link.
+   - On mobile, elevated `Apply Now` to the primary full-width action with a clean link below to email the role for laptop completion.
+3. **Normalized Outlier Compensation Rates:**
+   - Fixed malformed pay rate string in `waves.json` for Forward Deployed Engineer to `$250k–$400k/yr`.
+   - Updated `sync_micro1.js` and `render_waves.js` with rate validation: any hourly rate > $300/hr is automatically normalized to annual salary or marked "Competitive" to protect site credibility.
+4. **Transitioned Dashboard from "Hoarding" to Conversion Urgency:**
+   - Added `🔥 Actively Reviewing` badge and `⏳ Rolling applications — priority consideration for early applicants` notice on saved role cards.
+5. **GA4 Conversion Tagging Alignment:**
+   - Augmented outbound apply events with `outbound: true` and fired both `apply_click` and `job_apply_click` with full event payload (`platform`, `role_title`, `role_id`, `match_score`, `device_type`).
+
+---
+
 ## Release: v2026.10.12-platform-warnings-live
 - **Date:** October 12, 2026
 - **Git Commit:** `3f4f91d5`

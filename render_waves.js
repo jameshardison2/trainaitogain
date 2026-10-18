@@ -55,7 +55,7 @@ if (!window.handleApplyClick) {
         const deviceType = isMobileDevice ? 'mobile' : (window.innerWidth <= 1024 ? 'tablet' : 'desktop');
 
         if (typeof gtag === 'function') {
-            gtag('event', 'apply_click', {
+            const eventPayload = {
                 platform: platformName,
                 role_title: title,
                 role_id: computedRoleId,
@@ -63,8 +63,11 @@ if (!window.handleApplyClick) {
                 device_type: deviceType,
                 from_page: 'active_roles',
                 apply_number: applyNumber,
-                link_url: targetUrl
-            });
+                link_url: targetUrl,
+                outbound: true
+            };
+            gtag('event', 'apply_click', eventPayload);
+            gtag('event', 'job_apply_click', eventPayload);
         }
 
         const isGenericMercor = targetUrl.includes('wbPMF');
@@ -534,7 +537,19 @@ function renderWavesApp() {
                     const bg = role.badgeClass === 'orange' ? 'var(--orange)' : 'var(--black)';
                     const safeTitle = (role.title || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                     const safeDomain = (role.domain || 'GENERAL').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-                    const safePay = (role.pay || 'Competitive').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                    let cleanPay = (role.pay || 'Competitive');
+                    if (cleanPay.includes('/hr')) {
+                        let nums = cleanPay.match(/\d[\d,]*/g);
+                        if (nums) {
+                            let maxVal = Math.max(...nums.map(n => parseInt(n.replace(/,/g, ''), 10)));
+                            if (maxVal > 300) {
+                                cleanPay = (maxVal >= 15000 && maxVal <= 600000) ? cleanPay.replace('/hr', '/yr') : 'Competitive';
+                            }
+                        }
+                    } else if (cleanPay === ',000–,000/yr') {
+                        cleanPay = (role.payMin && role.payMax) ? `$${Math.round(role.payMin/1000)}k–$${Math.round(role.payMax/1000)}k/yr` : 'Competitive';
+                    }
+                    const safePay = cleanPay.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                     const safeLink = (role.linkTarget || 'https://t.mercor.com/wbPMF').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                     const safeId = (role.id || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 
@@ -554,39 +569,20 @@ function renderWavesApp() {
                     const isDifferentPlatform = (lastAppliedPlatform && lastAppliedPlatform !== rolePlatform);
 
                     const platformBadgeHtml = isMicro1Role
-                        ? `<span class="platform-badge" style="padding:5px 8px; background:#4338ca; color:#ffffff; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.04em; display:inline-flex; align-items:center; gap:4px;">🌐 micro1</span>`
-                        : `<span class="platform-badge" style="padding:5px 8px; background:#065f46; color:#ffffff; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.04em; display:inline-flex; align-items:center; gap:4px;">⚡ Mercor</span>`;
+                        ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.03em; display:inline-flex; align-items:center; gap:4px;">🌐 micro1 • Direct Application</span>`
+                        : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.03em; display:inline-flex; align-items:center; gap:4px;">⚡ Mercor • Direct Application</span>`;
 
                     const diffAlertHtml = `
-                        <div class="diff-platform-alert" data-role-platform="${rolePlatform}" style="background:#fef2f2; border:1.5px solid #ef4444; border-radius:8px; padding:10px 12px; margin-bottom:12px; font-size:12px; line-height:1.45; text-align:left; display:${isDifferentPlatform ? 'block' : 'none'};">
-                            <div style="display:flex; align-items:center; gap:6px; color:#dc2626; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">
-                                <span>🚨 DIFFERENT PLATFORM WARNING</span>
-                            </div>
-                            <div style="color:#991b1b;">
-                                You previously applied on <strong class="prev-platform-name">${lastAppliedPlatform}</strong>. This role is on <strong>${rolePlatform}</strong>. <strong>Your ${lastAppliedPlatform} credentials will NOT work here</strong> — you must create a new account on ${rolePlatform}.
+                        <div class="diff-platform-alert" data-role-platform="${rolePlatform}" style="background:#f8fafc; border:1px solid #cbd5e1; border-left:3px solid #6366f1; border-radius:6px; padding:6px 10px; margin-bottom:12px; font-size:12px; line-height:1.4; text-align:left; display:${isDifferentPlatform ? 'block' : 'none'};">
+                            <div style="color:#334155; font-size:11.5px;">
+                                💡 Note: This role is on <strong>${rolePlatform}</strong> (requires a separate free account from <span class="prev-platform-name">${lastAppliedPlatform || 'other platforms'}</span>).
                             </div>
                         </div>
                     `;
 
-                    const preApplyWarningHtml = isMicro1Role ? `
-                        <div class="pre-apply-warning" style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:10px 12px; margin-bottom:12px; font-size:12px; line-height:1.45; text-align:left;">
-                            <div style="display:flex; align-items:center; gap:6px; color:#b45309; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">
-                                <span>⚠️ Notice Before Applying (micro1)</span>
-                            </div>
-                            <div style="color:#78350f;">
-                                • <strong>Account Required:</strong> Redirects to micro1. Create your account in this same browser so your referral is recorded.<br>
-                                • <strong>Technical Screen:</strong> Evaluated live by Zara AI on your primary skill.
-                            </div>
-                        </div>
-                    ` : `
-                        <div class="pre-apply-warning" style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:10px 12px; margin-bottom:12px; font-size:12px; line-height:1.45; text-align:left;">
-                            <div style="display:flex; align-items:center; gap:6px; color:#b45309; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">
-                                <span>⚠️ Notice Before Applying (Mercor)</span>
-                            </div>
-                            <div style="color:#78350f;">
-                                • <strong>Account Required:</strong> Redirects to Mercor. Create your free account in this same browser so your progress is saved.<br>
-                                • <strong>AI Interview:</strong> ~20 min audio/video interview. <a href="/ai-interview" target="_blank" onclick="event.stopPropagation();" style="color:#b45309; font-weight:700; text-decoration:underline;">Practice mock first ➔</a>
-                            </div>
+                    const preApplyWarningHtml = `
+                        <div style="font-size:11px; color:#6b7280; margin-bottom:10px; display:flex; align-items:center; gap:4px;">
+                            <span>🔒 Free fast-track application • Direct referral</span>
                         </div>
                     `;
 
@@ -602,56 +598,30 @@ function renderWavesApp() {
                         </div>
                     `;
 
-                    // Button Logic:
-                    // Under 50% match: "Check your match" is main button, Apply is secondary.
-                    // 50%+ or unscanned: Apply is main on Desktop, "Best on a laptop: email me this link" is main on Mobile.
-                    let desktopButtonsHtml = '';
-                    let mobileButtonsHtml = '';
+                    // High-Converting CTA Buttons:
+                    // Apply Now is the undisputed primary button on both desktop and mobile
+                    const desktopButtonsHtml = `
+                        <div class="desktop-actions" style="display:flex; gap:8px; width:100%;">
+                            <button type="button" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}');" style="flex:1; text-align:center; background:var(--primary); border:none; color:var(--white); font-weight:800; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.1);" onmouseover="this.style.background='#059669';" onmouseout="this.style.background='var(--primary)';">Apply on ${rolePlatform} ➔</button>
+                            <button type="button" onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${safeLink}')" title="Save to Dashboard" aria-label="Save to Dashboard" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
+                            <button type="button" onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" title="Mark as applied" aria-label="Mark as applied" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">✅</button>
+                            <button type="button" onclick="event.stopPropagation(); window.open('/resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" title="Check match" aria-label="Check match" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">🎯</button>
+                        </div>
+                    `;
 
-                    if (matchScore !== null && matchScore < 50) {
-                        // Desktop Under 50%
-                        desktopButtonsHtml = `
-                            <div class="desktop-actions" style="display:flex; gap:8px; width:100%;">
-                                <button type="button" onclick="event.stopPropagation(); window.open('/resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" style="flex:1; text-align:center; background:#fffbeb; border:1.5px solid #d97706; color:#b45309; font-weight:700; font-size:13px; padding:12px; border-radius:var(--radius-sm); cursor:pointer;">Check your match 🎯</button>
-                                <button type="button" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore}, '${safeDomain}');" style="background:var(--white); border:1.5px solid var(--gray-300); color:var(--gray-700); font-weight:700; font-size:13px; padding:0 12px; border-radius:var(--radius-sm); cursor:pointer;">Apply anyway ➔</button>
-                                <button type="button" onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${safeLink}')" title="Save to Dashboard" aria-label="Save to Dashboard" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:15px; cursor:pointer;">💾</button>
-                                <button type="button" onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" title="Mark as applied" aria-label="Mark as applied" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:15px; cursor:pointer;">✅</button>
-                            </div>
-                        `;
-                        // Mobile Under 50%
-                        mobileButtonsHtml = `
-                            <div class="mobile-actions" style="display:none; flex-direction:column; gap:8px; width:100%;">
-                                <button type="button" onclick="event.stopPropagation(); window.open('/resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" style="width:100%; text-align:center; background:#fffbeb; border:1.5px solid #d97706; color:#b45309; font-weight:800; font-size:13px; padding:12px; border-radius:var(--radius-sm); cursor:pointer;">Check your match 🎯</button>
-                                <div style="display:flex; gap:8px; width:100%;">
-                                    <button type="button" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore}, '${safeDomain}');" style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--gray-300); color:var(--gray-700); font-weight:700; font-size:13px; padding:10px; border-radius:var(--radius-sm); cursor:pointer;">Apply anyway ➔</button>
-                                    <button type="button" onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${safeLink}')" title="Save to Dashboard" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:15px; cursor:pointer;">💾</button>
-                                    <button type="button" onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" title="Mark as applied" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:15px; cursor:pointer;">✅</button>
+                    const mobileButtonsHtml = `
+                        <div class="mobile-actions" style="display:none; flex-direction:column; gap:6px; width:100%;">
+                            <button type="button" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}');" style="width:100%; text-align:center; background:var(--primary); color:white; border:none; font-weight:800; font-size:14px; padding:12px; border-radius:var(--radius-sm); cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.1);">Apply on ${rolePlatform} ➔</button>
+                            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; padding-top:4px;">
+                                <button type="button" onclick="event.stopPropagation(); window.handleMobileSave('${safeTitle}', '${safeLink}', this);" style="background:transparent; border:none; color:var(--gray-500); font-size:11.5px; font-weight:600; text-decoration:underline; cursor:pointer; padding:0;">💻 On phone? Email me link for laptop</button>
+                                <div style="display:flex; gap:6px;">
+                                    <button type="button" onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${safeLink}')" title="Save to Dashboard" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:4px 8px; border-radius:var(--radius-sm); font-size:13px; cursor:pointer;">💾</button>
+                                    <button type="button" onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" title="Mark as applied" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:4px 8px; border-radius:var(--radius-sm); font-size:13px; cursor:pointer;">✅</button>
+                                    <button type="button" onclick="event.stopPropagation(); window.open('/resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" title="Check match" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:4px 8px; border-radius:var(--radius-sm); font-size:13px; cursor:pointer;">🎯</button>
                                 </div>
                             </div>
-                        `;
-                    } else {
-                        // Desktop 50%+ or Unscanned: Apply Now is main
-                        desktopButtonsHtml = `
-                            <div class="desktop-actions" style="display:flex; gap:8px; width:100%;">
-                                <button type="button" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}');" style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:14px; padding:12px; border-radius:var(--radius-sm); transition:all 0.2s; cursor:pointer;" onmouseover="this.style.background='var(--primary)'; this.style.color='var(--white)';" onmouseout="this.style.background='var(--white)'; this.style.color='var(--primary-dark)';">Apply Now ➔</button>
-                                <button type="button" onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${safeLink}')" title="Save to Dashboard" aria-label="Save to Dashboard" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">💾</button>
-                                <button type="button" onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" title="Mark as applied" aria-label="Mark as applied" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">✅</button>
-                                <button type="button" onclick="event.stopPropagation(); window.open('/resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" title="Check match" aria-label="Check match" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 12px; border-radius:var(--radius-sm); font-size:16px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-light)'; this.style.color='var(--primary-dark)';" onmouseout="this.style.background='var(--gray-100)'; this.style.color='var(--gray-700)';">🎯</button>
-                            </div>
-                        `;
-                        // Mobile 50%+ or Unscanned: Laptop Email Save is main
-                        mobileButtonsHtml = `
-                            <div class="mobile-actions" style="display:none; flex-direction:column; gap:8px; width:100%;">
-                                <button type="button" onclick="event.stopPropagation(); window.handleMobileSave('${safeTitle}', '${safeLink}', this);" style="width:100%; text-align:center; background:#111827; color:white; border:none; font-weight:700; font-size:13px; padding:12px; border-radius:var(--radius-sm); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px;">💻 Best on a laptop: email me this link</button>
-                                <div style="display:flex; gap:8px; width:100%;">
-                                    <button type="button" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}');" style="flex:1; text-align:center; background:var(--white); border:1.5px solid var(--primary); color:var(--primary-dark); font-weight:700; font-size:13px; padding:10px; border-radius:var(--radius-sm); cursor:pointer;">Apply anyway ➔</button>
-                                    <button type="button" onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${safeLink}')" title="Save to Dashboard" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 10px; border-radius:var(--radius-sm); font-size:15px; cursor:pointer;">💾</button>
-                                    <button type="button" onclick="event.stopPropagation(); markAsComplete('${safeTitle}', '${safeDomain}', '${safePay}', this)" title="Mark as applied" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 10px; border-radius:var(--radius-sm); font-size:15px; cursor:pointer;">✅</button>
-                                    <button type="button" onclick="event.stopPropagation(); window.open('/resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" title="Check match" style="background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-700); padding:0 10px; border-radius:var(--radius-sm); font-size:15px; cursor:pointer;">🎯</button>
-                                </div>
-                            </div>
-                        `;
-                    }
+                        </div>
+                    `;
 
                     html += `
                         <div class="feature-card opp-card" onclick="window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}')" data-domain="${role.domain}" data-platform="${rolePlatform}" data-pay="${payYearly}" data-location="${req.locKey}" data-index="${index}" style="cursor:pointer; width:100%; box-sizing:border-box; order:${index}; background:var(--white); border:2px solid var(--orange); padding:24px; display:flex; flex-direction:column; position:relative; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);">
