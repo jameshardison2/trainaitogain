@@ -2,6 +2,862 @@
   "lastUpdated": "2026-10-12T12:37:18.413Z",
   "roles": [
     {
+      "id": "customer-success-engineer-(latam)",
+      "title": "Customer Success Engineer (LatAm)",
+      "domain": "SOFTWARE",
+      "pay": "$50,000/yr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "customer success"
+      ],
+      "tags": [
+        "Software",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "customer-success-engineer-(india)",
+      "title": "Customer Success Engineer (India)",
+      "domain": "SOFTWARE",
+      "pay": "$45,000/yr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "customer success"
+      ],
+      "tags": [
+        "Software",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "customer-success---operations-(india-region)",
+      "title": "Customer Success - Operations (India Region)",
+      "domain": "GENERAL",
+      "pay": "$30,000/yr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "customer success",
+        "operations"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "agent-engineer",
+      "title": "Agent Engineer",
+      "domain": "SOFTWARE",
+      "pay": "$500/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "Software",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "local-political-expert-—-elections-forecasting-&-political-risk",
+      "title": "Local Political Expert — Elections Forecasting & Political Risk",
+      "domain": "GENERAL",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "company-analysis-expert-—-event-propagation",
+      "title": "Company Analysis Expert — Event Propagation",
+      "domain": "GENERAL",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "central-bank-expert-—-non-g7-policy-communication",
+      "title": "Central Bank Expert — Non-G7 Policy Communication",
+      "domain": "GENERAL",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "equity-research-expert-—-single-name-analyst-publications",
+      "title": "Equity Research Expert — Single-Name Analyst Publications",
+      "domain": "FINANCE",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "political-expert-—-elections-forecasting-&-political-risk",
+      "title": "Political Expert — Elections Forecasting & Political Risk",
+      "domain": "GENERAL",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "senior-design-expert---paid-ai-design-research-study",
+      "title": "Senior Design Expert - Paid AI Design Research Study",
+      "domain": "GENERAL",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "design"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "cybersecurity-research-expert-–-offensive-security-&-vulnerability-research",
+      "title": "Cybersecurity Research Expert – Offensive Security & Vulnerability Research",
+      "domain": "GENERAL",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "security"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "physician-talent-network",
+      "title": "Physician Talent Network",
+      "domain": "GENERAL",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "physician"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "machine-learning-engineer-talent-network",
+      "title": "Machine Learning Engineer Talent Network",
+      "domain": "SOFTWARE",
+      "pay": "$250/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "machine learning"
+      ],
+      "tags": [
+        "Software",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "disease-area-clinician-—-trial-endpoints-&-prescribing",
+      "title": "Disease-Area Clinician — Trial Endpoints & Prescribing",
+      "domain": "GENERAL",
+      "pay": "$230/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "health-plan-finance-leaders-–-paid-research-study-(pbm-decisions)",
+      "title": "Health Plan Finance Leaders – Paid Research Study (PBM Decisions)",
+      "domain": "FINANCE",
+      "pay": "$210/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "finance"
+      ],
+      "tags": [
+        "Finance",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "pharma-commercial-forecasting-expert-—-launch-curves",
+      "title": "Pharma Commercial Forecasting Expert — Launch Curves",
+      "domain": "GENERAL",
+      "pay": "$210/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "expert-senior-swe",
+      "title": "Expert Senior SWE",
+      "domain": "GENERAL",
+      "pay": "$210/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "uk-based-data-engineering-experts",
+      "title": "UK-Based Data Engineering Experts",
+      "domain": "SOFTWARE",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "Software",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "compensation-&-equity-expert-(total-rewards)",
+      "title": "Compensation & Equity Expert (Total Rewards)",
+      "domain": "GENERAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "legacy-codebase-migration-expert",
+      "title": "Legacy Codebase Migration Expert",
+      "domain": "GENERAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "payer-&-market-access-expert-—-gross-to-net-&-formulary-strategy",
+      "title": "Payer & Market Access Expert — Gross-to-Net & Formulary Strategy",
+      "domain": "GENERAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "biotech-investment-analyst-—-drug-asset-&-company-assessment",
+      "title": "Biotech Investment Analyst — Drug Asset & Company Assessment",
+      "domain": "FINANCE",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "investment"
+      ],
+      "tags": [
+        "Finance",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "lawyers",
+      "title": "Lawyers",
+      "domain": "GENERAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "law"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "personalized-life-assistant-expert",
+      "title": "Personalized Life Assistant Expert",
+      "domain": "GENERAL",
+      "pay": "$200/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "multilingual-primary-care-physician-(md)-—-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Primary Care Physician (MD) — Clinical Documentation & AI Evaluation",
+      "domain": "GENERAL",
+      "pay": "$190/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "clinical",
+        "physician"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "finance-expert",
+      "title": "Finance Expert",
+      "domain": "FINANCE",
+      "pay": "$180/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "finance"
+      ],
+      "tags": [
+        "Finance",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "medical-expert",
+      "title": "Medical Expert",
+      "domain": "MEDICAL",
+      "pay": "$180/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "medical"
+      ],
+      "tags": [
+        "Medical",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "professional-design-experts",
+      "title": "Professional Design Experts",
+      "domain": "GENERAL",
+      "pay": "$180/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "design"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "financial-analyst-talent-network",
+      "title": "Financial Analyst Talent Network",
+      "domain": "FINANCE",
+      "pay": "$180/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "Finance",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "urologists-&-medical-oncologists-(prostate-cancer)-–-paid-research-study",
+      "title": "Urologists & Medical Oncologists (Prostate Cancer) – Paid Research Study",
+      "domain": "MEDICAL",
+      "pay": "$175/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "medical"
+      ],
+      "tags": [
+        "Medical",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "cybersecurity-practitioner:-paid-expert-interviews-(soc-incident-response-detection-appsec)",
+      "title": "Cybersecurity Practitioner: Paid Expert Interviews (SOC, Incident Response, Detection, AppSec)",
+      "domain": "GENERAL",
+      "pay": "$175/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "security"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "epidemiologist-—-patient-population-sizing",
+      "title": "Epidemiologist — Patient Population Sizing",
+      "domain": "GENERAL",
+      "pay": "$175/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "multilingual-inpatient-hospitalist-(md)-—-clinical-documentation-&-ai-evaluation",
+      "title": "Multilingual Inpatient Hospitalist (MD) — Clinical Documentation & AI Evaluation",
+      "domain": "GENERAL",
+      "pay": "$170/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "clinical"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "neurologists-(mddo)-–-paid-research-study-(migraine)",
+      "title": "Neurologists (MD/DO) – Paid Research Study (Migraine)",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "economics-research-expert",
+      "title": "Economics Research Expert",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "economics"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "software-engineer-expert",
+      "title": "Software Engineer Expert",
+      "domain": "SOFTWARE",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "Software",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "data-science-expert",
+      "title": "Data Science Expert",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "data science"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "finance-expert",
+      "title": "Finance Expert",
+      "domain": "FINANCE",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "finance"
+      ],
+      "tags": [
+        "Finance",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "management-consulting-expert",
+      "title": "Management Consulting Expert",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "legal-expert",
+      "title": "Legal Expert",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "legal"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "software-engineering-expert",
+      "title": "Software Engineering Expert",
+      "domain": "SOFTWARE",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "Software",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "legal-expert-(j.d.ll.b.)",
+      "title": "Legal Expert (J.D./LL.B.)",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "legal"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "medical-expert-(m.d.d.o.)",
+      "title": "Medical Expert (M.D./D.O.)",
+      "domain": "MEDICAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "medical"
+      ],
+      "tags": [
+        "Medical",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "clinicians",
+      "title": "Clinicians",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "investment-banking-&-m&a---finance-domain-expert",
+      "title": "Investment Banking & M&A - Finance Domain Expert",
+      "domain": "FINANCE",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "finance",
+        "investment",
+        "banking"
+      ],
+      "tags": [
+        "Finance",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "partner-&-general-counsel---legal-domain-expert",
+      "title": "Partner & General Counsel - Legal Domain Expert",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "legal"
+      ],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "private-equity-&-venture-capital---finance-domain-expert",
+      "title": "Private Equity & Venture Capital - Finance Domain Expert",
+      "domain": "FINANCE",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [
+        "finance"
+      ],
+      "tags": [
+        "Finance",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "software-engineer-—-agentic-search-systems",
+      "title": "Software Engineer — Agentic Search Systems",
+      "domain": "SOFTWARE",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "Software",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "voice-actor:-cx-agent-voice-cloning-(swiss-german)",
+      "title": "Voice Actor: CX Agent Voice Cloning (Swiss German)",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
+      "id": "data-scientist-talent-network",
+      "title": "Data Scientist Talent Network",
+      "domain": "GENERAL",
+      "pay": "$150/hr",
+      "status": "ACTIVE",
+      "badgeClass": "orange",
+      "description": "Mercor is actively hiring for this position right now.",
+      "atsKeywords": [],
+      "tags": [
+        "General",
+        "Remote"
+      ],
+      "platform": "Mercor",
+      "linkTarget": "https://t.mercor.com/wbPMF"
+    },
+    {
       "id": "micro1-254e0a96-f823-486f-b0f5-cc82dca09427",
       "title": "Investment Banking Associate",
       "domain": "FINANCE",
