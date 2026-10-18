@@ -70,7 +70,7 @@ if (!window.handleApplyClick) {
             gtag('event', 'job_apply_click', eventPayload);
         }
 
-        const isGenericMercor = targetUrl.includes('wbPMF');
+        const isGenericMercor = (targetUrl === 'https://t.mercor.com/wbPMF' || targetUrl === 'https://t.mercor.com/wbPMF/') && !targetUrl.includes('listingId');
         if (isGenericMercor && navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(title).catch(() => {});
         }
@@ -338,10 +338,9 @@ function renderWavesApp() {
                             const tLow = (apiRole.title || '').toLowerCase();
                             if (tLow.includes('sample') || tLow.includes('test')) return;
 
-                            // R2-1: Never render a Mercor role whose linkTarget is wbPMF unless linkIsSpecific is false
-                            const isWbPMF = (apiRole.linkTarget || '').includes('wbPMF');
-                            if ((apiRole.platform === 'Mercor' || !apiRole.platform) && isWbPMF && apiRole.linkIsSpecific !== false) {
-                                return;
+                            // Ensure valid linkTarget
+                            if (!apiRole.linkTarget) {
+                                apiRole.linkTarget = 'https://t.mercor.com/wbPMF';
                             }
 
                             // R2-5: Pay guard for /hr over 500
@@ -394,6 +393,7 @@ function renderWavesApp() {
                                     if (apiRole.badgeClass) match.badgeClass = apiRole.badgeClass;
                                     if (apiRole.description) match.description = apiRole.description;
                                     if (apiRole.domain) match.domain = apiRole.domain;
+                                    if (apiRole.tags) match.tags = apiRole.tags;
                                 }
                             }
                         });
