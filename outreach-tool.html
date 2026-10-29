@@ -538,12 +538,13 @@
   const REFLINK = "https://refer.micro1.ai/referral/jobs?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe";
 
   const templates = {
-    "medical": "Hi [Name] -- I came across your profile and noticed your background in [Specialty]. I help healthcare professionals find AI evaluation work that pays well and fits around clinical schedules. Micro1 is hiring licensed clinicians to review and rate AI-generated medical content -- fully remote, flexible hours, $40-80/hr. Would a quick overview be worth 10 minutes?\n\nReferral Link: " + REFLINK,
-    "aviation": "Hi [Name] -- Your background caught my attention. I place pilots and aviation professionals into AI evaluation roles where your technical expertise is specifically what they're paying for. Micro1 is looking for people with real-world aviation experience to review AI outputs -- remote, flexible, competitive pay. Worth a quick conversation?\n\nReferral Link: " + REFLINK,
-    "legal": "Hi [Name] -- I work with attorneys and legal professionals who are interested in AI evaluation work on the side. Micro1 pays well for licensed legal professionals to review AI-generated legal content for accuracy. Fully remote, no commitment to hours. Would this be worth 10 minutes to explore?\n\nReferral Link: " + REFLINK,
-    "finance": "Hi [Name] -- I noticed your background in finance. Micro1 is hiring finance professionals to evaluate AI-generated financial analysis and content -- remote, flexible, solid pay. Your domain expertise is exactly what they're looking for. Want a quick overview?\n\nReferral Link: " + REFLINK,
-    "tech": "Hi [Name] -- I help software engineers and tech professionals find AI evaluation work that pays well and fits around their schedule. Mercor and Micro1 are both hiring -- remote, flexible hours, no commitment. Worth a quick look?\n\nReferral Link: " + REFLINK,
-    "other": "Hi [Name] -- I help professionals find AI evaluation work that pays well and fits around their schedule. Mercor and Micro1 are both hiring domain experts to evaluate AI models -- remote, flexible hours, no commitment. Worth a quick look?\n\nReferral Link: " + REFLINK
+    "medical": "Hi [Name] -- AI video screens can be frustrating and opaque. I help healthcare professionals decode what AI screeners look for and find high-paying remote evaluation roles ($40–$80/hr) that fit around clinical schedules. Micro1 is hiring licensed clinicians to review AI medical content. Would a quick breakdown be worth 5 minutes?\n\nReferral Link: " + REFLINK,
+    "aviation": "Hi [Name] -- Automated AI screens are frustrating when you don't know what they're scoring. I help pilots and aviation experts pass AI evaluations for remote aviation domain projects ($50–$120/hr). Real-world technical knowledge is what they evaluate. Worth a quick look?\n\nReferral Link: " + REFLINK,
+    "legal": "Hi [Name] -- AI interview screens reject 90% of applicants over rigid formatting. I help attorneys and legal professionals understand the scoring rubric and access remote AI legal evaluation work ($60–$120/hr) with no fixed hours. Would a 5-minute overview be helpful?\n\nReferral Link: " + REFLINK,
+    "finance": "Hi [Name] -- AI interview bots are notoriously frustrating. I help finance pros see what models actually score and access flexible, high-rate remote evaluation roles ($70–$150/hr) to earn income while continuing their career search. Want a quick look at the scoring guide?\n\nReferral Link: " + REFLINK,
+    "tech": "Hi [Name] -- AI screens reject strong engineers over simple keyword mismatches and pause timers. I built TrainAIToGain to show SWEs what bots like Zara and Mercor score, and connect you to flexible remote eval roles ($60–$150/hr). Great flexible bridge income while searching. Worth a quick look?\n\nReferral Link: " + REFLINK,
+    "new_grad": "Hi [Name] -- Breaking into tech right now is tough, and AI screening bots make it harder. I help new grads and junior pros decode what AI interviewers score, plus access paid AI training roles to build real resume experience and flexible income while searching. Happy to share our free guide!\n\nReferral Link: " + REFLINK,
+    "other": "Hi [Name] -- AI interview screens are frustrating when you don't know what they're scoring. I help professionals decode the rubric and access vetted remote AI evaluation roles ($40–$150/hr) with flexible hours. Free prep tools & referral fast-track here:\n\nReferral Link: " + REFLINK
   };
 
   // Auth State Listener
@@ -1199,20 +1200,21 @@
     else if (domainKey === 'FINANCE') { domainWorker = "experts"; domainAdjective = "financial "; }
 
     let firstName = (c.name || 'there').split(' ')[0];
-    let msg = `Hey ${firstName}, it was great connecting with you! My name is James Hardison and I'm the founder of TrainAIToGain.
+    let msg = `Hey ${firstName}, it was great connecting with you! My name is James Hardison, founder of TrainAIToGain.
+
+AI screening interviews can be frustrating and opaque—most candidates get filtered out over rigid keyword checklists or pause-detection algorithms without ever understanding why. We decoded what they're actually scoring so you can bypass the automated rejection pile:
 
 https://trainaitogain.com/apply
 
-I ran your profile through our matching tool and honestly your results stood out, here's what came back:
+I ran your profile through our matching tool and your background is a strong fit for several live remote AI evaluation roles:
 
 ${jobListings}
-These are remote, part-time roles you can do alongside your current position. Companies use ${domainWorker} like you to help evaluate and improve AI ${domainAdjective}tools. The application takes about 3 minutes: https://trainaitogain.com/apply
+These are flexible, remote contract roles (20–40 hrs/wk or project-based) that pay well ($40–$150/hr) and provide reliable income while you continue your primary career search (or work alongside your current position).
 
-Before you apply, run your resume through our ATS scanner to make sure everything clears smoothly: https://trainaitogain.com/resume-ats-guide
+Before you apply, run your resume through our free ATS keyword scanner so you clear their automated filter: https://trainaitogain.com/resume-ats-guide
+And practice on our realistic AI mock interview simulator first: https://trainaitogain.com/ai-interview
 
-The interview is AI-based so nothing stressful. I'm happy to hop on a quick Zoom and walk you through the whole process whenever works for you.
-
-Looking forward to hearing from you!
+Happy to hop on a quick Zoom to walk through the rubric and share tips from candidates who passed.
 
 Best,
 James`;

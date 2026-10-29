@@ -110,6 +110,18 @@ if (!window.handleApplyClick) {
                     <span style="font-size:22px;">🚀</span>
                     <h4 style="margin:0; font-size:16px; font-weight:800; color:#065f46;">You’re headed to ${platformName}. Here’s what’s next:</h4>
                 </div>
+                <!-- Pre-Apply Checklist (Avoid Costly Rejections) -->
+                <div style="background:#ffffff; border:1.5px solid #10b981; border-radius:8px; padding:12px 14px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+                    <div style="font-size:12px; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                        <span>📋 Pre-Apply Checklist (Avoid Costly Rejections)</span>
+                    </div>
+                    <ul style="margin:0; padding-left:18px; font-size:12px; color:#374151; line-height:1.55;">
+                        <li style="margin-bottom:4px;"><strong>Profile Hours Match:</strong> Set your profile availability to <strong>20–40 hrs/wk</strong>. Selecting 10 hours for a 20-hour role can permanently disqualify you without an edit option.</li>
+                        <li style="margin-bottom:4px;"><strong>Apply Early &amp; Complete:</strong> Finish 100% of the profile and upload your resume immediately in this tab.</li>
+                        <li style="margin-bottom:4px;"><strong>Start Tasks Right Away:</strong> Once approved, claim your first project task promptly to keep your placement active.</li>
+                        <li><strong>Country Eligibility:</strong> Confirm your tax residency matches this role before submitting.</li>
+                    </ul>
+                </div>
                 <ol style="margin:0 0 16px 0; padding-left:20px; font-size:13px; color:#166534; line-height:1.6;">
                     <li style="margin-bottom:6px;"><strong>Create your free account</strong> in this same browser so your referral carries over.</li>
                     <li style="margin-bottom:6px;"><strong>The AI interview takes about 20 minutes</strong>, on a laptop or desktop with a webcam and mic. Practice first if you like: 
@@ -1011,12 +1023,24 @@ function renderWavesApp() {
                         </div>
                     `;
 
-                    // Requirements block
+                    // Pay Type calculation
+                    let payTypeBadge = '';
+                    if (cleanPay.toLowerCase().includes('/task') || cleanPay.toLowerCase().includes('task')) {
+                        payTypeBadge = `<span style="background:#f3e8ff; color:#7e22ce; border:1px solid #d8b4fe; font-size:11px; font-weight:700; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">📄 Pay per Task</span>`;
+                    } else if (cleanPay.includes('/hr')) {
+                        payTypeBadge = `<span style="background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; font-size:11px; font-weight:700; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">⏱️ Hourly Contract</span>`;
+                    } else {
+                        payTypeBadge = `<span style="background:#f8fafc; color:#475569; border:1px solid #cbd5e1; font-size:11px; font-weight:700; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">💼 Flexible Contract</span>`;
+                    }
+
+                    // Requirements block with hours & verified freshness
                     const reqHtml = `
                         <div class="role-requirements" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; padding:8px 12px; margin-bottom:14px; font-size:12px; line-height:1.4;">
-                            <div style="font-weight:700; color:#374151; margin-bottom:4px; font-size:11px; text-transform:uppercase; letter-spacing:0.04em;">📋 Requirements</div>
+                            <div style="font-weight:700; color:#374151; margin-bottom:4px; font-size:11px; text-transform:uppercase; letter-spacing:0.04em;">📋 Requirements &amp; Details</div>
                             <div style="display:flex; flex-direction:column; gap:3px; color:#4b5563;">
                                 <div>📍 <strong>Location:</strong> ${req.location}</div>
+                                <div>⏰ <strong>Hours:</strong> 20–40 hrs/wk (Flexible)</div>
+                                <div>📅 <strong>Verified Active:</strong> Synced &amp; Active</div>
                                 ${req.degree ? `<div>🎓 <strong>Degree:</strong> ${req.degree}</div>` : ''}
                                 ${req.license ? `<div>📜 <strong>License:</strong> <span style="color:#b45309; font-weight:700;">${req.license}</span></div>` : ''}
                             </div>
@@ -1096,6 +1120,7 @@ function renderWavesApp() {
                                     <div style="padding:5px 8px; background:var(--black); color:var(--white); border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em;">${role.domain}</div>
                                     <div style="padding:5px 8px; background:${bg}; color:white; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">${role.status}</div>
                                     ${platformBadgeHtml}
+                                    ${payTypeBadge}
                                     ${matchBadgeHtml}
                                 </div>
                                 <div style="color:var(--primary); font-weight:800; font-size:18px;">${cleanPay}</div>
