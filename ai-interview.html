@@ -576,11 +576,18 @@ window.addEventListener('unhandledrejection', function(event) {
       </div>
 
       <!-- Lead Magnet Callout: Customized STAR PDF Study Guide Included -->
-      <div style="max-width:560px; margin:0 auto 14px auto; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:8px; padding:10px 14px; font-size:12.5px; color:#d1fae5; display:flex; align-items:center; gap:10px; text-align:left;">
-        <span style="font-size:18px; flex-shrink:0;">📄</span>
-        <div style="line-height:1.45;">
-          <strong>Included Free:</strong> Complete this 5-question mock drill to download your personalized <strong>Before &amp; After STAR Playbook (PDF)</strong> with highlighted keywords for your target role.
+      <div style="max-width:560px; margin:0 auto 14px auto; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:10px; padding:14px; font-size:12.5px; color:#d1fae5; text-align:left;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="font-size:20px; flex-shrink:0;">📄</span>
+          <div>
+            <strong>Included Free:</strong> Download your personalized <strong>Before &amp; After STAR Playbook (PDF)</strong> with verified keywords and matched role links.
+          </div>
         </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+          <input type="email" id="screen1-lead-email" placeholder="Enter your email to receive playbook &amp; roles..." style="flex:1; min-width:220px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:8px 12px; color:#ffffff; font-size:13px; outline:none;" oninput="localStorage.setItem('candidateEmail', this.value)" />
+          <button type="button" onclick="window.saveScreen1LeadEmail()" style="background:#10b981; color:#042f2e; border:none; border-radius:6px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; white-space:nowrap;">Get Playbook PDF</button>
+        </div>
+        <div id="screen1-lead-success" style="display:none; color:#34d399; font-size:12px; font-weight:700; margin-top:8px;">✓ Email saved! Your tailored debrief, STAR playbook, and referral links will be delivered here.</div>
       </div>
 
       <!-- Simulation Mode Selector (Tier 2: Item 6) -->
@@ -831,7 +838,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
           <!-- Practice Script & Teleprompter Quick Access Bar -->
           <div id="quick-teleprompter-bar" style="display:flex; justify-content:space-between; align-items:center; margin:10px 0 12px; flex-wrap:wrap; gap:8px;">
-            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <div id="teleprompter-buttons-group" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <button type="button" id="quick-teleprompter-btn" onclick="window.toggleLiveTeleprompterCard()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); color:#f3f4f6; border-radius:8px; padding:7px 15px; font-size:12.5px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:all 0.2s;">
                 <span>📖</span> <span id="quick-teleprompter-btn-text">Open Practice Script &amp; Teleprompter</span>
               </button>
@@ -851,7 +858,7 @@ window.addEventListener('unhandledrejection', function(event) {
           <div id="spoken-answer-container" style="display:none; text-align:left; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px 18px;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
               <span style="font-size:12px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em;" id="spoken-mic-status">🎙️ Microphone Active — Speak your answer (60–90s)</span>
-              <button type="button" onclick="window.setInterviewMode(true)" style="background:transparent; border:none; color:#9ca3af; font-size:12px; text-decoration:underline; cursor:pointer;">Switch to typed mode</button>
+              <button type="button" id="switch-to-typed-btn" onclick="window.setInterviewMode(true)" style="background:transparent; border:none; color:#9ca3af; font-size:12px; text-decoration:underline; cursor:pointer;">Switch to typed mode</button>
             </div>
             <!-- Live Microphone Volume & Connection VU Meter -->
             <div id="mic-live-meter-container" style="display:flex; align-items:center; gap:8px; margin-bottom:10px; background:rgba(0,0,0,0.3); padding:6px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
@@ -1852,7 +1859,10 @@ window.addEventListener('unhandledrejection', function(event) {
   }
   const atsRole = (queryRole || localStorage.getItem('atsRole') || '').replace(/^Role:\s*/i, '').trim();
   const atsDomain = localStorage.getItem('atsDomain');
-  const candidateResumeText = localStorage.getItem('candidateResumeText') || '';
+  let candidateResumeText = localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || localStorage.getItem('interviewResumeText') || sessionStorage.getItem('interviewResumeText') || '';
+  if (candidateResumeText && !localStorage.getItem('candidateResumeText')) {
+    try { localStorage.setItem('candidateResumeText', candidateResumeText); } catch(e) {}
+  }
 
   const detectedDomain = detectDomain(atsRole, atsDomain, candidateResumeText);
   syncDomainSelectorValue(detectedDomain);
@@ -4823,9 +4833,26 @@ ${(resumeText || '').slice(0, 3500)}`;
       window.resetTeleprompterScroll();
     }
 
+    const isPressure = (window.currentSimMode === 'pressure');
+    if (isPressure) {
+      isTextMode = false;
+    }
+
+    const switchTypedBtn = document.getElementById('switch-to-typed-btn');
+    if (switchTypedBtn) {
+      switchTypedBtn.style.display = isPressure ? 'none' : 'inline-block';
+    }
+
+    const tpGroup = document.getElementById('teleprompter-buttons-group');
+    if (tpGroup) {
+      tpGroup.style.display = isPressure ? 'none' : 'inline-flex';
+    }
+
     const liveTranscriptEl = document.getElementById('spoken-live-transcript');
     if (liveTranscriptEl) {
-      liveTranscriptEl.textContent = 'Listening for your voice response... (or switch to Typed mode in ⚙️ Settings)';
+      liveTranscriptEl.textContent = isPressure
+        ? 'Listening for your voice response...'
+        : 'Listening for your voice response... (or switch to Typed mode in ⚙️ Settings)';
       liveTranscriptEl.style.fontStyle = 'italic';
       liveTranscriptEl.style.color = '#9ca3af';
     }
@@ -4835,11 +4862,15 @@ ${(resumeText || '').slice(0, 3500)}`;
     const canonicalKws = (window.sessionKeywords && window.sessionKeywords.length > 0)
       ? window.sessionKeywords
       : ((qData && Array.isArray(qData.keywords)) ? qData.keywords : []);
-    if (kwBox && canonicalKws.length > 0) {
-      const visibleKws = canonicalKws.slice(0, 8);
-      const extraCount = canonicalKws.length - visibleKws.length;
-      kwBox.innerHTML = visibleKws.map((kw, idx) => `<span id="copilot-kw-idx-${idx}" class="kw-tag kw-${kw.replace(/[^a-zA-Z0-9_-]/g, '-')}">${kw}</span>`).join('') +
-        (extraCount > 0 ? `<span class="kw-tag" style="opacity:0.75;">+${extraCount} more</span>` : '');
+    if (kwBox) {
+      if (isPressure) {
+        kwBox.innerHTML = '<span style="color:#f87171; font-size:11.5px; font-weight:700;">🔥 Pressure Mode Active: Keywords masked to simulate real blind assessment conditions.</span>';
+      } else if (canonicalKws.length > 0) {
+        const visibleKws = canonicalKws.slice(0, 8);
+        const extraCount = canonicalKws.length - visibleKws.length;
+        kwBox.innerHTML = visibleKws.map((kw, idx) => `<span id="copilot-kw-idx-${idx}" class="kw-tag kw-${kw.replace(/[^a-zA-Z0-9_-]/g, '-')}">${kw}</span>`).join('') +
+          (extraCount > 0 ? `<span class="kw-tag" style="opacity:0.75;">+${extraCount} more</span>` : '');
+      }
     }
     populateLiveCopilotCues(qData);
     startAnswerTimer(qData);
@@ -4872,13 +4903,23 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     // Refresh live teleprompter card if open
     const liveTpSlot = document.getElementById('live-teleprompter-card-slot');
-    if (liveTpSlot && liveTpSlot.style.display !== 'none') {
-      liveTpSlot.innerHTML = buildSuggestedStarResponse(qData, currentQ, '');
+    if (liveTpSlot) {
+      if (isPressure) {
+        liveTpSlot.style.display = 'none';
+      } else if (liveTpSlot.style.display !== 'none') {
+        liveTpSlot.innerHTML = buildSuggestedStarResponse(qData, currentQ, '');
+      }
     }
     const resumeStatusChip = document.getElementById('quick-resume-status-chip');
     if (resumeStatusChip) {
-      const resumeTxt = (localStorage.getItem('candidateResumeText') || '').trim();
-      if (resumeTxt.length > 50) {
+      const resumeTxt = (
+        localStorage.getItem('candidateResumeText') ||
+        sessionStorage.getItem('candidateResumeText') ||
+        localStorage.getItem('interviewResumeText') ||
+        sessionStorage.getItem('interviewResumeText') ||
+        ''
+      ).trim();
+      if (resumeTxt.length > 20) {
         resumeStatusChip.innerHTML = '✓ Cross-Referenced with Resume';
         resumeStatusChip.style.color = '#34d399';
       } else {
@@ -5035,6 +5076,12 @@ ${(resumeText || '').slice(0, 3500)}`;
   }
 
   function proceedToSession() {
+    if (window.currentSimMode === 'pressure') {
+      isTextMode = false;
+      if (typeof window.setInterviewMode === 'function') {
+        window.setInterviewMode(false);
+      }
+    }
     const displayedRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : '';
     const roleTarget = displayedRole || localStorage.getItem('atsRole') || currentDomain;
     const resumeTxt = localStorage.getItem('candidateResumeText') || '';
@@ -5614,6 +5661,45 @@ ${(resumeText || '').slice(0, 3500)}`;
     const fillers = text.match(/\b(um|uh|er|ah|like|you know|basically|sort of|kind of|literally|honestly)\b/gi);
     return fillers ? fillers.length : 0;
   }
+
+  // Screen 1 Lead Magnet Email Capture Handler
+  window.saveScreen1LeadEmail = function() {
+    const emailInput = document.getElementById('screen1-lead-email');
+    const email = (emailInput ? emailInput.value : '').trim();
+    if (!email) return;
+
+    localStorage.setItem('candidateEmail', email);
+
+    fetch('/api/subscribeRoleAlerts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        domain: currentDomain || 'software',
+        role: localStorage.getItem('atsRole') || 'AI Evaluator',
+        source: 'screen1_lead_playbook'
+      })
+    }).catch(() => {});
+
+    const successEl = document.getElementById('screen1-lead-success');
+    if (successEl) successEl.style.display = 'block';
+
+    if (typeof gtag === 'function') {
+      gtag('event', 'lead_magnet_screen1_submit', {
+        email_provided: true,
+        domain: currentDomain
+      });
+    }
+  };
+
+  // Pre-fill email on page load if already known
+  document.addEventListener('DOMContentLoaded', function() {
+    const storedEmail = localStorage.getItem('candidateEmail');
+    if (storedEmail) {
+      const s1Email = document.getElementById('screen1-lead-email');
+      if (s1Email) s1Email.value = storedEmail;
+    }
+  });
 
   // Lead Magnet Submission Handler
   window.handleLeadMagnetSubmit = function(e) {

@@ -475,7 +475,18 @@ function getRoleRequirements(role) {
         license = 'PE License';
     }
 
-    return { location, locKey, degree, license };
+    // 4. Hours / Schedule
+    let hours = null;
+    const hoursMatch = text.match(/\b(\d{1,2}\s*(?:–|-|to)\s*\d{1,2}\s*(?:hrs?|hours?)(?:\s*\/\s*wk)?|\d{1,2}\s*(?:hrs?|hours?)(?:\s*\/\s*wk)?|full[-\s]time|part[-\s]time)\b/i);
+    if (hoursMatch) {
+        hours = hoursMatch[0].trim();
+    } else if (text.includes('part-time') || text.includes('part time')) {
+        hours = 'Part-Time / Flexible';
+    } else if (text.includes('full-time') || text.includes('full time')) {
+        hours = 'Full-Time';
+    }
+
+    return { location, locKey, degree, license, hours };
 }
 
 // Global Robust Pay Normalization Function
@@ -1034,13 +1045,17 @@ function renderWavesApp() {
                     }
 
                     // Requirements block with hours & verified freshness
+                    const hoursDisplay = req.hours 
+                        ? req.hours 
+                        : (cleanPay.toLowerCase().includes('/task') ? 'Self-Paced / Per Task' : 'Flexible Contractor Hours');
+
                     const reqHtml = `
                         <div class="role-requirements" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; padding:8px 12px; margin-bottom:14px; font-size:12px; line-height:1.4;">
                             <div style="font-weight:700; color:#374151; margin-bottom:4px; font-size:11px; text-transform:uppercase; letter-spacing:0.04em;">📋 Requirements &amp; Details</div>
                             <div style="display:flex; flex-direction:column; gap:3px; color:#4b5563;">
                                 <div>📍 <strong>Location:</strong> ${req.location}</div>
-                                <div>⏰ <strong>Hours:</strong> 20–40 hrs/wk (Flexible)</div>
-                                <div>📅 <strong>Verified Active:</strong> Synced &amp; Active</div>
+                                <div>⏰ <strong>Schedule:</strong> ${hoursDisplay}</div>
+                                <div>📅 <strong>Verified Active:</strong> Oct 2026 Sync</div>
                                 ${req.degree ? `<div>🎓 <strong>Degree:</strong> ${req.degree}</div>` : ''}
                                 ${req.license ? `<div>📜 <strong>License:</strong> <span style="color:#b45309; font-weight:700;">${req.license}</span></div>` : ''}
                             </div>
