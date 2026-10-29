@@ -4705,7 +4705,13 @@ ${(resumeText || '').slice(0, 3500)}`;
       isRecognizing = true;
       const micStatus = document.getElementById('spoken-mic-status');
       if (micStatus) {
-        micStatus.innerHTML = '🎙️ <span style="color:#34d399;">Microphone Active — Speak your answer (60–90s)</span>';
+        micStatus.innerHTML = '🎙️ <span style="color:#34d399;">Microphone Active — Speak your answer now (60–90s)</span>';
+      }
+      const liveTranscriptEl = document.getElementById('spoken-live-transcript');
+      if (liveTranscriptEl && !currentSpokenTranscript) {
+        liveTranscriptEl.textContent = 'Listening for your voice response... speak your answer into your microphone.';
+        liveTranscriptEl.style.fontStyle = 'italic';
+        liveTranscriptEl.style.color = '#9ca3af';
       }
     };
 
@@ -4909,6 +4915,17 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
 
     setUIState('speaking', 'Coach Gain is asking Question ' + (currentQ + 1) + '...');
+
+    const initialMicStatus = document.getElementById('spoken-mic-status');
+    if (initialMicStatus && !isTextMode) {
+      initialMicStatus.innerHTML = '🤖 <span style="color:#93c5fd;">Coach Gain is asking Question ' + (currentQ + 1) + '... (Mic opens in a moment)</span>';
+    }
+    const initialTranscriptEl = document.getElementById('spoken-live-transcript');
+    if (initialTranscriptEl && !isTextMode) {
+      initialTranscriptEl.textContent = 'Coach Gain is reading the question. Your voice answer will record and stream here live the moment he finishes...';
+      initialTranscriptEl.style.fontStyle = 'italic';
+      initialTranscriptEl.style.color = '#9ca3af';
+    }
 
     playQuestionSpeech(qData, () => {
       if (isTextMode) {
@@ -5459,12 +5476,17 @@ ${(resumeText || '').slice(0, 3500)}`;
     };
   }
 
-  // Preview & QA Screen Deep-Linking (?screen=interview | ?screen=results)
+  // Preview & QA Screen Deep-Linking (?screen=spoken | ?screen=interview | ?screen=results)
   (function checkScreenQueryParam() {
     try {
       const sp = new URLSearchParams(window.location.search);
       const reqScreen = sp.get('screen');
-      if (reqScreen === 'interview' || reqScreen === 'question1') {
+      if (reqScreen === 'spoken' || reqScreen === 'voice') {
+        setTimeout(() => {
+          window.setInterviewMode(false);
+          proceedToSession();
+        }, 150);
+      } else if (reqScreen === 'interview' || reqScreen === 'question1') {
         setTimeout(() => {
           window.setInterviewMode(true);
           proceedToSession();
