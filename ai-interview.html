@@ -1851,6 +1851,77 @@ window.addEventListener('unhandledrejection', function(event) {
     return false;
   }
 
+  // Universal Stored Resume Resolver
+  window.resolveStoredResume = function() {
+    const directKeys = [
+      'candidateResumeText', 'candidate_resume_text',
+      'interviewResumeText', 'interview_resume_text',
+      'atsResumeText', 'ats_resume_text',
+      'resumeText', 'resume_text',
+      'resume', 'candidateResume', 'userResume',
+      'savedResume', 'rawResume', 'atsResume',
+      'uploadedResume', 'resumeContent', 'candidateResumeRaw'
+    ];
+    for (let i = 0; i < directKeys.length; i++) {
+      const k = directKeys[i];
+      try {
+        const v = (localStorage.getItem(k) || sessionStorage.getItem(k) || '').trim();
+        if (v.length > 50) {
+          try { localStorage.setItem('candidateResumeText', v); } catch(e) {}
+          return v;
+        }
+      } catch(e) {}
+    }
+    const stores = [localStorage, sessionStorage];
+    for (let s = 0; s < stores.length; s++) {
+      const store = stores[s];
+      try {
+        for (let i = 0; i < store.length; i++) {
+          const key = store.key(i);
+          if (!key) continue;
+          if (/resume/i.test(key) && !/filename|file_name|date|count|status|badge/i.test(key)) {
+            const val = (store.getItem(key) || '').trim();
+            if (val.length > 50) {
+              try { localStorage.setItem('candidateResumeText', val); } catch(e) {}
+              return val;
+            }
+          }
+        }
+      } catch(e) {}
+    }
+    for (let s = 0; s < stores.length; s++) {
+      const store = stores[s];
+      try {
+        for (let i = 0; i < store.length; i++) {
+          const key = store.key(i);
+          if (!key || key.startsWith('cached_') || key.startsWith('waves_') || key === 'ai_matches') continue;
+          const val = (store.getItem(key) || '').trim();
+          if (val.length > 800) {
+            const lower = val.toLowerCase();
+            if ((lower.includes('experience') || lower.includes('work') || lower.includes('employment') || lower.includes('projects')) &&
+                (lower.includes('education') || lower.includes('skills') || lower.includes('university') || lower.includes('degree'))) {
+              try { localStorage.setItem('candidateResumeText', val); } catch(e) {}
+              return val;
+            }
+          }
+        }
+      } catch(e) {}
+    }
+    return '';
+  };
+
+  window.resolveStoredResumeFileName = function() {
+    const nameKeys = ['candidateResumeFileName', 'resumeFileName', 'resume_file_name', 'resumeName', 'fileName'];
+    for (let i = 0; i < nameKeys.length; i++) {
+      const k = nameKeys[i];
+      try {
+        const v = (localStorage.getItem(k) || sessionStorage.getItem(k) || '').trim();
+        if (v) return v;
+      } catch(e) {}
+    }
+    return 'My_Resume.pdf';
+  };
+
   // Auto-fill from ATS Scanner or URL param
   const urlParams = new URLSearchParams(window.location.search);
   const queryRole = urlParams.get('role');
@@ -1859,10 +1930,7 @@ window.addEventListener('unhandledrejection', function(event) {
   }
   const atsRole = (queryRole || localStorage.getItem('atsRole') || '').replace(/^Role:\s*/i, '').trim();
   const atsDomain = localStorage.getItem('atsDomain');
-  let candidateResumeText = localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || localStorage.getItem('interviewResumeText') || sessionStorage.getItem('interviewResumeText') || '';
-  if (candidateResumeText && !localStorage.getItem('candidateResumeText')) {
-    try { localStorage.setItem('candidateResumeText', candidateResumeText); } catch(e) {}
-  }
+  let candidateResumeText = window.resolveStoredResume();
 
   const detectedDomain = detectDomain(atsRole, atsDomain, candidateResumeText);
   syncDomainSelectorValue(detectedDomain);
@@ -2941,7 +3009,7 @@ window.addEventListener('unhandledrejection', function(event) {
   window._lastSuggestedStarPlain = "";
 
   function refreshResumeStatusUI() {
-    const resTxt = (localStorage.getItem('candidateResumeText') || '').trim();
+    const resTxt = (typeof window.resolveStoredResume === 'function' ? window.resolveStoredResume() : (localStorage.getItem('candidateResumeText') || '')).trim();
     const labelEl = document.getElementById('resume-status-label');
     const btnEl = document.getElementById('toggle-resume-drawer-btn');
     const taEl = document.getElementById('interview-resume-textarea');
@@ -4912,12 +4980,9 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
     const resumeStatusChip = document.getElementById('quick-resume-status-chip');
     if (resumeStatusChip) {
-      const resumeTxt = (
-        localStorage.getItem('candidateResumeText') ||
-        sessionStorage.getItem('candidateResumeText') ||
-        localStorage.getItem('interviewResumeText') ||
-        sessionStorage.getItem('interviewResumeText') ||
-        ''
+      const resumeTxt = (typeof window.resolveStoredResume === 'function'
+        ? window.resolveStoredResume()
+        : (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '')
       ).trim();
       if (resumeTxt.length > 20) {
         resumeStatusChip.innerHTML = '✓ Cross-Referenced with Resume';

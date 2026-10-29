@@ -1053,7 +1053,9 @@ ${resumeText.substring(0, 10000)}`;
           </div>
           <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:6px; font-size:12px;">
             <span style="color:#6b7280; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">Platform Guides:</span>
-            <a href="/what-mercor-looks-for" style="color:#9ca3af; text-decoration:none; font-weight:600;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">What Mercor Looks For</a>
+            <a href="/what-mercor-looks-for#mercor-format" style="color:#9ca3af; text-decoration:none; font-weight:600;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Mercor Interview Guide</a>
+            <a href="/what-mercor-looks-for#zara-format" style="color:#9ca3af; text-decoration:none; font-weight:600;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">micro1 Zara Guide</a>
+            <a href="/what-mercor-looks-for#coding-checklist" style="color:#9ca3af; text-decoration:none; font-weight:600;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Coding Take-Home Checklist</a>
             <a href="/no-response" style="color:#9ca3af; text-decoration:none; font-weight:600;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Waiting Stage Explainer</a>
             <a href="/post-hire" style="color:#9ca3af; text-decoration:none; font-weight:600;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Placed Contractor Hub</a>
             <a href="/readiness-checklist" style="color:#9ca3af; text-decoration:none; font-weight:600;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Pre-Apply Checklist</a>
@@ -1161,12 +1163,71 @@ ${resumeText.substring(0, 10000)}`;
 <script src="chat.js?v=16"></script>
 
 <script>
+  // Universal Stored Resume Resolver
+  window.resolveStoredResume = function() {
+    const directKeys = [
+      'candidateResumeText', 'candidate_resume_text',
+      'interviewResumeText', 'interview_resume_text',
+      'atsResumeText', 'ats_resume_text',
+      'resumeText', 'resume_text',
+      'resume', 'candidateResume', 'userResume',
+      'savedResume', 'rawResume', 'atsResume',
+      'uploadedResume', 'resumeContent', 'candidateResumeRaw'
+    ];
+    for (let i = 0; i < directKeys.length; i++) {
+      const k = directKeys[i];
+      try {
+        const v = (localStorage.getItem(k) || sessionStorage.getItem(k) || '').trim();
+        if (v.length > 50) {
+          try { localStorage.setItem('candidateResumeText', v); } catch(e) {}
+          return v;
+        }
+      } catch(e) {}
+    }
+    const stores = [localStorage, sessionStorage];
+    for (let s = 0; s < stores.length; s++) {
+      const store = stores[s];
+      try {
+        for (let i = 0; i < store.length; i++) {
+          const key = store.key(i);
+          if (!key) continue;
+          if (/resume/i.test(key) && !/filename|file_name|date|count|status|badge/i.test(key)) {
+            const val = (store.getItem(key) || '').trim();
+            if (val.length > 50) {
+              try { localStorage.setItem('candidateResumeText', val); } catch(e) {}
+              return val;
+            }
+          }
+        }
+      } catch(e) {}
+    }
+    for (let s = 0; s < stores.length; s++) {
+      const store = stores[s];
+      try {
+        for (let i = 0; i < store.length; i++) {
+          const key = store.key(i);
+          if (!key || key.startsWith('cached_') || key.startsWith('waves_') || key === 'ai_matches') continue;
+          const val = (store.getItem(key) || '').trim();
+          if (val.length > 800) {
+            const lower = val.toLowerCase();
+            if ((lower.includes('experience') || lower.includes('work') || lower.includes('employment') || lower.includes('projects')) &&
+                (lower.includes('education') || lower.includes('skills') || lower.includes('university') || lower.includes('degree'))) {
+              try { localStorage.setItem('candidateResumeText', val); } catch(e) {}
+              return val;
+            }
+          }
+        }
+      } catch(e) {}
+    }
+    return '';
+  };
+
   // Automatically restore AI matches from ATS Resume Scan
   (function() {
     function restoreMatches() {
       try {
         const candidateResumeFileName = localStorage.getItem('candidateResumeFileName');
-        const candidateResumeText = localStorage.getItem('candidateResumeText') || '';
+        const candidateResumeText = window.resolveStoredResume() || localStorage.getItem('candidateResumeText') || '';
         const uploadZone = document.getElementById('aws-upload-zone');
         if ((candidateResumeFileName || candidateResumeText) && uploadZone) {
             const fileName = candidateResumeFileName || 'Your Scanned Resume';

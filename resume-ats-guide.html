@@ -314,8 +314,11 @@
     </div>
     <div style="flex-shrink:0;">
       <a href="mailto:trainaitogain@gmail.com?subject=Request%2010-Min%20Zoom%20Walkthrough%20-%20Profile%20Review&body=Hi%20James,%0D%0A%0D%0AI've%20applied%20to%20[Mercor%20/%20micro1]%20for%20[Role%20Title]%20and%20am%20stuck%20under%20review.%0D%0A%0D%0AMy%20resume%20is%20attached.%20I'd%20like%20to%20schedule%20a%2010-minute%20Zoom%20walkthrough%20to%20diagnose%20my%20profile.%0D%0A%0D%0AMy%20time%20zone%20and%20availability:%20[Your%20Availability]%0D%0A%0D%0AThanks!" class="btn-primary" style="text-decoration:none; padding:14px 24px; font-weight:800; font-size:14px; border-radius:100px; display:inline-flex; align-items:center; gap:8px; white-space:nowrap; box-shadow:0 4px 14px rgba(16,185,129,0.35);">
-        Schedule 10-Min Zoom Walkthrough ➔
+        Schedule 10-Min Walkthrough (Email Request) ➔
       </a>
+      <div style="font-size:11.5px; color:#64748b; margin-top:6px; text-align:center;">
+        Direct booking: email your resume &amp; time zone to receive a Zoom invite.
+      </div>
     </div>
   </div>
 </div>
@@ -580,11 +583,88 @@
     return false;
   }
 
+  // Universal Stored Resume Resolver
+  window.resolveStoredResume = function() {
+    const directKeys = [
+      'candidateResumeText', 'candidate_resume_text',
+      'interviewResumeText', 'interview_resume_text',
+      'atsResumeText', 'ats_resume_text',
+      'resumeText', 'resume_text',
+      'resume', 'candidateResume', 'userResume',
+      'savedResume', 'rawResume', 'atsResume',
+      'uploadedResume', 'resumeContent', 'candidateResumeRaw'
+    ];
+    
+    // 1. Direct key lookups across localStorage and sessionStorage
+    for (let i = 0; i < directKeys.length; i++) {
+      const k = directKeys[i];
+      try {
+        const v = (localStorage.getItem(k) || sessionStorage.getItem(k) || '').trim();
+        if (v.length > 50) {
+          try { localStorage.setItem('candidateResumeText', v); } catch(e) {}
+          return v;
+        }
+      } catch(e) {}
+    }
+    
+    // 2. Scan all storage keys containing "resume"
+    const stores = [localStorage, sessionStorage];
+    for (let s = 0; s < stores.length; s++) {
+      const store = stores[s];
+      try {
+        for (let i = 0; i < store.length; i++) {
+          const key = store.key(i);
+          if (!key) continue;
+          if (/resume/i.test(key) && !/filename|file_name|date|count|status|badge/i.test(key)) {
+            const val = (store.getItem(key) || '').trim();
+            if (val.length > 50) {
+              try { localStorage.setItem('candidateResumeText', val); } catch(e) {}
+              return val;
+            }
+          }
+        }
+      } catch(e) {}
+    }
+    
+    // 3. Scan for any value > 800 chars containing typical resume sections
+    for (let s = 0; s < stores.length; s++) {
+      const store = stores[s];
+      try {
+        for (let i = 0; i < store.length; i++) {
+          const key = store.key(i);
+          if (!key || key.startsWith('cached_') || key.startsWith('waves_') || key === 'ai_matches') continue;
+          const val = (store.getItem(key) || '').trim();
+          if (val.length > 800) {
+            const lower = val.toLowerCase();
+            if ((lower.includes('experience') || lower.includes('work') || lower.includes('employment') || lower.includes('projects')) &&
+                (lower.includes('education') || lower.includes('skills') || lower.includes('university') || lower.includes('degree'))) {
+              try { localStorage.setItem('candidateResumeText', val); } catch(e) {}
+              return val;
+            }
+          }
+        }
+      } catch(e) {}
+    }
+    return '';
+  };
+
+  window.resolveStoredResumeFileName = function() {
+    const nameKeys = ['candidateResumeFileName', 'resumeFileName', 'resume_file_name', 'resumeName', 'fileName'];
+    for (let i = 0; i < nameKeys.length; i++) {
+      const k = nameKeys[i];
+      try {
+        const v = (localStorage.getItem(k) || sessionStorage.getItem(k) || '').trim();
+        if (v) return v;
+      } catch(e) {}
+    }
+    return 'My_Resume.pdf';
+  };
+
   document.addEventListener('DOMContentLoaded', async function() {
     const roleSelect = document.getElementById('role-select');
 
     // AUTO-LOAD SAVED RESUME
-    const savedResume = localStorage.getItem('candidateResumeText');
+    const savedResume = window.resolveStoredResume();
     if (savedResume && savedResume.length > 50) {
         const resumeBox = document.getElementById('resume-text');
         resumeBox.value = savedResume;
@@ -594,7 +674,7 @@
         const divider = document.getElementById('paste-text-divider');
         if(divider) divider.style.display = 'none';
         
-        const savedFileName = localStorage.getItem('candidateResumeFileName') || 'My_Resume.pdf';
+        const savedFileName = window.resolveStoredResumeFileName();
         const labelEl = document.getElementById('resume-label');
         if (labelEl) {
             labelEl.innerHTML = '1. ✅ Resume Loaded (Saved locally in your browser)';
@@ -646,6 +726,8 @@
             if(replaceBtn) {
                 replaceBtn.onclick = function() {
                   localStorage.removeItem('candidateResumeText');
+                  localStorage.removeItem('interviewResumeText');
+                  localStorage.removeItem('resumeText');
                   if (injectContainer) injectContainer.innerHTML = '';
                   if (uploadZone) uploadZone.style.display = 'flex';
                   resumeBox.value = '';
@@ -665,9 +747,13 @@
             }
         }, 100);
         
-        // Ensure scan button text is correct
+        // Ensure scan button text is correct and active
         const scanBtn = document.getElementById('scan-btn');
-        if (scanBtn) scanBtn.innerText = 'Scan Saved Resume';
+        if (scanBtn) {
+            scanBtn.innerText = 'Scan Saved Resume';
+            scanBtn.disabled = false;
+            scanBtn.style.opacity = '1';
+        }
     }
 
     const jobDescBox = document.getElementById('job-desc');

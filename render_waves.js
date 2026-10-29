@@ -681,7 +681,9 @@ window.calculateRoleMatchScore = function(role, resumeText) {
 
 function getRoleMatchInfo(role) {
     try {
-        const resumeText = localStorage.getItem('candidateResumeText');
+        const resumeText = (typeof window.resolveStoredResume === 'function') 
+            ? window.resolveStoredResume() 
+            : (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '');
         const computed = (resumeText && window.calculateRoleMatchScore) ? window.calculateRoleMatchScore(role, resumeText) : null;
         const raw = sessionStorage.getItem('ai_matches') || localStorage.getItem('ai_matches');
         if (raw) {
@@ -1045,9 +1047,19 @@ function renderWavesApp() {
                     }
 
                     // Requirements block with hours & verified freshness
-                    const hoursDisplay = req.hours 
-                        ? req.hours 
-                        : (cleanPay.toLowerCase().includes('/task') ? 'Self-Paced / Per Task' : 'Flexible Contractor Hours');
+                    const isMicro1Role = role.platform === 'Micro1' || (role.id && String(role.id).startsWith('micro1'));
+                    const isTaskBased = cleanPay.toLowerCase().includes('/task') || cleanPay.toLowerCase().includes('task');
+                    
+                    let hoursDisplay = req.hours;
+                    if (!hoursDisplay) {
+                        if (isTaskBased) {
+                            hoursDisplay = 'Self-Paced (Pay per task &bull; no weekly minimum)';
+                        } else if (isMicro1Role) {
+                            hoursDisplay = '20 hrs/wk min (Match profile availability to 20+ hrs)';
+                        } else {
+                            hoursDisplay = '20–40 hrs/wk (Contractor flexible schedule)';
+                        }
+                    }
 
                     const reqHtml = `
                         <div class="role-requirements" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; padding:8px 12px; margin-bottom:14px; font-size:12px; line-height:1.4;">
@@ -1055,7 +1067,7 @@ function renderWavesApp() {
                             <div style="display:flex; flex-direction:column; gap:3px; color:#4b5563;">
                                 <div>📍 <strong>Location:</strong> ${req.location}</div>
                                 <div>⏰ <strong>Schedule:</strong> ${hoursDisplay}</div>
-                                <div>📅 <strong>Verified Active:</strong> Oct 2026 Sync</div>
+                                <div>📅 <strong>Verified Active:</strong> Oct 18, 2026 Sync</div>
                                 ${req.degree ? `<div>🎓 <strong>Degree:</strong> ${req.degree}</div>` : ''}
                                 ${req.license ? `<div>📜 <strong>License:</strong> <span style="color:#b45309; font-weight:700;">${req.license}</span></div>` : ''}
                             </div>

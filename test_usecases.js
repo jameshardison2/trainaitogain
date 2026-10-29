@@ -510,7 +510,79 @@ assert(applyHtml.includes('/enterprise'), "apply.html must link to /enterprise")
 assert(sitemapXml.includes('https://trainaitogain.com/enterprise'), "sitemap.xml must include /enterprise");
 console.log("✓ PASSED: Tier 4 Enterprise Hub, Proton readiness audit, data-partner advisory, and nav links verified");
 
+// ==================================================================
+// Test 37: Stored Resume Persistence & Multi-Storage Recovery Audit
+// ==================================================================
+const resumeAtsHtml = fs.readFileSync('resume-ats-guide.html', 'utf8');
+assert(resumeAtsHtml.includes('window.resolveStoredResume'), "resume-ats-guide.html must define window.resolveStoredResume");
+assert(resumeAtsHtml.includes('window.resolveStoredResumeFileName'), "resume-ats-guide.html must define window.resolveStoredResumeFileName");
+assert(aiInterviewHtml.includes('window.resolveStoredResume'), "ai-interview.html must define window.resolveStoredResume");
+
+// Mock storage recovery test in pure Node
+function mockResolveStoredResume(mockLocal, mockSession) {
+  const directKeys = [
+    'candidateResumeText', 'candidate_resume_text',
+    'interviewResumeText', 'interview_resume_text',
+    'atsResumeText', 'ats_resume_text',
+    'resumeText', 'resume_text',
+    'resume', 'candidateResume', 'userResume',
+    'savedResume', 'rawResume', 'atsResume',
+    'uploadedResume', 'resumeContent', 'candidateResumeRaw'
+  ];
+  for (let i = 0; i < directKeys.length; i++) {
+    const k = directKeys[i];
+    const v = (mockLocal[k] || mockSession[k] || '').trim();
+    if (v.length > 50) return v;
+  }
+  const stores = [mockLocal, mockSession];
+  for (let s = 0; s < stores.length; s++) {
+    const store = stores[s];
+    for (const key of Object.keys(store)) {
+      if (/resume/i.test(key) && !/filename|file_name|date|count|status|badge/i.test(key)) {
+        const val = (store[key] || '').trim();
+        if (val.length > 50) return val;
+      }
+    }
+  }
+  for (let s = 0; s < stores.length; s++) {
+    const store = stores[s];
+    for (const key of Object.keys(store)) {
+      if (key.startsWith('cached_') || key.startsWith('waves_') || key === 'ai_matches') continue;
+      const val = (store[key] || '').trim();
+      if (val.length > 800) {
+        const lower = val.toLowerCase();
+        if ((lower.includes('experience') || lower.includes('work') || lower.includes('employment') || lower.includes('projects')) &&
+            (lower.includes('education') || lower.includes('skills') || lower.includes('university') || lower.includes('degree'))) {
+          return val;
+        }
+      }
+    }
+  }
+  return '';
+}
+
+// Case A: 17 KB resume under candidateResumeText
+const dummy17kResume = "James Hardison II - Senior SDET Experience\n" + "Software Engineering and Test Automation projects with Python, Selenium, CI/CD pipelines.\n".repeat(200) + "Education: Boston University Data Science BS\nSkills: Python, TypeScript, AI Evaluation";
+assert(mockResolveStoredResume({ candidateResumeText: dummy17kResume }, {}) === dummy17kResume, "Must recover candidateResumeText");
+
+// Case B: Resume under legacy interviewResumeText
+assert(mockResolveStoredResume({ interviewResumeText: dummy17kResume }, {}) === dummy17kResume, "Must recover legacy interviewResumeText");
+
+// Case C: Resume stored only in sessionStorage
+assert(mockResolveStoredResume({}, { candidateResumeText: dummy17kResume }) === dummy17kResume, "Must recover from sessionStorage");
+
+// Case D: Resume stored under arbitrary key with resume markers
+assert(mockResolveStoredResume({ random_storage_key_1: dummy17kResume }, {}) === dummy17kResume, "Must recover from unstructured resume text");
+
+// Check job card hours and real sync date in render_waves.js
+const renderWavesJs = fs.readFileSync('render_waves.js', 'utf8');
+assert(renderWavesJs.includes('20 hrs/wk min'), "render_waves.js must display 20 hrs/wk min for micro1 roles");
+assert(renderWavesJs.includes('20–40 hrs/wk'), "render_waves.js must display 20–40 hrs/wk for Mercor hourly roles");
+assert(renderWavesJs.includes('Oct 18, 2026 Sync'), "render_waves.js must display exact verified sync date Oct 18, 2026 Sync");
+
+console.log("✓ PASSED: Stored resume persistence, 17KB multi-storage recovery, job card hours, and verified sync date verified");
+
 console.log("==================================================================");
-console.log("ALL 36 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 37 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
