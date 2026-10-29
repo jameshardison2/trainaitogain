@@ -9,14 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="shared.css" />
 <link rel="canonical" href="https://trainaitogain.com/">
-<meta name="description" content="Master the AI model training interview and bypass the waitlist for high-paying RLHF jobs at Micro1 and Mercor.">
+<meta name="description" content="Browse 600+ vetted AI training roles in Software, Medical, and Finance. Apply through direct referral fast-track links and prepare for your AI interview.">
 <meta property="og:title" content="Secure a High-Paying AI Job - TrainAIToGain">
-<meta property="og:description" content="Master the AI model training interview and bypass the waitlist for high-paying RLHF jobs at Micro1 and Mercor.">
+<meta property="og:description" content="Browse 600+ vetted AI training roles in Software, Medical, and Finance. Apply through direct referral fast-track links and prepare for your AI interview.">
 <meta property="og:url" content="https://trainaitogain.com/">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://trainaitogain.com/og_image.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://trainaitogain.com/og_image.png">
 <meta name="twitter:title" content="Secure a High-Paying AI Job - TrainAIToGain">
-<meta name="twitter:description" content="Master the AI model training interview and bypass the waitlist for high-paying RLHF jobs at Micro1 and Mercor.">
+<meta name="twitter:description" content="Browse 600+ vetted AI training roles in Software, Medical, and Finance. Apply through direct referral fast-track links and prepare for your AI interview.">
   <meta name="keywords" content="Mercor AI interview, Mercor interview questions, Mercor SWE evaluator, Mercor jobs, Mercor referral, train AI models, RLHF jobs, Mercor $150 hr, Mercor medical evaluator">
 
   <!-- Google tag (gtag.js) - Deferred for Consent -->
@@ -37,14 +39,330 @@
   
 
 <style>
-  .hero-h1 { font-size: 56px; line-height: 1.1; }
+  /* Hero Section (Option A: Match Result) Styles */
+  .hero-section {
+    padding: 56px 0 64px;
+    background-color: var(--white);
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (min-width: 992px) {
+    .hero-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 56px;
+    }
+  }
+  .hero-preheader {
+    color: #c2410c;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+  }
+  .hero-headline {
+    font-size: clamp(36px, 4.4vw, 56px);
+    font-weight: 900;
+    color: #111827;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin: 0 0 24px 0;
+  }
+  .hero-highlight {
+    color: #047857;
+  }
+  @media (max-width: 991px) {
+    .hero-desktop-br {
+      display: none;
+    }
+  }
+  .hero-subheadline {
+    font-size: 17px;
+    color: #4b5563;
+    line-height: 1.6;
+    margin: 0 0 32px 0;
+    max-width: 520px;
+    font-weight: 450;
+  }
+  .hero-cta-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .hero-primary-cta {
+    background: #059669;
+    color: #ffffff !important;
+    padding: 14px 28px;
+    border-radius: 9999px;
+    font-weight: 800;
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.28);
+  }
+  .hero-primary-cta:hover {
+    background: #047857;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35);
+  }
+  .hero-secondary-cta {
+    color: #111827;
+    font-weight: 800;
+    font-size: 15px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 0.2s ease;
+  }
+  .hero-secondary-cta:hover {
+    color: #059669;
+  }
+  .hero-trust-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .trust-pill {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 9999px;
+    padding: 7px 15px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    white-space: nowrap;
+  }
+
+  /* Match Result Card Styles */
+  .hero-card-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .hero-match-card {
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.07);
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hero-match-card:hover {
+    box-shadow: 0 14px 36px -10px rgba(0,0,0,0.1);
+  }
+  .match-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .match-card-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .file-icon {
+    flex-shrink: 0;
+    stroke: #6b7280;
+  }
+  .file-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  .file-name {
+    font-weight: 800;
+    font-size: 14px;
+    color: #111827;
+    line-height: 1.2;
+  }
+  .file-subtext {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .match-card-badge {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    text-transform: uppercase;
+    background: #f3f4f6;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+  }
+  .match-role-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .match-role-info {
+    text-align: left;
+    flex: 1;
+  }
+  .match-role-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: #111827;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .match-role-meta {
+    font-size: 13.5px;
+    color: #4b5563;
+    font-weight: 600;
+  }
+  .match-score-info {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .match-score-num {
+    font-size: 38px;
+    font-weight: 900;
+    color: #059669;
+    line-height: 1;
+  }
+  .match-score-tier {
+    font-size: 12px;
+    color: #4b5563;
+    font-weight: 700;
+    margin-top: 4px;
+    white-space: nowrap;
+  }
+  .match-gauge-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-bottom: 22px;
+    width: 100%;
+  }
+  .match-gauge-fill {
+    height: 100%;
+    background: #059669;
+    border-radius: 9999px;
+  }
+  .match-chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .kw-chip-matched {
+    background: #d1fae5;
+    color: #065f46;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #a7f3d0;
+    display: inline-flex;
+    align-items: center;
+  }
+  .kw-chip-missing {
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px dashed #d1d5db;
+    display: inline-flex;
+    align-items: center;
+  }
+  .match-card-apply-btn {
+    background: #111827;
+    color: #ffffff !important;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-weight: 800;
+    font-size: 14.5px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .match-card-apply-btn:hover {
+    background: #1f2937;
+    transform: translateY(-1px);
+  }
+  .match-card-footnote {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13.5px;
+    color: #374151;
+    text-align: center;
+  }
+  .footnote-link {
+    color: #374151;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  .footnote-link:hover {
+    color: #059669;
+  }
+
   @media (max-width: 600px) {
-    .hero-h1 { font-size: 40px !important; }
-    .hero-btn-container { flex-direction: column; width: 100%; }
-    .hero-btn-container a { width: 100%; text-align: center; justify-content: center; }
+    .hero-cta-group {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+    }
+    .hero-primary-cta {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+    .hero-secondary-cta {
+      text-align: center;
+      display: block;
+    }
+    .hero-match-card {
+      padding: 20px 18px;
+    }
+    .match-role-title {
+      font-size: 22px;
+    }
+    .match-score-num {
+      font-size: 32px;
+    }
+    .hero-trust-pills {
+      justify-content: flex-start;
+    }
   }
 </style>
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
 </head>
 <body>
 <div style="background: var(--primary); color: white; padding: 12px; text-align: center; font-weight: 700; font-size: 14px; position: relative; z-index: 9999;">
@@ -63,7 +381,7 @@
           </div>
         </a>
         <input type="checkbox" id="nav-toggle" style="display:none;" />
-        <label for="nav-toggle" class="nav-toggle-label">
+        <label for="nav-toggle" class="nav-toggle-label" tabindex="0" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="nav-toggle-icon"></span>
         </label>
         <ul class="nav-links">
@@ -96,30 +414,43 @@
   </nav>
 
   
-  <!-- ─── New Direct-Response Hero ─────────────────────────────────────────── -->
-  
-  <!-- ─── New Hero Section ─────────────────────────────────────────── -->
-  <header style="padding: 60px 0 40px; background-color: var(--white); overflow: hidden;">
+  <!-- ─── Hero Section (Option A: Match Result) ───────────────────────── -->
+  <header class="hero-section">
     <div class="container">
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px; align-items: center;">
+      <div class="hero-grid">
         
-        <!-- Left Column -->
-        <div>
-          <div style="color: #F06A26; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 24px;">
-            AI OPPORTUNITIES &middot; REAL PAY
+        <!-- Left Column: Copy & Actions -->
+        <div class="hero-content">
+          <div class="hero-preheader">
+            PAID AI EVALUATION WORK · REMOTE
           </div>
-          <h1 class="hero-h1" style="font-weight: 800; color: #111; line-height: 1.1; letter-spacing: -0.04em; margin-bottom: 24px;">
-            Your expertise is <br>
-            worth <span style="color: #F06A26;">$70&ndash;120/hr</span> to <br>
-            the AI labs.
+          
+          <h1 class="hero-headline">
+            Find the AI <br class="hero-desktop-br">
+            evaluation roles <br class="hero-desktop-br">
+            your resume <br class="hero-desktop-br">
+            <span class="hero-highlight">already qualifies <br class="hero-desktop-br">for.</span>
           </h1>
-          <p style="font-size: 22px; color: #555; line-height: 1.6; margin-bottom: 40px; max-width: 520px;">
-            Leading AI labs pay skilled professionals to review and grade AI outputs in their field. Doctors, lawyers, engineers, researchers, coders - remote, flexible, and open globally.
+          
+          <p class="hero-subheadline">
+            Upload your resume and see your keyword match against 600+ live roles across top AI research labs. Practice the AI interview, then apply with a verified partner referral.
           </p>
           
-          <div style="display:flex; flex-direction:column; align-items:flex-start; gap:12px; margin-bottom:40px;">
-            <a href="/resume-ats-guide" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-size:18px; padding:18px 36px; border-radius:100px; box-shadow:0 10px 25px rgba(16,185,129,0.3); font-weight:800; color:white;">Scan My Resume ➔</a>
-            <a href="/apply" style="color:var(--gray-600); font-size:15px; text-decoration:underline; font-weight:600;">No resume? Browse all roles</a>
+          <div class="hero-cta-group">
+            <a href="/resume-ats-guide.html" class="hero-primary-cta">
+              Scan my resume, free &rarr;
+            </a>
+            <a href="/apply.html" class="hero-secondary-cta">
+              Browse all roles
+            </a>
+          </div>
+
+          <!-- Trust Pills Bar -->
+          <div class="hero-trust-pills">
+            <span class="trust-pill">&bull; 604 live roles</span>
+            <span class="trust-pill">&bull; Top AI Research Labs</span>
+            <span class="trust-pill">&bull; Remote, paid hourly</span>
+            <span class="trust-pill">&bull; Updated daily</span>
           </div>
 
           <!-- Hidden match elements for backwards compatibility -->
@@ -127,67 +458,67 @@
           <div id="index-match-results" style="display:none;"></div>
         </div>
 
-        <!-- Right Column (Grid) -->
-        <div style="position: relative;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <!-- Top Left -->
-            <div style="background: #E4CDB4; aspect-ratio: 1; border-radius: 20px; position: relative;">
-              <!-- Floating Pill -->
-              <div style="position: absolute; bottom: 24px; left: -12px; background: #fff; border-radius: 12px; padding: 12px 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 12px; z-index: 10;">
-                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); color: #10b981; display: flex; align-items: center; justify-content: center;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
-                <div>
-                  <div style="color: #111827; font-size: 18px; font-weight: 800; line-height: 1;">300+ Roles</div>
-                  <div style="color: #666; font-size: 12px; margin-top: 4px;">Actively recruiting</div>
-                </div>
-              </div>
-            </div>
+        <!-- Right Column: Interactive / Sample Match Result Card -->
+        <div class="hero-card-col">
+          <div class="hero-match-card">
             
-            <!-- Top Right -->
-            <div style="background: #C4B19F; aspect-ratio: 1; border-radius: 20px; position: relative;">
-              <!-- Floating Pill -->
-              <div style="position: absolute; top: 24px; right: -12px; background: #fff; border-radius: 12px; padding: 12px 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 12px; z-index: 10;">
-                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(240, 106, 38, 0.1); color: #F06A26; display: flex; align-items: center; justify-content: center;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                </div>
-                <div>
-                  <div style="color: #F06A26; font-size: 18px; font-weight: 800; line-height: 1;">Remote</div>
-                  <div style="color: #666; font-size: 12px; margin-top: 4px;">Global opportunities</div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Bottom Left -->
-            <div style="background: #9BB899; aspect-ratio: 1; border-radius: 20px; position: relative;">
-              <!-- Floating Pill -->
-              <div style="position: absolute; bottom: 24px; left: -12px; background: #fff; border-radius: 12px; padding: 12px 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 12px; z-index: 10;">
-                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(240, 106, 38, 0.1); color: #F06A26; display: flex; align-items: center; justify-content: center;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                </div>
-                <div>
-                  <div style="color: #F06A26; font-size: 18px; font-weight: 800; line-height: 1;">Flexible</div>
-                  <div style="color: #666; font-size: 12px; margin-top: 4px;">Paid hourly</div>
+            <!-- Card Header -->
+            <div class="match-card-header">
+              <div class="match-card-file">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="file-icon" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <div class="file-info">
+                  <div class="file-name">your_resume.pdf</div>
+                  <div class="file-subtext">Scanned in 16 seconds</div>
                 </div>
               </div>
+              <span class="match-card-badge">EXAMPLE RESULT</span>
             </div>
-            
-            <!-- Bottom Right -->
-            <div style="background: #A49FBA; aspect-ratio: 1; border-radius: 20px; position: relative;">
-              <!-- Floating Pill -->
-              <div style="position: absolute; top: 24px; right: -12px; background: #fff; border-radius: 12px; padding: 12px 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 12px; z-index: 10;">
-                <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(99, 102, 241, 0.1); color: #6366f1; display: flex; align-items: center; justify-content: center;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                </div>
-                <div>
-                  <div style="color: #111827; font-size: 18px; font-weight: 800; line-height: 1;">Verified</div>
-                  <div style="color: #666; font-size: 12px; margin-top: 4px;">Mercor & micro1</div>
-                </div>
+
+            <!-- Role & Score Row -->
+            <div class="match-role-row">
+              <div class="match-role-info">
+                <h3 class="match-role-title">QA Engineer</h3>
+                <div class="match-role-meta">Frontier AI Lab &middot; Remote &middot; $63–120/hr</div>
+              </div>
+              <div class="match-score-info">
+                <div class="match-score-num">63%</div>
+                <div class="match-score-tier">Good match &middot; 5 of 8</div>
               </div>
             </div>
+
+            <!-- Match Gauge / Progress Bar -->
+            <div class="match-gauge-bar" aria-label="Match progress 63%">
+              <div class="match-gauge-fill" style="width: 63%;"></div>
+            </div>
+
+            <!-- Keyword Match Chips -->
+            <div class="match-chips-container" aria-label="Keyword matches">
+              <span class="kw-chip-matched">QA</span>
+              <span class="kw-chip-matched">Selenium</span>
+              <span class="kw-chip-matched">SQL</span>
+              <span class="kw-chip-matched">Test automation</span>
+              <span class="kw-chip-matched">Test cases</span>
+              <span class="kw-chip-missing">+ Bug tracking</span>
+              <span class="kw-chip-missing">+ Manual testing</span>
+            </div>
+
+            <!-- Action Button -->
+            <a href="/apply.html?role=QA%20Engineer" class="match-card-apply-btn">
+              Apply with Verified Partner Referral &#x2197;
+            </a>
+
+          </div>
+
+          <!-- Footnote Step 2 Prompt -->
+          <div class="match-card-footnote">
+            <span class="footnote-icon" aria-hidden="true">&#x1F4A1;</span>
+            <span><strong>Next:</strong> <a href="/interview-prep.html" class="footnote-link">practice the 20-minute AI interview for this role</a></span>
           </div>
         </div>
-        
+
       </div>
     </div>
   </header>
@@ -200,7 +531,8 @@
       <p style="color: var(--gray-500); font-size: 18px; margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">Watch the 2-minute breakdown on how to optimize your resume and pass the automated screening to get hired faster.</p>
       
       <div style="width: 100%; max-width: 800px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 48px rgba(0,0,0,0.12); margin-bottom: 48px; border: 1px solid var(--gray-200); background: #000; transform: translateZ(0);">
-        <video src="ai_interview_hack.mp4?v=1790560912#t=2.0" type="video/mp4" width="100%" controls playsinline webkit-playsinline preload="metadata" style="display: block; max-width: 100%; height: auto; outline: none; border: none; background: #000; object-fit: contain;">
+        <video src="ai_interview_hack.mp4?v=1790560912" poster="/video_poster.jpg" type="video/mp4" width="100%" controls playsinline webkit-playsinline preload="metadata" style="display: block; max-width: 100%; height: auto; outline: none; border: none; background: #000; object-fit: contain;">
+          <track kind="captions" src="/video_captions.vtt" srclang="en" label="English" default>
           Your browser does not support the video tag.
         </video>
       </div>
@@ -219,8 +551,46 @@
 
   
 
+  <!-- For Companies Section -->
+  <section id="companies" class="section" style="padding: 80px 0; background: #0f172a; color: #ffffff; text-align: center;">
+    <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 24px; box-sizing: border-box;">
+      <div style="display:inline-block; background:rgba(16, 185, 129, 0.15); color:#10b981; font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:0.12em; padding:6px 18px; border-radius:100px; margin-bottom:20px; border:1px solid rgba(16,185,129,0.3);">Enterprise &amp; AI Labs</div>
+      <h2 style="font-size: 38px; font-weight: 800; margin-bottom: 16px; color: #ffffff; letter-spacing: -0.02em;">Hire Calibrated AI Evaluators &amp; Domain Experts</h2>
+      <p style="color: #94a3b8; font-size: 18px; margin-bottom: 40px; max-width: 680px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+        TrainAIToGain equips pre-vetted specialists—MD clinicians, licensed attorneys, Staff SWEs, and quantitative analysts—trained on RLHF benchmarks, prompt red-teaming, and model alignment.
+      </p>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 48px; text-align: left;">
+        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 12px;">
+          <div style="font-size: 24px; margin-bottom: 10px;">🩺</div>
+          <h3 style="font-size: 17px; font-weight: 700; color: #ffffff; margin-bottom: 6px;">Specialized Expertise</h3>
+          <p style="font-size: 14px; color: #94a3b8; line-height: 1.5; margin: 0;">Verified board-certified physicians, credentialed CPAs/CFAs, and senior software engineers.</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 12px;">
+          <div style="font-size: 24px; margin-bottom: 10px;">⚡</div>
+          <h3 style="font-size: 17px; font-weight: 700; color: #ffffff; margin-bottom: 6px;">Pre-Interviewed Talent</h3>
+          <p style="font-size: 14px; color: #94a3b8; line-height: 1.5; margin: 0;">Candidates pre-screened on AI evaluation rubrics, video interviews, and prompt engineering protocols.</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 12px;">
+          <div style="font-size: 24px; margin-bottom: 10px;">🌐</div>
+          <h3 style="font-size: 17px; font-weight: 700; color: #ffffff; margin-bottom: 6px;">Turnkey Pipelines</h3>
+          <p style="font-size: 14px; color: #94a3b8; line-height: 1.5; margin: 0;">Seamless candidate routing directly into your Mercor, micro1, or custom enterprise ATS pipelines.</p>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+        <a href="mailto:trainaitogain@gmail.com?subject=Enterprise%20Talent%20Inquiry%20-%20TrainAIToGain" style="background: var(--primary); color: #ffffff; font-weight: 800; font-size: 16px; padding: 16px 36px; border-radius: 100px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(16,185,129,0.4); transition: all 0.2s;" onmouseover="this.style.background='#047857'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='var(--primary)'; this.style.transform='translateY(0)';">
+          Partner With Us / Request Talent ➔
+        </a>
+        <a href="/apply" style="background: transparent; color: #ffffff; border: 1.5px solid rgba(255,255,255,0.3); font-weight: 700; font-size: 16px; padding: 16px 32px; border-radius: 100px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.borderColor='#ffffff';" onmouseout="this.style.borderColor='rgba(255,255,255,0.3)';">
+          View Active Pipelines
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ─── Footer ─────────────────────────────────────────── -->
-    <!-- ─── Standard Scalable Real Footer ─────────────────────────────────── -->
+  <!-- ─── Standard Scalable Real Footer ─────────────────────────────────── -->
   <footer class="site-footer no-print" style="background:#111111; padding: 48px 0; border-top: 1px solid rgba(255,255,255,0.1); color:#ffffff; width:100%; box-sizing:border-box;">
     <div class="container" style="max-width:1200px; margin:0 auto; padding:0 24px; box-sizing:border-box;">
       <div class="footer-inner" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
@@ -230,8 +600,10 @@
             <span style="color:#ffffff; font-weight:800; font-size:18px; letter-spacing:-0.02em; cursor:pointer;" onclick="window.location.href='/internal-hub'" title="Internal Portal">TrainAIToGain</span>
           </div>
           <p style="color:#9ca3af; font-size:14px; margin:0; line-height:1.5;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
-          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; 548 Market St, Suite 84000, San Francisco, CA 94104 &bull; Independent Candidate Preparation Platform</p>
           <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
+            <a href="/privacy" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Privacy Policy</a>
+            <a href="/terms" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Terms of Service</a>
             <a href="/disclosure" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Affiliate Disclosure</a>
             <a href="/saved-roles" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Dashboard</a>
             <a href="/resume-ats-guide" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">ATS Resume Scan</a>
@@ -342,6 +714,10 @@
       localStorage.setItem('cookieConsent', 'accepted');
       document.getElementById('consent-banner').classList.remove('show');
       loadGA();
+      if (!sessionStorage.getItem('page_view_logged_' + window.location.pathname)) {
+        if (typeof sendPipelineEvent === 'function') sendPipelineEvent('page_view');
+        sessionStorage.setItem('page_view_logged_' + window.location.pathname, 'true');
+      }
     }
 
     function declineConsent() {
@@ -398,6 +774,7 @@
     }
 
     function sendPipelineEvent(eventType) {
+      if (localStorage.getItem('cookieConsent') !== 'accepted') return;
       try {
         fetch('/api/logPipelineEvent', {
           method: 'POST',

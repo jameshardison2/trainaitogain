@@ -5,10 +5,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Interactive AI Resume Scanner - TrainAIToGain</title>
   <meta name="description" content="Get your Mercor referral, master the AI model training interview, and bypass the waitlist for high-paying RLHF jobs.">
+  <link rel="canonical" href="https://trainaitogain.com/resume-ats-guide">
+  <meta property="og:title" content="Interactive AI Resume Scanner - TrainAIToGain">
+  <meta property="og:description" content="Scan your resume against 600+ AI evaluation roles, detect missing Job Description keywords, and calculate your ATS match score instantly.">
+  <meta property="og:url" content="https://trainaitogain.com/resume-ats-guide">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://trainaitogain.com/og_image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Interactive AI Resume Scanner - TrainAIToGain">
+  <meta name="twitter:description" content="Scan your resume against 600+ AI evaluation roles, detect missing Job Description keywords, and calculate your ATS match score instantly.">
+  <meta name="twitter:image" content="https://trainaitogain.com/og_image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="shared.css?v=1792372500">
   <style>
     body { background: var(--gray-50); }
     
@@ -80,15 +90,24 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
   <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <!-- Google tag (gtag.js) - Conditional on Consent -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7Z54KYTV6B');
+    (function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      if (localStorage.getItem('cookieConsent') === 'accepted') {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-7Z54KYTV6B');
+      }
+    })();
   </script>
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
 </head>
 <body>
 
@@ -103,7 +122,7 @@
           </div>
         </a>
         <input type="checkbox" id="nav-toggle" style="display:none;" />
-        <label for="nav-toggle" class="nav-toggle-label">
+        <label for="nav-toggle" class="nav-toggle-label" tabindex="0" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="nav-toggle-icon"></span>
         </label>
         <ul class="nav-links">
@@ -229,7 +248,7 @@
       <div id="improvement-badge" style="display:none; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:700; align-items:center; gap:4px; box-shadow:0 1px 2px rgba(0,0,0,0.05);"></div>
     </div>
     <div class="meter-text" style="line-height:1; margin-bottom:8px;"><span id="score-text">0%</span></div>
-    <span class="meter-label">Match Probability</span>
+    <span class="meter-label">Keyword Match Coverage</span>
     
     <div class="meter-wrap">
       <div class="meter-fill" id="meter-fill"></div>
@@ -244,7 +263,12 @@
       <h4>Awaiting Scan...</h4>
       <p>Upload your resume or click Scan My Resume below.</p>
     </div>
-    <a href="/apply" class="btn-apply ready" id="apply-btn" style="text-decoration:none; display:block; text-align:center; padding:14px; font-weight:700; font-size:15px; border-radius:var(--radius-sm); margin-top:16px;">See Matching Roles & Apply ➔</a>
+    <a href="/apply" class="btn-apply ready" id="apply-btn" style="text-decoration:none; display:block; text-align:center; padding:14px; font-weight:700; font-size:15px; border-radius:var(--radius-sm); margin-top:16px;">See Matching Roles &amp; Apply ➔</a>
+    <div style="margin-top:10px; text-align:center;">
+      <a href="/ai-interview" id="ats-mock-cta-btn" style="display:inline-flex; align-items:center; justify-content:center; gap:6px; color:#047857; background:#d1fae5; border:1px solid #34d399; font-weight:800; font-size:13.5px; padding:11px 18px; border-radius:8px; text-decoration:none; width:100%; box-sizing:border-box; transition:all 0.2s;">
+        🎙️ Practice with AI Mock Interview &amp; Get STAR PDF ➔
+      </a>
+    </div>
     
   </div>
 </div>
@@ -252,10 +276,19 @@
 <div class="container" style="max-width:1000px;">
   
 
-  <!-- Next Steps -->
-  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:64px; padding-top:32px; border-top:1px solid var(--gray-200);">
-    <a href="/apply" class="btn-primary" style="text-decoration:none; padding:16px 32px; font-weight:800; font-size:16px; border-radius:100px; display:inline-flex; align-items:center; gap:8px;">See My Matching Roles ➔</a>
-    <a href="/ai-interview" style="color:var(--gray-600); font-size:15px; text-decoration:underline; font-weight:600;">Practice the AI interview first ➔</a>
+  <!-- Step 2: AI Mock Interview + STAR PDF Lead Magnet Card -->
+  <div style="background:linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(17,24,39,0.06) 100%); border:1px solid rgba(16,185,129,0.3); border-radius:16px; padding:24px 28px; margin-bottom:48px; margin-top:32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+    <div style="max-width:620px;">
+      <div style="font-size:11.5px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Step 2 (Recommended Before Applying)</div>
+      <h3 style="margin:0 0 8px; font-size:20px; font-weight:800; color:var(--black);">Practice Your AI Screening &amp; Download Your Custom STAR Playbook</h3>
+      <p style="margin:0; font-size:14px; color:var(--gray-600); line-height:1.5;">Mercor and micro1 evaluate candidates using autonomous AI video screeners. Test your delivery in our 5-question simulator and download your personalized <strong>Before &amp; After STAR Playbook (PDF)</strong> with highlighted keywords for your role.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-start;">
+      <a href="/ai-interview" class="btn-primary" style="text-decoration:none; padding:14px 28px; font-weight:800; font-size:15px; border-radius:100px; display:inline-flex; align-items:center; gap:8px; white-space:nowrap; box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+        🚀 Launch AI Mock Interview ➔
+      </a>
+      <a href="/apply" style="color:var(--gray-600); font-size:13.5px; font-weight:600; text-decoration:underline; padding-left:8px;">or jump straight to Active Roles</a>
+    </div>
   </div>
 </div>
 
@@ -269,8 +302,10 @@
             <span style="color:#ffffff; font-weight:800; font-size:18px; letter-spacing:-0.02em; cursor:pointer;" onclick="window.location.href='/internal-hub'" title="Internal Portal">TrainAIToGain</span>
           </div>
           <p style="color:#9ca3af; font-size:14px; margin:0; line-height:1.5;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
-          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; 548 Market St, Suite 84000, San Francisco, CA 94104 &bull; Independent Candidate Preparation Platform</p>
           <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
+            <a href="/privacy" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Privacy Policy</a>
+            <a href="/terms" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Terms of Service</a>
             <a href="/disclosure" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Affiliate Disclosure</a>
             <a href="/saved-roles" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Dashboard</a>
             <a href="/resume-ats-guide" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">ATS Resume Scan</a>
@@ -298,6 +333,106 @@
   </footer>
 
 <script>
+
+  function getDomainKeywords(title, domain, existingKws) {
+    const t = (title || '').toLowerCase();
+    const d = (domain || '').toLowerCase();
+
+    if (Array.isArray(existingKws) && existingKws.length >= 8) {
+      return existingKws.slice(0, 8);
+    }
+
+    if (/nurse|nursing|inpatient/i.test(t)) {
+      return ['Patient Assessment', 'Vitals Monitoring', 'Medication Administration', 'EHR Documentation', 'Pediatric Care', 'Inpatient Care', 'Clinical Judgment', 'Care Planning'];
+    }
+    if (/physician|hospitalist|pediatrician|oncolog|doctor|md\b/i.test(t)) {
+      return ['Clinical Diagnosis', 'Treatment Planning', 'Differential Diagnosis', 'Patient Care', 'Medical Protocols', 'EHR Systems', 'Evidence-Based Medicine', 'Clinical Decision Support'];
+    }
+    if (/pharma|drug discovery/i.test(t)) {
+      return ['Pharmacology', 'Drug Discovery', 'Clinical Trials', 'Pharmacovigilance', 'Regulatory Submissions', 'FDA Compliance', 'Data Analysis', 'Biochemical Assays'];
+    }
+    if (d === 'medical') {
+      return ['Clinical Assessment', 'Patient Care', 'Medical Terminology', 'EHR Systems', 'Differential Diagnosis', 'Treatment Evaluation', 'HIPAA Compliance', 'Healthcare Standards'];
+    }
+
+    if (/investment banking|m&a|valuation|dcf/i.test(t)) {
+      return ['Financial Modeling', 'DCF Valuation', 'M&A Advisory', 'LBO Analysis', 'Financial Statements', 'Market Research', 'EBITDA Analysis', 'Pitch Books'];
+    }
+    if (/accounting|tax|audit|cpa/i.test(t)) {
+      return ['GAAP Compliance', 'Financial Reporting', 'Tax Compliance', 'General Ledger', 'Auditing Standards', 'Account Reconciliation', 'Variance Analysis', 'Internal Controls'];
+    }
+    if (d === 'finance') {
+      return ['Financial Analysis', 'Financial Modeling', 'Budgeting & Forecasting', 'Valuation Analysis', 'Risk Management', 'Variance Analysis', 'Capital Allocation', 'Excel Modeling'];
+    }
+
+    if (/lawyer|attorney|counsel|legal|litigation|paralegal/i.test(t)) {
+      return ['Contract Review', 'Legal Research', 'Regulatory Compliance', 'Legal Drafting', 'Statutory Analysis', 'Due Diligence', 'Risk Mitigation', 'Brief Writing'];
+    }
+    if (d === 'legal') {
+      return ['Legal Analysis', 'Case Law Research', 'Statutory Interpretation', 'Compliance Review', 'Contract Negotiation', 'Legal Documentation', 'Risk Assessment', 'Legal Writing'];
+    }
+
+    if (/mechanical/i.test(t)) {
+      return ['Mechanical Engineering', 'CAD Design', 'Finite Element Analysis', 'Thermodynamics', 'SolidWorks', 'Prototyping', 'Materials Science', 'GD&T'];
+    }
+    if (/electrical|firmware|hardware|rtl/i.test(t)) {
+      return ['Hardware Architecture', 'RTL Design', 'Circuit Design', 'Verilog/VHDL', 'FPGA', 'Embedded Systems', 'PCB Layout', 'Signal Integrity'];
+    }
+    if (/chemist|chemistry/i.test(t)) {
+      return ['Computational Chemistry', 'Spectroscopy', 'Molecular Modeling', 'Analytical Chemistry', 'Reaction Kinetics', 'Organic Synthesis', 'Chromatography', 'Laboratory Protocols'];
+    }
+    if (/physics|physicist/i.test(t)) {
+      return ['Statistical Physics', 'Mathematical Modeling', 'Quantum Mechanics', 'Thermodynamics', 'Numerical Simulations', 'Data Modeling', 'Scientific Computing', 'Hypothesis Testing'];
+    }
+    if (/biology|bioinformatics/i.test(t)) {
+      return ['Bioinformatics', 'Genomics Analysis', 'Molecular Biology', 'Computational Biology', 'Sequence Alignment', 'Statistical Genetics', 'Data Analysis', 'Research Documentation'];
+    }
+    if (d === 'science') {
+      return ['Scientific Computing', 'Data Modeling', 'Experimental Design', 'Statistical Analysis', 'Quantitative Research', 'Literature Review', 'Hypothesis Testing', 'Documentation'];
+    }
+
+    if (/language|linguist|translation|transcription|voice|tutor/i.test(t)) {
+      return ['Native Fluency', 'Linguistic Annotation', 'Audio Transcription', 'Grammar & Syntax', 'Localization', 'Cultural Nuance', 'Quality Assurance', 'Proofreading'];
+    }
+    if (d === 'language') {
+      return ['Language Fluency', 'Audio Transcription', 'Text Normalization', 'Linguistic Analysis', 'Semantic Evaluation', 'Syntax Review', 'Quality Assurance', 'Translation'];
+    }
+
+    if (/3d|artist|designer|ui\/ux|video edit|creative/i.test(t)) {
+      return ['UI/UX Design', 'Figma Prototyping', 'Design Systems', 'User Research', 'Wireframing', 'Visual Design', 'Interaction Design', 'Usability Testing'];
+    }
+    if (d === 'creative') {
+      return ['Creative Direction', 'Visual Design', 'Narrative Structure', 'Content Strategy', 'Editorial Review', 'Style Guide Adherence', 'Brand Consistency', 'Design Systems'];
+    }
+
+    if (/sales|b2b/i.test(t)) {
+      return ['B2B Sales', 'Lead Generation', 'Sales Pipeline', 'Account Management', 'CRM Management', 'Contract Negotiation', 'Client Relationship', 'Revenue Forecasting'];
+    }
+    if (d === 'sales') {
+      return ['Sales Strategy', 'Pipeline Management', 'Client Engagement', 'Outbound Prospecting', 'CRM Analytics', 'Value Proposition', 'Deal Closing', 'Account Growth'];
+    }
+
+    if (/devops|sre|cloud|infrastructure|kubernetes/i.test(t)) {
+      return ['Kubernetes', 'Docker', 'CI/CD Pipelines', 'AWS/GCP Cloud', 'Infrastructure as Code', 'Monitoring & Alerting', 'Terraform', 'System Reliability'];
+    }
+    if (/security|appsec|soc/i.test(t)) {
+      return ['Vulnerability Assessment', 'Threat Modeling', 'AppSec', 'Penetration Testing', 'Security Architecture', 'Incident Response', 'OWASP Top 10', 'Compliance Auditing'];
+    }
+    if (/qa|test automation|testing/i.test(t)) {
+      return ['Test Automation', 'Selenium/Cypress', 'Regression Testing', 'Test Case Design', 'Bug Tracking', 'API Testing', 'Quality Assurance', 'Performance Testing'];
+    }
+    if (/ml|machine learning|data scientist|ai engineer/i.test(t)) {
+      return ['Machine Learning', 'Python', 'Model Evaluation', 'PyTorch/TensorFlow', 'Data Pipelines', 'Feature Engineering', 'Statistical Analysis', 'Deep Learning'];
+    }
+    if (/data engineer|data analyst|database|sql/i.test(t)) {
+      return ['SQL Optimization', 'ETL Pipelines', 'Data Warehousing', 'Data Modeling', 'Python', 'BigQuery/Snowflake', 'Data Quality', 'Schema Design'];
+    }
+    if (d === 'software' || /software|developer|engineer|fullstack|backend|frontend/i.test(t)) {
+      return ['System Architecture', 'API Development', 'Python/TypeScript', 'Unit Testing', 'Code Review', 'Git Version Control', 'Database Design', 'Agile Methodologies'];
+    }
+
+    return ['AI Output Evaluation', 'Prompt Engineering', 'Quality Assessment', 'Fact Verification', 'Rubric Evaluation', 'Data Annotation', 'RLHF Feedback', 'Instruction Following'];
+  }
 
   let jobDescriptions = {};
   let keywordSets = {};
@@ -339,50 +474,79 @@
     return 'software';
   }
 
+  const optionalModifiers = new Set([
+    'webdriver', 'queries', 'query', 'frameworks', 'framework', 'systems', 'system',
+    'tools', 'tool', 'practices', 'practice', 'skills', 'skill', 'experience',
+    'knowledge', 'methods', 'method', 'concepts', 'concept', 'fundamentals',
+    'basics', 'principles', 'technologies', 'technology', 'scripts', 'scripting',
+    'pipelines', 'pipeline', 'libraries', 'library', 'architecture', 'engineering',
+    'development', 'management', 'standards', 'processes', 'process', 'applications',
+    'application', 'solutions', 'solution', 'platforms', 'platform', 'patterns', 'pattern',
+    'programming', 'services', 'service', 'operations', 'operation'
+  ]);
+
   function keywordMatchesText(rawKw, resumeText) {
     if (!rawKw || !resumeText) return false;
     const kwLower = rawKw.toLowerCase().trim();
-    if (resumeText.includes(kwLower)) return true;
+    const resLower = resumeText.toLowerCase();
 
-    // Check parentheses acronym: e.g. "Electronic Health Records (EHR) Systems" -> "ehr"
+    // 1. Direct exact substring match (only for length >= 4, or whole word for short keywords)
+    if (kwLower.length >= 4 && resLower.includes(kwLower)) return true;
+    if (kwLower.length < 4) {
+        const re = new RegExp('\\b' + kwLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+        if (re.test(resLower)) return true;
+    }
+
+    // 2. Parentheses acronym: e.g. "Electronic Health Records (EHR) Systems" -> "ehr"
     const parenMatch = rawKw.match(/\(([^)]+)\)/);
     if (parenMatch) {
         const insideParen = parenMatch[1].toLowerCase().trim();
         const re = new RegExp('\\b' + insideParen.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
-        if (re.test(resumeText)) return true;
+        if (re.test(resLower)) return true;
         const beforeParen = rawKw.split('(')[0].toLowerCase().trim();
-        if (beforeParen.length > 3 && resumeText.includes(beforeParen)) return true;
+        if (beforeParen.length > 2 && resLower.includes(beforeParen)) return true;
     }
 
-    // Check standalone acronym in keyword: e.g. "EHR" in "EHR Systems", "AWS", "SQL", "RN"
-    const acronyms = rawKw.match(/\b[A-Z]{2,6}\b/g);
-    if (acronyms) {
-        for (const acr of acronyms) {
-            const acrRe = new RegExp('\\b' + acr.toLowerCase() + '\\b', 'i');
-            if (acrRe.test(resumeText)) return true;
+    // 3. Standalone acronym (e.g. "AWS", "SQL", "EHR", "RN", "MD", "CI/CD")
+    // Applies ONLY when the raw keyword is a single acronym token, NOT a multi-word phrase like "AI Agents"
+    const trimmed = rawKw.trim();
+    if (/^[A-Z0-9/#+.-]{2,6}$/i.test(trimmed) && !trimmed.includes(' ')) {
+        const acrClean = trimmed.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const acrRe = new RegExp('\\b' + acrClean + '\\b', 'i');
+        if (acrRe.test(resLower)) return true;
+    }
+
+    // 4. Normalized punctuation match (for phrases of 4+ chars)
+    const cleanKw = kwLower.replace(/[^\w\s+#.-]/g, ' ').replace(/\s+/g, ' ').trim();
+    const cleanText = resLower.replace(/[^\w\s+#.-]/g, ' ').replace(/\s+/g, ' ');
+    if (cleanKw.length >= 4 && cleanText.includes(cleanKw)) return true;
+
+    // 5. Main term matching with optional modifiers / qualifiers
+    // Words like "webdriver", "queries", "frameworks", "tools", "systems" are secondary qualifiers
+    const words = cleanKw.split(/\s+/).filter(w => w.length >= 2);
+    const mainWords = words.filter(w => !optionalModifiers.has(w));
+
+    // If removing modifiers leaves core technical terms (e.g. "selenium" from "selenium webdriver",
+    // "sql" from "sql queries", "test automation" from "test automation frameworks")
+    if (mainWords.length > 0 && mainWords.length < words.length) {
+        const mainPhrase = mainWords.join(' ');
+        if (mainPhrase.length >= 4 && resLower.includes(mainPhrase)) return true;
+        if (mainWords.every(w => {
+            const escaped = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return new RegExp('\\b' + escaped + '\\b', 'i').test(resLower);
+        })) {
+            return true;
         }
     }
 
-    // Clean punctuation and check cleaned version
-    const cleanKw = kwLower.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
-    const cleanText = resumeText.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ');
-    if (cleanText.includes(cleanKw)) return true;
-
-    // Check core significant words
-    const genericWords = new Set(['systems', 'system', 'tools', 'tool', 'practices', 'practice', 'skills', 'skill', 'experience', 'knowledge', 'methods', 'method']);
-    const words = cleanKw.split(' ').filter(w => w.length > 2);
-    const coreWords = words.filter(w => !genericWords.has(w));
-    if (coreWords.length > 0 && coreWords.every(w => new RegExp('\\b' + w + '\\b', 'i').test(resumeText))) {
-        return true;
-    }
-
-    // Multi-word phrase matching: at least 70% of words match
+    // 6. Multi-word phrase matching where all words are required (e.g. "AI Agents" requires both "ai" and "agents")
     if (words.length >= 2) {
-        let matchedWords = 0;
-        words.forEach(w => {
-            if (new RegExp('\\b' + w + '\\b', 'i').test(resumeText)) matchedWords++;
-        });
-        if (matchedWords / words.length >= 0.7) return true;
+        if (words.every(w => {
+            const escaped = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return new RegExp('\\b' + escaped + '\\b', 'i').test(resLower);
+        })) {
+            return true;
+        }
     }
 
     return false;
@@ -476,12 +640,6 @@
         // Ensure scan button text is correct
         const scanBtn = document.getElementById('scan-btn');
         if (scanBtn) scanBtn.innerText = 'Scan Saved Resume';
-        
-        // AUTOMATICALLY TRIGGER AUTO-MATCH IN BACKGROUND!
-        setTimeout(() => {
-            const autoBtn = document.getElementById('btn-auto-match');
-            if (autoBtn) autoBtn.click();
-        }, 500);
     }
 
     const jobDescBox = document.getElementById('job-desc');
@@ -577,6 +735,8 @@
           
           roles.forEach(role => {
             const opt = document.createElement('div');
+            opt.className = 'custom-role-option';
+            opt.setAttribute('data-role-title', role.title);
             opt.style.padding = '12px 14px';
             opt.style.cursor = 'pointer';
             opt.style.borderBottom = '1px solid var(--gray-100)';
@@ -592,8 +752,11 @@
             titleSpan.textContent = role.title;
             
             const badgeSpan = document.createElement('span');
-            badgeSpan.style.fontSize = '12px';
-            badgeSpan.textContent = role.status === 'ACTIVE' ? '🟢' : '🔴';
+            badgeSpan.className = 'role-match-badge';
+            badgeSpan.style.fontSize = '11.5px';
+            badgeSpan.style.fontWeight = '700';
+            badgeSpan.style.color = 'var(--gray-400)';
+            badgeSpan.textContent = 'Active';
             
             opt.appendChild(titleSpan);
             opt.appendChild(badgeSpan);
@@ -683,20 +846,12 @@
         
       // Populate keywords and placeholders for ATS scanning
       data.roles.forEach(role => {
-        // Fallback to tags if atsKeywords isn't ready, otherwise use the rich AI keywords
-        let kws = new Set(role.atsKeywords || role.tags || []);
-        if (kws.size < 12) {
-           kws.add("Evaluation");
-           kws.add("Accuracy");
-           kws.add("Quality");
-           kws.add("Analysis");
-           kws.add("Metrics");
-           kws.add("Testing");
-           kws.add("Review");
-        }
-        keywordSets[role.title] = Array.from(kws);
+        let kws = (role.atsKeywords && role.atsKeywords.length >= 8)
+          ? role.atsKeywords.slice(0, 8)
+          : getDomainKeywords(role.title, role.domain, role.atsKeywords);
+        keywordSets[role.title] = kws;
         
-        let tags_str = role.tags ? role.tags.join(', ') : 'Evaluation';
+        let tags_str = kws.slice(0, 3).join(', ');
         resumePlaceholders[role.title] = `John Doe
 ${role.title}
 
@@ -704,8 +859,9 @@ Experience
 - Evaluated AI outputs and enforced strict domain criteria...
 - Applied extensive background in ${tags_str}...`;
         
-        // We also need jobDescriptions to be populated!
-        jobDescriptions[role.title] = role.description || '';
+        jobDescriptions[role.title] = (role.description && role.description.trim())
+          ? role.description
+          : `${role.title} role focusing on ${role.domain ? role.domain.toLowerCase() : 'specialized'} domain evaluation, strict rubric compliance, and advanced quality verification.`;
       });
 
     } catch(err) {
@@ -722,7 +878,10 @@ Experience
     
     function renderKeywords(role) {
       kwListEl.innerHTML = '';
-      if(!keywordSets[role]) return;
+      if (!keywordSets[role] || keywordSets[role].length === 0 || keywordSets[role].includes('Evaluation')) {
+        const roleObj = (window.allRoles && Array.isArray(window.allRoles)) ? window.allRoles.find(r => r.title === role) : null;
+        keywordSets[role] = getDomainKeywords(role, roleObj ? roleObj.domain : '', roleObj ? roleObj.atsKeywords : []);
+      }
       keywordSets[role].forEach(kw => {
         const chip = document.createElement('div');
         chip.className = 'kw-chip pending';
@@ -772,88 +931,51 @@ Experience
         }
         
         scanBtn.innerText = 'Scan My Resume';
-      if (jobDescriptions[selectedRole]) {
-        
-        
-        if (keywordSets[selectedRole] && keywordSets[selectedRole].includes("Evaluation")) {
-            const cached = localStorage.getItem('cached_kws_' + selectedRole);
-            if (cached) {
-                try {
-                    const parsed = JSON.parse(cached);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        keywordSets[selectedRole] = parsed;
-                    }
-                } catch(e) {}
-            }
-            if (keywordSets[selectedRole].includes("Evaluation")) {
-                kwListEl.innerHTML = '<div style="font-size:12px; color:var(--primary); font-weight:700;">🤖 AI is generating precise industry keywords for this role...</div>';
-                try {
-                    const prompt = `You are an expert technical recruiter. Based ONLY on the job title '${selectedRole}', provide a comma-separated list of exactly 8 core industry keywords (hard skills, software, methodologies) required for this role. Only output the keywords separated by commas, nothing else.`;
-                    
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 8000);
-                    
-                    const response = await fetch('/api/generateAiResponse', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({contents: [{parts: [{text: prompt}]}]}),
-                        signal: controller.signal
-                    });
-                    clearTimeout(timeoutId);
-                    const result = await response.json();
-                    const text = result.candidates[0].content.parts[0].text;
-                    const kws = text.split(',').map(s => s.trim()).filter(s => s);
-                    if (kws.length > 0) {
-                        keywordSets[selectedRole] = kws;
-                        localStorage.setItem('cached_kws_' + selectedRole, JSON.stringify(kws));
-                    }
-                } catch (err) {
-                    console.error("Gemini failed", err);
-                }
-            }
-        }
-        
-        renderKeywords(selectedRole);
-        
-        // Reset the ATS scanner UI
-        document.getElementById('meter-fill').style.width = '0%';
-        document.getElementById('score-text').innerHTML = '0%';
-        document.getElementById('score-text').style.color = '#ef4444';
-        
-        const successMsg = document.getElementById('success-container');
-        if(successMsg) successMsg.style.display = 'none';
-        
-        
-        const impBadge = document.getElementById('improvement-badge');
-        if(impBadge) impBadge.style.display = 'none';
-        previousScore = null;
-        
-        const feedbackBox = document.getElementById('feedback-box');
-        if(feedbackBox) {
-            feedbackBox.innerHTML = '<h4>Awaiting Scan...</h4><p>Upload your resume or click Scan My Resume below.</p>';
-        }
-        
-        if(applyBtn) {
-            applyBtn.className = 'btn-apply ready';
-            applyBtn.innerText = 'See Matching Roles & Apply ➔';
-            applyBtn.onclick = () => window.location.href = '/apply';
-        }
-        
 
-        
-        
-        
-        // Auto-trigger the scan if a resume is already loaded!
-        const rBox = document.getElementById('resume-text');
-        if (rBox && rBox.value.length >= 50) {
-            scanBtn.click();
-        } else {
-            scanBtn.innerText = 'Upload Resume to Scan';
-        }
+      // Always guarantee keywordSets has rich, accurate keywords for selectedRole
+      const roleObjFromAll = (window.allRoles && Array.isArray(window.allRoles)) ? window.allRoles.find(r => r.title === selectedRole) : null;
+      if (!keywordSets[selectedRole] || keywordSets[selectedRole].length < 8 || keywordSets[selectedRole].includes('Evaluation')) {
+        const roleDomain = roleObjFromAll ? roleObjFromAll.domain : rDom;
+        const roleExisting = roleObjFromAll ? roleObjFromAll.atsKeywords : [];
+        keywordSets[selectedRole] = getDomainKeywords(selectedRole, roleDomain, roleExisting);
+      }
+
+      // Immediately render the selected role's 8 keywords to the UI
+      renderKeywords(selectedRole);
+
+      // Auto-trigger the scan if a resume is already loaded!
+      const rBox = document.getElementById('resume-text');
+      if (rBox && rBox.value.length >= 50) {
+        scanBtn.click();
+      } else {
+        scanBtn.innerText = 'Upload Resume to Scan';
       }
     });
 
-    // Auto-fill template button
+    // Handle URL ?role=... or run auto-match for saved resume
+    const passedRoleParam = new URLSearchParams(window.location.search).get('role');
+    if (passedRoleParam && window.allRoles && window.allRoles.length > 0) {
+        const decodedRole = decodeURIComponent(passedRoleParam).trim().toLowerCase();
+        const matchedRole = window.allRoles.find(r => (r.title || '').trim().toLowerCase() === decodedRole) ||
+                            window.allRoles.find(r => (r.title || '').trim().toLowerCase().includes(decodedRole)) ||
+                            window.allRoles.find(r => decodedRole.includes((r.title || '').trim().toLowerCase()));
+        if (matchedRole) {
+            roleSelect.value = matchedRole.title;
+            roleSelect.setAttribute('data-domain', matchedRole.domain);
+            if (customDisplayText) {
+                customDisplayText.textContent = matchedRole.title;
+                customDisplayText.style.color = 'var(--black)';
+                customDisplayText.style.fontWeight = '700';
+            }
+            roleSelect.dispatchEvent(new Event('change'));
+        }
+    } else if (savedResume && savedResume.length > 50) {
+        // Only auto-match if NO specific role was requested in the URL
+        setTimeout(() => {
+            const autoBtn = document.getElementById('btn-auto-match');
+            if (autoBtn) autoBtn.click();
+        }, 300);
+    }
     
     // File Upload Logic
     const uploadZone = document.getElementById('ats-upload-zone');
@@ -871,6 +993,16 @@ Experience
 
         const selectedRole = roleSelect.value;
 
+
+        const fbInit = document.getElementById('feedback-box');
+        if (fbInit) {
+            fbInit.innerHTML = '<h4>Analyzing Your Resume...</h4><p>Extracting text and identifying your top target roles...</p>';
+        }
+        const stInit = document.getElementById('score-text');
+        if (stInit) {
+            stInit.innerText = '...';
+            stInit.style.color = 'var(--primary)';
+        }
 
         document.getElementById('upload-content-wrapper').innerHTML = '<div style="font-size:24px; margin-bottom:12px;">⚙️</div><div style="font-weight:700; color:var(--black);">Processing...</div>';
         uploadZone.style.pointerEvents = 'none';
@@ -1014,6 +1146,16 @@ Experience
             
             autoMatchBtn.innerText = 'Analyzing...';
             autoMatchBtn.disabled = true;
+
+            const feedbackBoxToUpdate = document.getElementById('feedback-box');
+            if (feedbackBoxToUpdate) {
+                feedbackBoxToUpdate.innerHTML = '<h4>Analyzing Your Resume...</h4><p>Matching keywords and identifying your top target roles...</p>';
+            }
+            const scoreTextToUpdate = document.getElementById('score-text');
+            if (scoreTextToUpdate) {
+                scoreTextToUpdate.innerText = '...';
+                scoreTextToUpdate.style.color = 'var(--primary)';
+            }
             
             const customDisplayToUpdate = document.getElementById('custom-role-text');
             if(customDisplayToUpdate) {
@@ -1041,47 +1183,119 @@ Experience
             ]`;
             
             try {
-                                const response = await fetch('/api/generateAiResponse', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                let aiMatches = [];
+                try {
+                    const response = await fetch('/api/generateAiResponse', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    });
+                    const data = await response.json();
+                    if (!data.error && data.candidates && data.candidates[0]) {
+                        let responseText = data.candidates[0].content.parts[0].text.trim();
+                        responseText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+                        aiMatches = JSON.parse(responseText);
+                    }
+                } catch (apiErr) {
+                    console.warn("AI endpoint fallback to deterministic keyword scoring:", apiErr);
+                }
+
+                const resumeLower = resumeText.toLowerCase();
+                const languages = ['dutch', 'german', 'french', 'spanish', 'italian', 'portuguese', 'japanese', 'chinese', 'mandarin', 'korean', 'arabic', 'hindi', 'bengali', 'tamil', 'telugu', 'malayalam', 'marathi', 'gujarati', 'danish', 'finnish', 'norwegian', 'swedish', 'polish', 'russian', 'turkish', 'vietnamese', 'indonesian', 'thai'];
+                const aiRoleSet = new Set((Array.isArray(aiMatches) ? aiMatches : []).map(m => (m.role || m.roleName || '').toLowerCase().trim()));
+
+                const allRoleNames = Object.keys(jobDescriptions);
+                const scoredAll = allRoleNames.map(rName => {
+                    const roleObj = window.allRoles ? window.allRoles.find(r => r.title === rName) : null;
+                    const kws = (typeof keywordSets !== 'undefined' && keywordSets[rName] && keywordSets[rName].length >= 8)
+                        ? keywordSets[rName]
+                        : getDomainKeywords(rName, roleObj ? roleObj.domain : '', roleObj ? roleObj.atsKeywords : []);
+                    let requiredLang = null;
+                    for (const lang of languages) {
+                        if (new RegExp('\\b' + lang + '\\b', 'i').test(rName)) {
+                            requiredLang = lang;
+                            break;
+                        }
+                    }
+                    let hits = 0;
+                    const total = kws.length;
+                    if (!requiredLang || resumeLower.includes(requiredLang)) {
+                        kws.forEach(kw => {
+                            if (keywordMatchesText(kw, resumeText)) hits++;
+                        });
+                    }
+                    const rScore = (total > 0 && hits > 0) ? Math.round((hits / total) * 100) : 0;
+                    const matchTier = (rScore >= 70 && hits >= 3 && total >= 3) ? 'Strong Match' : (rScore >= 50 ? 'Good Match' : 'Stretch Role');
+                    const matchedRole = window.allRoles ? window.allRoles.find(r => r.title === rName) : null;
+                    const exactTitleHit = (rName.length >= 4 && resumeLower.includes(rName.toLowerCase()) && hits >= 3) ? 1 : 0;
+                    const isAiSuggested = aiRoleSet.has(rName.toLowerCase().trim()) ? 1 : 0;
+                    const expl = rScore >= 50
+                        ? `Strong keyword alignment (${rScore}% match) with this target role.`
+                        : `Keyword coverage: ${rScore}%. Add the ones that truly match your experience.`;
+                    return {
+                        role: rName,
+                        roleName: rName,
+                        match: rScore + '%',
+                        matchScore: rScore,
+                        computedScore: rScore,
+                        matchTier: matchTier,
+                        hits: hits,
+                        total: total,
+                        exactTitleHit: exactTitleHit,
+                        isAiSuggested: isAiSuggested,
+                        explanation: expl,
+                        hourlyRate: matchedRole ? (matchedRole.pay || matchedRole.hourlyRate) : 'Competitive',
+                        roleUrl: matchedRole ? (matchedRole.linkTarget || matchedRole.url) : 'https://t.mercor.com/wbPMF'
+                    };
                 });
-                
-                const data = await response.json();
-                if (data.error) throw new Error(data.error.message);
-                let responseText = data.candidates[0].content.parts[0].text.trim();
-                responseText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-                const matches = JSON.parse(responseText);
+
+                const getTierRank = (t) => t === 'Strong Match' ? 3 : (t === 'Good Match' ? 2 : 1);
+                scoredAll.sort((a, b) => {
+                    if (b.exactTitleHit !== a.exactTitleHit) return b.exactTitleHit - a.exactTitleHit;
+                    const trB = getTierRank(b.matchTier);
+                    const trA = getTierRank(a.matchTier);
+                    if (trB !== trA) return trB - trA;
+                    const substB = (b.hits >= 3 && b.total >= 3) ? 1 : 0;
+                    const substA = (a.hits >= 3 && a.total >= 3) ? 1 : 0;
+                    if (substB !== substA) return substB - substA;
+                    if (b.matchScore !== a.matchScore) return b.matchScore - a.matchScore;
+                    if (b.hits !== a.hits) return b.hits - a.hits;
+                    return b.isAiSuggested - a.isAiSuggested;
+                });
+
+                const matches = scoredAll.filter(m => m.matchScore > 0).slice(0, 5);
+                if (matches.length === 0 && scoredAll.length > 0) {
+                    matches.push(scoredAll[0]);
+                }
                 const bestRole = matches[0].role;
                 window.topMatches = matches;
+
+                // Update every role option in the custom dropdown with its actual match tier and dot!
+                try {
+                    const scoredMap = new Map(scoredAll.map(s => [s.role, s]));
+                    document.querySelectorAll('.custom-role-option').forEach(el => {
+                        const rTitle = el.getAttribute('data-role-title');
+                        const mInfo = scoredMap.get(rTitle);
+                        const bEl = el.querySelector('.role-match-badge');
+                        if (bEl && mInfo) {
+                            if (mInfo.matchScore >= 70 && mInfo.matchTier === 'Strong Match') {
+                                bEl.innerHTML = `<span style="color:#10b981; font-weight:800;">🟢 ${mInfo.matchScore}%</span>`;
+                            } else if (mInfo.matchScore >= 50) {
+                                bEl.innerHTML = `<span style="color:#f59e0b; font-weight:800;">🟡 ${mInfo.matchScore}%</span>`;
+                            } else if (mInfo.matchScore > 0) {
+                                bEl.innerHTML = `<span style="color:#94a3b8; font-weight:700;">⚪ ${mInfo.matchScore}%</span>`;
+                            } else {
+                                bEl.innerHTML = `<span style="color:#ef4444; font-size:10.5px; font-weight:700;">0%</span>`;
+                            }
+                        }
+                    });
+                } catch(bErr) { console.warn('Could not update dropdown match badges:', bErr); }
                 
                 try {
-                    const formattedForApply = matches.map(m => {
-                        const rName = m.role || m.roleName;
-                        let rScore = parseInt(m.match || m.matchScore || 70);
-                        if (isNaN(rScore)) rScore = 70;
-                        if (typeof keywordSets !== 'undefined' && keywordSets[rName] && keywordSets[rName].length > 0) {
-                            const kws = keywordSets[rName];
-                            let hits = 0;
-                            kws.forEach(kw => {
-                                if (keywordMatchesText(kw, resumeText)) hits++;
-                            });
-                            rScore = Math.round((hits / kws.length) * 100);
-                        }
-                        const matchedRole = window.allRoles ? window.allRoles.find(r => r.title === rName) : null;
-                        const expl = rScore >= 50
-                            ? `Strong keyword alignment (${rScore}% match) with this target role.`
-                            : `Keyword coverage: ${rScore}%. Add the ones that truly match your experience.`;
-                        return {
-                            roleName: rName,
-                            matchScore: rScore,
-                            explanation: expl,
-                            hourlyRate: matchedRole ? (matchedRole.pay || matchedRole.hourlyRate) : 'Competitive',
-                            roleUrl: matchedRole ? (matchedRole.linkTarget || matchedRole.url) : 'https://t.mercor.com/wbPMF'
-                        };
-                    });
-                    // Sort descending by matchScore
-                    formattedForApply.sort((a, b) => b.matchScore - a.matchScore);
+                    const formattedForApply = scoredAll.filter(m => m.matchScore >= 50).slice(0, 20);
+                    if (formattedForApply.length === 0 && matches.length > 0) {
+                        formattedForApply.push(matches[0]);
+                    }
                     localStorage.setItem('ai_matches', JSON.stringify(formattedForApply));
                     sessionStorage.setItem('ai_matches', JSON.stringify(formattedForApply));
                     localStorage.setItem('candidateResumeText', resumeText);
@@ -1132,7 +1346,7 @@ Experience
                             opt.style.alignItems = 'center';
                             opt.style.background = '#f8fafc';
                             
-                            opt.innerHTML = `<div style="font-weight:700;">${match.role}</div><div style="background:var(--primary); color:white; padding:2px 8px; border-radius:12px; font-size:12px; font-weight:800; white-space:nowrap; flex-shrink:0;">Top Match</div>`;
+                            opt.innerHTML = `<div style="font-weight:700;">${match.role}</div><div style="background:var(--primary); color:white; padding:2px 8px; border-radius:12px; font-size:12px; font-weight:800; white-space:nowrap; flex-shrink:0;">${match.matchScore}% Match</div>`;
                             
                             opt.onclick = () => {
                               hiddenSelect.value = match.role;
@@ -1166,7 +1380,7 @@ Experience
                     
                     // Automatically select the very best match (the first one)
                     if (matches && matches.length > 0) {
-                        if(typeof gtag === 'function') gtag('event', 'auto_matched_role', {'event_category': 'funnel', 'event_label': matches[0].role, 'value': parseInt(matches[0].match)});
+                        if(typeof gtag === 'function') gtag('event', 'auto_matched_role', {'event_category': 'funnel', 'event_label': matches[0].role, 'value': parseInt(matches[0].matchScore)});
                         const bestMatch = matches[0];
                         const bestRoleName = bestMatch.role;
                         const inferredDom = detectDomain(bestRoleName, '', resumeText);
@@ -1264,13 +1478,16 @@ Experience
       scanBtn.disabled = true;
       meterFill.style.width = '0%';
       scoreText.innerText = '...';
+      if (feedbackBox) {
+        feedbackBox.innerHTML = '<h4>Analyzing Your Resume...</h4><p>Matching keywords against selected role...</p>';
+      }
       
       const chips = kwListEl.querySelectorAll('.kw-chip');
       chips.forEach(c => c.className = 'kw-chip pending');
 
       setTimeout(() => {
         let matches = 0;
-        let total = keywordSets[selectedRole].length;
+        let total = chips.length || (keywordSets[selectedRole] ? keywordSets[selectedRole].length : 8);
         let missingKWs = [];
         
         chips.forEach(chip => {
@@ -1303,14 +1520,26 @@ Experience
             let existingMatches = JSON.parse(sessionStorage.getItem('ai_matches') || localStorage.getItem('ai_matches') || '[]');
             if (!Array.isArray(existingMatches)) existingMatches = [];
             const currentMatch = existingMatches.find(m => (m.roleName || m.role) === selectedRole);
+            const matchedRole = (typeof allRoles !== 'undefined' && Array.isArray(allRoles)) ? allRoles.find(r => r.title === selectedRole) : null;
+            const matchTier = (score >= 70 && matches >= 3 && total >= 3) ? 'Strong Match' : (score >= 50 ? 'Good Match' : 'Stretch Role');
+            const kws = (typeof keywordSets !== 'undefined' && keywordSets[selectedRole]) ? keywordSets[selectedRole] : [];
             if (currentMatch) {
                 currentMatch.matchScore = score;
+                currentMatch.computedScore = score;
+                currentMatch.matchTier = matchTier;
+                currentMatch.atsKeywords = kws;
+                currentMatch.hits = matches;
+                currentMatch.total = total;
                 currentMatch.explanation = `Your resume covers ${matches} of ${total} keywords (${score}%) for this role.`;
             } else {
-                const matchedRole = (typeof allRoles !== 'undefined' && Array.isArray(allRoles)) ? allRoles.find(r => r.title === selectedRole) : null;
                 existingMatches.unshift({
                     roleName: selectedRole,
                     matchScore: score,
+                    computedScore: score,
+                    matchTier: matchTier,
+                    atsKeywords: kws,
+                    hits: matches,
+                    total: total,
                     explanation: `Your resume covers ${matches} of ${total} keywords (${score}%) for this role.`,
                     hourlyRate: matchedRole ? (matchedRole.pay || matchedRole.hourlyRate) : 'Competitive',
                     roleUrl: matchedRole ? (matchedRole.linkTarget || matchedRole.url) : 'https://t.mercor.com/wbPMF'
@@ -1403,61 +1632,21 @@ ${resumeBox.value}
               btn.innerText = 'Copied again! ✅';
               setTimeout(() => {
                 if (btn.innerText === 'Copied again! ✅') {
-                  btn.innerText = 'Copied! You have 5 minutes ➔';
+                  btn.innerText = '✓ Prompt Copied to Clipboard!';
                 }
-              }, 1000);
+              }, 1200);
             } else {
-              btn.innerText = 'Copied! You have 5 minutes ➔';
+              btn.innerText = '✓ Prompt Copied to Clipboard!';
             }
             btn.style.color = '#10b981';
             
             const helperText = document.getElementById('ai-helper-text');
-            helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ ACTION REQUIRED:</span> Open ChatGPT, paste the prompt, and save the newly generated resume as a PDF. Then, click <strong>Upload New Document</strong> in Step 1 to rescan it! You have <span id="countdown-timer" style="font-weight:800; font-family:monospace; background:#fee2e2; color:#ef4444; padding:2px 4px; border-radius:4px;">05:00</span> minutes.';
-            
-            let timeLeft = 300; // 5 minutes
-            if(window.activeAITimer) clearInterval(window.activeAITimer);
-            
-            window.activeAITimer = setInterval(() => {
-              timeLeft--;
-              const timerEl = document.getElementById('countdown-timer');
-              if(timerEl) {
-                const m = Math.floor(timeLeft / 60);
-                const s = timeLeft % 60;
-                timerEl.innerText = `0${m}:${s < 10 ? '0' : ''}${s}`;
-              }
-              
-              if (timeLeft <= 0) {
-                clearInterval(window.activeAITimer);
-                if(timerEl) {
-                  helperText.innerHTML = '<span style="color:#ef4444; font-weight:700;">⏳ Time is up!</span> You\'ve got this. Save your new AI-upgraded resume as a PDF and click <strong>Upload New Document</strong> in Step 1 to rescan it. Let\'s get you hired!';
-                  btn.innerText = 'Generate New Prompt 🪄';
-                  btn.style.color = 'white';
-                }
-              }
-            }, 1000);
+            if (helperText) {
+              helperText.innerHTML = '<span style="color:#059669; font-weight:700;">✓ Prompt Copied:</span> Paste into ChatGPT or Claude to get tailored bullet points with your missing keywords. When ready, upload your updated resume in Step 1 to rescan!';
+            }
             
             const scanBtn = document.getElementById('scan-btn');
             if (scanBtn) scanBtn.innerText = 'Scan Updated Resume';
-            
-            const fileCardArea = document.getElementById('injected-file-container');
-            const replaceBtn = document.getElementById('btn-replace-file');
-            if (fileCardArea) {
-                setTimeout(() => {
-                    fileCardArea.scrollIntoView({behavior: 'smooth', block: 'center'});
-                    if (replaceBtn) {
-                        replaceBtn.style.transition = 'all 0.3s';
-                        replaceBtn.style.background = 'rgba(16,185,129,0.1)';
-                        replaceBtn.style.padding = '8px 12px';
-                        replaceBtn.style.borderRadius = '6px';
-                        replaceBtn.style.color = '#10b981';
-                        setTimeout(() => {
-                            replaceBtn.style.background = 'none';
-                            replaceBtn.style.padding = '0';
-                            replaceBtn.style.color = 'var(--gray-500)';
-                        }, 2500);
-                    }
-                }, 100);
-            }
           };
         }
         
@@ -1506,49 +1695,7 @@ ${resumeBox.value}
 
 </script>
 
-
 <script>
-  // Auto-Select Role from URL if passed via ?role=...
-  document.addEventListener('DOMContentLoaded', function() {
-    const params = new URLSearchParams(window.location.search);
-    const passedRole = params.get('role');
-    if (passedRole) {
-        setTimeout(() => {
-            const hiddenInput = document.getElementById('role-select');
-            const customDisplayText = document.getElementById('custom-role-text');
-            if (hiddenInput && customDisplayText) {
-                hiddenInput.value = passedRole;
-                customDisplayText.textContent = passedRole;
-                
-                // Trigger the selection logic (this fires the updateRequirements)
-                const event = new Event('change');
-                hiddenInput.dispatchEvent(event);
-                
-                // Find and trigger the hidden option if needed
-                const customOptionsDiv = document.getElementById('custom-role-options');
-                if (customOptionsDiv) {
-                    const options = customOptionsDiv.querySelectorAll('.custom-role-option');
-                    options.forEach(opt => {
-                        if (opt.textContent === passedRole) {
-                            opt.click();
-                        }
-                    });
-                }
-                
-                // If a resume is already loaded, auto-run the scan for this role!
-                setTimeout(() => {
-                    const rBox = document.getElementById('resume-text');
-                    const sBtn = document.getElementById('scan-btn');
-                    if (rBox && rBox.value.length >= 50 && sBtn) {
-                        sBtn.disabled = false;
-                        sBtn.click();
-                    }
-                }, 600);
-            }
-        }, 500); // give the fetch waves.json time to complete
-    }
-  });
-
   // Global Affiliate Tracker
   (function() {
     var ref = new URLSearchParams(window.location.search).get('ref');
@@ -1583,6 +1730,7 @@ ${resumeBox.value}
     }
 
     function sendPipelineEvent(eventType) {
+      if (localStorage.getItem('cookieConsent') !== 'accepted') return;
       try {
         fetch('/api/logPipelineEvent', {
           method: 'POST',

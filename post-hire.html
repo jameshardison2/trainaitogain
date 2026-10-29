@@ -16,15 +16,24 @@
     .check-list li::before { content: "✅"; font-size: 20px; flex-shrink: 0; }
   </style>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+    <!-- Google tag (gtag.js) - Conditional on Consent -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7Z54KYTV6B');
+    (function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      if (localStorage.getItem('cookieConsent') === 'accepted') {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-7Z54KYTV6B');
+      }
+    })();
   </script>
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
 </head>
 <body style="background:var(--gray-50);">
 
@@ -138,8 +147,10 @@
             <span style="color:#ffffff; font-weight:800; font-size:18px; letter-spacing:-0.02em; cursor:pointer;" onclick="window.location.href='/internal-hub'" title="Internal Portal">TrainAIToGain</span>
           </div>
           <p style="color:#9ca3af; font-size:14px; margin:0; line-height:1.5;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
-          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; 548 Market St, Suite 84000, San Francisco, CA 94104 &bull; Independent Candidate Preparation Platform</p>
           <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
+                        <a href="/privacy" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Privacy Policy</a>
+            <a href="/terms" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Terms of Service</a>
             <a href="/disclosure" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Affiliate Disclosure</a>
             <a href="/saved-roles" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Dashboard</a>
             <a href="/resume-ats-guide" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">ATS Resume Scan</a>

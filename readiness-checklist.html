@@ -5,19 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Official AI Interview Readiness Checklist | TrainAIToGain</title>
   <meta name="description" content="Free, printable readiness checklist for Mercor and micro1 AI interviews. Hardware, environment, STAR formulas, and platform rules cited from official guidelines.">
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+    <!-- Google tag (gtag.js) - Conditional on Consent -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7Z54KYTV6B');
+    (function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      if (localStorage.getItem('cookieConsent') === 'accepted') {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-7Z54KYTV6B');
+      }
+    })();
   </script>
 
   <style>
@@ -112,7 +121,7 @@
           </div>
         </a>
         <input type="checkbox" id="nav-toggle" style="display:none;" />
-        <label for="nav-toggle" class="nav-toggle-label">
+        <label for="nav-toggle" class="nav-toggle-label" tabindex="0" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="nav-toggle-icon"></span>
         </label>
         <ul class="nav-links">
@@ -239,8 +248,8 @@
           <div class="item-row" onclick="toggleCheck(this, 'c8')">
             <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
             <div class="item-body">
-              <div class="item-title">Take the Free Mercor Practice Interview First!</div>
-              <div class="item-text">Mercor provides an official, unlimited practice interview that is completely private and never shared with hiring managers. Test your audio and pacing there first.</div>
+              <div class="item-title">Mercor Practice Interviews</div>
+              <div class="item-text">Mercor offers practice interviews on its platform that are not shared with hiring managers. Test your audio and pacing there before your screening.</div>
               <div class="item-source">Source: Mercor Official Candidate Portal (work.mercor.com)</div>
             </div>
           </div>
@@ -249,7 +258,7 @@
             <div class="checkbox-custom"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
             <div class="item-body">
               <div class="item-title">Prepare Before Official Screening Submission</div>
-              <div class="item-text">Official screening interviews attach directly to your candidate profile for client evaluation. Complete the unlimited practice interview first to make sure your setup and pacing are solid.</div>
+              <div class="item-text">Official screening interviews attach directly to your candidate profile for client evaluation. Complete a practice interview first to make sure your setup and pacing are solid.</div>
               <div class="item-source">Source: Mercor Candidate Portal (work.mercor.com)</div>
             </div>
           </div>
@@ -314,7 +323,7 @@
       <div class="sources-box">
         <div class="sources-title">Verified Sources & Citations</div>
         <ol class="sources-list">
-          <li><strong>Mercor Platform Documentation:</strong> Official candidate guides, system check specifications, and retake policies at <a href="https://work.mercor.com" target="_blank" style="color:var(--primary-dark); font-weight:700;">work.mercor.com</a>.</li>
+          <li><strong>Mercor Platform Documentation:</strong> Official candidate guides, system check specifications, and retake policies at <a href="https://work.mercor.com/?ref=wbPMF" target="_blank" style="color:var(--primary-dark); font-weight:700;">work.mercor.com</a>.</li>
           <li><strong>micro1 Candidate Help Center:</strong> Zara AI Interviewer instructions and skill verification guidelines at <a href="https://micro1.ai" target="_blank" style="color:var(--primary-dark); font-weight:700;">micro1.ai</a>.</li>
           <li><strong>TrainAIToGain Analysis:</strong> Proprietary coaching evaluations, speech-to-text benchmark rubrics, and candidate placements across top AI training labs.</li>
         </ol>
@@ -339,8 +348,10 @@
             <span style="color:#ffffff; font-weight:800; font-size:18px; letter-spacing:-0.02em; cursor:pointer;" onclick="window.location.href='/internal-hub'" title="Internal Portal">TrainAIToGain</span>
           </div>
           <p style="color:#9ca3af; font-size:14px; margin:0; line-height:1.5;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
-          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; trainaitogain@gmail.com &bull; Independent Candidate Preparation Platform</p>
           <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
+                        <a href="/privacy" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Privacy Policy</a>
+            <a href="/terms" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Terms of Service</a>
             <a href="/disclosure" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Affiliate Disclosure</a>
             <a href="/saved-roles" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Dashboard</a>
             <a href="/resume-ats-guide" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">ATS Resume Scan</a>

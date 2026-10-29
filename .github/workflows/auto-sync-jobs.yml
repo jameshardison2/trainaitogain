@@ -1,9 +1,7 @@
 name: Auto-Sync Micro1 & Deploy
 
 on:
-  schedule:
-    - cron: '0 0,12 * * *' # Runs at 12:00 AM and 12:00 PM UTC every day
-  workflow_dispatch: # Allows manual trigger
+  workflow_dispatch: # Manual trigger only (automated cron disabled because Micro1 WAF blocks GitHub Actions datacenter IPs)
 
 jobs:
   sync_and_deploy:

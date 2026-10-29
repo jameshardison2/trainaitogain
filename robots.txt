@@ -1,3 +1,8 @@
 User-agent: *
 Allow: /
-Sitemap: https://trainaitogain.netlify.app/sitemap.xml
+Disallow: /saved-roles
+Disallow: /saved-roles.html
+Disallow: /dashboard
+Disallow: /dashboard.html
+
+Sitemap: https://trainaitogain.com/sitemap.xml

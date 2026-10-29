@@ -83,6 +83,16 @@
         "type": 301
       },
       {
+        "source": "/interview-prep",
+        "destination": "/ai-interview",
+        "type": 301
+      },
+      {
+        "source": "/interview-prep.html",
+        "destination": "/ai-interview",
+        "type": 301
+      },
+      {
         "source": "/guide-download",
         "destination": "/trainaitogain-hiring-blueprint.pdf",
         "type": 301
@@ -96,6 +106,16 @@
         "source": "/dm",
         "destination": "/?utm_source=linkedin&utm_medium=dm",
         "type": 301
+      },
+      {
+        "source": "/go/:campaign",
+        "destination": "/resume-ats-guide?utm_source=linkedin&utm_medium=dm&utm_campaign=:campaign",
+        "type": 302
+      },
+      {
+        "source": "/p/:campaign",
+        "destination": "/ai-interview?utm_source=linkedin&utm_medium=dm&utm_campaign=:campaign",
+        "type": 302
       }
     ]
   },

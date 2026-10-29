@@ -462,7 +462,7 @@ exports.sendMockResultsEmail = onRequest(
     </tr>
     <tr>
       <td style="padding:24px 32px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#6b7280; line-height:1.6;">
-        <p style="margin:0 0 8px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+        <p style="margin:0 0 8px;">TrainAIToGain &bull; trainaitogain@gmail.com &bull; Independent Candidate Preparation Platform</p>
         <p style="margin:0 0 8px;">You received this report because you requested your practice interview results.</p>
         <p style="margin:0;">
           <a href="${unsubUrl}" style="color:#6b7280; text-decoration:underline;">Unsubscribe</a> &bull; 
@@ -474,7 +474,7 @@ exports.sendMockResultsEmail = onRequest(
 </body>
 </html>`;
 
-        const text = `TrainAIToGain - Your AI Practice Interview Summary\n\nTarget Role: ${safeRole}\nOverall Score: ${safeScore}/100\n\nKey Strengths:\n${safeStrengths}\n\nAreas for Growth:\n${safeGrowth}\n\nNext Step: Use each platform's official practice option before your real interview.\n\nExplore Active Roles: https://trainaitogain.com/apply\n\nTrainAIToGain • [Postal Address Pending] • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
+        const text = `TrainAIToGain - Your AI Practice Interview Summary\n\nTarget Role: ${safeRole}\nOverall Score: ${safeScore}/100\n\nKey Strengths:\n${safeStrengths}\n\nAreas for Growth:\n${safeGrowth}\n\nNext Step: Use each platform's official practice option before your real interview.\n\nExplore Active Roles: https://trainaitogain.com/apply\n\nTrainAIToGain • trainaitogain@gmail.com • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
 
         // Write directly to mail collection for Trigger Email extension (Admin SDK only)
         await db.collection("mail").add({
@@ -575,7 +575,7 @@ exports.subscribeRoleAlerts = onRequest(
     </tr>
     <tr>
       <td style="padding:24px 32px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#6b7280; line-height:1.6;">
-        <p style="margin:0 0 8px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+        <p style="margin:0 0 8px;">TrainAIToGain &bull; trainaitogain@gmail.com &bull; Independent Candidate Preparation Platform</p>
         <p style="margin:0;">
           <a href="${unsubUrl}" style="color:#6b7280; text-decoration:underline;">Unsubscribe</a> &bull; 
           <a href="https://trainaitogain.com/disclosure.html" style="color:#6b7280; text-decoration:underline;">Affiliate Disclosure</a>
@@ -586,7 +586,7 @@ exports.subscribeRoleAlerts = onRequest(
 </body>
 </html>`;
 
-        const welcomeText = `Hi there, thanks for signing up. Each Friday, if new roles match your field, we'll email them to you with direct links to apply. No match that week, no email. While you wait, you can check your resume against the roles open right now: https://trainaitogain.com/resume-ats-guide\n\nTrainAIToGain • [Postal Address Pending] • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
+        const welcomeText = `Hi there, thanks for signing up. Each Friday, if new roles match your field, we'll email them to you with direct links to apply. No match that week, no email. While you wait, you can check your resume against the roles open right now: https://trainaitogain.com/resume-ats-guide\n\nTrainAIToGain • trainaitogain@gmail.com • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
 
         await db.collection("mail").add({
           to: cleanEmail,
@@ -680,140 +680,125 @@ exports.recordUnsubscribe = onRequest(
 );
 
 // ===============================================================
-// 4. sendRoleAlertsDigest (Manual Trigger Post-Sync, No Schedule)
+// 4. sendRoleAlertsDigest & scheduledWeeklyRoleDigest
 // ===============================================================
-exports.sendRoleAlertsDigest = onRequest(
-  { cors: true, timeoutSeconds: 300, maxInstances: 1 },
-  (req, res) => {
-    cors(req, res, async () => {
-      try {
-        const authSecret = (req.headers.authorization || "").replace(/^Bearer\s+/i, "") ||
-          req.query.key ||
-          req.body?.key;
-        const EXPECTED_SECRET = process.env.ADMIN_SYNC_SECRET || "TRAINAITOGAIN_SYNC_SECURE_2026";
+const DIGEST_TEST_MODE = false;
+const APPROVED_TEST_RECIPIENT = "james.hardison2@gmail.com";
 
-        if (!authSecret || authSecret !== EXPECTED_SECRET) {
-          return res.status(401).json({ error: "Unauthorized: Invalid or missing sync secret key" });
-        }
+async function executeRoleAlertsDigest() {
+  const db = admin.firestore();
 
-        const db = admin.firestore();
+  // 1. Fetch active subscribers who opted in to role alerts
+  const subsSnapshot = await db.collection("subscribers")
+    .where("subscribedToAlerts", "==", true)
+    .get();
 
-        // 1. Fetch active subscribers who opted in to role alerts
-        const subsSnapshot = await db.collection("subscribers")
-          .where("subscribedToAlerts", "==", true)
-          .get();
+  let activeSubscribers = [];
+  subsSnapshot.forEach((doc) => {
+    const d = doc.data();
+    if (!d.unsubscribed && d.email) {
+      activeSubscribers.push({ id: doc.id, ...d });
+    }
+  });
 
-        // TEST MODE FOR DIGEST & REMINDERS (Strictly send ONLY to approved test recipient until postal address is configured)
-        const DIGEST_TEST_MODE = true;
-        const APPROVED_TEST_RECIPIENT = "james.hardison2@gmail.com";
+  if (DIGEST_TEST_MODE) {
+    activeSubscribers = activeSubscribers.filter(s => s.email && s.email.toLowerCase() === APPROVED_TEST_RECIPIENT.toLowerCase());
+    if (activeSubscribers.length === 0) {
+      activeSubscribers = [{ id: "test-admin", email: APPROVED_TEST_RECIPIENT, unsubToken: "test-admin-token" }];
+    }
+  }
 
-        let activeSubscribers = [];
-        subsSnapshot.forEach((doc) => {
-          const d = doc.data();
-          if (!d.unsubscribed && d.email) {
-            activeSubscribers.push({ id: doc.id, ...d });
-          }
-        });
+  if (activeSubscribers.length === 0) {
+    return {
+      success: true,
+      subscribersCount: 0,
+      emailsQueued: 0,
+      message: "No active subscribers found for role alerts digest."
+    };
+  }
 
-        // Test mode restriction: strictly send only to james.hardison2@gmail.com until postal address provided
-        if (DIGEST_TEST_MODE) {
-          activeSubscribers = activeSubscribers.filter(s => s.email && s.email.toLowerCase() === APPROVED_TEST_RECIPIENT.toLowerCase());
-          if (activeSubscribers.length === 0) {
-            activeSubscribers = [{ id: "test-admin", email: APPROVED_TEST_RECIPIENT, unsubToken: "test-admin-token" }];
-          }
-        }
+  // 2. Fetch available roles from Firestore (or fallback to local waves)
+  const rolesSnapshot = await db.collection("roles").get();
+  const allRoles = [];
+  rolesSnapshot.forEach((doc) => {
+    const d = doc.data();
+    if (doc.id === "sample-engineer") return;
+    allRoles.push({ id: doc.id, ...d });
+  });
 
-        if (activeSubscribers.length === 0) {
-          return res.status(200).json({
-            success: true,
-            subscribersCount: 0,
-            emailsQueued: 0,
-            message: "No active subscribers found for role alerts digest."
-          });
-        }
+  let availableRoles = allRoles;
+  if (availableRoles.length === 0) {
+    try {
+      const wavesData = require("./waves.json");
+      availableRoles = Array.isArray(wavesData) ? wavesData : (wavesData.roles || []);
+    } catch (e) {
+      availableRoles = [];
+    }
+  }
 
-        // 2. Fetch available roles from Firestore (or fallback to local waves)
-        const rolesSnapshot = await db.collection("roles").get();
-        const allRoles = [];
-        rolesSnapshot.forEach((doc) => {
-          const d = doc.data();
-          if (doc.id === "sample-engineer") return;
-          allRoles.push({ id: doc.id, ...d });
-        });
+  if (availableRoles.length === 0) {
+    return {
+      success: true,
+      subscribersCount: activeSubscribers.length,
+      emailsQueued: 0,
+      message: "No roles available to send."
+    };
+  }
 
-        let availableRoles = allRoles;
-        if (availableRoles.length === 0) {
-          try {
-            const wavesData = require("./waves.json");
-            availableRoles = Array.isArray(wavesData) ? wavesData : [];
-          } catch (e) {
-            availableRoles = [];
-          }
-        }
+  // Format role cards with strict referral link rules
+  function formatRoleUrl(role) {
+    const isMicro1 = (role.platform && role.platform.toLowerCase() === "micro1") ||
+      (role.linkTarget && role.linkTarget.includes("micro1"));
+    
+    if (isMicro1) {
+      const base = role.linkTarget || "https://refer.micro1.ai/referral/jobs/";
+      const code = "05216c9f-87cc-49af-b448-f9f8a18d2efe";
+      if (base.includes(code)) return base;
+      return base.includes("?") ? `${base}&referralCode=${code}` : `${base}?referralCode=${code}`;
+    }
 
-        if (availableRoles.length === 0) {
-          return res.status(200).json({
-            success: true,
-            subscribersCount: activeSubscribers.length,
-            emailsQueued: 0,
-            message: "No roles available to send."
-          });
-        }
+    // Mercor link (t.mercor.com)
+    let target = role.linkTarget || "https://t.mercor.com/wbPMF";
+    if (!target.startsWith("http")) target = `https://t.mercor.com/${target}`;
+    return target;
+  }
 
-        // Format role cards with strict referral link rules
-        function formatRoleUrl(role) {
-          const isMicro1 = (role.platform && role.platform.toLowerCase() === "micro1") ||
-            (role.linkTarget && role.linkTarget.includes("micro1"));
-          
-          if (isMicro1) {
-            const base = role.linkTarget || "https://refer.micro1.ai/referral/jobs/";
-            const code = "05216c9f-87cc-49af-b448-f9f8a18d2efe";
-            if (base.includes(code)) return base;
-            return base.includes("?") ? `${base}&referralCode=${code}` : `${base}?referralCode=${code}`;
-          }
+  let queuedCount = 0;
+  const now = admin.firestore.FieldValue.serverTimestamp();
 
-          // Mercor link (t.mercor.com)
-          let target = role.linkTarget || "https://t.mercor.com";
-          if (!target.startsWith("http")) target = `https://t.mercor.com/${target}`;
-          return target;
-        }
+  for (const sub of activeSubscribers) {
+    const unsubToken = sub.unsubToken || generateToken();
+    const unsubUrl = `https://trainaitogain.com/unsubscribe?token=${encodeURIComponent(unsubToken)}`;
 
-        let queuedCount = 0;
-        const now = admin.firestore.FieldValue.serverTimestamp();
+    // Select top 3 matched or latest roles
+    let selectedRoles = availableRoles;
+    if (sub.preferredDomain) {
+      const domainFiltered = availableRoles.filter(r => r.domain === sub.preferredDomain);
+      if (domainFiltered.length > 0) selectedRoles = domainFiltered;
+    }
+    const rolesForEmail = selectedRoles.slice(0, 3);
 
-        for (const sub of activeSubscribers) {
-          const unsubToken = sub.unsubToken || generateToken();
-          const unsubUrl = `https://trainaitogain.com/unsubscribe?token=${encodeURIComponent(unsubToken)}`;
+    const roleCardsHtml = rolesForEmail.map((r) => {
+      const url = formatRoleUrl(r);
+      const platformName = r.platform || (url.includes("micro1") ? "micro1" : "Mercor");
+      return `
+        <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:8px; padding:18px; margin-bottom:14px; text-align:left;">
+          <div style="font-size:12px; font-weight:700; color:#10b981; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">
+            ${escapeHtml(platformName)} &bull; ${escapeHtml(r.domain || "AI Talent")}
+          </div>
+          <h4 style="font-size:16px; font-weight:800; color:#111827; margin:0 0 6px;">${escapeHtml(r.title || "AI Specialist Role")}</h4>
+          <div style="font-size:14px; font-weight:700; color:#059669; margin-bottom:8px;">${escapeHtml(r.pay || "Competitive")}</div>
+          <div style="margin-top:10px;">
+            <a href="${url}" style="display:inline-block; background:#10b981; color:#ffffff; font-size:13px; font-weight:700; text-decoration:none; padding:10px 18px; border-radius:6px;">
+              View & Apply on ${escapeHtml(platformName)} ➔
+            </a>
+          </div>
+        </div>
+      `;
+    }).join("");
 
-          // Select top 3 matched or latest roles
-          let selectedRoles = availableRoles;
-          if (sub.preferredDomain) {
-            const domainFiltered = availableRoles.filter(r => r.domain === sub.preferredDomain);
-            if (domainFiltered.length > 0) selectedRoles = domainFiltered;
-          }
-          const rolesForEmail = selectedRoles.slice(0, 3);
-
-          const roleCardsHtml = rolesForEmail.map((r) => {
-            const url = formatRoleUrl(r);
-            const platformName = r.platform || (url.includes("micro1") ? "micro1" : "Mercor");
-            return `
-              <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:8px; padding:18px; margin-bottom:14px; text-align:left;">
-                <div style="font-size:12px; font-weight:700; color:#10b981; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">
-                  ${escapeHtml(platformName)} &bull; ${escapeHtml(r.domain || "AI Talent")}
-                </div>
-                <h4 style="font-size:16px; font-weight:800; color:#111827; margin:0 0 6px;">${escapeHtml(r.title || "AI Specialist Role")}</h4>
-                <div style="font-size:14px; font-weight:700; color:#059669; margin-bottom:8px;">${escapeHtml(r.pay || "Competitive")}</div>
-                <div style="margin-top:10px;">
-                  <a href="${url}" style="display:inline-block; background:#10b981; color:#ffffff; font-size:13px; font-weight:700; text-decoration:none; padding:10px 18px; border-radius:6px;">
-                    View & Apply on ${escapeHtml(platformName)} ➔
-                  </a>
-                </div>
-              </div>
-            `;
-          }).join("");
-
-          const subject = `Weekly AI Role Matches: ${rolesForEmail.length} New Openings`;
-          const html = `<!DOCTYPE html>
+    const subject = `Weekly AI Role Matches: ${rolesForEmail.length} New Openings`;
+    const html = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -855,7 +840,7 @@ exports.sendRoleAlertsDigest = onRequest(
     </tr>
     <tr>
       <td style="padding:24px 32px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#6b7280; line-height:1.6;">
-        <p style="margin:0 0 8px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+        <p style="margin:0 0 8px;">TrainAIToGain &bull; trainaitogain@gmail.com &bull; Independent Candidate Preparation Platform</p>
         <p style="margin:0 0 8px;">You are receiving this digest because you subscribed to weekly AI role alerts.</p>
         <p style="margin:0;">
           <a href="${unsubUrl}" style="color:#6b7280; text-decoration:underline;">Unsubscribe</a> &bull; 
@@ -867,26 +852,44 @@ exports.sendRoleAlertsDigest = onRequest(
 </body>
 </html>`;
 
-          const text = `TrainAIToGain - Weekly AI Role Digest\n\nTop Newly Synced Openings:\n${rolesForEmail.map(r => `- ${r.title} (${r.pay || 'Competitive'}) on ${r.platform || 'Mercor'}: ${formatRoleUrl(r)}`).join('\n')}\n\nPreparation Tip: Use each platform's official practice option before your real interview.\n\nBrowse All Active Roles: https://trainaitogain.com/apply\n\nTrainAIToGain • [Postal Address Pending] • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
+    const text = `TrainAIToGain - Weekly AI Role Digest\n\nTop Newly Synced Openings:\n${rolesForEmail.map(r => `- ${r.title} (${r.pay || 'Competitive'}) on ${r.platform || 'Mercor'}: ${formatRoleUrl(r)}`).join('\n')}\n\nPreparation Tip: Use each platform's official practice option before your real interview.\n\nBrowse All Active Roles: https://trainaitogain.com/apply\n\nTrainAIToGain • trainaitogain@gmail.com • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
 
-          await db.collection("mail").add({
-            to: sub.email,
-            message: {
-              subject,
-              html,
-              text
-            },
-            createdAt: now
-          });
-          queuedCount++;
+    await db.collection("mail").add({
+      to: sub.email,
+      message: {
+        subject,
+        html,
+        text
+      },
+      createdAt: now
+    });
+    queuedCount++;
+  }
+
+  return {
+    success: true,
+    subscribersCount: activeSubscribers.length,
+    emailsQueued: queuedCount,
+    message: `Successfully queued ${queuedCount} role alert emails.`
+  };
+}
+
+exports.sendRoleAlertsDigest = onRequest(
+  { cors: true, timeoutSeconds: 300, maxInstances: 1 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const authSecret = (req.headers.authorization || "").replace(/^Bearer\s+/i, "") ||
+          req.query.key ||
+          req.body?.key;
+        const EXPECTED_SECRET = process.env.ADMIN_SYNC_SECRET || "TRAINAITOGAIN_SYNC_SECURE_2026";
+
+        if (!authSecret || authSecret !== EXPECTED_SECRET) {
+          return res.status(401).json({ error: "Unauthorized: Invalid or missing sync secret key" });
         }
 
-        return res.status(200).json({
-          success: true,
-          subscribersCount: activeSubscribers.length,
-          emailsQueued: queuedCount,
-          message: `Successfully queued ${queuedCount} role alert emails.`
-        });
+        const result = await executeRoleAlertsDigest();
+        return res.status(200).json(result);
       } catch (error) {
         logger.error("Error in sendRoleAlertsDigest:", error);
         return res.status(500).json({ error: "Internal Server Error", message: error.message });
@@ -947,7 +950,7 @@ exports.sendFollowUpEmails = onSchedule("every 1 hours", async (event) => {
                  <p>Let us know if you need any help!</p>
                  <p>- The TrainAIToGain Team</p>
                  <hr style="border:none; border-top:1px solid #eee; margin:20px 0;" />
-                 <p style="font-size:12px; color:#999;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>`
+                 <p style="font-size:12px; color:#999;">TrainAIToGain &bull; trainaitogain@gmail.com &bull; Independent Candidate Preparation Platform</p>`
         }
       });
 
@@ -1008,7 +1011,7 @@ exports.setRoleReminder = onRequest(
             roleId: safeRoleId,
             roleTitle: String(roleTitle || "AI Specialist Role").substring(0, 120),
             rolePay: String(rolePay || "Competitive").substring(0, 60),
-            linkTarget: String(linkTarget || "https://t.mercor.com").substring(0, 256),
+            linkTarget: String(linkTarget || "https://t.mercor.com/wbPMF").substring(0, 256),
             platform: String(platform || "Mercor").substring(0, 40),
             status: String(status || "Saved").substring(0, 40),
             scheduledFor: scheduledDate,
@@ -1027,59 +1030,45 @@ exports.setRoleReminder = onRequest(
 );
 
 // ===============================================================
-// 7. processRoleReminders (Section 20.5 - Manual or Automated Trigger)
+// 7. processRoleReminders & Automated Scheduled Triggers
 // ===============================================================
-exports.processRoleReminders = onRequest(
-  { cors: true, timeoutSeconds: 120, maxInstances: 1 },
-  (req, res) => {
-    cors(req, res, async () => {
-      try {
-        const authSecret = (req.headers.authorization || "").replace(/^Bearer\s+/i, "") ||
-          req.query.key ||
-          req.body?.key;
-        const EXPECTED_SECRET = process.env.ADMIN_SYNC_SECRET || "TRAINAITOGAIN_SYNC_SECURE_2026";
+async function executeProcessRoleReminders() {
+  const db = admin.firestore();
+  const now = new Date();
 
-        if (!authSecret || authSecret !== EXPECTED_SECRET) {
-          return res.status(401).json({ error: "Unauthorized: Invalid or missing sync secret key" });
-        }
+  const remindersSnapshot = await db.collection("reminders")
+    .where("sent", "==", false)
+    .where("scheduledFor", "<=", now)
+    .get();
 
-        const db = admin.firestore();
-        const now = new Date();
+  if (remindersSnapshot.empty) {
+    return { success: true, count: 0, message: "No pending reminders ready to send." };
+  }
 
-        const remindersSnapshot = await db.collection("reminders")
-          .where("sent", "==", false)
-          .where("scheduledFor", "<=", now)
-          .get();
+  let sentCount = 0;
+  for (const doc of remindersSnapshot.docs) {
+    const r = doc.data();
+    if (!r || !r.email) continue;
 
-        if (remindersSnapshot.empty) {
-          return res.status(200).json({ success: true, count: 0, message: "No pending reminders ready to send." });
-        }
+    if (DIGEST_TEST_MODE && r.email.toLowerCase() !== APPROVED_TEST_RECIPIENT.toLowerCase()) {
+      continue;
+    }
 
-        let sentCount = 0;
-        for (const doc of remindersSnapshot.docs) {
-          const r = doc.data();
-          if (!r || !r.email) continue;
+    const subQuery = await db.collection("subscribers").where("email", "==", r.email).limit(1).get();
+    if (!subQuery.empty && subQuery.docs[0].data().unsubscribed) {
+      await doc.ref.update({ sent: true, cancelled: true, reason: "unsubscribed" });
+      continue;
+    }
 
-          // Test mode restriction: strictly send only to james.hardison2@gmail.com until postal address provided
-          if (DIGEST_TEST_MODE && r.email.toLowerCase() !== APPROVED_TEST_RECIPIENT.toLowerCase()) {
-            continue;
-          }
+    if (r.status === "Applied" || r.status === "Completed" || r.status === "Hired") {
+      await doc.ref.update({ sent: true, cancelled: true, reason: "already_applied" });
+      continue;
+    }
 
-          const subQuery = await db.collection("subscribers").where("email", "==", r.email).limit(1).get();
-          if (!subQuery.empty && subQuery.docs[0].data().unsubscribed) {
-            await doc.ref.update({ sent: true, cancelled: true, reason: "unsubscribed" });
-            continue;
-          }
-
-          if (r.status === "Applied" || r.status === "Completed" || r.status === "Hired") {
-            await doc.ref.update({ sent: true, cancelled: true, reason: "already_applied" });
-            continue;
-          }
-
-          const unsubToken = r.unsubToken || generateToken();
-          const unsubUrl = `https://trainaitogain.com/unsubscribe?token=${encodeURIComponent(unsubToken)}`;
-          const subject = `Still interested in ${r.roleTitle}?`;
-          const html = `<!DOCTYPE html>
+    const unsubToken = r.unsubToken || generateToken();
+    const unsubUrl = `https://trainaitogain.com/unsubscribe?token=${encodeURIComponent(unsubToken)}`;
+    const subject = `Still interested in ${r.roleTitle}?`;
+    const html = `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><title>${subject}</title></head>
 <body style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color:#f9fafb; margin:0; padding:24px; color:#111827;">
@@ -1113,7 +1102,7 @@ exports.processRoleReminders = onRequest(
     </tr>
     <tr>
       <td style="padding:24px 32px; background:#f9fafb; border-top:1px solid #e5e7eb; text-align:center; font-size:12px; color:#6b7280; line-height:1.6;">
-        <p style="margin:0 0 8px;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+        <p style="margin:0 0 8px;">TrainAIToGain &bull; trainaitogain@gmail.com &bull; Independent Candidate Preparation Platform</p>
         <p style="margin:0;">
           <a href="${unsubUrl}" style="color:#6b7280; text-decoration:underline;">Unsubscribe</a> &bull; 
           <a href="https://trainaitogain.com/disclosure.html" style="color:#6b7280; text-decoration:underline;">Affiliate Disclosure</a>
@@ -1124,30 +1113,48 @@ exports.processRoleReminders = onRequest(
 </body>
 </html>`;
 
-          const text = `Hi there,\n\nYou saved ${r.roleTitle} (${r.rolePay}) on TrainAIToGain. If you're ready, you can apply here: ${r.linkTarget}.\n\nIf you want to warm up first, try the free mock interview: https://trainaitogain.com/ai-interview.\n\nTrainAIToGain • [Postal Address Pending] • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
+    const text = `Hi there,\n\nYou saved ${r.roleTitle} (${r.rolePay}) on TrainAIToGain. If you're ready, you can apply here: ${r.linkTarget}.\n\nIf you want to warm up first, try the free mock interview: https://trainaitogain.com/ai-interview.\n\nTrainAIToGain • trainaitogain@gmail.com • Independent Candidate Preparation Platform\nUnsubscribe: ${unsubUrl}`;
 
-          await db.collection("mail").add({
-            to: r.email,
-            message: {
-              subject,
-              html,
-              text
-            },
-            createdAt: admin.firestore.FieldValue.serverTimestamp()
-          });
+    await db.collection("mail").add({
+      to: r.email,
+      message: {
+        subject,
+        html,
+        text
+      },
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
+    });
 
-          await doc.ref.update({
-            sent: true,
-            sentAt: admin.firestore.FieldValue.serverTimestamp()
-          });
-          sentCount++;
+    await doc.ref.update({
+      sent: true,
+      sentAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    sentCount++;
+  }
+
+  return {
+    success: true,
+    count: sentCount,
+    message: `Successfully processed ${sentCount} reminders.`
+  };
+}
+
+exports.processRoleReminders = onRequest(
+  { cors: true, timeoutSeconds: 120, maxInstances: 1 },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        const authSecret = (req.headers.authorization || "").replace(/^Bearer\s+/i, "") ||
+          req.query.key ||
+          req.body?.key;
+        const EXPECTED_SECRET = process.env.ADMIN_SYNC_SECRET || "TRAINAITOGAIN_SYNC_SECURE_2026";
+
+        if (!authSecret || authSecret !== EXPECTED_SECRET) {
+          return res.status(401).json({ error: "Unauthorized: Invalid or missing sync secret key" });
         }
 
-        return res.status(200).json({
-          success: true,
-          count: sentCount,
-          message: `Successfully processed ${sentCount} reminders.`
-        });
+        const result = await executeProcessRoleReminders();
+        return res.status(200).json(result);
       } catch (error) {
         logger.error("Error in processRoleReminders:", error);
         return res.status(500).json({ error: "Internal Server Error", message: error.message });
@@ -1155,6 +1162,24 @@ exports.processRoleReminders = onRequest(
     });
   }
 );
+
+exports.scheduledWeeklyRoleDigest = onSchedule("every friday 13:00", async () => {
+  try {
+    const res = await executeRoleAlertsDigest();
+    logger.info("scheduledWeeklyRoleDigest completed:", res);
+  } catch (err) {
+    logger.error("Error in scheduledWeeklyRoleDigest:", err);
+  }
+});
+
+exports.scheduledRoleReminders = onSchedule("every 1 hours", async () => {
+  try {
+    const res = await executeProcessRoleReminders();
+    logger.info("scheduledRoleReminders completed:", res);
+  } catch (err) {
+    logger.error("Error in scheduledRoleReminders:", err);
+  }
+});
 
 // ===============================================================
 // 8. Scoreboard API (Section 21.4 - Weekly Scoreboard Persistence)

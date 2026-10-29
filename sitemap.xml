@@ -1,123 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://trainaitogain.com/ai-interview.html</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://trainaitogain.com/no-response.html</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://trainaitogain.com/role-medical.html</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://trainaitogain.com/role-software.html</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://trainaitogain.com/hiring-pipeline.html</loc>
-    <changefreq>weekly</changefreq>
-  </url>
+  <!-- Clean URLs with canonical lastmod timestamps -->
+  <!-- Legacy aliases: privacy.html terms.html -->
   <url>
     <loc>https://trainaitogain.com/</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/landing_page_v2.html</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://trainaitogain.com/apply</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/prep-coding.html</loc>
+    <loc>https://trainaitogain.com/resume-ats-guide</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/prep-hub.html</loc>
+    <loc>https://trainaitogain.com/ai-interview</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/post-hire.html</loc>
+    <loc>https://trainaitogain.com/hiring-blueprint</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/prep-crossexam.html</loc>
+    <loc>https://trainaitogain.com/readiness-checklist</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/apply.html</loc>
+    <loc>https://trainaitogain.com/video-guides</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/prep-hallucination.html</loc>
+    <loc>https://trainaitogain.com/role-software</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/dashboard.html</loc>
+    <loc>https://trainaitogain.com/role-medical</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/ai-interview_1.html</loc>
+    <loc>https://trainaitogain.com/role-finance</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/role-finance.html</loc>
+    <loc>https://trainaitogain.com/what-mercor-looks-for</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/guide-download.html</loc>
+    <loc>https://trainaitogain.com/is-it-worth-it</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/affiliate.html</loc>
+    <loc>https://trainaitogain.com/no-response</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/lifeline.html</loc>
+    <loc>https://trainaitogain.com/post-hire</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/is-it-worth-it.html</loc>
+    <loc>https://trainaitogain.com/prep-hub</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/resume-ats-guide.html</loc>
+    <loc>https://trainaitogain.com/lifeline</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/saved-roles.html</loc>
+    <loc>https://trainaitogain.com/experts-guide</loc>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/experts-guide.html</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://trainaitogain.com/privacy</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/what-mercor-looks-for.html</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://trainaitogain.com/terms</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/prep-casestudy.html</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://trainaitogain.com/disclosure</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/articles/how-to-pass-mercor-ai-interview.html</loc>
+    <loc>https://trainaitogain.com/articles/how-to-pass-mercor-ai-interview</loc>
+    <lastmod>2026-10-29</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/articles/how-to-bypass-mercor-waitlist.html</loc>
+    <loc>https://trainaitogain.com/articles/how-to-pass-outlier-ai-assessment</loc>
+    <lastmod>2026-10-29</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/articles/how-to-pass-outlier-ai-assessment.html</loc>
+    <loc>https://trainaitogain.com/articles/dataannotation-tech-vs-mercor-pay</loc>
+    <lastmod>2026-10-29</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trainaitogain.com/articles/dataannotation-tech-vs-mercor-pay.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://trainaitogain.com/articles/how-to-pass-micro1-zara-ai-interview.html</loc>
+    <loc>https://trainaitogain.com/articles/how-to-pass-micro1-zara-ai-interview</loc>
+    <lastmod>2026-10-29</lastmod>
     <priority>0.6</priority>
   </url>
 </urlset>

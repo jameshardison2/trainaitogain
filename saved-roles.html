@@ -5,20 +5,31 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>My Pipeline - TrainAIToGain</title>
   <meta name="description" content="Get your Mercor referral, master the AI model training interview, and bypass the waitlist for high-paying RLHF jobs.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://trainaitogain.com/saved-roles">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+  <!-- Google tag (gtag.js) - Conditional on Consent -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7Z54KYTV6B');
+    (function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      if (localStorage.getItem('cookieConsent') === 'accepted') {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-7Z54KYTV6B');
+      }
+    })();
   </script>
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
 </head>
 <body style="background:var(--gray-50); display:flex; flex-direction:column; min-height:100vh;">
 
@@ -33,7 +44,7 @@
           </div>
         </a>
         <input type="checkbox" id="nav-toggle" style="display:none;" />
-        <label for="nav-toggle" class="nav-toggle-label">
+        <label for="nav-toggle" class="nav-toggle-label" tabindex="0" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="nav-toggle-icon"></span>
         </label>
         <ul class="nav-links">
@@ -113,9 +124,11 @@
             <span style="color:#ffffff; font-weight:800; font-size:18px; letter-spacing:-0.02em; cursor:pointer;" onclick="window.location.href='/internal-hub'" title="Internal Portal">TrainAIToGain</span>
           </div>
           <p style="color:#9ca3af; font-size:14px; margin:0; line-height:1.5;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
-          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; 548 Market St, Suite 84000, San Francisco, CA 94104 &bull; Independent Candidate Preparation Platform</p>
           <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
             <a href="/disclosure" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Affiliate Disclosure</a>
+            <a href="/privacy" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Privacy Policy</a>
+            <a href="/terms" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Terms of Service</a>
             <a href="/saved-roles" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Dashboard</a>
             <a href="/resume-ats-guide" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">ATS Resume Scan</a>
             <a href="/apply" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Active Roles</a>
@@ -254,14 +267,23 @@ function updateAnalytics(saved) {
     statPay.innerText = payCount > 0 ? `$${Math.round(totalHourlyPay/payCount)}/hr` : 'N/A';
     
     let total = saved.length || 1; 
-    let startedCount = stats['Started'] + stats['Completed'] + stats['Offer'] + stats['Hired'];
+    const candidateResumeText = localStorage.getItem('candidateResumeText');
+    const hasResume = candidateResumeText && typeof candidateResumeText === 'string' && candidateResumeText.trim().length >= 50;
+
+    let scannedCount = 0;
+    saved.forEach(role => {
+        if (role.status === 'ATS Scanned' || (hasResume && (role.matchScore !== null || role.status === 'Started' || role.status === 'Completed' || role.status === 'Offer' || role.status === 'Hired'))) {
+            scannedCount++;
+        }
+    });
+
     let completedCount = stats['Completed'] + stats['Offer'] + stats['Hired'];
     
     const barSaved = document.getElementById('bar-saved');
     const barScanned = document.getElementById('bar-scanned');
     const barApplied = document.getElementById('bar-applied');
     if (barSaved) barSaved.style.width = '100%';
-    if (barScanned) barScanned.style.width = Math.round(startedCount / total * 100) + '%';
+    if (barScanned) barScanned.style.width = Math.round(scannedCount / total * 100) + '%';
     if (barApplied) barApplied.style.width = Math.round(completedCount / total * 100) + '%';
 }
 
@@ -324,13 +346,11 @@ function keywordMatchesText(kw, text) {
         if (beforeParen.length > 3 && resumeText.includes(beforeParen)) return true;
     }
 
-    // Check standalone acronym in keyword: e.g. "EHR" in "EHR Systems", "AWS", "SQL", "RN"
-    const acronyms = rawKw.match(/\b[A-Z]{2,6}\b/g);
-    if (acronyms) {
-        for (const acr of acronyms) {
-            const acrRe = new RegExp('\\b' + acr.toLowerCase() + '\\b', 'i');
-            if (acrRe.test(resumeText)) return true;
-        }
+    // Standalone single-token acronym (e.g. "AWS", "SQL", "EHR", "RN", "MD")
+    // Do NOT match single acronym if the keyword is a multi-word phrase like "AI Agents"
+    if (/^[A-Z]{2,6}$/.test(rawKw)) {
+        const acrRe = new RegExp('\\b' + rawKw.toLowerCase() + '\\b', 'i');
+        if (acrRe.test(resumeText)) return true;
     }
 
     // Clean punctuation and check cleaned version
@@ -340,19 +360,15 @@ function keywordMatchesText(kw, text) {
 
     // Check core significant words
     const genericWords = new Set(['systems', 'system', 'tools', 'tool', 'practices', 'practice', 'skills', 'skill', 'experience', 'knowledge', 'methods', 'method']);
-    const words = cleanKw.split(' ').filter(w => w.length > 2);
+    const words = cleanKw.split(' ').filter(w => w.length >= 2);
     const coreWords = words.filter(w => !genericWords.has(w));
     if (coreWords.length > 0 && coreWords.every(w => new RegExp('\\b' + w + '\\b', 'i').test(resumeText))) {
         return true;
     }
 
-    // Multi-word phrase matching: at least 70% of words match
+    // Multi-word phrase matching: require all significant words to be present
     if (words.length >= 2) {
-        let matchedWords = 0;
-        words.forEach(w => {
-            if (new RegExp('\\b' + w + '\\b', 'i').test(resumeText)) matchedWords++;
-        });
-        if (matchedWords / words.length >= 0.7) return true;
+        if (words.every(w => new RegExp('\\b' + w + '\\b', 'i').test(resumeText))) return true;
     }
 
     return false;
@@ -449,6 +465,80 @@ function runMatchScore(btn, id) {
     }, 500);
 }
 
+function openReminderModal(role, onConfirm) {
+    const existing = document.getElementById('reminder-modal-overlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'reminder-modal-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'reminder-modal-title');
+    overlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; z-index:99999; padding:16px; box-sizing:border-box;';
+
+    const modal = document.createElement('div');
+    modal.style.cssText = 'background:white; border-radius:12px; width:100%; max-width:440px; padding:24px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.25); box-sizing:border-box;';
+
+    modal.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 id="reminder-modal-title" style="margin:0; font-size:18px; font-weight:800; color:#111827;">Set Application Reminder</h3>
+            <button type="button" id="reminder-modal-close" style="background:none; border:none; font-size:20px; color:#6b7280; cursor:pointer; padding:0 4px;">✕</button>
+        </div>
+        <p style="margin:0 0 16px; font-size:13.5px; color:#4b5563; line-height:1.5;">
+            Enter your email to receive a reminder in 2 days with tailored interview prep tips for <strong>${role.title || 'this role'}</strong>:
+        </p>
+        <form id="reminder-form" style="display:flex; flex-direction:column; gap:12px;">
+            <input type="email" id="reminder-email-input" required placeholder="name@example.com" style="width:100%; padding:12px 14px; border:1.5px solid #d1d5db; border-radius:8px; font-size:14px; box-sizing:border-box; outline:none;" />
+            <div id="reminder-modal-error" style="display:none; color:#dc2626; font-size:12px; font-weight:600;"></div>
+            <div style="font-size:11.5px; color:#6b7280;">🔒 1-click unsubscribe anytime. We respect your privacy.</div>
+            <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+                <button type="button" id="reminder-modal-cancel" style="padding:10px 16px; background:#f3f4f6; border:1px solid #e5e7eb; border-radius:6px; font-weight:600; font-size:13px; color:#374151; cursor:pointer;">Cancel</button>
+                <button type="submit" id="reminder-modal-submit" style="padding:10px 20px; background:#10b981; border:none; border-radius:6px; font-weight:700; font-size:13px; color:white; cursor:pointer;">Set Reminder ✓</button>
+            </div>
+        </form>
+    `;
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    const input = document.getElementById('reminder-email-input');
+    const form = document.getElementById('reminder-form');
+    const closeBtn = document.getElementById('reminder-modal-close');
+    const cancelBtn = document.getElementById('reminder-modal-cancel');
+    const errDiv = document.getElementById('reminder-modal-error');
+
+    setTimeout(() => { if (input) input.focus(); }, 50);
+
+    const close = () => {
+        window.removeEventListener('keydown', handleKey);
+        overlay.remove();
+    };
+
+    const handleKey = (e) => {
+        if (e.key === 'Escape') close();
+    };
+    window.addEventListener('keydown', handleKey);
+
+    overlay.onclick = (e) => {
+        if (e.target === overlay) close();
+    };
+
+    closeBtn.onclick = close;
+    cancelBtn.onclick = close;
+
+    form.onsubmit = (e) => {
+        e.preventDefault();
+        const em = input.value.trim().toLowerCase();
+        if (!em.includes('@') || !em.includes('.') || em.length < 5) {
+            errDiv.innerText = 'Please enter a valid email address.';
+            errDiv.style.display = 'block';
+            return;
+        }
+        close();
+        onConfirm(em);
+    };
+}
+
 function toggleReminder(btn, id) {
     let isOn = btn.getAttribute('data-on') === 'true';
     let reminders = JSON.parse(localStorage.getItem('savedReminders') || '{}');
@@ -463,52 +553,50 @@ function toggleReminder(btn, id) {
         localStorage.setItem('savedReminders', JSON.stringify(reminders));
         renderSavedRoles();
     } else {
-        // Section 20.5: Ask for email once (skip if already stored)
+        function activateReminder(email) {
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead', {
+                    lead_type: 'reminder',
+                    email: email,
+                    role: role.title
+                });
+                gtag('event', 'reminder_set', {
+                    role: role.title,
+                    platform: role.platform || (role.linkTarget && role.linkTarget.includes('micro1') ? 'micro1' : 'Mercor')
+                });
+            }
+
+            fetch('/api/setRoleReminder', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    roleId: role.id || id,
+                    roleTitle: role.title,
+                    rolePay: role.pay,
+                    linkTarget: role.linkTarget,
+                    platform: role.platform || (role.linkTarget && role.linkTarget.includes('micro1') ? 'micro1' : 'Mercor'),
+                    status: role.status || 'Saved'
+                })
+            }).catch(() => {});
+
+            btn.setAttribute('data-on', 'true');
+            btn.style.color = 'var(--primary)';
+            btn.innerHTML = '⏰ Reminder Active<div style="font-size:11px; color:var(--gray-500); font-weight:500;">Email in 2 days</div>';
+            reminders[id] = true;
+            localStorage.setItem('savedReminders', JSON.stringify(reminders));
+            renderSavedRoles();
+        }
+
         let email = localStorage.getItem('user_email');
         if (!email || !email.includes('@')) {
-            email = prompt("Enter your email address to receive this reminder in 2 days:");
-            if (!email || !email.includes('@')) {
-                alert("A valid email address is required to set a reminder.");
-                return;
-            }
-            email = email.trim().toLowerCase();
-            localStorage.setItem('user_email', email);
-        }
-
-        // Section 20.5 & 21.3: Fire generate_lead and reminder_set
-        if (typeof gtag === 'function') {
-            gtag('event', 'generate_lead', {
-                lead_type: 'reminder',
-                email: email,
-                role: role.title
+            openReminderModal(role, (em) => {
+                localStorage.setItem('user_email', em);
+                activateReminder(em);
             });
-            gtag('event', 'reminder_set', {
-                role: role.title,
-                platform: role.platform || (role.linkTarget && role.linkTarget.includes('micro1') ? 'micro1' : 'Mercor')
-            });
+        } else {
+            activateReminder(email);
         }
-
-        // Send to server
-        fetch('/api/setRoleReminder', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                roleId: role.id || id,
-                roleTitle: role.title,
-                rolePay: role.pay,
-                linkTarget: role.linkTarget,
-                platform: role.platform || (role.linkTarget && role.linkTarget.includes('micro1') ? 'micro1' : 'Mercor'),
-                status: role.status || 'Saved'
-            })
-        }).catch(() => {});
-
-        btn.setAttribute('data-on', 'true');
-        btn.style.color = 'var(--primary)';
-        btn.innerHTML = '⏰ Reminder Active<div style="font-size:11px; color:var(--gray-500); font-weight:500;">Email in 2 days</div>';
-        reminders[id] = true;
-        localStorage.setItem('savedReminders', JSON.stringify(reminders));
-        renderSavedRoles();
     }
 }
 
@@ -667,7 +755,7 @@ function renderSavedRoles() {
                     <select id="status-${role.id}" onchange="changeRoleStatus('${safeId}', this.value)" style="padding:8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:var(--font); font-weight:600; font-size:13px; background:var(--gray-50); cursor:pointer;">
                         <option value="Saved" ${currentStatus === 'Saved' ? 'selected' : ''}>📌 Status: Saved</option>
                         <option value="Started" ${currentStatus === 'Started' ? 'selected' : ''}>🚀 Status: Started</option>
-                        <option value="Completed" ${currentStatus === 'Completed' ? 'selected' : ''}>✅ Status: Completed</option>
+                        <option value="Applied" ${(currentStatus === 'Applied' || currentStatus === 'Completed') ? 'selected' : ''}>✅ Status: Applied</option>
                         <option value="Offer" ${currentStatus === 'Offer' ? 'selected' : ''}>💼 Status: Offer</option>
                         <option value="Hired" ${currentStatus === 'Hired' ? 'selected' : ''}>🎉 Status: Hired</option>
                     </select>
@@ -764,6 +852,7 @@ if (document.readyState === 'loading') {
     }
 
     function sendPipelineEvent(eventType) {
+      if (localStorage.getItem('cookieConsent') !== 'accepted') return;
       try {
         fetch('/api/logPipelineEvent', {
           method: 'POST',
@@ -795,6 +884,43 @@ if (document.readyState === 'loading') {
       }
     });
   })();
+</script>
+
+<script>
+// Bug 2 Fix: Sync completedRoles into savedRoles so any applied roles appear in the Dashboard
+(function() {
+    try {
+        let completed = JSON.parse(localStorage.getItem('completedRoles') || '[]');
+        let saved = JSON.parse(localStorage.getItem('savedRoles') || '[]');
+        if (Array.isArray(completed) && Array.isArray(saved) && completed.length > 0) {
+            let updated = false;
+            completed.forEach(c => {
+                if (!c || !c.title) return;
+                let existing = saved.find(s => s && (s.id === c.id || s.title === c.title));
+                if (existing) {
+                    if (existing.status !== 'Applied' && existing.status !== 'Completed' && existing.status !== 'Offer' && existing.status !== 'Hired') {
+                        existing.status = 'Applied';
+                        updated = true;
+                    }
+                } else {
+                    saved.push({
+                        id: c.id || (c.title + (c.domain || '')),
+                        title: c.title,
+                        domain: c.domain || 'GENERAL',
+                        pay: c.pay || 'Competitive',
+                        status: 'Applied',
+                        date: c.date || new Date().toISOString()
+                    });
+                    updated = true;
+                }
+            });
+            if (updated) {
+                localStorage.setItem('savedRoles', JSON.stringify(saved));
+                if (typeof renderSavedRoles === 'function') renderSavedRoles();
+            }
+        }
+    } catch(e) {}
+})();
 </script>
 <script src="chat.js?v=16"></script>
 

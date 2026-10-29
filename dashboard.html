@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Partner Dashboard - TrainAIToGain</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://trainaitogain.com/dashboard">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -169,15 +171,24 @@
     }
   </style>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+    <!-- Google tag (gtag.js) - Conditional on Consent -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7Z54KYTV6B');
+    (function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      if (localStorage.getItem('cookieConsent') === 'accepted') {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-7Z54KYTV6B');
+      }
+    })();
   </script>
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
 </head>
 <body style="background:var(--gray-50); display:flex; flex-direction:column; min-height:100vh;">
 
@@ -193,7 +204,7 @@
           </div>
           </a>
           <input type="checkbox" id="nav-toggle" style="display:none;" />
-        <label for="nav-toggle" class="nav-toggle-label">
+        <label for="nav-toggle" class="nav-toggle-label" tabindex="0" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="nav-toggle-icon"></span>
         </label>
         <ul class="nav-links">
@@ -650,8 +661,10 @@
             <span style="color:#ffffff; font-weight:800; font-size:18px; letter-spacing:-0.02em; cursor:pointer;" onclick="window.location.href='/internal-hub'" title="Internal Portal">TrainAIToGain</span>
           </div>
           <p style="color:#9ca3af; font-size:14px; margin:0; line-height:1.5;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
-          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; 548 Market St, Suite 84000, San Francisco, CA 94104 &bull; Independent Candidate Preparation Platform</p>
           <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
+                        <a href="/privacy" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Privacy Policy</a>
+            <a href="/terms" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Terms of Service</a>
             <a href="/disclosure" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Affiliate Disclosure</a>
             <a href="/saved-roles" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Dashboard</a>
             <a href="/resume-ats-guide" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">ATS Resume Scan</a>
@@ -734,13 +747,36 @@
     }
   });
 
+  window.showDashboardError = function(title, message) {
+    const errorMsgEl = document.getElementById('dashboard-error-msg');
+    if (errorMsgEl) {
+      errorMsgEl.innerHTML = `
+        <div style="display:flex; align-items:flex-start; gap:10px;">
+          <span style="font-size:20px;">🔒</span>
+          <div>
+            <strong style="display:block; font-size:14px; color:#991b1b; margin-bottom:2px;">${title}</strong>
+            <span>${message}</span>
+          </div>
+        </div>
+      `;
+      errorMsgEl.style.display = 'block';
+      errorMsgEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    const toast = document.getElementById('dashboard-toast');
+    if (toast) {
+      toast.innerHTML = `🔒 <strong>${title}:</strong> ${message}`;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 6000);
+    }
+  };
+
   window.signInAdminGoogle = async function() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
     } catch (err) {
       console.error("Sign-in error", err);
-      alert("Sign-in error: " + (err.message || err));
+      window.showDashboardError("Sign-in Failed", err.message || err);
     }
   };
 
@@ -765,7 +801,7 @@
       renderBoard();
     } catch (err) {
       console.error(err);
-      alert("Error updating status. Make sure you have permission.");
+      window.showDashboardError("Access Denied", "You do not have permission to update lead status. Please sign in with an authorized admin account.");
       selectEl.value = origStatus; // Revert on failure
     } finally {
       selectEl.disabled = false;
@@ -783,7 +819,7 @@
       renderBoard();
     } catch (err) {
       console.error(err);
-      alert("Error deleting lead. Make sure you have permission.");
+      window.showDashboardError("Access Denied", "You do not have permission to delete leads. Please sign in with an authorized admin account.");
     }
   }
 
@@ -1447,6 +1483,8 @@ function submitNavbarLead(e) {
   }, 1000);
 }
 </script>
+
+<div id="dashboard-toast" style="display:none; position:fixed; bottom:24px; right:24px; z-index:99999; padding:14px 20px; border-radius:8px; font-weight:700; font-size:14px; background:#991b1b; color:#ffffff; border:1px solid #ef4444; box-shadow:0 10px 25px rgba(0,0,0,0.3); animation:slideUp 0.3s ease;"></div>
 
 </body>
 

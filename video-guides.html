@@ -5,19 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Interview Masterclass | TrainAIToGain</title>
   <meta name="description" content="Master one-way AI screening interviews on Mercor and micro1. 14 video breakdowns, algorithm scoring rubrics, STAR formula templates, and real candidate experiences." />
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="shared.css" />
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B"></script>
+    <!-- Google tag (gtag.js) - Conditional on Consent -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-7Z54KYTV6B');
+    (function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      if (localStorage.getItem('cookieConsent') === 'accepted') {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-7Z54KYTV6B');
+      }
+    })();
   </script>
 
   <style>
@@ -251,20 +260,85 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--black);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      gap: 4px;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .takeaways-hint {
+      font-size: 10px;
+      font-weight: 700;
+      color: #059669;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 2px 7px;
+      border-radius: 100px;
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     .takeaways-list {
       margin: 0;
-      padding-left: 18px;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .takeaways-list li {
-      margin-bottom: 4px;
+      margin-bottom: 0;
       line-height: 1.45;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .takeaways-list li:hover {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+      color: #065f46;
+      transform: translateX(2px);
+    }
+
+    .takeaways-list li.active-takeaway {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #064e3b;
+      font-weight: 600;
+    }
+
+    .ts-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-variant-numeric: tabular-nums;
+      transition: all 0.18s ease;
+    }
+
+    .takeaways-list li:hover .ts-badge,
+    .takeaways-list li.active-takeaway .ts-badge {
+      background: #059669;
+      color: #ffffff;
+      border-color: #059669;
     }
 
     .coach-tip {
@@ -368,7 +442,7 @@
           </div>
         </a>
         <input type="checkbox" id="nav-toggle" style="display:none;" />
-        <label for="nav-toggle" class="nav-toggle-label">
+        <label for="nav-toggle" class="nav-toggle-label" tabindex="0" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="nav-toggle-icon"></span>
         </label>
         <ul class="nav-links">
@@ -413,7 +487,7 @@
     <div class="video-grid" id="video-grid">
 
       <!-- Lesson 1 -->
-      <article class="video-card" data-cat="algorithm">
+      <article class="video-card" id="lesson-01" data-cat="algorithm">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/vC4wlYS2bkY" title="AI Interview Tips - Indeed" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -425,11 +499,11 @@
           <h3 class="video-title">AI Interview Tips: What to Expect & How to Pass</h3>
           <div class="video-creator">Source: Indeed Official Career Guide</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>How AI evaluation engines transcribe audio and parse structural completeness.</li>
-              <li>Camera positioning: maintaining level eye-line with the webcam prevents gaze drift penalties.</li>
-              <li>Acoustic clarity: external noise causes transcription dropouts in domain terms.</li>
+              <li data-start="34" onclick="seekLessonVideo(this, 'vC4wlYS2bkY', 34)" title="Jump to 0:34 in video"><span class="ts-badge">▶ 0:34</span><span>How AI is used in interviews: scoring answer structure and job-description keyword density.</span></li>
+              <li data-start="67" onclick="seekLessonVideo(this, 'vC4wlYS2bkY', 67)" title="Jump to 1:07 in video"><span class="ts-badge">▶ 1:07</span><span>AI interview prep: researching the role requirements and preparing structured STAR examples.</span></li>
+              <li data-start="156" onclick="seekLessonVideo(this, 'vC4wlYS2bkY', 156)" title="Jump to 2:36 in video"><span class="ts-badge">▶ 2:36</span><span>Running a simulation test (2:36) and full environment &amp; camera checklist (3:31).</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -439,7 +513,7 @@
       </article>
 
       <!-- Lesson 2 -->
-      <article class="video-card" data-cat="traps">
+      <article class="video-card" id="lesson-02" data-cat="traps">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/n4lzOYAJmDc" title="How Screeners Behave" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -451,11 +525,11 @@
           <h3 class="video-title">How Automated Screeners Behave in Real Time</h3>
           <div class="video-creator">Source: Joshua Fluke</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Why AI bots penalize long silences (>6 seconds) as incomplete responses.</li>
-              <li>Robotic screeners lack human empathy: emotional appeals score lower than factual STAR frameworks.</li>
-              <li>The danger of rambling off-topic when attempting to fill arbitrary time limits.</li>
+              <li data-start="34" onclick="seekLessonVideo(this, 'n4lzOYAJmDc', 34)" title="Jump to 0:34 in video"><span class="ts-badge">▶ 0:34</span><span>Live AI recruiter call: seeing how automated voice bots react to spoken answers in real time.</span></li>
+              <li data-start="178" onclick="seekLessonVideo(this, 'n4lzOYAJmDc', 178)" title="Jump to 2:58 in video"><span class="ts-badge">▶ 2:58</span><span>Testing the AI bot's limits: why off-script tangents and awkward pauses hurt your evaluation.</span></li>
+              <li data-start="749" onclick="seekLessonVideo(this, 'n4lzOYAJmDc', 749)" title="Jump to 12:29 in video"><span class="ts-badge">▶ 12:29</span><span>Corporate jargon overload: why empty buzzwords fail without concrete project substance.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -465,7 +539,7 @@
       </article>
 
       <!-- Lesson 3 -->
-      <article class="video-card" data-cat="micro1">
+      <article class="video-card" id="lesson-03" data-cat="micro1">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/Zxvd3F8OwsU" title="micro1 Review & Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -477,11 +551,11 @@
           <h3 class="video-title">micro1 Platform Guide: Joining & Passing Zara</h3>
           <div class="video-creator">Source: Tom Blake</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Detailed walkthrough of micro1's talent pool vetting and payout structure.</li>
-              <li>Why specializing in 1 focused domain yields 3x higher placement than generalist profiles.</li>
-              <li>Navigating the automated onboarding screening flow smoothly.</li>
+              <li data-start="61" onclick="seekLessonVideo(this, 'Zxvd3F8OwsU', 61)" title="Jump to 1:01 in video"><span class="ts-badge">▶ 1:01</span><span>What is micro1, available AI training jobs (1:52), and signing up for screening (2:26).</span></li>
+              <li data-start="235" onclick="seekLessonVideo(this, 'Zxvd3F8OwsU', 235)" title="Jump to 3:55 in video"><span class="ts-badge">▶ 3:55</span><span>Walkthrough of my actual micro1 interview with Zara and getting micro1 certified (4:44).</span></li>
+              <li data-start="561" onclick="seekLessonVideo(this, 'Zxvd3F8OwsU', 561)" title="Jump to 9:21 in video"><span class="ts-badge">▶ 9:21</span><span>Actionable micro1 interview tips to pass (9:21) and how payout rates work (6:56).</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -491,7 +565,7 @@
       </article>
 
       <!-- Lesson 4 -->
-      <article class="video-card" data-cat="algorithm">
+      <article class="video-card" id="lesson-04" data-cat="algorithm">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/N_u_wLWDaiw" title="How to Ace Interview with AI Agent" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -503,11 +577,11 @@
           <h3 class="video-title">How to Ace the Interview with an AI Agent</h3>
           <div class="video-creator">Source: Bossed Up</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Pacing calibration: targeting 120-140 words per minute maximizes speech-to-text accuracy.</li>
-              <li>Vocal modulation: monotone delivery triggers low engagement scores in conversational models.</li>
-              <li>Explicit transition signaling: "The direct action I took was..."</li>
+              <li data-start="45" onclick="seekLessonVideo(this, 'N_u_wLWDaiw', 45)" title="Jump to 0:45 in video"><span class="ts-badge">▶ 0:45</span><span>How employers use agentic AI screeners to conduct first-round interviews beyond resume scans.</span></li>
+              <li data-start="190" onclick="seekLessonVideo(this, 'N_u_wLWDaiw', 190)" title="Jump to 3:10 in video"><span class="ts-badge">▶ 3:10</span><span>Overcoming "black screen" camera anxiety and projecting natural warmth and vocal energy.</span></li>
+              <li data-start="375" onclick="seekLessonVideo(this, 'N_u_wLWDaiw', 375)" title="Jump to 6:15 in video"><span class="ts-badge">▶ 6:15</span><span>Step-by-step preparation process to deliver clear, structured STAR stories to an AI agent.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -517,7 +591,7 @@
       </article>
 
       <!-- Lesson 5 -->
-      <article class="video-card" data-cat="algorithm">
+      <article class="video-card" id="lesson-05" data-cat="algorithm">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/8QEK7B9GUhM" title="WSJ Robots are Hiring" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -529,11 +603,11 @@
           <h3 class="video-title">The Robots Are Hiring: Under the Hood of AI Recruiter Rubrics</h3>
           <div class="video-creator">Source: The Wall Street Journal</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Investigative look into how modern hiring LLMs evaluate speech transcripts.</li>
-              <li>Semantic keyword weighting: required domain terms must appear in the first 30 seconds.</li>
-              <li>Consistency checks between resume text and spoken claims.</li>
+              <li data-start="45" onclick="seekLessonVideo(this, '8QEK7B9GUhM', 45)" title="Jump to 0:45 in video"><span class="ts-badge">▶ 0:45</span><span>WSJ investigation: how Fortune 500 companies use automated video interviews to screen talent.</span></li>
+              <li data-start="195" onclick="seekLessonVideo(this, '8QEK7B9GUhM', 195)" title="Jump to 3:15 in video"><span class="ts-badge">▶ 3:15</span><span>Inside the scoring rubric: how AI models analyze your spoken vocabulary, tone, and structure.</span></li>
+              <li data-start="370" onclick="seekLessonVideo(this, '8QEK7B9GUhM', 370)" title="Jump to 6:10 in video"><span class="ts-badge">▶ 6:10</span><span>How job seekers practice for algorithmic assessments and align answers with rubric signals.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -543,7 +617,7 @@
       </article>
 
       <!-- Lesson 6 -->
-      <article class="video-card" data-cat="micro1">
+      <article class="video-card" id="lesson-06" data-cat="micro1">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/h18G7KP4zk8" title="Pass micro1 Interview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -555,11 +629,11 @@
           <h3 class="video-title">How to PASS the micro1 Zara Interview (Full Video)</h3>
           <div class="video-creator">Source: SECUREWITHDAVID</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Real questions asked by Zara during technical and generalist evaluations.</li>
-              <li>Explaining complex technical architecture clearly within time limits.</li>
-              <li>How to handle live code explanation prompts effectively.</li>
+              <li data-start="80" onclick="seekLessonVideo(this, 'h18G7KP4zk8', 80)" title="Jump to 1:20 in video"><span class="ts-badge">▶ 1:20</span><span>Exact strategy to dominate the micro1 mock interview and Zara AI screening questions.</span></li>
+              <li data-start="285" onclick="seekLessonVideo(this, 'h18G7KP4zk8', 285)" title="Jump to 4:45 in video"><span class="ts-badge">▶ 4:45</span><span>Mandatory zero-lag internet and hardware setup (why connection drops cause instant failure).</span></li>
+              <li data-start="550" onclick="seekLessonVideo(this, 'h18G7KP4zk8', 550)" title="Jump to 9:10 in video"><span class="ts-badge">▶ 9:10</span><span>How to optimize your micro1 profile immediately after passing so top companies select you.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -569,7 +643,7 @@
       </article>
 
       <!-- Lesson 7 -->
-      <article class="video-card" data-cat="micro1">
+      <article class="video-card" id="lesson-07" data-cat="micro1">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/VnI-PRMgHA0" title="Crack micro1 Easily" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -581,11 +655,11 @@
           <h3 class="video-title">How to Crack the micro1 AI Interview Easily</h3>
           <div class="video-creator">Source: Earn With Loki</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Pre-test checklist: camera resolution, browser permissions, and microphone input level.</li>
-              <li>Structuring quick 45-second answers to introductory behavioral questions.</li>
-              <li>What happens behind the scenes after you submit your responses.</li>
+              <li data-start="62" onclick="seekLessonVideo(this, 'VnI-PRMgHA0', 62)" title="Jump to 1:02 in video"><span class="ts-badge">▶ 1:02</span><span>Top skills to add for selection (1:02) and Zara AI recruiter introduction (1:12).</span></li>
+              <li data-start="182" onclick="seekLessonVideo(this, 'VnI-PRMgHA0', 182)" title="Jump to 3:02 in video"><span class="ts-badge">▶ 3:02</span><span>Scenario-based questions on data annotation (3:02) and data labeling problem approaches (5:28).</span></li>
+              <li data-start="735" onclick="seekLessonVideo(this, 'VnI-PRMgHA0', 735)" title="Jump to 12:15 in video"><span class="ts-badge">▶ 12:15</span><span>Real project-based questions (12:15) and exact next steps after passing the interview (13:46).</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -595,7 +669,7 @@
       </article>
 
       <!-- Lesson 8 -->
-      <article class="video-card" data-cat="micro1">
+      <article class="video-card" id="lesson-08" data-cat="micro1">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/MoUVzt0ZwZU" title="Insider micro1 Tips" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -607,11 +681,11 @@
           <h3 class="video-title">Insider Info: Applying and Acing micro1 Screening</h3>
           <div class="video-creator">Source: Earn With Loki</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>How matching algorithms pair candidates with enterprise client contracts.</li>
-              <li>Setting realistic compensation expectations that maximize contract offer rates.</li>
-              <li>Identity verification tips to prevent unexpected profile holds.</li>
+              <li data-start="79" onclick="seekLessonVideo(this, 'MoUVzt0ZwZU', 79)" title="Jump to 1:19 in video"><span class="ts-badge">▶ 1:19</span><span>Overview of micro1 vacancies and step-by-step instructions to submit your application.</span></li>
+              <li data-start="159" onclick="seekLessonVideo(this, 'MoUVzt0ZwZU', 159)" title="Jump to 2:39 in video"><span class="ts-badge">▶ 2:39</span><span>Live AI interview simulation: what to expect and how to answer during Zara screening.</span></li>
+              <li data-start="524" onclick="seekLessonVideo(this, 'MoUVzt0ZwZU', 524)" title="Jump to 8:44 in video"><span class="ts-badge">▶ 8:44</span><span>Post-interview next steps, verification, and preparing for contract selection.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -621,7 +695,7 @@
       </article>
 
       <!-- Lesson 9 -->
-      <article class="video-card" data-cat="micro1">
+      <article class="video-card" id="lesson-09" data-cat="micro1">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/GZMqgR0boPo" title="Pass micro1 Specialist" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -633,11 +707,11 @@
           <h3 class="video-title">Specialist AI Interview: Real Prompts & Scoring Rubric</h3>
           <div class="video-creator">Source: Akahilz</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Live examples of domain-specific prompts used for high-tier AI training contracts.</li>
-              <li>Demonstrating rigorous fact-checking and edge-case sensitivity in evaluation roles.</li>
-              <li>Writing high-quality justifications that pass client quality audits.</li>
+              <li data-start="15" onclick="seekLessonVideo(this, 'GZMqgR0boPo', 15)" title="Jump to 0:15 in video"><span class="ts-badge">▶ 0:15</span><span>Interview prep and camera angle setup before starting a $140/hr specialist assessment.</span></li>
+              <li data-start="120" onclick="seekLessonVideo(this, 'GZMqgR0boPo', 120)" title="Jump to 2:00 in video"><span class="ts-badge">▶ 2:00</span><span>Full live micro1 specialist interview questions and real spoken candidate responses.</span></li>
+              <li data-start="1500" onclick="seekLessonVideo(this, 'GZMqgR0boPo', 1500)" title="Jump to 25:00 in video"><span class="ts-badge">▶ 25:00</span><span>Crucial post-interview tips and final walkthrough on passing high-tier assessments.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -647,7 +721,7 @@
       </article>
 
       <!-- Lesson 10 -->
-      <article class="video-card" data-cat="mercor">
+      <article class="video-card" id="lesson-10" data-cat="mercor">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/NrAdn2lb8Bk" title="Mercor Live Experience" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -659,11 +733,11 @@
           <h3 class="video-title">Mercor Generalist Expert Live Interview Walkthrough</h3>
           <div class="video-creator">Source: Earn With Loki</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Real Mercor screen layout, timer behavior, and question sequencing.</li>
-              <li>Managing the 3-minute hard ceiling while keeping delivery between 60-90 seconds.</li>
-              <li>Official screening retakes vary by opening; use unlimited practice mode first.</li>
+              <li data-start="100" onclick="seekLessonVideo(this, 'NrAdn2lb8Bk', 100)" title="Jump to 1:40 in video"><span class="ts-badge">▶ 1:40</span><span>Mercor apply process, qualification requirements, and job dashboard overview (2:20).</span></li>
+              <li data-start="240" onclick="seekLessonVideo(this, 'NrAdn2lb8Bk', 240)" title="Jump to 4:00 in video"><span class="ts-badge">▶ 4:00</span><span>Full walkthrough of real Mercor live interview questions and how to structure answers.</span></li>
+              <li data-start="895" onclick="seekLessonVideo(this, 'NrAdn2lb8Bk', 895)" title="Jump to 14:55 in video"><span class="ts-badge">▶ 14:55</span><span>Personal interview experience, feedback, and tips to improve your selection chances.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -673,7 +747,7 @@
       </article>
 
       <!-- Lesson 11 -->
-      <article class="video-card" data-cat="mercor">
+      <article class="video-card" id="lesson-11" data-cat="mercor">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/P65_F2OWB-0" title="Mercor AI Interview Tips" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -685,11 +759,11 @@
           <h3 class="video-title">Mercor AI Interview: Proven Strategies & Scoring Tips</h3>
           <div class="video-creator">Source: The Om Londhe</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Overcoming initial nervousness in front of an automated one-way video interface.</li>
-              <li>Aligning spoken accomplishments directly with keywords in Mercor job listings.</li>
-              <li>How Mercor algorithms synthesize your responses into a candidate summary for hiring clients.</li>
+              <li data-start="35" onclick="seekLessonVideo(this, 'P65_F2OWB-0', 35)" title="Jump to 0:35 in video"><span class="ts-badge">▶ 0:35</span><span>How the automated Mercor AI video interview format works from start to finish.</span></li>
+              <li data-start="110" onclick="seekLessonVideo(this, 'P65_F2OWB-0', 110)" title="Jump to 1:50 in video"><span class="ts-badge">▶ 1:50</span><span>Defending your resume: how Mercor's AI probes your listed projects and job-description skills.</span></li>
+              <li data-start="205" onclick="seekLessonVideo(this, 'P65_F2OWB-0', 205)" title="Jump to 3:25 in video"><span class="ts-badge">▶ 3:25</span><span>Key preparation tips and speaking strategies to score high on Mercor's evaluation rubric.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -699,7 +773,7 @@
       </article>
 
       <!-- Lesson 12 -->
-      <article class="video-card" data-cat="mercor">
+      <article class="video-card" id="lesson-12" data-cat="mercor">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/3k1AEcW3RPA" title="Mercor Real Questions" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -711,11 +785,11 @@
           <h3 class="video-title">Mercor Domain Expert Interview: Real Questions & Answers</h3>
           <div class="video-creator">Source: AI Junkie</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Actual questions posed to candidates for AI evaluation and RLHF contract roles.</li>
-              <li>How to formulate measurable impact metrics even for research or advisory projects.</li>
-              <li>Demonstrating deep domain familiarity without sounding overly rehearsed.</li>
+              <li data-start="90" onclick="seekLessonVideo(this, '3k1AEcW3RPA', 90)" title="Jump to 1:30 in video"><span class="ts-badge">▶ 1:30</span><span>How Mercor's AI adapts follow-up questions dynamically based on your background and answers.</span></li>
+              <li data-start="290" onclick="seekLessonVideo(this, '3k1AEcW3RPA', 290)" title="Jump to 4:50 in video"><span class="ts-badge">▶ 4:50</span><span>Handling document/spreadsheet evaluation scenarios, error detection, and AI output review.</span></li>
+              <li data-start="510" onclick="seekLessonVideo(this, '3k1AEcW3RPA', 510)" title="Jump to 8:30 in video"><span class="ts-badge">▶ 8:30</span><span>Full recording of my actual Mercor Generalist Expert AI interview questions and answers.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -725,7 +799,7 @@
       </article>
 
       <!-- Lesson 13 -->
-      <article class="video-card" data-cat="micro1">
+      <article class="video-card" id="lesson-13" data-cat="micro1">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/TgYbcK4pNvE" title="Selected for Generalist Position" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -737,11 +811,11 @@
           <h3 class="video-title">Application to Offer: Case Study of a Successful Hire</h3>
           <div class="video-creator">Source: AI Junkie</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>Timeline breakdown: hours from screening to client match and offer letter.</li>
-              <li>Contract setup, onboarding requirements, and hourly tracking expectations.</li>
-              <li>Maintaining high evaluation quality during initial probationary batches.</li>
+              <li data-start="56" onclick="seekLessonVideo(this, 'TgYbcK4pNvE', 56)" title="Jump to 0:56 in video"><span class="ts-badge">▶ 0:56</span><span>Journey from micro1 application and AI interview to selection and job offers (2:49).</span></li>
+              <li data-start="266" onclick="seekLessonVideo(this, 'TgYbcK4pNvE', 266)" title="Jump to 4:26 in video"><span class="ts-badge">▶ 4:26</span><span>Project screening process (4:26) and onboarding emails and steps after selection (6:16).</span></li>
+              <li data-start="466" onclick="seekLessonVideo(this, 'TgYbcK4pNvE', 466)" title="Jump to 7:46 in video"><span class="ts-badge">▶ 7:46</span><span>Setting up work tools (7:46), team communication (9:30), and ongoing project opportunities.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -751,7 +825,7 @@
       </article>
 
       <!-- Lesson 14 -->
-      <article class="video-card" data-cat="traps">
+      <article class="video-card" id="lesson-14" data-cat="traps">
         <div class="video-container">
           <iframe src="https://www.youtube.com/embed/By4OZI1BDzU" title="How to Beat the Bot" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -763,11 +837,11 @@
           <h3 class="video-title">How to Beat the Bot & Land High-Paying Remote AI Roles</h3>
           <div class="video-creator">Source: Deborah Dosunmu</div>
           <div class="takeaways-box">
-            <div class="takeaways-title">📌 Key Takeaways & Signals</div>
+            <div class="takeaways-title"><span>📌 Key Takeaways & Signals</span><span class="takeaways-hint">▶ Click to jump</span></div>
             <ul class="takeaways-list">
-              <li>How global candidates overcome algorithmic transcription barriers.</li>
-              <li>Acoustic optimization: directional microphones vs built-in laptop mic arrays.</li>
-              <li>Building an unshakable STAR template that works across all prompt variations.</li>
+              <li data-start="12" onclick="seekLessonVideo(this, 'By4OZI1BDzU', 12)" title="Jump to 0:12 in video"><span class="ts-badge">▶ 0:12</span><span>Why qualified remote candidates get rejected by AI screeners before a recruiter sees them.</span></li>
+              <li data-start="42" onclick="seekLessonVideo(this, 'By4OZI1BDzU', 42)" title="Jump to 0:42 in video"><span class="ts-badge">▶ 0:42</span><span>Common mistakes job seekers make during automated first-round AI video interviews.</span></li>
+              <li data-start="72" onclick="seekLessonVideo(this, 'By4OZI1BDzU', 72)" title="Jump to 1:12 in video"><span class="ts-badge">▶ 1:12</span><span>How to structure your answers, keywords, and delivery to beat the AI screening bot.</span></li>
             </ul>
           </div>
           <div class="coach-tip">
@@ -861,8 +935,10 @@
             <span style="color:#ffffff; font-weight:800; font-size:18px; letter-spacing:-0.02em; cursor:pointer;" onclick="window.location.href='/internal-hub'" title="Internal Portal">TrainAIToGain</span>
           </div>
           <p style="color:#9ca3af; font-size:14px; margin:0; line-height:1.5;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
-          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; [Postal Address Pending] &bull; Independent Candidate Preparation Platform</p>
+          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; trainaitogain@gmail.com &bull; Independent Candidate Preparation Platform</p>
           <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
+                        <a href="/privacy" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Privacy Policy</a>
+            <a href="/terms" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Terms of Service</a>
             <a href="/disclosure" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Affiliate Disclosure</a>
             <a href="/saved-roles" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Dashboard</a>
             <a href="/resume-ats-guide" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">ATS Resume Scan</a>
@@ -889,7 +965,7 @@
     </script>
   </footer>
 
-  <!-- Interactive Filter Script -->
+  <!-- Interactive Filter & Video Timestamp Seek Script -->
   <script>
     function filterVideos(category, btn) {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -904,6 +980,57 @@
         }
       });
     }
+
+    function seekLessonVideo(liEl, videoId, startSec) {
+      if (!liEl || !videoId) return;
+      const card = liEl.closest('.video-card');
+      if (!card) return;
+
+      // Highlight the clicked takeaway bullet
+      card.querySelectorAll('.takeaways-list li').forEach(item => item.classList.remove('active-takeaway'));
+      liEl.classList.add('active-takeaway');
+
+      // Update the card's YouTube iframe to jump directly to startSec and play
+      const iframe = card.querySelector('iframe');
+      if (iframe) {
+        const sec = Math.max(0, parseInt(startSec, 10) || 0);
+        iframe.src = `https://www.youtube.com/embed/${videoId}?start=${sec}&autoplay=1&rel=0`;
+      }
+
+      // Ensure the video player at the top of the card is comfortably visible
+      const rect = card.getBoundingClientRect();
+      if (rect.top < 70 || rect.top > window.innerHeight * 0.6) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function handleDeepLinkedLesson() {
+      if (window.location.hash && window.location.hash.startsWith('#lesson-')) {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+          target.style.border = '2px solid #059669';
+          target.style.boxShadow = '0 0 0 4px rgba(5, 150, 105, 0.2), 0 12px 28px rgba(0,0,0,0.12)';
+
+          const params = new URLSearchParams(window.location.search);
+          const tParam = parseInt(params.get('t') || '', 10);
+          if (!isNaN(tParam) && tParam >= 0) {
+            const matchingLi = target.querySelector(`.takeaways-list li[data-start="${tParam}"]`) || target.querySelector('.takeaways-list li');
+            const iframe = target.querySelector('iframe');
+            const m = iframe && iframe.src ? iframe.src.match(/embed\/([a-zA-Z0-9_-]+)/) : null;
+            if (matchingLi && m && m[1]) {
+              seekLessonVideo(matchingLi, m[1], tParam);
+            }
+          }
+
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 150);
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', handleDeepLinkedLesson);
+    window.addEventListener('hashchange', handleDeepLinkedLesson);
   </script>
 </body>
 </html>

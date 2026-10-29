@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - TrainAIToGain</title>
+  <meta name="description" content="Privacy Policy for TrainAIToGain - how we protect your resume, email, and personal data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+
+  <!-- Google tag (gtag.js) - Conditional on Consent -->
+  <script>
+    (function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      if (localStorage.getItem('cookieConsent') === 'accepted') {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-7Z54KYTV6B";
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-7Z54KYTV6B');
+      }
+    })();
+  </script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+</head>
+<body style="background:var(--gray-50); display:flex; flex-direction:column; min-height:100vh;">
+
+  <!-- Nav -->
+  <nav class="nav" aria-label="Primary Navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="nav-logo" href="/" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+          <img src="/logo.svg" alt="TrainAIToGain Logo" style="height:44px; display:block;" />
+          <div class="logo-text" style="display:flex; flex-direction:column; line-height:1.1;">
+            <span style="color:var(--black); font-weight:800; font-size:18px; letter-spacing:-0.02em;">TrainAIToGain</span>
+            <span style="color:var(--primary); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">We Get You Hired.</span>
+          </div>
+        </a>
+        <input type="checkbox" id="nav-toggle" style="display:none;" />
+        <label for="nav-toggle" class="nav-toggle-label" tabindex="0" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="nav-toggle-icon"></span>
+        </label>
+        <ul class="nav-links">
+          <li><a href="/resume-ats-guide" class="nav-link">ATS Resume Scan</a></li>
+          <li><a href="/ai-interview" class="nav-link">Mock Interview</a></li>
+          <li><a href="/apply" class="nav-link">Active Roles</a></li>
+          <li><a href="/saved-roles" class="nav-link" style="display:flex; align-items:center; gap:6px;">Dashboard</a></li>
+          <li><a href="/hiring-blueprint" style="background:var(--primary); color:var(--white); padding:8px 16px; border-radius:100px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3); text-decoration:none;">Get Free Blueprint</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section" style="flex:1; padding: 48px 0;">
+    <div class="container" style="max-width:800px; margin: 0 auto; padding: 0 24px;">
+      <h1 style="font-size:36px; font-weight:800; color:var(--black); margin-bottom:12px;">Privacy Policy</h1>
+      <p style="font-size:14px; color:var(--gray-500); margin-bottom:32px;">Last updated: October 2026</p>
+
+      <div style="background:var(--white); padding:36px; border-radius:16px; border:1px solid var(--gray-200); box-shadow:var(--shadow-sm); display:flex; flex-direction:column; gap:24px; line-height:1.7; color:var(--gray-700); font-size:15px;">
+        
+        <div>
+          <h2 style="font-size:20px; font-weight:800; color:var(--black); margin-bottom:8px;">1. Overview</h2>
+          <p style="margin:0;">TrainAIToGain ("we", "our", or "us") provides candidate preparation resources, interactive tools, and referral links for remote AI evaluation and RLHF positions. We are committed to transparency and respect for candidate privacy.</p>
+        </div>
+
+        <div>
+          <h2 style="font-size:20px; font-weight:800; color:var(--black); margin-bottom:8px;">2. Resume Data & Privacy</h2>
+          <p style="margin:0 0 10px 0;">When you use our Interactive ATS Resume Scanner or upload a resume to match against active hiring waves:</p>
+          <ul style="margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px;">
+            <li>Your resume file is parsed client-side in your web browser.</li>
+            <li>Text extraction and keyword matching occur within your browser session or are transmitted securely to our AI inference endpoint strictly for generating keyword alignment scores.</li>
+            <li><strong>We never sell, rent, or monetize your resume text or personal details.</strong></li>
+            <li>Resume files are not permanently stored on our servers without your explicit consent.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 style="font-size:20px; font-weight:800; color:var(--black); margin-bottom:8px;">3. Email Communications & 1-Click Unsubscribe</h2>
+          <p style="margin:0 0 10px 0;">If you voluntarily sign up for our Weekly Role Alerts or Application Companion Guides:</p>
+          <ul style="margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px;">
+            <li>We collect your email address solely to send the requested hiring alerts, blueprints, or status reminders.</li>
+            <li>Every email sent contains a clear, 1-click unsubscribe link. You can also opt out at any time by visiting <a href="/unsubscribe" style="color:var(--primary); font-weight:600;">/unsubscribe</a>.</li>
+            <li>We do not share your email with third-party marketers.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 style="font-size:20px; font-weight:800; color:var(--black); margin-bottom:8px;">4. Cookies & Tracking Choices</h2>
+          <p style="margin:0 0 10px 0;">We respect your privacy choices under global data protection laws (including GDPR and CCPA/CPRA):</p>
+          <ul style="margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px;">
+            <li><strong>Opt-in by default:</strong> We do not load Google Analytics or tracking scripts until you click "Accept" on our Cookie Consent banner.</li>
+            <li><strong>Decline honored:</strong> If you click "Decline", analytics scripts and pipeline telemetry remain disabled for your session.</li>
+            <li>Functional data (such as saved bookmarked roles and interview progress) is stored locally on your device in your browser's <code>localStorage</code>.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 style="font-size:20px; font-weight:800; color:var(--black); margin-bottom:8px;">5. Third-Party Links & Referrals</h2>
+          <p style="margin:0;">Our site includes direct referral links to third-party hiring platforms (such as Mercor and micro1). When you click an external link to apply, you are directed to that provider's domain, and their terms and privacy policies govern their application process.</p>
+        </div>
+
+        <div>
+          <h2 style="font-size:20px; font-weight:800; color:var(--black); margin-bottom:8px;">6. Data Rights & Contact</h2>
+          <p style="margin:0 0 10px 0;">You have the right to request access to, correction of, or permanent deletion of any personal data you have submitted to TrainAIToGain. To submit a request or inquire about our privacy practices, contact us:</p>
+          <div style="background:var(--gray-50); border:1px solid var(--gray-200); padding:16px; border-radius:8px;">
+            <strong>TrainAIToGain</strong><br />
+            Independent Candidate Preparation Platform (United States)<br />
+            Email: <a href="mailto:trainaitogain@gmail.com" style="color:var(--primary); font-weight:600;">trainaitogain@gmail.com</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer no-print" style="background:#111111; padding: 48px 0; border-top: 1px solid rgba(255,255,255,0.1); color:#ffffff; width:100%; box-sizing:border-box;">
+    <div class="container" style="max-width:1200px; margin:0 auto; padding:0 24px; box-sizing:border-box;">
+      <div class="footer-inner" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:32px;">
+        <div style="max-width:600px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <img src="/logo.svg" alt="TrainAIToGain Logo" width="24" height="24" class="footer-logo-img" style="width:24px !important; height:24px !important; max-width:24px !important; max-height:24px !important; min-width:24px !important; min-height:24px !important; flex-shrink:0 !important; object-fit:contain !important; filter: brightness(0) invert(1) !important; display:inline-block !important;" />
+            <span style="color:#ffffff; font-weight:800; font-size:18px; letter-spacing:-0.02em; cursor:pointer;" onclick="window.location.href='/internal-hub'" title="Internal Portal">TrainAIToGain</span>
+          </div>
+          <p style="color:#9ca3af; font-size:14px; margin:0; line-height:1.5;">&copy; 2026 TrainAIToGain. All rights reserved.</p>
+          <p style="color:#6b7280; font-size:12px; margin:0; line-height:1.5;">TrainAIToGain &bull; trainaitogain@gmail.com &bull; Independent Candidate Preparation Platform</p>
+          <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
+            <a href="/privacy" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Privacy Policy</a>
+            <a href="/terms" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Terms of Service</a>
+            <a href="/disclosure" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Affiliate Disclosure</a>
+            <a href="/saved-roles" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Dashboard</a>
+            <a href="/resume-ats-guide" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">ATS Resume Scan</a>
+            <a href="/apply" style="color:#9ca3af; text-decoration:none; font-size:13px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">Active Roles</a>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+          <a href="/#companies" style="color:#9ca3af; text-decoration:none; font-size:14px; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">For Companies</a>
+          <a href="https://www.linkedin.com/company/trainaitogain/" target="_blank" rel="noopener noreferrer" style="color:#9ca3af; transition:color 0.2s; display:inline-flex; align-items:center;" aria-label="LinkedIn" onmouseover="this.style.color='#10b981'" onmouseout="this.style.color='#9ca3af'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
