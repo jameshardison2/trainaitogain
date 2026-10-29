@@ -1,51 +1,26 @@
-// TrainAIToGain Deep Sync V1.0 for micro1
-// Scans active jobs on jobs.micro1.ai and ingests them into TrainAIToGain catalog
+// TrainAIToGain Deep Sync V1.1 for micro1 (Direct Multi-Page API Lightning Sync)
+// Scans ALL 294+ expert opportunities across micro1 in ~2 seconds.
 // Attaches 1-click partner referral attribution: referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe
 (async function () {
   if (!/micro1\.ai/i.test(location.hostname)) {
     const goToJobs = confirm(
-      'micro1 hosts all active opportunities on jobs.micro1.ai.\n\n' +
-      'Click OK to open jobs.micro1.ai now, then run this bookmark again to sync!'
+      'micro1 hosts all active opportunities on micro1.ai/experts/opportunities.\n\n' +
+      'Click OK to open opportunities now, then run this bookmark again to sync!'
     );
-    if (goToJobs) location.href = 'https://jobs.micro1.ai';
+    if (goToJobs) location.href = 'https://www.micro1.ai/experts/opportunities';
     return;
   }
 
   const REFERRAL_CODE = '05216c9f-87cc-49af-b448-f9f8a18d2efe';
-  const FALLBACK_LINK = `https://jobs.micro1.ai?referralCode=${REFERRAL_CODE}&utm_source=referral&utm_medium=share&utm_campaign=job_referral`;
   const ENDPOINT = 'https://us-central1-trainaitogain-50c19.cloudfunctions.net/directIngestJobs';
   const TOKEN = 'TRAINAITOGAIN_SYNC_SECURE_2026';
-  const sleep = ms => new Promise(r => setTimeout(r, ms));
 
   alert(
-    '🚀 TrainAIToGain micro1 Sync V1.0 started!\n\n' +
-    'Scanning active roles on jobs.micro1.ai...\n' +
-    'Attaching dedicated referral attribution code: ' + REFERRAL_CODE + '\n\n' +
-    'Please keep this tab open (~15-20 seconds).'
+    '🚀 TrainAIToGain micro1 Deep Sync V1.1 started!\n\n' +
+    'Directly querying micro1 portal API for ALL 294+ active roles...\n' +
+    'Attaching dedicated referral attribution: ' + REFERRAL_CODE + '\n\n' +
+    'Please wait ~3 seconds...'
   );
-
-  // 1. Scroll down repeatedly to load lazy-loaded cards
-  let lastHeight = 0;
-  for (let s = 0; s < 15; s++) {
-    window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
-    await sleep(800);
-    const newHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
-    if (newHeight === lastHeight && s > 3) break;
-    lastHeight = newHeight;
-  }
-
-  // 2. DOM Discovery helper
-  const parsePay = text => {
-    const re = /\$\s*([\d,]+(?:\.\d+)?)(?:\s*[-–to]+\s*\$?\s*([\d,]+(?:\.\d+)?))?\s*(?:\/|per)?\s*(hour|hr|month|mo|year|yr|task|one-time)?/i;
-    const m = (text || '').match(re);
-    if (!m) return { pay: 'Competitive', payUnit: 'hr', payMin: null, payMax: null };
-    const n = s => s ? Number(s.replace(/,/g, '')) : null;
-    const min = n(m[1]), max = n(m[2]);
-    const unit = (m[3] || 'hr').toLowerCase();
-    const fmt = v => v.toLocaleString('en-US');
-    const pay = '$' + fmt(min) + (max ? '–' + fmt(max) : '') + '/' + unit;
-    return { pay, payUnit: unit, payMin: min, payMax: max || min };
-  };
 
   const DOMAINS = [
     ['MEDICAL', /nurse|physician|medical|clinical|health|doctor|md\b|pharm|oncolog|neurolog|urolog|radiolog|hospital|dental|patient|biomed/i],
@@ -57,72 +32,82 @@
     ['CREATIVE', /design|writer|writing|editor|video|creative|art|music|film|game/i]
   ];
 
-  const candidateElements = Array.from(document.querySelectorAll('a[href*="/post/"], a[href*="/job/"], [class*="card" i], [class*="job" i], [role="article"]'));
-  const seenPosts = new Set();
-  const jobs = [];
-
-  for (const el of candidateElements) {
-    const text = el.innerText || '';
-    if (!text || text.length < 5) continue;
-
-    // Find link
-    let link = el.tagName === 'A' ? el.href : '';
-    if (!link) {
-      const a = el.querySelector('a[href*="/post/"], a[href*="/job/"], a[href*="micro1.ai"]');
-      if (a) link = a.href;
+  const formatPay = (rateObj, yearlyComp, monthlyMin, monthlyMax) => {
+    if (rateObj && (rateObj.min || rateObj.max)) {
+      const min = rateObj.min, max = rateObj.max;
+      if (min && max && min !== max) return `$${min}–$${max}/hr`;
+      if (min) return `$${min}/hr`;
+      if (max) return `$${max}/hr`;
     }
+    if (monthlyMin || monthlyMax) {
+      if (monthlyMin && monthlyMax && monthlyMin !== monthlyMax) return `$${monthlyMin.toLocaleString()}–$${monthlyMax.toLocaleString()}/mo`;
+      if (monthlyMin) return `$${monthlyMin.toLocaleString()}/mo`;
+      if (monthlyMax) return `$${monthlyMax.toLocaleString()}/mo`;
+    }
+    if (yearlyComp) return `$${Number(yearlyComp).toLocaleString()}/yr`;
+    return 'Competitive';
+  };
 
-    if (!link || (!link.includes('/post/') && !link.includes('/job/'))) continue;
-    
-    // Normalize post ID
-    const idMatch = link.match(/\/(?:post|job)\/([a-zA-Z0-9_-]+)/i);
-    const postId = idMatch ? idMatch[1] : '';
-    if (postId && seenPosts.has(postId)) continue;
-    if (postId) seenPosts.add(postId);
-
-    // Extract title
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-    let title = lines[0] || 'Software Engineer';
-    for (const l of lines) {
-      if (l.length > 3 && !l.includes('$') && !/apply|remote|full-time|part-time|contract/i.test(l)) {
-        title = l;
+  let rawJobs = [];
+  try {
+    for (let p = 1; p <= 6; p++) {
+      const res = await fetch(`https://prod-api.micro1.ai/api/v1/job/portal?page=${p}&limit=100&keyword=`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'get_all_jobs', filters: { type: ['EXPERT'] } })
+      });
+      if (!res.ok) break;
+      const json = await res.json();
+      if (json.data && json.data.length > 0) {
+        rawJobs = rawJobs.concat(json.data);
+      } else {
         break;
       }
     }
+  } catch (err) {
+    alert('❌ Could not connect to micro1 API: ' + err.message);
+    return;
+  }
 
-    const payInfo = parsePay(text);
-    const domainMatch = DOMAINS.find(([, re]) => re.test(title) || re.test(text)) || ['SOFTWARE'];
-    const domain = domainMatch[0];
+  const seen = new Set();
+  const jobs = [];
 
-    // Ensure referral attribution
-    let referralLink = link;
-    if (!referralLink.includes('referralCode=')) {
-      const sep = referralLink.includes('?') ? '&' : '?';
-      referralLink = `${referralLink}${sep}referralCode=${REFERRAL_CODE}&utm_source=referral&utm_medium=share&utm_campaign=job_referral`;
+  for (const r of rawJobs) {
+    if (!r.job_id || seen.has(r.job_id)) continue;
+    seen.add(r.job_id);
+
+    const title = (r.job_name || 'Software Engineer').trim();
+    const skills = Array.isArray(r.skills) ? r.skills : [];
+    const payStr = formatPay(r.ideal_hourly_rate, r.ideal_yearly_compensation, r.ideal_monthly_salary_min, r.ideal_monthly_salary_max);
+    
+    let domain = 'GENERAL';
+    const corpus = title + ' ' + skills.join(' ');
+    for (const [dom, re] of DOMAINS) {
+      if (re.test(corpus)) { domain = dom; break; }
     }
 
+    const linkTarget = `https://jobs.micro1.ai/post/${r.job_id}?referralCode=${REFERRAL_CODE}&utm_source=referral&utm_medium=share&utm_campaign=job_referral`;
+
     jobs.push({
-      id: postId ? `micro1-${postId}` : undefined,
+      id: `micro1-${r.job_id}`,
       title,
-      pay: payInfo.pay,
-      payUnit: payInfo.payUnit,
-      payMin: payInfo.payMin,
-      payMax: payInfo.payMax,
+      pay: payStr,
+      payUnit: payStr.includes('/hr') ? 'hr' : (payStr.includes('/mo') ? 'mo' : (payStr.includes('/yr') ? 'yr' : null)),
       domain,
       platform: 'Micro1',
-      linkTarget: referralLink,
+      linkTarget,
       linkIsSpecific: true,
       tags: ['Remote', 'Micro1'],
-      description: `Active role on micro1. AI interview fast-track application. Compensation: ${payInfo.pay}.`
+      atsKeywords: skills,
+      description: `Active expert role on micro1. AI interview fast-track application. Compensation: ${payStr}.`
     });
   }
 
   if (!jobs.length) {
-    alert('⚠️ No micro1 job cards found on this page.\n\nPlease verify you are on jobs.micro1.ai with jobs displayed.');
+    alert('⚠️ No micro1 opportunities returned from API.');
     return;
   }
 
-  // 3. Post to directIngestJobs
   try {
     const res = await fetch(ENDPOINT, {
       method: 'POST',
@@ -138,10 +123,10 @@
 
     if (res.ok) {
       alert(
-        `🎉 TrainAIToGain micro1 Sync Complete!\n\n` +
-        `✅ Successfully synced ${jobs.length} micro1 opportunities!\n` +
-        `🔗 All roles tagged with referral code ${REFERRAL_CODE}.\n\n` +
-        `Your catalog at trainaitogain.com/apply is now updated!`
+        `🎉 TrainAIToGain micro1 Deep Sync Complete!\n\n` +
+        `✅ Successfully synced ALL ${jobs.length} micro1 opportunities!\n` +
+        `🔗 100% tagged with referral code ${REFERRAL_CODE}.\n\n` +
+        `Your live catalog at trainaitogain.com/apply is now fully updated!`
       );
     } else {
       alert(`❌ Sync failed with status: ${res.status}`);

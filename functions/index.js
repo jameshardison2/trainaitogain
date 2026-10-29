@@ -120,15 +120,26 @@ exports.directIngestJobs = onRequest(
 
         const targetPlatform = platform || "Mercor";
         const incomingDocIds = new Set();
+        const isMercor = targetPlatform.toLowerCase() === 'mercor';
+        const isMicro1 = targetPlatform.toLowerCase().includes('micro');
 
-        // 1. Update metadata
-        await db.collection("system").doc("sync_metadata").set({
+        // 1. Update metadata per platform and globally
+        const metaUpdate = {
           platform: targetPlatform,
           syncedAt: syncedAt || new Date().toISOString(),
           totalJobs: jobs.length,
           fullSync: !!fullSync,
           updatedAt: admin.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
+        };
+        if (isMercor) {
+          metaUpdate.mercorSyncedAt = syncedAt || new Date().toISOString();
+          metaUpdate.mercorTotalJobs = jobs.length;
+        } else if (isMicro1) {
+          metaUpdate.micro1SyncedAt = syncedAt || new Date().toISOString();
+          metaUpdate.micro1TotalJobs = jobs.length;
+        }
+
+        await db.collection("system").doc("sync_metadata").set(metaUpdate, { merge: true });
 
         // 2. Write jobs into 'roles' collection in batches of up to 400
         const batchSize = 400;
@@ -149,7 +160,7 @@ exports.directIngestJobs = onRequest(
             const paySlug = (job.pay || '').toLowerCase().replace(/[^a-z0-9]/g, '');
             const linkSlug = (job.linkTarget || '').split('/').pop() || '';
             const titleSlug = (job.title || "job").toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
-            const rawId = `${titleSlug}-${paySlug || linkSlug || 'role'}`;
+            const rawId = isMicro1 && job.id ? job.id : `${titleSlug}-${paySlug || linkSlug || 'role'}`;
             const docId = rawId.substring(0, 80);
             incomingDocIds.add(docId);
             
@@ -181,7 +192,8 @@ exports.directIngestJobs = onRequest(
         for (const doc of existingSnap.docs) {
           const d = doc.data();
           const docPlatform = (d.platform || 'Mercor').toLowerCase();
-          if (docPlatform === targetPlatform.toLowerCase() && !incomingDocIds.has(doc.id)) {
+          const matchesTarget = (isMercor && docPlatform === 'mercor') || (isMicro1 && docPlatform.includes('micro'));
+          if (matchesTarget && !incomingDocIds.has(doc.id)) {
             pruneBatch.delete(doc.ref);
             prunedCount++;
             if (prunedCount % 400 === 0) {
@@ -218,8 +230,9 @@ exports.getRoles = onRequest(
         const metaDoc = await db.collection("system").doc("sync_metadata").get();
         const meta = metaDoc.exists ? metaDoc.data() : {};
         const metaSyncedAt = meta.syncedAt || null;
-        const metaPlatform = (meta.platform || 'Mercor').toLowerCase();
-        const latestSyncTime = metaSyncedAt ? new Date(metaSyncedAt).getTime() : 0;
+        
+        const mercorSyncTime = meta.mercorSyncedAt ? new Date(meta.mercorSyncedAt).getTime() : ((meta.platform || '').toLowerCase() === 'mercor' && meta.syncedAt ? new Date(meta.syncedAt).getTime() : 0);
+        const micro1SyncTime = meta.micro1SyncedAt ? new Date(meta.micro1SyncedAt).getTime() : ((meta.platform || '').toLowerCase().includes('micro') && meta.syncedAt ? new Date(meta.syncedAt).getTime() : 0);
 
         const snapshot = await db.collection("roles").get();
         const roles = [];
@@ -234,11 +247,25 @@ exports.getRoles = onRequest(
           }
 
           const docPlatform = (d.platform || 'Mercor').toLowerCase();
+          const isDocMercor = docPlatform === 'mercor';
+          const isDocMicro1 = docPlatform.includes('micro');
 
-          // Prune / skip stale roles from older syncs if latestSyncTime is known
-          if (latestSyncTime > 0 && docPlatform === metaPlatform) {
+          // Prune stale Mercor roles from older syncs
+          if (isDocMercor && mercorSyncTime > 0) {
             const docTime = d.lastUpdated ? new Date(d.lastUpdated).getTime() : 0;
-            if (isNaN(docTime) || docTime === 0 || (latestSyncTime - docTime > 4 * 3600 * 1000)) {
+            if (isNaN(docTime) || docTime === 0 || (mercorSyncTime - docTime > 4 * 3600 * 1000)) {
+              if (stalePrunedCount < 450) {
+                staleDeleteBatch.delete(doc.ref);
+                stalePrunedCount++;
+              }
+              return;
+            }
+          }
+
+          // Prune stale micro1 roles from older syncs
+          if (isDocMicro1 && micro1SyncTime > 0) {
+            const docTime = d.lastUpdated ? new Date(d.lastUpdated).getTime() : 0;
+            if (isNaN(docTime) || docTime === 0 || (micro1SyncTime - docTime > 4 * 3600 * 1000)) {
               if (stalePrunedCount < 450) {
                 staleDeleteBatch.delete(doc.ref);
                 stalePrunedCount++;
@@ -271,12 +298,12 @@ exports.getRoles = onRequest(
             payUnit: d.payUnit || null,
             domain: resolvedDom,
             tags: Array.isArray(d.tags) ? d.tags : ['Remote'],
-            platform: d.platform || "Mercor",
+            platform: isDocMicro1 ? "Micro1" : "Mercor",
             linkTarget: d.linkTarget || "",
             linkIsSpecific: d.linkIsSpecific !== undefined ? d.linkIsSpecific : true,
             description: sanitizedDesc,
             atsKeywords: Array.isArray(d.atsKeywords) ? d.atsKeywords : [],
-            lastUpdated: d.lastUpdated || metaSyncedAt || null
+            lastUpdated: d.lastUpdated || (isDocMicro1 ? meta.micro1SyncedAt : meta.mercorSyncedAt) || metaSyncedAt || null
           });
         });
 
@@ -292,7 +319,9 @@ exports.getRoles = onRequest(
         return res.json({
           count: roles.length,
           meta: {
-            platform: meta.platform || "Mercor",
+            platform: "Multi-Platform",
+            mercorJobs: roles.filter(r => r.platform.toLowerCase() === 'mercor').length,
+            micro1Jobs: roles.filter(r => r.platform.toLowerCase().includes('micro')).length,
             syncedAt: metaSyncedAt,
             totalJobs: roles.length
           },
