@@ -575,10 +575,11 @@ assert(mockResolveStoredResume({}, { candidateResumeText: dummy17kResume }) === 
 // Case D: Resume stored under arbitrary key with resume markers
 assert(mockResolveStoredResume({ random_storage_key_1: dummy17kResume }, {}) === dummy17kResume, "Must recover from unstructured resume text");
 
-// Check job card hours and real sync date in render_waves.js
+// Check job card hours and real dynamic sync date in render_waves.js
 const renderWavesJs = fs.readFileSync('render_waves.js', 'utf8');
 assert(renderWavesJs.includes('Check listing for hours'), "render_waves.js must link to check listing for hours");
-assert(renderWavesJs.includes('Oct 18, 2026 Sync'), "render_waves.js must display exact verified sync date Oct 18, 2026 Sync");
+assert(renderWavesJs.includes('${cardDateStr} Sync'), "render_waves.js must display dynamic verified sync date (${cardDateStr} Sync)");
+assert(renderWavesJs.includes('Oct 18, 2026'), "render_waves.js must have Oct 18, 2026 baseline for micro1");
 
 // Test filename recovery for custom filename (e.g. My_Resume_Optimized_v5.pdf)
 function mockResolveFileName(mockLocal, mockSession) {

@@ -25,12 +25,47 @@ if (!window.updateAllPlatformWarnings) {
     };
 }
 
+if (!window.ensureReferralAttribution) {
+    window.ensureReferralAttribution = function(rawUrl, platform) {
+        if (!rawUrl || typeof rawUrl !== 'string') {
+            var isM1 = platform === 'micro1' || (platform || '').toLowerCase().indexOf('micro') !== -1;
+            return isM1
+                ? 'https://jobs.micro1.ai?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral'
+                : 'https://t.mercor.com/wbPMF';
+        }
+        var url = rawUrl.trim();
+        var isMicro1 = platform === 'micro1' || url.toLowerCase().indexOf('micro1') !== -1;
+        if (isMicro1) {
+            if (url.indexOf('referralCode=') === -1) {
+                var sep = url.indexOf('?') !== -1 ? '&' : '?';
+                url = url + sep + 'referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe&utm_source=referral&utm_medium=share&utm_campaign=job_referral';
+            }
+            return url;
+        }
+        // Mercor
+        if (url.indexOf('https://t.mercor.com/') === 0) {
+            return url;
+        }
+        if (url.indexOf('work.mercor.com') !== -1 || url.indexOf('mercor.com') !== -1) {
+            if (url.indexOf('referralCode=') === -1 && url.indexOf('ref=') === -1) {
+                var sepM = url.indexOf('?') !== -1 ? '&' : '?';
+                url = url + sepM + 'referralCode=867a4c34-8e4d-4d1b-8ac7-13370a4a3942&ref=wbPMF&utm_campaign=job&utm_medium=direct&utm_source=referral';
+            }
+        }
+        return url;
+    };
+}
+
 if (!window.handleApplyClick) {
     window.handleApplyClick = function(title, linkTarget, btn, roleId, matchScore, domain) {
         if (window.event) window.event.stopPropagation();
         const refCode = localStorage.getItem('affiliate_ref') || new URLSearchParams(window.location.search).get('ref') || '';
         let targetUrl = linkTarget || 'https://t.mercor.com/wbPMF';
         
+        const isMicro1 = targetUrl.toLowerCase().includes('micro1');
+        const platformName = isMicro1 ? 'micro1' : 'Mercor';
+        
+        targetUrl = window.ensureReferralAttribution(targetUrl, platformName);
         if (targetUrl.includes('mercor') && !targetUrl.startsWith('https://t.mercor.com/')) {
             const mRef = refCode || 'wbPMF';
             if (!targetUrl.includes('ref=') && !targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'ref=' + encodeURIComponent(mRef);
@@ -39,8 +74,6 @@ if (!window.handleApplyClick) {
             if (!targetUrl.includes('referralCode=')) targetUrl += (targetUrl.includes('?') ? '&' : '?') + 'referralCode=' + encodeURIComponent(m1Ref);
         }
 
-        const isMicro1 = targetUrl.includes('micro1');
-        const platformName = isMicro1 ? 'micro1' : 'Mercor';
         const prevPlatform = localStorage.getItem('tgt_last_applied_platform') || '';
         localStorage.setItem('tgt_last_applied_platform', platformName);
 
@@ -752,15 +785,58 @@ function renderWavesApp() {
                         }
                     }
                     if (apiData && apiData.roles && apiData.roles.length > 0) {
-                        const existingTitles = new Set(data.roles.map(r => (r.title || '').toLowerCase()));
+                        // 1. Identify platforms present in incoming API sync
+                        const incomingPlatforms = new Set(apiData.roles.map(r => (r.platform || 'Mercor').toLowerCase()));
+
+                        // 2. Retain baseline roles ONLY for platforms NOT present in incoming sync (e.g. micro1)
+                        const retainedBaselineRoles = (data.roles || []).filter(r => {
+                            const p = (r.platform || 'Mercor').toLowerCase();
+                            const l = (r.linkTarget || '').toLowerCase();
+                            const isMicro1 = p.includes('micro') || l.includes('micro1');
+                            if (isMicro1) return !incomingPlatforms.has('micro1');
+                            return !incomingPlatforms.has('mercor');
+                        });
+
+                        // 3. Process, sanitize, and deduplicate incoming API roles
+                        const domMap = [
+                            ['MEDICAL', /nurse|physician|medical|clinical|health|doctor|md\b|pharm|oncolog|neurolog|urolog|radiolog|hospital|dental|patient|biomed|preclinical/i],
+                            ['LEGAL', /legal|lawyer|attorney|law\b|paralegal|litigation|j\.d|counsel/i],
+                            ['FINANCE', /financ|accounting|banking|investment|equity|quant|trading|actuar|tax|economic|cpa|cfa|private equity|venture/i],
+                            ['LANGUAGE', /voice actor|language|translat|linguist|spanish|french|german|japanese|korean|chinese|arabic|hindi|portuguese|italian|native speaker/i],
+                            ['SOFTWARE', /software|engineer|developer|swe\b|coding|code|data scien|machine learning|\bml\b|\bai\b|devops|security|cyber|backend|frontend|full.?stack|mobile|qa\b/i],
+                            ['SCIENCE', /chemist|physic|biolog|math|scien|research|materials|nuclear|energetic/i],
+                            ['CREATIVE', /design|writer|writing|editor|video|creative|art|music|film|game/i]
+                        ];
+
+                        const seenTitles = new Set();
+                        const freshRoles = [];
+
                         apiData.roles.forEach(apiRole => {
                             if (!apiRole || !apiRole.title) return;
-                            const tLow = (apiRole.title || '').toLowerCase();
+                            const tClean = apiRole.title.trim();
+                            const tLow = tClean.toLowerCase();
                             if (tLow.includes('sample') || tLow.includes('test')) return;
+                            if (seenTitles.has(tLow)) return;
+                            seenTitles.add(tLow);
 
-                            // Ensure valid linkTarget
+                            apiRole.title = tClean;
+                            apiRole.status = apiRole.status || 'ACTIVE';
+                            apiRole.badgeClass = apiRole.badgeClass || 'orange';
+                            apiRole.description = apiRole.description || 'Actively hiring for this position.';
+                            apiRole.platform = apiRole.platform || 'Mercor';
+                            apiRole.lastUpdated = apiRole.lastUpdated || apiData.meta.syncedAt || syncDate;
+
+                            // Ensure valid linkTarget with referral attribution
                             if (!apiRole.linkTarget) {
-                                apiRole.linkTarget = 'https://t.mercor.com/wbPMF';
+                                apiRole.linkTarget = (apiRole.platform === 'micro1' || (apiRole.platform || '').toLowerCase().includes('micro'))
+                                    ? 'https://jobs.micro1.ai?referralCode=05216c9f-87cc-49af-b448-f9f8a18d2efe'
+                                    : 'https://t.mercor.com/wbPMF';
+                            } else if (apiRole.linkTarget.includes('listingId=')) {
+                                const lidMatch = apiRole.linkTarget.match(/listingId=(list_[A-Za-z0-9_-]+)/);
+                                if (lidMatch) {
+                                    const lid = lidMatch[1];
+                                    apiRole.linkTarget = `https://work.mercor.com/jobs/${lid}?referralCode=867a4c34-8e4d-4d1b-8ac7-13370a4a3942&ref=wbPMF&utm_campaign=job&utm_content=${lid}&utm_medium=direct&utm_source=referral`;
+                                }
                             }
 
                             // R2-5: Pay guard for /hr over 500
@@ -771,21 +847,9 @@ function renderWavesApp() {
                                     pStr = pStr.replace(/\/hr/i, '/yr');
                                 }
                             }
+                            apiRole.pay = pStr;
 
-                            apiRole.status = apiRole.status || 'ACTIVE';
-                            apiRole.badgeClass = apiRole.badgeClass || 'orange';
-                            apiRole.description = apiRole.description || 'Mercor is actively hiring for this position.';
-                            
-                            // R2b-2: Resolve domain for all incoming roles
-                            const domMap = [
-                                ['MEDICAL', /nurse|physician|medical|clinical|health|doctor|md\b|pharm|oncolog|neurolog|urolog|radiolog|hospital|dental|patient|biomed|preclinical/i],
-                                ['LEGAL', /legal|lawyer|attorney|law\b|paralegal|litigation|j\.d|counsel/i],
-                                ['FINANCE', /financ|accounting|banking|investment|equity|quant|trading|actuar|tax|economic|cpa|cfa|private equity|venture/i],
-                                ['LANGUAGE', /voice actor|language|translat|linguist|spanish|french|german|japanese|korean|chinese|arabic|hindi|portuguese|italian|native speaker/i],
-                                ['SOFTWARE', /software|engineer|developer|swe\b|coding|code|data scien|machine learning|\bml\b|\bai\b|devops|security|cyber|backend|frontend|full.?stack|mobile|qa\b/i],
-                                ['SCIENCE', /chemist|physic|biolog|math|scien|research|materials|nuclear|energetic/i],
-                                ['CREATIVE', /design|writer|writing|editor|video|creative|art|music|film|game/i]
-                            ];
+                            // Resolve domain
                             let resolvedDom = (apiRole.domain || '').toUpperCase();
                             if (!resolvedDom || resolvedDom === 'SOFTWARE' || resolvedDom === 'GENERAL') {
                                 for (const [d, re] of domMap) {
@@ -798,42 +862,26 @@ function renderWavesApp() {
                                 }
                             }
                             apiRole.domain = resolvedDom || 'GENERAL';
-                            apiRole.pay = pStr;
-                            apiRole.platform = apiRole.platform || 'Mercor';
 
-                            // Ensure Mercor links carry job-specific referral attribution without ?ref=wbPMF on t.mercor.com shortlinks
-                            if (apiRole.linkTarget && apiRole.linkTarget.includes('mercor')) {
-                                if (apiRole.linkTarget.startsWith('https://t.mercor.com/')) {
-                                    apiRole.linkTarget = apiRole.linkTarget.split('?')[0];
-                                } else if (apiRole.linkTarget.includes('listingId=')) {
-                                    const lidMatch = apiRole.linkTarget.match(/listingId=(list_[A-Za-z0-9_-]+)/);
-                                    if (lidMatch) {
-                                        const lid = lidMatch[1];
-                                        apiRole.linkTarget = `https://work.mercor.com/jobs/${lid}?referralCode=867a4c34-8e4d-4d1b-8ac7-13370a4a3942&utm_campaign=job&utm_content=${lid}&utm_medium=direct&utm_source=referral`;
-                                    }
-                                }
-                            }
+                            freshRoles.push(apiRole);
+                        });
 
-                            if (!existingTitles.has(tLow)) {
-                                data.roles.unshift(apiRole);
-                                existingTitles.add(tLow);
-                            } else {
-                                const match = data.roles.find(r => (r.title || '').toLowerCase() === tLow);
-                                if (match) {
-                                    const apiIsGeneric = !apiRole.linkTarget || apiRole.linkTarget === 'https://t.mercor.com/wbPMF' || apiRole.linkTarget === 'https://t.mercor.com/wbPMF/';
-                                    const apiIsShort = apiRole.linkTarget && apiRole.linkTarget.startsWith('https://t.mercor.com/') && !apiRole.linkTarget.includes('/wbPMF');
-                                    if (!apiIsGeneric) {
-                                        if (apiIsShort || !match.linkTarget || match.linkTarget.includes('/wbPMF')) {
-                                            match.linkTarget = apiRole.linkTarget;
-                                        }
-                                    }
-                                    if (apiRole.pay) match.pay = apiRole.pay;
-                                    if (apiRole.status) match.status = apiRole.status;
-                                    if (apiRole.badgeClass) match.badgeClass = apiRole.badgeClass;
-                                    if (apiRole.description) match.description = apiRole.description;
+                        // 4. Combine fresh incoming roles with retained baseline roles (deduplicating across all)
+                        const combinedRoles = [...freshRoles];
+                        retainedBaselineRoles.forEach(baseRole => {
+                            if (!baseRole || !baseRole.title) return;
+                            const tLow = baseRole.title.trim().toLowerCase();
+                            if (!seenTitles.has(tLow)) {
+                                seenTitles.add(tLow);
+                                if (!baseRole.lastUpdated) {
+                                    const isM1 = (baseRole.platform || '').toLowerCase().includes('micro') || (baseRole.linkTarget || '').includes('micro1');
+                                    baseRole.lastUpdated = isM1 ? '2026-10-18T12:00:00Z' : syncDate;
                                 }
+                                combinedRoles.push(baseRole);
                             }
                         });
+
+                        data.roles = combinedRoles;
                     }
                 }
             } catch (err) {
@@ -992,10 +1040,13 @@ function renderWavesApp() {
                     let tagsList = Array.isArray(role.tags) ? role.tags : (role.tags ? [role.tags] : ['Remote', role.platform || 'Mercor']);
                     let tagsHtml = tagsList.map(t => `<span style="background:var(--gray-200); color:var(--gray-700); font-size:11px; padding:4px 8px; border-radius:4px; font-weight:600;">${t}</span>`).join('');
                     const bg = role.badgeClass === 'orange' ? 'var(--orange)' : 'var(--black)';
+                    const isMicro1Role = (role.platform === 'micro1' || (role.platform || '').toLowerCase().includes('micro') || (role.linkTarget || '').includes('micro1'));
+                    const rolePlatform = isMicro1Role ? 'micro1' : 'Mercor';
+                    const rawTargetLink = role.linkTarget || (isMicro1Role ? 'https://jobs.micro1.ai' : 'https://t.mercor.com/wbPMF');
+                    const safeLink = (window.ensureReferralAttribution ? window.ensureReferralAttribution(rawTargetLink, rolePlatform) : rawTargetLink).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                     const safeTitle = (role.title || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                     const safeDomain = (role.domain || 'GENERAL').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                     const safePay = cleanPay.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-                    const safeLink = (role.linkTarget || 'https://t.mercor.com/wbPMF').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                     const safeId = (role.id || '').replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 
                     // Match badge if candidate scanned resume
@@ -1013,8 +1064,6 @@ function renderWavesApp() {
                         }
                     }
 
-                    const isMicro1Role = (role.platform === 'micro1' || safeLink.includes('micro1'));
-                    const rolePlatform = isMicro1Role ? 'micro1' : 'Mercor';
                     const lastAppliedPlatform = typeof localStorage !== 'undefined' ? (localStorage.getItem('tgt_last_applied_platform') || '') : '';
                     const isDifferentPlatform = (lastAppliedPlatform && lastAppliedPlatform !== rolePlatform);
 
@@ -1054,9 +1103,18 @@ function renderWavesApp() {
                         if (isTaskBased) {
                             hoursDisplay = 'Self-Paced (Pay per task)';
                         } else {
-                            hoursDisplay = `<a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color:#059669; text-decoration:underline; font-weight:600;">Check listing for hours ↗</a>`;
+                            hoursDisplay = `<a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color:#059669; text-decoration:underline; font-weight:600;" onclick="if(window.event) window.event.stopPropagation();">Check listing for hours ↗</a>`;
                         }
                     }
+
+                    const roleRawDate = role.lastUpdated || role.syncedAt || (isMicro1Role ? '2026-10-18T12:00:00Z' : syncDate);
+                    let cardDateStr = isMicro1Role ? 'Oct 18, 2026' : 'Oct 29, 2026';
+                    try {
+                        const dObj = new Date(roleRawDate);
+                        if (!isNaN(dObj.getTime())) {
+                            cardDateStr = dObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        }
+                    } catch(e) {}
 
                     const reqHtml = `
                         <div class="role-requirements" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; padding:8px 12px; margin-bottom:14px; font-size:12px; line-height:1.4;">
@@ -1064,7 +1122,7 @@ function renderWavesApp() {
                             <div style="display:flex; flex-direction:column; gap:3px; color:#4b5563;">
                                 <div>📍 <strong>Location:</strong> ${req.location}</div>
                                 <div>⏰ <strong>Schedule:</strong> ${hoursDisplay}</div>
-                                <div>📅 <strong>Verified Active:</strong> Oct 18, 2026 Sync</div>
+                                <div>📅 <strong>Verified Active:</strong> ${cardDateStr} Sync</div>
                                 ${req.degree ? `<div>🎓 <strong>Degree:</strong> ${req.degree}</div>` : ''}
                                 ${req.license ? `<div>📜 <strong>License:</strong> <span style="color:#b45309; font-weight:700;">${req.license}</span></div>` : ''}
                             </div>

@@ -118,9 +118,12 @@ exports.directIngestJobs = onRequest(
 
         const db = admin.firestore();
 
+        const targetPlatform = platform || "Mercor";
+        const incomingDocIds = new Set();
+
         // 1. Update metadata
         await db.collection("system").doc("sync_metadata").set({
-          platform: platform || "Mercor",
+          platform: targetPlatform,
           syncedAt: syncedAt || new Date().toISOString(),
           totalJobs: jobs.length,
           fullSync: !!fullSync,
@@ -148,6 +151,7 @@ exports.directIngestJobs = onRequest(
             const titleSlug = (job.title || "job").toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
             const rawId = `${titleSlug}-${paySlug || linkSlug || 'role'}`;
             const docId = rawId.substring(0, 80);
+            incomingDocIds.add(docId);
             
             const ref = db.collection("roles").doc(docId);
             batch.set(ref, {
@@ -161,7 +165,7 @@ exports.directIngestJobs = onRequest(
               domain: domain,                   // Saved domain (Section 14 R2b-2)
               atsKeywords: job.atsKeywords || [],
               tags: job.tags || ['Remote'],
-              platform: job.platform || platform || "Mercor",
+              platform: job.platform || targetPlatform,
               linkIsSpecific: job.linkIsSpecific !== undefined ? job.linkIsSpecific : true,
               lastUpdated: syncedAt || new Date().toISOString(),
               updatedAt: admin.firestore.FieldValue.serverTimestamp()
@@ -170,10 +174,31 @@ exports.directIngestJobs = onRequest(
           await batch.commit();
         }
 
-        logger.info(`directIngestJobs: Synced ${jobs.length} jobs for ${platform || "Mercor"}`);
+        // 3. True Replace: Prune / delete older roles for this platform not in incomingDocIds
+        const existingSnap = await db.collection("roles").get();
+        let pruneBatch = db.batch();
+        let prunedCount = 0;
+        for (const doc of existingSnap.docs) {
+          const d = doc.data();
+          const docPlatform = (d.platform || 'Mercor').toLowerCase();
+          if (docPlatform === targetPlatform.toLowerCase() && !incomingDocIds.has(doc.id)) {
+            pruneBatch.delete(doc.ref);
+            prunedCount++;
+            if (prunedCount % 400 === 0) {
+              await pruneBatch.commit();
+              pruneBatch = db.batch();
+            }
+          }
+        }
+        if (prunedCount % 400 !== 0) {
+          await pruneBatch.commit();
+        }
+
+        logger.info(`directIngestJobs: Synced ${jobs.length} jobs, pruned ${prunedCount} stale jobs for ${targetPlatform}`);
         return res.status(200).json({
           success: true,
           count: jobs.length,
+          pruned: prunedCount,
           syncedAt: syncedAt || new Date().toISOString()
         });
       } catch (error) {
@@ -190,10 +215,17 @@ exports.getRoles = onRequest(
     cors(req, res, async () => {
       try {
         const db = admin.firestore();
+        const metaDoc = await db.collection("system").doc("sync_metadata").get();
+        const meta = metaDoc.exists ? metaDoc.data() : {};
+        const metaSyncedAt = meta.syncedAt || null;
+        const metaPlatform = (meta.platform || 'Mercor').toLowerCase();
+        const latestSyncTime = metaSyncedAt ? new Date(metaSyncedAt).getTime() : 0;
+
         const snapshot = await db.collection("roles").get();
         const roles = [];
-        const cleanupBatch = db.batch();
-        let cleanedDocsCount = 0;
+        const seenTitles = new Set();
+        const staleDeleteBatch = db.batch();
+        let stalePrunedCount = 0;
 
         snapshot.forEach(doc => {
           const d = doc.data();
@@ -201,21 +233,37 @@ exports.getRoles = onRequest(
             return;
           }
 
+          const docPlatform = (d.platform || 'Mercor').toLowerCase();
+
+          // Prune / skip stale roles from older syncs if latestSyncTime is known
+          if (latestSyncTime > 0 && docPlatform === metaPlatform) {
+            const docTime = d.lastUpdated ? new Date(d.lastUpdated).getTime() : 0;
+            if (isNaN(docTime) || docTime === 0 || (latestSyncTime - docTime > 4 * 3600 * 1000)) {
+              if (stalePrunedCount < 450) {
+                staleDeleteBatch.delete(doc.ref);
+                stalePrunedCount++;
+              }
+              return;
+            }
+          }
+
+          // Deduplicate by trimmed normalized title
+          const titleKey = (d.title || '').trim().toLowerCase();
+          if (!titleKey || seenTitles.has(titleKey)) {
+            return;
+          }
+          seenTitles.add(titleKey);
+
           // Check if description has leaked referral text or is the Medicare Advantage role
           const hasLeakedDesc = (d.description && REFERRAL_LEAK_RE.test(d.description)) ||
             (d.title && d.title.toLowerCase().includes('medicare advantage brokers survey'));
-
-          if (hasLeakedDesc && d.description) {
-            cleanupBatch.update(doc.ref, { description: "" });
-            cleanedDocsCount++;
-          }
 
           // Sanitize description and classify domain on read
           let sanitizedDesc = hasLeakedDesc ? "" : sanitizeDescription(d.description);
           if (REFERRAL_LEAK_RE.test(sanitizedDesc)) sanitizedDesc = "";
           const resolvedDom = resolveDomain(d.title, sanitizedDesc, d.domain);
           
-          // Return ONLY the public fields needed by the page (Section 15 R2c-1 item 3)
+          // Return ONLY the public fields needed by the page (Section 15 R2c-1 item 3) + lastUpdated
           roles.push({
             id: doc.id,
             title: d.title || "",
@@ -227,23 +275,26 @@ exports.getRoles = onRequest(
             linkTarget: d.linkTarget || "",
             linkIsSpecific: d.linkIsSpecific !== undefined ? d.linkIsSpecific : true,
             description: sanitizedDesc,
-            atsKeywords: Array.isArray(d.atsKeywords) ? d.atsKeywords : []
+            atsKeywords: Array.isArray(d.atsKeywords) ? d.atsKeywords : [],
+            lastUpdated: d.lastUpdated || metaSyncedAt || null
           });
         });
 
-        if (cleanedDocsCount > 0) {
-          await cleanupBatch.commit();
-          logger.info(`Cleaned description on ${cleanedDocsCount} roles in Firestore`);
+        if (stalePrunedCount > 0) {
+          try {
+            await staleDeleteBatch.commit();
+            logger.info(`Cleaned ${stalePrunedCount} stale roles from Firestore`);
+          } catch(e) {
+            logger.warn("Could not commit stale prune batch:", e.message);
+          }
         }
 
-        const metaDoc = await db.collection("system").doc("sync_metadata").get();
-        const meta = metaDoc.exists ? metaDoc.data() : {};
         return res.json({
           count: roles.length,
           meta: {
             platform: meta.platform || "Mercor",
-            syncedAt: meta.syncedAt || null,
-            totalJobs: meta.totalJobs || roles.length
+            syncedAt: metaSyncedAt,
+            totalJobs: roles.length
           },
           roles
         });
