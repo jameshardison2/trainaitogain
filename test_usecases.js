@@ -495,7 +495,22 @@ assert(aiInterviewHtml.includes('2. Action &amp; Execution (30–45s)'), "ai-int
 assert(aiInterviewHtml.includes('3. Quantified Result (Final 15s)'), "ai-interview.html must include 3. Quantified Result");
 console.log("✓ PASSED: Teleprompter auto-scroll down engine, active pacing illuminator, and webcam HUD verified");
 
+// ==================================================================
+// Test 36: Tier 4 Enterprise Hub & B2B AI Readiness Integrity
+// ==================================================================
+assert(fs.existsSync('enterprise.html'), "enterprise.html must exist for Tier 4 enterprise hub");
+const enterpriseHtml = fs.readFileSync('enterprise.html', 'utf8');
+assert(enterpriseHtml.includes('https://trainaitogain.com/enterprise'), "enterprise.html must specify canonical tag");
+assert(enterpriseHtml.includes('Corporate AI Readiness Prep'), "enterprise.html must detail Proton model readiness prep");
+assert(enterpriseHtml.includes('Mercor Data-Partner Program'), "enterprise.html must detail Mercor data-partner program");
+assert(enterpriseHtml.includes('Calibrated Evaluator Sourcing'), "enterprise.html must offer evaluator talent sourcing");
+assert(enterpriseHtml.includes('id="enterprise-inquiry-form"'), "enterprise.html must provide interactive consultation form");
+assert(indexHtml.includes('/enterprise'), "index.html must link to /enterprise");
+assert(applyHtml.includes('/enterprise'), "apply.html must link to /enterprise");
+assert(sitemapXml.includes('https://trainaitogain.com/enterprise'), "sitemap.xml must include /enterprise");
+console.log("✓ PASSED: Tier 4 Enterprise Hub, Proton readiness audit, data-partner advisory, and nav links verified");
+
 console.log("==================================================================");
-console.log("ALL 35 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 36 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
