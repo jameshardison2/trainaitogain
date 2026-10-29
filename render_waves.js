@@ -1047,17 +1047,14 @@ function renderWavesApp() {
                     }
 
                     // Requirements block with hours & verified freshness
-                    const isMicro1Role = role.platform === 'Micro1' || (role.id && String(role.id).startsWith('micro1'));
                     const isTaskBased = cleanPay.toLowerCase().includes('/task') || cleanPay.toLowerCase().includes('task');
                     
                     let hoursDisplay = req.hours;
                     if (!hoursDisplay) {
                         if (isTaskBased) {
-                            hoursDisplay = 'Self-Paced (Pay per task &bull; no weekly minimum)';
-                        } else if (isMicro1Role) {
-                            hoursDisplay = '20 hrs/wk min (Match profile availability to 20+ hrs)';
+                            hoursDisplay = 'Self-Paced (Pay per task)';
                         } else {
-                            hoursDisplay = '20–40 hrs/wk (Contractor flexible schedule)';
+                            hoursDisplay = `<a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color:#059669; text-decoration:underline; font-weight:600;">Check listing for hours ↗</a>`;
                         }
                     }
 

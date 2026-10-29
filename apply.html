@@ -1222,11 +1222,50 @@ ${resumeText.substring(0, 10000)}`;
     return '';
   };
 
+  window.resolveStoredResumeFileName = function() {
+    const nameKeys = [
+      'candidateResumeFileName', 'candidate_resume_file_name',
+      'resumeFileName', 'resume_file_name',
+      'atsResumeFileName', 'ats_resume_file_name',
+      'atsFileName', 'uploadedFileName', 'uploaded_file_name',
+      'resumeName', 'fileName', 'file_name',
+      'pdfName', 'pdf_name', 'lastUploadedFileName'
+    ];
+    for (let i = 0; i < nameKeys.length; i++) {
+      const k = nameKeys[i];
+      try {
+        const v = (localStorage.getItem(k) || sessionStorage.getItem(k) || '').trim();
+        if (v && v.length > 3 && v.length < 150) {
+          try { localStorage.setItem('candidateResumeFileName', v); } catch(e) {}
+          return v;
+        }
+      } catch(e) {}
+    }
+    const stores = [localStorage, sessionStorage];
+    for (let s = 0; s < stores.length; s++) {
+      const store = stores[s];
+      try {
+        for (let i = 0; i < store.length; i++) {
+          const key = store.key(i);
+          if (!key) continue;
+          const val = (store.getItem(key) || '').trim();
+          if (val && typeof val === 'string' && val.length > 4 && val.length < 120) {
+            if (/\.(pdf|docx|txt)$/i.test(val) || /_Resume.*\.pdf/i.test(val) || /Resume.*\.pdf/i.test(val)) {
+              try { localStorage.setItem('candidateResumeFileName', val); } catch(e) {}
+              return val;
+            }
+          }
+        }
+      } catch(e) {}
+    }
+    return 'My_Resume.pdf';
+  };
+
   // Automatically restore AI matches from ATS Resume Scan
   (function() {
     function restoreMatches() {
       try {
-        const candidateResumeFileName = localStorage.getItem('candidateResumeFileName');
+        const candidateResumeFileName = window.resolveStoredResumeFileName();
         const candidateResumeText = window.resolveStoredResume() || localStorage.getItem('candidateResumeText') || '';
         const uploadZone = document.getElementById('aws-upload-zone');
         if ((candidateResumeFileName || candidateResumeText) && uploadZone) {
