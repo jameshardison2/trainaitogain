@@ -592,19 +592,129 @@ window.addEventListener('unhandledrejection', function(event) {
 
       <!-- Simulation Mode Selector (Tier 2: Item 6) -->
       <div style="max-width:560px; margin:0 auto 16px auto; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; text-align:left;">
-        <div style="font-size:11.5px; font-weight:800; color:#9ca3af; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">Select Simulation Mode</div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:8px;">
-          <div id="mode-opt-pressure" onclick="window.selectSimMode('pressure')" style="background:rgba(239,68,68,0.12); border:1.5px solid #ef4444; border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
+        <div style="font-size:11.5px; font-weight:800; color:#9ca3af; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">Select Preparation Mode</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">
+          <div id="mode-opt-flashcards" onclick="window.selectSimMode('flashcards')" style="background:rgba(16,185,129,0.1); border:1.5px solid #10b981; border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
+            <div style="font-size:12px; font-weight:800; color:#34d399; display:flex; align-items:center; gap:4px;">🃏 Flashcards Deck</div>
+            <div style="font-size:11px; color:#cbd5e1; margin-top:3px; line-height:1.35;">Quizlet-style card flip: Question front, winning STAR formula back</div>
+          </div>
+          <div id="mode-opt-pressure" onclick="window.selectSimMode('pressure')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
             <div style="font-size:12px; font-weight:800; color:#f87171; display:flex; align-items:center; gap:4px;">🔥 Pressure Mode</div>
-            <div style="font-size:11px; color:#cbd5e1; margin-top:3px; line-height:1.35;">Voice only, neutral avatar, real 4s pause cutoff alert</div>
+            <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Voice only, neutral avatar, real 4s pause cutoff alert</div>
           </div>
           <div id="mode-opt-practice" onclick="window.selectSimMode('practice')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
-            <div style="font-size:12px; font-weight:800; color:#34d399; display:flex; align-items:center; gap:4px;">💡 CoPilot Guided</div>
+            <div style="font-size:12px; font-weight:800; color:#6ee7b7; display:flex; align-items:center; gap:4px;">💡 CoPilot Guided</div>
             <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Teleprompter, live keyword cues, voice or typing</div>
           </div>
           <div id="mode-opt-warmup" onclick="window.selectSimMode('warmup')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
             <div style="font-size:12px; font-weight:800; color:#60a5fa; display:flex; align-items:center; gap:4px;">🌱 Warm-Up Mode</div>
             <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">1 low-stress icebreaker question to test audio</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quizlet-Style Interactive Study Deck (Shown when Flashcards Deck is active) -->
+      <div id="flashcards-deck-container" style="display:none; max-width:680px; margin:0 auto 24px auto; text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:18px;">🃏</span>
+            <span style="font-size:14px; font-weight:800; color:#f3f4f6; letter-spacing:0.02em;">Quizlet-Style Flashcards: Plug &amp; Play STAR Mastery</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span id="fc-progress-badge" style="background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; font-size:11.5px; font-weight:800; padding:3px 10px; border-radius:100px;">Card 1 of 5</span>
+            <button type="button" onclick="window.shuffleFlashcards()" style="background:transparent; border:1px solid rgba(255,255,255,0.15); color:#9ca3af; border-radius:6px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer;" title="Shuffle card order">🔀 Shuffle</button>
+          </div>
+        </div>
+
+        <!-- 3D Flip Card Scene -->
+        <div class="fc-scene" style="perspective:1200px; width:100%; min-height:360px; cursor:pointer;" onclick="window.flipCurrentFlashcard()">
+          <div id="fc-flipper" style="position:relative; width:100%; min-height:360px; transition:transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform-style:preserve-3d; border-radius:16px;">
+            
+            <!-- Card Front (Question Side) -->
+            <div id="fc-card-front" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:linear-gradient(145deg, #131a29 0%, #0d121c 100%); border:1.5px solid rgba(255,255,255,0.12); border-radius:16px; padding:28px 24px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 12px 36px rgba(0,0,0,0.5);">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                  <span id="fc-card-category" style="background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Category: Core Evaluation</span>
+                  <span style="font-size:11.5px; color:#9ca3af; font-weight:600;">⏱️ Target: 60–90s</span>
+                </div>
+                <div style="font-size:11.5px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Interview Question</div>
+                <div id="fc-question-text" style="font-size:18.5px; font-weight:700; color:#ffffff; line-height:1.5; margin-bottom:18px;">
+                  Walk me through your most recent role and what you were primarily responsible for day to day.
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px 14px; margin-top:8px;">
+                  <div style="font-size:11px; font-weight:800; color:#9ca3af; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px;">Target Scoring Keywords to Hit</div>
+                  <div id="fc-question-keywords" style="display:flex; flex-wrap:wrap; gap:6px;">
+                    <!-- Keyword chips rendered dynamically -->
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.08); font-size:12px; color:#6ee7b7; font-weight:700;">
+                <span>👆 Click card or press <kbd style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px; font-family:monospace; color:#fff;">Space</kbd> to flip for STAR Answer Formula</span>
+                <span>🔄 Flip ➔</span>
+              </div>
+            </div>
+
+            <!-- Card Back (Plug & Play STAR Formula Side) -->
+            <div id="fc-card-back" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:rotateY(180deg); background:linear-gradient(145deg, #091f1b 0%, #061513 100%); border:1.5px solid rgba(16,185,129,0.35); border-radius:16px; padding:24px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 12px 36px rgba(0,0,0,0.5); overflow-y:auto;">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <span style="background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.45); color:#6ee7b7; font-size:11px; font-weight:900; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Winning STAR Formula</span>
+                  <span style="font-size:11.5px; color:#34d399; font-weight:700;">Fill in the <mark style="background:rgba(251,191,36,0.25); color:#fef08a; padding:1px 5px; border-radius:3px;">[blanks]</mark></span>
+                </div>
+                
+                <!-- S: Situation & Task -->
+                <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #60a5fa; border-radius:0 6px 6px 0; padding:8px 12px;">
+                  <div style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">S — Situation &amp; Task</div>
+                  <div id="fc-star-situation" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+
+                <!-- A: Action -->
+                <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #34d399; border-radius:0 6px 6px 0; padding:8px 12px;">
+                  <div style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">A — Specific Action Taken</div>
+                  <div id="fc-star-action" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+
+                <!-- R: Result -->
+                <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #f59e0b; border-radius:0 6px 6px 0; padding:8px 12px;">
+                  <div style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">R — Measurable Result</div>
+                  <div id="fc-star-result" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+
+                <!-- Screener Guardrail Warning -->
+                <div id="fc-screener-tip" style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:6px; padding:7px 12px; font-size:11.5px; color:#fca5a5; line-height:1.4;">
+                  ⚠️ <strong>AI Screener Trap:</strong> Never pause longer than 4.2s or the AI cuts you off. State your metric within the first 45 seconds.
+                </div>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08); font-size:12px; color:#9ca3af; font-weight:600;">
+                <span>👆 Click card to flip back to question</span>
+                <span style="color:#34d399; font-weight:700;">🔄 Flip Back</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Flashcard Carousel Controls -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; gap:8px;">
+            <button type="button" onclick="window.prevFlashcard()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.2); color:#f3f4f6; border-radius:8px; padding:9px 18px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+              <span>⬅</span> Previous Card
+            </button>
+            <button type="button" onclick="window.nextFlashcard()" style="background:#10b981; color:#042f2e; border:none; border-radius:8px; padding:9px 20px; font-size:13px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+              Next Card <span>➔</span>
+            </button>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button type="button" onclick="window.startSimFromFlashcards()" style="background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#ffffff; border:none; border-radius:8px; padding:9px 18px; font-size:13px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(37,99,235,0.35);">
+              <span>🎙️</span> Test with Live Mic Now
+            </button>
           </div>
         </div>
       </div>
@@ -3877,31 +3987,37 @@ ${(resumeText || '').slice(0, 3500)}`;
     let videoLessonFocus = "";
     let primaryVideoHref = "/video-guides.html#lesson-11";
 
+    const companyPlaceholder = parsedResume.companyName ? parsedResume.companyName : "[Your Recent Employer / Project]";
+    const rolePlaceholder = parsedResume.cleanRoleTitle ? parsedResume.cleanRoleTitle : "[Your Target Role / Title]";
+    const primarySkill = qKeywords[0] || "[Primary Tool / Core Skill]";
+    const secondarySkill = qKeywords[1] || "[Secondary Framework / Methodology]";
+    const metricPlaceholder = parsedResume.cleanMetricPhrase || "[Measurable Result: e.g. 25%+ improvement in turnaround / accuracy]";
+
     if (qPromptLower.includes("most recent role") || qPromptLower.includes("primarily responsible for day to day") || qPromptLower.includes("tell me about your background")) {
-      starSituationTask = `In my most recent role ${roleContextPhrase}, I was primarily responsible for designing and implementing our core evaluation and execution framework, specifically focusing on **${qKeywords[0] || 'system quality'}** and **${qKeywords[1] || 'accuracy'}**.`;
-      starAction = `The direct action I took day to day was building and auditing end-to-end workflows using **${skillPhrase}**—encoding deterministic ground-truth checks and isolating edge-case bottlenecks early.`;
-      starResult = `Which resulted in ${metricExample}, significantly de-risking production deployments and advancing **${qKeywords[2] || roleTitle}** standards.`;
+      starSituationTask = `In my recent work as **${rolePlaceholder}** at **${companyPlaceholder}**, my primary ownership was leading deliverables around **${primarySkill}** and **${secondarySkill}**, ensuring production quality across our core pipeline.`;
+      starAction = `Day to day, the specific action I took was designing standard verification workflows using **${primarySkill}**, isolating technical bottlenecks early, and collaborating across teams on **[Key Milestone / Deliverable]**.`;
+      starResult = `As a direct outcome, we achieved **${metricPlaceholder}**, maintaining high rubric accuracy and setting the benchmark standard for our deliverables.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-11" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 11 (1:50): Mercor AI Interview Tips — Defending Your Resume &amp; JD Skills</a> &amp; <a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a>`;
       primaryVideoHref = "/video-guides.html#lesson-11";
     } else if (qPromptLower.includes("specific project or achievement") || qPromptLower.includes("measurable result")) {
-      starSituationTask = `In my work ${roleContextPhrase}, our team faced a high-priority challenge where edge-case inconsistencies across **${qKeywords[0] || skillPhrase}** were slowing turnaround and risking downstream quality.`;
-      starAction = `The specific action I took was building a standardized verification workflow around **${skillPhrase}**, isolating root-cause failure modes, and encoding automated validation checks across **${qKeywords[1] || 'pipeline'}** outputs.`;
-      starResult = `That measurable outcome delivered ${metricExample}, and our **${qKeywords[2] || 'evaluation'}** framework was adopted as the permanent benchmark.`;
+      starSituationTask = `On a high-impact initiative involving **[Specific Project Name]**, our team faced a critical challenge where inconsistencies across **${primarySkill}** were slowing execution.`;
+      starAction = `I stepped in and took ownership by architecting a structured solution using **${secondarySkill}**, conducting root-cause reviews, and implementing automated validation gates.`;
+      starResult = `That initiative produced **${metricPlaceholder}**, eliminated repetitive errors, and was adopted permanently across production.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-01" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 01 (1:07): Indeed AI Interview Prep — Structuring STAR &amp; Keyword Density</a> &amp; <a href="/video-guides.html#lesson-12" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 12 (4:50): Mercor Domain Expert — Real Evaluation Scenarios</a>`;
       primaryVideoHref = "/video-guides.html#lesson-01";
     } else if (qPromptLower.includes("reviewer of ai model outputs") || qPromptLower.includes("accuracy and strict guidelines")) {
-      starSituationTask = `My hands-on background ${roleContextPhrase} working with **${skillPhrase}** trained me to audit complex model outputs where subtle hallucinations or logic gaps create high risk.`;
-      starAction = `When evaluating AI outputs against strict rubrics, the exact method I use is isolating each technical claim, stress-testing boundary edge cases (**${qKeywords.slice(0, 3).join('**, **')}**), and documenting objective ground-truth justifications.`;
-      starResult = `Which resulted in catching subtle multi-step reasoning errors that generalist reviewers overlook and maintaining ${metricExample}.`;
+      starSituationTask = `In complex evaluation environments, subtle hallucinations and borderline reasoning gaps can slip past generalists if rubrics are not applied with strict domain precision.`;
+      starAction = `The rigorous auditing process I follow is isolating each technical assertion, stress-testing boundary edge cases using **${primarySkill}**, and validating claims against verifiable ground truth.`;
+      starResult = `This structured review methodology caught subtle multi-step reasoning failures and consistently maintained **${metricPlaceholder}**.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-12" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 12 (1:30): Mercor Domain Expert — Adaptive Questions &amp; AI Output Review</a> &amp; <a href="/video-guides.html#lesson-09" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 09 (2:00): micro1 Specialist Live Interview Questions &amp; Responses</a>`;
       primaryVideoHref = "/video-guides.html#lesson-12";
     } else {
       const coreTechnicalAnchor = (qData && qData.answer)
         ? qData.answer.trim()
-        : `To solve this effectively in a ${roleTitle} environment, I prioritize **${qKeywords.slice(0, 3).join('**, **')}** to ensure reliability under edge-case conditions.`;
+        : `To solve this effectively in production, I prioritize **${primarySkill}** combined with structured edge-case testing.`;
       starSituationTask = `${coreTechnicalAnchor}`;
-      starAction = `In practice ${roleContextPhrase}, the direct action I take is combining **${skillPhrase}** with rigorous validation checks around **${qKeywords.slice(0, 3).join('**, **')}** so edge cases are caught before production.`;
-      starResult = `When I applied this exact methodology on a recent workflow, it resulted in ${metricExample}.`;
+      starAction = `In my day-to-day work at **${companyPlaceholder}**, the exact step I take is pairing **${secondarySkill}** with systematic boundary checks so failures are flagged before release.`;
+      starResult = `Applying this method on our workflows delivered **${metricPlaceholder}** while keeping error rates minimal.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07 (3:02): micro1 Zara Scenario-Based &amp; Project Questions</a> &amp; <a href="/video-guides.html#lesson-06" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 06 (1:20): How to Pass the micro1 Zara Interview Strategy</a>`;
       primaryVideoHref = "/video-guides.html#lesson-07";
     }
@@ -5692,20 +5808,36 @@ ${(resumeText || '').slice(0, 3500)}`;
       btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume AI';
     }
   });
-  // Simulation Mode State (Tier 2: Item 6)
-  window.currentSimMode = localStorage.getItem('tgt_sim_mode') || 'pressure';
+  // Simulation Mode State (Tier 2: Item 6) + Quizlet-Style Flashcards Deck
+  window.currentSimMode = localStorage.getItem('tgt_sim_mode') || 'flashcards';
+
+  let _fcCurrentIndex = 0;
+  let _fcIsFlipped = false;
+  let _fcDeck = [];
 
   window.selectSimMode = function(mode) {
     window.currentSimMode = mode;
     localStorage.setItem('tgt_sim_mode', mode);
     
+    const fcBtn = document.getElementById('mode-opt-flashcards');
     const pBtn = document.getElementById('mode-opt-pressure');
     const cBtn = document.getElementById('mode-opt-practice');
     const wBtn = document.getElementById('mode-opt-warmup');
 
+    if (fcBtn) fcBtn.style.borderColor = (mode === 'flashcards') ? '#10b981' : 'rgba(255,255,255,0.15)';
     if (pBtn) pBtn.style.borderColor = (mode === 'pressure') ? '#ef4444' : 'rgba(255,255,255,0.15)';
     if (cBtn) cBtn.style.borderColor = (mode === 'practice') ? '#10b981' : 'rgba(255,255,255,0.15)';
     if (wBtn) wBtn.style.borderColor = (mode === 'warmup') ? '#3b82f6' : 'rgba(255,255,255,0.15)';
+
+    const fcContainer = document.getElementById('flashcards-deck-container');
+    if (fcContainer) {
+      if (mode === 'flashcards') {
+        fcContainer.style.display = 'block';
+        window.initFlashcardsDeck();
+      } else {
+        fcContainer.style.display = 'none';
+      }
+    }
 
     // In pressure mode, avatar behaves as neutral non-reacting screener
     const alexName = document.getElementById('alex-avatar-ring')?.nextElementSibling;
@@ -5713,6 +5845,149 @@ ${(resumeText || '').slice(0, 3500)}`;
       alexName.innerText = (mode === 'pressure') ? 'Neutral AI Screener' : 'Coach Gain';
     }
   };
+
+  // Initialize selected simulation mode on page load
+  setTimeout(() => {
+    window.selectSimMode(window.currentSimMode);
+  }, 100);
+
+  window.initFlashcardsDeck = function() {
+    const rawRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').trim() : '';
+    const roleTarget = rawRole || localStorage.getItem('atsRole') || 'AI Evaluation Specialist';
+    const dom = currentDomain || 'general';
+    _fcDeck = (typeof buildInterviewQuestions === 'function')
+      ? buildInterviewQuestions(roleTarget, dom)
+      : [];
+    if (!_fcDeck || _fcDeck.length === 0) {
+      _fcDeck = [
+        {
+          q: "Walk me through your most recent role and what you were primarily responsible for day to day.",
+          keywords: ["system quality", "workflow", "production", "deliverables"],
+          category: "Role & Background"
+        },
+        {
+          q: "Tell me about a specific project or achievement from your experience that produced a measurable result. What was your role and the outcome?",
+          keywords: ["metrics", "optimization", "turnaround", "automation"],
+          category: "Measurable Impact"
+        },
+        {
+          q: "Which part of your background makes you a strong reviewer of AI model outputs under strict guidelines?",
+          keywords: ["hallucinations", "edge cases", "ground truth", "rubric precision"],
+          category: "Model Auditing & Precision"
+        }
+      ];
+    }
+    _fcCurrentIndex = 0;
+    _fcIsFlipped = false;
+    window.renderFlashcardAtCurrentIndex();
+  };
+
+  window.renderFlashcardAtCurrentIndex = function() {
+    if (!_fcDeck || _fcDeck.length === 0) return;
+    if (_fcCurrentIndex >= _fcDeck.length) _fcCurrentIndex = 0;
+    if (_fcCurrentIndex < 0) _fcCurrentIndex = _fcDeck.length - 1;
+
+    const card = _fcDeck[_fcCurrentIndex];
+    const total = _fcDeck.length;
+
+    // Reset 3D flip transform
+    const flipper = document.getElementById('fc-flipper');
+    _fcIsFlipped = false;
+    if (flipper) flipper.style.transform = 'rotateY(0deg)';
+
+    // Update progress badge
+    const badge = document.getElementById('fc-progress-badge');
+    if (badge) badge.innerText = `Card ${_fcCurrentIndex + 1} of ${total}`;
+
+    // Front: Question & Category & Keywords
+    const catEl = document.getElementById('fc-card-category');
+    if (catEl) catEl.innerText = `Category: ${card.category || getQuestionBankLabel(currentDomain || 'general')}`;
+
+    const qTextEl = document.getElementById('fc-question-text');
+    if (qTextEl) qTextEl.innerText = card.q || '';
+
+    const kwsBox = document.getElementById('fc-question-keywords');
+    if (kwsBox) {
+      const kws = Array.isArray(card.keywords) && card.keywords.length > 0
+        ? card.keywords.slice(0, 5)
+        : ['ownership', 'quality standards', 'validation', 'deliverables'];
+      kwsBox.innerHTML = kws.map(k =>
+        `<span style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; font-size:11px; font-weight:800; padding:3px 8px; border-radius:100px;">✓ ${k}</span>`
+      ).join('');
+    }
+
+    // Back: Compute clean plug-and-play STAR formula
+    const parts = (typeof computeStarPartsForQuestion === 'function')
+      ? computeStarPartsForQuestion(card, _fcCurrentIndex, '')
+      : { st: '', a: '', r: '' };
+
+    const stEl = document.getElementById('fc-star-situation');
+    const aEl = document.getElementById('fc-star-action');
+    const rEl = document.getElementById('fc-star-result');
+
+    const formatBlanks = (txt) => {
+      if (!txt) return '';
+      return txt
+        .replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#6ee7b7;">$1</strong>')
+        .replace(/\[([^\]]+)\]/g, '<mark style="background:rgba(251,191,36,0.25); color:#fef08a; border-bottom:1.5px solid #f59e0b; padding:1px 6px; border-radius:4px; font-weight:800;">[$1]</mark>');
+    };
+
+    if (stEl) stEl.innerHTML = formatBlanks(parts.st);
+    if (aEl) aEl.innerHTML = formatBlanks(parts.a);
+    if (rEl) rEl.innerHTML = formatBlanks(parts.r);
+  };
+
+  window.flipCurrentFlashcard = function() {
+    const flipper = document.getElementById('fc-flipper');
+    if (!flipper) return;
+    _fcIsFlipped = !_fcIsFlipped;
+    flipper.style.transform = _fcIsFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+  };
+
+  window.nextFlashcard = function(e) {
+    if (e) e.stopPropagation();
+    _fcCurrentIndex++;
+    window.renderFlashcardAtCurrentIndex();
+  };
+
+  window.prevFlashcard = function(e) {
+    if (e) e.stopPropagation();
+    _fcCurrentIndex--;
+    window.renderFlashcardAtCurrentIndex();
+  };
+
+  window.shuffleFlashcards = function() {
+    if (!_fcDeck || _fcDeck.length <= 1) return;
+    for (let i = _fcDeck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [_fcDeck[i], _fcDeck[j]] = [_fcDeck[j], _fcDeck[i]];
+    }
+    _fcCurrentIndex = 0;
+    window.renderFlashcardAtCurrentIndex();
+  };
+
+  window.startSimFromFlashcards = function() {
+    const startBtn = document.getElementById('start-btn');
+    if (startBtn) startBtn.click();
+  };
+
+  // Keyboard shortcut listener for Flashcards: Space to flip, Left/Right arrow to navigate
+  window.addEventListener('keydown', function(evt) {
+    const deck = document.getElementById('flashcards-deck-container');
+    if (!deck || deck.style.display === 'none') return;
+    if (evt.target && (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA')) return;
+
+    if (evt.code === 'Space') {
+      evt.preventDefault();
+      window.flipCurrentFlashcard();
+    } else if (evt.code === 'ArrowRight') {
+      evt.preventDefault();
+      window.nextFlashcard();
+    } else if (evt.code === 'ArrowLeft') {
+      evt.preventDefault();
+      window.prevFlashcard();
+    }
+  });
 
   // Live Pause Timeout Detection (Prevents being cut off by real AI screeners)
   let lastSpeechTimestamp = Date.now();
