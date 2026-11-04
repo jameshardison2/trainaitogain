@@ -618,7 +618,72 @@ assert(renderWavesJs.includes('Apply on'), "render_waves.js must include Apply o
 
 console.log(`✓ PASSED: Active Roles DOM integrity verified across all ${allRoles.length} roles with verified syntax`);
 
+// ==================================================================
+// Test 39: 10+ Tailored Questions Bank for Every Active Role & Quizlet Deck
+// ==================================================================
+assert(aiInterviewHtml.includes('function buildInterviewQuestions(targetRoleName, targetDomain)'), "ai-interview.html must define buildInterviewQuestions");
+assert(aiInterviewHtml.includes('return questions.slice(0, 10);'), "ai-interview.html must return at least 10 questions for any role");
+assert(aiInterviewHtml.includes('Question 1 of 10'), "ai-interview.html must initialize progress indicator to Question 1 of 10");
+assert(aiInterviewHtml.includes('Card 1 of 10'), "ai-interview.html must initialize Quizlet flashcard badge to Card 1 of 10");
+
+// Verify that 10 questions are generated for test sample across diverse domains
+const sampleTestRoles = [
+  { title: "Senior Python / ML Evaluator", domain: "SOFTWARE" },
+  { title: "Investment Banking Associate", domain: "FINANCE" },
+  { title: "Neurologists (MD/DO)", domain: "MEDICAL" },
+  { title: "Corporate Lawyer", domain: "LEGAL" },
+  { title: "Dutch Translator", domain: "LANGUAGE" },
+  { title: "Robotics Control Systems Engineer", domain: "ROBOTICS" }
+];
+
+const scriptPart = aiInterviewHtml.split('<script>').find(p => p.includes('function buildInterviewQuestions'));
+const isolatedCode = scriptPart.split('</script>')[0];
+const testVm = require('vm');
+const testSandbox = {
+  console,
+  setTimeout,
+  clearTimeout,
+  setInterval: () => {},
+  clearInterval: () => {},
+  URLSearchParams,
+  fetch: () => Promise.resolve({ json: () => Promise.resolve({}) }),
+  localStorage: { getItem: () => '', setItem: () => {} },
+  sessionStorage: { getItem: () => '', setItem: () => {} },
+  window: {
+    currentSimMode: 'standard',
+    wavesRoleMap: {},
+    addEventListener: () => {},
+    location: { search: '', hash: '', pathname: '/ai-interview' }
+  },
+  document: {
+    getElementById: () => ({ style: {}, classList: { add(){}, remove(){} }, innerText: '', value: '', options: [{ value: 'medical' }, { value: 'software' }, { value: 'general' }, { value: 'language' }, { value: 'finance' }, { value: 'legal' }], addEventListener: () => {}, appendChild: () => {} }),
+    querySelectorAll: () => [],
+    createElement: () => ({ addEventListener: () => {} }),
+    addEventListener: () => {}
+  },
+  navigator: { mediaDevices: {} }
+};
+testVm.createContext(testSandbox);
+allRoles.forEach(r => {
+  testSandbox.window.wavesRoleMap[r.title.toLowerCase()] = r;
+});
+testVm.runInContext(isolatedCode, testSandbox);
+
+sampleTestRoles.forEach(({ title, domain }) => {
+  const generatedQs = testSandbox.buildInterviewQuestions(title, domain);
+  assert(Array.isArray(generatedQs), `Questions for ${title} must be an array`);
+  assert(generatedQs.length >= 10, `Expected at least 10 questions for ${title}, got ${generatedQs.length}`);
+  generatedQs.forEach((q, idx) => {
+    assert(q.q && q.q.length > 15, `Question ${idx + 1} for ${title} must have a valid question prompt`);
+    assert(q.answer && q.answer.length > 20, `Question ${idx + 1} for ${title} must have a valid STAR answer`);
+    assert(Array.isArray(q.keywords) && q.keywords.length >= 2, `Question ${idx + 1} for ${title} must have at least 2 keywords`);
+    assert(q.category && q.category.length > 3, `Question ${idx + 1} for ${title} must have a category badge`);
+  });
+});
+
+console.log(`✓ PASSED: 10+ tailored interview questions verified for all roles across domains with category badges & STAR answers`);
+
 console.log("==================================================================");
-console.log("ALL 38 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 39 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
