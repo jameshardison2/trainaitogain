@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Enterprise AI Readiness, Evaluator Talent & Data Partnerships | TrainAIToGain</title>
-  <meta name="description" content="Prepare your internal team for corporate AI skills reviews (the Proton model), source calibrated domain evaluators, or explore Mercor's data-partner program.">
+  <title>Enterprise AI Readiness, Evaluator Talent & Technical Transition | TrainAIToGain</title>
+  <meta name="description" content="Prepare your internal team for corporate AI skills reviews (the Proton model), source calibrated domain evaluators, or explore technical transition advisory.">
   <link rel="canonical" href="https://trainaitogain.com/enterprise">
 
   <!-- Open Graph / Facebook / LinkedIn -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://trainaitogain.com/enterprise">
-  <meta property="og:title" content="Enterprise AI Readiness, Evaluator Talent & Data Partnerships | TrainAIToGain">
-  <meta property="og:description" content="Calibrate your team for corporate AI skills audits (the Proton model), source pre-screened domain evaluators, or monetize proprietary data via official Mercor partnerships.">
+  <meta property="og:title" content="Enterprise AI Readiness, Evaluator Talent & Technical Transition | TrainAIToGain">
+  <meta property="og:description" content="Calibrate your team for corporate AI skills audits (the Proton model), source pre-screened domain evaluators, or explore technical transition advisory.">
   <meta property="og:image" content="https://trainaitogain.com/og_image.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://trainaitogain.com/enterprise">
-  <meta name="twitter:title" content="Enterprise AI Readiness, Evaluator Talent & Data Partnerships | TrainAIToGain">
-  <meta name="twitter:description" content="Prepare your team for corporate AI skills reviews, source calibrated domain evaluators, or explore Mercor data-partner programs.">
+  <meta name="twitter:title" content="Enterprise AI Readiness, Evaluator Talent & Technical Transition | TrainAIToGain">
+  <meta name="twitter:description" content="Prepare your team for corporate AI skills reviews, source calibrated domain evaluators, or explore technical transition advisory.">
   <meta name="twitter:image" content="https://trainaitogain.com/og_image.png">
 
   <!-- Structured Data: Service & Organization -->
@@ -33,7 +33,7 @@
       "url": "https://trainaitogain.com",
       "logo": "https://trainaitogain.com/logo.svg"
     },
-    "description": "Enterprise AI readiness assessments, corporate skills reviews, calibrated domain evaluator talent sourcing, and Mercor data-partner advisory.",
+    "description": "Enterprise AI readiness assessments, corporate skills reviews, calibrated domain evaluator talent sourcing, and technical transition advisory.",
     "areaServed": "Worldwide"
   }
   </script>
@@ -271,11 +271,39 @@
       grid-template-columns: 1fr 1fr;
       gap: 18px;
     }
+    html {
+      scroll-behavior: smooth;
+    }
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+    details summary {
+      list-style: none;
+    }
+    details[open] summary .faq-icon {
+      transform: rotate(45deg);
+    }
+    .faq-icon {
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .secondary-hero-btn:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      transform: translateY(-1px);
+    }
     @media (max-width: 768px) {
       .hero h1 { font-size: 32px; }
       .grid-2 { grid-template-columns: 1fr; }
       .form-container { padding: 24px 18px; }
       .nav-links { display: none; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .hero h1 { font-size: 27px; line-height: 1.25; }
+      .hero p { font-size: 16px; }
+      .track-card { padding: 24px 18px; }
+      #expert-network > div { padding: 28px 16px !important; }
     }
   </style>
 </head>
@@ -287,7 +315,7 @@
     <span>&bull;</span>
     <span>100% Free for Candidates</span>
     <span>&bull;</span>
-    <span>Official Referral Partner of Mercor &amp; micro1</span>
+    <span>Mercor and micro1 referral partner</span>
   </div>
 
   <!-- Navigation -->
@@ -311,16 +339,16 @@
   <header class="hero">
     <div class="container">
       <div class="badge">Enterprise &amp; AI Labs Advisory</div>
-      <h1>Calibrate Your Team for AI Audits or Source Pre-Screened AI Evaluators</h1>
+      <h1>Domain experts for AI evaluation, vetted before they reach you.</h1>
       <p>
-        Whether preparing internal engineering and domain teams for corporate AI skills reviews, sourcing calibrated evaluation specialists, or exploring data-partner advisory.
+        Whether preparing internal engineering and domain teams for corporate AI skills reviews, sourcing calibrated evaluation specialists, or exploring technical transition advisory.
       </p>
       <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
-        <a href="#inquiry" class="cta-btn" style="padding:14px 32px; font-size:16px;">
-          Request Team Assessment or Talent Intake ➔
+        <a href="#inquiry" class="cta-btn" style="padding:14px 28px; font-size:16px; min-height:44px; display:inline-flex; align-items:center; justify-content:center;">
+          Request evaluators ➔
         </a>
-        <a href="#data-partners" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#f3f4f6; padding:14px 28px; border-radius:100px; text-decoration:none; font-weight:700; font-size:15px; display:inline-flex; align-items:center; gap:8px;">
-          Explore Data-Partner &amp; Transition Advisory
+        <a href="#expert-network" class="secondary-hero-btn" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#f3f4f6; padding:14px 28px; border-radius:100px; text-decoration:none; font-weight:700; font-size:15px; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; transition:all 0.2s;">
+          Join the expert network ➔
         </a>
       </div>
     </div>
@@ -348,24 +376,24 @@
           <li><strong>3. When NOT to Use AI:</strong> Enforcing regulatory, compliance, and deterministic bounds.</li>
           <li><strong>4. Adaptive Learning:</strong> Systematic iterative prompting without blind reliance.</li>
         </ul>
-        <a href="#inquiry" style="color:#34d399; text-decoration:none; font-weight:700; font-size:14px; margin-top:auto;">Schedule Team AI Assessment ➔</a>
+        <a href="#inquiry" style="color:#34d399; text-decoration:none; font-weight:700; font-size:14px; margin-top:auto; min-height:44px; display:inline-flex; align-items:center;">Schedule Team AI Assessment ➔</a>
       </div>
 
-      <!-- Track 2: Data-Partner & Transition Advisory -->
-      <div class="track-card" id="data-partners">
+      <!-- Track 2: Technical Transition Advisory -->
+      <div class="track-card" id="transition-advisory">
         <div class="icon">📊</div>
         <div style="font-size:12px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">Track 02</div>
-        <h3>Mercor Data-Partner Program &amp; Technical Transition Advisory</h3>
+        <h3>Technical Transition Advisory</h3>
         <p>
-          Frontier AI labs frequently license proprietary enterprise codebases and specialized domain archives. We advise founders, technical leaders, and winding-down organizations on ethical data valuation and soft-landing departing engineers into evaluation roles under official partner terms.
+          Frontier AI labs frequently license proprietary enterprise codebases and specialized domain archives. We advise founders, technical leaders, and winding-down organizations on ethical data valuation and soft-landing departing engineers into evaluation roles.
         </p>
         <ul class="pillar-list">
           <li><strong>Dataset Valuation:</strong> Assess domain codebases and structured archives for frontier training.</li>
           <li><strong>Soft-Landing Departing SWEs:</strong> Transition exiting engineering staff into top remote evaluation roles.</li>
-          <li><strong>Sanitized Compliance:</strong> Zero PII exposure, rigorous NDA workflows, and official platform terms.</li>
+          <li><strong>Sanitized Compliance:</strong> Zero PII exposure, rigorous NDA workflows, and platform terms.</li>
           <li><strong>Verified Attribution:</strong> Protect partner relationships through transparent, documented processes.</li>
         </ul>
-        <a href="#inquiry" style="color:#34d399; text-decoration:none; font-weight:700; font-size:14px; margin-top:auto;">Explore Data Partnership Terms ➔</a>
+        <a href="#inquiry" style="color:#34d399; text-decoration:none; font-weight:700; font-size:14px; margin-top:auto; min-height:44px; display:inline-flex; align-items:center;">Explore Technical Transition Advisory ➔</a>
       </div>
 
       <!-- Track 3: Handshake-Style Pre-Screened Talent Intake -->
@@ -376,13 +404,10 @@
         <p>
           AI labs and enterprises can request pre-screened specialist pools trained on STAR evaluation metrics, deterministic rubric grading, and asynchronous AI interview protocols.
         </p>
-        <ul class="pillar-list">
-          <li><strong>Staff &amp; Principal SWEs:</strong> ($80–$160/hr) Systems design, C++/Rust, benchmark auditing.</li>
-          <li><strong>MD/DO Clinicians:</strong> ($65–$130/hr) Clinical safety, medical accuracy, pharmacology.</li>
-          <li><strong>Licensed Attorneys:</strong> ($80–$150/hr) Contract red-teaming, statutory compliance.</li>
-          <li><strong>CFA/CPA Quant Analysts:</strong> ($75–$160/hr) Algorithmic models, financial statement verification.</li>
-        </ul>
-        <a href="#inquiry" style="color:#34d399; text-decoration:none; font-weight:700; font-size:14px; margin-top:auto;">Request Pre-Screened Talent ➔</a>
+        <p style="font-size:14.5px; color:#d1d5db; line-height:1.6; margin-bottom:20px;">
+          Now building our network in medical devices, QA and regulatory software. Rates quoted per project.
+        </p>
+        <a href="#inquiry" style="color:#34d399; text-decoration:none; font-weight:700; font-size:14px; margin-top:auto; min-height:44px; display:inline-flex; align-items:center;">Request Pre-Screened Talent ➔</a>
       </div>
     </div>
   </section>
@@ -405,12 +430,12 @@
   </section>
 
   <!-- Interactive Intake & Consultation Form -->
-  <section class="container" id="inquiry">
+  <section class="container" id="inquiry" style="scroll-margin-top:80px;">
     <div class="form-container">
       <div style="text-align:center; margin-bottom:30px;">
         <div class="badge">Direct Enterprise Channel</div>
         <h2 style="font-size:28px; font-weight:800; color:#ffffff; margin-bottom:8px; letter-spacing:-0.02em;">Initiate an Enterprise Consultation</h2>
-        <p style="color:#9ca3af; font-size:15px; margin:0;">Receive a tailored readiness audit plan, talent availability breakdown, or confidential data-partner overview within 24 hours.</p>
+        <p style="color:#9ca3af; font-size:15px; margin:0;">Receive a tailored readiness audit plan, talent availability breakdown, or confidential transition overview within 1 business day.</p>
       </div>
 
       <form id="enterprise-inquiry-form" onsubmit="handleEnterpriseSubmit(event)">
@@ -434,7 +459,7 @@
             <label for="track-select">Primary Initiative *</label>
             <select id="track-select" class="form-control" required style="cursor:pointer;">
               <option value="corporate-readiness">Corporate Employee AI Readiness Assessment</option>
-              <option value="data-partner">Data-Partner Program &amp; Technical Transition</option>
+              <option value="transition-advisory">Technical Transition Advisory</option>
               <option value="evaluator-talent">Hire Pre-Screened AI Evaluator Talent</option>
               <option value="general-inquiry">General Enterprise / Advisory Inquiry</option>
             </select>
@@ -471,9 +496,62 @@
         </button>
 
         <div id="inquiry-success" style="display:none; margin-top:16px; padding:16px; background:rgba(16,185,129,0.15); border:1px solid #10b981; border-radius:8px; color:#d1fae5; font-size:14px; text-align:center;">
-          ✓ <strong>Inquiry Received!</strong> Opening your email client to dispatch direct details to James Hardison (trainaitogain@gmail.com). We will respond within 24 hours.
+          ✓ <strong>Inquiry Received!</strong> Opening your email client to dispatch direct details to James Hardison (trainaitogain@gmail.com). We will respond within 1 business day.
         </div>
       </form>
+    </div>
+  </section>
+
+  <!-- Join the Expert Network Section -->
+  <section class="container" id="expert-network" style="margin-bottom:60px; scroll-margin-top:80px;">
+    <div style="background:rgba(255, 255, 255, 0.025); border:1px solid rgba(255, 255, 255, 0.09); border-radius:20px; padding:44px 28px; box-shadow:0 20px 60px rgba(0, 0, 0, 0.5);">
+      <div style="max-width:820px; margin:0 auto 28px; text-align:center;">
+        <div class="badge">Direct Client Projects</div>
+        <h2 style="font-size:32px; font-weight:800; color:#ffffff; margin:0 0 14px; letter-spacing:-0.02em;">Join the Expert Network</h2>
+        <p style="font-size:16px; color:#d1d5db; line-height:1.65; margin:0 auto; max-width:740px;">
+          Join the TrainAIToGain expert network. When a client project matches your background, we’ll contact you first. Direct client projects can be W-2, 1099 or corp-to-corp. Mercor and micro1 roles are separate: those platforms contract with you directly as an individual.
+        </p>
+      </div>
+
+      <div style="max-width:820px; margin:0 auto; background:rgba(0,0,0,0.25); border-radius:12px; overflow:hidden;">
+        <iframe src="https://form.jotform.com/263078785644067" style="width:100%;height:1400px;border:none;" title="TrainAIToGain Expert Network form" loading="lazy"></iframe>
+      </div>
+
+      <!-- Expert Network FAQ (Collapsible) -->
+      <div style="max-width:820px; margin:40px auto 0;">
+        <h3 style="font-size:22px; font-weight:800; color:#ffffff; margin:0 0 16px; letter-spacing:-0.01em;">Frequently Asked Questions</h3>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <details style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; transition:all 0.2s;">
+            <summary style="padding:14px 18px; font-weight:700; font-size:15px; color:#ffffff; cursor:pointer; min-height:44px; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; user-select:none;">
+              <span>Can I work corp-to-corp?</span>
+              <span class="faq-icon" style="color:#10b981; font-weight:800; font-size:18px; line-height:1;">+</span>
+            </summary>
+            <div style="padding:4px 18px 16px; color:#9ca3af; font-size:14px; line-height:1.6;">
+              On direct client projects, yes. Mercor pays contractors as individuals, so C2C isn’t available for Mercor roles.
+            </div>
+          </details>
+
+          <details style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; transition:all 0.2s;">
+            <summary style="padding:14px 18px; font-weight:700; font-size:15px; color:#ffffff; cursor:pointer; min-height:44px; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; user-select:none;">
+              <span>Is joining the expert network free?</span>
+              <span class="faq-icon" style="color:#10b981; font-weight:800; font-size:18px; line-height:1;">+</span>
+            </summary>
+            <div style="padding:4px 18px 16px; color:#9ca3af; font-size:14px; line-height:1.6;">
+              Yes. We never charge experts.
+            </div>
+          </details>
+
+          <details style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; transition:all 0.2s;">
+            <summary style="padding:14px 18px; font-weight:700; font-size:15px; color:#ffffff; cursor:pointer; min-height:44px; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; user-select:none;">
+              <span>How is this different from Active Roles?</span>
+              <span class="faq-icon" style="color:#10b981; font-weight:800; font-size:18px; line-height:1;">+</span>
+            </summary>
+            <div style="padding:4px 18px 16px; color:#9ca3af; font-size:14px; line-height:1.6;">
+              Active Roles links to open Mercor and micro1 jobs. The expert network is for direct client projects we staff ourselves.
+            </div>
+          </details>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -481,7 +559,7 @@
   <section class="container" style="margin-bottom:60px;">
     <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:20px 24px; font-size:12.5px; color:#9ca3af; line-height:1.6;">
       <strong style="color:#d1d5db;">Enterprise Compliance &amp; Attribution Guardrails:</strong>
-      TrainAIToGain operates strictly as an independent enablement platform and official referral partner of Mercor and micro1. We do not provide unauthorized automation, screen scrapers, or cheating tools. All data partnership advisory adheres to strict client confidentiality, PII sanitization, and the terms of frontier AI labs. Placed candidates are engaged directly as independent contractors or employees under the respective platform's legal framework.
+      TrainAIToGain operates strictly as an independent enablement platform and referral partner of Mercor and micro1. We do not provide unauthorized automation, screen scrapers, or cheating tools. All data partnership advisory adheres to strict client confidentiality, PII sanitization, and the terms of frontier AI labs. Placed candidates are engaged directly as independent contractors or employees under the respective platform's legal framework.
     </div>
   </section>
 

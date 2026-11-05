@@ -503,7 +503,7 @@ assert(fs.existsSync('enterprise.html'), "enterprise.html must exist for Tier 4 
 const enterpriseHtml = fs.readFileSync('enterprise.html', 'utf8');
 assert(enterpriseHtml.includes('https://trainaitogain.com/enterprise'), "enterprise.html must specify canonical tag");
 assert(enterpriseHtml.includes('Corporate AI Readiness Prep'), "enterprise.html must detail Proton model readiness prep");
-assert(enterpriseHtml.includes('Mercor Data-Partner Program'), "enterprise.html must detail Mercor data-partner program");
+assert(enterpriseHtml.includes('Technical Transition Advisory'), "enterprise.html must detail technical transition advisory");
 assert(enterpriseHtml.includes('Calibrated Evaluator Sourcing'), "enterprise.html must offer evaluator talent sourcing");
 assert(enterpriseHtml.includes('id="enterprise-inquiry-form"'), "enterprise.html must provide interactive consultation form");
 assert(indexHtml.includes('/enterprise'), "index.html must link to /enterprise");
@@ -1176,7 +1176,48 @@ assert(aiInterviewCode.includes('About 12 minutes &middot; 8 questions &middot; 
 assert(aiInterviewCode.includes('About 2 minutes &middot; 1 question &middot; aim for 60&ndash;90 seconds per answer'), 'updateHeroSubtitle must have 1 question for warmup');
 console.log(`✓ PASSED: Test 81 - Dynamic hero header subtitle question count verified`);
 
+// Test 82 (Phase 1 For Teams / Enterprise Spec):
+const enterprisePageHtml = fs.readFileSync('enterprise.html', 'utf8');
+const privacyPageHtml = fs.readFileSync('privacy.html', 'utf8');
+
+// 1. Hero headline & buttons
+assert(enterprisePageHtml.includes('Domain experts for AI evaluation, vetted before they reach you.'), 'enterprise.html hero headline must match spec');
+assert(enterprisePageHtml.includes('href="#inquiry"') && enterprisePageHtml.includes('Request evaluators'), 'enterprise.html must have Request evaluators button linked to #inquiry');
+assert(enterprisePageHtml.includes('href="#expert-network"') && enterprisePageHtml.includes('Join the expert network'), 'enterprise.html must have Join the expert network button linked to #expert-network');
+
+// 2. New Expert Network section & Jotform iframe
+assert(enterprisePageHtml.includes('id="expert-network"'), 'enterprise.html must have section id="expert-network"');
+assert(enterprisePageHtml.includes('Join the TrainAIToGain expert network. When a client project matches your background, we’ll contact you first.'), 'enterprise.html must contain exact intro text');
+assert(enterprisePageHtml.includes('Direct client projects can be W-2, 1099 or corp-to-corp. Mercor and micro1 roles are separate: those platforms contract with you directly as an individual.'), 'enterprise.html must contain C2C / platform contract text');
+assert(enterprisePageHtml.includes('https://form.jotform.com/263078785644067'), 'enterprise.html must embed the Jotform form');
+assert(enterprisePageHtml.includes('height:1400px'), 'enterprise.html Jotform iframe must have height:1400px');
+
+// 3. 3 Collapsible FAQ items
+assert(enterprisePageHtml.includes('Can I work corp-to-corp?'), 'FAQ must include C2C question');
+assert(enterprisePageHtml.includes('On direct client projects, yes. Mercor pays contractors as individuals, so C2C isn’t available for Mercor roles.'), 'FAQ must include C2C answer');
+assert(enterprisePageHtml.includes('Is joining the expert network free?'), 'FAQ must include free question');
+assert(enterprisePageHtml.includes('Yes. We never charge experts.'), 'FAQ must include free answer');
+assert(enterprisePageHtml.includes('How is this different from Active Roles?'), 'FAQ must include Active Roles comparison question');
+assert(enterprisePageHtml.includes('Active Roles links to open Mercor and micro1 jobs. The expert network is for direct client projects we staff ourselves.'), 'FAQ must include Active Roles answer');
+
+// 4. Softened claims & Track updates
+assert(enterprisePageHtml.includes('Mercor and micro1 referral partner'), 'Top trust strip must say Mercor and micro1 referral partner');
+assert(!enterprisePageHtml.includes('Official Referral Partner'), 'Must NOT claim Official Referral Partner');
+assert(!enterprisePageHtml.includes('Mercor Data-Partner Program'), 'Must NOT claim Mercor Data-Partner Program');
+assert(enterprisePageHtml.includes('<h3>Technical Transition Advisory</h3>'), 'Track 02 must be named Technical Transition Advisory');
+assert(!enterprisePageHtml.includes('$80–$160/hr') && !enterprisePageHtml.includes('$65–$130/hr'), 'Track 03 must NOT contain hourly pay ranges');
+assert(enterprisePageHtml.includes('Now building our network in medical devices, QA and regulatory software. Rates quoted per project.'), 'Track 03 must contain the exact domain scope copy');
+assert(!enterprisePageHtml.includes('within 24 hours'), 'enterprise.html must NOT contain within 24 hours');
+assert(enterprisePageHtml.includes('within 1 business day'), 'enterprise.html must say within 1 business day');
+
+// 5. Privacy policy update
+assert(privacyPageHtml.includes('Expert Network Applications'), 'privacy.html must include Expert Network section');
+assert(privacyPageHtml.includes('Jotform'), 'privacy.html must mention Jotform collection');
+assert(privacyPageHtml.includes('permanent removal on request'), 'privacy.html must guarantee removal on request');
+
+console.log(`✓ PASSED: Test 82 - For Teams Phase 1 spec verified (hero headline & buttons, expert network Jotform iframe, 3 FAQs, softened claims, and privacy policy)`);
+
 console.log("==================================================================");
-console.log("ALL 81 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 82 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

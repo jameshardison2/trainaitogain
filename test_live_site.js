@@ -129,7 +129,30 @@ async function runLiveVerification() {
   assert(aiRes.body.includes('isOffTopicNoKeywords'), 'Live ai-interview must have isOffTopicNoKeywords cap');
   assert(aiRes.body.includes('Retake Pass Check ➔'), 'Live ai-interview must have Retake Pass Check CTA');
   assert(aiRes.body.includes('id="page-hero-subtitle"'), 'Live ai-interview must have #page-hero-subtitle');
+  assert(privRes.body.includes('Expert Network Applications') && privRes.body.includes('Jotform'), 'Live privacy policy must mention Expert Network Jotform');
   console.log('✓ PASS: All QA Report and Retest bug fixes verified on live production bundle');
+
+  // 9. Check /enterprise Phase 1 Updates Live
+  console.log('\n[9/9] Auditing live https://trainaitogain.com/enterprise (Phase 1)...');
+  const entRes = await fetchLiveUrl('/enterprise');
+  assert.strictEqual(entRes.status, 200, '/enterprise must return HTTP 200');
+  assert(entRes.body.includes('Domain experts for AI evaluation, vetted before they reach you.'), 'Live hero must have updated headline');
+  assert(entRes.body.includes('href="#inquiry"') && entRes.body.includes('Request evaluators'), 'Live page must have Request evaluators button');
+  assert(entRes.body.includes('href="#expert-network"') && entRes.body.includes('Join the expert network'), 'Live page must have Join the expert network button');
+  assert(entRes.body.includes('id="expert-network"'), 'Live page must have #expert-network section');
+  assert(entRes.body.includes('https://form.jotform.com/263078785644067'), 'Live page must embed Jotform form');
+  assert(entRes.body.includes('height:1400px'), 'Live Jotform iframe must have height:1400px');
+  assert(entRes.body.includes('Can I work corp-to-corp?'), 'Live page must have C2C FAQ');
+  assert(entRes.body.includes('Is joining the expert network free?'), 'Live page must have free FAQ');
+  assert(entRes.body.includes('How is this different from Active Roles?'), 'Live page must have Active Roles FAQ');
+  assert(!entRes.body.includes('Official Referral Partner'), 'Live page must NOT claim Official Referral Partner');
+  assert(!entRes.body.includes('Mercor Data-Partner Program'), 'Live page must NOT claim Mercor Data-Partner Program');
+  assert(entRes.body.includes('Technical Transition Advisory'), 'Live page must name Track 02 Technical Transition Advisory');
+  assert(!entRes.body.includes('$80–$160/hr') && !entRes.body.includes('$65–$130/hr'), 'Live page must NOT contain pay ranges');
+  assert(entRes.body.includes('Now building our network in medical devices, QA and regulatory software. Rates quoted per project.'), 'Live page must have updated Track 3 copy');
+  assert(!entRes.body.includes('within 24 hours'), 'Live page must NOT contain within 24 hours');
+  assert(entRes.body.includes('within 1 business day'), 'Live page must contain within 1 business day');
+  console.log('✓ PASS: Live /enterprise Phase 1 requirements fully verified');
 
   console.log('\n==================================================================');
   console.log('ALL LIVE SITE CHECKS PASSED ON TRAINAITOGAIN.COM! 🚀');
