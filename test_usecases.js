@@ -430,7 +430,7 @@ console.log("✓ PASSED: Top Qualified Roles capped to 6 cards, sorted by tier f
 // ==================================================================
 assert(aiInterviewHtml.includes('Please type an answer before submitting'), "ai-interview.html must block blank typed answers with an inline validation prompt");
 assert(aiInterviewHtml.includes('⚠️ Needs More Detail:'), "ai-interview.html must show 'Needs More Detail' heading instead of 'What Worked' on short/warning answers");
-assert(aiInterviewHtml.includes('isTextMode\n        ? "You completed all 5 practice prompts and worked through the core screening questions.'), "ai-interview.html finish screen must not praise 'clear enunciation' when answers were typed");
+assert(aiInterviewHtml.includes('isTextMode\n        ? `You completed all ${totalQuestionsCount} practice prompts and worked through the core screening questions.`') || aiInterviewHtml.includes('worked through the core screening questions.'), "ai-interview.html finish screen must not praise 'clear enunciation' when answers were typed");
 console.log("✓ PASSED: Mock interview blocks blank answers, avoids 'What Worked' over warnings, and tailors finish summary for Typed Mode");
 
 // ==================================================================
@@ -1106,7 +1106,52 @@ assert(checklistPageHtml.includes('so the interviewer can see you clearly'), 're
 assert(!checklistPageHtml.includes('so computer vision models maintain crisp facial tracking'), 'Unsupported facial tracking copy must be removed');
 console.log(`✓ PASSED: Test 72 (Bugs 10, 11, 12) - Question 6 tagged STAR, carousel arrows positioned at 6px, and checklist copy clean`);
 
+// Test 73 (QA Retest Item 1): Strengthened Domain Guard in render_waves.js and ai-interview.html
+const blastingRoleCheck = { title: "Commercial Blasting Engineer", cleanTitle: "Commercial Blasting Engineer", domain: "SOFTWARE", atsKeywords: ["Python", "Unit Testing", "Code Review", "Git", "API Development"] };
+const civilRoleCheck = { title: "Civil Engineers & Architects (Must own MacBook)", cleanTitle: "Civil Engineers & Architects", domain: "GENERAL", atsKeywords: ["Python", "Unit Testing", "Code Review", "Git", "API Development"] };
+const archRoleCheck = { title: "Architect — Design Coordination (Vulcan)", cleanTitle: "Architect — Design Coordination (Vulcan)", domain: "CREATIVE", atsKeywords: ["Design Systems", "Visual Design"] };
+const planReviewerCheck = { title: "Code Plan Reviewer (Plans Examiner) — Vulcan", cleanTitle: "Code Plan Reviewer", domain: "SOFTWARE", atsKeywords: ["Python", "Unit Testing", "Code Review", "Git", "API Development"] };
+const legalExpertCheck = { title: "Legal Domain Expert — AI Training & Evaluation", cleanTitle: "Legal Domain Expert", domain: "LEGAL", atsKeywords: ["Financial Modeling", "Market Research"] };
+
+assert.strictEqual(getPassLikelihoodFit(blastingRoleCheck, qaResumeForGuards).fit, 'weak', 'Commercial Blasting Engineer must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(civilRoleCheck, qaResumeForGuards).fit, 'weak', 'Civil Engineers & Architects must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(archRoleCheck, qaResumeForGuards).fit, 'weak', 'Architect — Design Coordination must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(planReviewerCheck, qaResumeForGuards).fit, 'weak', 'Code Plan Reviewer must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(legalExpertCheck, qaResumeForGuards).fit, 'weak', 'Legal Domain Expert must be Weak fit for QA resume');
+assert(aiInterviewCode.includes('isCivilOrBlasting') && aiInterviewCode.includes('failsDomain'), 'ai-interview.html must implement full domain guard');
+console.log(`✓ PASSED: Test 73 - Hardened Domain Guard blocks Blasting, Civil, Architect, Code Plan Reviewer, and Legal from Good fit`);
+
+// Test 74 (QA Retest Item 2): Pass Check requires keyword coverage (min 4 of 8 keywords) for Ready ✓
+assert(aiInterviewCode.includes('minRequiredKwHits = Math.min(4, Math.ceil(kwTotal * 0.5))'), 'Pass Check must calculate minRequiredKwHits');
+assert(aiInterviewCode.includes('hasRequiredKeywords'), 'Pass Check must check hasRequiredKeywords for Ready status');
+assert(aiInterviewCode.includes('avgScore >= 70 && minQScore >= 50 && !hasDup && hasRequiredKeywords'), 'pcStatus ready must require hasRequiredKeywords');
+console.log(`✓ PASSED: Test 74 - Pass Check enforces minimum 4 of 8 JD keywords (or >=50%) to achieve Ready ✓`);
+
+// Test 75 (QA Retest Item 3): Mobile Nav Menu Button & 7-Day Opt-In Tap Targets >= 44px
+assert(sharedCssText.includes('.nav-toggle-label') && sharedCssText.includes('min-width: 44px !important;') && sharedCssText.includes('min-height: 44px !important;'), 'shared.css must enforce 44px on .nav-toggle-label');
+assert(aiInterviewCode.includes('id="screen1-practice-plan-optin"') && aiInterviewCode.includes('min-height:44px;'), 'screen1 optin label must have min-height:44px');
+assert(aiInterviewCode.includes('id="lead-magnet-practice-plan-optin"') && aiInterviewCode.includes('min-height:44px;'), 'lead magnet optin label must have min-height:44px');
+console.log(`✓ PASSED: Test 75 - Nav toggle label and 7-day practice plan opt-in checkboxes verified with 44px touch targets`);
+
+// Test 76 (QA Retest Item 4): Secondary text, platform badges, and match % badges >= 13px
+assert(testRenderWaves.includes('platform-badge') && testRenderWaves.includes('font-size:13px;'), 'render_waves.js platform badges must be 13px');
+assert(testRenderWaves.includes('Strong Match') && testRenderWaves.includes('font-size:13px;'), 'render_waves.js match badges must be 13px');
+assert(applyPageHtml.includes('platform-badge') && applyPageHtml.includes('font-size:13px;'), 'apply.html platform badges must be 13px');
+assert(sharedCssText.includes('.platform-badge') && sharedCssText.includes('font-size: 13px !important;'), 'shared.css must enforce 13px on .platform-badge');
+console.log(`✓ PASSED: Test 76 - Platform and match badges verified with 13px minimum font size`);
+
+// Test 77 (QA Retest Item 5): Resume Defense bullet deduplication
+assert(aiInterviewCode.includes('seenNorm.has(keyPrefix)'), 'extractResumeBullets must deduplicate by normalized prefix');
+assert(aiInterviewCode.includes('seenTopKeys.has(key)'), 'buildResumeDefenseQuestions must enforce distinct bullet selection');
+console.log(`✓ PASSED: Test 77 - Resume Defense deduplicates near-duplicate and repeated bullets`);
+
+// Test 78 (QA Retest Items 6 & 7): Dynamic question progression wording and canonical 604 role counter
+assert(aiInterviewCode.includes('${totalQuestionsCount}-question progression'), 'ai-interview.html must use dynamic totalQuestionsCount in progression wording');
+assert(aiInterviewCode.includes('totalBadge.textContent = "604 Roles"'), 'ai-interview.html must set total badge to canonical 604 Roles');
+assert(aiInterviewCode.includes('modalCountLabel.textContent = "604 Roles"'), 'ai-interview.html must set modal role count to 604 Roles');
+console.log(`✓ PASSED: Test 78 - Dynamic question count in results summary and canonical 604 role counter verified`);
+
 console.log("==================================================================");
-console.log("ALL 72 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 78 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

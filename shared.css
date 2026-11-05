@@ -2025,7 +2025,10 @@ html { scroll-behavior: smooth; }
 .nav-toggle-label {
   display: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
 }
 .nav-toggle-icon, .nav-toggle-icon::before, .nav-toggle-icon::after {
   display: block;
@@ -2048,7 +2051,13 @@ html { scroll-behavior: smooth; }
 }
 
 @media (max-width: 768px) {
-  .nav-toggle-label { display: block; }
+  .nav-toggle-label {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
   .nav-links, .nav-cta {
     display: none;
     position: absolute;
@@ -2428,9 +2437,9 @@ button, select, input[type="text"], input[type="email"], input[type="search"],
 }
 
 /* Accessibility: Minimum text sizing for badges and labels (Bug 7 Fix) */
-.pass-fit-badge, .passcheck-badge {
+.pass-fit-badge, .passcheck-badge, .platform-badge {
   font-size: 13px !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
   line-height: 1.3 !important;
 }
 

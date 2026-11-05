@@ -838,19 +838,19 @@ ${resumeText.substring(0, 10000)}`;
             const scoreVal = parseInt(m.matchScore || '70', 10);
 
             const platformBadge = isMicro1Match
-              ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.03em;">🌐 micro1</span>`
-              : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.03em;">⚡ Mercor</span>`;
+              ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:6px; font-size:13px; font-weight:700; letter-spacing:0.03em;">🌐 micro1</span>`
+              : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:6px; font-size:13px; font-weight:700; letter-spacing:0.03em;">⚡ Mercor</span>`;
 
             const diffAlert = `
               <div class="diff-platform-alert" data-role-platform="${matchPlatform}" style="background:#f8fafc; border:1px solid #cbd5e1; border-left:3px solid #6366f1; border-radius:6px; padding:6px 10px; margin-bottom:12px; font-size:12px; line-height:1.4; text-align:left; width:100%; box-sizing:border-box; display:${isDiff ? 'block' : 'none'};">
-                <div style="color:#334155; font-size:11.5px;">
+                <div style="color:#334155; font-size:12.5px;">
                   💡 Note: This role is on <strong>${matchPlatform}</strong> (requires a separate free account from <span class="prev-platform-name">${lastApplied || 'other platforms'}</span>).
                 </div>
               </div>
             `;
 
             const preApplyWarning = `
-              <div style="font-size:11px; color:#6b7280; margin-bottom:10px; display:flex; align-items:center; gap:4px;">
+              <div style="font-size:12px; color:#6b7280; margin-bottom:10px; display:flex; align-items:center; gap:4px;">
                 <span>🔒 Free fast-track application • Direct referral</span>
               </div>
             `;
@@ -861,10 +861,10 @@ ${resumeText.substring(0, 10000)}`;
 
             const isStrongMatch = (m.matchTier === 'Strong Match') || (scoreVal >= 70 && m.hits !== undefined && m.total !== undefined && m.hits >= 3 && m.total >= 3);
             const badgeHtml = isStrongMatch
-              ? `<span style="background:var(--primary-light); color:var(--primary-dark); border:1px solid #a7f3d0; font-size:11.5px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">🌟 Strong Match • ${scoreVal}%${kwCountStr}</span>`
+              ? `<span style="background:var(--primary-light); color:var(--primary-dark); border:1px solid #a7f3d0; font-size:13px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">🌟 Strong Match • ${scoreVal}%${kwCountStr}</span>`
               : (scoreVal >= 50
-                ? `<span style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:11.5px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">⭐ Good Match • ${scoreVal}%${kwCountStr}</span>`
-                : `<span style="background:#fffbeb; color:#92400e; border:1px solid #fde68a; font-size:11.5px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">📈 Stretch Role • ${scoreVal}%${kwCountStr}</span>`);
+                ? `<span style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:13px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">⭐ Good Match • ${scoreVal}%${kwCountStr}</span>`
+                : `<span style="background:#fffbeb; color:#92400e; border:1px solid #fde68a; font-size:13px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">📈 Stretch Role • ${scoreVal}%${kwCountStr}</span>`);
 
             const fitLabel = scoreVal >= 50 ? "Why you're a fit:" : "Keyword alignment:";
 
@@ -1304,6 +1304,8 @@ ${resumeText.substring(0, 10000)}`;
         if (candidateResumeText && candidateResumeText.trim().length >= 50 && window.calculateRoleMatchScore && window.allRoles && Array.isArray(window.allRoles)) {
           const scoredCatalog = [];
           window.allRoles.forEach(role => {
+            const passFit = (typeof window.getPassLikelihoodFit === 'function') ? window.getPassLikelihoodFit(role, candidateResumeText) : null;
+            if (passFit && passFit.fit === 'weak') return;
             const res = window.calculateRoleMatchScore(role, candidateResumeText);
             if (res && res.score >= 50 && res.tier !== 'None' && res.tier !== 'Stretch Role') {
               scoredCatalog.push({
@@ -1480,19 +1482,19 @@ ${resumeText.substring(0, 10000)}`;
           const isDiff = (lastApplied && lastApplied !== matchPlatform);
 
           const platformBadge = isMicro1Match
-            ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.03em;">🌐 micro1</span>`
-            : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.03em;">⚡ Mercor</span>`;
+            ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:6px; font-size:13px; font-weight:700; letter-spacing:0.03em;">🌐 micro1</span>`
+            : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:6px; font-size:13px; font-weight:700; letter-spacing:0.03em;">⚡ Mercor</span>`;
 
           const diffAlert = `
             <div class="diff-platform-alert" data-role-platform="${matchPlatform}" style="background:#f8fafc; border:1px solid #cbd5e1; border-left:3px solid #6366f1; border-radius:6px; padding:6px 10px; margin-bottom:12px; font-size:12px; line-height:1.4; text-align:left; width:100%; box-sizing:border-box; display:${isDiff ? 'block' : 'none'};">
-              <div style="color:#334155; font-size:11.5px;">
+              <div style="color:#334155; font-size:12.5px;">
                 💡 Note: This role is on <strong>${matchPlatform}</strong> (requires a separate free account from <span class="prev-platform-name">${lastApplied || 'other platforms'}</span>).
               </div>
             </div>
           `;
 
           const preApplyWarning = `
-            <div style="font-size:11px; color:#6b7280; margin-bottom:10px; display:flex; align-items:center; gap:4px;">
+            <div style="font-size:12px; color:#6b7280; margin-bottom:10px; display:flex; align-items:center; gap:4px;">
               <span>🔒 Free fast-track application • Direct referral</span>
             </div>
           `;
@@ -1505,8 +1507,8 @@ ${resumeText.substring(0, 10000)}`;
 
           const isStrong = (m.matchTier === 'Strong Match') && (rScore >= 70 && m.hits !== undefined && m.total !== undefined && m.hits >= 3 && m.total >= 3);
           const badgeHtml = isStrong
-            ? `<span style="background:var(--primary-light); color:var(--primary-dark); border:1px solid #a7f3d0; font-size:11.5px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">🌟 Strong Match • ${rScore}%${kwCountStr}</span>`
-            : `<span style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:11.5px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">⭐ Good Match • ${rScore}%${kwCountStr}</span>`;
+            ? `<span style="background:var(--primary-light); color:var(--primary-dark); border:1px solid #a7f3d0; font-size:13px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">🌟 Strong Match • ${rScore}%${kwCountStr}</span>`
+            : `<span style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:13px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">⭐ Good Match • ${rScore}%${kwCountStr}</span>`;
 
           const storedResume = (typeof window.resolveStoredResume === 'function') 
             ? window.resolveStoredResume() 

@@ -119,8 +119,13 @@ async function runLiveVerification() {
   assert(!aiRes.body.includes('/audio/q_resume_1.mp3'), 'Live ai-interview must not have MP3 audio links (Bug 3)');
   assert(rwRes.body.includes('failsDomain'), 'Live render_waves.js must include Domain Guard (Bug 4)');
   assert(rwRes.body.includes('failsLocation'), 'Live render_waves.js must include Location Guard (Bug 4)');
+  assert(rwRes.body.includes('isCivilOrBlasting'), 'Live render_waves.js must include hardened domain guard');
+  assert(aiRes.body.includes('hasRequiredKeywords'), 'Live ai-interview must include Pass Check keyword check');
+  assert(aiRes.body.includes('minRequiredKwHits'), 'Live ai-interview must include minRequiredKwHits');
+  assert(aiRes.body.includes('isCivilOrBlasting'), 'Live ai-interview must include Domain Guard');
+  assert(aiRes.body.includes('id="screen1-practice-plan-optin"') && aiRes.body.includes('min-height:44px;'), 'Live ai-interview must have 44px opt-in tap target');
   assert(chkRes.body.includes('so the interviewer can see you clearly'), 'Live readiness-checklist must have updated human copy (Bug 12)');
-  console.log('✓ PASS: All 12 QA Report bug fixes verified on live production bundle');
+  console.log('✓ PASS: All QA Report and Retest bug fixes verified on live production bundle');
 
   console.log('\n==================================================================');
   console.log('ALL LIVE SITE CHECKS PASSED ON TRAINAITOGAIN.COM! 🚀');

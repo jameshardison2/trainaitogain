@@ -835,21 +835,25 @@ function getPassLikelihoodFit(roleInput, resumeText) {
 
     // Domain Guard (Prevent Software/QA/General from matching specialized domains without domain evidence)
     let failsDomain = false;
-    const isCivilOrBlasting = /\b(civil|commercial blasting|mining engineer|structural engineer|geotechnical|blasting engineer)\b/i.test(titleLow);
-    const isChemicalDefense = /\b(chemical defense|chemical engineer|energetic materials|propellant|hazmat|toxicology)\b/i.test(titleLow);
-    const isIndustrialHygienist = /\b(industrial hygienist|occupational hygienist|workplace safety specialist|environmental health and safety|ehs specialist)\b/i.test(titleLow);
-    const isLegal = /\b(attorney|lawyer|paralegal|legal counsel|litigation|general counsel|juris doctor)\b/i.test(titleLow);
-    const isMedical = /\b(physician|doctor of medicine|surgeon|oncolog|neurolog|radiolog|patholog|pediatric|psychiat|dermatolog|pharmacolog|general practitioner|clinical specialist)\b/i.test(titleLow);
+    const domainLow = (roleObj.domain || '').toLowerCase();
+    const isCivilOrBlasting = /\b(civil|commercial blasting|mining|structural|geotechnical|blasting|architect\b|architecture|code plan reviewer|plans examiner|construction|cfd\b|fluid dynamics)\b/i.test(titleLow) && !/\b(software architect|solutions architect|cloud architect|data architect|system architect|enterprise architect)\b/i.test(titleLow);
+    const isChemicalDefense = /\b(chemical defense|chemical engineer|energetic materials|propellant|hazmat|toxicology|chemist|chemistry)\b/i.test(titleLow);
+    const isIndustrialHygienist = /\b(industrial hygienist|occupational hygienist|workplace safety|environmental health|ehs specialist|fire & life safety)\b/i.test(titleLow);
+    const isLegal = domainLow === 'legal' || /\b(legal|attorney|lawyer|paralegal|counsel|litigat|juris doctor|j\.d\.|statutory|contract review|deposition)\b/i.test(titleLow);
+    const isMedical = domainLow === 'medical' || /\b(physician|doctor of medicine|doctor\b|surgeon|oncolog|neurolog|radiolog|patholog|pediatric|psychiat|dermatolog|pharmacolog|general practitioner|clinical|hospitalist|nurse|nursing|bci annotator)\b/i.test(titleLow);
+    const isFinance = domainLow === 'finance' || /\b(investment banking|quantitative trader|private equity|portfolio manager|equity research|valuation associate|m&a analyst)\b/i.test(titleLow);
 
-    if (isCivilOrBlasting && !/\b(civil|blasting|mining|structural|geotechnical|autocad|staad|revit|construction)\b/i.test(resLow)) {
+    if (isCivilOrBlasting && !/\b(civil engineer|professional engineer|p\.e\.|blasting license|mining engineer|structural engineer|geotechnical engineer|registered architect|plans examiner|building code|icc certified|autocad|revit|staad|construction management)\b/i.test(resLow)) {
         failsDomain = true;
-    } else if (isChemicalDefense && !/\b(chemical engineering|chemistry|chemical defense|energetic materials|toxicology|hazmat)\b/i.test(resLow)) {
+    } else if (isChemicalDefense && !/\b(chemical engineering|chemistry degree|chemist|chemical defense|energetic materials|toxicology|hazmat certification)\b/i.test(resLow)) {
         failsDomain = true;
-    } else if (isIndustrialHygienist && !/\b(industrial hygiene|industrial hygienist|occupational safety|cih|osha|hazwoper)\b/i.test(resLow)) {
+    } else if (isIndustrialHygienist && !/\b(industrial hygiene|industrial hygienist|certified industrial hygienist|cih\b|hazwoper|occupational safety and health|ehs management)\b/i.test(resLow)) {
         failsDomain = true;
-    } else if (isLegal && !/\b(juris doctor|j\.d\.|law degree|attorney|bar admission|legal counsel|paralegal|litigation|law school)\b/i.test(resLow)) {
+    } else if (isLegal && !/\b(juris doctor|j\.d\.|law degree|attorney|bar admission|legal counsel|paralegal|litigation|law school|admitted to the bar|practicing attorney)\b/i.test(resLow)) {
         failsDomain = true;
-    } else if (isMedical && !/\b(md\b|do\b|m\.d\.|physician|residency|medical doctor|clinical trial|pharmacology|board certified|patient care)\b/i.test(resLow)) {
+    } else if (isMedical && !/\b(md\b|do\b|m\.d\.|physician|residency|medical doctor|clinical trial|pharmacology|board certified|registered nurse|rn\b)\b/i.test(resLow)) {
+        failsDomain = true;
+    } else if (isFinance && !/\b(investment banking|private equity|financial modeling|dcf valuation|cfa\b|series 7|equity research|portfolio management)\b/i.test(resLow)) {
         failsDomain = true;
     }
 
@@ -1191,11 +1195,11 @@ function renderWavesApp() {
                     const matchHits = (matchInfo && matchInfo.hits !== undefined) ? matchInfo.hits : 0;
                     if (matchScore !== null && matchScore > 0) {
                         if (matchTier === 'Strong Match') {
-                            matchBadgeHtml = `<span style="background:var(--primary-light); color:var(--primary-dark); border:1px solid #a7f3d0; font-size:11px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">🌟 Strong Match • ${matchScore}%${kwCountStr}</span>`;
+                            matchBadgeHtml = `<span style="background:var(--primary-light); color:var(--primary-dark); border:1px solid #a7f3d0; font-size:13px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">🌟 Strong Match • ${matchScore}%${kwCountStr}</span>`;
                         } else if (matchTier === 'Good Match' || matchScore >= 50) {
-                            matchBadgeHtml = `<span style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:11px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">⭐ Good Match • ${matchScore}%${kwCountStr}</span>`;
+                            matchBadgeHtml = `<span style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:13px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">⭐ Good Match • ${matchScore}%${kwCountStr}</span>`;
                         } else {
-                            matchBadgeHtml = `<span style="background:#fffbeb; color:#92400e; border:1px solid #fde68a; font-size:11px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">📈 Stretch Role • ${matchScore}%${kwCountStr}</span>`;
+                            matchBadgeHtml = `<span style="background:#fffbeb; color:#92400e; border:1px solid #fde68a; font-size:13px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">📈 Stretch Role • ${matchScore}%${kwCountStr}</span>`;
                         }
                     }
 
@@ -1237,19 +1241,19 @@ function renderWavesApp() {
                     const isDifferentPlatform = (lastAppliedPlatform && lastAppliedPlatform !== rolePlatform);
 
                     const platformBadgeHtml = isMicro1Role
-                        ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.03em; display:inline-flex; align-items:center; gap:4px;">🌐 micro1 • Direct Application</span>`
-                        : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:6px; font-size:11px; font-weight:700; letter-spacing:0.03em; display:inline-flex; align-items:center; gap:4px;">⚡ Mercor • Direct Application</span>`;
+                        ? `<span class="platform-badge" style="padding:4px 8px; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:6px; font-size:13px; font-weight:700; letter-spacing:0.03em; display:inline-flex; align-items:center; gap:4px;">🌐 micro1 • Direct Application</span>`
+                        : `<span class="platform-badge" style="padding:4px 8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; border-radius:6px; font-size:13px; font-weight:700; letter-spacing:0.03em; display:inline-flex; align-items:center; gap:4px;">⚡ Mercor • Direct Application</span>`;
 
                     const diffAlertHtml = `
                         <div class="diff-platform-alert" data-role-platform="${rolePlatform}" style="background:#f8fafc; border:1px solid #cbd5e1; border-left:3px solid #6366f1; border-radius:6px; padding:6px 10px; margin-bottom:12px; font-size:12px; line-height:1.4; text-align:left; display:${isDifferentPlatform ? 'block' : 'none'};">
-                            <div style="color:#334155; font-size:11.5px;">
+                            <div style="color:#334155; font-size:12.5px;">
                                 💡 Note: This role is on <strong>${rolePlatform}</strong> (requires a separate free account from <span class="prev-platform-name">${lastAppliedPlatform || 'other platforms'}</span>).
                             </div>
                         </div>
                     `;
 
                     const preApplyWarningHtml = `
-                        <div style="font-size:11px; color:#6b7280; margin-bottom:10px; display:flex; align-items:center; gap:4px;">
+                        <div style="font-size:12px; color:#6b7280; margin-bottom:10px; display:flex; align-items:center; gap:4px;">
                             <span>🔒 Free fast-track application • Direct referral</span>
                         </div>
                     `;

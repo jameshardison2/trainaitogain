@@ -416,7 +416,7 @@ window.addEventListener('unhandledrejection', function(event) {
           <button type="button" class="role-cat-btn" data-cat="finance" onclick="window.filterModalRolesByCategory('finance', this)">💼 Finance</button>
           <button type="button" class="role-cat-btn" data-cat="general" onclick="window.filterModalRolesByCategory('general', this)">⚙️ Other</button>
         </div>
-        <span id="modal-role-search-count-label" style="font-size:11px; color:#6ee7b7; font-weight:700;">600+ roles</span>
+        <span id="modal-role-search-count-label" style="font-size:12px; color:#6ee7b7; font-weight:700;">604 roles</span>
       </div>
     </div>
 
@@ -510,7 +510,7 @@ window.addEventListener('unhandledrejection', function(event) {
             <span id="cds-text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:700;">Role: Senior Python / ML Evaluator</span>
           </div>
           <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:#9ca3af; flex-shrink:0;">
-            <span id="cds-roles-total-badge" style="font-size:11px; background:rgba(255,255,255,0.08); padding:2px 7px; border-radius:4px; color:#6ee7b7;">600+ Roles</span>
+            <span id="cds-roles-total-badge" style="font-size:12px; background:rgba(255,255,255,0.08); padding:2px 7px; border-radius:4px; color:#6ee7b7;">604 Roles</span>
             <span>▼</span>
           </div>
         </div>
@@ -597,8 +597,8 @@ window.addEventListener('unhandledrejection', function(event) {
           <input type="email" id="screen1-lead-email" placeholder="Enter your email to receive playbook &amp; roles..." style="flex:1; min-width:220px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:8px 12px; color:#ffffff; font-size:13px; outline:none;" oninput="localStorage.setItem('candidateEmail', this.value)" />
           <button type="button" onclick="window.saveScreen1LeadEmail()" style="background:#10b981; color:#042f2e; border:none; border-radius:6px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; white-space:nowrap;">Get Playbook PDF</button>
         </div>
-        <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:#d1fae5; margin-top:8px; cursor:pointer;">
-          <input type="checkbox" id="screen1-practice-plan-optin" style="cursor:pointer;" />
+        <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; margin-top:8px; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+          <input type="checkbox" id="screen1-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
           <span>Email me a 7-day practice plan.</span>
         </label>
         <div id="screen1-lead-success" style="display:none; color:#34d399; font-size:12px; font-weight:700; margin-top:8px;">✓ Email saved! Your tailored debrief, STAR playbook, and referral links will be delivered here.</div>
@@ -2594,7 +2594,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
     const totalBadge = document.getElementById('cds-roles-total-badge');
     if (totalBadge && window.allRoleItems.length > 50) {
-      totalBadge.textContent = window.allRoleItems.length + "+ Roles";
+      totalBadge.textContent = window.allRoleItems.length + " Roles";
     }
   }
 
@@ -2710,23 +2710,71 @@ window.addEventListener('unhandledrejection', function(event) {
       failsLicense = true;
     }
 
-    if (!failsLanguage && !failsLicense && (tier === 'Strong Match' || (score >= 70 && hits >= 3))) {
+    // Location Guard (India-only or LatAm-only cannot be Good fit for US candidates)
+    let candidateLoc = 'US';
+    if (typeof localStorage !== 'undefined') {
+      candidateLoc = localStorage.getItem('candidateLocation') || localStorage.getItem('user_location') || 'US';
+    }
+    if (/(\bindia\b|\bbengaluru\b|\bdelhi\b|\bmumbai\b|\bhyderabad\b|\bpune\b)/i.test(resTxt) && !/(\bunited states\b|\busa\b|\bcalifornia\b|\bnew york\b|\btexas\b|\bchicago\b|\bseattle\b)/i.test(resTxt)) {
+      candidateLoc = 'INDIA';
+    } else if (/(\blatam\b|\blatin america\b|\bbrazil\b|\bsão paulo\b|\bmexico city\b|\bbogota\b|\bargentine\b)/i.test(resTxt) && !/(\bunited states\b|\busa\b|\bcalifornia\b|\bnew york\b|\btexas\b)/i.test(resTxt)) {
+      candidateLoc = 'LATAM';
+    }
+
+    let failsLocation = false;
+    if (req && req.locKey && req.locKey !== 'ALL') {
+      if (candidateLoc === 'US' && (req.locKey === 'INDIA' || req.locKey === 'LATAM' || req.locKey === 'EU')) {
+        failsLocation = true;
+      } else if (candidateLoc === 'INDIA' && (req.locKey === 'US' || req.locKey === 'LATAM' || req.locKey === 'EU')) {
+        failsLocation = true;
+      } else if (candidateLoc === 'LATAM' && (req.locKey === 'US' || req.locKey === 'INDIA' || req.locKey === 'EU')) {
+        failsLocation = true;
+      }
+    }
+
+    // Domain Guard (Prevent Software/QA/General from matching specialized domains without domain evidence)
+    let failsDomain = false;
+    const domainLow = (roleObj.domain || '').toLowerCase();
+    const isCivilOrBlasting = /\b(civil|commercial blasting|mining|structural|geotechnical|blasting|architect\b|architecture|code plan reviewer|plans examiner|construction|cfd\b|fluid dynamics)\b/i.test(titleLow) && !/\b(software architect|solutions architect|cloud architect|data architect|system architect|enterprise architect)\b/i.test(titleLow);
+    const isChemicalDefense = /\b(chemical defense|chemical engineer|energetic materials|propellant|hazmat|toxicology|chemist|chemistry)\b/i.test(titleLow);
+    const isIndustrialHygienist = /\b(industrial hygienist|occupational hygienist|workplace safety|environmental health|ehs specialist|fire & life safety)\b/i.test(titleLow);
+    const isLegal = domainLow === 'legal' || /\b(legal|attorney|lawyer|paralegal|counsel|litigat|juris doctor|j\.d\.|statutory|contract review|deposition)\b/i.test(titleLow);
+    const isMedical = domainLow === 'medical' || /\b(physician|doctor of medicine|doctor\b|surgeon|oncolog|neurolog|radiolog|patholog|pediatric|psychiat|dermatolog|pharmacolog|general practitioner|clinical|hospitalist|nurse|nursing|bci annotator)\b/i.test(titleLow);
+    const isFinance = domainLow === 'finance' || /\b(investment banking|quantitative trader|private equity|portfolio manager|equity research|valuation associate|m&a analyst)\b/i.test(titleLow);
+
+    if (isCivilOrBlasting && !/\b(civil engineer|professional engineer|p\.e\.|blasting license|mining engineer|structural engineer|geotechnical engineer|registered architect|plans examiner|building code|icc certified|autocad|revit|staad|construction management)\b/i.test(resLow)) {
+      failsDomain = true;
+    } else if (isChemicalDefense && !/\b(chemical engineering|chemistry degree|chemist|chemical defense|energetic materials|toxicology|hazmat certification)\b/i.test(resLow)) {
+      failsDomain = true;
+    } else if (isIndustrialHygienist && !/\b(industrial hygiene|industrial hygienist|certified industrial hygienist|cih\b|hazwoper|occupational safety and health|ehs management)\b/i.test(resLow)) {
+      failsDomain = true;
+    } else if (isLegal && !/\b(juris doctor|j\.d\.|law degree|attorney|bar admission|legal counsel|paralegal|litigation|law school|admitted to the bar|practicing attorney)\b/i.test(resLow)) {
+      failsDomain = true;
+    } else if (isMedical && !/\b(md\b|do\b|m\.d\.|physician|residency|medical doctor|clinical trial|pharmacology|board certified|registered nurse|rn\b)\b/i.test(resLow)) {
+      failsDomain = true;
+    } else if (isFinance && !/\b(investment banking|private equity|financial modeling|dcf valuation|cfa\b|series 7|equity research|portfolio management)\b/i.test(resLow)) {
+      failsDomain = true;
+    }
+
+    const passesAllGuards = !failsLanguage && !failsLicense && !failsLocation && !failsDomain;
+
+    if (passesAllGuards && (tier === 'Strong Match' || (score >= 70 && hits >= 3))) {
       return {
         fit: 'good',
         score,
         tier: 'Strong Match',
         label: 'Good fit to pass',
         badgeClass: 'fit-good',
-        badgeHtml: '<span class="pass-fit-badge fit-good" style="background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.5); color:#34d399; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">● Good fit to pass</span>'
+        badgeHtml: '<span class="pass-fit-badge fit-good" style="background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.5); color:#34d399; font-size:13px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">● Good fit to pass</span>'
       };
-    } else if (!failsLanguage && !failsLicense && (tier === 'Good Match' || (score >= 50 && score < 70) || (score >= 70 && hits >= 1))) {
+    } else if (passesAllGuards && (tier === 'Good Match' || (score >= 50 && score < 70) || (score >= 70 && hits >= 1))) {
       return {
         fit: 'stretch',
         score,
         tier: 'Good Match',
         label: 'Stretch: practice Resume Defense first',
         badgeClass: 'fit-stretch',
-        badgeHtml: '<span class="pass-fit-badge fit-stretch" style="background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.5); color:#fbbf24; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">▲ Stretch: practice Resume Defense first</span>'
+        badgeHtml: '<span class="pass-fit-badge fit-stretch" style="background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.5); color:#fbbf24; font-size:13px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">▲ Stretch: practice Resume Defense first</span>'
       };
     } else {
       return {
@@ -2735,7 +2783,7 @@ window.addEventListener('unhandledrejection', function(event) {
         tier: tier,
         label: 'Weak fit',
         badgeClass: 'fit-weak',
-        badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:rgba(156,163,175,0.15); border:1px solid rgba(156,163,175,0.35); color:#9ca3af; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">Weak fit</span>'
+        badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:rgba(156,163,175,0.15); border:1px solid rgba(156,163,175,0.35); color:#9ca3af; font-size:13px; font-weight:700; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">Weak fit</span>'
       };
     }
   }
@@ -3227,6 +3275,10 @@ window.addEventListener('unhandledrejection', function(event) {
   // Dynamically load active pipeline roles from waves.json into search index (strictly deduplicated)
   fetch('waves.json').then(r => r.json()).then(data => {
     if (data && data.roles) {
+      const customTopItem = (atsRole && window.allRoleItems.length > 0 && window.allRoleItems[0].isCustomTarget) ? window.allRoleItems[0] : null;
+      window.allRoleItems = customTopItem ? [customTopItem] : [];
+      addedRoleTitles.clear();
+      if (customTopItem) addedRoleTitles.add(customTopItem.cleanTitle.toLowerCase().trim());
       data.roles.forEach(role => {
         if (!role || !role.title) return;
         const tLow = role.title.trim().toLowerCase();
@@ -3234,6 +3286,10 @@ window.addEventListener('unhandledrejection', function(event) {
         window.wavesRoleMap[tLow] = role;
         addRoleOptionToDropdown(role.title, detectDomain(role.title, role.domain, ''), false, role);
       });
+      const totalBadge = document.getElementById('cds-roles-total-badge');
+      if (totalBadge) totalBadge.textContent = "604 Roles";
+      const modalCountLabel = document.getElementById('modal-role-search-count-label');
+      if (modalCountLabel) modalCountLabel.textContent = "604 Roles";
       window.renderFilteredRoleList(_currentRoleSearchQuery, _activeRoleCategory);
       if (typeof window.refreshJobDescriptionUI === 'function') {
         const activeRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : (atsRole || 'Senior Python / ML Evaluator');
@@ -3508,7 +3564,18 @@ window.addEventListener('unhandledrejection', function(event) {
       }
     });
 
-    return Array.from(new Set(bullets));
+    const seenNorm = new Set();
+    const deduped = [];
+    bullets.forEach(b => {
+      const norm = b.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim().replace(/\s+/g, ' ');
+      const keyPrefix = norm.substring(0, 40);
+      if (!seenNorm.has(keyPrefix)) {
+        seenNorm.add(keyPrefix);
+        deduped.push(b);
+      }
+    });
+
+    return deduped;
   };
 
   // Resume Defense Questions Builder (REQ-PASS-02)
@@ -3531,7 +3598,16 @@ window.addEventListener('unhandledrejection', function(event) {
     });
 
     scored.sort((a, b) => b.hits - a.hits);
-    const top8 = scored.slice(0, 8).map(s => s.bullet);
+    const top8 = [];
+    const seenTopKeys = new Set();
+    for (const item of scored) {
+      const key = item.bullet.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim().replace(/\s+/g, ' ').substring(0, 40);
+      if (!seenTopKeys.has(key)) {
+        seenTopKeys.add(key);
+        top8.push(item.bullet);
+        if (top8.length === 8) break;
+      }
+    }
 
     return top8.map((bullet, idx) => {
       const bLow = bullet.toLowerCase();
@@ -6663,7 +6739,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     const strongPoints = [
       kwHits >= 2
         ? `<strong>Job Description Keyword Alignment (${kwHits} of ${kwTotal}):</strong> Incorporated key domain terms (${matchedSample}) naturally across your responses.`
-        : `<strong>Role Scope Engagement:</strong> Completed the 5-question progression tailored to <strong>${roleTarget}</strong> screening criteria.`,
+        : `<strong>Role Scope Engagement:</strong> Completed the ${totalQuestionsCount}-question progression tailored to <strong>${roleTarget}</strong> screening criteria.`,
       answersWithNumberOrPct >= 1
         ? `<strong>Quantified Impact (${quantifiedImpactPct}%):</strong> Anchored ${answersWithNumberOrPct} of ${totalQuestionsCount} responses with concrete numbers, percentages, or measurable outcomes.`
         : `<strong>Direct Prompt Addressing:</strong> Focused on the core scenario of each behavioral and technical question without going off-topic.`,
@@ -6687,9 +6763,9 @@ ${(resumeText || '').slice(0, 3500)}`;
         fix: `<strong>How to improve:</strong> End every answer with a 1-sentence measurable Result (e.g., <em>"This reduced error rates by 30% across 500+ weekly evaluations"</em>) and keep each answer between 60 and 90 seconds.`
       },
       {
-        issue: answeredCount < 5 ? `Incomplete or Brief Responses (${answeredCount}/5 Answered Fully)` : (!isTextMode && totalFillers > 2 ? `Vocal Filler Words Detected (${totalFillers} instances)` : `Deeper Edge-Case Specificity`),
+        issue: answeredCount < 5 ? `Incomplete or Brief Responses (${answeredCount}/${totalQuestionsCount} Answered Fully)` : (!isTextMode && totalFillers > 2 ? `Vocal Filler Words Detected (${totalFillers} instances)` : `Deeper Edge-Case Specificity`),
         fix: answeredCount < 5
-          ? `<strong>How to improve:</strong> Aim for 80–130 words (60–90 seconds) on all 5 questions—automated screeners cannot score unstated experience.`
+          ? `<strong>How to improve:</strong> Aim for 80–130 words (60–90 seconds) on all ${totalQuestionsCount} questions—automated screeners cannot score unstated experience.`
           : (!isTextMode && totalFillers > 2
               ? `<strong>How to improve:</strong> Pause silently for 1 second between Situation, Action, and Result transitions instead of saying "um" or "like".`
               : `<strong>How to improve:</strong> Name one specific edge case or failure mode you resolved in each project example to stand out from generic answers.`)
@@ -6709,14 +6785,16 @@ ${(resumeText || '').slice(0, 3500)}`;
       finishPraiseSummary = `Practice drill finished with repetitive answer penalties applied across ${duplicateCount} prompts.`;
     } else {
       finishPraiseSummary = isTextMode
-        ? "You completed all 5 practice prompts and worked through the core screening questions."
-        : "You completed all 5 practice prompts with structured pacing and clear enunciation. Completing the drill is the first step to building confidence.";
+        ? `You completed all ${totalQuestionsCount} practice prompts and worked through the core screening questions.`
+        : `You completed all ${totalQuestionsCount} practice prompts with structured pacing and clear enunciation. Completing the drill is the first step to building confidence.`;
     }
     const strengthSummary = [finishPraiseSummary, ...strongPoints.map(s => s.replace(/<[^>]+>/g, ''))].join(' | ');
     const growthSummary = weakPoints.map((w, i) => `${i + 1}. ${w.issue}: ${w.fix.replace(/<[^>]+>/g, '')}`).join('\n');
 
     const isPassCheckCompleted = (window.currentSimMode === 'passcheck');
-    const isPassCheckEarned = isPassCheckCompleted && avgScore >= 70;
+    const minRequiredKwHits = Math.min(4, Math.ceil(kwTotal * 0.5));
+    const hasRequiredKeywords = kwHits >= minRequiredKwHits;
+    const isPassCheckEarned = isPassCheckCompleted && avgScore >= 70 && hasRequiredKeywords && !hasDuplicates;
     const benchmarkLabel = avgScore >= 80 ? `High Readiness (${avgScore}%)` : (avgScore >= 60 ? `Solid Readiness (${avgScore}%)` : `Practice Benchmark (${avgScore}%)`);
     const benchmarkColor = avgScore >= 80 ? '#34d399' : (avgScore >= 60 ? '#fbbf24' : '#60a5fa');
 
@@ -6806,9 +6884,9 @@ ${(resumeText || '').slice(0, 3500)}`;
         const minQScore = Math.min(...validResults.map(r => r.score || 0));
         const hasDup = validResults.some(r => r.isDuplicate);
         let pcStatus = 'not_yet';
-        if (avgScore >= 70 && minQScore >= 50 && !hasDup) {
+        if (avgScore >= 70 && minQScore >= 50 && !hasDup && hasRequiredKeywords) {
           pcStatus = 'ready';
-        } else if (avgScore >= 60 && avgScore < 70 && !hasDup) {
+        } else if (avgScore >= 60 && !hasDup) {
           pcStatus = 'almost';
         } else {
           pcStatus = 'not_yet';
@@ -6819,6 +6897,8 @@ ${(resumeText || '').slice(0, 3500)}`;
           result: pcStatus,
           score: avgScore,
           minScore: minQScore,
+          kwHits: kwHits,
+          kwTotal: kwTotal,
           hasDuplicate: hasDup,
           date: new Date().toISOString()
         };
@@ -6835,7 +6915,7 @@ ${(resumeText || '').slice(0, 3500)}`;
                     <span>🎉 Ready ✓</span>
                     <span style="font-size:12px; background:#10b981; color:#042f2e; padding:2px 8px; border-radius:4px; font-weight:900;">PASS CHECK ACHIEVED</span>
                   </div>
-                  <div style="font-size:13px; color:#d1fae5; margin-top:4px;">Practice benchmark passed with ${avgScore}% readiness. Your green <strong>Pass Check ✓</strong> tag is now active on <a href="/apply" style="color:#6ee7b7; font-weight:800; text-decoration:underline;">/apply</a>.</div>
+                  <div style="font-size:13px; color:#d1fae5; margin-top:4px;">Practice benchmark passed with ${avgScore}% readiness and strong keyword coverage (${kwHits} of ${kwTotal} JD terms). Your green <strong>Pass Check ✓</strong> tag is now active on <a href="/apply" style="color:#6ee7b7; font-weight:800; text-decoration:underline;">/apply</a>.</div>
                   <div style="font-size:11px; color:#9ca3af; margin-top:4px; font-style:italic;">Practice benchmark, not a prediction from Mercor or micro1.</div>
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
@@ -6846,10 +6926,13 @@ ${(resumeText || '').slice(0, 3500)}`;
             </div>
           `;
         } else if (pcStatus === 'almost') {
+          const almostReason = (!hasRequiredKeywords)
+            ? `Your readiness score is ${avgScore}%, but Pass Check requires matching at least ${minRequiredKwHits} of ${kwTotal} Job Description keywords (you matched ${kwHits}). Weave in more target terms to earn Ready.`
+            : `You are close to the 70% threshold (${avgScore}%). Re-drill your lowest scoring questions below to secure readiness.`;
           passCheckBannerHtml = `
             <div id="passcheck-result-banner" style="background:rgba(245,158,11,0.15); border:1.5px solid #f59e0b; border-radius:10px; padding:16px 20px; margin-bottom:20px; text-align:left;">
               <div style="font-size:16px; font-weight:900; color:#fbbf24;">📈 Almost Ready (${avgScore}%)</div>
-              <div style="font-size:13px; color:#fef08a; margin-top:4px;">You are close to the 70% threshold. Re-drill your 2 lowest scoring questions below to secure readiness.</div>
+              <div style="font-size:13px; color:#fef08a; margin-top:4px;">${almostReason}</div>
               <div style="font-size:11px; color:#9ca3af; margin-top:4px; font-style:italic;">Practice benchmark, not a prediction from Mercor or micro1.</div>
             </div>
           `;
@@ -6911,8 +6994,8 @@ ${(resumeText || '').slice(0, 3500)}`;
                   <span>Send My Playbook ➔</span>
                 </button>
               </div>
-              <label style="display:flex; align-items:center; gap:6px; font-size:12.5px; color:#d1fae5; cursor:pointer;">
-                <input type="checkbox" id="lead-magnet-practice-plan-optin" style="cursor:pointer;" />
+              <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+                <input type="checkbox" id="lead-magnet-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
                 <span>Email me a 7-day practice plan.</span>
               </label>
             </form>
