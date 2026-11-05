@@ -683,7 +683,38 @@ sampleTestRoles.forEach(({ title, domain }) => {
 
 console.log(`✓ PASSED: 10+ tailored interview questions verified for all roles across domains with category badges & STAR answers`);
 
+// Test 40: Verify Teleprompter physical auto-scroll, Dual-Dollar pay format, Strict 30% duplicate penalty, Debrief warning banner, and Honest STAR title placeholder
+// 1. Pay format verification
+assert.strictEqual(testSandbox.window.formatDualDollarPay('$100–130/hr'), '$100–$130/hr', 'Pay format must have dual dollar signs for en-dash ranges');
+assert.strictEqual(testSandbox.window.formatDualDollarPay('$50-60/hr'), '$50–$60/hr', 'Pay format must have dual dollar signs for hyphen ranges');
+assert.strictEqual(testSandbox.window.formatDualDollarPay('$100–$100/hr'), '$100/hr', 'Single-value ranges must collapse to single rate');
+assert.strictEqual(testSandbox.window.formatDualDollarPay('Competitive'), 'Competitive', 'Competitive pay must remain untouched');
+
+// 2. Honest STAR title placeholder verification
+const sampleQ1 = { q: "Walk me through your most recent role and what you were primarily responsible for day to day", keywords: ["Python", "Machine Learning"] };
+const starParts = testSandbox.computeStarPartsForQuestion(sampleQ1, 0, "");
+assert(starParts.st.includes('[Your Recent Title]'), 'Opening STAR situation must use [Your Recent Title]');
+assert(!starParts.st.includes('[Your Target Role:'), 'Opening STAR situation must never coach candidate to claim target role as past title');
+assert(!starParts.st.includes('Abbott') && !starParts.st.includes('ML Engineer'), 'False company and title credentials must be completely absent');
+
+// 3. Strict 30% duplicate answer penalty & debrief alert
+const cannedText = "In my recent role I architected a distributed data pipeline using Python and Docker, optimizing throughput by 35% across 500 weekly jobs.";
+testVm.runInContext(`
+  sessionQuestionResults = [{ answer: "${cannedText}", score: 90 }];
+`, testSandbox);
+const duplicateEval = testSandbox.evaluateAnswerText(cannedText, { q: "Describe a high-impact technical project", keywords: ["Python"] }, 1);
+assert.strictEqual(duplicateEval.cappedScore, 30, `Duplicate canned answers must be strictly capped at 30%, got ${duplicateEval.cappedScore}%`);
+assert.strictEqual(duplicateEval.isDuplicate, true, 'Duplicate canned answer must set isDuplicate: true');
+assert(duplicateEval.feedbackHTML.includes('Repeated Response Detected'), 'Feedback HTML must contain Repeated Response Detected warning');
+
+// 4. Auto-scroll CSS & instant assignment verification
+assert(aiInterviewHtml.includes('.star-tp-scroll-viewport,') && aiInterviewHtml.includes('scroll-behavior: auto !important;'), 'Teleprompter viewports must enforce scroll-behavior: auto !important to prevent rAF cancellation');
+assert(aiInterviewHtml.includes('vp.style.scrollBehavior = \'auto\';'), 'step() animation loop must enforce instant scroll behavior per frame');
+assert(aiInterviewHtml.includes('Repeated Response Detected: Identical or canned response penalized (30% cap)'), 'Debrief cards must contain explicit duplicate penalty badge');
+
+console.log(`✓ PASSED: Teleprompter auto-scroll engine, dual-dollar pay format, strict 30% duplicate cap, debrief alerts, and honest [Your Recent Title] placeholder verified`);
+
 console.log("==================================================================");
-console.log("ALL 39 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 40 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

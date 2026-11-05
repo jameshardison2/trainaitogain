@@ -173,6 +173,7 @@ window.addEventListener('unhandledrejection', function(event) {
     #floating-tp-viewport {
       scrollbar-width: thin;
       scrollbar-color: rgba(16, 185, 129, 0.45) rgba(255, 255, 255, 0.04);
+      scroll-behavior: auto !important;
     }
   </style>
 
@@ -475,7 +476,7 @@ window.addEventListener('unhandledrejection', function(event) {
     </div>
   </div>
   <!-- Viewport for HUD (Compact Eyeline Ribbon by default) -->
-  <div id="floating-tp-viewport" class="star-tp-scroll-viewport" style="max-height:155px; overflow-y:auto; overflow-x:hidden; scroll-behavior:smooth; padding-right:6px; padding-bottom:60px; position:relative; border-radius:6px; transition:max-height 0.25s ease;">
+  <div id="floating-tp-viewport" class="star-tp-scroll-viewport" style="max-height:155px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:6px; padding-bottom:60px; position:relative; border-radius:6px; transition:max-height 0.25s ease;">
     <div id="floating-tp-content" class="star-teleprompter-text-body" style="font-size:19px; line-height:1.65; color:#ffffff;">
       <!-- Cloned from active question STAR script -->
     </div>
@@ -2126,6 +2127,19 @@ window.addEventListener('unhandledrejection', function(event) {
     return 'general';
   }
 
+  // Format pay strings to always enforce dual dollar signs e.g. $100–$130/hr
+  function formatDualDollarPay(rawPay) {
+    if (!rawPay || typeof rawPay !== 'string') return rawPay || '';
+    let str = rawPay.trim();
+    if (str.toLowerCase() === 'competitive') return 'Competitive';
+    // Enforce dual dollar signs: $100–130/hr -> $100–$130/hr, $50-60/hr -> $50–$60/hr
+    str = str.replace(/\$?(\d+)\s*[-–—]\s*\$?(\d+)(\s*\/(?:hr|yr|mo|task))/i, '$$$1–$$$2$3');
+    // If min === max e.g. $100–$100/hr -> $100/hr
+    str = str.replace(/\$(\d+)–\$\1(\s*\/(?:hr|yr|mo|task))/i, '$$$1$2');
+    return str;
+  }
+  window.formatDualDollarPay = formatDualDollarPay;
+
   function addRoleOptionToDropdown(roleTitle, domainVal, isHighlightedTop, optionalMeta) {
     const cleanTitle = String(roleTitle || '').replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim();
     if (!cleanTitle) return;
@@ -2134,13 +2148,14 @@ window.addEventListener('unhandledrejection', function(event) {
     const dom = detectDomain(cleanTitle, domainVal, localStorage.getItem('candidateResumeText') || '');
     const cat = categorizeRole(cleanTitle, dom);
     const waveMeta = window.wavesRoleMap[normKey] || optionalMeta || {};
+    const cleanPay = formatDualDollarPay(waveMeta.pay || '');
 
     const item = {
       title: cleanTitle,
       cleanTitle: cleanTitle,
       domain: dom,
       category: cat,
-      pay: waveMeta.pay || '',
+      pay: cleanPay,
       platform: waveMeta.platform || (waveMeta.tags && waveMeta.tags.includes('Micro1') ? 'Micro1' : (waveMeta.tags && waveMeta.tags.includes('Mercor') ? 'Mercor' : '')),
       atsKeywords: waveMeta.atsKeywords || [],
       isHighlightedTop: Boolean(isHighlightedTop),
@@ -2219,7 +2234,7 @@ window.addEventListener('unhandledrejection', function(event) {
           ${kwsSnippet ? `<div style="font-size:11px; color:#9ca3af; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Skills: ${escapeHtml(kwsSnippet)}</div>` : ''}
         </div>
         <div style="text-align:right; flex-shrink:0;">
-          ${item.pay ? `<div style="font-size:12px; font-weight:800; color:#34d399;">${escapeHtml(item.pay)}</div>` : ''}
+          ${item.pay ? `<div style="font-size:12px; font-weight:800; color:#34d399;">${escapeHtml(formatDualDollarPay(item.pay))}</div>` : ''}
           <div style="font-size:10.5px; color:#6b7280; text-transform:capitalize;">${escapeHtml(item.platform || item.domain || 'Remote')}</div>
         </div>
       </div>
@@ -2609,6 +2624,7 @@ window.addEventListener('unhandledrejection', function(event) {
       data.roles.forEach(role => {
         if (!role || !role.title) return;
         const tLow = role.title.trim().toLowerCase();
+        if (role.pay) role.pay = formatDualDollarPay(role.pay);
         window.wavesRoleMap[tLow] = role;
         addRoleOptionToDropdown(role.title, detectDomain(role.title, role.domain, ''), false, role);
       });
@@ -2915,7 +2931,7 @@ window.addEventListener('unhandledrejection', function(event) {
         q: `Walk me through your most recent role and what you were primarily responsible for day to day as ${roleArticle} ${cleanRole}, specifically involving ${formatSkill(k0)} and ${formatSkill(k1)}.`,
         audio: "/audio/q_resume_1.mp3",
         category: "Role & Core Ownership",
-        answer: `In my recent work as ${roleArticle} ${cleanRole}, I held direct ownership of ${formatSkill(k0)} and ${formatSkill(k1)}, structuring standard workflows, collaborating across teams, and maintaining rigorous quality benchmarks.`,
+        answer: `In my recent work as [Your Recent Title], I held direct ownership of ${formatSkill(k0)} and ${formatSkill(k1)}, structuring standard workflows, collaborating across teams, and maintaining rigorous quality benchmarks.`,
         keywords: [k0, k1, k2],
         feedbackHit: `Clear introduction. You gave direct context on your role and anchored your day-to-day responsibilities in ${k0}.`,
         feedbackMiss: `Weave in specific Job Description skills (${k0}, ${k1}) and state your direct scope of ownership.`
@@ -3552,12 +3568,18 @@ window.addEventListener('unhandledrejection', function(event) {
         f.style.width = `${Math.round(progress * 100)}%`;
       });
 
-      // Smooth scroll down across all active teleprompter viewports
+      // Instant frame-accurate scroll down across all active teleprompter viewports
       const viewports = document.querySelectorAll('.star-tp-scroll-viewport, #floating-tp-viewport, #teleprompter-box');
       viewports.forEach(vp => {
+        // Enforce instant scroll behavior so browser does not cancel rAF steps
+        vp.style.scrollBehavior = 'auto';
         const maxScroll = Math.max(0, vp.scrollHeight - vp.clientHeight);
         if (maxScroll > 0) {
-          vp.scrollTop = progress * maxScroll;
+          const targetY = Math.round(progress * maxScroll);
+          vp.scrollTop = targetY;
+          if (typeof vp.scrollTo === 'function') {
+            try { vp.scrollTo({ top: targetY, behavior: 'instant' }); } catch(e){}
+          }
         }
       });
 
@@ -3599,7 +3621,11 @@ window.addEventListener('unhandledrejection', function(event) {
     _tpScrollStartTime = null;
     const viewports = document.querySelectorAll('.star-tp-scroll-viewport, #floating-tp-viewport, #teleprompter-box');
     viewports.forEach(vp => {
+      vp.style.scrollBehavior = 'auto';
       vp.scrollTop = 0;
+      if (typeof vp.scrollTo === 'function') {
+        try { vp.scrollTo({ top: 0, behavior: 'instant' }); } catch(e){}
+      }
     });
     document.querySelectorAll('.tp-timer-badge').forEach(b => {
       b.innerText = `0s / ${_tpScrollDuration}s`;
@@ -4125,7 +4151,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     let primaryVideoHref = "/video-guides.html#lesson-11";
 
     const companyPlaceholder = "[Your Recent Employer / Project]";
-    const rolePlaceholder = `[Your Target Role: ${roleTitle}]`;
+    const rolePlaceholder = "[Your Recent Title]";
     const primarySkill = qKeywords[0] || "[Primary Tool / Core Skill]";
     const secondarySkill = qKeywords[1] || "[Secondary Framework / Methodology]";
     const metricPlaceholder = "[Measurable Result: e.g. 25%+ improvement in turnaround / accuracy]";
@@ -4185,7 +4211,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-03" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 03 (1:55): Optimizing Turnaround Speed &amp; Accuracy Trade-Offs</a> &amp; <a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07 (3:02): micro1 Zara Scenario-Based Questions</a>`;
       primaryVideoHref = "/video-guides.html#lesson-03";
     } else if (qPromptLower.includes("tight deadlines") || qPromptLower.includes("high accuracy requirements") || qPromptLower.includes("prioritize your verification")) {
-      starSituationTask = `During a mission-critical release for **${rolePlaceholder}** under tight deadlines, maintaining zero defect escapes was mandatory.`;
+      starSituationTask = `During a mission-critical release in my work as **${rolePlaceholder}** under tight deadlines, maintaining zero defect escapes was mandatory.`;
       starAction = `I triaged verification paths by risk severity, applied non-negotiable checks to **${primarySkill}** using **${secondarySkill}**, and coordinated closely with stakeholders at **${companyPlaceholder}**.`;
       starResult = `We delivered all target milestones on schedule, achieving **${metricPlaceholder}** with zero production defects.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a> &amp; <a href="/video-guides.html#lesson-01" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 01 (1:07): Structuring STAR &amp; Keyword Density</a>`;
@@ -4321,7 +4347,7 @@ ${(resumeText || '').slice(0, 3500)}`;
 
         <!-- 1. TELEPROMPTER FLOW VIEW (ALL 3 PHASES VISIBLE TOGETHER IMMEDIATELY) -->
         <div class="star-view-teleprompter-wrap" style="display:block;">
-          <div class="star-tp-scroll-viewport" style="max-height:220px; overflow-y:auto; overflow-x:hidden; scroll-behavior:smooth; padding-right:4px;">
+          <div class="star-tp-scroll-viewport" style="max-height:220px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:4px;">
             <div class="star-teleprompter-text-body" style="font-size:${_starFontSize}px; line-height:1.52; color:#ffffff;">
               <!-- Phase 1: Opening Hook & Scope -->
               <div class="tp-sec-hook" style="margin-bottom:6px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #3b82f6; border-radius:5px; transition:all 0.25s ease;">
@@ -4892,11 +4918,27 @@ ${(resumeText || '').slice(0, 3500)}`;
       toTighten = "Coach Gain says: Strong coverage of the Job Description terms and STAR structure. Keep your delivery crisp at 60–90 seconds.";
     }
 
-    const cappedScore = wordCount < 15
-      ? Math.min(40, Math.max(0, confScore))
-      : Math.min(100, Math.max(35, confScore));
+    let cappedScore;
+    if (isDuplicateAnswer) {
+      cappedScore = 30; // Strict 30% cap for repeated duplicate submissions
+    } else if (wordCount < 15) {
+      cappedScore = Math.min(40, Math.max(0, confScore));
+    } else {
+      cappedScore = Math.min(100, Math.max(35, confScore));
+    }
+
     const suggestedStarHTML = buildSuggestedStarResponse(qData || {}, qIndex, rawText);
-    const feedbackHTML = isBriefOrBlank ? `
+    const feedbackHTML = isDuplicateAnswer ? `
+      <div style="background:rgba(239,68,68,0.12); border-left:3px solid #ef4444; padding:14px 18px; border-radius:8px; margin-bottom:12px;">
+        <div style="font-size:12px; font-weight:800; color:#f87171; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">⚠️ Repeated Response Detected (Capped at 30%):</div>
+        <div style="color:#ffffff; font-size:14px; line-height:1.5;">${whatWorked}</div>
+      </div>
+      <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3b82f6; padding:14px 18px; border-radius:8px;">
+        <div style="font-size:12px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">💡 Coach Gain says — To Tighten for the Real Interview:</div>
+        <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
+      </div>
+      ${suggestedStarHTML}
+    ` : (isBriefOrBlank ? `
       <div style="background:rgba(245,158,11,0.1); border-left:3px solid #f59e0b; padding:14px 18px; border-radius:8px; margin-bottom:12px;">
         <div style="font-size:12px; font-weight:800; color:#fbbf24; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">⚠️ Needs More Detail (Capped at 40%):</div>
         <div style="color:#ffffff; font-size:14px; line-height:1.5;">${whatWorked}</div>
@@ -4916,7 +4958,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
       </div>
       ${suggestedStarHTML}
-    `;
+    `);
 
     return {
       rawText,
@@ -4929,7 +4971,8 @@ ${(resumeText || '').slice(0, 3500)}`;
       whatWorked,
       toTighten: toTighten.trim(),
       feedbackHTML,
-      isBriefOrBlank
+      isBriefOrBlank,
+      isDuplicate: isDuplicateAnswer
     };
   }
 
@@ -4990,6 +5033,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       question: qData.q || '',
       answer: rawText || '(No answer provided)',
       score: evalRes.cappedScore,
+      isDuplicate: Boolean(evalRes.isDuplicate),
       wordCount: evalRes.wordCount,
       matchedKeywords: evalRes.matchedList,
       missedKeywords: evalRes.missedList,
@@ -5609,9 +5653,14 @@ ${(resumeText || '').slice(0, 3500)}`;
     const kwTotal = canonicalKws.length;
     const kwHits = uniqueMatchedCanonical.size;
 
+    const hasDuplicates = validResults.some(r => r.isDuplicate);
+    const duplicateCount = validResults.filter(r => r.isDuplicate).length;
+
     // Build Overall Summary
     let overallSummary = "";
-    if (avgScore >= 80 && kwHits >= 4) {
+    if (hasDuplicates) {
+      overallSummary = `⚠️ <strong>Repetitive Responses Detected:</strong> ${duplicateCount} of ${answeredCount} responses were identified as identical or canned duplicates (capped at 30%). Real AI interview platforms (Mercor, micro1, Anthropic) immediately invalidate repetitive submissions across questions. To raise your readiness score, provide distinct, role-specific STAR examples for each individual prompt.`;
+    } else if (avgScore >= 80 && kwHits >= 4) {
       overallSummary = `Strong readiness (${avgScore}%) for <strong>${roleTarget}</strong>. You aligned your answers with <strong>${kwHits} of ${kwTotal}</strong> core Job Description signals and achieved <strong>${quantifiedImpactPct}% Quantified Impact</strong>.`;
     } else if (answeredCount >= 3) {
       overallSummary = `Solid practice foundation (${avgScore}% readiness) for <strong>${roleTarget}</strong>. You answered ${answeredCount} of ${totalQuestionsCount} questions, matched <strong>${kwHits} of ${kwTotal}</strong> Job Description signals, and achieved <strong>${quantifiedImpactPct}% Quantified Impact</strong>. Tightening your STAR outcomes will further boost your score.`;
@@ -5628,9 +5677,11 @@ ${(resumeText || '').slice(0, 3500)}`;
       answersWithNumberOrPct >= 1
         ? `<strong>Quantified Impact (${quantifiedImpactPct}%):</strong> Anchored ${answersWithNumberOrPct} of ${totalQuestionsCount} responses with concrete numbers, percentages, or measurable outcomes.`
         : `<strong>Direct Prompt Addressing:</strong> Focused on the core scenario of each behavioral and technical question without going off-topic.`,
-      (isTextMode || totalFillers <= 2)
-        ? `<strong>Clear Delivery &amp; Pacing:</strong> Maintained a clean, structured flow ${isTextMode ? 'in typed mode' : 'with minimal filler words'} suitable for AI evaluation.`
-        : `<strong>Consistent Vocal Presence:</strong> Worked through spoken responses under live time targets (60–90 seconds per answer).`
+      hasDuplicates
+        ? `<strong>Prompt Coverage Audit:</strong> Attempted responses across the full drill; replace duplicate submissions with prompt-tailored scenarios to unlock delivery credit.`
+        : ((isTextMode || totalFillers <= 2)
+            ? `<strong>Clear Delivery &amp; Pacing:</strong> Maintained a clean, structured flow ${isTextMode ? 'in typed mode' : 'with minimal filler words'} suitable for AI evaluation.`
+            : `<strong>Consistent Vocal Presence:</strong> Worked through spoken responses under live time targets (60–90 seconds per answer).`)
     ];
 
     // Build 3 Weakest Points with How to Improve
@@ -5655,9 +5706,22 @@ ${(resumeText || '').slice(0, 3500)}`;
       }
     ];
 
-    let finishPraiseSummary = isTextMode
+    if (hasDuplicates) {
+      weakPoints.unshift({
+        issue: `Repeated / Canned Responses Across Prompts (${duplicateCount} Flagged)`,
+        fix: `<strong>How to improve:</strong> Provide a unique, concrete situation and outcome for every question. Autonomous AI evaluators compare submissions across questions and disqualify duplicate copy-pastes.`
+      });
+      if (weakPoints.length > 3) weakPoints.pop();
+    }
+
+    let finishPraiseSummary = "";
+    if (hasDuplicates) {
+      finishPraiseSummary = `Practice drill finished with repetitive answer penalties applied across ${duplicateCount} prompts.`;
+    } else {
+      finishPraiseSummary = isTextMode
         ? "You completed all 5 practice prompts and worked through the core screening questions."
         : "You completed all 5 practice prompts with structured pacing and clear enunciation. Completing the drill is the first step to building confidence.";
+    }
     const strengthSummary = [finishPraiseSummary, ...strongPoints.map(s => s.replace(/<[^>]+>/g, ''))].join(' | ');
     const growthSummary = weakPoints.map((w, i) => `${i + 1}. ${w.issue}: ${w.fix.replace(/<[^>]+>/g, '')}`).join('\n');
 
@@ -5688,6 +5752,13 @@ ${(resumeText || '').slice(0, 3500)}`;
         ? computeStarPartsForQuestion(qItem, idx, res.answer)
         : { videoLessonFocus: '' };
 
+      const duplicateAlert = res.isDuplicate ? `
+        <div style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); border-radius:6px; padding:7px 11px; margin-top:8px; display:flex; align-items:center; gap:8px;">
+          <span style="font-size:14px; flex-shrink:0;">⚠️</span>
+          <span style="color:#fca5a5; font-size:11.5px; font-weight:700; line-height:1.4;">Repeated Response Detected: Identical or canned response penalized (30% cap). Autonomous screeners require a distinct STAR scenario for each prompt.</span>
+        </div>
+      ` : '';
+
       return `
         <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.09); border-radius:10px; padding:14px 16px; margin-bottom:10px; text-align:left;">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; margin-bottom:6px;">
@@ -5698,7 +5769,8 @@ ${(resumeText || '').slice(0, 3500)}`;
             </div>
           </div>
           <div style="font-size:12px; color:#9ca3af; font-style:italic; margin-bottom:8px;">Your response: "${(res.answer || '').slice(0, 160)}${(res.answer || '').length > 160 ? '...' : ''}"</div>
-          <div style="display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin-bottom:6px;">
+          ${duplicateAlert}
+          <div style="display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin-bottom:6px; margin-top:${res.isDuplicate ? '8px' : '0'};">
             <span style="font-size:10.5px; color:#9ca3af; font-weight:700; text-transform:uppercase; margin-right:4px;">JD Keywords:</span>
             ${matchedPills} ${missedPills}
           </div>
