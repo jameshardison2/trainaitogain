@@ -101,14 +101,26 @@ async function runLiveVerification() {
   console.log('✓ PASS: Live render_waves.js contains Good fit, Stretch, Weak fit labels, and Pass Check badge');
 
   // 7. Check waves.json
-  console.log('\n[7/7] Auditing live https://trainaitogain.com/waves.json...');
+  console.log('\n[7/8] Auditing live https://trainaitogain.com/waves.json...');
   const wavesRes = await fetchLiveUrl('/waves.json');
   assert.strictEqual(wavesRes.status, 200, '/waves.json must return HTTP 200');
   const wavesData = JSON.parse(wavesRes.body);
   const micro1Roles = (wavesData.roles || []).filter(r => (r.platform || '').toLowerCase().includes('micro') || (r.linkTarget || '').includes('micro1'));
   const allMicro1Attributed = micro1Roles.every(r => (r.linkTarget || '').includes('05216c9f-87cc-49af-b448-f9f8a18d2efe'));
   assert(allMicro1Attributed, 'All micro1 roles must carry referral code 05216c9f-87cc-49af-b448-f9f8a18d2efe');
-  console.log(`✓ PASS: ${micro1Roles.length} micro1 roles verified live, 100% carrying verified referral code`);
+  assert.strictEqual(micro1Roles.length, 271, 'Must have canonical 271 micro1 roles');
+  console.log(`✓ PASS: ${micro1Roles.length} micro1 roles verified live (canonical 271), 100% carrying verified referral code`);
+
+  // 8. Check QA Report Bug Fixes Live
+  console.log('\n[8/8] Auditing QA Report bug fixes live on trainaitogain.com...');
+  assert(aiRes.body.includes('resume-defense-error-banner'), 'Live ai-interview must have resume-defense-error-banner (Bug 1)');
+  assert(aiRes.body.includes('typed-followup-prompt'), 'Live ai-interview must have typed-followup-prompt (Bug 2)');
+  assert(aiRes.body.includes('speakAsInterviewer'), 'Live ai-interview must have speakAsInterviewer (Bug 3)');
+  assert(!aiRes.body.includes('/audio/q_resume_1.mp3'), 'Live ai-interview must not have MP3 audio links (Bug 3)');
+  assert(rwRes.body.includes('failsDomain'), 'Live render_waves.js must include Domain Guard (Bug 4)');
+  assert(rwRes.body.includes('failsLocation'), 'Live render_waves.js must include Location Guard (Bug 4)');
+  assert(chkRes.body.includes('so the interviewer can see you clearly'), 'Live readiness-checklist must have updated human copy (Bug 12)');
+  console.log('✓ PASS: All 12 QA Report bug fixes verified on live production bundle');
 
   console.log('\n==================================================================');
   console.log('ALL LIVE SITE CHECKS PASSED ON TRAINAITOGAIN.COM! 🚀');

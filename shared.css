@@ -2419,6 +2419,25 @@ header .nav-logo img {
   border-radius: 4px;
 }
 
+/* Universal WCAG 2.5.5 Touch Target Standards (Min 44px) */
+button, select, input[type="text"], input[type="email"], input[type="search"],
+.btn, .btn-primary, .btn-secondary, .btn-card-primary, .btn-card-secondary, .btn-card-tool,
+.carousel-btn, .status-select, .pipeline-status-select {
+  min-height: 44px !important;
+  box-sizing: border-box;
+}
+
+/* Accessibility: Minimum text sizing for badges and labels (Bug 7 Fix) */
+.pass-fit-badge, .passcheck-badge {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+}
+
+.passcheck-rec-link {
+  font-size: 13px !important;
+}
+
 /* Mobile Touch Target Standards (Min 44px on phone screens) */
 @media (max-width: 600px) {
   .btn-card-tool {

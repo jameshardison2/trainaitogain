@@ -616,8 +616,8 @@
       </div>
 
       <div style="position:relative; max-width:1100px; margin:0 auto;">
-        <button class="carousel-btn" style="position:absolute; left:-18px; top:50%; transform:translateY(-50%); z-index:10;" onclick="document.getElementById('matched-waves-track')?.scrollBy({left: -340, behavior: 'smooth'})">‹</button>
-        <button class="carousel-btn" style="position:absolute; right:-18px; top:50%; transform:translateY(-50%); z-index:10;" onclick="document.getElementById('matched-waves-track')?.scrollBy({left: 340, behavior: 'smooth'})">›</button>
+        <button class="carousel-btn" style="position:absolute; left:6px; top:50%; transform:translateY(-50%); z-index:10; width:44px; height:44px; min-width:44px; min-height:44px;" onclick="document.getElementById('matched-waves-track')?.scrollBy({left: -340, behavior: 'smooth'})">‹</button>
+        <button class="carousel-btn" style="position:absolute; right:6px; top:50%; transform:translateY(-50%); z-index:10; width:44px; height:44px; min-width:44px; min-height:44px;" onclick="document.getElementById('matched-waves-track')?.scrollBy({left: 340, behavior: 'smooth'})">›</button>
 
         <div id="matched-waves-track" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:20px; padding:12px 4px 24px; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none;">
           <style>
@@ -1508,12 +1508,39 @@ ${resumeText.substring(0, 10000)}`;
             ? `<span style="background:var(--primary-light); color:var(--primary-dark); border:1px solid #a7f3d0; font-size:11.5px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">🌟 Strong Match • ${rScore}%${kwCountStr}</span>`
             : `<span style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-size:11.5px; font-weight:800; padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">⭐ Good Match • ${rScore}%${kwCountStr}</span>`;
 
+          const storedResume = (typeof window.resolveStoredResume === 'function') 
+            ? window.resolveStoredResume() 
+            : (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '');
+          const passFit = (typeof window.getPassLikelihoodFit === 'function')
+            ? window.getPassLikelihoodFit(m.roleName || m.role || '', storedResume)
+            : { badgeHtml: '' };
+          const fitBadgeHtml = passFit.badgeHtml || '';
+
+          const roleNameClean = (m.roleName || m.role || '').toLowerCase().trim();
+          let passCheckObj = null;
+          try {
+            const rawPc = localStorage.getItem('passCheck_' + roleNameClean);
+            if (rawPc) passCheckObj = JSON.parse(rawPc);
+          } catch(e) {}
+
+          let passCheckBadgeHtml = '';
+          let isPassCheckReady = false;
+          let passCheckRecommendationHtml = '';
+          if (passCheckObj && passCheckObj.result === 'ready') {
+            isPassCheckReady = true;
+            passCheckBadgeHtml = `<span class="passcheck-badge passcheck-ready" style="background:#ecfdf5; color:#065f46; border:1px solid #10b981; font-size:13px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">Pass Check ✓</span>`;
+          } else {
+            passCheckRecommendationHtml = `<a href="/ai-interview?role=${encodeURIComponent(m.roleName || m.role || '')}&mode=passcheck" onclick="event.stopPropagation();" class="passcheck-rec-link" style="font-size:13px; color:#6b7280; text-decoration:underline; display:block; margin-top:4px; text-align:center;">Recommended: take the Pass Check first</a>`;
+          }
+
           return `
             <div class="wave-card matched-role-card" style="min-width:min(340px, 86vw); max-width:360px; flex:0 0 min(340px, 86vw); scroll-snap-align:start; box-sizing:border-box; text-align:left; background:white; padding:22px; border-radius:var(--radius-lg); border:1.5px solid #e5e7eb; box-shadow:0 1px 3px rgba(0,0,0,0.05); display:flex; flex-direction:column; align-items:flex-start; position:relative; transition:transform 0.25s ease, opacity 0.25s ease;">
               <button type="button" onclick="event.stopPropagation(); window.dismissSingleMatchedRole('${rName}', this);" title="Dismiss this role" aria-label="Dismiss this role" style="position:absolute; top:10px; right:10px; background:var(--gray-100); border:1px solid var(--gray-200); color:var(--gray-500); width:44px; height:44px; min-width:44px; min-height:44px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:800; transition:all 0.2s; z-index:5;" onmouseover="this.style.background='#fee2e2'; this.style.borderColor='#fca5a5'; this.style.color='#dc2626';" onmouseout="this.style.background='var(--gray-100)'; this.style.borderColor='var(--gray-200)'; this.style.color='var(--gray-500)';">✕</button>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; width:100%; padding-right:48px;">
-                 <div style="display:flex; gap:8px; align-items:center;">
+                 <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
                    ${badgeHtml}
+                   ${fitBadgeHtml}
+                   ${passCheckBadgeHtml}
                    ${platformBadge}
                  </div>
                  <span style="color:var(--primary); font-weight:800; font-size:15px;">${rRate}</span>
@@ -1525,7 +1552,8 @@ ${resumeText.substring(0, 10000)}`;
               ${preApplyWarning}
 
               <div class="card-actions-wrapper">
-                <button type="button" class="btn-card-primary" onclick="window.handleApplyClick('${rName}', '${rUrl}', this, null, ${rScore}, 'ALL')">Apply on ${matchPlatform} ➔</button>
+                <button type="button" class="btn-card-primary" onclick="window.handleApplyClick('${rName}', '${rUrl}', this, null, ${rScore}, 'ALL')">Apply on ${matchPlatform} ➔ ${isPassCheckReady ? `<span class="btn-passcheck-tag" style="margin-left:4px; background:#ecfdf5; color:#065f46; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:900;">Pass Check ✓</span>` : ''}</button>
+                ${passCheckRecommendationHtml}
                 <div class="card-options-toolbar">
                   <button type="button" class="btn-card-tool" onclick="event.stopPropagation(); window.open('/resume-ats-guide?role=' + encodeURIComponent('${rName}'), '_blank');" title="Practice ATS guide for this role" aria-label="Practice ATS">${svgTarget} <span>ATS Guide</span></button>
                   <button type="button" class="btn-card-tool" onclick="event.stopPropagation(); saveRole('${rName}', 'ALL', '${rRate}', this, '${rUrl}')" title="Save role to Dashboard" aria-label="Save role">${svgBookmark} <span>Save</span></button>

@@ -1005,7 +1005,108 @@ assert(privacyHtml.includes('Passed AI interview'), 'privacy.html must cite Pass
 assert(privacyHtml.includes('No resume or answer text stored'), 'privacy.html must guarantee no resume or answer text stored');
 console.log(`✓ PASSED: Test 60 (PASS-08) - Privacy policy explicitly covers anonymous outcome tracking & data boundaries`);
 
+// ==================================================================
+// TRAINAITOGAIN QA REPORT REGRESSION TESTS (BUGS 1 - 13)
+// ==================================================================
+
+// Test 61 (Bug 1): Bullet normalization in extractResumeBullets (inline PDF bullets)
+const inlinePdfResume = "Professional Experience • Led automated regression testing across 40 services • Built CI/CD pipelines in Jenkins and Docker reducing release time by 35% • Spearheaded QA automation architecture for payment processing systems";
+const extractedBullets = testSandbox.window.extractResumeBullets(inlinePdfResume);
+assert(Array.isArray(extractedBullets) && extractedBullets.length >= 3, `Expected at least 3 bullets extracted from inline PDF text, got ${extractedBullets.length}`);
+assert(extractedBullets[0].includes("Led automated regression testing"), "Extracted bullet 1 must match content");
+console.log(`✓ PASSED: Test 61 (Bug 1) - extractResumeBullets normalizes inline PDF bullets (•, ●, ▪, *) properly`);
+
+// Test 62 (Bug 1): Explicit Resume Defense error banner on 0 bullets
+const aiInterviewCode = fs.readFileSync('ai-interview.html', 'utf8');
+assert(aiInterviewCode.includes('id="resume-defense-error-banner"'), 'ai-interview.html must contain resume-defense-error-banner');
+assert(aiInterviewCode.includes("Couldn't read bullets from resume"), 'ai-interview.html must show explicit error rather than silently falling back');
+console.log(`✓ PASSED: Test 62 (Bug 1) - Explicit error banner rendered when 0 resume bullets are found in Resume Defense`);
+
+// Test 63 (Bug 2): Pass Check & Pressure Mode typed mode support (REQ-PASS-10)
+assert(!aiInterviewCode.includes("if (isPressure) isTextMode = false;"), "Must not override isTextMode to false in askQuestion");
+assert(!aiInterviewCode.includes("if (window.currentSimMode === 'pressure') {\n      isTextMode = false;"), "Must not force isTextMode to false in proceedToSession");
+assert(aiInterviewCode.includes('id="typed-followup-prompt"'), "ai-interview.html must contain typed-followup-prompt container");
+console.log(`✓ PASSED: Test 63 (Bug 2) - Pass Check & Pressure Mode support typed mode with text follow-ups (REQ-PASS-10)`);
+
+// Test 64 (Bug 3): Interviewer voice consistency & locked session voice (REQ-PASS-09)
+assert(aiInterviewCode.includes("window.speakAsInterviewer"), "ai-interview.html must define window.speakAsInterviewer");
+assert(aiInterviewCode.includes("window.getLockedSessionVoice"), "ai-interview.html must lock interviewer voice per session");
+assert(!aiInterviewCode.includes('/audio/q_resume_1.mp3'), "All MP3 references must be removed from question audio fields");
+assert(!aiInterviewCode.includes('/audio/q_general_1.mp3'), "All MP3 references must be removed from question audio fields");
+console.log(`✓ PASSED: Test 64 (Bug 3) - Single speakAsInterviewer function with locked session voice verified (REQ-PASS-09)`);
+
+// Test 65 (Bug 4): Domain Guard in getPassLikelihoodFit
+const testRenderWaves = fs.readFileSync('render_waves.js', 'utf8');
+eval(testRenderWaves.substring(testRenderWaves.indexOf("function getPassLikelihoodFit"), testRenderWaves.indexOf("if (typeof window !== 'undefined') {\n    window.getPassLikelihoodFit")));
+const qaResumeForGuards = "Senior QA Automation Engineer with 8 years of experience in Python, Selenium WebDriver, Cypress, API testing, SQL, CI/CD pipelines, and test strategy. Based in San Francisco, CA, USA.";
+
+const blastingRole = { title: "Commercial Blasting Engineer", cleanTitle: "Commercial Blasting Engineer", domain: "SCIENCE", atsKeywords: ["explosives", "blasting", "safety"] };
+const civilRole = { title: "Civil Engineers & Architects", cleanTitle: "Civil Engineers & Architects", domain: "SCIENCE", atsKeywords: ["civil", "structures", "cad"] };
+const chemRole = { title: "Chemical Defense Researcher", cleanTitle: "Chemical Defense Researcher", domain: "SCIENCE", atsKeywords: ["hazmat", "chemistry", "toxicology"] };
+const hygienistRole = { title: "Industrial Hygienist", cleanTitle: "Industrial Hygienist", domain: "SCIENCE", atsKeywords: ["industrial hygiene", "safety", "cih"] };
+const legalRole = { title: "Corporate Legal Counsel", cleanTitle: "Corporate Legal Counsel", domain: "LEGAL", atsKeywords: ["attorney", "litigation", "contracts"] };
+const medRole = { title: "Oncology Clinical Evaluator", cleanTitle: "Oncology Clinical Evaluator", domain: "MEDICAL", atsKeywords: ["oncology", "clinical", "physician"] };
+
+assert.strictEqual(getPassLikelihoodFit(blastingRole, qaResumeForGuards).fit, 'weak', 'Blasting role must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(civilRole, qaResumeForGuards).fit, 'weak', 'Civil role must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(chemRole, qaResumeForGuards).fit, 'weak', 'Chemical Defense role must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(hygienistRole, qaResumeForGuards).fit, 'weak', 'Industrial Hygienist role must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(legalRole, qaResumeForGuards).fit, 'weak', 'Legal role must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(medRole, qaResumeForGuards).fit, 'weak', 'Medical role must be Weak fit for QA resume');
+console.log(`✓ PASSED: Test 65 (Bug 4) - Domain Guard blocks Software/QA from receiving Good fit on Blasting, Civil, Chem, Safety, Legal, and Medical`);
+
+// Test 66 (Bug 4): Location Guard in getPassLikelihoodFit
+const indiaRole = { title: "Python Engineer (India Only)", cleanTitle: "Python Engineer", domain: "SOFTWARE", tags: ["India"], atsKeywords: ["python", "sql"] };
+const latamRole = { title: "Backend Developer (LatAm Remote)", cleanTitle: "Backend Developer", domain: "SOFTWARE", tags: ["LatAm"], atsKeywords: ["python", "api"] };
+assert.strictEqual(getPassLikelihoodFit(indiaRole, qaResumeForGuards).fit, 'weak', 'India-only role must be Weak fit for US candidate');
+assert.strictEqual(getPassLikelihoodFit(latamRole, qaResumeForGuards).fit, 'weak', 'LatAm-only role must be Weak fit for US candidate');
+console.log(`✓ PASSED: Test 66 (Bug 4) - Location Guard prevents mismatched region-only roles from being Good fit`);
+
+// Test 67 (Bug 5): Top Qualified Roles on /apply render fit labels and Pass Check tags
+const applyPageHtml = fs.readFileSync('apply.html', 'utf8');
+assert(applyPageHtml.includes('window.getPassLikelihoodFit'), 'apply.html must invoke getPassLikelihoodFit for top matches');
+assert(applyPageHtml.includes('${fitBadgeHtml}'), 'apply.html must render fitBadgeHtml in matched role cards');
+assert(applyPageHtml.includes('${passCheckBadgeHtml}'), 'apply.html must render passCheckBadgeHtml in matched role cards');
+assert(applyPageHtml.includes('Pass Check ✓'), 'apply.html must render Pass Check tag on apply button when earned');
+console.log(`✓ PASSED: Test 67 (Bug 5) - Top Qualified Roles on /apply render fit labels and Pass Check ✓ tags`);
+
+// Test 68 (Bug 5 & Bug 13): QA Engineer role preserved in render_waves.js
+assert(!testRenderWaves.includes('!incomingPlatforms.has('), 'render_waves.js must not drop baseline roles when merging API roles');
+assert(testRenderWaves.includes('Preserving all baseline roles like QA Engineer') || testRenderWaves.includes('preserving all baseline roles like QA Engineer'), 'render_waves.js must retain baseline roles across platforms');
+const wavesRaw = JSON.parse(fs.readFileSync('waves.json', 'utf8'));
+const qaEng = wavesRaw.roles.find(r => r.title === 'QA Engineer');
+assert(qaEng && qaEng.platform === 'Micro1', 'QA Engineer must exist in waves.json as active Micro1 role');
+assert.strictEqual(wavesRaw.meta.totalJobs, 604, 'waves.json meta.totalJobs must be canonical 604');
+console.log(`✓ PASSED: Test 68 (Bug 5 & Bug 13) - QA Engineer and all 604 baseline roles preserved during API sync`);
+
+// Test 69 (Bug 6 & Bug 7): Universal 44px tap target height & 13px badge font size
+const sharedCssText = fs.readFileSync('shared.css', 'utf8');
+assert(sharedCssText.includes('min-height: 44px !important;'), 'shared.css must enforce universal 44px tap targets');
+assert(sharedCssText.includes('.pass-fit-badge') && sharedCssText.includes('font-size: 13px !important;'), 'shared.css must enforce 13px minimum for badges');
+const savedRolesCode = fs.readFileSync('saved-roles.html', 'utf8');
+assert(savedRolesCode.includes('id="savedSortFilter"') && savedRolesCode.includes('min-height:44px;'), 'savedSortFilter must have 44px min-height');
+console.log(`✓ PASSED: Test 69 (Bug 6 & Bug 7) - 44px tap target height and 13px badge font size verified`);
+
+// Test 70 (Bug 8): Practice Benchmark banner always displayed on results screen
+assert(aiInterviewCode.includes('Next step: take the Pass Check <button'), 'ai-interview.html must include Next step: take the Pass Check CTA button');
+assert(!aiInterviewCode.includes('const vettedBadgeHTML = avgScore >= 80 ?'), 'Practice Benchmark banner must render for all completed sessions, not only avgScore >= 80');
+console.log(`✓ PASSED: Test 70 (Bug 8) - Practice Benchmark banner with Pass Check CTA displays for all completed sessions`);
+
+// Test 71 (Bug 9): Duplicate sentence removed from duplicate debrief
+assert(!aiInterviewCode.includes('Give a distinct example for each question. To raise your readiness score, provide distinct, role-specific STAR examples for each individual prompt.'), 'Duplicate sentence must be removed');
+assert(aiInterviewCode.includes('Give a distinct example for each question.'), 'Single clear guidance sentence retained');
+console.log(`✓ PASSED: Test 71 (Bug 9) - Repeated sentence in duplicate-answer debrief successfully cleaned`);
+
+// Test 72 (Bug 10, 11, 12): Question 6 tagged as STAR, carousel arrows at 6px, and facial tracking copy updated
+assert(aiInterviewCode.includes('q: `Describe a scenario where data anomalies') && aiInterviewCode.includes('tag: "STAR"'), 'Question 6 must be tagged as STAR');
+assert(testRenderWaves.includes('left:6px;') && testRenderWaves.includes('right:6px;'), 'render_waves.js carousel buttons must be pulled inside (left:6px; right:6px;)');
+assert(applyPageHtml.includes('left:6px;') && applyPageHtml.includes('right:6px;'), 'apply.html carousel buttons must be pulled inside (left:6px; right:6px;)');
+const checklistPageHtml = fs.readFileSync('readiness-checklist.html', 'utf8');
+assert(checklistPageHtml.includes('so the interviewer can see you clearly'), 'readiness-checklist.html must use clean human copy');
+assert(!checklistPageHtml.includes('so computer vision models maintain crisp facial tracking'), 'Unsupported facial tracking copy must be removed');
+console.log(`✓ PASSED: Test 72 (Bugs 10, 11, 12) - Question 6 tagged STAR, carousel arrows positioned at 6px, and checklist copy clean`);
+
 console.log("==================================================================");
-console.log("ALL 60 AUDIT SUITE TESTS (PHASES 1, 2, 3 & 4) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 72 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

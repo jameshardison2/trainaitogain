@@ -763,7 +763,7 @@ function getPassLikelihoodFit(roleInput, resumeText) {
             tier: 'None',
             label: 'Upload your resume to see your fit',
             badgeClass: 'fit-none',
-            badgeHtml: '<span class="pass-fit-badge fit-none" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#d1d5db; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px;"><a href="/resume-ats-guide" style="color:#d1d5db; text-decoration:none;">Upload your resume to see your fit</a></span>'
+            badgeHtml: '<span class="pass-fit-badge fit-none" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#d1d5db; font-size:13px; font-weight:700; padding:3px 8px; border-radius:4px;"><a href="/resume-ats-guide" style="color:#d1d5db; text-decoration:none;">Upload your resume to see your fit</a></span>'
         };
     }
 
@@ -786,7 +786,7 @@ function getPassLikelihoodFit(roleInput, resumeText) {
             tier: 'None',
             label: 'Weak fit',
             badgeClass: 'fit-weak',
-            badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:rgba(156,163,175,0.15); border:1px solid rgba(156,163,175,0.35); color:#9ca3af; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px;">Weak fit</span>'
+            badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:rgba(156,163,175,0.15); border:1px solid rgba(156,163,175,0.35); color:#9ca3af; font-size:13px; font-weight:700; padding:3px 8px; border-radius:4px;">Weak fit</span>'
         };
     }
 
@@ -811,6 +811,48 @@ function getPassLikelihoodFit(roleInput, resumeText) {
         failsLicense = true;
     }
 
+    // Location Guard (India-only or LatAm-only cannot be Good fit for US candidates)
+    let candidateLoc = 'US';
+    if (typeof localStorage !== 'undefined') {
+        candidateLoc = localStorage.getItem('candidateLocation') || localStorage.getItem('user_location') || 'US';
+    }
+    if (/(\bindia\b|\bbengaluru\b|\bdelhi\b|\bmumbai\b|\bhyderabad\b|\bpune\b)/i.test(resTxt) && !/(\bunited states\b|\busa\b|\bcalifornia\b|\bnew york\b|\btexas\b|\bchicago\b|\bseattle\b)/i.test(resTxt)) {
+        candidateLoc = 'INDIA';
+    } else if (/(\blatam\b|\blatin america\b|\bbrazil\b|\bsão paulo\b|\bmexico city\b|\bbogota\b|\bargentine\b)/i.test(resTxt) && !/(\bunited states\b|\busa\b|\bcalifornia\b|\bnew york\b|\btexas\b)/i.test(resTxt)) {
+        candidateLoc = 'LATAM';
+    }
+
+    let failsLocation = false;
+    if (req && req.locKey && req.locKey !== 'ALL') {
+        if (candidateLoc === 'US' && (req.locKey === 'INDIA' || req.locKey === 'LATAM' || req.locKey === 'EU')) {
+            failsLocation = true;
+        } else if (candidateLoc === 'INDIA' && (req.locKey === 'US' || req.locKey === 'LATAM' || req.locKey === 'EU')) {
+            failsLocation = true;
+        } else if (candidateLoc === 'LATAM' && (req.locKey === 'US' || req.locKey === 'INDIA' || req.locKey === 'EU')) {
+            failsLocation = true;
+        }
+    }
+
+    // Domain Guard (Prevent Software/QA/General from matching specialized domains without domain evidence)
+    let failsDomain = false;
+    const isCivilOrBlasting = /\b(civil|commercial blasting|mining engineer|structural engineer|geotechnical|blasting engineer)\b/i.test(titleLow);
+    const isChemicalDefense = /\b(chemical defense|chemical engineer|energetic materials|propellant|hazmat|toxicology)\b/i.test(titleLow);
+    const isIndustrialHygienist = /\b(industrial hygienist|occupational hygienist|workplace safety specialist|environmental health and safety|ehs specialist)\b/i.test(titleLow);
+    const isLegal = /\b(attorney|lawyer|paralegal|legal counsel|litigation|general counsel|juris doctor)\b/i.test(titleLow);
+    const isMedical = /\b(physician|doctor of medicine|surgeon|oncolog|neurolog|radiolog|patholog|pediatric|psychiat|dermatolog|pharmacolog|general practitioner|clinical specialist)\b/i.test(titleLow);
+
+    if (isCivilOrBlasting && !/\b(civil|blasting|mining|structural|geotechnical|autocad|staad|revit|construction)\b/i.test(resLow)) {
+        failsDomain = true;
+    } else if (isChemicalDefense && !/\b(chemical engineering|chemistry|chemical defense|energetic materials|toxicology|hazmat)\b/i.test(resLow)) {
+        failsDomain = true;
+    } else if (isIndustrialHygienist && !/\b(industrial hygiene|industrial hygienist|occupational safety|cih|osha|hazwoper)\b/i.test(resLow)) {
+        failsDomain = true;
+    } else if (isLegal && !/\b(juris doctor|j\.d\.|law degree|attorney|bar admission|legal counsel|paralegal|litigation|law school)\b/i.test(resLow)) {
+        failsDomain = true;
+    } else if (isMedical && !/\b(md\b|do\b|m\.d\.|physician|residency|medical doctor|clinical trial|pharmacology|board certified|patient care)\b/i.test(resLow)) {
+        failsDomain = true;
+    }
+
     let matchInfo = null;
     if (typeof getRoleMatchInfo === 'function') {
         matchInfo = getRoleMatchInfo(roleObj);
@@ -822,23 +864,25 @@ function getPassLikelihoodFit(roleInput, resumeText) {
     const hits = matchInfo ? matchInfo.hits : 0;
     const tier = matchInfo ? matchInfo.tier : 'None';
 
-    if (!failsLanguage && !failsLicense && (tier === 'Strong Match' || (score >= 70 && hits >= 3))) {
+    const passesAllGuards = !failsLanguage && !failsLicense && !failsLocation && !failsDomain;
+
+    if (passesAllGuards && (tier === 'Strong Match' || (score >= 70 && hits >= 3))) {
         return {
             fit: 'good',
             score,
             tier: 'Strong Match',
             label: 'Good fit to pass',
             badgeClass: 'fit-good',
-            badgeHtml: '<span class="pass-fit-badge fit-good" style="background:#ecfdf5; border:1px solid #10b981; color:#065f46; font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">● Good fit to pass</span>'
+            badgeHtml: '<span class="pass-fit-badge fit-good" style="background:#ecfdf5; border:1px solid #10b981; color:#065f46; font-size:13px; font-weight:800; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">● Good fit to pass</span>'
         };
-    } else if (!failsLanguage && !failsLicense && (tier === 'Good Match' || (score >= 50 && score < 70) || (score >= 70 && hits >= 1))) {
+    } else if (passesAllGuards && (tier === 'Good Match' || (score >= 50 && score < 70) || (score >= 70 && hits >= 1))) {
         return {
             fit: 'stretch',
             score,
             tier: 'Good Match',
             label: 'Stretch: practice Resume Defense first',
             badgeClass: 'fit-stretch',
-            badgeHtml: '<span class="pass-fit-badge fit-stretch" style="background:#fffbeb; border:1px solid #f59e0b; color:#92400e; font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">▲ Stretch: practice Resume Defense first</span>'
+            badgeHtml: '<span class="pass-fit-badge fit-stretch" style="background:#fffbeb; border:1px solid #f59e0b; color:#92400e; font-size:13px; font-weight:800; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">▲ Stretch: practice Resume Defense first</span>'
         };
     } else {
         return {
@@ -847,7 +891,7 @@ function getPassLikelihoodFit(roleInput, resumeText) {
             tier: tier,
             label: 'Weak fit',
             badgeClass: 'fit-weak',
-            badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:#f3f4f6; border:1px solid #d1d5db; color:#4b5563; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">Weak fit</span>'
+            badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:#f3f4f6; border:1px solid #d1d5db; color:#4b5563; font-size:13px; font-weight:700; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">Weak fit</span>'
         };
     }
 }
@@ -888,19 +932,7 @@ function renderWavesApp() {
                         }
                     }
                     if (apiData && apiData.roles && apiData.roles.length > 0) {
-                        // 1. Identify platforms present in incoming API sync
-                        const incomingPlatforms = new Set(apiData.roles.map(r => (r.platform || 'Mercor').toLowerCase()));
-
-                        // 2. Retain baseline roles ONLY for platforms NOT present in incoming sync (e.g. micro1)
-                        const retainedBaselineRoles = (data.roles || []).filter(r => {
-                            const p = (r.platform || 'Mercor').toLowerCase();
-                            const l = (r.linkTarget || '').toLowerCase();
-                            const isMicro1 = p.includes('micro') || l.includes('micro1');
-                            if (isMicro1) return !incomingPlatforms.has('micro1');
-                            return !incomingPlatforms.has('mercor');
-                        });
-
-                        // 3. Process, sanitize, and deduplicate incoming API roles
+                        // Process, sanitize, and deduplicate incoming API roles
                         const domMap = [
                             ['MEDICAL', /nurse|physician|medical|clinical|health|doctor|md\b|pharm|oncolog|neurolog|urolog|radiolog|hospital|dental|patient|biomed|preclinical/i],
                             ['LEGAL', /legal|lawyer|attorney|law\b|paralegal|litigation|j\.d|counsel/i],
@@ -969,9 +1001,9 @@ function renderWavesApp() {
                             freshRoles.push(apiRole);
                         });
 
-                        // 4. Combine fresh incoming roles with retained baseline roles (deduplicating across all)
+                        // Combine fresh incoming API roles with baseline roles (preserving all baseline roles like QA Engineer)
                         const combinedRoles = [...freshRoles];
-                        retainedBaselineRoles.forEach(baseRole => {
+                        (data.roles || []).forEach(baseRole => {
                             if (!baseRole || !baseRole.title) return;
                             const tLow = baseRole.title.trim().toLowerCase();
                             if (!seenTitles.has(tLow)) {
@@ -1119,8 +1151,8 @@ function renderWavesApp() {
                     </div>
                     
                     <div style="position:relative;">
-                        <button class="carousel-btn" style="position:absolute; left:-18px; top:50%; transform:translateY(-50%); z-index:10; background:white; color:var(--gray-800); border:1.5px solid var(--gray-200); width:42px; height:42px; border-radius:50%; cursor:pointer; font-size:24px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all 0.2s;" onmouseover="this.style.background='var(--primary)'; this.style.color='white'; this.style.borderColor='var(--primary)';" onmouseout="this.style.background='white'; this.style.color='var(--gray-800)'; this.style.borderColor='var(--gray-200)';" onclick="document.getElementById('${cat.id}')?.scrollBy({left: -340, behavior: 'smooth'})">‹</button>
-                        <button class="carousel-btn" style="position:absolute; right:-18px; top:50%; transform:translateY(-50%); z-index:10; background:white; color:var(--gray-800); border:1.5px solid var(--gray-200); width:42px; height:42px; border-radius:50%; cursor:pointer; font-size:24px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all 0.2s;" onmouseover="this.style.background='var(--primary)'; this.style.color='white'; this.style.borderColor='var(--primary)';" onmouseout="this.style.background='white'; this.style.color='var(--gray-800)'; this.style.borderColor='var(--gray-200)';" onclick="document.getElementById('${cat.id}')?.scrollBy({left: 340, behavior: 'smooth'})">›</button>
+                        <button class="carousel-btn" style="position:absolute; left:6px; top:50%; transform:translateY(-50%); z-index:10; background:white; color:var(--gray-800); border:1.5px solid var(--gray-200); width:44px; height:44px; min-width:44px; min-height:44px; border-radius:50%; cursor:pointer; font-size:24px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all 0.2s;" onmouseover="this.style.background='var(--primary)'; this.style.color='white'; this.style.borderColor='var(--primary)';" onmouseout="this.style.background='white'; this.style.color='var(--gray-800)'; this.style.borderColor='var(--gray-200)';" onclick="document.getElementById('${cat.id}')?.scrollBy({left: -340, behavior: 'smooth'})">‹</button>
+                        <button class="carousel-btn" style="position:absolute; right:6px; top:50%; transform:translateY(-50%); z-index:10; background:white; color:var(--gray-800); border:1.5px solid var(--gray-200); width:44px; height:44px; min-width:44px; min-height:44px; border-radius:50%; cursor:pointer; font-size:24px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:all 0.2s;" onmouseover="this.style.background='var(--primary)'; this.style.color='white'; this.style.borderColor='var(--primary)';" onmouseout="this.style.background='white'; this.style.color='var(--gray-800)'; this.style.borderColor='var(--gray-200)';" onclick="document.getElementById('${cat.id}')?.scrollBy({left: 340, behavior: 'smooth'})">›</button>
                         
                         <div id="${cat.id}" class="category-carousel-track" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:20px; padding:12px 6px 24px; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none;">
                             <style>
@@ -1191,13 +1223,13 @@ function renderWavesApp() {
                         isPassCheckReady = true;
                         const daysOld = (Date.now() - new Date(passCheckObj.date || Date.now()).getTime()) / (1000 * 60 * 60 * 24);
                         if (daysOld > 14) {
-                            passCheckBadgeHtml = `<span class="passcheck-badge passcheck-stale" style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">Pass Check ✓ <span style="font-size:9.5px; opacity:0.8;">(Retake to refresh)</span></span>`;
-                            passCheckStaleNote = `<span class="passcheck-stale-note" style="font-size:10px; color:#d97706; display:block; margin-top:2px;">Retake to refresh (14+ days old)</span>`;
+                            passCheckBadgeHtml = `<span class="passcheck-badge passcheck-stale" style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; font-size:13px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">Pass Check ✓ <span style="font-size:10px; opacity:0.8;">(Retake to refresh)</span></span>`;
+                            passCheckStaleNote = `<span class="passcheck-stale-note" style="font-size:11px; color:#d97706; display:block; margin-top:2px;">Retake to refresh (14+ days old)</span>`;
                         } else {
-                            passCheckBadgeHtml = `<span class="passcheck-badge passcheck-ready" style="background:#ecfdf5; color:#065f46; border:1px solid #10b981; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">Pass Check ✓</span>`;
+                            passCheckBadgeHtml = `<span class="passcheck-badge passcheck-ready" style="background:#ecfdf5; color:#065f46; border:1px solid #10b981; font-size:13px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">Pass Check ✓</span>`;
                         }
                     } else {
-                        passCheckRecommendationHtml = `<a href="/ai-interview?role=${encodeURIComponent(safeTitle)}&mode=passcheck" onclick="event.stopPropagation();" class="passcheck-rec-link" style="font-size:10.5px; color:#6b7280; text-decoration:underline; display:block; margin-top:3px; text-align:center;">Recommended: take the Pass Check first</a>`;
+                        passCheckRecommendationHtml = `<a href="/ai-interview?role=${encodeURIComponent(safeTitle)}&mode=passcheck" onclick="event.stopPropagation();" class="passcheck-rec-link" style="font-size:13px; color:#6b7280; text-decoration:underline; display:block; margin-top:3px; text-align:center;">Recommended: take the Pass Check first</a>`;
                     }
 
 

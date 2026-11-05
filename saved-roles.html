@@ -97,7 +97,7 @@
       <div id="saved-toolbar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
         <div style="font-size:14px; font-weight:700; color:var(--gray-700);">My Saved Pipelines</div>
         <div style="display:flex; gap:8px; align-items:center;">
-          <select id="savedSortFilter" onchange="renderSavedRoles()" style="appearance:none; -webkit-appearance:none; background-color:white; background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat:no-repeat; background-position:right 12px center; padding:8px 32px 8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-weight:600; font-size:13px; cursor:pointer;">
+          <select id="savedSortFilter" onchange="renderSavedRoles()" style="appearance:none; -webkit-appearance:none; background-color:white; background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat:no-repeat; background-position:right 12px center; padding:8px 32px 8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:inherit; font-weight:600; font-size:13px; min-height:44px; cursor:pointer;">
             <option value="DATE">Sort: Recently Saved</option>
             <option value="MATCH_HIGH">🌟 Highest Match %</option>
             <option value="PAY_HIGH">💰 Highest Pay</option>
@@ -560,7 +560,7 @@ function openReminderModal(role, onConfirm) {
     modal.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <h3 id="reminder-modal-title" style="margin:0; font-size:18px; font-weight:800; color:#111827;">Set Application Reminder</h3>
-            <button type="button" id="reminder-modal-close" style="background:none; border:none; font-size:20px; color:#6b7280; cursor:pointer; padding:0 4px;">✕</button>
+            <button type="button" id="reminder-modal-close" style="background:none; border:none; font-size:20px; color:#6b7280; cursor:pointer; padding:0 8px; width:44px; height:44px; min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center;">✕</button>
         </div>
         <p style="margin:0 0 16px; font-size:13.5px; color:#4b5563; line-height:1.5;">
             Enter your email to receive a reminder in 2 days with tailored interview prep tips for <strong>${role.title || 'this role'}</strong>:
@@ -831,7 +831,7 @@ function renderSavedRoles() {
                 </div>
                 
                 <div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px;">
-                    <select id="status-${role.id}" onchange="changeRoleStatus('${safeId}', this.value)" style="padding:8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:var(--font); font-weight:600; font-size:13px; background:var(--gray-50); cursor:pointer;">
+                    <select id="status-${role.id}" onchange="changeRoleStatus('${safeId}', this.value)" style="padding:8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:var(--font); font-weight:600; font-size:13px; min-height:44px; background:var(--gray-50); cursor:pointer;">
                         <option value="Saved" ${rawStatus === 'Saved' ? 'selected' : ''}>📌 Status: Saved</option>
                         <option value="Started" ${rawStatus === 'Started' ? 'selected' : ''}>🚀 Status: Started</option>
                         <option value="Applied" ${rawStatus === 'Applied' ? 'selected' : ''}>✅ Status: Applied</option>
@@ -844,7 +844,7 @@ function renderSavedRoles() {
 
                     <div id="outcome-feedback-${role.id}" style="display:${(rawStatus === 'Passed AI interview' || rawStatus === "Didn't pass") ? 'block' : 'none'}; margin-top:8px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; padding:8px 10px; max-width:260px; text-align:left;">
                         <div style="font-size:11px; font-weight:700; color:#4b5563; margin-bottom:4px;">Which question type felt hardest? (Optional)</div>
-                        <select onchange="recordHardestQuestionType('${safeId}', this.value)" style="width:100%; font-size:11.5px; padding:4px 6px; border-radius:6px; border:1px solid #d1d5db; background:#ffffff;">
+                        <select onchange="recordHardestQuestionType('${safeId}', this.value)" style="width:100%; font-size:12px; padding:8px 10px; border-radius:6px; border:1px solid #d1d5db; background:#ffffff; min-height:44px;">
                             <option value="">Select question type...</option>
                             <option value="Story (STAR)" ${role.hardestQuestionType === 'Story (STAR)' ? 'selected' : ''}>Story (STAR)</option>
                             <option value="Knowledge (Answer–Why–Check)" ${role.hardestQuestionType === 'Knowledge (Answer–Why–Check)' ? 'selected' : ''}>Knowledge (Answer–Why–Check)</option>
@@ -855,7 +855,7 @@ function renderSavedRoles() {
                         <div id="outcome-msg-${role.id}" style="font-size:10.5px; color:#10b981; margin-top:3px; display:${role.hardestQuestionType ? 'block' : 'none'};">✓ Saved anonymously to calibrate cutoffs</div>
                     </div>
                     
-                    <button onclick="toggleReminder(this, '${safeId}')" data-on="${isReminded}" style="background:transparent; border:none; font-size:12px; font-weight:600; color:${isReminded ? 'var(--primary)' : 'var(--gray-400)'}; cursor:pointer; padding:0; text-align:right; transition:color 0.2s;">
+                    <button onclick="toggleReminder(this, '${safeId}')" data-on="${isReminded}" style="background:transparent; border:none; font-size:12px; font-weight:600; color:${isReminded ? 'var(--primary)' : 'var(--gray-400)'}; cursor:pointer; padding:4px 0; text-align:right; transition:color 0.2s; min-height:44px; display:inline-flex; flex-direction:column; justify-content:center;">
                         ${isReminded ? '⏰ Reminder Active' : '🔔 Set Reminder'}
                         <div style="font-size:11px; color:var(--gray-500); font-weight:500;">Email in 2 days</div>
                     </button>
@@ -866,8 +866,8 @@ function renderSavedRoles() {
 
             <div style="display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--gray-100); padding-top:14px; width:100%;">
                 <div style="display:flex; gap:8px; width:100%; align-items:center;">
-                    <button class="btn-primary" style="flex:1; cursor:pointer; padding:12px 16px; background:var(--primary); border:none; color:white; font-size:15px; font-weight:800; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1); transition:all 0.2s;" onclick="applySavedRole(${idx}, this)" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='var(--primary)'">Apply Now on ${rolePlatform} ➔</button>
-                    <button onclick="removeRole('${safeId}')" style="background:var(--gray-100); border:1px solid var(--gray-200); border-radius:8px; padding:11px 14px; color:var(--gray-500); cursor:pointer; font-size:14px; font-weight:700;" title="Remove from Dashboard" aria-label="Remove Role" onmouseover="this.style.color='#ef4444'; this.style.background='#fef2f2'" onmouseout="this.style.color='var(--gray-500)'; this.style.background='var(--gray-100)'">✕</button>
+                    <button class="btn-primary" style="flex:1; cursor:pointer; padding:12px 16px; background:var(--primary); border:none; color:white; font-size:15px; font-weight:800; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1); transition:all 0.2s; min-height:44px;" onclick="applySavedRole(${idx}, this)" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='var(--primary)'">Apply Now on ${rolePlatform} ➔</button>
+                    <button onclick="removeRole('${safeId}')" style="background:var(--gray-100); border:1px solid var(--gray-200); border-radius:8px; padding:11px 14px; color:var(--gray-500); cursor:pointer; font-size:14px; font-weight:700; width:44px; height:44px; min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center;" title="Remove from Dashboard" aria-label="Remove Role" onmouseover="this.style.color='#ef4444'; this.style.background='#fef2f2'" onmouseout="this.style.color='var(--gray-500)'; this.style.background='var(--gray-100)'">✕</button>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:2px;">
                     <a href="${prepUrl}" target="_blank" onclick="trackPrepClick('${safeTitle}')" style="color:var(--gray-500); font-size:12px; font-weight:600; text-decoration:underline;">Want a quick practice run? Try the 2-minute mock interview ➔</a>

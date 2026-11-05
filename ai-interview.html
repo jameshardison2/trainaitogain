@@ -604,6 +604,16 @@ window.addEventListener('unhandledrejection', function(event) {
         <div id="screen1-lead-success" style="display:none; color:#34d399; font-size:12px; font-weight:700; margin-top:8px;">✓ Email saved! Your tailored debrief, STAR playbook, and referral links will be delivered here.</div>
       </div>
 
+      <!-- Resume Defense Bullet Error Banner (REQ-PASS-02 / Bug 1) -->
+      <div id="resume-defense-error-banner" style="display:none; max-width:560px; margin:0 auto 16px auto; background:rgba(239,68,68,0.15); border:1.5px solid #ef4444; border-radius:10px; padding:14px 16px; text-align:left;">
+        <div style="font-size:13px; font-weight:800; color:#fca5a5; display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+          <span>⚠️</span> Couldn't read bullets from resume
+        </div>
+        <div style="font-size:12.5px; color:#fecaca; line-height:1.45;">
+          We couldn't detect distinct bullet points in your saved resume. PDF formatting may have flattened the text. Please <a href="/resume-ats-guide" style="color:#ffffff; font-weight:800; text-decoration:underline;">paste your resume bullets in the ATS Scanner</a> to run Resume Defense.
+        </div>
+      </div>
+
       <!-- Simulation Mode Selector (Tier 2: Item 6) -->
       <div style="max-width:560px; margin:0 auto 16px auto; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; text-align:left;">
         <div style="font-size:11.5px; font-weight:800; color:#9ca3af; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">Select Preparation Mode</div>
@@ -1063,6 +1073,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
           <!-- Typed Answer Area -->
           <div id="typed-answer-container" style="display:none; text-align:left; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px 18px;">
+            <div id="typed-followup-prompt" style="display:none; margin-bottom:12px; padding:10px 14px; background:rgba(239,68,68,0.15); border:1.5px solid #ef4444; border-radius:8px; font-size:13px; color:#fca5a5; line-height:1.45;"></div>
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
               <span style="font-size:12px; font-weight:800; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em;">Your Answer (STAR Format):</span>
               <span style="font-size:11.5px; color:#888;">Aim for 60–90 seconds (75–130 words)</span>
@@ -1986,16 +1997,16 @@ window.addEventListener('unhandledrejection', function(event) {
   ]
 };
 
-  // Section 19: Natural Interviewer Voice (Chirp 3 HD Audio for fixed questions)
+  // Interviewer Audio Map (MP3s removed per REQ-PASS-09 for unified session voice)
   const domainAudioMap = {
-    software: ['/audio/q_software_1.mp3', '/audio/q_software_2.mp3'],
-    robotics: ['/audio/q_software_1.mp3', '/audio/q_software_2.mp3'],
-    data: ['/audio/q_data_1.mp3', '/audio/q_data_2.mp3'],
-    medical: ['/audio/q_medical_1.mp3', '/audio/q_medical_2.mp3'],
-    legal: ['/audio/q_legal_1.mp3', '/audio/q_legal_2.mp3'],
-    finance: ['/audio/q_finance_1.mp3', '/audio/q_finance_2.mp3'],
-    language: ['/audio/q_language_1.mp3', '/audio/q_language_2.mp3'],
-    general: ['/audio/q_general_1.mp3', '/audio/q_general_2.mp3', '/audio/q_general_3.mp3']
+    software: ['', ''],
+    robotics: ['', ''],
+    data: ['', ''],
+    medical: ['', ''],
+    legal: ['', ''],
+    finance: ['', ''],
+    language: ['', ''],
+    general: ['', '', '']
   };
 
   Object.keys(domainAudioMap).forEach(dom => {
@@ -3477,14 +3488,16 @@ window.addEventListener('unhandledrejection', function(event) {
   // Bullet extraction from candidate resume (REQ-PASS-02)
   window.extractResumeBullets = function(resumeText) {
     if (!resumeText || typeof resumeText !== 'string' || resumeText.trim().length < 40) return [];
-    const lines = resumeText.split(/\r?\n/);
+    // Normalize inline bullets and numbered points before parsing (e.g. PDF text keeping bullets inline)
+    let normalized = resumeText.replace(/([^\n\r])([•●▪◦►*]|\b\d+\.\s+)/g, '$1\n$2');
+    const lines = normalized.split(/\r?\n/);
     const bullets = [];
     
     lines.forEach(line => {
       let clean = line.trim();
       if (!clean) return;
-      if (/^[•\-*◦▪►]\s*/.test(clean) || /^\d+\.\s+/.test(clean)) {
-        clean = clean.replace(/^[•\-*◦▪►\d.]+\s*/, '').trim();
+      if (/^[•●▪◦►*\-]\s*/.test(clean) || /^\d+\.\s+/.test(clean)) {
+        clean = clean.replace(/^[•●▪◦►*\-\d.]+\s*/, '').trim();
         if (clean.length >= 25 && clean.length <= 300) {
           bullets.push(clean);
         }
@@ -3725,7 +3738,7 @@ window.addEventListener('unhandledrejection', function(event) {
     if (hasResume) {
       questions.push({
         q: `Walk me through your most recent role and what you were primarily responsible for day to day as ${roleArticle} ${cleanRole}, specifically involving ${formatSkill(k0)} and ${formatSkill(k1)}.`,
-        audio: "/audio/q_resume_1.mp3",
+        audio: "",
         category: "Role & Core Ownership",
         tag: "STAR",
         answer: `In my recent work as [Your Recent Title], I held direct ownership of ${formatSkill(k0)} and ${formatSkill(k1)}, structuring standard workflows, collaborating across teams, and maintaining rigorous quality benchmarks.`,
@@ -3736,7 +3749,7 @@ window.addEventListener('unhandledrejection', function(event) {
     } else {
       questions.push({
         q: `Tell me about your background ${formatBackgroundInRole(cleanRole)} and what types of complex problems you typically solve involving ${formatSkill(k0)}.`,
-        audio: "/audio/q_resume_1.mp3",
+        audio: "",
         category: "Role & Core Ownership",
         tag: "STAR",
         answer: `I specialize in ${cleanRole}, applying systematic analysis across ${formatSkill(k0)} and ${formatSkill(k1)} to solve complex problems and ensure high-accuracy deliverables.`,
@@ -3750,7 +3763,7 @@ window.addEventListener('unhandledrejection', function(event) {
     if (hasResume) {
       questions.push({
         q: `Tell me about a specific high-impact project or achievement in your work as ${roleArticle} ${cleanRole} where you leveraged ${formatSkill(k0)} or ${formatSkill(k1)} to produce a measurable result.`,
-        audio: "/audio/q_resume_2.mp3",
+        audio: "",
         category: "Measurable Project Impact",
         tag: "STAR",
         answer: `On a high-impact initiative, our team faced execution bottlenecks around ${formatSkill(k0)}. I engineered a structured solution using ${formatSkill(k1)}, implemented automated validation gates, and delivered a 25%+ improvement in efficiency and accuracy.`,
@@ -3761,7 +3774,7 @@ window.addEventListener('unhandledrejection', function(event) {
     } else {
       questions.push({
         q: `Tell me about a specific project or initiative in your work as ${roleArticle} ${cleanRole} where you had to balance accuracy and speed. What was the outcome?`,
-        audio: "/audio/q_no_resume_2.mp3",
+        audio: "",
         category: "Measurable Project Impact",
         tag: "STAR",
         answer: `I identified a critical quality bottleneck involving ${formatSkill(k0)}, established an audit framework with ${formatSkill(k1)}, and delivered a measurable 20%+ increase in turnaround speed while maintaining zero defects.`,
@@ -3774,7 +3787,7 @@ window.addEventListener('unhandledrejection', function(event) {
     // Question 3: AI Model Output Review & Hallucination Spotting
     questions.push({
       q: `Which part of your background ${formatBackgroundInRole(cleanRole)} makes you an exceptional reviewer of AI model outputs or automated deliverables when evaluating ${formatSkill(k1)} and ${formatSkill(k2)}?`,
-      audio: "/audio/q_general_1.mp3",
+      audio: "",
       category: "AI Output & Hallucinations",
       tag: "Answer–Why–Check",
       answerWhyCheck: {
@@ -3791,7 +3804,7 @@ window.addEventListener('unhandledrejection', function(event) {
     // Question 4: Primary Technical Competency & Failure Modes
     questions.push({
       q: `In your specialized work with ${formatSkill(k0)}, what are the most common failure modes or subtle edge cases you encounter, and how do you systematically diagnose and resolve them?`,
-      audio: domAudios[0] || "/audio/q_general_2.mp3",
+      audio: "",
       category: "Technical Deep Dive",
       tag: "Answer–Why–Check",
       answerWhyCheck: {
@@ -3808,7 +3821,7 @@ window.addEventListener('unhandledrejection', function(event) {
     // Question 5: Secondary Technical Competency & Workflow Architecture
     questions.push({
       q: `Walk me through how you integrate ${formatSkill(k1)} into a scalable, high-accuracy workflow. What architectural or procedural trade-offs do you consider?`,
-      audio: domAudios[1] || "/audio/q_general_3.mp3",
+      audio: "",
       category: "Architecture & Systems",
       tag: "Answer–Why–Check",
       answerWhyCheck: {
@@ -3827,7 +3840,7 @@ window.addEventListener('unhandledrejection', function(event) {
       q: `Describe a scenario where data anomalies, ambiguous specifications, or corrupted inputs threatened ${formatSkill(k2)}. How did you detect and resolve the issue?`,
       audio: "",
       category: "Edge Cases & Data Integrity",
-      tag: "Answer–Why–Check",
+      tag: "STAR",
       answerWhyCheck: {
         answer: `Score 4/5 (Data Integrity & Boundary Safeguards). Detect corrupted inputs in ${formatSkill(k2)} by isolating discrepancies against ground truth benchmarks.`,
         why: `Reason 1: Inconsistent boundary data compromises downstream pipeline accuracy. Reason 2: Rigorous filtering criteria prevent defect recurrence.`,
@@ -4038,79 +4051,32 @@ window.addEventListener('unhandledrejection', function(event) {
     speakText(qData ? qData.q : '', onEndCallback);
   }
 
-  function playQuestionSpeech(qData, onEndCallback) {
-    stopAllSpeech();
+  let _lockedSessionVoice = null;
 
+  window.getLockedSessionVoice = function() {
+    if (_lockedSessionVoice) return _lockedSessionVoice;
+    if (typeof synth === 'undefined') return null;
+    const voices = synth.getVoices() || [];
     const voiceSelect = document.getElementById('voice-select');
-    const userPickedBrowserVoice = voiceSelect && voiceSelect.value !== 'default' && voiceSelect.value !== '';
-
-    if (userPickedBrowserVoice) {
-      const fbBadge = document.getElementById('voice-fallback-badge');
-      if (fbBadge) fbBadge.style.display = 'inline-block';
-      speakText(qData ? qData.q : '', onEndCallback);
-      return;
-    }
-
-    if (qData && qData.audio) {
-      try {
-        const audio = new Audio(qData.audio);
-        activeAudio = audio;
-        let hasStartedPlaying = false;
-        let hasFinishedOrFailed = false;
-
-        // 5-second timeout: if MP3 does not start playing within 5s, switch to browser voice & show "Using browser voice"
-        activeFallbackTimer = setTimeout(() => {
-          if (!hasStartedPlaying && !hasFinishedOrFailed) {
-            hasFinishedOrFailed = true;
-            triggerBrowserVoiceFallback(qData, onEndCallback, 'timeout_5s');
-          }
-        }, 5000);
-
-        audio.onplaying = () => {
-          hasStartedPlaying = true;
-          if (activeFallbackTimer) {
-            clearTimeout(activeFallbackTimer);
-            activeFallbackTimer = null;
-          }
-          const fbBadge = document.getElementById('voice-fallback-badge');
-          if (fbBadge) fbBadge.style.display = 'none';
-        };
-
-        audio.onended = () => {
-          if (hasFinishedOrFailed) return;
-          hasFinishedOrFailed = true;
-          if (activeFallbackTimer) {
-            clearTimeout(activeFallbackTimer);
-            activeFallbackTimer = null;
-          }
-          activeAudio = null;
-          if (onEndCallback) onEndCallback();
-        };
-
-        audio.onerror = () => {
-          if (hasFinishedOrFailed) return;
-          hasFinishedOrFailed = true;
-          triggerBrowserVoiceFallback(qData, onEndCallback, 'audio_error');
-        };
-
-        const playPromise = audio.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(() => {
-            if (hasFinishedOrFailed) return;
-            hasFinishedOrFailed = true;
-            triggerBrowserVoiceFallback(qData, onEndCallback, 'play_rejected');
-          });
-        }
-      } catch(e) {
-        triggerBrowserVoiceFallback(qData, onEndCallback, 'exception');
+    if (voiceSelect && voiceSelect.value !== 'default' && voiceSelect.value !== '' && availableVoices.length > 0) {
+      const selectedIndex = parseInt(voiceSelect.value, 10);
+      if (!isNaN(selectedIndex) && availableVoices[selectedIndex]) {
+        _lockedSessionVoice = availableVoices[selectedIndex];
+        return _lockedSessionVoice;
       }
-    } else {
-      triggerBrowserVoiceFallback(qData, onEndCallback, 'no_mp3');
     }
-  }
+    if (voices.length > 0) {
+      _lockedSessionVoice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha')) ||
+                            voices.find(v => v.lang.includes('en-US')) ||
+                            voices.find(v => v.lang.includes('en-')) ||
+                            voices[0];
+    }
+    return _lockedSessionVoice;
+  };
 
-  function speakText(text, callback) {
-    if (typeof synth === 'undefined') {
+  // Unified interviewer voice locked per session (REQ-PASS-09)
+  window.speakAsInterviewer = function(text, callback) {
+    if (typeof synth === 'undefined' || !text) {
       if (callback) callback();
       return;
     }
@@ -4123,17 +4089,9 @@ window.addEventListener('unhandledrejection', function(event) {
     const utterance = new SpeechSynthesisUtterance(text);
     window._utterances.push(utterance);
 
-    const voiceSelect = document.getElementById('voice-select');
-    if (voiceSelect && voiceSelect.value !== 'default' && availableVoices.length > 0) {
-      const selectedIndex = parseInt(voiceSelect.value, 10);
-      if (!isNaN(selectedIndex) && availableVoices[selectedIndex]) {
-        utterance.voice = availableVoices[selectedIndex];
-      }
-    } else {
-      const voices = synth.getVoices();
-      if (voices.length > 0) {
-        utterance.voice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha')) || voices.find(v => v.lang.includes('en-')) || voices[0];
-      }
+    const voice = window.getLockedSessionVoice();
+    if (voice) {
+      utterance.voice = voice;
     }
 
     utterance.rate = 1.05;
@@ -4154,6 +4112,15 @@ window.addEventListener('unhandledrejection', function(event) {
     setTimeout(() => {
       if (!synth.speaking && !done) finishCb();
     }, 1500);
+  };
+
+  function playQuestionSpeech(qData, onEndCallback) {
+    stopAllSpeech();
+    window.speakAsInterviewer(qData ? qData.q : '', onEndCallback);
+  }
+
+  function speakText(text, callback) {
+    window.speakAsInterviewer(text, callback);
   }
 
   // Build tailored STAR response based on Target Role, Resume, Question Keywords, and Video Masterclass methods
@@ -6216,13 +6183,16 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
 
     const isPressure = (window.currentSimMode === 'pressure' || window.currentSimMode === 'passcheck');
-    if (isPressure) {
-      isTextMode = false;
-    }
 
     const switchTypedBtn = document.getElementById('switch-to-typed-btn');
     if (switchTypedBtn) {
-      switchTypedBtn.style.display = isPressure ? 'none' : 'inline-block';
+      switchTypedBtn.style.display = 'inline-block';
+    }
+
+    const typedFp = document.getElementById('typed-followup-prompt');
+    if (typedFp) {
+      typedFp.style.display = 'none';
+      typedFp.innerHTML = '';
     }
 
     const tpGroup = document.getElementById('teleprompter-buttons-group');
@@ -6399,25 +6369,30 @@ ${(resumeText || '').slice(0, 3500)}`;
 
       // Clear answer input fields for follow-up
       const typedIn = document.getElementById('typed-answer-input');
-      if (typedIn) typedIn.value = '';
+      if (typedIn) {
+        typedIn.value = '';
+        typedIn.focus();
+      }
       currentSpokenTranscript = '';
       const spokenEl = document.getElementById('spoken-live-transcript');
       if (spokenEl) spokenEl.textContent = 'Listening for your follow-up response...';
 
-      // Render the follow-up prompt in the interviewer question box
+      // Render the follow-up prompt in the interviewer question box & typed box (REQ-PASS-10)
       const qTextEl = document.getElementById('alex-question-text');
       if (qTextEl) {
         qTextEl.innerHTML = `<span style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; font-size:11px; font-weight:800; padding:2px 7px; border-radius:4px; text-transform:uppercase; margin-right:6px;">Follow-Up</span> ${escapeHtml(followUpPrompt)}`;
       }
+      const typedFp = document.getElementById('typed-followup-prompt');
+      if (typedFp) {
+        typedFp.innerHTML = `<strong>Follow-Up:</strong> ${escapeHtml(followUpPrompt)}`;
+        typedFp.style.display = 'block';
+      }
 
       if (nextBtn) nextBtn.innerHTML = `Submit Follow-Up ➔`;
 
-      // In spoken mode, speak the follow-up prompt aloud
-      if (!isTextMode && synth) {
-        try {
-          const u = new SpeechSynthesisUtterance(followUpPrompt);
-          synth.speak(u);
-        } catch (e) {}
+      // In spoken mode, speak the follow-up prompt aloud with locked voice (REQ-PASS-09)
+      if (!isTextMode) {
+        window.speakAsInterviewer(followUpPrompt);
       }
       return;
     }
@@ -6534,12 +6509,6 @@ ${(resumeText || '').slice(0, 3500)}`;
   }
 
   function proceedToSession() {
-    if (window.currentSimMode === 'pressure') {
-      isTextMode = false;
-      if (typeof window.setInterviewMode === 'function') {
-        window.setInterviewMode(false);
-      }
-    }
     const displayedRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : '';
     const roleTarget = displayedRole || localStorage.getItem('atsRole') || currentDomain;
     const resumeTxt = localStorage.getItem('candidateResumeText') || '';
@@ -6552,7 +6521,14 @@ ${(resumeText || '').slice(0, 3500)}`;
       const jdCtx = getJobContextForRole(roleTarget, currentDomain);
       currentQuestions = window.buildResumeDefenseQuestions(roleTarget, resumeText, (jdCtx && jdCtx.keywords) || []);
       if (currentQuestions.length === 0) {
-        currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
+        const errBanner = document.getElementById('resume-defense-error-banner');
+        if (errBanner) {
+          errBanner.style.display = 'block';
+          errBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          alert("Couldn't read bullets from resume. Please upload your resume or paste bullet points in the ATS Scanner.");
+        }
+        return;
       }
     } else if (window.currentSimMode === 'passcheck') {
       currentQuestions = window.buildPassCheckQuestions(roleTarget, currentDomain);
@@ -6673,7 +6649,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     // Build Overall Summary
     let overallSummary = "";
     if (hasDuplicates) {
-      overallSummary = `⚠️ <strong>Repetitive Responses Detected:</strong> ${duplicateCount} of ${answeredCount} responses were identified as identical or canned duplicates (capped at 30%). AI screeners are built to flag repeated or canned answers. Give a distinct example for each question. To raise your readiness score, provide distinct, role-specific STAR examples for each individual prompt.`;
+      overallSummary = `⚠️ <strong>Repetitive Responses Detected:</strong> ${duplicateCount} of ${answeredCount} responses were identified as identical or canned duplicates (capped at 30%). AI screeners are built to flag repeated or canned answers. Give a distinct example for each question.`;
     } else if (avgScore >= 80 && kwHits >= 4) {
       overallSummary = `Strong readiness (${avgScore}%) for <strong>${roleTarget}</strong>. You aligned your answers with <strong>${kwHits} of ${kwTotal}</strong> core Job Description signals and achieved <strong>${quantifiedImpactPct}% Quantified Impact</strong>.`;
     } else if (answeredCount >= 3) {
@@ -6739,16 +6715,25 @@ ${(resumeText || '').slice(0, 3500)}`;
     const strengthSummary = [finishPraiseSummary, ...strongPoints.map(s => s.replace(/<[^>]+>/g, ''))].join(' | ');
     const growthSummary = weakPoints.map((w, i) => `${i + 1}. ${w.issue}: ${w.fix.replace(/<[^>]+>/g, '')}`).join('\n');
 
-    const vettedBadgeHTML = avgScore >= 80 ? `
+    const isPassCheckCompleted = (window.currentSimMode === 'passcheck');
+    const isPassCheckEarned = isPassCheckCompleted && avgScore >= 70;
+    const benchmarkLabel = avgScore >= 80 ? `High Readiness (${avgScore}%)` : (avgScore >= 60 ? `Solid Readiness (${avgScore}%)` : `Practice Benchmark (${avgScore}%)`);
+    const benchmarkColor = avgScore >= 80 ? '#34d399' : (avgScore >= 60 ? '#fbbf24' : '#60a5fa');
+
+    const vettedBadgeHTML = `
       <div style="background:linear-gradient(135deg, rgba(16,185,129,0.18) 0%, rgba(5,46,22,0.6) 100%); border:1px solid rgba(16,185,129,0.5); border-radius:12px; padding:16px 20px; margin-bottom:20px; display:flex; align-items:center; gap:14px;">
-        <span style="font-size:28px; flex-shrink:0;">🎯</span>
+        <span style="font-size:28px; flex-shrink:0;">${isPassCheckEarned ? '🎉' : '🎯'}</span>
         <div>
-          <div style="font-size:13.5px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.05em;">Practice Benchmark &bull; High Readiness (${avgScore}%)</div>
-          <div style="font-size:12.5px; font-weight:800; color:#93c5fd; margin-top:2px;">Next step: take the Pass Check <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="background:#10b981; color:#042f2e; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; cursor:pointer; margin-left:6px;">Start Pass Check ➔</button></div>
+          <div style="font-size:13.5px; font-weight:800; color:${benchmarkColor}; text-transform:uppercase; letter-spacing:0.05em;">Practice Benchmark &bull; ${benchmarkLabel}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#93c5fd; margin-top:2px;">
+            ${isPassCheckEarned
+              ? `Pass Check ✓ Earned! <a href="/apply" style="display:inline-block; background:#10b981; color:#042f2e; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; text-decoration:none; margin-left:6px;">Apply to Matching Roles ➔</a>`
+              : `Next step: take the Pass Check <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="background:#10b981; color:#042f2e; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; cursor:pointer; margin-left:6px;">Start Pass Check ➔</button>`}
+          </div>
           <div style="font-size:13px; color:#f3f4f6; margin-top:4px; line-height:1.45;">Your answers hit <strong>${kwHits} of ${kwTotal}</strong> core Job Description terms with <strong>${quantifiedImpactPct}% Quantified Impact</strong>. Review the specific feedback below to sharpen your edge before real screenings.</div>
         </div>
       </div>
-    ` : '';
+    `;
 
     const debriefCardsHTML = currentQuestions.map((qItem, idx) => {
       const res = sessionQuestionResults[idx] || {
