@@ -140,7 +140,7 @@ async function runLiveVerification() {
   assert(entRes.body.includes('href="#inquiry"') && entRes.body.includes('Request evaluators'), 'Live page must have Request evaluators button');
   assert(entRes.body.includes('href="#expert-network"') && entRes.body.includes('Join the expert network'), 'Live page must have Join the expert network button');
   assert(entRes.body.includes('id="expert-network"'), 'Live page must have #expert-network section');
-  assert(entRes.body.includes('https://form.jotform.com/263078785644067'), 'Live page must embed Jotform form');
+  assert(entRes.body.includes('https://form.jotform.com/263078475979074'), 'Live page must embed Jotform form');
   assert(entRes.body.includes('height:1400px'), 'Live Jotform iframe must have height:1400px');
   assert(entRes.body.includes('Can I work corp-to-corp?'), 'Live page must have C2C FAQ');
   assert(entRes.body.includes('Is joining the expert network free?'), 'Live page must have free FAQ');

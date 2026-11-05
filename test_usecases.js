@@ -1189,7 +1189,7 @@ assert(enterprisePageHtml.includes('href="#expert-network"') && enterprisePageHt
 assert(enterprisePageHtml.includes('id="expert-network"'), 'enterprise.html must have section id="expert-network"');
 assert(enterprisePageHtml.includes('Join the TrainAIToGain expert network. When a client project matches your background, we’ll contact you first.'), 'enterprise.html must contain exact intro text');
 assert(enterprisePageHtml.includes('Direct client projects can be W-2, 1099 or corp-to-corp. Mercor and micro1 roles are separate: those platforms contract with you directly as an individual.'), 'enterprise.html must contain C2C / platform contract text');
-assert(enterprisePageHtml.includes('https://form.jotform.com/263078785644067'), 'enterprise.html must embed the Jotform form');
+assert(enterprisePageHtml.includes('https://form.jotform.com/263078475979074'), 'enterprise.html must embed the Jotform form');
 assert(enterprisePageHtml.includes('height:1400px'), 'enterprise.html Jotform iframe must have height:1400px');
 
 // 3. 3 Collapsible FAQ items
