@@ -500,7 +500,7 @@ function getRoleRequirements(role) {
         license = 'CFA Charterholder';
     } else if (text.includes('medical license') || text.includes('board certified') || text.includes('physician') || text.includes('doctor') || text.includes('md/do') || text.includes('surgeon')) {
         license = 'Active Medical License (MD/DO)';
-    } else if (text.includes('registered nurse') || text.includes('rn ') || text.includes('(rn)') || text.includes('nursing license') || text.includes('bsn')) {
+    } else if (text.includes('registered nurse') || /\brn\b/i.test(text) || text.includes('(rn)') || text.includes('nursing license') || text.includes('bsn')) {
         license = 'Active RN License';
     } else if (text.includes('bar admission') || text.includes('admitted to the bar') || text.includes('law license') || text.includes('attorney') || text.includes('lawyer')) {
         license = 'Bar Admission / Licensed Attorney';
@@ -547,10 +547,12 @@ function parseRolePay(rawPay, title) {
             }
             return { cleanPay: 'Competitive', yearlyValue: 0 };
         }
-        // Normalize single-value ranges e.g. $230-$230/hr -> $230/hr
+        // Normalize single-value ranges e.g. $230-$230/hr -> $230/hr, and ensure dual dollar signs ($100–$130/hr)
         let clean = rawPay;
-        if (minVal === maxVal && rawPay.includes('-')) {
+        if (minVal === maxVal && (rawPay.includes('-') || rawPay.includes('–'))) {
             clean = `$${maxVal}/hr`;
+        } else if (rawPay.includes('-') || rawPay.includes('–')) {
+            clean = `$${minVal}–$${maxVal}/hr`;
         }
         return { cleanPay: clean, yearlyValue: maxVal * 2000 };
     }

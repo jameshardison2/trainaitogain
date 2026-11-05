@@ -2173,7 +2173,22 @@ window.addEventListener('unhandledrejection', function(event) {
   function updateResumeRoleMatches() {
     const resTxt = (localStorage.getItem('candidateResumeText') || '').toLowerCase();
     if (!resTxt || resTxt.length < 50) return;
+    const languages = ['dutch', 'german', 'french', 'spanish', 'italian', 'portuguese', 'japanese', 'chinese', 'mandarin', 'korean', 'arabic', 'hindi', 'bengali', 'tamil', 'telugu', 'malayalam', 'marathi', 'gujarati', 'danish', 'finnish', 'norwegian', 'swedish', 'polish', 'russian', 'turkish', 'vietnamese', 'indonesian', 'thai'];
     window.allRoleItems.forEach(item => {
+      const titleLow = (item.cleanTitle || '').toLowerCase();
+      // Mandatory language requirement: if position title names a foreign language, candidate resume must contain it
+      let requiredLang = null;
+      for (const lang of languages) {
+        if (new RegExp('\\b' + lang + '\\b', 'i').test(titleLow)) {
+          requiredLang = lang;
+          break;
+        }
+      }
+      if (requiredLang && !resTxt.includes(requiredLang)) {
+        item.isResumeMatch = false;
+        return;
+      }
+
       let hits = 0;
       if (item.atsKeywords && Array.isArray(item.atsKeywords)) {
         item.atsKeywords.forEach(kw => {
@@ -2389,6 +2404,11 @@ window.addEventListener('unhandledrejection', function(event) {
     // Update Screen 2 active position label
     const actPos = document.getElementById('active-position-label');
     if (actPos) actPos.textContent = clean;
+
+    // Immediately re-initialize Quizlet flashcard deck with new role's 10 questions (Blocker 1 fix)
+    if (typeof window.initFlashcardsDeck === 'function') {
+      window.initFlashcardsDeck();
+    }
 
     // If session is already in flight, regenerate questions and update active view
     if (interviewStarted && !interviewCompleted) {
@@ -2866,6 +2886,18 @@ window.addEventListener('unhandledrejection', function(event) {
       .replace(/\s*\(Your Target Role\)\s*/i, '')
       .trim();
 
+    const roleArticle = getIndefiniteArticle(cleanRole);
+
+    const formatSkill = (kw) => {
+      const s = String(kw || '').trim();
+      if (!s) return 'core technical deliverables';
+      if (/annotator$/i.test(s)) return s.replace(/annotator$/i, 'annotation');
+      if (/(engineer|developer|specialist|analyst|consultant|officer|associate|expert)$/i.test(s)) {
+        return s + ' workflows';
+      }
+      return s;
+    };
+
     const k0 = canonicalKws[0] || 'core technical deliverables';
     const k1 = canonicalKws[1] || 'quality verification';
     const k2 = canonicalKws[2] || 'edge-case handling';
@@ -2880,20 +2912,20 @@ window.addEventListener('unhandledrejection', function(event) {
     // Question 1: Role Overview & Daily Ownership
     if (hasResume) {
       questions.push({
-        q: `Walk me through your most recent role and what you were primarily responsible for day to day in ${cleanRole}, specifically involving ${k0} and ${k1}.`,
+        q: `Walk me through your most recent role and what you were primarily responsible for day to day as ${roleArticle} ${cleanRole}, specifically involving ${formatSkill(k0)} and ${formatSkill(k1)}.`,
         audio: "/audio/q_resume_1.mp3",
         category: "Role & Core Ownership",
-        answer: `In my recent role in ${cleanRole}, I held direct ownership of ${k0} and ${k1}, structuring standard workflows, collaborating across teams, and maintaining rigorous quality benchmarks.`,
+        answer: `In my recent work as ${roleArticle} ${cleanRole}, I held direct ownership of ${formatSkill(k0)} and ${formatSkill(k1)}, structuring standard workflows, collaborating across teams, and maintaining rigorous quality benchmarks.`,
         keywords: [k0, k1, k2],
         feedbackHit: `Clear introduction. You gave direct context on your role and anchored your day-to-day responsibilities in ${k0}.`,
         feedbackMiss: `Weave in specific Job Description skills (${k0}, ${k1}) and state your direct scope of ownership.`
       });
     } else {
       questions.push({
-        q: `Tell me about your background ${formatBackgroundInRole(cleanRole)} and what types of complex problems you typically solve involving ${k0}.`,
+        q: `Tell me about your background ${formatBackgroundInRole(cleanRole)} and what types of complex problems you typically solve involving ${formatSkill(k0)}.`,
         audio: "/audio/q_resume_1.mp3",
         category: "Role & Core Ownership",
-        answer: `I specialize in ${cleanRole}, applying systematic analysis across ${k0} and ${k1} to solve complex problems and ensure high-accuracy deliverables.`,
+        answer: `I specialize in ${cleanRole}, applying systematic analysis across ${formatSkill(k0)} and ${formatSkill(k1)} to solve complex problems and ensure high-accuracy deliverables.`,
         keywords: [k0, k1, k2],
         feedbackHit: `Great summary of your core strengths and alignment with ${cleanRole}.`,
         feedbackMiss: `Give one concrete example using key Job Description skills (${k0}, ${k1}).`
@@ -2903,20 +2935,20 @@ window.addEventListener('unhandledrejection', function(event) {
     // Question 2: Measurable Impact & Project Deep Dive
     if (hasResume) {
       questions.push({
-        q: `Tell me about a specific high-impact project or achievement in ${cleanRole} where you leveraged ${k0} or ${k1} to produce a measurable result.`,
+        q: `Tell me about a specific high-impact project or achievement in your work as ${roleArticle} ${cleanRole} where you leveraged ${formatSkill(k0)} or ${formatSkill(k1)} to produce a measurable result.`,
         audio: "/audio/q_resume_2.mp3",
         category: "Measurable Project Impact",
-        answer: `On a high-impact initiative, our team faced execution bottlenecks around ${k0}. I engineered a structured solution using ${k1}, implemented automated validation gates, and delivered a 25%+ improvement in efficiency and accuracy.`,
+        answer: `On a high-impact initiative, our team faced execution bottlenecks around ${formatSkill(k0)}. I engineered a structured solution using ${formatSkill(k1)}, implemented automated validation gates, and delivered a 25%+ improvement in efficiency and accuracy.`,
         keywords: [k0, k1, 'metrics', 'optimization'],
         feedbackHit: `Great focus on results. Highlighting concrete metrics and tools like ${k0} aligns directly with how AI screeners score impact.`,
         feedbackMiss: `Follow the STAR method: Situation, Task, Action (naming ${k1}), and the final quantified Result.`
       });
     } else {
       questions.push({
-        q: `Tell me about a specific project or initiative in ${cleanRole} where you had to balance accuracy and speed. What was the outcome?`,
+        q: `Tell me about a specific project or initiative in your work as ${roleArticle} ${cleanRole} where you had to balance accuracy and speed. What was the outcome?`,
         audio: "/audio/q_no_resume_2.mp3",
         category: "Measurable Project Impact",
-        answer: `I identified a critical quality bottleneck involving ${k0}, established an audit framework with ${k1}, and delivered a measurable 20%+ increase in turnaround speed while maintaining zero defects.`,
+        answer: `I identified a critical quality bottleneck involving ${formatSkill(k0)}, established an audit framework with ${formatSkill(k1)}, and delivered a measurable 20%+ increase in turnaround speed while maintaining zero defects.`,
         keywords: [k0, k1, 'accuracy', 'turnaround'],
         feedbackHit: `Strong systematic focus. Citing quantified outcomes and verification standards demonstrates production readiness.`,
         feedbackMiss: `Detail your exact step-by-step contribution and include a quantified result.`
@@ -2925,10 +2957,10 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Question 3: AI Model Output Review & Hallucination Spotting
     questions.push({
-      q: `Which part of your background ${formatBackgroundInRole(cleanRole)} makes you an exceptional reviewer of AI model outputs or automated deliverables when evaluating ${k1} and ${k2}?`,
+      q: `Which part of your background ${formatBackgroundInRole(cleanRole)} makes you an exceptional reviewer of AI model outputs or automated deliverables when evaluating ${formatSkill(k1)} and ${formatSkill(k2)}?`,
       audio: "/audio/q_general_1.mp3",
       category: "AI Output & Hallucinations",
-      answer: `My hands-on experience with ${k1} and ${k2} allows me to spot subtle hallucinations, verify boundary edge cases, and uphold strict rubric precision that generalists miss.`,
+      answer: `My hands-on experience with ${formatSkill(k1)} and ${formatSkill(k2)} allows me to spot subtle hallucinations, verify boundary edge cases, and uphold strict rubric precision that generalists miss.`,
       keywords: [k1, k2, 'hallucinations', 'edge cases', 'rubric precision'],
       feedbackHit: `Excellent connection. Demonstrating how your domain expertise catches subtle edge cases is exactly what AI evaluation platforms look for.`,
       feedbackMiss: `Connect your hands-on experience to spotting hallucinations and boundary edge cases in ${k1}.`
@@ -2936,10 +2968,10 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Question 4: Primary Technical Competency & Failure Modes
     questions.push({
-      q: `In your specialized work with ${k0}, what are the most common failure modes or subtle edge cases you encounter, and how do you systematically diagnose and resolve them?`,
+      q: `In your specialized work with ${formatSkill(k0)}, what are the most common failure modes or subtle edge cases you encounter, and how do you systematically diagnose and resolve them?`,
       audio: domAudios[0] || "/audio/q_general_2.mp3",
       category: "Technical Deep Dive",
-      answer: `When handling ${k0}, failure modes typically stem from boundary condition mismatches or uncalibrated assumptions. I isolate the root cause through step-by-step stress tests, validate against source specifications, and implement preventative checks.`,
+      answer: `When handling ${formatSkill(k0)}, failure modes typically stem from boundary condition mismatches or uncalibrated assumptions. I isolate the root cause through step-by-step stress tests, validate against source specifications, and implement preventative checks.`,
       keywords: [k0, 'root-cause', 'edge cases', 'stress tests', 'validation'],
       feedbackHit: `Excellent technical depth. You articulated realistic failure modes in ${k0} and outlined a systematic diagnosis process.`,
       feedbackMiss: `Demonstrate deep subject matter expertise by citing a specific failure mode in ${k0} and your step-by-step resolution.`
@@ -2947,10 +2979,10 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Question 5: Secondary Technical Competency & Workflow Architecture
     questions.push({
-      q: `Walk me through how you integrate ${k1} into a scalable, high-accuracy workflow. What architectural or procedural trade-offs do you consider?`,
+      q: `Walk me through how you integrate ${formatSkill(k1)} into a scalable, high-accuracy workflow. What architectural or procedural trade-offs do you consider?`,
       audio: domAudios[1] || "/audio/q_general_3.mp3",
       category: "Architecture & Systems",
-      answer: `I design workflows around ${k1} by establishing deterministic validation checkpoints, balancing throughput against strict verification standards, and ensuring rapid feedback loops for edge cases.`,
+      answer: `I design workflows around ${formatSkill(k1)} by establishing deterministic validation checkpoints, balancing throughput against strict verification standards, and ensuring rapid feedback loops for edge cases.`,
       keywords: [k1, 'workflow', 'architecture', 'scalability', 'trade-offs'],
       feedbackHit: `Strong architectural perspective. Addressing trade-offs while maintaining high standards shows senior-level execution.`,
       feedbackMiss: `Discuss how ${k1} scales in production and the trade-offs between speed, cost, and accuracy.`
@@ -2958,10 +2990,10 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Question 6: Edge Cases, Data Integrity & Anomaly Detection
     questions.push({
-      q: `Describe a scenario where data anomalies, ambiguous specifications, or corrupted inputs threatened ${k2}. How did you detect and resolve the issue?`,
+      q: `Describe a scenario where data anomalies, ambiguous specifications, or corrupted inputs threatened ${formatSkill(k2)}. How did you detect and resolve the issue?`,
       audio: "",
       category: "Edge Cases & Data Integrity",
-      answer: `I identified an anomaly where inconsistent boundary data compromised ${k2}. I conducted an audit, isolated the discrepancies against ground truth benchmarks, and revised our filtering criteria to prevent recurrence.`,
+      answer: `I identified an anomaly where inconsistent boundary data compromised ${formatSkill(k2)}. I conducted an audit, isolated the discrepancies against ground truth benchmarks, and revised our filtering criteria to prevent recurrence.`,
       keywords: [k2, 'data anomalies', 'audit', 'ground truth', 'filtering'],
       feedbackHit: `Great problem-solving narrative. You showed vigilance in detecting anomalies and protecting pipeline integrity.`,
       feedbackMiss: `Detail how you detected the anomaly in ${k2} and the exact verification safeguards you put in place.`
@@ -2969,7 +3001,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Question 7: Rubric Calibration & Subject Matter Disagreements
     questions.push({
-      q: `When evaluating complex deliverables under strict guidelines, how do you handle situations where two qualified domain experts disagree on rubric scoring or evaluation criteria for ${k0}?`,
+      q: `When evaluating complex deliverables under strict guidelines, how do you handle situations where two qualified domain experts disagree on rubric scoring or evaluation criteria for ${formatSkill(k0)}?`,
       audio: "",
       category: "Rubric Calibration",
       answer: `I deconstruct the disagreement down to objective ground-truth criteria, cross-reference the formal rubric guidelines, and document empirical evidence to align both reviewers on a defensible, standardized consensus.`,
@@ -2980,10 +3012,10 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Question 8: Compliance, Benchmarks & Ground Truth Auditing
     questions.push({
-      q: `How do you verify ground truth and enforce benchmark standards when auditing outputs involving ${k3} and ${k4}?`,
+      q: `How do you verify ground truth and enforce benchmark standards when auditing outputs involving ${formatSkill(k3)} and ${formatSkill(k4)}?`,
       audio: "",
       category: "Benchmark Verification",
-      answer: `I cross-reference outputs against authoritative primary sources and verified benchmark datasets, applying multi-point verification matrices across ${k3} and ${k4} to ensure zero tolerance for ungrounded assertions.`,
+      answer: `I cross-reference outputs against authoritative primary sources and verified benchmark datasets, applying multi-point verification matrices across ${formatSkill(k3)} and ${formatSkill(k4)} to ensure zero tolerance for ungrounded assertions.`,
       keywords: [k3, k4, 'benchmarks', 'ground truth', 'verification matrix', 'compliance'],
       feedbackHit: `Strong compliance mindset. Establishing multi-point ground truth checks guarantees benchmark reliability.`,
       feedbackMiss: `Emphasize your ground-truth sources and the verification checks you run on ${k3} and ${k4}.`
@@ -2991,10 +3023,10 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Question 9: Workflow Optimization & Review Turnaround
     questions.push({
-      q: `Walk me through how you would optimize an end-to-end evaluation pipeline or technical process involving ${k1} to reduce review turnaround while improving precision.`,
+      q: `Walk me through how you would optimize an end-to-end evaluation pipeline or technical process involving ${formatSkill(k1)} to reduce review turnaround while improving precision.`,
       audio: "",
       category: "Workflow Optimization",
-      answer: `I would profile the existing pipeline to identify review bottlenecks, automate pre-validation checks for routine criteria involving ${k1}, and focus expert human review on high-complexity boundary cases.`,
+      answer: `I would profile the existing pipeline to identify review bottlenecks, automate pre-validation checks for routine criteria involving ${formatSkill(k1)}, and focus expert human review on high-complexity boundary cases.`,
       keywords: [k1, 'optimization', 'turnaround', 'automation', 'bottlenecks'],
       feedbackHit: `Spot-on efficiency strategy. Pairing automated pre-filtering with focused human expertise maximizes both speed and accuracy.`,
       feedbackMiss: `Identify the bottleneck in ${k1} and explain how streamlining the review process preserves quality.`
@@ -3002,10 +3034,10 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Question 10: Stress-Testing & High-Pressure Delivery
     questions.push({
-      q: `Tell me about a time you had to deliver under tight deadlines with high accuracy requirements in ${cleanRole}. How did you prioritize your verification steps without compromising quality?`,
+      q: `Tell me about a time you had to deliver under tight deadlines with high accuracy requirements as ${roleArticle} ${cleanRole}. How did you prioritize your verification steps without compromising quality?`,
       audio: "",
       category: "Quality Under Pressure",
-      answer: `Under a compressed delivery timeline, I triaged deliverables by risk severity, applied non-negotiable checks to critical paths involving ${k0} and ${k2}, and completed the milestone with zero defect escapes.`,
+      answer: `Under a compressed delivery timeline, I triaged deliverables by risk severity, applied non-negotiable checks to critical paths involving ${formatSkill(k0)} and ${formatSkill(k2)}, and completed the milestone with zero defect escapes.`,
       keywords: [k0, k2, 'triage', 'risk assessment', 'deadline', 'quality assurance'],
       feedbackHit: `Impressive poise and prioritization. Demonstrating risk-based triage under pressure signals production readiness.`,
       feedbackMiss: `Highlight how you triage critical vs secondary tasks and protect core quality in ${cleanRole} under time pressure.`
@@ -3970,6 +4002,13 @@ ${(resumeText || '').slice(0, 3500)}`;
       return token;
     });
 
+    // 2. Highlight bracketed fill-in-the-blank placeholders [Placeholder] in yellow badge styling
+    safe = safe.replace(/\[([^\]]+)\]/g, (match, inner) => {
+      const token = `__JDKW_TOKEN_${placeholders.length}__`;
+      placeholders.push(`<mark style="background:rgba(251,191,36,0.25); color:#fef08a; border-bottom:1.5px solid #f59e0b; padding:1px 6px; border-radius:4px; font-weight:800;">[${inner}]</mark>`);
+      return token;
+    });
+
     // 2. Highlight matching Job Description keywords (sorted longest first so multi-word terms match intact)
     const validKws = Array.from(new Set((keywords || [])
       .map(k => String(k || '').trim())
@@ -4085,11 +4124,11 @@ ${(resumeText || '').slice(0, 3500)}`;
     let videoLessonFocus = "";
     let primaryVideoHref = "/video-guides.html#lesson-11";
 
-    const companyPlaceholder = parsedResume.companyName ? parsedResume.companyName : "[Your Recent Employer / Project]";
-    const rolePlaceholder = parsedResume.cleanRoleTitle ? parsedResume.cleanRoleTitle : "[Your Target Role / Title]";
+    const companyPlaceholder = "[Your Recent Employer / Project]";
+    const rolePlaceholder = `[Your Target Role: ${roleTitle}]`;
     const primarySkill = qKeywords[0] || "[Primary Tool / Core Skill]";
     const secondarySkill = qKeywords[1] || "[Secondary Framework / Methodology]";
-    const metricPlaceholder = parsedResume.cleanMetricPhrase || "[Measurable Result: e.g. 25%+ improvement in turnaround / accuracy]";
+    const metricPlaceholder = "[Measurable Result: e.g. 25%+ improvement in turnaround / accuracy]";
 
     if (qPromptLower.includes("most recent role") || qPromptLower.includes("primarily responsible for day to day") || qPromptLower.includes("tell me about your background")) {
       starSituationTask = `In my recent work as **${rolePlaceholder}** at **${companyPlaceholder}**, my primary ownership was leading deliverables around **${primarySkill}** and **${secondarySkill}**, ensuring production quality across our core pipeline.`;
@@ -4282,8 +4321,8 @@ ${(resumeText || '').slice(0, 3500)}`;
 
         <!-- 1. TELEPROMPTER FLOW VIEW (ALL 3 PHASES VISIBLE TOGETHER IMMEDIATELY) -->
         <div class="star-view-teleprompter-wrap" style="display:block;">
-          <div class="star-tp-scroll-viewport" style="max-height:540px; overflow-y:auto; overflow-x:hidden; scroll-behavior:smooth; padding-right:4px;">
-            <div class="star-teleprompter-text-body" style="font-size:16.5px; line-height:1.52; color:#ffffff;">
+          <div class="star-tp-scroll-viewport" style="max-height:220px; overflow-y:auto; overflow-x:hidden; scroll-behavior:smooth; padding-right:4px;">
+            <div class="star-teleprompter-text-body" style="font-size:${_starFontSize}px; line-height:1.52; color:#ffffff;">
               <!-- Phase 1: Opening Hook & Scope -->
               <div class="tp-sec-hook" style="margin-bottom:6px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #3b82f6; border-radius:5px; transition:all 0.25s ease;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
@@ -4757,8 +4796,32 @@ ${(resumeText || '').slice(0, 3500)}`;
     let whatWorked = "";
     let toTighten = "";
 
+    // Anti-gaming duplicate / canned response detection across questions
+    const prevAnswers = (sessionQuestionResults || []).filter((r, i) => i !== qIndex && r && r.answer && r.answer !== '(Not answered)');
+    let isDuplicateAnswer = false;
+    if (prevAnswers.length > 0 && wordCount >= 10) {
+      const cleanCurrent = rawText.toLowerCase().replace(/[^a-z0-9]/g, '');
+      isDuplicateAnswer = prevAnswers.some(prev => {
+        const cleanPrev = (prev.answer || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (cleanCurrent === cleanPrev) return true;
+        if (cleanCurrent.length > 30 && cleanPrev.length > 30) {
+          const minLen = Math.min(cleanCurrent.length, cleanPrev.length);
+          let matchChars = 0;
+          for (let ci = 0; ci < minLen; ci++) {
+            if (cleanCurrent[ci] === cleanPrev[ci]) matchChars++;
+          }
+          return (matchChars / minLen) > 0.8;
+        }
+        return false;
+      });
+    }
+
     const isBriefOrBlank = (wordCount < 15 || rawText === "No response provided" || rawText === "I don't know" || rawText === "");
-    if (isBriefOrBlank) {
+    if (isDuplicateAnswer) {
+      confScore = 30;
+      whatWorked = "⚠️ Repeated Response Detected: This answer appears identical or nearly identical to a response submitted for an earlier question.";
+      toTighten = "Autonomous AI screening models flag repetitive or canned answers immediately. Each interview question requires a unique scenario tailored to that specific prompt.";
+    } else if (isBriefOrBlank) {
       // Item 9: An answer under 15 words caps that question at 40%
       confScore = wordCount === 0 ? 25 : Math.min(40, 20 + wordCount);
       whatWorked = "⚠️ Needs More Detail: Your response is under 15 words (capped at 40%). AI screeners require concrete technical detail, tools, and outcomes to verify your experience.";
@@ -5600,10 +5663,10 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     const vettedBadgeHTML = avgScore >= 80 ? `
       <div style="background:linear-gradient(135deg, rgba(16,185,129,0.18) 0%, rgba(5,46,22,0.6) 100%); border:1px solid rgba(16,185,129,0.5); border-radius:12px; padding:16px 20px; margin-bottom:20px; display:flex; align-items:center; gap:14px;">
-        <span style="font-size:28px; flex-shrink:0;">🏆</span>
+        <span style="font-size:28px; flex-shrink:0;">🎯</span>
         <div>
-          <div style="font-size:13.5px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.05em;">Vetted Candidate &bull; Top 10% Readiness</div>
-          <div style="font-size:13px; color:#f3f4f6; margin-top:3px; line-height:1.45;">Your STAR delivery, technical keyword coverage, and quantifiable impact meet the passing threshold for autonomous AI screenings (Mercor &amp; micro1). Apply directly to your matched roles below.</div>
+          <div style="font-size:13.5px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.05em;">Practice Benchmark &bull; High Readiness (${avgScore}%)</div>
+          <div style="font-size:13px; color:#f3f4f6; margin-top:3px; line-height:1.45;">Your answers hit <strong>${kwHits} of ${kwTotal}</strong> core Job Description terms with <strong>${quantifiedImpactPct}% Quantified Impact</strong>. Review the specific feedback below to sharpen your edge before real screenings.</div>
         </div>
       </div>
     ` : '';
@@ -5621,20 +5684,30 @@ ${(resumeText || '').slice(0, 3500)}`;
       const matchedPills = (res.matchedKeywords || []).map(k => `<span style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; font-size:11px; font-weight:700; padding:2px 7px; border-radius:100px;">✓ ${k}</span>`).join(' ');
       const missedPills = (res.missedKeywords || []).slice(0, 4).map(k => `<span style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#9ca3af; font-size:11px; padding:2px 7px; border-radius:100px;">+ ${k}</span>`).join(' ');
 
+      const qParts = (typeof computeStarPartsForQuestion === 'function')
+        ? computeStarPartsForQuestion(qItem, idx, res.answer)
+        : { videoLessonFocus: '' };
+
       return `
         <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.09); border-radius:10px; padding:14px 16px; margin-bottom:10px; text-align:left;">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; margin-bottom:6px;">
-            <div style="font-size:13px; font-weight:800; color:#f3f4f6; flex:1;">Q${idx + 1}: ${qItem.q}</div>
+            <div style="font-size:13px; font-weight:800; color:#f3f4f6; flex:1;">Q${idx + 1} (${qItem.category || 'Core Question'}): ${qItem.q}</div>
             <div style="display:flex; align-items:center; gap:8px;">
               <span style="font-size:12px; font-weight:800; color:${scoreBadgeColor}; background:rgba(0,0,0,0.4); padding:3px 9px; border-radius:100px; border:1px solid ${scoreBadgeColor}55;">${res.score}%</span>
               <button type="button" onclick="window.redrillSingleQuestion(${idx})" style="background:rgba(59,130,246,0.18); color:#93c5fd; border:1px solid rgba(59,130,246,0.4); border-radius:6px; padding:4px 10px; font-size:11.5px; font-weight:800; cursor:pointer;">🎯 Re-Drill</button>
             </div>
           </div>
           <div style="font-size:12px; color:#9ca3af; font-style:italic; margin-bottom:8px;">Your response: "${(res.answer || '').slice(0, 160)}${(res.answer || '').length > 160 ? '...' : ''}"</div>
-          <div style="display:flex; flex-wrap:wrap; gap:5px; align-items:center;">
+          <div style="display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin-bottom:6px;">
             <span style="font-size:10.5px; color:#9ca3af; font-weight:700; text-transform:uppercase; margin-right:4px;">JD Keywords:</span>
             ${matchedPills} ${missedPills}
           </div>
+          ${qParts.videoLessonFocus ? `
+            <div style="font-size:11.5px; color:#93c5fd; padding-top:6px; border-top:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; gap:6px;">
+              <span>🎥 <strong>Recommended Masterclass Lesson:</strong></span>
+              <span>${qParts.videoLessonFocus}</span>
+            </div>
+          ` : ''}
         </div>
       `;
     }).join('');
