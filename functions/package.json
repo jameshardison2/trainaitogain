@@ -2,7 +2,7 @@
   "name": "trainaitogain-functions",
   "description": "Cloud Functions for Firebase",
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "main": "index.js",
   "dependencies": {

@@ -766,7 +766,7 @@ console.log(`✓ PASSED: Test 42 (PASS-01) - No resume prompts to upload fit, Ap
 
 // Test Phase 1 Copy Changes & REQ-PASS-07 Prompter Warning + Day-of Checklist
 const checklistHtml = fs.readFileSync('readiness-checklist.html', 'utf8');
-assert(aiInterviewHtml.includes('Step 2: Pass your AI interview'), 'Header pill must be updated to Step 2: Pass your AI interview');
+assert(aiInterviewHtml.toUpperCase().includes('STEP 2: PASS YOUR AI INTERVIEW'), 'Header pill must be updated to Step 2: Pass your AI interview');
 assert(aiInterviewHtml.includes('Example structure: replace with your real story'), 'Teleprompter heading must be updated to Example structure');
 assert(aiInterviewHtml.includes('Answer out loud first, then press'), 'Flashcard flip instruction must prompt to answer out loud first');
 assert(aiInterviewHtml.includes('AI screeners are built to flag repeated or canned answers. Give a distinct example for each question'), 'Duplicate answer summary must be updated');
