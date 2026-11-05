@@ -34,7 +34,8 @@ async function runLiveVerification() {
   
   assert(aiRes.body.includes('STEP 2: PASS YOUR AI INTERVIEW'), 'Live header pill must contain STEP 2: PASS YOUR AI INTERVIEW');
   assert(!aiRes.body.includes('STEP 2 (OPTIONAL)'), 'Live header must NOT contain STEP 2 (OPTIONAL)');
-  console.log('✓ PASS: Live header reads "STEP 2: PASS YOUR AI INTERVIEW"');
+  assert(aiRes.body.includes('href="/enterprise"') && aiRes.body.includes('For Teams'), 'Live ai-interview must have For Teams tab');
+  console.log('✓ PASS: Live header reads "STEP 2: PASS YOUR AI INTERVIEW" and includes For Teams tab');
 
   assert(aiRes.body.includes('Practice only. Don\'t use notes, prompters or overlays in a real interview.'), 'Live prompter must include practice-only banner');
   console.log('✓ PASS: Live prompter includes "Practice only" warning banner');
