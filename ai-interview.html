@@ -313,7 +313,7 @@ window.addEventListener('unhandledrejection', function(event) {
 <div id="page-hero-header" style="text-align:center; padding: 36px 16px 12px; max-width:760px; margin:0 auto;">
   <div style="display:inline-block; background:rgba(16,185,129,0.15); color:var(--primary); font-weight:800; font-size:12.5px; text-transform:uppercase; letter-spacing:0.08em; padding:6px 16px; border-radius:100px; margin-bottom:10px;">STEP 2: PASS YOUR AI INTERVIEW</div>
   <h1 style="font-size:34px; font-weight:800; color:var(--white); margin:0 0 8px; letter-spacing:-0.02em;">Live AI Mock Interview</h1>
-  <p style="color:#9ca3af; font-size:14px; font-weight:600; margin:0 auto;">About 15 minutes &middot; 10 questions &middot; aim for 60&ndash;90 seconds per answer</p>
+  <p id="page-hero-subtitle" style="color:#9ca3af; font-size:14px; font-weight:600; margin:0 auto;">About 15 minutes &middot; 10 questions &middot; aim for 60&ndash;90 seconds per answer</p>
 </div>
 
 <!-- Settings Modal (Gear Icon on Screen 1 & Screen 2) -->
@@ -2750,7 +2750,7 @@ window.addEventListener('unhandledrejection', function(event) {
       failsDomain = true;
     } else if (isLegal && !/\b(juris doctor|j\.d\.|law degree|attorney|bar admission|legal counsel|paralegal|litigation|law school|admitted to the bar|practicing attorney)\b/i.test(resLow)) {
       failsDomain = true;
-    } else if (isMedical && !/\b(md\b|do\b|m\.d\.|physician|residency|medical doctor|clinical trial|pharmacology|board certified|registered nurse|rn\b)\b/i.test(resLow)) {
+    } else if (isMedical && !(/\b(m\.d\.|doctor of medicine|doctor of osteopathy|d\.o\.|licensed physician|board certified|medical residency|usmle|hospitalist|clinical fellowship|registered nurse|\brn\b|general practitioner)\b/i.test(resLow) || /\bMD\b|\bDO\b/.test(resTxt))) {
       failsDomain = true;
     } else if (isFinance && !/\b(investment banking|private equity|financial modeling|dcf valuation|cfa\b|series 7|equity research|portfolio management)\b/i.test(resLow)) {
       failsDomain = true;
@@ -5872,11 +5872,19 @@ ${(resumeText || '').slice(0, 3500)}`;
       toTighten = "Coach Gain says: Strong coverage of the Job Description terms and STAR structure. Keep your delivery crisp at 60–90 seconds.";
     }
 
+    const isOffTopicNoKeywords = (matches === 0 && kwsToEvaluate.length > 0 && wordCount >= 15 && !isDuplicateAnswer && !isBriefOrBlank);
+    if (isOffTopicNoKeywords) {
+      whatWorked = "⚠️ No Core Job Description Terms Detected: Your response did not include any of the core technical keywords required for this position.";
+      toTighten = "🎯 <strong>Coach Gain says:</strong> Autonomous AI evaluators score domain competence by checking for role-specific methods, frameworks, and tools. Ground your STAR example in the role's core technical scope rather than general workplace activities.\n" + toTighten;
+    }
+
     let cappedScore;
     if (isDuplicateAnswer) {
       cappedScore = 30; // Strict 30% cap for repeated duplicate submissions
     } else if (wordCount < 15) {
       cappedScore = Math.min(40, Math.max(0, confScore));
+    } else if (isOffTopicNoKeywords) {
+      cappedScore = Math.min(38, Math.max(20, confScore - 35)); // Strict 38% cap for off-topic / zero-keyword answers
     } else {
       cappedScore = Math.min(100, Math.max(35, confScore));
     }
@@ -5902,6 +5910,16 @@ ${(resumeText || '').slice(0, 3500)}`;
         <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
       </div>
       ${suggestedStarHTML}
+    ` : (isOffTopicNoKeywords ? `
+      <div style="background:rgba(239,68,68,0.12); border-left:3px solid #ef4444; padding:14px 18px; border-radius:8px; margin-bottom:12px;">
+        <div style="font-size:12px; font-weight:800; color:#f87171; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">⚠️ Off-Topic / Zero Job Description Terms (Capped at 38%):</div>
+        <div style="color:#ffffff; font-size:14px; line-height:1.5;">${whatWorked}</div>
+      </div>
+      <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3b82f6; padding:14px 18px; border-radius:8px;">
+        <div style="font-size:12px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">💡 Coach Gain says — To Tighten for the Real Interview:</div>
+        <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
+      </div>
+      ${suggestedStarHTML}
     ` : `
       <div style="background:rgba(16,185,129,0.08); border-left:3px solid var(--primary); padding:14px 18px; border-radius:8px; margin-bottom:12px;">
         <div style="font-size:12px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">✓ What Worked:</div>
@@ -5912,7 +5930,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
       </div>
       ${suggestedStarHTML}
-    `);
+    `));
 
     return {
       rawText,
@@ -6611,6 +6629,9 @@ ${(resumeText || '').slice(0, 3500)}`;
     } else {
       currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
     }
+    if (typeof window.updateHeroSubtitle === 'function') {
+      window.updateHeroSubtitle(window.currentSimMode);
+    }
     sessionTargetKeywords.clear();
     sessionMatchedKeywords.clear();
     sessionQuestionResults = [];
@@ -6806,7 +6827,9 @@ ${(resumeText || '').slice(0, 3500)}`;
           <div style="font-size:12.5px; font-weight:800; color:#93c5fd; margin-top:2px;">
             ${isPassCheckEarned
               ? `Pass Check ✓ Earned! <a href="/apply" style="display:inline-block; background:#10b981; color:#042f2e; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; text-decoration:none; margin-left:6px;">Apply to Matching Roles ➔</a>`
-              : `Next step: take the Pass Check <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="background:#10b981; color:#042f2e; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; cursor:pointer; margin-left:6px;">Start Pass Check ➔</button>`}
+              : (isPassCheckCompleted
+                  ? `Next step: retake Pass Check to earn your green checkmark <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="background:#10b981; color:#042f2e; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; cursor:pointer; margin-left:6px;">Retake Pass Check ➔</button>`
+                  : `Next step: take the Pass Check <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="background:#10b981; color:#042f2e; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; cursor:pointer; margin-left:6px;">Start Pass Check ➔</button>`)}
           </div>
           <div style="font-size:13px; color:#f3f4f6; margin-top:4px; line-height:1.45;">Your answers hit <strong>${kwHits} of ${kwTotal}</strong> core Job Description terms with <strong>${quantifiedImpactPct}% Quantified Impact</strong>. Review the specific feedback below to sharpen your edge before real screenings.</div>
         </div>
@@ -7262,9 +7285,25 @@ ${(resumeText || '').slice(0, 3500)}`;
   let _fcIsFlipped = false;
   let _fcDeck = [];
 
+  window.updateHeroSubtitle = function(mode) {
+    const subEl = document.getElementById('page-hero-subtitle');
+    if (!subEl) return;
+    const m = mode || window.currentSimMode;
+    if (m === 'passcheck') {
+      subEl.innerHTML = 'About 10 minutes &middot; 6 questions &middot; aim for 60&ndash;90 seconds per answer';
+    } else if (m === 'resumedefense') {
+      subEl.innerHTML = 'About 12 minutes &middot; 8 questions &middot; aim for 60&ndash;90 seconds per answer';
+    } else if (m === 'warmup') {
+      subEl.innerHTML = 'About 2 minutes &middot; 1 question &middot; aim for 60&ndash;90 seconds per answer';
+    } else {
+      subEl.innerHTML = 'About 15 minutes &middot; 10 questions &middot; aim for 60&ndash;90 seconds per answer';
+    }
+  };
+
   window.selectSimMode = function(mode) {
     window.currentSimMode = mode;
     localStorage.setItem('tgt_sim_mode', mode);
+    window.updateHeroSubtitle(mode);
     
     const fcBtn = document.getElementById('mode-opt-flashcards');
     const pBtn = document.getElementById('mode-opt-pressure');

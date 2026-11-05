@@ -851,7 +851,7 @@ function getPassLikelihoodFit(roleInput, resumeText) {
         failsDomain = true;
     } else if (isLegal && !/\b(juris doctor|j\.d\.|law degree|attorney|bar admission|legal counsel|paralegal|litigation|law school|admitted to the bar|practicing attorney)\b/i.test(resLow)) {
         failsDomain = true;
-    } else if (isMedical && !/\b(md\b|do\b|m\.d\.|physician|residency|medical doctor|clinical trial|pharmacology|board certified|registered nurse|rn\b)\b/i.test(resLow)) {
+    } else if (isMedical && !(/\b(m\.d\.|doctor of medicine|doctor of osteopathy|d\.o\.|licensed physician|board certified|medical residency|usmle|hospitalist|clinical fellowship|registered nurse|\brn\b|general practitioner)\b/i.test(resLow) || /\bMD\b|\bDO\b/.test(resTxt))) {
         failsDomain = true;
     } else if (isFinance && !/\b(investment banking|private equity|financial modeling|dcf valuation|cfa\b|series 7|equity research|portfolio management)\b/i.test(resLow)) {
         failsDomain = true;

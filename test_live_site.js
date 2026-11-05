@@ -125,6 +125,10 @@ async function runLiveVerification() {
   assert(aiRes.body.includes('isCivilOrBlasting'), 'Live ai-interview must include Domain Guard');
   assert(aiRes.body.includes('id="screen1-practice-plan-optin"') && aiRes.body.includes('min-height:44px;'), 'Live ai-interview must have 44px opt-in tap target');
   assert(chkRes.body.includes('so the interviewer can see you clearly'), 'Live readiness-checklist must have updated human copy (Bug 12)');
+  assert(rwRes.body.includes('doctor of osteopathy') && rwRes.body.includes('\\bMD\\b|\\bDO\\b'), 'Live render_waves.js must have strict medical credential guard');
+  assert(aiRes.body.includes('isOffTopicNoKeywords'), 'Live ai-interview must have isOffTopicNoKeywords cap');
+  assert(aiRes.body.includes('Retake Pass Check ➔'), 'Live ai-interview must have Retake Pass Check CTA');
+  assert(aiRes.body.includes('id="page-hero-subtitle"'), 'Live ai-interview must have #page-hero-subtitle');
   console.log('✓ PASS: All QA Report and Retest bug fixes verified on live production bundle');
 
   console.log('\n==================================================================');

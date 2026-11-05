@@ -1151,7 +1151,32 @@ assert(aiInterviewCode.includes('totalBadge.textContent = "604 Roles"'), 'ai-int
 assert(aiInterviewCode.includes('modalCountLabel.textContent = "604 Roles"'), 'ai-interview.html must set modal role count to 604 Roles');
 console.log(`✓ PASSED: Test 78 - Dynamic question count in results summary and canonical 604 role counter verified`);
 
+// Test 79 (QA Retest Item - Physician Roles Weak Fit):
+const infectiousDiseaseRole = { title: "Infectious Disease Physician", cleanTitle: "Infectious Disease Physician", domain: "MEDICAL", atsKeywords: ["Clinical Research", "Diagnosis", "Patient Care"] };
+const usLicensedPhysicianRole = { title: "US-Licensed Physician (MD/DO)", cleanTitle: "US-Licensed Physician", domain: "MEDICAL", atsKeywords: ["Clinical Medicine", "Patient Care"] };
+const hospitalistRole = { title: "Hospitalist Physician", cleanTitle: "Hospitalist Physician", domain: "MEDICAL", atsKeywords: ["Inpatient Care", "Internal Medicine"] };
+
+assert.strictEqual(getPassLikelihoodFit(infectiousDiseaseRole, qaResumeForGuards).fit, 'weak', 'Infectious Disease Physician must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(usLicensedPhysicianRole, qaResumeForGuards).fit, 'weak', 'US-Licensed Physician must be Weak fit for QA resume');
+assert.strictEqual(getPassLikelihoodFit(hospitalistRole, qaResumeForGuards).fit, 'weak', 'Hospitalist Physician must be Weak fit for QA resume');
+console.log(`✓ PASSED: Test 79 - Physician roles (Infectious Disease, US-Licensed, Hospitalist) verified as Weak fit for QA resume`);
+
+// Test 80 (QA Retest Item - Off-Topic Zero-Keyword Capped at <=38%):
+assert(aiInterviewCode.includes('const isOffTopicNoKeywords = (matches === 0 && kwsToEvaluate.length > 0 && wordCount >= 15 && !isDuplicateAnswer && !isBriefOrBlank);'), 'evaluateAnswerText must detect isOffTopicNoKeywords');
+assert(aiInterviewCode.includes('cappedScore = Math.min(38, Math.max(20, confScore - 35));'), 'Off-topic zero-keyword answers must be capped at 38%');
+assert(aiInterviewCode.includes('⚠️ Off-Topic / Zero Job Description Terms (Capped at 38%)'), 'Off-topic debrief banner must warn user of zero JD terms');
+assert(aiInterviewCode.includes('Next step: retake Pass Check to earn your green checkmark'), 'Results screen must offer Retake Pass Check CTA when completed without passing');
+console.log(`✓ PASSED: Test 80 - Off-topic zero-keyword answers capped at 38% and Retake Pass Check CTA verified`);
+
+// Test 81 (QA Retest Item - Dynamic Hero Subtitle & Question Count):
+assert(aiInterviewCode.includes('id="page-hero-subtitle"'), 'ai-interview.html must have id="page-hero-subtitle"');
+assert(aiInterviewCode.includes('window.updateHeroSubtitle = function(mode)'), 'ai-interview.html must define window.updateHeroSubtitle');
+assert(aiInterviewCode.includes('About 10 minutes &middot; 6 questions &middot; aim for 60&ndash;90 seconds per answer'), 'updateHeroSubtitle must have 6 questions for passcheck');
+assert(aiInterviewCode.includes('About 12 minutes &middot; 8 questions &middot; aim for 60&ndash;90 seconds per answer'), 'updateHeroSubtitle must have 8 questions for resumedefense');
+assert(aiInterviewCode.includes('About 2 minutes &middot; 1 question &middot; aim for 60&ndash;90 seconds per answer'), 'updateHeroSubtitle must have 1 question for warmup');
+console.log(`✓ PASSED: Test 81 - Dynamic hero header subtitle question count verified`);
+
 console.log("==================================================================");
-console.log("ALL 78 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 81 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
