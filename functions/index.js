@@ -344,9 +344,9 @@ exports.logPipelineEvent = onRequest(
           return res.status(405).json({ error: "Method Not Allowed" });
         }
 
-        const { event_type, referral_id, session_id, page_url } = req.body || {};
+        const { event_type, referral_id, session_id, page_url, outcome, fit_label, pass_check_score, pass_check_date, hardest_question_type } = req.body || {};
         
-        const ALLOWED_EVENTS = new Set(["page_view", "application_started"]);
+        const ALLOWED_EVENTS = new Set(["page_view", "application_started", "interview_outcome"]);
         if (!event_type || !ALLOWED_EVENTS.has(event_type)) {
           return res.status(400).json({ error: "Invalid event_type" });
         }
@@ -356,6 +356,27 @@ exports.logPipelineEvent = onRequest(
         const safePageUrl = typeof page_url === "string" ? page_url.substring(0, 128) : "/";
 
         const db = admin.firestore();
+        if (event_type === "interview_outcome") {
+          const outcomeDoc = {
+            event_type: "interview_outcome",
+            session_id: safeSessionId,
+            role_id: safeReferralId,
+            outcome: typeof outcome === "string" ? outcome.substring(0, 64) : "unknown",
+            fit_label: typeof fit_label === "string" ? fit_label.substring(0, 64) : null,
+            pass_check_score: typeof pass_check_score === "number" ? pass_check_score : null,
+            pass_check_date: typeof pass_check_date === "string" ? pass_check_date.substring(0, 32) : null,
+            hardest_question_type: typeof hardest_question_type === "string" ? hardest_question_type.substring(0, 64) : null,
+            timestamp: admin.firestore.FieldValue.serverTimestamp()
+          };
+          // Guarantee no resume or answer text exists
+          delete outcomeDoc.resumeText;
+          delete outcomeDoc.candidateResumeText;
+          delete outcomeDoc.answers;
+          delete outcomeDoc.answer;
+
+          await db.collection("pipeline_events").add(outcomeDoc);
+          return res.status(200).json({ success: true });
+        }
         await db.collection("pipeline_events").add({
           event_type,
           referral_id: safeReferralId,
@@ -597,7 +618,7 @@ exports.subscribeRoleAlerts = onRequest(
           return res.status(405).json({ error: "Method Not Allowed" });
         }
 
-        const { email, role, domain } = req.body || {};
+        const { email, role, domain, practice_plan_optin } = req.body || {};
         if (!email || typeof email !== "string" || !email.includes("@") || email.length > 100) {
           return res.status(400).json({ error: "Valid email address is required" });
         }
@@ -616,8 +637,12 @@ exports.subscribeRoleAlerts = onRequest(
         const updates = {
           subscribedToAlerts: true,
           unsubscribed: false,
+          practicePlanOptin: practice_plan_optin === true,
           updatedAt: admin.firestore.FieldValue.serverTimestamp()
         };
+        if (practice_plan_optin === true) {
+          updates.practicePlanStartedAt = admin.firestore.FieldValue.serverTimestamp();
+        }
         if (role) updates.preferredRole = String(role).substring(0, 80);
         if (domain) updates.preferredDomain = String(domain).substring(0, 50);
 

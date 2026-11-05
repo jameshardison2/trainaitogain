@@ -311,7 +311,7 @@ window.addEventListener('unhandledrejection', function(event) {
 </nav>
 
 <div id="page-hero-header" style="text-align:center; padding: 36px 16px 12px; max-width:760px; margin:0 auto;">
-  <div style="display:inline-block; background:rgba(16,185,129,0.15); color:var(--primary); font-weight:800; font-size:12.5px; text-transform:uppercase; letter-spacing:0.08em; padding:6px 16px; border-radius:100px; margin-bottom:10px;">Step 2 (optional): Practice before your AI interview</div>
+  <div style="display:inline-block; background:rgba(16,185,129,0.15); color:var(--primary); font-weight:800; font-size:12.5px; text-transform:uppercase; letter-spacing:0.08em; padding:6px 16px; border-radius:100px; margin-bottom:10px;">Step 2: Pass your AI interview</div>
   <h1 style="font-size:34px; font-weight:800; color:var(--white); margin:0 0 8px; letter-spacing:-0.02em;">Live AI Mock Interview</h1>
   <p style="color:#9ca3af; font-size:14px; font-weight:600; margin:0 auto;">About 15 minutes &middot; 10 questions &middot; aim for 60&ndash;90 seconds per answer</p>
 </div>
@@ -454,6 +454,11 @@ window.addEventListener('unhandledrejection', function(event) {
       <button type="button" onclick="window.closeFloatingTeleprompter()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; border-radius:5px; padding:3px 9px; font-size:12px; font-weight:800; cursor:pointer;">✕ Close</button>
     </div>
   </div>
+  <!-- Fixed Prompter Practice-Only Warning Label (REQ-PASS-07) -->
+  <div style="background:rgba(239,68,68,0.16); border:1px solid rgba(239,68,68,0.35); border-radius:6px; padding:4px 10px; margin-bottom:8px; font-size:11px; font-weight:800; color:#fca5a5; display:flex; align-items:center; gap:6px;">
+    <span>⚠️</span>
+    <span>Practice only. Don't use notes, prompters or overlays in a real interview.</span>
+  </div>
   <!-- HUD Controls -->
   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px; background:rgba(0,0,0,0.45); padding:6px 10px; border-radius:6px; border:1px solid rgba(16,185,129,0.25);">
     <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
@@ -549,6 +554,10 @@ window.addEventListener('unhandledrejection', function(event) {
           </div>
         </div>
       </div>
+
+      <!-- Pass Likelihood Fit Banner (REQ-PASS-01) -->
+      <div id="role-fit-banner" style="max-width:560px; margin:0 auto 14px auto; text-align:left; display:none;"></div>
+
       <div id="setup-question-bank-note" style="max-width:560px; margin:0 auto 14px auto; text-align:left; font-size:12px; color:#6ee7b7; font-weight:600; display:none;"></div>
 
       <!-- 2. Optional Resume Upload ("Upload PDF / DOCX" as a proper button on its own line) -->
@@ -588,28 +597,46 @@ window.addEventListener('unhandledrejection', function(event) {
           <input type="email" id="screen1-lead-email" placeholder="Enter your email to receive playbook &amp; roles..." style="flex:1; min-width:220px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:8px 12px; color:#ffffff; font-size:13px; outline:none;" oninput="localStorage.setItem('candidateEmail', this.value)" />
           <button type="button" onclick="window.saveScreen1LeadEmail()" style="background:#10b981; color:#042f2e; border:none; border-radius:6px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; white-space:nowrap;">Get Playbook PDF</button>
         </div>
+        <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:#d1fae5; margin-top:8px; cursor:pointer;">
+          <input type="checkbox" id="screen1-practice-plan-optin" style="cursor:pointer;" />
+          <span>Email me a 7-day practice plan.</span>
+        </label>
         <div id="screen1-lead-success" style="display:none; color:#34d399; font-size:12px; font-weight:700; margin-top:8px;">✓ Email saved! Your tailored debrief, STAR playbook, and referral links will be delivered here.</div>
       </div>
 
       <!-- Simulation Mode Selector (Tier 2: Item 6) -->
       <div style="max-width:560px; margin:0 auto 16px auto; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; text-align:left;">
         <div style="font-size:11.5px; font-weight:800; color:#9ca3af; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">Select Preparation Mode</div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">
-          <div id="mode-opt-flashcards" onclick="window.selectSimMode('flashcards')" style="background:rgba(16,185,129,0.1); border:1.5px solid #10b981; border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
-            <div style="font-size:12px; font-weight:800; color:#34d399; display:flex; align-items:center; gap:4px;">🃏 Flashcards Deck</div>
-            <div style="font-size:11px; color:#cbd5e1; margin-top:3px; line-height:1.35;">Quizlet-style card flip: Question front, winning STAR formula back</div>
-          </div>
-          <div id="mode-opt-pressure" onclick="window.selectSimMode('pressure')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
-            <div style="font-size:12px; font-weight:800; color:#f87171; display:flex; align-items:center; gap:4px;">🔥 Pressure Mode</div>
-            <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Voice only, neutral avatar, real 4s pause cutoff alert</div>
-          </div>
-          <div id="mode-opt-practice" onclick="window.selectSimMode('practice')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
-            <div style="font-size:12px; font-weight:800; color:#6ee7b7; display:flex; align-items:center; gap:4px;">💡 CoPilot Guided</div>
-            <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Teleprompter, live keyword cues, voice or typing</div>
-          </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:8px;">
+          <!-- 1. Warm-Up -->
           <div id="mode-opt-warmup" onclick="window.selectSimMode('warmup')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
-            <div style="font-size:12px; font-weight:800; color:#60a5fa; display:flex; align-items:center; gap:4px;">🌱 Warm-Up Mode</div>
+            <div style="font-size:12px; font-weight:800; color:#60a5fa; display:flex; align-items:center; gap:4px;">🌱 1. Warm-Up</div>
             <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">1 low-stress icebreaker question to test audio</div>
+          </div>
+          <!-- 2. Flashcards -->
+          <div id="mode-opt-flashcards" onclick="window.selectSimMode('flashcards')" style="background:rgba(16,185,129,0.1); border:1.5px solid #10b981; border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
+            <div style="font-size:12px; font-weight:800; color:#34d399; display:flex; align-items:center; gap:4px;">🃏 2. Flashcards</div>
+            <div style="font-size:11px; color:#cbd5e1; margin-top:3px; line-height:1.35;">Quizlet-style STAR &amp; Answer–Why–Check 10-card deck</div>
+          </div>
+          <!-- 3. CoPilot Guided -->
+          <div id="mode-opt-practice" onclick="window.selectSimMode('practice')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
+            <div style="font-size:12px; font-weight:800; color:#6ee7b7; display:flex; align-items:center; gap:4px;">💡 3. CoPilot</div>
+            <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Recall Ladder fading prompter &amp; live JD cues</div>
+          </div>
+          <!-- 4. Resume Defense (REQ-PASS-02) -->
+          <div id="mode-opt-resumedefense" onclick="window.selectSimMode('resumedefense')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
+            <div style="font-size:12px; font-weight:800; color:#fbbf24; display:flex; align-items:center; gap:4px;">🛡️ 4. Resume Defense</div>
+            <div id="mode-resumedefense-desc" style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Answer questions about your own resume bullets</div>
+          </div>
+          <!-- 5. Pressure Mode -->
+          <div id="mode-opt-pressure" onclick="window.selectSimMode('pressure')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
+            <div style="font-size:12px; font-weight:800; color:#f87171; display:flex; align-items:center; gap:4px;">🔥 5. Pressure Mode</div>
+            <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Voice only, silence cutoff &amp; unexpected follow-ups</div>
+          </div>
+          <!-- 6. Pass Check (REQ-PASS-06) -->
+          <div id="mode-opt-passcheck" onclick="window.selectSimMode('passcheck')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
+            <div style="font-size:12px; font-weight:800; color:#a78bfa; display:flex; align-items:center; gap:4px;">🎯 6. Pass Check</div>
+            <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">6-question benchmark: earn your Pass Check ✓ tag</div>
           </div>
         </div>
       </div>
@@ -634,8 +661,11 @@ window.addEventListener('unhandledrejection', function(event) {
             <!-- Card Front (Question Side) -->
             <div id="fc-card-front" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:linear-gradient(145deg, #131a29 0%, #0d121c 100%); border:1.5px solid rgba(255,255,255,0.12); border-radius:16px; padding:28px 24px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 12px 36px rgba(0,0,0,0.5);">
               <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                  <span id="fc-card-category" style="background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Category: Core Evaluation</span>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:6px;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span id="fc-card-category" style="background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Category: Core Evaluation</span>
+                    <span id="fc-card-tag" style="background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.45); color:#6ee7b7; font-size:11px; font-weight:900; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">STAR</span>
+                  </div>
                   <span style="font-size:11.5px; color:#9ca3af; font-weight:600;">⏱️ Target: 60–90s</span>
                 </div>
                 <div style="font-size:11.5px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Interview Question</div>
@@ -650,7 +680,7 @@ window.addEventListener('unhandledrejection', function(event) {
                 </div>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.08); font-size:12px; color:#6ee7b7; font-weight:700;">
-                <span>👆 Click card or press <kbd style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px; font-family:monospace; color:#fff;">Space</kbd> to flip for STAR Answer Formula</span>
+                <span>👆 Answer out loud first, then press <kbd style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px; font-family:monospace; color:#fff;">Space</kbd> to compare</span>
                 <span>🔄 Flip ➔</span>
               </div>
             </div>
@@ -659,31 +689,55 @@ window.addEventListener('unhandledrejection', function(event) {
             <div id="fc-card-back" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:rotateY(180deg); background:linear-gradient(145deg, #091f1b 0%, #061513 100%); border:1.5px solid rgba(16,185,129,0.35); border-radius:16px; padding:24px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 12px 36px rgba(0,0,0,0.5); overflow-y:auto;">
               <div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                  <span style="background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.45); color:#6ee7b7; font-size:11px; font-weight:900; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Winning STAR Formula</span>
+                  <span id="fc-back-title" style="background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.45); color:#6ee7b7; font-size:11px; font-weight:900; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Winning STAR Formula</span>
                   <span style="font-size:11.5px; color:#34d399; font-weight:700;">Fill in the <mark style="background:rgba(251,191,36,0.25); color:#fef08a; padding:1px 5px; border-radius:3px;">[blanks]</mark></span>
                 </div>
                 
-                <!-- S: Situation & Task -->
-                <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #60a5fa; border-radius:0 6px 6px 0; padding:8px 12px;">
-                  <div style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">S — Situation &amp; Task</div>
-                  <div id="fc-star-situation" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
-                    <!-- Rendered dynamically -->
+                <!-- STAR Container -->
+                <div id="fc-back-star" style="display:block;">
+                  <!-- S: Situation & Task -->
+                  <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #60a5fa; border-radius:0 6px 6px 0; padding:8px 12px;">
+                    <div style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">S — Situation &amp; Task</div>
+                    <div id="fc-star-situation" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
+                      <!-- Rendered dynamically -->
+                    </div>
+                  </div>
+
+                  <!-- A: Action -->
+                  <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #34d399; border-radius:0 6px 6px 0; padding:8px 12px;">
+                    <div style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">A — Specific Action Taken</div>
+                    <div id="fc-star-action" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
+                      <!-- Rendered dynamically -->
+                    </div>
+                  </div>
+
+                  <!-- R: Result -->
+                  <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #f59e0b; border-radius:0 6px 6px 0; padding:8px 12px;">
+                    <div style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">R — Measurable Result</div>
+                    <div id="fc-star-result" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
+                      <!-- Rendered dynamically -->
+                    </div>
                   </div>
                 </div>
 
-                <!-- A: Action -->
-                <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #34d399; border-radius:0 6px 6px 0; padding:8px 12px;">
-                  <div style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">A — Specific Action Taken</div>
-                  <div id="fc-star-action" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
-                    <!-- Rendered dynamically -->
+                <!-- Answer–Why–Check Container (REQ-PASS-03) -->
+                <div id="fc-back-awc" style="display:none;">
+                  <!-- Answer -->
+                  <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #38bdf8; border-radius:0 6px 6px 0; padding:8px 12px;">
+                    <div style="font-size:11px; font-weight:800; color:#7dd3fc; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Answer — Your Verdict First</div>
+                    <div id="fc-awc-answer" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;"></div>
                   </div>
-                </div>
 
-                <!-- R: Result -->
-                <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #f59e0b; border-radius:0 6px 6px 0; padding:8px 12px;">
-                  <div style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">R — Measurable Result</div>
-                  <div id="fc-star-result" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;">
-                    <!-- Rendered dynamically -->
+                  <!-- Why -->
+                  <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #a78bfa; border-radius:0 6px 6px 0; padding:8px 12px;">
+                    <div style="font-size:11px; font-weight:800; color:#c4b5fd; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Why — 2 Reasons from Your Field</div>
+                    <div id="fc-awc-why" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;"></div>
+                  </div>
+
+                  <!-- Check -->
+                  <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #34d399; border-radius:0 6px 6px 0; padding:8px 12px;">
+                    <div style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Check — How to Verify &amp; Measure</div>
+                    <div id="fc-awc-check" style="font-size:13.5px; color:#f3f4f6; line-height:1.55;"></div>
                   </div>
                 </div>
 
@@ -969,7 +1023,18 @@ window.addEventListener('unhandledrejection', function(event) {
           <div id="spoken-answer-container" style="display:none; text-align:left; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px 18px;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
               <span style="font-size:12px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em;" id="spoken-mic-status">🎙️ Microphone Active — Speak your answer (60–90s)</span>
-              <button type="button" id="switch-to-typed-btn" onclick="window.setInterviewMode(true)" style="background:transparent; border:none; color:#9ca3af; font-size:12px; text-decoration:underline; cursor:pointer;">Switch to typed mode</button>
+              <div style="display:inline-flex; align-items:center; gap:8px;">
+                <!-- Silence Cutoff Selector (REQ-PASS-05) -->
+                <div id="pause-cutoff-control" style="display:inline-flex; align-items:center; gap:5px; background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.12); padding:2px 7px; border-radius:4px;">
+                  <span style="font-size:11px; color:#9ca3af; font-weight:700;">⏱️ Cutoff:</span>
+                  <select id="pressure-pause-cutoff-select" onchange="window.setPauseCutoff(this.value)" title="Some AI interviewers treat a short silence as the end of your answer." style="background:#1e293b; color:#ffffff; border:1px solid rgba(255,255,255,0.2); border-radius:3px; padding:1px 4px; font-size:10.5px; font-weight:700;">
+                    <option value="2">2s (Aggressive)</option>
+                    <option value="3" selected>3s (Standard)</option>
+                    <option value="4">4s (Relaxed)</option>
+                  </select>
+                </div>
+                <button type="button" id="switch-to-typed-btn" onclick="window.setInterviewMode(true)" style="background:transparent; border:none; color:#9ca3af; font-size:12px; text-decoration:underline; cursor:pointer;">Switch to typed mode</button>
+              </div>
             </div>
             <!-- Live Microphone Volume & Connection VU Meter -->
             <div id="mic-live-meter-container" style="display:flex; align-items:center; gap:8px; margin-bottom:10px; background:rgba(0,0,0,0.3); padding:6px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
@@ -1086,6 +1151,343 @@ window.addEventListener('unhandledrejection', function(event) {
   </footer>
 
 <script>
+  window.evaluatorCardsData = {
+  "software": [
+    {
+      "id": "eval-swe-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Recommends direct raw SQL string concatenation instead of parameterized queries, claiming it is safe behind a firewall.",
+      "sampleAnswer": "To optimize database querying for user authentication in Python/Django, you can safely concatenate the username directly into raw SQL: SELECT * FROM users WHERE username = ' + username + '. Raw SQL is faster because it bypasses ORM overhead and sanitization isn't necessary behind a firewall.",
+      "question": "An AI model gave this advice for optimizing Python database queries: 'To optimize database querying for user authentication in Python/Django, you can safely concatenate the username directly into raw SQL: SELECT * FROM users WHERE username = \\'' + username + '\\''. Raw SQL is faster because it bypasses ORM overhead and sanitization isn't necessary behind a firewall.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "sql injection",
+        "parameterized",
+        "raw sql",
+        "sanitization",
+        "security"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Severe Security Failure). The response recommends raw SQL concatenation which introduces a critical SQL injection vulnerability regardless of firewall.",
+        "why": "Reason 1: Direct string interpolation allows arbitrary SQL execution and data exfiltration. Reason 2: Modern ORMs compile parameterized queries with negligible overhead that inherently prevent injection.",
+        "check": "Verify with static security analysis ([Your Tool: Bandit/SonarQube]) and test with a standard injection payload (e.g., ' OR '1'='1) to confirm parameterized queries are enforced."
+      }
+    },
+    {
+      "id": "eval-swe-2",
+      "flawType": "unsupported claim",
+      "plantedFlaw": "Claims Python standard threading runs CPU-bound computations across multiple cores without GIL limitations.",
+      "sampleAnswer": "Multi-threading in Python using the threading module is the best way to speed up heavy CPU-bound image processing and math calculations across multiple CPU cores without any changes to the Global Interpreter Lock (GIL).",
+      "question": "An AI model explained Python concurrency like this: 'Multi-threading in Python using the threading module is the best way to speed up heavy CPU-bound image processing and math calculations across multiple CPU cores without any changes to the Global Interpreter Lock (GIL).' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "gil",
+        "global interpreter lock",
+        "multiprocessing",
+        "cpu-bound",
+        "threading"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 2/5 (Factually Incorrect). Python's standard threading cannot execute CPU-bound work across multiple cores due to the Global Interpreter Lock (GIL).",
+        "why": "Reason 1: CPython's GIL restricts bytecode execution to one native thread at a time for CPU-bound tasks. Reason 2: True parallel core scaling requires multiprocessing, native extensions (C/Rust), or free-threaded Python.",
+        "check": "Benchmark CPU execution time across multiple threads vs multiprocessing using [Your Profiler/time.perf_counter] to measure core utilization."
+      }
+    }
+  ],
+  "medical": [
+    {
+      "id": "eval-med-1",
+      "flawType": "missing safety caveat",
+      "plantedFlaw": "Recommends high-dose NSAIDs for a patient on Warfarin without bleeding risk precautions.",
+      "sampleAnswer": "For an elderly patient experiencing mild tension headaches while taking Warfarin for atrial fibrillation, recommend initiating standard high-dose Ibuprofen 800mg TID as first-line therapy since it is an effective OTC analgesic.",
+      "question": "An AI clinical assistant generated this recommendation: 'For an elderly patient experiencing mild tension headaches while taking Warfarin for atrial fibrillation, recommend initiating standard high-dose Ibuprofen 800mg TID as first-line therapy since it is an effective OTC analgesic.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "warfarin",
+        "ibuprofen",
+        "nsaid",
+        "gi bleed",
+        "bleeding risk",
+        "hemorrhage",
+        "acetaminophen"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Critical Safety Hazard). High-dose Ibuprofen (an NSAID) taken concomitantly with Warfarin exponentially increases the risk of major gastrointestinal hemorrhage.",
+        "why": "Reason 1: NSAIDs reversibly inhibit platelet aggregation and damage gastric mucosa while Warfarin suppresses coagulation factor synthesis. Reason 2: Acetaminophen is the appropriate first-line analgesic for anticoagulated patients.",
+        "check": "Cross-reference FDA Black Box warnings and [Your Interaction Checker: Micromedex/UpToDate] for anticoagulant plus NSAID contraindications."
+      }
+    },
+    {
+      "id": "eval-med-2",
+      "flawType": "factual error",
+      "plantedFlaw": "Discharges thunderclap headache as benign tension migraine without neuroimaging or LP workup.",
+      "sampleAnswer": "A patient presents with a sudden severe 'thunderclap' headache peaking within 60 seconds with normal vital signs. Since the physical examination is completely benign, this is benign exertional migraine and the patient can be safely discharged with hydration instructions.",
+      "question": "An AI triage system produced this clinical summary: 'A patient presents with a sudden severe 'thunderclap' headache peaking within 60 seconds with normal vital signs. Since the physical examination is completely benign, this is benign exertional migraine and the patient can be safely discharged with hydration instructions.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "thunderclap headache",
+        "subarachnoid hemorrhage",
+        "ct scan",
+        "lumbar puncture",
+        "emergency",
+        "sah"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Life-Threatening Diagnostic Omission). A sudden thunderclap headache peaking in under 60 seconds must be worked up immediately for subarachnoid hemorrhage (SAH).",
+        "why": "Reason 1: Thunderclap headache is the hallmark presentation of ruptured intracranial aneurysm and has up to a 50% mortality if missed. Reason 2: A normal physical exam cannot rule out intracranial hemorrhage.",
+        "check": "Order an immediate non-contrast head CT within 6 hours followed by lumbar puncture if CT is negative per [Your Clinical Guideline: ACEP Guidelines]."
+      }
+    }
+  ],
+  "finance": [
+    {
+      "id": "eval-fin-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Adds Capital Expenditures (CapEx) as positive cash flow instead of subtracting it in Unlevered Free Cash Flow formula.",
+      "sampleAnswer": "When calculating Unlevered Free Cash Flow for a DCF valuation, start with Net Income, add back Depreciation and Amortization, and add Capital Expenditures because CapEx increases the cash value of company assets.",
+      "question": "An AI financial modeling tutor stated: 'When calculating Unlevered Free Cash Flow for a DCF valuation, start with Net Income, add back Depreciation and Amortization, and add Capital Expenditures because CapEx increases the cash value of company assets.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "capex",
+        "subtract",
+        "cash outflow",
+        "unlevered free cash flow",
+        "ebit",
+        "dcf"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Fundamental Accounting Calculation Error). Capital Expenditures (CapEx) is a cash outflow and must be subtracted, not added, in DCF modeling.",
+        "why": "Reason 1: CapEx represents reinvestment cash leaving the firm to acquire or maintain fixed assets. Reason 2: UFCF must begin with NOPAT (EBIT * (1 - t)), not unadjusted Net Income.",
+        "check": "Verify against standard financial modeling standards ([Your Source: Rosenbaum & Pearl / Wall Street Prep]) and reconcile cash flow from investing activities."
+      }
+    },
+    {
+      "id": "eval-fin-2",
+      "flawType": "unsupported claim",
+      "plantedFlaw": "Claims Value at Risk (VaR) guarantees maximum loss under black swan crisis conditions.",
+      "sampleAnswer": "Historical Value at Risk (VaR) at a 99% confidence level over a 10-day horizon guarantees that portfolio losses under extreme black swan market disruptions will never exceed the calculated VaR threshold.",
+      "question": "An AI risk report stated: 'Historical Value at Risk (VaR) at a 99% confidence level over a 10-day horizon guarantees that portfolio losses under extreme black swan market disruptions will never exceed the calculated VaR threshold.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "var",
+        "guarantee",
+        "tail risk",
+        "black swan",
+        "confidence level",
+        "stress test"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 2/5 (Dangerous Misunderstanding of Risk Limits). VaR provides a statistical confidence percentile, not a maximum ceiling or guarantee against tail risk.",
+        "why": "Reason 1: A 99% VaR explicitly implies that on 1% of trading intervals (2-3 days a year), losses will exceed the VaR estimate. Reason 2: VaR does not quantify the magnitude of tail losses beyond the cutoff.",
+        "check": "Execute historical stress testing and Expected Shortfall (CVaR) simulations using [Your Risk Engine: RiskMetrics/PyFolio]."
+      }
+    }
+  ],
+  "legal": [
+    {
+      "id": "eval-leg-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Claims oral guarantee of third-party debt is fully enforceable without written agreement.",
+      "sampleAnswer": "Under general contract law, a verbal promise to guarantee the commercial debt of a third party is completely legally enforceable in court without any signed written agreement.",
+      "question": "An AI contract advisor advised: 'Under general contract law, a verbal promise to guarantee the commercial debt of a third party is completely legally enforceable in court without any signed written agreement.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "statute of frauds",
+        "writing",
+        "signed",
+        "suretyship",
+        "guarantee",
+        "enforceability"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Material Legal Error). Under the Statute of Frauds, a contract to answer for the debt of another (suretyship) is unenforceable unless in writing and signed.",
+        "why": "Reason 1: The suretyship provision of the Statute of Frauds strictly requires written memorandum signed by the guarantor. Reason 2: Oral promises of third-party debt guarantees are barred from enforcement.",
+        "check": "Cross-reference [Your Jurisdiction Statute: UCC \u00a7 2-201 / Restatement (Second) of Contracts \u00a7 110(1)(b)]."
+      }
+    },
+    {
+      "id": "eval-leg-2",
+      "flawType": "missing safety caveat",
+      "plantedFlaw": "Claims AI provides formal legal representation with attorney-client privilege.",
+      "sampleAnswer": "I will draft and file your company's formal incorporation articles and represent your entity in federal court as your AI attorney, ensuring full attorney-client privilege protects our discussions.",
+      "question": "An AI legal bot stated: 'I will draft and file your company's formal incorporation articles and represent your entity in federal court as your AI attorney, ensuring full attorney-client privilege protects our discussions.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "attorney-client privilege",
+        "unauthorized practice of law",
+        "upl",
+        "licensed attorney",
+        "disclaimer"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Severe Regulatory & Ethical Violation). AI software cannot practice law, represent clients in court, or create attorney-client privilege.",
+        "why": "Reason 1: Representation in court requires admission to the relevant bar; non-lawyer practice constitutes Unauthorized Practice of Law (UPL). Reason 2: Legal privilege applies strictly to communications with licensed legal counsel.",
+        "check": "Verify bar admission guidelines and include mandatory disclaimer: '[Your Disclaimer: Not legal advice / no attorney-client relationship]'."
+      }
+    }
+  ],
+  "language": [
+    {
+      "id": "eval-lang-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Uses false cognate 'embarazado' for embarrassed in Spanish formal translation.",
+      "sampleAnswer": "In Spanish business correspondence, translating 'I am embarrassed by the scheduling delay' as 'Estoy embarazado por la demora' is the most idiomatic and accurate translation.",
+      "question": "An AI translator produced this translation guidance: 'In Spanish business correspondence, translating \\'I am embarrassed by the scheduling delay\\' as \\'Estoy embarazado por la demora\\' is the most idiomatic and accurate translation.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "embarazado",
+        "pregnant",
+        "avergonzado",
+        "false cognate",
+        "false friend",
+        "idiomatic"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Severe False Cognate Error). 'Embarazado' means pregnant in Spanish, not embarrassed.",
+        "why": "Reason 1: This is a classic false cognate ('falso amigo'); the correct term is 'apenado', 'avergonzado', or 'lamento la demora'. Reason 2: In a business context, stating 'estoy embarazado' changes the entire meaning and causes professional embarrassment.",
+        "check": "Consult the Real Academia Espa\u00f1ola (RAE) dictionary and [Your Style Guide: Chicago Manual of Style / Translation Corpus]."
+      }
+    },
+    {
+      "id": "eval-lang-2",
+      "flawType": "wrong format",
+      "plantedFlaw": "Advocates informal street slang for formal diplomatic treaties.",
+      "sampleAnswer": "When translating a formal bilateral treaty between government ministries, informal colloquial phrasing and contemporary slang should be used to make the diplomatic text feel relatable and trendy.",
+      "question": "An AI localization assistant recommended: 'When translating a formal bilateral treaty between government ministries, informal colloquial phrasing and contemporary slang should be used to make the diplomatic text feel relatable and trendy.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "register",
+        "formal",
+        "diplomatic",
+        "slang",
+        "treaty",
+        "legal precision"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Gross Register & Precision Failure). Formal diplomatic treaties require elevated register, precise statutory terms, and zero colloquial ambiguity.",
+        "why": "Reason 1: International treaties have binding legal authority where colloquial idioms create fatal interpretive discrepancies. Reason 2: Diplomatic protocol mandates standardized formal nomenclature.",
+        "check": "Validate terminology against the UN Treaty Collection database and [Your Translation Benchmark: ISO 17100 Standards]."
+      }
+    }
+  ],
+  "science": [
+    {
+      "id": "eval-sci-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Instructs adding water directly to concentrated sulfuric acid instead of acid to water.",
+      "sampleAnswer": "To dilute concentrated sulfuric acid safely in the laboratory, always pour water directly into the acid container in a rapid stream to quickly dissipate the heat.",
+      "question": "An AI lab safety guide stated: 'To dilute concentrated sulfuric acid safely in the laboratory, always pour water directly into the acid container in a rapid stream to quickly dissipate the heat.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "acid into water",
+        "exothermic",
+        "splattering",
+        "sulfuric acid",
+        "safety hazard",
+        "lab safety"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Critical Laboratory Hazard). Pouring water into concentrated acid causes violent exothermic boiling and corrosive acid splattering.",
+        "why": "Reason 1: The hydration enthalpy of sulfuric acid is extremely high; localized steam explosions spray acid. Reason 2: Standard chemical protocol mandates adding acid slowly to a large volume of water with continuous stirring.",
+        "check": "Review OSHA Laboratory Safety Standards and Safety Data Sheet (SDS) Section 7/8 for [Your Chemical: H2SO4 Handling Protocol]."
+      }
+    },
+    {
+      "id": "eval-sci-2",
+      "flawType": "unsupported claim",
+      "plantedFlaw": "Equates retrospective subgroup correlation with proven causal proof without adjusting for multiple testing.",
+      "sampleAnswer": "Since our trial observational cohort showed a statistically significant correlation (p < 0.05) between daily coffee consumption and longevity across 50 retrospective subgroup cuts, coffee is proven to causally extend human lifespan by 15%.",
+      "question": "An AI scientific summarizer claimed: 'Since our trial observational cohort showed a statistically significant correlation (p < 0.05) between daily coffee consumption and longevity across 50 retrospective subgroup cuts, coffee is proven to causally extend human lifespan by 15%.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "correlation is not causation",
+        "multiple testing",
+        "p-hacking",
+        "observational",
+        "causal",
+        "confounding"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 2/5 (Methodological & Causal Fallacy). Observational correlation cannot establish causation, and evaluating 50 retrospective subgroups requires multiple-testing correction.",
+        "why": "Reason 1: Without Bonferroni or FDR corrections, 50 hypothesis tests yield false positives purely by chance at alpha = 0.05. Reason 2: Observational studies suffer from confounding variables and healthy user bias.",
+        "check": "Apply False Discovery Rate (Benjamini-Hochberg) adjustment and test in a randomized controlled trial framework using [Your Statistical Library: R/statsmodels]."
+      }
+    }
+  ],
+  "creative": [
+    {
+      "id": "eval-cre-1",
+      "flawType": "wrong format",
+      "plantedFlaw": "Proposes distorting brand logo aspect ratio and replacing typography with Comic Sans.",
+      "sampleAnswer": "To make a corporate luxury brand logo stand out on social media, stretch the vector horizontally by 140%, apply a rainbow drop shadow, and replace the trademarked serif typography with Comic Sans.",
+      "question": "An AI design generator recommended: 'To make a corporate luxury brand logo stand out on social media, stretch the vector horizontally by 140%, apply a rainbow drop shadow, and replace the trademarked serif typography with Comic Sans.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "aspect ratio",
+        "distortion",
+        "brand guidelines",
+        "typography",
+        "comic sans",
+        "luxury"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Severe Brand Violation). Altering aspect ratio, arbitrary type substitution, and clashing drop shadows violates core brand design guidelines.",
+        "why": "Reason 1: Brand marks require strict lockup proportions; horizontal stretching degrades brand equity and visual balance. Reason 2: Typography conveys brand identity, especially in luxury positioning.",
+        "check": "Validate asset deliverables against [Your Design System / Brand Guidelines Document] to verify clear-space and font licensing."
+      }
+    },
+    {
+      "id": "eval-cre-2",
+      "flawType": "factual error",
+      "plantedFlaw": "Claims commercial campaigns can use Google image search assets without copyright licenses.",
+      "sampleAnswer": "Commercial marketing campaigns can freely copy and paste high-resolution copyrighted artwork directly from Google Image search without permission, provided credit is mentioned in 8pt font at the bottom of the banner.",
+      "question": "An AI creative strategist wrote: 'Commercial marketing campaigns can freely copy and paste high-resolution copyrighted artwork directly from Google Image search without permission, provided credit is mentioned in 8pt font at the bottom of the banner.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "copyright",
+        "commercial license",
+        "infringement",
+        "fair use",
+        "intellectual property",
+        "permission"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Willful Copyright Infringement Risk). Attribution does not satisfy copyright requirements for commercial asset usage.",
+        "why": "Reason 1: Commercial advertising requires explicit copyright licenses or public domain releases; unauthorized use exposes the agency to statutory damages. Reason 2: Fair use almost never shields direct commercial advertising campaigns.",
+        "check": "Verify commercial clearance releases and model licenses through [Your Digital Asset Management: DAM / Getty / Adobe Stock Archive]."
+      }
+    }
+  ],
+  "general": [
+    {
+      "id": "eval-gen-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Invents fake ISO 9001 clause demanding unencrypted keystroke logging.",
+      "sampleAnswer": "According to the 2024 International Standards Organization ISO 9001 clause 42.8, all remote companies must store daily employee keyboard keystrokes on public unencrypted servers for external verification.",
+      "question": "An AI compliance officer reported: 'According to the 2024 International Standards Organization ISO 9001 clause 42.8, all remote companies must store daily employee keyboard keystrokes on public unencrypted servers for external verification.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "iso 9001",
+        "hallucination",
+        "unencrypted",
+        "keystroke",
+        "privacy",
+        "security breach"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Hallucinated Standard & Severe Security Breach). ISO 9001 has no such clause, and storing keystrokes on unencrypted public servers violates global data privacy regulations.",
+        "why": "Reason 1: The standard cited (Clause 42.8) is completely fabricated; ISO 9001 addresses quality management, not employee surveillance. Reason 2: Unencrypted keystroke logging violates GDPR, CCPA, and basic cybersecurity standards.",
+        "check": "Cross-reference official ISO standards documentation and [Your Compliance Framework: SOC 2 / ISO 27001]."
+      }
+    },
+    {
+      "id": "eval-gen-2",
+      "flawType": "missing safety caveat",
+      "plantedFlaw": "Recommends Friday evening production deployment without UAT or backups.",
+      "sampleAnswer": "When rolling out major organization-wide payroll software changes, skip user acceptance testing and deploy directly to production on Friday at 5 PM without taking a database backup to maximize deployment turnaround.",
+      "question": "An AI IT operations guide proposed: 'When rolling out major organization-wide payroll software changes, skip user acceptance testing and deploy directly to production on Friday at 5 PM without taking a database backup to maximize deployment turnaround.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": [
+        "uat",
+        "backup",
+        "rollback",
+        "friday deployment",
+        "production risk",
+        "change management"
+      ],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Catastrophic Operational Risk). Deploying untested core financial software on Friday evening without backups violates basic IT change management.",
+        "why": "Reason 1: Payroll systems directly impact legal employee compensation where data loss or calculation bugs carry immediate liability. Reason 2: High-risk changes must have verified UAT signoff, rollback runbooks, and snapshot backups.",
+        "check": "Enforce ITIL change approval board (CAB) checklist and test rollback scripts in [Your Staging Environment]."
+      }
+    }
+  ]
+};
+
   // Browser Speech APIs
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const synth = window.speechSynthesis;
@@ -2215,6 +2617,194 @@ window.addEventListener('unhandledrejection', function(event) {
     });
   }
 
+  // Pass Likelihood Fit Logic (REQ-PASS-01)
+  function getPassLikelihoodFit(roleInput, resumeText) {
+    const resTxt = (typeof resumeText === 'string') ? resumeText : ((typeof window.resolveStoredResume === 'function') ? window.resolveStoredResume() : (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || ''));
+    if (!resTxt || resTxt.trim().length < 50) {
+      return {
+        fit: 'none',
+        tier: 'None',
+        label: 'Upload your resume to see your fit',
+        badgeClass: 'fit-none',
+        badgeHtml: '<span class="pass-fit-badge fit-none" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#d1d5db; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px;"><a href="/resume-ats-guide" style="color:#d1d5db; text-decoration:none;">Upload your resume to see your fit</a></span>'
+      };
+    }
+
+    let roleObj = null;
+    if (typeof roleInput === 'string') {
+      const rKey = roleInput.toLowerCase().trim();
+      if (window.wavesRoleMap && window.wavesRoleMap[rKey]) {
+        roleObj = window.wavesRoleMap[rKey];
+      } else if (Array.isArray(window.allRoleItems)) {
+        roleObj = window.allRoleItems.find(r => (r.cleanTitle || r.title || '').toLowerCase().trim() === rKey);
+      }
+      if (!roleObj) {
+        roleObj = { title: roleInput, cleanTitle: roleInput, domain: 'GENERAL', atsKeywords: [] };
+      }
+    } else if (roleInput && typeof roleInput === 'object') {
+      roleObj = roleInput;
+    } else {
+      return {
+        fit: 'weak',
+        tier: 'None',
+        label: 'Weak fit',
+        badgeClass: 'fit-weak',
+        badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:rgba(156,163,175,0.15); border:1px solid rgba(156,163,175,0.35); color:#9ca3af; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px;">Weak fit</span>'
+      };
+    }
+
+    const titleLow = (roleObj.cleanTitle || roleObj.title || '').toLowerCase();
+    const resLow = resTxt.toLowerCase();
+
+    // Language Guard
+    const languages = ['dutch', 'german', 'french', 'spanish', 'italian', 'portuguese', 'japanese', 'chinese', 'mandarin', 'korean', 'arabic', 'hindi', 'bengali', 'tamil', 'telugu', 'malayalam', 'marathi', 'gujarati', 'danish', 'finnish', 'norwegian', 'swedish', 'polish', 'russian', 'turkish', 'vietnamese', 'indonesian', 'thai'];
+    let requiredLang = null;
+    for (const lang of languages) {
+      if (new RegExp('\\b' + lang + '\\b', 'i').test(titleLow)) {
+        requiredLang = lang;
+        break;
+      }
+    }
+    const failsLanguage = Boolean(requiredLang && !resLow.includes(requiredLang));
+
+    // Keyword & match scoring
+    let hits = 0;
+    const kws = Array.isArray(roleObj.atsKeywords) ? roleObj.atsKeywords : [];
+    kws.forEach(kw => {
+      if (!kw) return;
+      const kLow = kw.toLowerCase().trim();
+      if (kLow.includes('/')) {
+        if (kLow.split('/').some(part => resLow.includes(part.trim()))) hits++;
+      } else if (resLow.includes(kLow)) {
+        hits++;
+      }
+    });
+    if (resLow.includes(titleLow)) hits += 2;
+    const total = Math.max(kws.length, 1);
+    const score = Math.min(100, Math.round((hits / total) * 100));
+
+    let tier = 'None';
+    if (score >= 70 && hits >= 3 && total >= 3) {
+      tier = 'Strong Match';
+    } else if (score >= 50 || (score >= 70 && hits >= 1)) {
+      tier = 'Good Match';
+    } else {
+      tier = 'Stretch Role';
+    }
+
+    // License Check
+    let failsLicense = false;
+    const req = (typeof getRoleRequirements === 'function') ? getRoleRequirements(roleObj) : {};
+    if (req && req.license && !resLow.includes(req.license.toLowerCase())) {
+      failsLicense = true;
+    }
+
+    if (!failsLanguage && !failsLicense && (tier === 'Strong Match' || (score >= 70 && hits >= 3))) {
+      return {
+        fit: 'good',
+        score,
+        tier: 'Strong Match',
+        label: 'Good fit to pass',
+        badgeClass: 'fit-good',
+        badgeHtml: '<span class="pass-fit-badge fit-good" style="background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.5); color:#34d399; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">● Good fit to pass</span>'
+      };
+    } else if (!failsLanguage && !failsLicense && (tier === 'Good Match' || (score >= 50 && score < 70) || (score >= 70 && hits >= 1))) {
+      return {
+        fit: 'stretch',
+        score,
+        tier: 'Good Match',
+        label: 'Stretch: practice Resume Defense first',
+        badgeClass: 'fit-stretch',
+        badgeHtml: '<span class="pass-fit-badge fit-stretch" style="background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.5); color:#fbbf24; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">▲ Stretch: practice Resume Defense first</span>'
+      };
+    } else {
+      return {
+        fit: 'weak',
+        score,
+        tier: tier,
+        label: 'Weak fit',
+        badgeClass: 'fit-weak',
+        badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:rgba(156,163,175,0.15); border:1px solid rgba(156,163,175,0.35); color:#9ca3af; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">Weak fit</span>'
+      };
+    }
+  }
+  window.getPassLikelihoodFit = getPassLikelihoodFit;
+
+  window.renderRoleFitBanner = function(roleTitle) {
+    const banner = document.getElementById('role-fit-banner');
+    if (!banner) return;
+    const cleanTitle = String(roleTitle || (cdsText && cdsText.innerText ? cdsText.innerText.replace(/^Role:\s*/i, '') : '') || localStorage.getItem('atsRole') || 'Senior Python / ML Evaluator').replace(/\s*\(Your Target Role\)\s*/i, '').trim();
+    const resumeTxt = (typeof window.resolveStoredResume === 'function') 
+      ? window.resolveStoredResume() 
+      : (localStorage.getItem('candidateResumeText') || '');
+
+    if (!resumeTxt || resumeTxt.trim().length < 50) {
+      banner.innerHTML = `
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:10px 14px; font-size:12px; color:#9ca3af; display:flex; justify-content:space-between; align-items:center;">
+          <span>Upload your resume to see your fit</span>
+          <a href="/resume-ats-guide" style="color:#34d399; font-weight:700; text-decoration:none;">Upload resume &rarr;</a>
+        </div>
+      `;
+      banner.style.display = 'block';
+      return;
+    }
+
+    const fitInfo = getPassLikelihoodFit(cleanTitle, resumeTxt);
+
+    if (fitInfo.fit === 'good') {
+      banner.innerHTML = `
+        <div style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:8px; padding:10px 14px; font-size:12.5px; color:#34d399; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <span style="font-size:14px;">●</span>
+          <span>Good fit to pass based on your resume</span>
+        </div>
+      `;
+    } else if (fitInfo.fit === 'stretch') {
+      banner.innerHTML = `
+        <div style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:10px 14px; font-size:12.5px; color:#fbbf24; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <span style="font-size:14px;">▲</span>
+          <span>Stretch: practice Resume Defense first</span>
+        </div>
+      `;
+    } else {
+      // Weak fit: pull top 3 Good fit roles from all available roles
+      const allRolesList = (window.allRoleItems && window.allRoleItems.length > 0)
+        ? window.allRoleItems
+        : Object.values(window.wavesRoleMap || {});
+
+      const goodAlternatives = allRolesList
+        .filter(r => (r.cleanTitle || r.title || '').toLowerCase().trim() !== cleanTitle.toLowerCase().trim())
+        .map(r => ({
+          role: r,
+          fitInfo: getPassLikelihoodFit(r, resumeTxt)
+        }))
+        .filter(item => item.fitInfo.fit === 'good')
+        .sort((a, b) => (b.fitInfo.score || 0) - (a.fitInfo.score || 0))
+        .slice(0, 3);
+
+      const altBtnsHtml = goodAlternatives.length > 0 ? `
+        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+          ${goodAlternatives.map(alt => `
+            <button type="button" onclick="window.selectRoleItem('${escapeHtml(alt.role.cleanTitle || alt.role.title)}', '${alt.role.domain || 'GENERAL'}')" style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); color:#6ee7b7; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:700; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:all 0.15s ease;" onmouseover="this.style.background='rgba(16,185,129,0.15)'" onmouseout="this.style.background='rgba(16,185,129,0.08)'">
+              <span>➔ Switch to: <strong>${escapeHtml(alt.role.cleanTitle || alt.role.title)}</strong></span>
+              <span style="font-size:10.5px; color:#34d399; font-weight:800;">● Good fit to pass</span>
+            </button>
+          `).join('')}
+        </div>
+      ` : '';
+
+      banner.innerHTML = `
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.12); border-left:3px solid #9ca3af; border-radius:8px; padding:12px 14px; text-align:left;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="background:rgba(156,163,175,0.18); color:#d1d5db; border:1px solid rgba(156,163,175,0.35); padding:2px 7px; border-radius:4px; font-size:11px; font-weight:800;">Weak fit</span>
+            <span style="font-size:12px; color:#d1d5db;">This role is a weak fit for your resume. 3 better-fitting roles to pass:</span>
+          </div>
+          ${altBtnsHtml}
+        </div>
+      `;
+    }
+    banner.style.display = 'block';
+  };
+
   function renderRoleCardHtml(item, qLow, currentActiveRole, isTopRecommended, isModal) {
     const isSelected = item.cleanTitle.toLowerCase() === (currentActiveRole || '').toLowerCase();
     const titleHtml = qLow ? highlightMatchText(item.cleanTitle, qLow) : escapeHtml(item.cleanTitle);
@@ -2423,6 +3013,11 @@ window.addEventListener('unhandledrejection', function(event) {
     // Immediately re-initialize Quizlet flashcard deck with new role's 10 questions (Blocker 1 fix)
     if (typeof window.initFlashcardsDeck === 'function') {
       window.initFlashcardsDeck();
+    }
+
+    // Render Pass Likelihood Fit Banner (REQ-PASS-01)
+    if (typeof window.renderRoleFitBanner === 'function') {
+      window.renderRoleFitBanner(clean);
     }
 
     // If session is already in flight, regenerate questions and update active view
@@ -2638,6 +3233,10 @@ window.addEventListener('unhandledrejection', function(event) {
         if (actPos) actPos.textContent = activeRole;
         const setRole = document.getElementById('settings-current-role-text');
         if (setRole) setRole.textContent = "Role: " + activeRole;
+      }
+      if (typeof window.renderRoleFitBanner === 'function') {
+        const activeRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : (atsRole || 'Senior Python / ML Evaluator');
+        window.renderRoleFitBanner(activeRole);
       }
     }
   }).catch(() => {});
@@ -2874,6 +3473,203 @@ window.addEventListener('unhandledrejection', function(event) {
   }, 250);
   populateVoiceList();
 
+  
+  // Bullet extraction from candidate resume (REQ-PASS-02)
+  window.extractResumeBullets = function(resumeText) {
+    if (!resumeText || typeof resumeText !== 'string' || resumeText.trim().length < 40) return [];
+    const lines = resumeText.split(/\r?\n/);
+    const bullets = [];
+    
+    lines.forEach(line => {
+      let clean = line.trim();
+      if (!clean) return;
+      if (/^[•\-*◦▪►]\s*/.test(clean) || /^\d+\.\s+/.test(clean)) {
+        clean = clean.replace(/^[•\-*◦▪►\d.]+\s*/, '').trim();
+        if (clean.length >= 25 && clean.length <= 300) {
+          bullets.push(clean);
+        }
+      } else if (/^(led|built|architected|designed|developed|implemented|engineered|managed|created|spearheaded|optimized|automated|directed|conducted|established|reduced|increased|delivered)\b/i.test(clean)) {
+        if (clean.length >= 25 && clean.length <= 300) {
+          bullets.push(clean);
+        }
+      }
+    });
+
+    return Array.from(new Set(bullets));
+  };
+
+  // Resume Defense Questions Builder (REQ-PASS-02)
+  window.buildResumeDefenseQuestions = function(roleTitle, resumeText, roleKeywords) {
+    const rawRes = (typeof resumeText === 'string') ? resumeText : (localStorage.getItem('candidateResumeText') || '');
+    const bullets = window.extractResumeBullets(rawRes);
+    if (!bullets || bullets.length === 0) return [];
+
+    const kws = Array.isArray(roleKeywords) ? roleKeywords.map(k => String(k).toLowerCase()) : [];
+
+    // Rank bullets by relevance to selected role using atsKeywords
+    const scored = bullets.map(b => {
+      const bLow = b.toLowerCase();
+      let hits = 0;
+      kws.forEach(k => {
+        if (bLow.includes(k)) hits++;
+      });
+      if (/\b\d+%?|\$\d+/.test(b)) hits += 0.5;
+      return { bullet: b, hits };
+    });
+
+    scored.sort((a, b) => b.hits - a.hits);
+    const top8 = scored.slice(0, 8).map(s => s.bullet);
+
+    return top8.map((bullet, idx) => {
+      const bLow = bullet.toLowerCase();
+      let followUp = "How did you measure the result?";
+      const hasWeOrTeam = /\b(we|team|our)\b/i.test(bLow);
+      const namesTool = /\b(prometheus|grafana|docker|kubernetes|jenkins|terraform|ansible|helm|aws|gcp|azure|datadog|splunk|elk|react|angular|vue|next\.?js|node|python|java|golang|rust|c\+\+|c#|\.net|sql|postgres|postgresql|mysql|mongodb|redis|kafka|rabbitmq|spark|hadoop|tableau|figma|excel|selenium|cypress|playwright|jest|git|github|gitlab|jira|pytorch|tensorflow)\b/i.test(bLow);
+      const hasNumber = /\b\d+(?:\.\d+)?%?|\b(one|two|three|four|five|six|seven|eight|nine|ten)\b/i.test(bullet);
+
+      if (hasWeOrTeam) {
+        followUp = "What did you do?";
+      } else if (namesTool) {
+        followUp = "Why that tool over the alternatives?";
+      } else if (!hasNumber) {
+        followUp = "How did you measure the result?";
+      }
+
+      const openingQ = `Walk me through this: "${bullet}". What was your part?`;
+
+      return {
+        id: `resume-defense-${idx + 1}`,
+        q: openingQ,
+        bullet: bullet,
+        followUp: followUp,
+        audio: "",
+        category: "Resume Defense",
+        tag: "STAR",
+        keywords: kws.slice(0, 4),
+        answer: `In this initiative, my direct individual ownership was [Your Specific Role] where I applied [Core Skill / Tool] to solve [Key Challenge], resulting in [Quantified Outcome].`,
+        feedbackHit: "Strong individual ownership and grounded resume defense.",
+        feedbackMiss: "Say what you did personally using 'I' and state a measurable result."
+      };
+    });
+  };
+
+  // Pass Check Questions Builder (REQ-PASS-06)
+  window.buildPassCheckQuestions = function(targetRoleName, targetDomain) {
+    const fullDeck = (typeof buildInterviewQuestions === 'function')
+      ? buildInterviewQuestions(targetRoleName, targetDomain)
+      : [];
+    const resumeText = (localStorage.getItem('candidateResumeText') || '').trim();
+    const resumeDefQs = window.buildResumeDefenseQuestions(targetRoleName, resumeText);
+
+    // 1. Pick 3 STAR questions
+    const starPool = fullDeck.filter(q => q.tag === 'STAR');
+    const shuffledStar = [...starPool].sort(() => 0.5 - Math.random());
+    const selectedStar = shuffledStar.slice(0, 3);
+
+    // 2. Pick 2 Answer–Why–Check questions (guaranteed 1 AI Evaluator)
+    const evalPool = fullDeck.filter(q => q.category === 'AI Evaluator');
+    const otherAwcPool = fullDeck.filter(q => q.tag === 'Answer–Why–Check' && q.category !== 'AI Evaluator');
+    const selectedEval = evalPool.length > 0 ? [evalPool[Math.floor(Math.random() * evalPool.length)]] : [];
+    const selectedOtherAwc = [...otherAwcPool].sort(() => 0.5 - Math.random()).slice(0, 2 - selectedEval.length);
+    const selectedAwc = [...selectedEval, ...selectedOtherAwc];
+
+    // 3. Pick 1 Resume Defense question
+    let selectedResumeDef = null;
+    if (resumeDefQs.length > 0) {
+      selectedResumeDef = resumeDefQs[Math.floor(Math.random() * resumeDefQs.length)];
+    } else {
+      selectedResumeDef = {
+        id: "passcheck-resume-fallback",
+        q: `Walk me through the most technically complex milestone from your recent career as ${targetRoleName}. What was your specific part?`,
+        category: "Resume Defense",
+        tag: "STAR",
+        keywords: ["ownership", "complexity", "architecture", "impact"],
+        answer: `In my recent role, I led direct execution on [Key Technical Milestone], coordinating delivery and ensuring production quality.`,
+        feedbackHit: "Clear ownership stated.",
+        feedbackMiss: "Detail your specific individual contribution."
+      };
+    }
+
+    const passCheckDeck = [...selectedStar, ...selectedAwc, selectedResumeDef];
+    return passCheckDeck.slice(0, 6);
+  };
+
+  // Recall Ladder (Fading CoPilot Engine) (REQ-PASS-04)
+  window.getQuestionRecallLevel = function(roleKey, qIdx) {
+    try {
+      const cleanKey = String(roleKey || (typeof localStorage !== 'undefined' ? localStorage.getItem('atsRole') : '') || 'default').toLowerCase().trim();
+      const raw = (typeof localStorage !== 'undefined') ? localStorage.getItem('recallLevels_' + cleanKey) : null;
+      if (!raw) return 1;
+      const map = JSON.parse(raw);
+      const lvl = parseInt(map[qIdx], 10);
+      return (lvl >= 1 && lvl <= 4) ? lvl : 1;
+    } catch (e) {
+      return 1;
+    }
+  };
+
+  window.setQuestionRecallLevel = function(roleKey, qIdx, lvl) {
+    try {
+      const cleanKey = String(roleKey || (typeof localStorage !== 'undefined' ? localStorage.getItem('atsRole') : '') || 'default').toLowerCase().trim();
+      const raw = (typeof localStorage !== 'undefined') ? localStorage.getItem('recallLevels_' + cleanKey) : null;
+      const map = raw ? JSON.parse(raw) : {};
+      map[qIdx] = Math.max(1, Math.min(4, parseInt(lvl, 10)));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('recallLevels_' + cleanKey, JSON.stringify(map));
+      }
+    } catch (e) {}
+  };
+
+  window.cycleRecallLevelDown = function() {
+    const roleKey = (typeof localStorage !== 'undefined' ? localStorage.getItem('atsRole') : '') || 'default';
+    const cleanKey = roleKey.toLowerCase().trim();
+    const currentLvl = window.getQuestionRecallLevel(cleanKey, currentQ);
+    if (currentLvl > 1) {
+      window.setQuestionRecallLevel(cleanKey, currentQ, currentLvl - 1);
+      const liveTpSlot = document.getElementById('live-teleprompter-card-slot');
+      const qData = currentQuestions[currentQ] || {};
+      if (liveTpSlot && typeof buildSuggestedStarResponse === 'function') {
+        liveTpSlot.innerHTML = buildSuggestedStarResponse(qData, currentQ, '');
+      }
+    }
+  };
+
+  // Pressure Mode Follow-up Question Generation (REQ-PASS-05)
+  window.generateFollowUpQuestion = function(mainAnswer, qData) {
+    const text = (mainAnswer || "").trim();
+    const hasNumber = /\b\d+(?:\.\d+)?%?|\b(one|two|three|four|five|six|seven|eight|nine|ten)\b/i.test(text);
+    const hasOwnershipI = /\b(i architected|i built|i designed|i led|i personally|i implemented|i owned|i diagnosed|i managed|i wrote|my role|my responsibility|i took|i decided)\b/i.test(text);
+    const hasWe = /\b(we|our|team)\b/i.test(text);
+
+    // 1. No number
+    if (!hasNumber) {
+      return "How did you measure that?";
+    }
+    // 2. No "I" (only "we")
+    if (!hasOwnershipI && hasWe) {
+      return "What was your specific role?";
+    }
+    // 3. A JD keyword missing
+    const kws = (qData && qData.keywords) ? qData.keywords : [];
+    for (const kw of kws) {
+      if (!text.toLowerCase().includes(kw.toLowerCase())) {
+        return `How would ${kw} apply here?`;
+      }
+    }
+    // 4. Otherwise
+    return "What would you do differently next time?";
+  };
+
+  // Pause Cutoff Setting (REQ-PASS-05)
+  window._pauseCutoffSec = (typeof localStorage !== 'undefined') ? parseInt(localStorage.getItem('tgt_pause_cutoff_sec') || '3', 10) : 3;
+  window.setPauseCutoff = function(sec) {
+    const val = parseInt(sec, 10);
+    window._pauseCutoffSec = (val >= 2 && val <= 4) ? val : 3;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('tgt_pause_cutoff_sec', String(window._pauseCutoffSec));
+    }
+  };
+
   // Construct questions that match the real interview AND use the single-source-of-truth JD keyword list!
   function buildInterviewQuestions(targetRoleName, targetDomain) {
     const candidateResume = localStorage.getItem('candidateResumeText') || '';
@@ -2931,6 +3727,7 @@ window.addEventListener('unhandledrejection', function(event) {
         q: `Walk me through your most recent role and what you were primarily responsible for day to day as ${roleArticle} ${cleanRole}, specifically involving ${formatSkill(k0)} and ${formatSkill(k1)}.`,
         audio: "/audio/q_resume_1.mp3",
         category: "Role & Core Ownership",
+        tag: "STAR",
         answer: `In my recent work as [Your Recent Title], I held direct ownership of ${formatSkill(k0)} and ${formatSkill(k1)}, structuring standard workflows, collaborating across teams, and maintaining rigorous quality benchmarks.`,
         keywords: [k0, k1, k2],
         feedbackHit: `Clear introduction. You gave direct context on your role and anchored your day-to-day responsibilities in ${k0}.`,
@@ -2941,6 +3738,7 @@ window.addEventListener('unhandledrejection', function(event) {
         q: `Tell me about your background ${formatBackgroundInRole(cleanRole)} and what types of complex problems you typically solve involving ${formatSkill(k0)}.`,
         audio: "/audio/q_resume_1.mp3",
         category: "Role & Core Ownership",
+        tag: "STAR",
         answer: `I specialize in ${cleanRole}, applying systematic analysis across ${formatSkill(k0)} and ${formatSkill(k1)} to solve complex problems and ensure high-accuracy deliverables.`,
         keywords: [k0, k1, k2],
         feedbackHit: `Great summary of your core strengths and alignment with ${cleanRole}.`,
@@ -2954,6 +3752,7 @@ window.addEventListener('unhandledrejection', function(event) {
         q: `Tell me about a specific high-impact project or achievement in your work as ${roleArticle} ${cleanRole} where you leveraged ${formatSkill(k0)} or ${formatSkill(k1)} to produce a measurable result.`,
         audio: "/audio/q_resume_2.mp3",
         category: "Measurable Project Impact",
+        tag: "STAR",
         answer: `On a high-impact initiative, our team faced execution bottlenecks around ${formatSkill(k0)}. I engineered a structured solution using ${formatSkill(k1)}, implemented automated validation gates, and delivered a 25%+ improvement in efficiency and accuracy.`,
         keywords: [k0, k1, 'metrics', 'optimization'],
         feedbackHit: `Great focus on results. Highlighting concrete metrics and tools like ${k0} aligns directly with how AI screeners score impact.`,
@@ -2964,6 +3763,7 @@ window.addEventListener('unhandledrejection', function(event) {
         q: `Tell me about a specific project or initiative in your work as ${roleArticle} ${cleanRole} where you had to balance accuracy and speed. What was the outcome?`,
         audio: "/audio/q_no_resume_2.mp3",
         category: "Measurable Project Impact",
+        tag: "STAR",
         answer: `I identified a critical quality bottleneck involving ${formatSkill(k0)}, established an audit framework with ${formatSkill(k1)}, and delivered a measurable 20%+ increase in turnaround speed while maintaining zero defects.`,
         keywords: [k0, k1, 'accuracy', 'turnaround'],
         feedbackHit: `Strong systematic focus. Citing quantified outcomes and verification standards demonstrates production readiness.`,
@@ -2976,6 +3776,12 @@ window.addEventListener('unhandledrejection', function(event) {
       q: `Which part of your background ${formatBackgroundInRole(cleanRole)} makes you an exceptional reviewer of AI model outputs or automated deliverables when evaluating ${formatSkill(k1)} and ${formatSkill(k2)}?`,
       audio: "/audio/q_general_1.mp3",
       category: "AI Output & Hallucinations",
+      tag: "Answer–Why–Check",
+      answerWhyCheck: {
+        answer: `Score 4/5 (Calibrated Quality Standard). Spot subtle hallucinations and edge cases in ${formatSkill(k1)} deliverables using domain ground truth.`,
+        why: `Reason 1: Domain boundary expertise verifies edge cases that generalist models miss. Reason 2: Hands-on mastery of ${formatSkill(k2)} catches subtle false claims before delivery.`,
+        check: `Cross-reference outputs against primary source specifications and evaluate with targeted adversarial stress tests.`
+      },
       answer: `My hands-on experience with ${formatSkill(k1)} and ${formatSkill(k2)} allows me to spot subtle hallucinations, verify boundary edge cases, and uphold strict rubric precision that generalists miss.`,
       keywords: [k1, k2, 'hallucinations', 'edge cases', 'rubric precision'],
       feedbackHit: `Excellent connection. Demonstrating how your domain expertise catches subtle edge cases is exactly what AI evaluation platforms look for.`,
@@ -2987,6 +3793,12 @@ window.addEventListener('unhandledrejection', function(event) {
       q: `In your specialized work with ${formatSkill(k0)}, what are the most common failure modes or subtle edge cases you encounter, and how do you systematically diagnose and resolve them?`,
       audio: domAudios[0] || "/audio/q_general_2.mp3",
       category: "Technical Deep Dive",
+      tag: "Answer–Why–Check",
+      answerWhyCheck: {
+        answer: `Score 4/5 (Systematic Root-Cause Diagnosis). Isolate boundary condition mismatches in ${formatSkill(k0)} through deterministic stress tests.`,
+        why: `Reason 1: Uncalibrated assumptions distort output reliability under high load. Reason 2: Methodical step-by-step isolation eliminates recurrence.`,
+        check: `Implement automated preventative assertions and benchmark against gold standard specifications.`
+      },
       answer: `When handling ${formatSkill(k0)}, failure modes typically stem from boundary condition mismatches or uncalibrated assumptions. I isolate the root cause through step-by-step stress tests, validate against source specifications, and implement preventative checks.`,
       keywords: [k0, 'root-cause', 'edge cases', 'stress tests', 'validation'],
       feedbackHit: `Excellent technical depth. You articulated realistic failure modes in ${k0} and outlined a systematic diagnosis process.`,
@@ -2998,6 +3810,12 @@ window.addEventListener('unhandledrejection', function(event) {
       q: `Walk me through how you integrate ${formatSkill(k1)} into a scalable, high-accuracy workflow. What architectural or procedural trade-offs do you consider?`,
       audio: domAudios[1] || "/audio/q_general_3.mp3",
       category: "Architecture & Systems",
+      tag: "Answer–Why–Check",
+      answerWhyCheck: {
+        answer: `Score 4/5 (Scalable Architecture Design). Establish deterministic validation checkpoints for ${formatSkill(k1)} balancing throughput against verification standards.`,
+        why: `Reason 1: Automated pre-validation filters routine noise at scale. Reason 2: Expert human review is preserved for high-complexity edge cases.`,
+        check: `Measure review turnaround latency against precision benchmarks across weekly cohorts.`
+      },
       answer: `I design workflows around ${formatSkill(k1)} by establishing deterministic validation checkpoints, balancing throughput against strict verification standards, and ensuring rapid feedback loops for edge cases.`,
       keywords: [k1, 'workflow', 'architecture', 'scalability', 'trade-offs'],
       feedbackHit: `Strong architectural perspective. Addressing trade-offs while maintaining high standards shows senior-level execution.`,
@@ -3009,32 +3827,75 @@ window.addEventListener('unhandledrejection', function(event) {
       q: `Describe a scenario where data anomalies, ambiguous specifications, or corrupted inputs threatened ${formatSkill(k2)}. How did you detect and resolve the issue?`,
       audio: "",
       category: "Edge Cases & Data Integrity",
+      tag: "Answer–Why–Check",
+      answerWhyCheck: {
+        answer: `Score 4/5 (Data Integrity & Boundary Safeguards). Detect corrupted inputs in ${formatSkill(k2)} by isolating discrepancies against ground truth benchmarks.`,
+        why: `Reason 1: Inconsistent boundary data compromises downstream pipeline accuracy. Reason 2: Rigorous filtering criteria prevent defect recurrence.`,
+        check: `Run automated schema validation queries and audit edge cases against verified ground truth.`
+      },
       answer: `I identified an anomaly where inconsistent boundary data compromised ${formatSkill(k2)}. I conducted an audit, isolated the discrepancies against ground truth benchmarks, and revised our filtering criteria to prevent recurrence.`,
       keywords: [k2, 'data anomalies', 'audit', 'ground truth', 'filtering'],
       feedbackHit: `Great problem-solving narrative. You showed vigilance in detecting anomalies and protecting pipeline integrity.`,
       feedbackMiss: `Detail how you detected the anomaly in ${k2} and the exact verification safeguards you put in place.`
     });
 
-    // Question 7: Rubric Calibration & Subject Matter Disagreements
+    // Questions 7 & 8: AI Evaluator Cards (REQ-PASS-03)
+    const domCards = (window.evaluatorCardsData && (window.evaluatorCardsData[matchedDom] || window.evaluatorCardsData['general'])) || [];
+    const evalCard1 = domCards[0] || {
+      id: "eval-gen-1",
+      flawType: "factual error",
+      plantedFlaw: "Invents fabricated compliance requirement without factual grounding.",
+      question: `An AI model stated that all automated deliverables for ${cleanRole} can omit audit trails if processed on localhost. What's wrong with this answer, and how would you score it?`,
+      keyPoints: ["audit trail", "localhost", "compliance", "verification", "security"],
+      answerWhyCheck: {
+        "answer": "Score 1/5 (Severe Compliance Violation). Localhost execution does not exempt production deliverables from auditability.",
+        "why": "Reason 1: Regulated deliverables require immutable audit logs regardless of environment. Reason 2: Bypassing logging creates unverified deployment risks.",
+        "check": "Verify against regulatory compliance checklists and run audit trail integrity checks."
+      }
+    };
+    const evalCard2 = domCards[1] || {
+      id: "eval-gen-2",
+      flawType: "missing safety caveat",
+      plantedFlaw: "Recommends skipping verification testing to maximize delivery speed.",
+      question: `An AI assistant recommended deploying changes directly to production without taking backups or running smoke tests to meet tight deadlines. What's wrong with this answer, and how would you score it?`,
+      keyPoints: ["backups", "smoke tests", "production risk", "rollback", "testing"],
+      answerWhyCheck: {
+        "answer": "Score 1/5 (Catastrophic Operational Risk). Deploying without backups or smoke tests introduces immediate data loss risk.",
+        "why": "Reason 1: Unverified code can cause cascading failures without a rollback mechanism. Reason 2: High-velocity delivery requires automated test gates.",
+        "check": "Enforce automated CI/CD gating and verify snapshot recovery in staging."
+      }
+    };
+
     questions.push({
-      q: `When evaluating complex deliverables under strict guidelines, how do you handle situations where two qualified domain experts disagree on rubric scoring or evaluation criteria for ${formatSkill(k0)}?`,
+      id: evalCard1.id,
+      q: evalCard1.question,
       audio: "",
-      category: "Rubric Calibration",
-      answer: `I deconstruct the disagreement down to objective ground-truth criteria, cross-reference the formal rubric guidelines, and document empirical evidence to align both reviewers on a defensible, standardized consensus.`,
-      keywords: [k0, 'rubric calibration', 'consensus', 'ground truth', 'guidelines'],
-      feedbackHit: `Excellent collaborative and calibration approach. De-escalating subjective disagreement with objective rubric standards is critical for AI training.`,
-      feedbackMiss: `Explain how you reference objective rubrics and evidence rather than personal opinion when resolving evaluation disputes.`
+      category: "AI Evaluator",
+      tag: "Answer–Why–Check",
+      flawType: evalCard1.flawType,
+      plantedFlaw: evalCard1.plantedFlaw,
+      keyPoints: evalCard1.keyPoints,
+      answer: `${evalCard1.answerWhyCheck.answer} Why: ${evalCard1.answerWhyCheck.why} Check: ${evalCard1.answerWhyCheck.check}`,
+      answerWhyCheck: evalCard1.answerWhyCheck,
+      keywords: evalCard1.keyPoints,
+      feedbackHit: `Excellent evaluation. You identified the planted flaw (${evalCard1.flawType}) and gave a clear, grounded verdict.`,
+      feedbackMiss: `Spot the planted flaw: examine whether the answer contains a ${evalCard1.flawType} and identify what verification step was missed.`
     });
 
-    // Question 8: Compliance, Benchmarks & Ground Truth Auditing
     questions.push({
-      q: `How do you verify ground truth and enforce benchmark standards when auditing outputs involving ${formatSkill(k3)} and ${formatSkill(k4)}?`,
+      id: evalCard2.id,
+      q: evalCard2.question,
       audio: "",
-      category: "Benchmark Verification",
-      answer: `I cross-reference outputs against authoritative primary sources and verified benchmark datasets, applying multi-point verification matrices across ${formatSkill(k3)} and ${formatSkill(k4)} to ensure zero tolerance for ungrounded assertions.`,
-      keywords: [k3, k4, 'benchmarks', 'ground truth', 'verification matrix', 'compliance'],
-      feedbackHit: `Strong compliance mindset. Establishing multi-point ground truth checks guarantees benchmark reliability.`,
-      feedbackMiss: `Emphasize your ground-truth sources and the verification checks you run on ${k3} and ${k4}.`
+      category: "AI Evaluator",
+      tag: "Answer–Why–Check",
+      flawType: evalCard2.flawType,
+      plantedFlaw: evalCard2.plantedFlaw,
+      keyPoints: evalCard2.keyPoints,
+      answer: `${evalCard2.answerWhyCheck.answer} Why: ${evalCard2.answerWhyCheck.why} Check: ${evalCard2.answerWhyCheck.check}`,
+      answerWhyCheck: evalCard2.answerWhyCheck,
+      keywords: evalCard2.keyPoints,
+      feedbackHit: `Excellent evaluation. You identified the planted flaw (${evalCard2.flawType}) and grounded your verdict in field standards.`,
+      feedbackMiss: `Spot the planted flaw: check for a ${evalCard2.flawType} and detail how you would systematically verify the output.`
     });
 
     // Question 9: Workflow Optimization & Review Turnaround
@@ -3042,6 +3903,12 @@ window.addEventListener('unhandledrejection', function(event) {
       q: `Walk me through how you would optimize an end-to-end evaluation pipeline or technical process involving ${formatSkill(k1)} to reduce review turnaround while improving precision.`,
       audio: "",
       category: "Workflow Optimization",
+      tag: "Answer–Why–Check",
+      answerWhyCheck: {
+        answer: `Score 4/5 (Pipeline Optimization Strategy). Profile review bottlenecks in ${formatSkill(k1)} and automate pre-validation checks.`,
+        why: `Reason 1: Pre-filtering routine criteria reduces turnaround time by 30%+. Reason 2: Clear rubric criteria eliminate subjective disputes.`,
+        check: `Track turnaround speed and reviewer calibration metrics against historical baselines.`
+      },
       answer: `I would profile the existing pipeline to identify review bottlenecks, automate pre-validation checks for routine criteria involving ${formatSkill(k1)}, and focus expert human review on high-complexity boundary cases.`,
       keywords: [k1, 'optimization', 'turnaround', 'automation', 'bottlenecks'],
       feedbackHit: `Spot-on efficiency strategy. Pairing automated pre-filtering with focused human expertise maximizes both speed and accuracy.`,
@@ -3053,6 +3920,7 @@ window.addEventListener('unhandledrejection', function(event) {
       q: `Tell me about a time you had to deliver under tight deadlines with high accuracy requirements as ${roleArticle} ${cleanRole}. How did you prioritize your verification steps without compromising quality?`,
       audio: "",
       category: "Quality Under Pressure",
+      tag: "STAR",
       answer: `Under a compressed delivery timeline, I triaged deliverables by risk severity, applied non-negotiable checks to critical paths involving ${formatSkill(k0)} and ${formatSkill(k2)}, and completed the milestone with zero defect escapes.`,
       keywords: [k0, k2, 'triage', 'risk assessment', 'deadline', 'quality assurance'],
       feedbackHit: `Impressive poise and prioritization. Demonstrating risk-based triage under pressure signals production readiness.`,
@@ -4246,6 +5114,8 @@ ${(resumeText || '').slice(0, 3500)}`;
     const hasResume = resumeText.length > 50;
     const parts = computeStarPartsForQuestion(qData, qIndex, rawAnswer);
     const { st: starSituationTask, a: starAction, r: starResult, qKeywords, kwPool, roleTitle, parsedResume, detectedResumeSkills, videoLessonFocus, primaryVideoHref } = parts;
+    const roleKeyForRecall = (roleTitle || localStorage.getItem('atsRole') || 'default').toLowerCase().trim();
+    const recallLvl = (typeof window.getQuestionRecallLevel === 'function') ? window.getQuestionRecallLevel(roleKeyForRecall, qIndex) : 1;
 
     const fullPlainScript = `${starSituationTask} ${starAction} ${starResult}`.replace(/\*\*([^*]+)\*\*/g, '$1');
     window._lastSuggestedStarPlain = fullPlainScript;
@@ -4304,7 +5174,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:6px;">
           <!-- Left: Title & Career Grounding Tag -->
           <div style="display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;">
-            <span style="font-size:12px; font-weight:800; color:#ffffff;">🎯 Suggested High-Scoring Response (STAR + Masterclass Formula)</span>
+            <span style="font-size:12px; font-weight:800; color:#ffffff;">🎯 Example structure: replace with your real story</span>
             <span style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); color:#6ee7b7; font-size:9.5px; font-weight:800; padding:1px 5px; border-radius:3px; text-transform:uppercase; letter-spacing:0.03em;">Grounded across career history</span>
             <span class="star-resume-source-note" style="display:none;">${rolesHeadline}</span>
           </div>
@@ -4317,6 +5187,10 @@ ${(resumeText || '').slice(0, 3500)}`;
             </button>
             <button type="button" class="tab-star-breakdown" onclick="window.setStarViewMode('breakdown')" style="background:transparent; color:#9ca3af; border:1px solid rgba(255,255,255,0.12); border-radius:4px; padding:3px 8px; font-size:10.5px; font-weight:700; cursor:pointer;">
               Rubric Breakdown
+            </button>
+            <!-- Recall Ladder Badge (REQ-PASS-04) -->
+            <button type="button" id="recall-ladder-badge" onclick="window.cycleRecallLevelDown()" title="Recall Ladder: Tap to manually step down recall support" style="background:rgba(99,102,241,0.18); border:1px solid rgba(99,102,241,0.45); color:#c7d2fe; border-radius:4px; padding:3px 8px; font-size:10.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+              <span>🪜 Recall:</span> <span id="recall-level-label">Level ${recallLvl}: ${recallLvl === 1 ? 'Script' : recallLvl === 2 ? 'Cues' : recallLvl === 3 ? 'Keywords' : 'Recall'}</span>
             </button>
 
             <!-- Auto-Scroll Tools -->
@@ -4345,36 +5219,73 @@ ${(resumeText || '').slice(0, 3500)}`;
 
         <div class="inline-resume-paste-box" style="display:none;"></div>
 
+        <!-- Fixed Practice-Only Label (REQ-PASS-07) -->
+        <div style="background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.3); border-radius:6px; padding:4px 10px; margin-bottom:10px; font-size:11px; font-weight:800; color:#fca5a5; display:flex; align-items:center; gap:6px;">
+          <span>⚠️</span>
+          <span>Practice only. Don't use notes, prompters or overlays in a real interview.</span>
+        </div>
+
         <!-- 1. TELEPROMPTER FLOW VIEW (ALL 3 PHASES VISIBLE TOGETHER IMMEDIATELY) -->
         <div class="star-view-teleprompter-wrap" style="display:block;">
           <div class="star-tp-scroll-viewport" style="max-height:220px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:4px;">
             <div class="star-teleprompter-text-body" style="font-size:${_starFontSize}px; line-height:1.52; color:#ffffff;">
-              <!-- Phase 1: Opening Hook & Scope -->
-              <div class="tp-sec-hook" style="margin-bottom:6px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #3b82f6; border-radius:5px; transition:all 0.25s ease;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                  <span style="font-size:10.5px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em;">1. Opening Hook &amp; Scope (First 15s)</span>
-                  <span class="tp-pacing-indicator" style="font-size:9px; font-weight:800; background:#3b82f6; color:#ffffff; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (0–15s)</span>
+              ${recallLvl === 4 ? `
+                <!-- Level 4: Recall (Memory Mode - NO SCRIPT TEXT IN DOM) -->
+                <div class="tp-recall-memory" style="padding:28px 16px; text-align:center; color:#9ca3af; font-size:14px; font-weight:700;">
+                  🧠 Answer from memory (Level 4: Recall)
+                  <div style="font-size:11.5px; color:#6b7280; margin-top:4px;">No script shown. Deliver your answer from recall.</div>
                 </div>
-                <div class="star-st-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starSituationTask, kwPool, false, true)}</div>
-              </div>
+              ` : recallLvl === 3 ? `
+                <!-- Level 3: Keywords Only -->
+                <div class="tp-recall-kws" style="padding:20px 14px; text-align:center;">
+                  <div style="font-size:11px; font-weight:800; color:#9ca3af; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">🎯 Target Keywords to Hit (Level 3: Keywords)</div>
+                  <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
+                    ${qKeywords.slice(0, 3).map(k => `<span style="background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.5); color:#6ee7b7; font-size:12px; font-weight:800; padding:4px 10px; border-radius:100px;">✓ ${k}</span>`).join('')}
+                  </div>
+                </div>
+              ` : recallLvl === 2 ? `
+                <!-- Level 2: Cues Only -->
+                <div class="tp-recall-cues" style="padding:10px 12px;">
+                  <div style="font-size:11px; font-weight:800; color:#a5b4fc; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px;">🪜 Speaking Cues (Level 2: Cues)</div>
+                  <div style="margin-bottom:6px; padding:6px 10px; background:rgba(255,255,255,0.02); border-left:3px solid #3b82f6; border-radius:4px; font-size:13px; color:#d1d5db;">
+                    <strong style="color:#93c5fd;">${(qData && qData.tag === 'Answer–Why–Check') ? 'Verdict:' : 'Situation:'}</strong> ${(qData && qData.tag === 'Answer–Why–Check') ? '[State your calibrated score / verdict first]' : '[Role & Company context]'}
+                  </div>
+                  <div style="margin-bottom:6px; padding:6px 10px; background:rgba(255,255,255,0.02); border-left:3px solid #10b981; border-radius:4px; font-size:13px; color:#d1d5db;">
+                    <strong style="color:#6ee7b7;">${(qData && qData.tag === 'Answer–Why–Check') ? 'Why:' : 'Action:'}</strong> ${(qData && qData.tag === 'Answer–Why–Check') ? '[2 field reasons / technical justifications]' : `[Specific steps executed with ${qKeywords[0] || 'core skill'}]`}
+                  </div>
+                  <div style="padding:6px 10px; background:rgba(255,255,255,0.02); border-left:3px solid #f59e0b; border-radius:4px; font-size:13px; color:#d1d5db;">
+                    <strong style="color:#fcd34d;">${(qData && qData.tag === 'Answer–Why–Check') ? 'Check:' : 'Result:'}</strong> ${(qData && qData.tag === 'Answer–Why–Check') ? '[Verification metric / specification benchmark]' : '[Quantified outcome & metric]'}
+                  </div>
+                </div>
+              ` : `
+                <!-- Level 1: Full Script -->
+                <!-- Phase 1: Opening Hook & Scope -->
+                <div class="tp-sec-hook" style="margin-bottom:6px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #3b82f6; border-radius:5px; transition:all 0.25s ease;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                    <span style="font-size:10.5px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em;">1. Opening Hook &amp; Scope (First 15s)</span>
+                    <span class="tp-pacing-indicator" style="font-size:9px; font-weight:800; background:#3b82f6; color:#ffffff; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (0–15s)</span>
+                  </div>
+                  <div class="star-st-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starSituationTask, kwPool, false, true)}</div>
+                </div>
 
-              <!-- Phase 2: Action & Execution -->
-              <div class="tp-sec-action" style="margin-bottom:6px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #10b981; border-radius:5px; transition:all 0.25s ease;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                  <span style="font-size:10.5px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em;">2. Action &amp; Execution (30–45s)</span>
-                  <span class="tp-pacing-indicator" style="display:none; font-size:9px; font-weight:800; background:#10b981; color:#042f2e; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (30–45s)</span>
+                <!-- Phase 2: Action & Execution -->
+                <div class="tp-sec-action" style="margin-bottom:6px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #10b981; border-radius:5px; transition:all 0.25s ease;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                    <span style="font-size:10.5px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em;">2. Action &amp; Execution (30–45s)</span>
+                    <span class="tp-pacing-indicator" style="display:none; font-size:9px; font-weight:800; background:#10b981; color:#042f2e; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (30–45s)</span>
+                  </div>
+                  <div class="star-a-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starAction, kwPool, false, true)}</div>
                 </div>
-                <div class="star-a-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starAction, kwPool, false, true)}</div>
-              </div>
 
-              <!-- Phase 3: Quantified Result -->
-              <div class="tp-sec-result" style="margin-bottom:4px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #f59e0b; border-radius:5px; transition:all 0.25s ease;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                  <span style="font-size:10.5px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em;">3. Quantified Result (Final 15s)</span>
-                  <span class="tp-pacing-indicator" style="display:none; font-size:9px; font-weight:800; background:#f59e0b; color:#000000; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (Final 15s)</span>
+                <!-- Phase 3: Quantified Result -->
+                <div class="tp-sec-result" style="margin-bottom:4px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #f59e0b; border-radius:5px; transition:all 0.25s ease;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                    <span style="font-size:10.5px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em;">3. Quantified Result (Final 15s)</span>
+                    <span class="tp-pacing-indicator" style="display:none; font-size:9px; font-weight:800; background:#f59e0b; color:#000000; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (Final 15s)</span>
+                  </div>
+                  <div class="star-r-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starResult, kwPool, false, true)}</div>
                 </div>
-                <div class="star-r-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starResult, kwPool, false, true)}</div>
-              </div>
+              `}
             </div>
           </div>
           <div style="font-size:10.5px; color:#9ca3af; margin-top:3px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
@@ -4864,7 +5775,7 @@ ${(resumeText || '').slice(0, 3500)}`;
 
       if (hasPassiveWe && !hasOwnershipI) {
         confScore -= 8;
-        toTighten += "\n💡 <strong>Coach Gain says (Ownership):</strong> Autonomous AI evaluators score individual contribution. Replace 'we did' with 'I specifically built/diagnosed'.";
+        toTighten += "\n💡 <strong>Coach Gain says:</strong> Say what you did. Autonomous screeners score your individual contributions, not your team's.";
       } else if (hasOwnershipI) {
         confScore += 6;
       }
@@ -5027,6 +5938,19 @@ ${(resumeText || '').slice(0, 3500)}`;
     totalFillers += evalRes.fillerCount;
     if (evalRes.hasMetrics) totalMetricsAnswered++;
     if (rawText.length > 0) totalQuestionsAnswered++;
+
+    // Recall Ladder Progression (REQ-PASS-04)
+    const roleKeyForRecall = (localStorage.getItem('atsRole') || 'default').toLowerCase().trim();
+    const curRecallLvl = (typeof window.getQuestionRecallLevel === 'function') ? window.getQuestionRecallLevel(roleKeyForRecall, currentQ) : 1;
+    let nextRecallLvl = curRecallLvl;
+    if (evalRes.cappedScore >= 70) {
+      nextRecallLvl = Math.min(4, curRecallLvl + 1);
+    } else if (evalRes.cappedScore < 50) {
+      nextRecallLvl = Math.max(1, curRecallLvl - 1);
+    }
+    if (typeof window.setQuestionRecallLevel === 'function') {
+      window.setQuestionRecallLevel(roleKeyForRecall, currentQ, nextRecallLvl);
+    }
 
     sessionQuestionResults[currentQ] = {
       qIndex: currentQ,
@@ -5291,7 +6215,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       window.resetTeleprompterScroll();
     }
 
-    const isPressure = (window.currentSimMode === 'pressure');
+    const isPressure = (window.currentSimMode === 'pressure' || window.currentSimMode === 'passcheck');
     if (isPressure) {
       isTextMode = false;
     }
@@ -5458,7 +6382,86 @@ ${(resumeText || '').slice(0, 3500)}`;
       }
     }
     stopAllSpeech();
-    recordCurrentQuestionAnswer();
+
+    // Pressure Mode Follow-Up Question Engine (REQ-PASS-05)
+    const isPressure = (window.currentSimMode === 'pressure' || window.currentSimMode === 'passcheck');
+    if (isPressure && !window._isAnsweringFollowUp) {
+      const qData = currentQuestions[currentQ] || {};
+      const mainRawText = getCurrentAnswerText();
+      const followUpPrompt = (typeof window.generateFollowUpQuestion === 'function')
+        ? window.generateFollowUpQuestion(mainRawText, qData)
+        : "What was your specific role?";
+
+      window._isAnsweringFollowUp = true;
+      window._pendingMainAnswer = mainRawText;
+      window._pendingMainEval = evaluateAnswerText(mainRawText, qData, currentQ);
+      window._currentFollowUpQuestion = followUpPrompt;
+
+      // Clear answer input fields for follow-up
+      const typedIn = document.getElementById('typed-answer-input');
+      if (typedIn) typedIn.value = '';
+      currentSpokenTranscript = '';
+      const spokenEl = document.getElementById('spoken-live-transcript');
+      if (spokenEl) spokenEl.textContent = 'Listening for your follow-up response...';
+
+      // Render the follow-up prompt in the interviewer question box
+      const qTextEl = document.getElementById('alex-question-text');
+      if (qTextEl) {
+        qTextEl.innerHTML = `<span style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; font-size:11px; font-weight:800; padding:2px 7px; border-radius:4px; text-transform:uppercase; margin-right:6px;">Follow-Up</span> ${escapeHtml(followUpPrompt)}`;
+      }
+
+      if (nextBtn) nextBtn.innerHTML = `Submit Follow-Up ➔`;
+
+      // In spoken mode, speak the follow-up prompt aloud
+      if (!isTextMode && synth) {
+        try {
+          const u = new SpeechSynthesisUtterance(followUpPrompt);
+          synth.speak(u);
+        } catch (e) {}
+      }
+      return;
+    }
+
+    if (isPressure && window._isAnsweringFollowUp) {
+      const followUpText = getCurrentAnswerText();
+      const qData = currentQuestions[currentQ] || {};
+      const followUpEval = evaluateAnswerText(followUpText, qData, currentQ);
+      const mainEval = window._pendingMainEval || evaluateAnswerText(window._pendingMainAnswer || '', qData, currentQ);
+
+      // Question score = 70% main answer + 30% follow-up (REQ-PASS-05)
+      const compositeScore = Math.round(mainEval.cappedScore * 0.70 + followUpEval.cappedScore * 0.30);
+
+      sessionQuestionResults[currentQ] = {
+        qIndex: currentQ,
+        question: qData.q || '',
+        answer: window._pendingMainAnswer || '(No main answer)',
+        score: compositeScore,
+        mainScore: mainEval.cappedScore,
+        followUpQuestion: window._currentFollowUpQuestion || 'Follow-up',
+        followUpAnswer: followUpText || '(No follow-up provided)',
+        followUpScore: followUpEval.cappedScore,
+        isDuplicate: Boolean(mainEval.isDuplicate || followUpEval.isDuplicate),
+        wordCount: (mainEval.wordCount || 0) + (followUpEval.wordCount || 0),
+        matchedKeywords: mainEval.matchedList,
+        missedKeywords: mainEval.missedList,
+        hasMetrics: Boolean(mainEval.hasMetrics || followUpEval.hasMetrics),
+        whatWorked: mainEval.whatWorked,
+        toTighten: mainEval.toTighten,
+        answered: true
+      };
+
+      currentQScore = compositeScore;
+      totalScore += compositeScore;
+
+      // Reset follow-up state
+      window._isAnsweringFollowUp = false;
+      window._pendingMainAnswer = null;
+      window._pendingMainEval = null;
+      window._currentFollowUpQuestion = null;
+      if (nextBtn) nextBtn.innerHTML = `Next Question ➔`;
+    } else {
+      recordCurrentQuestionAnswer();
+    }
 
     if (isSingleQuestionRedrill || currentQ + 1 >= currentQuestions.length) {
       isSingleQuestionRedrill = false;
@@ -5544,7 +6547,18 @@ ${(resumeText || '').slice(0, 3500)}`;
     currentDomain = resolvedDomain;
     syncDomainSelectorValue(resolvedDomain);
 
-    currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
+    if (window.currentSimMode === 'resumedefense') {
+      const resumeText = localStorage.getItem('candidateResumeText') || '';
+      const jdCtx = getJobContextForRole(roleTarget, currentDomain);
+      currentQuestions = window.buildResumeDefenseQuestions(roleTarget, resumeText, (jdCtx && jdCtx.keywords) || []);
+      if (currentQuestions.length === 0) {
+        currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
+      }
+    } else if (window.currentSimMode === 'passcheck') {
+      currentQuestions = window.buildPassCheckQuestions(roleTarget, currentDomain);
+    } else {
+      currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
+    }
     sessionTargetKeywords.clear();
     sessionMatchedKeywords.clear();
     sessionQuestionResults = [];
@@ -5659,7 +6673,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     // Build Overall Summary
     let overallSummary = "";
     if (hasDuplicates) {
-      overallSummary = `⚠️ <strong>Repetitive Responses Detected:</strong> ${duplicateCount} of ${answeredCount} responses were identified as identical or canned duplicates (capped at 30%). Real AI interview platforms (Mercor, micro1, Anthropic) immediately invalidate repetitive submissions across questions. To raise your readiness score, provide distinct, role-specific STAR examples for each individual prompt.`;
+      overallSummary = `⚠️ <strong>Repetitive Responses Detected:</strong> ${duplicateCount} of ${answeredCount} responses were identified as identical or canned duplicates (capped at 30%). AI screeners are built to flag repeated or canned answers. Give a distinct example for each question. To raise your readiness score, provide distinct, role-specific STAR examples for each individual prompt.`;
     } else if (avgScore >= 80 && kwHits >= 4) {
       overallSummary = `Strong readiness (${avgScore}%) for <strong>${roleTarget}</strong>. You aligned your answers with <strong>${kwHits} of ${kwTotal}</strong> core Job Description signals and achieved <strong>${quantifiedImpactPct}% Quantified Impact</strong>.`;
     } else if (answeredCount >= 3) {
@@ -5730,7 +6744,8 @@ ${(resumeText || '').slice(0, 3500)}`;
         <span style="font-size:28px; flex-shrink:0;">🎯</span>
         <div>
           <div style="font-size:13.5px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.05em;">Practice Benchmark &bull; High Readiness (${avgScore}%)</div>
-          <div style="font-size:13px; color:#f3f4f6; margin-top:3px; line-height:1.45;">Your answers hit <strong>${kwHits} of ${kwTotal}</strong> core Job Description terms with <strong>${quantifiedImpactPct}% Quantified Impact</strong>. Review the specific feedback below to sharpen your edge before real screenings.</div>
+          <div style="font-size:12.5px; font-weight:800; color:#93c5fd; margin-top:2px;">Next step: take the Pass Check <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="background:#10b981; color:#042f2e; border:none; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; cursor:pointer; margin-left:6px;">Start Pass Check ➔</button></div>
+          <div style="font-size:13px; color:#f3f4f6; margin-top:4px; line-height:1.45;">Your answers hit <strong>${kwHits} of ${kwTotal}</strong> core Job Description terms with <strong>${quantifiedImpactPct}% Quantified Impact</strong>. Review the specific feedback below to sharpen your edge before real screenings.</div>
         </div>
       </div>
     ` : '';
@@ -5769,6 +6784,12 @@ ${(resumeText || '').slice(0, 3500)}`;
             </div>
           </div>
           <div style="font-size:12px; color:#9ca3af; font-style:italic; margin-bottom:8px;">Your response: "${(res.answer || '').slice(0, 160)}${(res.answer || '').length > 160 ? '...' : ''}"</div>
+          ${res.followUpQuestion && res.followUpAnswer ? `
+            <div style="margin-top:6px; margin-bottom:8px; padding:8px 12px; background:rgba(255,255,255,0.02); border-left:3px solid #f59e0b; border-radius:0 6px 6px 0; font-size:12px;">
+              <div style="font-weight:800; color:#fcd34d; margin-bottom:2px;">Follow-Up Question: "${escapeHtml(res.followUpQuestion)}"</div>
+              <div style="color:#d1d5db;">Follow-Up Response: "${escapeHtml(res.followUpAnswer)}" <span style="color:#34d399; font-weight:800; margin-left:6px;">(${res.followUpScore || 0}%)</span></div>
+            </div>
+          ` : ''}
           ${duplicateAlert}
           <div style="display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin-bottom:6px; margin-top:${res.isDuplicate ? '8px' : '0'};">
             <span style="font-size:10.5px; color:#9ca3af; font-weight:700; text-transform:uppercase; margin-right:4px;">JD Keywords:</span>
@@ -5792,7 +6813,74 @@ ${(resumeText || '').slice(0, 3500)}`;
         setupDetails.appendChild(existingChecklist);
       }
       resultsView.style.display = 'block';
+      // Pass Check Evaluation (REQ-PASS-06)
+      const isPassCheck = (window.currentSimMode === 'passcheck');
+      let passCheckResult = null;
+      let passCheckBannerHtml = '';
+      if (isPassCheck) {
+        const minQScore = Math.min(...validResults.map(r => r.score || 0));
+        const hasDup = validResults.some(r => r.isDuplicate);
+        let pcStatus = 'not_yet';
+        if (avgScore >= 70 && minQScore >= 50 && !hasDup) {
+          pcStatus = 'ready';
+        } else if (avgScore >= 60 && avgScore < 70 && !hasDup) {
+          pcStatus = 'almost';
+        } else {
+          pcStatus = 'not_yet';
+        }
+
+        const roleKey = (roleTarget || 'default').toLowerCase().trim();
+        passCheckResult = {
+          result: pcStatus,
+          score: avgScore,
+          minScore: minQScore,
+          hasDuplicate: hasDup,
+          date: new Date().toISOString()
+        };
+        try {
+          localStorage.setItem('passCheck_' + roleKey, JSON.stringify(passCheckResult));
+        } catch(e) {}
+
+        if (pcStatus === 'ready') {
+          passCheckBannerHtml = `
+            <div id="passcheck-result-banner" style="background:rgba(16,185,129,0.15); border:1.5px solid #10b981; border-radius:10px; padding:16px 20px; margin-bottom:20px; text-align:left;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div>
+                  <div style="font-size:16px; font-weight:900; color:#34d399; display:flex; align-items:center; gap:6px;">
+                    <span>🎉 Ready ✓</span>
+                    <span style="font-size:12px; background:#10b981; color:#042f2e; padding:2px 8px; border-radius:4px; font-weight:900;">PASS CHECK ACHIEVED</span>
+                  </div>
+                  <div style="font-size:13px; color:#d1fae5; margin-top:4px;">Practice benchmark passed with ${avgScore}% readiness. Your green <strong>Pass Check ✓</strong> tag is now active on <a href="/apply" style="color:#6ee7b7; font-weight:800; text-decoration:underline;">/apply</a>.</div>
+                  <div style="font-size:11px; color:#9ca3af; margin-top:4px; font-style:italic;">Practice benchmark, not a prediction from Mercor or micro1.</div>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <a href="/readiness-checklist#day-of-checklist" class="btn btn-secondary" style="font-size:12px; padding:8px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">📋 Day-Of Checklist</a>
+                  <a href="/apply" class="btn btn-primary" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#10b981; color:#042f2e; font-weight:800;">Apply with Pass Check ✓ ➔</a>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (pcStatus === 'almost') {
+          passCheckBannerHtml = `
+            <div id="passcheck-result-banner" style="background:rgba(245,158,11,0.15); border:1.5px solid #f59e0b; border-radius:10px; padding:16px 20px; margin-bottom:20px; text-align:left;">
+              <div style="font-size:16px; font-weight:900; color:#fbbf24;">📈 Almost Ready (${avgScore}%)</div>
+              <div style="font-size:13px; color:#fef08a; margin-top:4px;">You are close to the 70% threshold. Re-drill your 2 lowest scoring questions below to secure readiness.</div>
+              <div style="font-size:11px; color:#9ca3af; margin-top:4px; font-style:italic;">Practice benchmark, not a prediction from Mercor or micro1.</div>
+            </div>
+          `;
+        } else {
+          passCheckBannerHtml = `
+            <div id="passcheck-result-banner" style="background:rgba(239,68,68,0.15); border:1.5px solid #ef4444; border-radius:10px; padding:16px 20px; margin-bottom:20px; text-align:left;">
+              <div style="font-size:16px; font-weight:900; color:#f87171;">⚠️ Not yet (${avgScore}%)</div>
+              <div style="font-size:13px; color:#fca5a5; margin-top:4px;">${hasDup ? "A run containing duplicate or repeated answers cannot return Ready. Give a distinct scenario for every prompt." : "Practice in CoPilot Guided mode first to master your STAR structure and Job Description keywords."}</div>
+              <div style="font-size:11px; color:#9ca3af; margin-top:4px; font-style:italic;">Practice benchmark, not a prediction from Mercor or micro1.</div>
+            </div>
+          `;
+        }
+      }
+
       resultsView.innerHTML = `
+        ${passCheckBannerHtml}
         <div id="post-interview-summary-card" style="background:var(--black); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:32px 24px; text-align:left; width:100%; box-shadow:0 12px 48px rgba(0,0,0,0.5); box-sizing:border-box;">
           <!-- Overall Summary -->
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:18px;">
@@ -5831,11 +6919,17 @@ ${(resumeText || '').slice(0, 3500)}`;
                 <p style="margin:2px 0 0; font-size:13px; color:#d1fae5;">Save your answers, scoring rubrics, and personalized Mercor &amp; micro1 fast-track links.</p>
               </div>
             </div>
-            <form id="lead-magnet-form" onsubmit="window.handleLeadMagnetSubmit(event)" style="display:flex; gap:10px; flex-wrap:wrap; max-width:600px; margin-top:12px;">
-              <input type="email" id="lead-magnet-email" placeholder="Enter your email to receive PDF &amp; roles" required style="flex:1; min-width:240px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:10px 14px; color:#ffffff; font-size:14px; outline:none;" />
-              <button type="submit" id="lead-magnet-submit-btn" style="background:#10b981; color:#ffffff; font-weight:800; font-size:13.5px; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
-                <span>Send My Playbook ➔</span>
-              </button>
+            <form id="lead-magnet-form" onsubmit="window.handleLeadMagnetSubmit(event)" style="display:flex; flex-direction:column; gap:10px; max-width:600px; margin-top:12px;">
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <input type="email" id="lead-magnet-email" placeholder="Enter your email to receive PDF &amp; roles" required style="flex:1; min-width:240px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:10px 14px; color:#ffffff; font-size:14px; outline:none;" />
+                <button type="submit" id="lead-magnet-submit-btn" style="background:#10b981; color:#ffffff; font-weight:800; font-size:13.5px; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
+                  <span>Send My Playbook ➔</span>
+                </button>
+              </div>
+              <label style="display:flex; align-items:center; gap:6px; font-size:12.5px; color:#d1fae5; cursor:pointer;">
+                <input type="checkbox" id="lead-magnet-practice-plan-optin" style="cursor:pointer;" />
+                <span>Email me a 7-day practice plan.</span>
+              </label>
             </form>
             <div id="lead-magnet-success" style="display:none; color:#34d399; font-weight:700; font-size:13px; margin-top:10px;">
               ✓ Success! Your STAR Playbook and partner referral links have been queued. You can also <a href="/apply" style="color:#ffffff; text-decoration:underline;">browse your matched roles now &rarr;</a>
@@ -6108,11 +7202,26 @@ ${(resumeText || '').slice(0, 3500)}`;
     const pBtn = document.getElementById('mode-opt-pressure');
     const cBtn = document.getElementById('mode-opt-practice');
     const wBtn = document.getElementById('mode-opt-warmup');
+    const rdBtn = document.getElementById('mode-opt-resumedefense');
+    const pcBtn = document.getElementById('mode-opt-passcheck');
 
     if (fcBtn) fcBtn.style.borderColor = (mode === 'flashcards') ? '#10b981' : 'rgba(255,255,255,0.15)';
     if (pBtn) pBtn.style.borderColor = (mode === 'pressure') ? '#ef4444' : 'rgba(255,255,255,0.15)';
     if (cBtn) cBtn.style.borderColor = (mode === 'practice') ? '#10b981' : 'rgba(255,255,255,0.15)';
     if (wBtn) wBtn.style.borderColor = (mode === 'warmup') ? '#3b82f6' : 'rgba(255,255,255,0.15)';
+    if (rdBtn) rdBtn.style.borderColor = (mode === 'resumedefense') ? '#fbbf24' : 'rgba(255,255,255,0.15)';
+    if (pcBtn) pcBtn.style.borderColor = (mode === 'passcheck') ? '#a78bfa' : 'rgba(255,255,255,0.15)';
+
+    // Update Resume Defense unlock status
+    const rdDesc = document.getElementById('mode-resumedefense-desc');
+    const hasResume = (localStorage.getItem('candidateResumeText') || '').trim().length > 40;
+    if (rdDesc) {
+      if (hasResume) {
+        rdDesc.innerHTML = 'Answer questions about your own resume bullets (8 questions)';
+      } else {
+        rdDesc.innerHTML = '<a href="/resume-ats-guide" style="color:#fbbf24; text-decoration:underline; font-weight:700;">Upload your resume to unlock</a>';
+      }
+    }
 
     const fcContainer = document.getElementById('flashcards-deck-container');
     if (fcContainer) {
@@ -6201,14 +7310,26 @@ ${(resumeText || '').slice(0, 3500)}`;
       ).join('');
     }
 
-    // Back: Compute clean plug-and-play STAR formula
-    const parts = (typeof computeStarPartsForQuestion === 'function')
-      ? computeStarPartsForQuestion(card, _fcCurrentIndex, '')
-      : { st: '', a: '', r: '' };
+    // Front: Update card tag badge (STAR vs Answer–Why–Check)
+    const tagEl = document.getElementById('fc-card-tag');
+    const isAWC = (card.tag === 'Answer–Why–Check');
+    if (tagEl) {
+      tagEl.innerText = isAWC ? 'Answer–Why–Check' : 'STAR';
+      if (isAWC) {
+        tagEl.style.background = 'rgba(59,130,246,0.18)';
+        tagEl.style.borderColor = 'rgba(59,130,246,0.5)';
+        tagEl.style.color = '#93c5fd';
+      } else {
+        tagEl.style.background = 'rgba(16,185,129,0.18)';
+        tagEl.style.borderColor = 'rgba(16,185,129,0.5)';
+        tagEl.style.color = '#6ee7b7';
+      }
+    }
 
-    const stEl = document.getElementById('fc-star-situation');
-    const aEl = document.getElementById('fc-star-action');
-    const rEl = document.getElementById('fc-star-result');
+    // Toggle Back Side: STAR vs Answer–Why–Check
+    const backTitle = document.getElementById('fc-back-title');
+    const backStar = document.getElementById('fc-back-star');
+    const backAwc = document.getElementById('fc-back-awc');
 
     const formatBlanks = (txt) => {
       if (!txt) return '';
@@ -6217,9 +7338,51 @@ ${(resumeText || '').slice(0, 3500)}`;
         .replace(/\[([^\]]+)\]/g, '<mark style="background:rgba(251,191,36,0.25); color:#fef08a; border-bottom:1.5px solid #f59e0b; padding:1px 6px; border-radius:4px; font-weight:800;">[$1]</mark>');
     };
 
-    if (stEl) stEl.innerHTML = formatBlanks(parts.st);
-    if (aEl) aEl.innerHTML = formatBlanks(parts.a);
-    if (rEl) rEl.innerHTML = formatBlanks(parts.r);
+    if (isAWC) {
+      if (backTitle) {
+        backTitle.innerText = 'Answer–Why–Check Formula';
+        backTitle.style.background = 'rgba(59,130,246,0.2)';
+        backTitle.style.borderColor = 'rgba(59,130,246,0.45)';
+        backTitle.style.color = '#93c5fd';
+      }
+      if (backStar) backStar.style.display = 'none';
+      if (backAwc) backAwc.style.display = 'block';
+
+      const awcAnswerEl = document.getElementById('fc-awc-answer');
+      const awcWhyEl = document.getElementById('fc-awc-why');
+      const awcCheckEl = document.getElementById('fc-awc-check');
+
+      const awc = card.answerWhyCheck || {
+        answer: 'Score 1/5 (Core Assessment). [State your clear verdict first].',
+        why: 'Reason 1: [Primary domain justification]. Reason 2: [Secondary technical principle].',
+        check: 'Verification: [How you would test or verify against specifications].'
+      };
+
+      if (awcAnswerEl) awcAnswerEl.innerHTML = formatBlanks(awc.answer);
+      if (awcWhyEl) awcWhyEl.innerHTML = formatBlanks(awc.why);
+      if (awcCheckEl) awcCheckEl.innerHTML = formatBlanks(awc.check);
+    } else {
+      if (backTitle) {
+        backTitle.innerText = 'Winning STAR Formula';
+        backTitle.style.background = 'rgba(16,185,129,0.2)';
+        backTitle.style.borderColor = 'rgba(16,185,129,0.45)';
+        backTitle.style.color = '#6ee7b7';
+      }
+      if (backStar) backStar.style.display = 'block';
+      if (backAwc) backAwc.style.display = 'none';
+
+      const parts = (typeof computeStarPartsForQuestion === 'function')
+        ? computeStarPartsForQuestion(card, _fcCurrentIndex, '')
+        : { st: '', a: '', r: '' };
+
+      const stEl = document.getElementById('fc-star-situation');
+      const aEl = document.getElementById('fc-star-action');
+      const rEl = document.getElementById('fc-star-result');
+
+      if (stEl) stEl.innerHTML = formatBlanks(parts.st);
+      if (aEl) aEl.innerHTML = formatBlanks(parts.a);
+      if (rEl) rEl.innerHTML = formatBlanks(parts.r);
+    }
   };
 
   window.flipCurrentFlashcard = function() {
@@ -6289,9 +7452,11 @@ ${(resumeText || '').slice(0, 3500)}`;
       const wordsSpoken = (currentSpokenTranscript || '').split(/\s+/).filter(w => w.length > 0).length;
       const elapsedSilence = (Date.now() - lastSpeechTimestamp) / 1000;
 
-      // If user has spoken at least 3 words and goes silent for > 4.2 seconds
-      if (wordsSpoken >= 3 && elapsedSilence > 4.2) {
+      // Pause cutoff check (REQ-PASS-05: 2s, 3s, or 4s, default 3s)
+      const cutoff = window._pauseCutoffSec || parseInt(localStorage.getItem('tgt_pause_cutoff_sec') || '3', 10);
+      if (wordsSpoken >= 3 && elapsedSilence >= cutoff) {
         pauseWarn.style.display = 'block';
+        pauseWarn.innerHTML = `⚠️ <strong>Silence Cutoff Triggered (${cutoff}s):</strong> Some AI interviewers treat a short silence as the end of your answer.<br><span style="color:#fef08a;">💡 Bridge phrases: "Let me walk you through that," or "There are two parts to this."</span>`;
       } else {
         pauseWarn.style.display = 'none';
       }
@@ -6306,6 +7471,41 @@ ${(resumeText || '').slice(0, 3500)}`;
     const pauseWarn = document.getElementById('pause-timeout-warning');
     if (pauseWarn) pauseWarn.style.display = 'none';
   }
+
+  
+  // Pressure Mode Follow-up Question Generation (REQ-PASS-05)
+  window.generateFollowUpQuestion = function(mainAnswer, qData) {
+    const text = (mainAnswer || "").trim();
+    const hasNumber = /\b\d+(?:\.\d+)?%?|\b(one|two|three|four|five|six|seven|eight|nine|ten)\b/i.test(text);
+    const hasOwnershipI = /\b(i architected|i built|i designed|i led|i personally|i implemented|i owned|i diagnosed|i managed|i wrote|my role|my responsibility|i took|i decided)\b/i.test(text);
+    const hasWe = /\b(we|our|team)\b/i.test(text);
+
+    // 1. No number
+    if (!hasNumber) {
+      return "How did you measure that?";
+    }
+    // 2. No "I" (only "we")
+    if (!hasOwnershipI && hasWe) {
+      return "What was your specific role?";
+    }
+    // 3. A JD keyword missing
+    const kws = (qData && qData.keywords) ? qData.keywords : [];
+    for (const kw of kws) {
+      if (!text.toLowerCase().includes(kw.toLowerCase())) {
+        return `How would ${kw} apply here?`;
+      }
+    }
+    // 4. Otherwise
+    return "What would you do differently next time?";
+  };
+
+  // Pause Cutoff Setting (REQ-PASS-05)
+  window._pauseCutoffSec = parseInt(localStorage.getItem('tgt_pause_cutoff_sec') || '3', 10);
+  window.setPauseCutoff = function(sec) {
+    const val = parseInt(sec, 10);
+    window._pauseCutoffSec = (val >= 2 && val <= 4) ? val : 3;
+    localStorage.setItem('tgt_pause_cutoff_sec', String(window._pauseCutoffSec));
+  };
 
   // Real-Time Filler Word Counter
   function countFillerWords(text) {
@@ -6322,6 +7522,10 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     localStorage.setItem('candidateEmail', email);
 
+    const planOptInEl = document.getElementById('screen1-practice-plan-optin');
+    const practicePlanOptin = !!(planOptInEl && planOptInEl.checked);
+    localStorage.setItem('practice_plan_optin', practicePlanOptin ? 'true' : 'false');
+
     fetch('/api/subscribeRoleAlerts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -6329,7 +7533,8 @@ ${(resumeText || '').slice(0, 3500)}`;
         email: email,
         domain: currentDomain || 'software',
         role: localStorage.getItem('atsRole') || 'AI Evaluator',
-        source: 'screen1_lead_playbook'
+        source: 'screen1_lead_playbook',
+        practice_plan_optin: practicePlanOptin
       })
     }).catch(() => {});
 
@@ -6339,7 +7544,8 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (typeof gtag === 'function') {
       gtag('event', 'lead_magnet_screen1_submit', {
         email_provided: true,
-        domain: currentDomain
+        domain: currentDomain,
+        practice_plan_optin: practicePlanOptin
       });
     }
   };
@@ -6362,6 +7568,10 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     localStorage.setItem('candidateEmail', email);
 
+    const planOptInEl = document.getElementById('lead-magnet-practice-plan-optin');
+    const practicePlanOptin = !!(planOptInEl && planOptInEl.checked);
+    localStorage.setItem('practice_plan_optin', practicePlanOptin ? 'true' : 'false');
+
     // Call subscribeRoleAlerts
     fetch('/api/subscribeRoleAlerts', {
       method: 'POST',
@@ -6370,7 +7580,8 @@ ${(resumeText || '').slice(0, 3500)}`;
         email: email,
         domain: currentDomain || 'software',
         role: localStorage.getItem('atsRole') || 'AI Evaluator',
-        source: 'mock_interview_playbook'
+        source: 'mock_interview_playbook',
+        practice_plan_optin: practicePlanOptin
       })
     }).catch(() => {});
 
@@ -6382,7 +7593,8 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (typeof gtag === 'function') {
       gtag('event', 'lead_magnet_playbook_download', {
         email_provided: true,
-        domain: currentDomain
+        domain: currentDomain,
+        practice_plan_optin: practicePlanOptin
       });
     }
   };

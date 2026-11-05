@@ -287,6 +287,73 @@ function updateAnalytics(saved) {
     if (barApplied) barApplied.style.width = Math.round(completedCount / total * 100) + '%';
 }
 
+function recordHardestQuestionType(id, qType) {
+    let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
+    let role = saved.find(r => r && (r.id === id || ((r.title + '_' + r.domain) === id)));
+    if (role) {
+        role.hardestQuestionType = qType;
+        localStorage.setItem('savedRoles', JSON.stringify(saved));
+        if (typeof window.recordOutcomeData === 'function') {
+            window.recordOutcomeData(role, role.status, qType);
+        }
+        const msgEl = document.getElementById('outcome-msg-' + (role.id || id));
+        if (msgEl) {
+            msgEl.style.display = qType ? 'block' : 'none';
+        }
+    }
+}
+
+window.recordOutcomeData = function(role, outcome, hardestQuestionType) {
+    if (!role || !outcome) return null;
+    let anonId = localStorage.getItem('anonymousUserId');
+    if (!anonId) {
+        anonId = 'anon_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+        localStorage.setItem('anonymousUserId', anonId);
+    }
+
+    const pcKey = 'passCheck_' + (role.id || role.title);
+    let pcData = null;
+    try {
+        pcData = JSON.parse(localStorage.getItem(pcKey) || 'null');
+    } catch(e) {}
+
+    let fitLabel = 'Weak fit';
+    if (typeof role.matchScore === 'number') {
+        if (role.matchScore >= 80) fitLabel = 'Good fit';
+        else if (role.matchScore >= 40) fitLabel = 'Stretch';
+    }
+
+    const outcomeRecord = {
+        event_type: 'interview_outcome',
+        session_id: anonId,
+        referral_id: String(role.id || role.title || 'unknown'),
+        outcome: outcome,
+        fit_label: fitLabel,
+        pass_check_score: pcData ? pcData.score : null,
+        pass_check_date: pcData ? pcData.date : null,
+        hardest_question_type: hardestQuestionType || null
+    };
+
+    delete outcomeRecord.resumeText;
+    delete outcomeRecord.candidateResumeText;
+    delete outcomeRecord.answers;
+    delete outcomeRecord.answer;
+
+    try {
+        const storedOutcomes = JSON.parse(localStorage.getItem('interviewOutcomes') || '[]');
+        storedOutcomes.push({ ...outcomeRecord, recordedAt: new Date().toISOString() });
+        localStorage.setItem('interviewOutcomes', JSON.stringify(storedOutcomes));
+    } catch(e) {}
+
+    fetch('/api/logPipelineEvent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(outcomeRecord)
+    }).catch(() => {});
+
+    return outcomeRecord;
+};
+
 function changeRoleStatus(id, newStatus) {
     let saved = JSON.parse(localStorage.getItem('savedRoles')) || [];
     let role = saved.find(r => r && (r.id === id || ((r.title + '_' + r.domain) === id)));
@@ -294,6 +361,17 @@ function changeRoleStatus(id, newStatus) {
         role.status = newStatus;
         localStorage.setItem('savedRoles', JSON.stringify(saved));
         updateAnalytics(saved);
+
+        const feedbackEl = document.getElementById('outcome-feedback-' + (role.id || id));
+        if (feedbackEl) {
+            feedbackEl.style.display = (newStatus === 'Passed AI interview' || newStatus === "Didn't pass") ? 'block' : 'none';
+        }
+
+        if (newStatus === 'Passed AI interview' || newStatus === "Didn't pass") {
+            if (typeof window.recordOutcomeData === 'function') {
+                window.recordOutcomeData(role, newStatus, role.hardestQuestionType);
+            }
+        }
         
         // Section 21.3: pipeline_status_changed event
         if (typeof gtag === 'function') {
@@ -686,9 +764,10 @@ function renderSavedRoles() {
     const reminders = JSON.parse(localStorage.getItem('savedReminders') || '{}');
 
     container.innerHTML = saved.map((role, idx) => {
-        let currentStatus = role.status || 'Saved';
-        if (currentStatus === 'ATS Scanned' || currentStatus === 'Interviewing') currentStatus = 'Started';
-        if (currentStatus === 'Applied') currentStatus = 'Completed';
+        let rawStatus = role.status || 'Saved';
+        let currentStatus = rawStatus;
+        if (currentStatus === 'ATS Scanned') currentStatus = 'Started';
+        if (currentStatus === 'Applied' || currentStatus === 'Interviewing' || currentStatus === 'Passed AI interview' || currentStatus === "Didn't pass") currentStatus = 'Completed';
         let borderStyle = (currentStatus === 'Completed' || currentStatus === 'Offer' || currentStatus === 'Hired') ? '2px solid var(--primary)' : '1px solid var(--gray-200)';
         let days = getDaysActive(role.date);
         let safeId = (role.id || ('role_' + idx)).replace(/'/g, "\\'");
@@ -753,12 +832,28 @@ function renderSavedRoles() {
                 
                 <div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px;">
                     <select id="status-${role.id}" onchange="changeRoleStatus('${safeId}', this.value)" style="padding:8px 12px; border-radius:8px; border:1px solid var(--gray-300); font-family:var(--font); font-weight:600; font-size:13px; background:var(--gray-50); cursor:pointer;">
-                        <option value="Saved" ${currentStatus === 'Saved' ? 'selected' : ''}>📌 Status: Saved</option>
-                        <option value="Started" ${currentStatus === 'Started' ? 'selected' : ''}>🚀 Status: Started</option>
-                        <option value="Applied" ${(currentStatus === 'Applied' || currentStatus === 'Completed') ? 'selected' : ''}>✅ Status: Applied</option>
-                        <option value="Offer" ${currentStatus === 'Offer' ? 'selected' : ''}>💼 Status: Offer</option>
-                        <option value="Hired" ${currentStatus === 'Hired' ? 'selected' : ''}>🎉 Status: Hired</option>
+                        <option value="Saved" ${rawStatus === 'Saved' ? 'selected' : ''}>📌 Status: Saved</option>
+                        <option value="Started" ${rawStatus === 'Started' ? 'selected' : ''}>🚀 Status: Started</option>
+                        <option value="Applied" ${rawStatus === 'Applied' ? 'selected' : ''}>✅ Status: Applied</option>
+                        <option value="Interviewing" ${rawStatus === 'Interviewing' ? 'selected' : ''}>🎙️ Status: Interviewing</option>
+                        <option value="Passed AI interview" ${rawStatus === 'Passed AI interview' ? 'selected' : ''}>🎉 Status: Passed AI interview</option>
+                        <option value="Didn't pass" ${rawStatus === "Didn't pass" ? 'selected' : ''}>🔄 Status: Didn't pass</option>
+                        <option value="Offered" ${(rawStatus === 'Offer' || rawStatus === 'Offered') ? 'selected' : ''}>💼 Status: Offered</option>
+                        <option value="Hired" ${rawStatus === 'Hired' ? 'selected' : ''}>🌟 Status: Hired</option>
                     </select>
+
+                    <div id="outcome-feedback-${role.id}" style="display:${(rawStatus === 'Passed AI interview' || rawStatus === "Didn't pass") ? 'block' : 'none'}; margin-top:8px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; padding:8px 10px; max-width:260px; text-align:left;">
+                        <div style="font-size:11px; font-weight:700; color:#4b5563; margin-bottom:4px;">Which question type felt hardest? (Optional)</div>
+                        <select onchange="recordHardestQuestionType('${safeId}', this.value)" style="width:100%; font-size:11.5px; padding:4px 6px; border-radius:6px; border:1px solid #d1d5db; background:#ffffff;">
+                            <option value="">Select question type...</option>
+                            <option value="Story (STAR)" ${role.hardestQuestionType === 'Story (STAR)' ? 'selected' : ''}>Story (STAR)</option>
+                            <option value="Knowledge (Answer–Why–Check)" ${role.hardestQuestionType === 'Knowledge (Answer–Why–Check)' ? 'selected' : ''}>Knowledge (Answer–Why–Check)</option>
+                            <option value="Resume Defense" ${role.hardestQuestionType === 'Resume Defense' ? 'selected' : ''}>Resume Defense</option>
+                            <option value="Follow-up" ${role.hardestQuestionType === 'Follow-up' ? 'selected' : ''}>Follow-up</option>
+                            <option value="Timing (Pause Cutoff)" ${role.hardestQuestionType === 'Timing (Pause Cutoff)' ? 'selected' : ''}>Timing (Pause Cutoff)</option>
+                        </select>
+                        <div id="outcome-msg-${role.id}" style="font-size:10.5px; color:#10b981; margin-top:3px; display:${role.hardestQuestionType ? 'block' : 'none'};">✓ Saved anonymously to calibrate cutoffs</div>
+                    </div>
                     
                     <button onclick="toggleReminder(this, '${safeId}')" data-on="${isReminded}" style="background:transparent; border:none; font-size:12px; font-weight:600; color:${isReminded ? 'var(--primary)' : 'var(--gray-400)'}; cursor:pointer; padding:0; text-align:right; transition:color 0.2s;">
                         ${isReminded ? '⏰ Reminder Active' : '🔔 Set Reminder'}
@@ -918,6 +1013,18 @@ if (document.readyState === 'loading') {
                 localStorage.setItem('savedRoles', JSON.stringify(saved));
                 if (typeof renderSavedRoles === 'function') renderSavedRoles();
             }
+        }
+
+        // REQ-PASS-08: Check URL parameters for "Did you pass?" email response links
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramRoleId = urlParams.get('roleId');
+        const paramOutcome = urlParams.get('outcome');
+        if (paramRoleId && paramOutcome) {
+            const mappedStatus = (paramOutcome.toLowerCase() === 'passed' || paramOutcome.toLowerCase() === 'pass')
+                ? 'Passed AI interview'
+                : "Didn't pass";
+            changeRoleStatus(paramRoleId, mappedStatus);
+            if (typeof renderSavedRoles === 'function') renderSavedRoles();
         }
     } catch(e) {}
 })();

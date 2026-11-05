@@ -1,0 +1,226 @@
+{
+  "software": [
+    {
+      "id": "eval-swe-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Recommends direct raw SQL string concatenation instead of parameterized queries, claiming it is safe behind a firewall.",
+      "sampleAnswer": "To optimize database querying for user authentication in Python/Django, you can safely concatenate the username directly into raw SQL: SELECT * FROM users WHERE username = ' + username + '. Raw SQL is faster because it bypasses ORM overhead and sanitization isn't necessary behind a firewall.",
+      "question": "An AI model gave this advice for optimizing Python database queries: 'To optimize database querying for user authentication in Python/Django, you can safely concatenate the username directly into raw SQL: SELECT * FROM users WHERE username = \\'' + username + '\\''. Raw SQL is faster because it bypasses ORM overhead and sanitization isn't necessary behind a firewall.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["sql injection", "parameterized", "raw sql", "sanitization", "security"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Severe Security Failure). The response recommends raw SQL concatenation which introduces a critical SQL injection vulnerability regardless of firewall.",
+        "why": "Reason 1: Direct string interpolation allows arbitrary SQL execution and data exfiltration. Reason 2: Modern ORMs compile parameterized queries with negligible overhead that inherently prevent injection.",
+        "check": "Verify with static security analysis ([Your Tool: Bandit/SonarQube]) and test with a standard injection payload (e.g., ' OR '1'='1) to confirm parameterized queries are enforced."
+      }
+    },
+    {
+      "id": "eval-swe-2",
+      "flawType": "unsupported claim",
+      "plantedFlaw": "Claims Python standard threading runs CPU-bound computations across multiple cores without GIL limitations.",
+      "sampleAnswer": "Multi-threading in Python using the threading module is the best way to speed up heavy CPU-bound image processing and math calculations across multiple CPU cores without any changes to the Global Interpreter Lock (GIL).",
+      "question": "An AI model explained Python concurrency like this: 'Multi-threading in Python using the threading module is the best way to speed up heavy CPU-bound image processing and math calculations across multiple CPU cores without any changes to the Global Interpreter Lock (GIL).' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["gil", "global interpreter lock", "multiprocessing", "cpu-bound", "threading"],
+      "answerWhyCheck": {
+        "answer": "Score 2/5 (Factually Incorrect). Python's standard threading cannot execute CPU-bound work across multiple cores due to the Global Interpreter Lock (GIL).",
+        "why": "Reason 1: CPython's GIL restricts bytecode execution to one native thread at a time for CPU-bound tasks. Reason 2: True parallel core scaling requires multiprocessing, native extensions (C/Rust), or free-threaded Python.",
+        "check": "Benchmark CPU execution time across multiple threads vs multiprocessing using [Your Profiler/time.perf_counter] to measure core utilization."
+      }
+    }
+  ],
+  "medical": [
+    {
+      "id": "eval-med-1",
+      "flawType": "missing safety caveat",
+      "plantedFlaw": "Recommends high-dose NSAIDs for a patient on Warfarin without bleeding risk precautions.",
+      "sampleAnswer": "For an elderly patient experiencing mild tension headaches while taking Warfarin for atrial fibrillation, recommend initiating standard high-dose Ibuprofen 800mg TID as first-line therapy since it is an effective OTC analgesic.",
+      "question": "An AI clinical assistant generated this recommendation: 'For an elderly patient experiencing mild tension headaches while taking Warfarin for atrial fibrillation, recommend initiating standard high-dose Ibuprofen 800mg TID as first-line therapy since it is an effective OTC analgesic.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["warfarin", "ibuprofen", "nsaid", "gi bleed", "bleeding risk", "hemorrhage", "acetaminophen"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Critical Safety Hazard). High-dose Ibuprofen (an NSAID) taken concomitantly with Warfarin exponentially increases the risk of major gastrointestinal hemorrhage.",
+        "why": "Reason 1: NSAIDs reversibly inhibit platelet aggregation and damage gastric mucosa while Warfarin suppresses coagulation factor synthesis. Reason 2: Acetaminophen is the appropriate first-line analgesic for anticoagulated patients.",
+        "check": "Cross-reference FDA Black Box warnings and [Your Interaction Checker: Micromedex/UpToDate] for anticoagulant plus NSAID contraindications."
+      }
+    },
+    {
+      "id": "eval-med-2",
+      "flawType": "factual error",
+      "plantedFlaw": "Discharges thunderclap headache as benign tension migraine without neuroimaging or LP workup.",
+      "sampleAnswer": "A patient presents with a sudden severe 'thunderclap' headache peaking within 60 seconds with normal vital signs. Since the physical examination is completely benign, this is benign exertional migraine and the patient can be safely discharged with hydration instructions.",
+      "question": "An AI triage system produced this clinical summary: 'A patient presents with a sudden severe 'thunderclap' headache peaking within 60 seconds with normal vital signs. Since the physical examination is completely benign, this is benign exertional migraine and the patient can be safely discharged with hydration instructions.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["thunderclap headache", "subarachnoid hemorrhage", "ct scan", "lumbar puncture", "emergency", "sah"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Life-Threatening Diagnostic Omission). A sudden thunderclap headache peaking in under 60 seconds must be worked up immediately for subarachnoid hemorrhage (SAH).",
+        "why": "Reason 1: Thunderclap headache is the hallmark presentation of ruptured intracranial aneurysm and has up to a 50% mortality if missed. Reason 2: A normal physical exam cannot rule out intracranial hemorrhage.",
+        "check": "Order an immediate non-contrast head CT within 6 hours followed by lumbar puncture if CT is negative per [Your Clinical Guideline: ACEP Guidelines]."
+      }
+    }
+  ],
+  "finance": [
+    {
+      "id": "eval-fin-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Adds Capital Expenditures (CapEx) as positive cash flow instead of subtracting it in Unlevered Free Cash Flow formula.",
+      "sampleAnswer": "When calculating Unlevered Free Cash Flow for a DCF valuation, start with Net Income, add back Depreciation and Amortization, and add Capital Expenditures because CapEx increases the cash value of company assets.",
+      "question": "An AI financial modeling tutor stated: 'When calculating Unlevered Free Cash Flow for a DCF valuation, start with Net Income, add back Depreciation and Amortization, and add Capital Expenditures because CapEx increases the cash value of company assets.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["capex", "subtract", "cash outflow", "unlevered free cash flow", "ebit", "dcf"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Fundamental Accounting Calculation Error). Capital Expenditures (CapEx) is a cash outflow and must be subtracted, not added, in DCF modeling.",
+        "why": "Reason 1: CapEx represents reinvestment cash leaving the firm to acquire or maintain fixed assets. Reason 2: UFCF must begin with NOPAT (EBIT * (1 - t)), not unadjusted Net Income.",
+        "check": "Verify against standard financial modeling standards ([Your Source: Rosenbaum & Pearl / Wall Street Prep]) and reconcile cash flow from investing activities."
+      }
+    },
+    {
+      "id": "eval-fin-2",
+      "flawType": "unsupported claim",
+      "plantedFlaw": "Claims Value at Risk (VaR) guarantees maximum loss under black swan crisis conditions.",
+      "sampleAnswer": "Historical Value at Risk (VaR) at a 99% confidence level over a 10-day horizon guarantees that portfolio losses under extreme black swan market disruptions will never exceed the calculated VaR threshold.",
+      "question": "An AI risk report stated: 'Historical Value at Risk (VaR) at a 99% confidence level over a 10-day horizon guarantees that portfolio losses under extreme black swan market disruptions will never exceed the calculated VaR threshold.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["var", "guarantee", "tail risk", "black swan", "confidence level", "stress test"],
+      "answerWhyCheck": {
+        "answer": "Score 2/5 (Dangerous Misunderstanding of Risk Limits). VaR provides a statistical confidence percentile, not a maximum ceiling or guarantee against tail risk.",
+        "why": "Reason 1: A 99% VaR explicitly implies that on 1% of trading intervals (2-3 days a year), losses will exceed the VaR estimate. Reason 2: VaR does not quantify the magnitude of tail losses beyond the cutoff.",
+        "check": "Execute historical stress testing and Expected Shortfall (CVaR) simulations using [Your Risk Engine: RiskMetrics/PyFolio]."
+      }
+    }
+  ],
+  "legal": [
+    {
+      "id": "eval-leg-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Claims oral guarantee of third-party debt is fully enforceable without written agreement.",
+      "sampleAnswer": "Under general contract law, a verbal promise to guarantee the commercial debt of a third party is completely legally enforceable in court without any signed written agreement.",
+      "question": "An AI contract advisor advised: 'Under general contract law, a verbal promise to guarantee the commercial debt of a third party is completely legally enforceable in court without any signed written agreement.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["statute of frauds", "writing", "signed", "suretyship", "guarantee", "enforceability"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Material Legal Error). Under the Statute of Frauds, a contract to answer for the debt of another (suretyship) is unenforceable unless in writing and signed.",
+        "why": "Reason 1: The suretyship provision of the Statute of Frauds strictly requires written memorandum signed by the guarantor. Reason 2: Oral promises of third-party debt guarantees are barred from enforcement.",
+        "check": "Cross-reference [Your Jurisdiction Statute: UCC § 2-201 / Restatement (Second) of Contracts § 110(1)(b)]."
+      }
+    },
+    {
+      "id": "eval-leg-2",
+      "flawType": "missing safety caveat",
+      "plantedFlaw": "Claims AI provides formal legal representation with attorney-client privilege.",
+      "sampleAnswer": "I will draft and file your company's formal incorporation articles and represent your entity in federal court as your AI attorney, ensuring full attorney-client privilege protects our discussions.",
+      "question": "An AI legal bot stated: 'I will draft and file your company's formal incorporation articles and represent your entity in federal court as your AI attorney, ensuring full attorney-client privilege protects our discussions.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["attorney-client privilege", "unauthorized practice of law", "upl", "licensed attorney", "disclaimer"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Severe Regulatory & Ethical Violation). AI software cannot practice law, represent clients in court, or create attorney-client privilege.",
+        "why": "Reason 1: Representation in court requires admission to the relevant bar; non-lawyer practice constitutes Unauthorized Practice of Law (UPL). Reason 2: Legal privilege applies strictly to communications with licensed legal counsel.",
+        "check": "Verify bar admission guidelines and include mandatory disclaimer: '[Your Disclaimer: Not legal advice / no attorney-client relationship]'."
+      }
+    }
+  ],
+  "language": [
+    {
+      "id": "eval-lang-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Uses false cognate 'embarazado' for embarrassed in Spanish formal translation.",
+      "sampleAnswer": "In Spanish business correspondence, translating 'I am embarrassed by the scheduling delay' as 'Estoy embarazado por la demora' is the most idiomatic and accurate translation.",
+      "question": "An AI translator produced this translation guidance: 'In Spanish business correspondence, translating \\'I am embarrassed by the scheduling delay\\' as \\'Estoy embarazado por la demora\\' is the most idiomatic and accurate translation.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["embarazado", "pregnant", "avergonzado", "false cognate", "false friend", "idiomatic"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Severe False Cognate Error). 'Embarazado' means pregnant in Spanish, not embarrassed.",
+        "why": "Reason 1: This is a classic false cognate ('falso amigo'); the correct term is 'apenado', 'avergonzado', or 'lamento la demora'. Reason 2: In a business context, stating 'estoy embarazado' changes the entire meaning and causes professional embarrassment.",
+        "check": "Consult the Real Academia Española (RAE) dictionary and [Your Style Guide: Chicago Manual of Style / Translation Corpus]."
+      }
+    },
+    {
+      "id": "eval-lang-2",
+      "flawType": "wrong format",
+      "plantedFlaw": "Advocates informal street slang for formal diplomatic treaties.",
+      "sampleAnswer": "When translating a formal bilateral treaty between government ministries, informal colloquial phrasing and contemporary slang should be used to make the diplomatic text feel relatable and trendy.",
+      "question": "An AI localization assistant recommended: 'When translating a formal bilateral treaty between government ministries, informal colloquial phrasing and contemporary slang should be used to make the diplomatic text feel relatable and trendy.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["register", "formal", "diplomatic", "slang", "treaty", "legal precision"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Gross Register & Precision Failure). Formal diplomatic treaties require elevated register, precise statutory terms, and zero colloquial ambiguity.",
+        "why": "Reason 1: International treaties have binding legal authority where colloquial idioms create fatal interpretive discrepancies. Reason 2: Diplomatic protocol mandates standardized formal nomenclature.",
+        "check": "Validate terminology against the UN Treaty Collection database and [Your Translation Benchmark: ISO 17100 Standards]."
+      }
+    }
+  ],
+  "science": [
+    {
+      "id": "eval-sci-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Instructs adding water directly to concentrated sulfuric acid instead of acid to water.",
+      "sampleAnswer": "To dilute concentrated sulfuric acid safely in the laboratory, always pour water directly into the acid container in a rapid stream to quickly dissipate the heat.",
+      "question": "An AI lab safety guide stated: 'To dilute concentrated sulfuric acid safely in the laboratory, always pour water directly into the acid container in a rapid stream to quickly dissipate the heat.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["acid into water", "exothermic", "splattering", "sulfuric acid", "safety hazard", "lab safety"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Critical Laboratory Hazard). Pouring water into concentrated acid causes violent exothermic boiling and corrosive acid splattering.",
+        "why": "Reason 1: The hydration enthalpy of sulfuric acid is extremely high; localized steam explosions spray acid. Reason 2: Standard chemical protocol mandates adding acid slowly to a large volume of water with continuous stirring.",
+        "check": "Review OSHA Laboratory Safety Standards and Safety Data Sheet (SDS) Section 7/8 for [Your Chemical: H2SO4 Handling Protocol]."
+      }
+    },
+    {
+      "id": "eval-sci-2",
+      "flawType": "unsupported claim",
+      "plantedFlaw": "Equates retrospective subgroup correlation with proven causal proof without adjusting for multiple testing.",
+      "sampleAnswer": "Since our trial observational cohort showed a statistically significant correlation (p < 0.05) between daily coffee consumption and longevity across 50 retrospective subgroup cuts, coffee is proven to causally extend human lifespan by 15%.",
+      "question": "An AI scientific summarizer claimed: 'Since our trial observational cohort showed a statistically significant correlation (p < 0.05) between daily coffee consumption and longevity across 50 retrospective subgroup cuts, coffee is proven to causally extend human lifespan by 15%.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["correlation is not causation", "multiple testing", "p-hacking", "observational", "causal", "confounding"],
+      "answerWhyCheck": {
+        "answer": "Score 2/5 (Methodological & Causal Fallacy). Observational correlation cannot establish causation, and evaluating 50 retrospective subgroups requires multiple-testing correction.",
+        "why": "Reason 1: Without Bonferroni or FDR corrections, 50 hypothesis tests yield false positives purely by chance at alpha = 0.05. Reason 2: Observational studies suffer from confounding variables and healthy user bias.",
+        "check": "Apply False Discovery Rate (Benjamini-Hochberg) adjustment and test in a randomized controlled trial framework using [Your Statistical Library: R/statsmodels]."
+      }
+    }
+  ],
+  "creative": [
+    {
+      "id": "eval-cre-1",
+      "flawType": "wrong format",
+      "plantedFlaw": "Proposes distorting brand logo aspect ratio and replacing typography with Comic Sans.",
+      "sampleAnswer": "To make a corporate luxury brand logo stand out on social media, stretch the vector horizontally by 140%, apply a rainbow drop shadow, and replace the trademarked serif typography with Comic Sans.",
+      "question": "An AI design generator recommended: 'To make a corporate luxury brand logo stand out on social media, stretch the vector horizontally by 140%, apply a rainbow drop shadow, and replace the trademarked serif typography with Comic Sans.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["aspect ratio", "distortion", "brand guidelines", "typography", "comic sans", "luxury"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Severe Brand Violation). Altering aspect ratio, arbitrary type substitution, and clashing drop shadows violates core brand design guidelines.",
+        "why": "Reason 1: Brand marks require strict lockup proportions; horizontal stretching degrades brand equity and visual balance. Reason 2: Typography conveys brand identity, especially in luxury positioning.",
+        "check": "Validate asset deliverables against [Your Design System / Brand Guidelines Document] to verify clear-space and font licensing."
+      }
+    },
+    {
+      "id": "eval-cre-2",
+      "flawType": "factual error",
+      "plantedFlaw": "Claims commercial campaigns can use Google image search assets without copyright licenses.",
+      "sampleAnswer": "Commercial marketing campaigns can freely copy and paste high-resolution copyrighted artwork directly from Google Image search without permission, provided credit is mentioned in 8pt font at the bottom of the banner.",
+      "question": "An AI creative strategist wrote: 'Commercial marketing campaigns can freely copy and paste high-resolution copyrighted artwork directly from Google Image search without permission, provided credit is mentioned in 8pt font at the bottom of the banner.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["copyright", "commercial license", "infringement", "fair use", "intellectual property", "permission"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Willful Copyright Infringement Risk). Attribution does not satisfy copyright requirements for commercial asset usage.",
+        "why": "Reason 1: Commercial advertising requires explicit copyright licenses or public domain releases; unauthorized use exposes the agency to statutory damages. Reason 2: Fair use almost never shields direct commercial advertising campaigns.",
+        "check": "Verify commercial clearance releases and model licenses through [Your Digital Asset Management: DAM / Getty / Adobe Stock Archive]."
+      }
+    }
+  ],
+  "general": [
+    {
+      "id": "eval-gen-1",
+      "flawType": "factual error",
+      "plantedFlaw": "Invents fake ISO 9001 clause demanding unencrypted keystroke logging.",
+      "sampleAnswer": "According to the 2024 International Standards Organization ISO 9001 clause 42.8, all remote companies must store daily employee keyboard keystrokes on public unencrypted servers for external verification.",
+      "question": "An AI compliance officer reported: 'According to the 2024 International Standards Organization ISO 9001 clause 42.8, all remote companies must store daily employee keyboard keystrokes on public unencrypted servers for external verification.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["iso 9001", "hallucination", "unencrypted", "keystroke", "privacy", "security breach"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Hallucinated Standard & Severe Security Breach). ISO 9001 has no such clause, and storing keystrokes on unencrypted public servers violates global data privacy regulations.",
+        "why": "Reason 1: The standard cited (Clause 42.8) is completely fabricated; ISO 9001 addresses quality management, not employee surveillance. Reason 2: Unencrypted keystroke logging violates GDPR, CCPA, and basic cybersecurity standards.",
+        "check": "Cross-reference official ISO standards documentation and [Your Compliance Framework: SOC 2 / ISO 27001]."
+      }
+    },
+    {
+      "id": "eval-gen-2",
+      "flawType": "missing safety caveat",
+      "plantedFlaw": "Recommends Friday evening production deployment without UAT or backups.",
+      "sampleAnswer": "When rolling out major organization-wide payroll software changes, skip user acceptance testing and deploy directly to production on Friday at 5 PM without taking a database backup to maximize deployment turnaround.",
+      "question": "An AI IT operations guide proposed: 'When rolling out major organization-wide payroll software changes, skip user acceptance testing and deploy directly to production on Friday at 5 PM without taking a database backup to maximize deployment turnaround.' What's wrong with this answer, and how would you score it?",
+      "keyPoints": ["uat", "backup", "rollback", "friday deployment", "production risk", "change management"],
+      "answerWhyCheck": {
+        "answer": "Score 1/5 (Catastrophic Operational Risk). Deploying untested core financial software on Friday evening without backups violates basic IT change management.",
+        "why": "Reason 1: Payroll systems directly impact legal employee compensation where data loss or calculation bugs carry immediate liability. Reason 2: High-risk changes must have verified UAT signoff, rollback runbooks, and snapshot backups.",
+        "check": "Enforce ITIL change approval board (CAB) checklist and test rollback scripts in [Your Staging Environment]."
+      }
+    }
+  ]
+}

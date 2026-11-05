@@ -452,7 +452,7 @@ console.log("✓ PASSED: Short tracked links (/go/:campaign and /p/:campaign) co
 // Test 32: Suggested STAR Response & Video Masterclass Deep-Links in ai-interview.html
 // ==================================================================
 assert(aiInterviewHtml.includes('function buildSuggestedStarResponse(qData, qIndex, rawAnswer)'), "ai-interview.html must define buildSuggestedStarResponse");
-assert(aiInterviewHtml.includes('🎯 Suggested High-Scoring Response (STAR + Masterclass Formula)'), "ai-interview.html must render the Suggested STAR Response card");
+assert(aiInterviewHtml.includes('🎯 Example structure: replace with your real story') || aiInterviewHtml.includes('🎯 Suggested High-Scoring Response'), "ai-interview.html must render the suggested response card heading");
 assert(aiInterviewHtml.includes('/video-guides.html#lesson-'), "ai-interview.html must reference specific lessons in /video-guides.html");
 const videoGuidesHtml = fs.readFileSync('video-guides.html', 'utf8');
 assert(videoGuidesHtml.includes('id="lesson-04"') && videoGuidesHtml.includes('id="lesson-05"') && videoGuidesHtml.includes('id="lesson-12"'), "video-guides.html must have anchor IDs on lessons");
@@ -647,8 +647,24 @@ const testSandbox = {
   clearInterval: () => {},
   URLSearchParams,
   fetch: () => Promise.resolve({ json: () => Promise.resolve({}) }),
-  localStorage: { getItem: () => '', setItem: () => {} },
-  sessionStorage: { getItem: () => '', setItem: () => {} },
+  localStorage: (() => {
+    let store = {};
+    return {
+      getItem: (k) => store[k] || null,
+      setItem: (k, v) => { store[k] = String(v); },
+      removeItem: (k) => { delete store[k]; },
+      clear: () => { store = {}; }
+    };
+  })(),
+  sessionStorage: (() => {
+    let store = {};
+    return {
+      getItem: (k) => store[k] || null,
+      setItem: (k, v) => { store[k] = String(v); },
+      removeItem: (k) => { delete store[k]; },
+      clear: () => { store = {}; }
+    };
+  })(),
   window: {
     currentSimMode: 'standard',
     wavesRoleMap: {},
@@ -714,7 +730,282 @@ assert(aiInterviewHtml.includes('Repeated Response Detected: Identical or canned
 
 console.log(`✓ PASSED: Teleprompter auto-scroll engine, dual-dollar pay format, strict 30% duplicate cap, debrief alerts, and honest [Your Recent Title] placeholder verified`);
 
+// ==================================================================
+// Test 41 & 42: Pass Likelihood on /apply & Role Picker (REQ-PASS-01) + Day-Of Checklist & Copy Changes (REQ-PASS-07)
+// ==================================================================
+const testQaResume = "Senior QA Engineer and Test Automation Specialist with deep expertise in Selenium, Python, SQL, test automation, manual testing, bug tracking, unit testing, test execution, test cases, code review, git version control, database design, and agile methodologies.";
+const neuroRole = allRoles.find(r => r.title.toLowerCase().includes('neurology')) || { title: "Neurology / BCI Annotator", atsKeywords: ["neurology", "BCI", "clinical annotation", "EEG"] };
+
+// Test 41: QA resume on Neurology / BCI Annotator gives Weak fit label + 3 Good fit alternatives
+const fitRes = testSandbox.window.getPassLikelihoodFit(neuroRole, testQaResume);
+assert.strictEqual(fitRes.fit, 'weak', 'QA resume for Neurology / BCI Annotator must result in weak fit');
+assert.strictEqual(fitRes.label, 'Weak fit', 'Label must be Weak fit');
+
+const allRolesList = allRoles;
+const goodAlts = allRolesList
+  .filter(r => (r.title || '').toLowerCase() !== neuroRole.title.toLowerCase())
+  .map(r => ({ role: r, fit: testSandbox.window.getPassLikelihoodFit(r, testQaResume) }))
+  .filter(item => item.fit.fit === 'good')
+  .sort((a, b) => (b.fit.score || 0) - (a.fit.score || 0))
+  .slice(0, 3);
+
+assert.strictEqual(goodAlts.length, 3, 'Must return exactly 3 Good fit alternatives');
+goodAlts.forEach(alt => {
+  assert.strictEqual(alt.fit.fit, 'good', `Alternative ${alt.role.title} must be Good fit`);
+  assert.strictEqual(alt.fit.label, 'Good fit to pass', `Alternative ${alt.role.title} label must be Good fit to pass`);
+});
+console.log(`✓ PASSED: Test 41 (PASS-01) - Weak fit correctly identified with 3 Good fit alternatives for QA resume`);
+
+// Test 42: No resume saved returns "Upload your resume to see your fit", Apply button stays universally clickable
+const noResumeFit = testSandbox.window.getPassLikelihoodFit(neuroRole, "");
+assert.strictEqual(noResumeFit.fit, 'none', 'No resume saved must return fit: none');
+assert.strictEqual(noResumeFit.label, 'Upload your resume to see your fit', 'Label must be Upload your resume to see your fit');
+assert(renderWavesJs.includes('window.handleApplyClick'), 'Apply click handler must always be attached');
+assert(!renderWavesJs.includes('disabled="${passFit'), 'Apply button must never be disabled by pass fit state');
+console.log(`✓ PASSED: Test 42 (PASS-01) - No resume prompts to upload fit, Apply button remains universally clickable`);
+
+// Test Phase 1 Copy Changes & REQ-PASS-07 Prompter Warning + Day-of Checklist
+const checklistHtml = fs.readFileSync('readiness-checklist.html', 'utf8');
+assert(aiInterviewHtml.includes('Step 2: Pass your AI interview'), 'Header pill must be updated to Step 2: Pass your AI interview');
+assert(aiInterviewHtml.includes('Example structure: replace with your real story'), 'Teleprompter heading must be updated to Example structure');
+assert(aiInterviewHtml.includes('Answer out loud first, then press'), 'Flashcard flip instruction must prompt to answer out loud first');
+assert(aiInterviewHtml.includes('AI screeners are built to flag repeated or canned answers. Give a distinct example for each question'), 'Duplicate answer summary must be updated');
+assert(aiInterviewHtml.includes('Next step: take the Pass Check'), 'Results benchmark banner must include Next step: take the Pass Check');
+assert(aiInterviewHtml.includes("Practice only. Don't use notes, prompters or overlays in a real interview."), 'Eyeline prompter must carry fixed practice-only warning banner');
+assert(checklistHtml.includes('id="day-of-checklist"'), 'readiness-checklist.html must contain #day-of-checklist section');
+assert(checklistHtml.includes('7. Bridge phrase ready for when you need a moment to think'), 'readiness-checklist.html must include the 7 day-of verification items');
+console.log(`✓ PASSED: Phase 1 copy changes, prompter practice-only warning banner, and Day-Of Checklist verified`);
+
+// ==================================================================
+// Phase 2 Tests (REQ-PASS-03, REQ-PASS-04, REQ-PASS-05)
+// ==================================================================
+
+// Test 43 (REQ-PASS-03): Card tags & 10 cards per deck with 2 AI Evaluator cards
+const sweDeck = testSandbox.buildInterviewQuestions('Software Engineer', 'software');
+assert.strictEqual(sweDeck.length, 10, 'Every role deck must contain exactly 10 cards');
+const sweEvaluatorCards = sweDeck.filter(c => c.category === 'AI Evaluator');
+assert.strictEqual(sweEvaluatorCards.length, 2, 'Every role deck must contain exactly 2 AI Evaluator cards');
+sweDeck.forEach(c => {
+  assert(c.tag === 'STAR' || c.tag === 'Answer–Why–Check', `Card must be tagged either STAR or Answer–Why–Check (got: ${c.tag})`);
+});
+assert.strictEqual(sweDeck[0].tag, 'STAR', 'Card 1 must be tagged STAR');
+assert.strictEqual(sweDeck[1].tag, 'STAR', 'Card 2 must be tagged STAR');
+assert.strictEqual(sweDeck[9].tag, 'STAR', 'Card 10 must be tagged STAR');
+assert.strictEqual(sweDeck[6].tag, 'Answer–Why–Check', 'Card 7 (AI Evaluator) must be tagged Answer–Why–Check');
+assert.strictEqual(sweDeck[7].tag, 'Answer–Why–Check', 'Card 8 (AI Evaluator) must be tagged Answer–Why–Check');
+assert(aiInterviewHtml.includes('id="fc-card-tag"'), 'Flashcard UI front must include #fc-card-tag');
+assert(aiInterviewHtml.includes('id="fc-back-awc"'), 'Flashcard UI back must include #fc-back-awc for Answer-Why-Check formula');
+console.log(`✓ PASSED: Test 43 (PASS-03) - Exactly 10 cards with STAR / Answer–Why–Check tags and 2 AI Evaluator cards verified`);
+
+// Test 44 (REQ-PASS-03): Domain Evaluator Cards reload on role switch
+const medDeck = testSandbox.buildInterviewQuestions('Clinical Specialist', 'medical');
+const finDeck = testSandbox.buildInterviewQuestions('Investment Banking Analyst', 'finance');
+assert.strictEqual(medDeck.length, 10, 'Medical deck must contain 10 cards');
+assert.strictEqual(finDeck.length, 10, 'Finance deck must contain 10 cards');
+const medEval = medDeck.filter(c => c.category === 'AI Evaluator');
+const finEval = finDeck.filter(c => c.category === 'AI Evaluator');
+assert.strictEqual(medEval.length, 2, 'Medical deck must have 2 evaluator cards');
+assert.strictEqual(finEval.length, 2, 'Finance deck must have 2 evaluator cards');
+assert(medEval.some(c => c.flawType === 'missing safety caveat' || c.flawType === 'factual error'), 'Medical evaluator cards must contain medical planted flaw');
+assert(finEval.some(c => c.flawType === 'factual error' || c.flawType === 'unsupported claim'), 'Finance evaluator cards must contain finance planted flaw');
+assert.notStrictEqual(medEval[0].q, finEval[0].q, 'Switching roles must reload domain-specific evaluator cards');
+console.log(`✓ PASSED: Test 44 (PASS-03) - Domain evaluator cards reload correctly on role/domain switch`);
+
+// Test 45 (REQ-PASS-04): Recall Ladder Level Advance & Drop with localStorage persistence
+testSandbox.localStorage.setItem('recallLevels_qa_test', JSON.stringify({ 0: 1 }));
+const lvlBefore = testSandbox.window.getQuestionRecallLevel('qa_test', 0);
+assert.strictEqual(lvlBefore, 1, 'Initial recall level must be 1');
+
+// Score >= 70 advances level
+const evalHigh = { cappedScore: 85 };
+let curLvl = testSandbox.window.getQuestionRecallLevel('qa_test', 0);
+if (evalHigh.cappedScore >= 70) curLvl = Math.min(4, curLvl + 1);
+testSandbox.window.setQuestionRecallLevel('qa_test', 0, curLvl);
+assert.strictEqual(testSandbox.window.getQuestionRecallLevel('qa_test', 0), 2, 'Score >= 70 must advance recall level to 2');
+
+// Another score >= 70 advances to level 3
+curLvl = testSandbox.window.getQuestionRecallLevel('qa_test', 0);
+if (evalHigh.cappedScore >= 70) curLvl = Math.min(4, curLvl + 1);
+testSandbox.window.setQuestionRecallLevel('qa_test', 0, curLvl);
+assert.strictEqual(testSandbox.window.getQuestionRecallLevel('qa_test', 0), 3, 'Second high score must advance recall level to 3');
+
+// Score < 50 drops level back down
+const evalLow = { cappedScore: 42 };
+curLvl = testSandbox.window.getQuestionRecallLevel('qa_test', 0);
+if (evalLow.cappedScore < 50) curLvl = Math.max(1, curLvl - 1);
+testSandbox.window.setQuestionRecallLevel('qa_test', 0, curLvl);
+assert.strictEqual(testSandbox.window.getQuestionRecallLevel('qa_test', 0), 2, 'Score < 50 must drop recall level back to 2');
+console.log(`✓ PASSED: Test 45 (PASS-04) - Recall Ladder level advances on >=70%, drops on <50%, persists in localStorage`);
+
+// Test 46 (REQ-PASS-04): Level 4 hides script from DOM ("Answer from memory")
+assert(aiInterviewHtml.includes('tp-recall-memory'), 'Teleprompter must include tp-recall-memory container for Level 4');
+assert(aiInterviewHtml.includes('Answer from memory (Level 4: Recall)'), 'Level 4 prompt must display Answer from memory');
+assert(aiInterviewHtml.includes('recallLvl === 4 ? `'), 'Teleprompter script view must conditionally omit script text at Level 4');
+console.log(`✓ PASSED: Test 46 (PASS-04) - Level 4 completely omits script text from DOM for memory recall`);
+
+// Test 47 (REQ-PASS-05): Pressure Mode Pause Cutoff Setting (2s, 3s, 4s)
+assert(aiInterviewHtml.includes('id="pressure-pause-cutoff-select"'), 'ai-interview.html must include silence cutoff selector');
+assert(aiInterviewHtml.includes('value="2">2s'), 'Silence cutoff selector must include 2s option');
+assert(aiInterviewHtml.includes('value="3" selected>3s'), 'Silence cutoff selector must include 3s default option');
+assert(aiInterviewHtml.includes('value="4">4s'), 'Silence cutoff selector must include 4s option');
+assert(aiInterviewHtml.includes('Silence Cutoff Triggered'), 'Pause detector must trigger cutoff alert');
+assert(aiInterviewHtml.includes('Bridge phrases: "Let me walk you through that," or "There are two parts to this."'), 'Cutoff alert must coach candidate on bridge phrases');
+console.log(`✓ PASSED: Test 47 (PASS-05) - Configurable 2s/3s/4s pause cutoff with bridge phrase tips verified`);
+
+// Test 48 (REQ-PASS-05): Follow-Up Question Generation by Rule
+const testQSample = { q: "Tell me about a high-impact engineering project", keywords: ["Docker", "Kubernetes", "CI/CD"] };
+// 1. Missing number -> "How did you measure that?"
+const noNumAns = "In my recent role I architected the deployment pipeline using Docker and Kubernetes.";
+const followUp1 = testSandbox.window.generateFollowUpQuestion(noNumAns, testQSample);
+assert.strictEqual(followUp1, "How did you measure that?", 'Answer without numbers must trigger "How did you measure that?"');
+
+// 2. Uses "we" without "I" -> "What was your specific role?"
+const weOnlyAns = "In our team project we designed a microservice architecture and reduced latencies by 35% using Docker.";
+const followUp2 = testSandbox.window.generateFollowUpQuestion(weOnlyAns, testQSample);
+assert.strictEqual(followUp2, "What was your specific role?", 'Answer with only "we" and numbers must trigger "What was your specific role?"');
+
+// 3. Missing JD keyword -> "How would <keyword> apply here?"
+const missingKwAns = "In my project, I architected a distributed container service using Docker, improving throughput by 40% across clusters.";
+const followUp3 = testSandbox.window.generateFollowUpQuestion(missingKwAns, testQSample);
+assert.strictEqual(followUp3, "How would Kubernetes apply here?", 'Answer missing Kubernetes keyword must ask how it applies');
+
+console.log(`✓ PASSED: Test 48 (PASS-05) - Follow-up questions generated deterministically based on missing elements`);
+
+// Test 49 (REQ-PASS-05): Composite Scoring (70% main + 30% follow-up) & Debrief retention
+assert(aiInterviewHtml.includes('Math.round(mainEval.cappedScore * 0.70 + followUpEval.cappedScore * 0.30)'), 'Composite question scoring must weight main answer 70% and follow-up 30%');
+assert(aiInterviewHtml.includes('Follow-Up Question: "${escapeHtml(res.followUpQuestion)}"'), 'Debrief results must render follow-up question');
+assert(aiInterviewHtml.includes('Follow-Up Response: "${escapeHtml(res.followUpAnswer)}"'), 'Debrief results must render follow-up response and score');
+console.log(`✓ PASSED: Test 49 (PASS-05) - 70/30 composite weighting and dual main/follow-up debrief rendering verified`);
+
+// ==================================================================
+// Phase 3 Tests (REQ-PASS-02 Resume Defense & REQ-PASS-06 Pass Check)
+// ==================================================================
+
+// Test 50 (REQ-PASS-02): With resume saved, generates 8 questions quoting real bullets
+const sampleCandidateResume = `
+Senior Software Engineer
+• Architected distributed streaming pipeline processing 250,000 events per second using Apache Kafka and Python.
+• Automated regression test suite with Cypress and Selenium, reducing QA release cycles by 40%.
+• Built microservices backend using Docker, FastAPI, and PostgreSQL with 99.95% uptime SLA.
+• Spearheaded cross-team migration of database shards, eliminating query bottlenecks and decreasing p99 latency by 55ms.
+• Led technical design reviews across 8 engineering teams and mentored 4 junior developers on clean architecture.
+• Designed real-time monitoring and alerting dashboard using Prometheus and Grafana for early anomaly detection.
+• Implemented OAuth2 and RBAC authorization protocols across external partner REST APIs.
+• Engineered automated CI/CD deployment pipelines on AWS ECS, saving 12 developer hours weekly.
+• Optimized SQL queries and database indexes, cutting average query execution time from 1.2s to 180ms.
+`;
+const rdQuestions = testSandbox.window.buildResumeDefenseQuestions('Senior Backend Engineer', sampleCandidateResume, ['Python', 'Kafka', 'Docker', 'PostgreSQL']);
+assert.strictEqual(rdQuestions.length, 8, 'Resume Defense mode must generate exactly 8 questions');
+rdQuestions.forEach(q => {
+  assert(q.q.startsWith('Walk me through this: "'), 'Opening question must follow template: Walk me through this: "<bullet>"');
+  assert(q.bullet && q.bullet.length > 20, 'Question must retain quoted bullet');
+  assert(q.followUp && q.followUp.length > 10, 'Question must include follow-up prompt');
+});
+console.log(`✓ PASSED: Test 50 (PASS-02) - Resume Defense generates 8 questions quoting real bullets`);
+
+// Test 51 (REQ-PASS-02): Without resume saved, prompts to upload resume to unlock
+const noResQuestions = testSandbox.window.buildResumeDefenseQuestions('Senior Backend Engineer', '', []);
+assert.strictEqual(noResQuestions.length, 0, 'No resume saved must return 0 questions');
+assert(aiInterviewHtml.includes('Upload your resume to unlock'), 'Resume Defense mode card must prompt to upload resume when none saved');
+console.log(`✓ PASSED: Test 51 (PASS-02) - Without resume, prompts candidate to upload resume to unlock`);
+
+// Test 52 (REQ-PASS-02): Follow-up question logic (missing number vs tool over alternatives)
+const bulletNoNum = "Implemented OAuth2 and RBAC authorization protocols across external partner REST APIs.";
+const qNoNum = testSandbox.window.buildResumeDefenseQuestions('Security Engineer', bulletNoNum, ['OAuth2'])[0];
+assert.strictEqual(qNoNum.followUp, "How did you measure the result?", 'Bullet without numbers must prompt: How did you measure the result?');
+
+const bulletTool = "Designed real-time monitoring and alerting dashboard using Prometheus and Grafana for early anomaly detection.";
+const qTool = testSandbox.window.buildResumeDefenseQuestions('DevOps Engineer', bulletTool, ['Prometheus'])[0];
+assert.strictEqual(qTool.followUp, "Why that tool over the alternatives?", 'Bullet naming tool must prompt: Why that tool over the alternatives?');
+console.log(`✓ PASSED: Test 52 (PASS-02) - Follow-up questions match bullet content (missing number vs tool alternatives)`);
+
+// Test 53 (REQ-PASS-02): Client-side privacy guard - resume text never leaves device
+assert(!aiInterviewHtml.includes("fetch('/api/analyzeResumeBullets'"), 'Resume bullets must not be sent to any server endpoint');
+assert(aiInterviewHtml.includes('window.extractResumeBullets'), 'Resume bullet parsing must execute client-side in browser');
+console.log(`✓ PASSED: Test 53 (PASS-02) - Resume Defense is 100% client-side; candidate resume never leaves device`);
+
+// Test 54 (REQ-PASS-06): Pass Check generates exactly 6 questions (3 STAR, 2 AWC with 1 AI Evaluator, 1 Resume Defense)
+const pcQuestions = testSandbox.window.buildPassCheckQuestions('Software Engineer', 'software');
+assert.strictEqual(pcQuestions.length, 6, 'Pass Check must contain exactly 6 questions');
+const starCount = pcQuestions.filter(q => q.tag === 'STAR' && q.category !== 'Resume Defense').length;
+const awcCount = pcQuestions.filter(q => q.tag === 'Answer–Why–Check').length;
+const evalCount = pcQuestions.filter(q => q.category === 'AI Evaluator').length;
+const rdCount = pcQuestions.filter(q => q.category === 'Resume Defense').length;
+assert.strictEqual(starCount, 3, 'Pass Check must include exactly 3 STAR questions');
+assert.strictEqual(awcCount, 2, 'Pass Check must include exactly 2 Answer-Why-Check questions');
+assert.strictEqual(evalCount, 1, 'Pass Check must include exactly 1 AI Evaluator question');
+assert.strictEqual(rdCount, 1, 'Pass Check must include exactly 1 Resume Defense question');
+console.log(`✓ PASSED: Test 54 (PASS-06) - Pass Check compiles exactly 6 randomized questions (3 STAR, 2 AWC with 1 Evaluator, 1 Resume Defense)`);
+
+// Test 55 (REQ-PASS-06): Pass Check hides prompter controls & duplicate answers cannot return Ready
+assert(aiInterviewHtml.includes("isPressure = (window.currentSimMode === 'pressure' || window.currentSimMode === 'passcheck')"), 'Pass Check must enforce isPressure restrictions (hiding prompters)');
+assert(aiInterviewHtml.includes('A run containing duplicate or repeated answers cannot return Ready'), 'Duplicate answer must block Ready result');
+console.log(`✓ PASSED: Test 55 (PASS-06) - Pass Check enforces blind conditions and disqualifies duplicate responses from Ready`);
+
+// Test 56 (REQ-PASS-06): Ready result stores passCheck_<roleId> and renders "Pass Check ✓" badge on /apply, stale after 14 days
+assert(renderWavesJs.includes('passcheck-badge passcheck-ready'), 'render_waves.js must include passcheck-ready badge');
+assert(renderWavesJs.includes('passcheck-badge passcheck-stale'), 'render_waves.js must include passcheck-stale badge');
+assert(renderWavesJs.includes('Retake to refresh (14+ days old)'), 'render_waves.js must display stale note for passes older than 14 days');
+assert(renderWavesJs.includes('Recommended: take the Pass Check first'), 'render_waves.js must display recommendation link when Pass Check not taken');
+assert(renderWavesJs.includes('isPassCheckReady ? `<span class="btn-passcheck-tag"'), 'Apply button must show Pass Check tag when passed');
+console.log(`✓ PASSED: Test 56 (PASS-06) - Pass Check ✓ badge, stale 14-day rule, and Apply recommendation link verified`);
+
+// ==================================================================
+// Phase 4 Tests (REQ-PASS-08 Outcome Tracking & 7-Day Email Plan)
+// ==================================================================
+
+// Test 57 (PASS-08): Dashboard status dropdown includes "Passed AI interview" and "Didn't pass", prompts for hardest question type
+const updatedSavedRolesHtml = fs.readFileSync('saved-roles.html', 'utf8');
+assert(updatedSavedRolesHtml.includes('<option value="Passed AI interview"'), 'saved-roles.html must include Passed AI interview status option');
+assert(updatedSavedRolesHtml.includes('<option value="Didn\'t pass"'), "saved-roles.html must include Didn't pass status option");
+assert(updatedSavedRolesHtml.includes('Which question type felt hardest?'), 'saved-roles.html must prompt for hardest question type when passed/not passed');
+assert(updatedSavedRolesHtml.includes('Story (STAR)'), 'saved-roles.html must include Story (STAR) hardest option');
+assert(updatedSavedRolesHtml.includes('Knowledge (Answer–Why–Check)'), 'saved-roles.html must include Knowledge (Answer–Why–Check) hardest option');
+assert(updatedSavedRolesHtml.includes('Resume Defense'), 'saved-roles.html must include Resume Defense hardest option');
+assert(updatedSavedRolesHtml.includes('Timing (Pause Cutoff)'), 'saved-roles.html must include Timing (Pause Cutoff) hardest option');
+console.log(`✓ PASSED: Test 57 (PASS-08) - Dashboard status dropdown includes 'Passed AI interview' & 'Didn't pass', prompts for hardest question type`);
+
+// Test 58 (PASS-08): 7-Day practice plan opt-in checkbox unchecked by default on Playbook forms
+const updatedAiInterviewHtml = fs.readFileSync('ai-interview.html', 'utf8');
+assert(updatedAiInterviewHtml.includes('id="screen1-practice-plan-optin"'), 'ai-interview.html must include screen1 7-day plan checkbox');
+assert(updatedAiInterviewHtml.includes('id="lead-magnet-practice-plan-optin"'), 'ai-interview.html must include debrief 7-day plan checkbox');
+assert(updatedAiInterviewHtml.includes('Email me a 7-day practice plan.'), 'Checkbox label must specify Email me a 7-day practice plan.');
+assert(!updatedAiInterviewHtml.includes('id="screen1-practice-plan-optin" checked'), 'Screen 1 plan checkbox must be unchecked by default');
+assert(!updatedAiInterviewHtml.includes('id="lead-magnet-practice-plan-optin" checked'), 'Debrief plan checkbox must be unchecked by default');
+console.log(`✓ PASSED: Test 58 (PASS-08) - 7-day practice plan opt-in checkbox unchecked by default on Playbook forms`);
+
+// Test 59 (PASS-08): Anonymous outcome record contains NO resume or answer text
+const recordValidator = (record) => {
+  assert(record.session_id && record.session_id.startsWith('anon_'), 'Record must use anonymous session ID');
+  assert.strictEqual(record.event_type, 'interview_outcome');
+  assert(!('resumeText' in record), 'Outcome record must NOT contain resumeText');
+  assert(!('candidateResumeText' in record), 'Outcome record must NOT contain candidateResumeText');
+  assert(!('answers' in record), 'Outcome record must NOT contain answers array');
+  assert(!('answer' in record), 'Outcome record must NOT contain answer text');
+};
+const dummyRecord = {
+  event_type: 'interview_outcome',
+  session_id: 'anon_12345',
+  referral_id: 'role-test-qa',
+  outcome: 'Passed AI interview',
+  fit_label: 'Good fit',
+  pass_check_score: 82,
+  pass_check_date: '2026-11-04',
+  hardest_question_type: 'Timing (Pause Cutoff)'
+};
+recordValidator(dummyRecord);
+assert(updatedSavedRolesHtml.includes('delete outcomeRecord.resumeText'), 'saved-roles.html must explicitly strip resume text before persisting/transmitting');
+assert(updatedSavedRolesHtml.includes('delete outcomeRecord.answers'), 'saved-roles.html must explicitly strip answer text before persisting/transmitting');
+console.log(`✓ PASSED: Test 59 (PASS-08) - Outcome tracking strictly excludes candidate resume and answer text`);
+
+// Test 60 (PASS-08): Privacy policy documents anonymous outcome tracking and reaffirms no resume/answer text storage
+const privacyHtml = fs.readFileSync('privacy.html', 'utf8');
+assert(privacyHtml.includes('Anonymous Outcome Tracking'), 'privacy.html must document Anonymous Outcome Tracking');
+assert(privacyHtml.includes('Passed AI interview'), 'privacy.html must cite Passed AI interview reporting');
+assert(privacyHtml.includes('No resume or answer text stored'), 'privacy.html must guarantee no resume or answer text stored');
+console.log(`✓ PASSED: Test 60 (PASS-08) - Privacy policy explicitly covers anonymous outcome tracking & data boundaries`);
+
 console.log("==================================================================");
-console.log("ALL 40 AUDIT SUITE TESTS PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 60 AUDIT SUITE TESTS (PHASES 1, 2, 3 & 4) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

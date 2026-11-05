@@ -754,6 +754,107 @@ function getRoleMatchScore(role) {
     return info ? info.score : null;
 }
 
+// Global Pass Likelihood Fit Engine (REQ-PASS-01)
+function getPassLikelihoodFit(roleInput, resumeText) {
+    const resTxt = (typeof resumeText === 'string') ? resumeText : ((typeof window.resolveStoredResume === 'function') ? window.resolveStoredResume() : (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || ''));
+    if (!resTxt || resTxt.trim().length < 50) {
+        return {
+            fit: 'none',
+            tier: 'None',
+            label: 'Upload your resume to see your fit',
+            badgeClass: 'fit-none',
+            badgeHtml: '<span class="pass-fit-badge fit-none" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#d1d5db; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px;"><a href="/resume-ats-guide" style="color:#d1d5db; text-decoration:none;">Upload your resume to see your fit</a></span>'
+        };
+    }
+
+    let roleObj = null;
+    if (typeof roleInput === 'string') {
+        const rKey = roleInput.toLowerCase().trim();
+        if (typeof window !== 'undefined' && window.wavesRoleMap && window.wavesRoleMap[rKey]) {
+            roleObj = window.wavesRoleMap[rKey];
+        } else if (typeof allRoles !== 'undefined' && Array.isArray(allRoles)) {
+            roleObj = allRoles.find(r => (r.title || '').toLowerCase().trim() === rKey);
+        }
+        if (!roleObj) {
+            roleObj = { title: roleInput, cleanTitle: roleInput, domain: 'GENERAL', atsKeywords: [] };
+        }
+    } else if (roleInput && typeof roleInput === 'object') {
+        roleObj = roleInput;
+    } else {
+        return {
+            fit: 'weak',
+            tier: 'None',
+            label: 'Weak fit',
+            badgeClass: 'fit-weak',
+            badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:rgba(156,163,175,0.15); border:1px solid rgba(156,163,175,0.35); color:#9ca3af; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px;">Weak fit</span>'
+        };
+    }
+
+    const titleLow = (roleObj.title || roleObj.cleanTitle || '').toLowerCase();
+    const resLow = resTxt.toLowerCase();
+
+    // Language Guard
+    const languages = ['dutch', 'german', 'french', 'spanish', 'italian', 'portuguese', 'japanese', 'chinese', 'mandarin', 'korean', 'arabic', 'hindi', 'bengali', 'tamil', 'telugu', 'malayalam', 'marathi', 'gujarati', 'danish', 'finnish', 'norwegian', 'swedish', 'polish', 'russian', 'turkish', 'vietnamese', 'indonesian', 'thai'];
+    let requiredLang = null;
+    for (const lang of languages) {
+        if (new RegExp('\\b' + lang + '\\b', 'i').test(titleLow)) {
+            requiredLang = lang;
+            break;
+        }
+    }
+    const failsLanguage = Boolean(requiredLang && !resLow.includes(requiredLang));
+
+    // License Guard
+    const req = (typeof getRoleRequirements === 'function') ? getRoleRequirements(roleObj) : {};
+    let failsLicense = false;
+    if (req && req.license && !resLow.includes(req.license.toLowerCase())) {
+        failsLicense = true;
+    }
+
+    let matchInfo = null;
+    if (typeof getRoleMatchInfo === 'function') {
+        matchInfo = getRoleMatchInfo(roleObj);
+    } else if (typeof window.calculateRoleMatchScore === 'function') {
+        matchInfo = window.calculateRoleMatchScore(roleObj, resTxt);
+    }
+
+    const score = matchInfo ? matchInfo.score : 0;
+    const hits = matchInfo ? matchInfo.hits : 0;
+    const tier = matchInfo ? matchInfo.tier : 'None';
+
+    if (!failsLanguage && !failsLicense && (tier === 'Strong Match' || (score >= 70 && hits >= 3))) {
+        return {
+            fit: 'good',
+            score,
+            tier: 'Strong Match',
+            label: 'Good fit to pass',
+            badgeClass: 'fit-good',
+            badgeHtml: '<span class="pass-fit-badge fit-good" style="background:#ecfdf5; border:1px solid #10b981; color:#065f46; font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">● Good fit to pass</span>'
+        };
+    } else if (!failsLanguage && !failsLicense && (tier === 'Good Match' || (score >= 50 && score < 70) || (score >= 70 && hits >= 1))) {
+        return {
+            fit: 'stretch',
+            score,
+            tier: 'Good Match',
+            label: 'Stretch: practice Resume Defense first',
+            badgeClass: 'fit-stretch',
+            badgeHtml: '<span class="pass-fit-badge fit-stretch" style="background:#fffbeb; border:1px solid #f59e0b; color:#92400e; font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">▲ Stretch: practice Resume Defense first</span>'
+        };
+    } else {
+        return {
+            fit: 'weak',
+            score,
+            tier: tier,
+            label: 'Weak fit',
+            badgeClass: 'fit-weak',
+            badgeHtml: '<span class="pass-fit-badge fit-weak" style="background:#f3f4f6; border:1px solid #d1d5db; color:#4b5563; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">Weak fit</span>'
+        };
+    }
+}
+if (typeof window !== 'undefined') {
+    window.getPassLikelihoodFit = getPassLikelihoodFit;
+}
+
 function formatSyncDate(dateStr) {
     if (!dateStr) return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     try {
@@ -1066,6 +1167,40 @@ function renderWavesApp() {
                         }
                     }
 
+                    // Pass likelihood fit label (REQ-PASS-01)
+                    const storedResume = (typeof window.resolveStoredResume === 'function') 
+                        ? window.resolveStoredResume() 
+                        : (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '');
+                    const passFit = getPassLikelihoodFit(role, storedResume);
+                    const fitBadgeHtml = passFit.badgeHtml || '';
+                    // Pass Check state (REQ-PASS-06)
+                    const roleIdKey = (role.id || '').toLowerCase();
+                    const roleTitleKey = (role.title || '').toLowerCase().trim();
+                    let passCheckObj = null;
+                    try {
+                        const rawPc = (typeof localStorage !== 'undefined') ? (localStorage.getItem('passCheck_' + roleIdKey) || localStorage.getItem('passCheck_' + roleTitleKey)) : null;
+                        if (rawPc) passCheckObj = JSON.parse(rawPc);
+                    } catch(e) {}
+
+                    let passCheckBadgeHtml = '';
+                    let isPassCheckReady = false;
+                    let passCheckStaleNote = '';
+                    let passCheckRecommendationHtml = '';
+
+                    if (passCheckObj && passCheckObj.result === 'ready') {
+                        isPassCheckReady = true;
+                        const daysOld = (Date.now() - new Date(passCheckObj.date || Date.now()).getTime()) / (1000 * 60 * 60 * 24);
+                        if (daysOld > 14) {
+                            passCheckBadgeHtml = `<span class="passcheck-badge passcheck-stale" style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">Pass Check ✓ <span style="font-size:9.5px; opacity:0.8;">(Retake to refresh)</span></span>`;
+                            passCheckStaleNote = `<span class="passcheck-stale-note" style="font-size:10px; color:#d97706; display:block; margin-top:2px;">Retake to refresh (14+ days old)</span>`;
+                        } else {
+                            passCheckBadgeHtml = `<span class="passcheck-badge passcheck-ready" style="background:#ecfdf5; color:#065f46; border:1px solid #10b981; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; display:inline-flex; align-items:center; gap:3px;">Pass Check ✓</span>`;
+                        }
+                    } else {
+                        passCheckRecommendationHtml = `<a href="/ai-interview?role=${encodeURIComponent(safeTitle)}&mode=passcheck" onclick="event.stopPropagation();" class="passcheck-rec-link" style="font-size:10.5px; color:#6b7280; text-decoration:underline; display:block; margin-top:3px; text-align:center;">Recommended: take the Pass Check first</a>`;
+                    }
+
+
                     const lastAppliedPlatform = typeof localStorage !== 'undefined' ? (localStorage.getItem('tgt_last_applied_platform') || '') : '';
                     const isDifferentPlatform = (lastAppliedPlatform && lastAppliedPlatform !== rolePlatform);
 
@@ -1150,7 +1285,9 @@ function renderWavesApp() {
                         </div>
                     ` : `
                         <div class="desktop-actions card-actions-wrapper">
-                            <button type="button" class="btn-card-primary" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}');">Apply on ${rolePlatform} ➔</button>
+                            <button type="button" class="btn-card-primary" onclick="event.stopPropagation(); window.handleApplyClick('${safeTitle}', '${safeLink}', this, '${safeId}', ${matchScore !== null ? matchScore : 'null'}, '${safeDomain}');">Apply on ${rolePlatform} ➔ ${isPassCheckReady ? `<span class="btn-passcheck-tag" style="margin-left:4px; background:#ecfdf5; color:#065f46; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:900;">Pass Check ✓</span>` : ''}</button>
+                            ${passCheckRecommendationHtml}
+                            ${passCheckStaleNote}
                             <div class="card-options-toolbar">
                                 <button type="button" class="btn-card-tool" onclick="event.stopPropagation(); window.open('/resume-ats-guide?role=' + encodeURIComponent('${safeTitle}'), '_blank');" title="Practice ATS guide for this role" aria-label="Practice ATS">${svgTarget} <span>ATS Guide</span></button>
                                 <button type="button" class="btn-card-tool" onclick="event.stopPropagation(); saveRole('${safeTitle}', '${safeDomain}', '${safePay}', this, '${safeLink}')" title="Save role to Dashboard" aria-label="Save role">${svgBookmark} <span>Save</span></button>
@@ -1206,6 +1343,8 @@ function renderWavesApp() {
                                     ${platformBadgeHtml}
                                     ${payTypeBadge}
                                     ${matchBadgeHtml}
+                                    ${fitBadgeHtml}
+                                    ${passCheckBadgeHtml}
                                 </div>
                                 <div style="color:var(--primary); font-weight:800; font-size:18px;">${cleanPay}</div>
                             </div>
