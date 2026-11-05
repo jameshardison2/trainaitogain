@@ -304,6 +304,16 @@
       .hero p { font-size: 16px; }
       .track-card { padding: 24px 18px; }
       #expert-network > div { padding: 28px 16px !important; }
+      .founder-strip-card {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 24px 18px !important;
+        gap: 16px !important;
+      }
+      .founder-strip-card > div {
+        min-width: 0 !important;
+        text-align: center !important;
+      }
     }
   </style>
 </head>
@@ -417,7 +427,7 @@
 
   <!-- Founder Trust & Background Strip -->
   <section class="container" style="margin-bottom:60px;">
-    <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:28px 32px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+    <div class="founder-strip-card" style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:28px 32px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
       <img src="/james_hardison.png" alt="James Hardison" style="width:76px; height:76px; border-radius:50%; object-fit:cover; border:2px solid #10b981; flex-shrink:0;">
       <div style="flex:1; min-width:260px;">
         <div style="font-size:12px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:3px;">Founder's Commitment</div>
