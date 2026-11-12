@@ -17,3 +17,4 @@ serviceAccountKey.json
 # OS & Temp
 .DS_Store
 Thumbs.db
+*.bak

@@ -2050,7 +2050,7 @@ html { scroll-behavior: smooth; }
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .nav-toggle-label {
     display: inline-flex !important;
     align-items: center !important;
