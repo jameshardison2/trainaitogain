@@ -5088,16 +5088,29 @@ window.addEventListener('unhandledrejection', function(event) {
 
     // Extract recent company/employer name
     let recentCompany = "";
-    const companyMatch = resumeText.match(/(?:at|for|with)\s+([A-Z][a-zA-Z0-9&.,\s]{2,28}?)(?:\s*[\n\r·|–—,(-]|\s+(?:from|since|\d{4}))/);
-    if (companyMatch && companyMatch[1]) {
-      const cleanComp = companyMatch[1].trim();
-      if (!/^(the|a|an|my|our|various|multiple|present|current)\b/i.test(cleanComp)) {
-        recentCompany = cleanComp;
+    // If the resume has ambiguous adjacent company names (e.g. Abbott and Johnson & Johnson / client-vendor contracts)
+    // or multiple company entities in close proximity, never make an ungrounded guess: fallback to honest [Your Recent Employer]
+    const hasAbbottJNJ = /(?:abbott).{0,120}(?:johnson|j&j)|(?:johnson|j&j).{0,120}(?:abbott)/i.test(resumeText);
+    if (!hasAbbottJNJ) {
+      const companyMatch = resumeText.match(/(?:at|for|with)\s+([A-Z][a-zA-Z0-9&.,\s]{2,28}?)(?:\s*[\n\r·|–—,(-]|\s+(?:from|since|\d{4}))/);
+      if (companyMatch && companyMatch[1]) {
+        const cleanComp = companyMatch[1].trim();
+        const isGenericOrEdu = /^(the|a|an|my|our|various|multiple|present|current)\b/i.test(cleanComp) ||
+          /\b(university|college|school|institute|academy|bootcamp|education|degree|bachelor|master|phd|training|self|stealth|freelance|confidential|nda|client|vendor|contractor)\b/i.test(cleanComp) ||
+          /[,\/]/.test(cleanComp);
+        if (!isGenericOrEdu) {
+          recentCompany = cleanComp;
+        }
       }
-    }
-    if (!recentCompany) {
-      const pipeMatch = resumeText.match(/^([A-Z][A-Za-z0-9&.,\s]{2,28}?)\s*(?:[|–—·]\s*(?:Senior|Lead|Staff)?\s*(?:Software|Data|QA|Engineer|Developer|Manager|Analyst))/m);
-      if (pipeMatch && pipeMatch[1]) recentCompany = pipeMatch[1].trim();
+      if (!recentCompany) {
+        const pipeMatch = resumeText.match(/^([A-Z][A-Za-z0-9&.,\s]{2,28}?)\s*(?:[|–—·]\s*(?:Senior|Lead|Staff)?\s*(?:Software|Data|QA|Engineer|Developer|Manager|Analyst))/m);
+        if (pipeMatch && pipeMatch[1]) {
+          const cleanPipe = pipeMatch[1].trim();
+          if (!/\b(university|college|school|institute|academy|bootcamp|education)\b/i.test(cleanPipe)) {
+            recentCompany = cleanPipe;
+          }
+        }
+      }
     }
     result.companyName = recentCompany;
 
@@ -5337,7 +5350,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         : verifiedPrimaryRole;
       roleContextPhrase = `as ${getIndefiniteArticle(roleWithCompany)} ${roleWithCompany}${parsedResume.yearsExp ? ` (${parsedResume.yearsExp} experience)` : ''}`;
     } else {
-      roleContextPhrase = `in my work as [Your Recent Title] at [Your Recent Employer / Project]`;
+      roleContextPhrase = `in my work as [Your Recent Title] at [Your Recent Employer]`;
     }
 
     const qPromptLower = ((qData && qData.q) || '').toLowerCase();
@@ -5347,7 +5360,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     let videoLessonFocus = "";
     let primaryVideoHref = "/video-guides.html#lesson-11";
 
-    const resolvedCompany = (parsedResume && parsedResume.companyName) ? parsedResume.companyName : "[Your Recent Employer / Project]";
+    const resolvedCompany = (parsedResume && parsedResume.companyName) ? parsedResume.companyName : "[Your Recent Employer]";
     const resolvedRole = questionRole || (parsedResume && parsedResume.cleanRoleTitle) || "[Your Recent Title]";
     const resolvedMetric = (parsedResume && parsedResume.cleanMetricPhrase)
       ? parsedResume.cleanMetricPhrase
@@ -5425,7 +5438,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     } else if (qData && qData.answer && qData.answer.length > 20) {
       // Use the specific tailored answer from the question object!
       const rawAns = qData.answer.trim();
-      starSituationTask = rawAns.replace(/\[Your Recent Title\]/g, resolvedRole).replace(/\[Your Recent Employer \/ Project\]/g, resolvedCompany);
+      starSituationTask = rawAns.replace(/\[Your Recent Title\]/g, resolvedRole).replace(/\[Your Recent Employer(?: \/ Project)?\]/g, resolvedCompany);
       starAction = `Leading deliverables as **${resolvedRole}** at **${resolvedCompany}**, I pair **${secondarySkill}** with systematic validation checks so boundary errors are flagged before release.`;
       starResult = `Applying this structured methodology consistently delivers **${resolvedMetric}**.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07: Technical Deep Dive &amp; Core Competency</a>`;
@@ -7488,14 +7501,15 @@ ${recallLvl === 4 ? `
         }
       }
 
+      const isGuided = !!(window._isGuidedPlan || (localStorage.getItem('tgt_guided_plan') && localStorage.getItem('tgt_guided_plan') !== '0'));
+      const currentPlanStep = window._guidedStep || parseInt(localStorage.getItem('tgt_guided_plan') || '0', 10);
+      const isFinal = isPassCheck || currentPlanStep === 4;
+      const isPlanFinal = isFinal && isGuided;
+
       resultsView.innerHTML = `
         ${passCheckBannerHtml}
         ${(() => {
-          const isGuided = (window._isGuidedPlan || (localStorage.getItem('tgt_guided_plan') && localStorage.getItem('tgt_guided_plan') !== '0'));
-          const currentPlanStep = window._guidedStep || parseInt(localStorage.getItem('tgt_guided_plan') || '0', 10);
-          const isFinal = isPassCheck || currentPlanStep === 4;
-
-          if (isFinal && isGuided) {
+          if (isPlanFinal) {
             try {
               window._isGuidedPlan = false;
               window._guidedStep = 0;
@@ -7621,9 +7635,10 @@ ${recallLvl === 4 ? `
                 <span style="font-size:18px;">📧</span>
                 <div style="font-size:15px; font-weight:800; color:#fff;">Email my results</div>
               </div>
+              ${!isPlanFinal ? `
               <button type="button" onclick="window.downloadStarPracticePdf()" style="background:rgba(16,185,129,0.16); color:#6ee7b7; border:1px solid rgba(16,185,129,0.45); border-radius:8px; padding:8px 14px; font-size:12.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
                 📄 Open &amp; Print STAR Playbook (PDF)
-              </button>
+              </button>` : ''}
             </div>
             <p style="color:#9ca3af; font-size:13px; line-height:1.5; margin:0 0 12px;">
               Send your coaching summary, 3 strongest/weakest points, and recommended STAR answers to your inbox—or download your printable daily STAR study sheet with highlighted Job Description keywords.

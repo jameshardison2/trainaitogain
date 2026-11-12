@@ -1301,11 +1301,56 @@ assert(updatedHtml.includes("Congratulations! You finished the entire interview 
 
 // 3. Robust title isolation (skips verbs like architected, requires clean header lines, preserves brackets)
 assert(updatedHtml.includes("if (/\\b(architected|developed|engineered|designed|built|managed|led|maintained|automated|collaborated|responsible|working|experience in|knowledge of|proficient)\\b/i.test(trimmed)) return;"), "Resume parser must ignore lines with action verbs");
-assert(updatedHtml.includes("roleContextPhrase = `in my work as [Your Recent Title] at [Your Recent Employer / Project]`;"), "Must preserve honest [Your Recent Title] placeholder when no confirmed work history title exists");
+assert(updatedHtml.includes("roleContextPhrase = `in my work as [Your Recent Title] at [Your Recent Employer]`;"), "Must preserve honest [Your Recent Title] placeholder when no confirmed work history title exists");
 
 console.log(`✓ PASSED: Test 85 - Guided Prep Plan typed persistence, 4-step completion screen, and title isolation verified`);
 
+// ==================================================================
+// Test 86: Ambiguous Employer Name Resolution & Debrief Playbook Button Deduplication
+// ==================================================================
+// 1. Ambiguous adjacent employers (Abbott and Johnson & Johnson) must fall back to [Your Recent Employer]
+const resumeWithAdjacentEmployers = `
+James Hardison
+Boston, MA
+Experience:
+Senior Software Quality Engineer at Johnson & Johnson (contract via Abbott Laboratories)
+2021 - Present
+- Architected automated end-to-end test framework using Python, Selenium, and PyTest
+- Achieved a 35% reduction in release defect escaped rates across 40 sprint deployments
+`;
+const parsedAdjacent = testSandbox.parseCandidateResumeForStar(resumeWithAdjacentEmployers, { q: "Walk me through your most recent role", keywords: ["Selenium", "Python"] });
+assert.strictEqual(parsedAdjacent.companyName, "", "Adjacent / ambiguous employers (e.g. Abbott & Johnson & Johnson) must not guess an employer; companyName must be empty");
+
+const partsForAdjacent = testSandbox.computeStarPartsForQuestion({ q: "Walk me through your most recent role and what you were primarily responsible for day to day", keywords: ["Selenium", "Python"] }, 0, "");
+assert(partsForAdjacent.st.includes('[Your Recent Employer]'), "When employer is ambiguous, STAR situation must display [Your Recent Employer]");
+assert(!partsForAdjacent.st.includes('Abbott'), "Must not pick Abbott when adjacent to Johnson & Johnson");
+
+// 2. Clear, unambiguous single employer should be cleanly extracted
+const resumeWithSingleEmployer = `
+Experience:
+Senior Test Automation Engineer at Pfizer Inc.
+2020 - 2024
+- Built test frameworks
+`;
+const parsedSingle = testSandbox.parseCandidateResumeForStar(resumeWithSingleEmployer, { q: "Walk me through your role", keywords: ["Python"] });
+assert.strictEqual(parsedSingle.companyName, "Pfizer Inc.", "Single unambiguous employer should be cleanly extracted");
+
+// 3. Educational institutions must not be extracted as employer
+const resumeWithEduOnly = `
+Education:
+Master of Science in Data Science at Boston University
+2020 - 2022
+`;
+const parsedEdu = testSandbox.parseCandidateResumeForStar(resumeWithEduOnly, { q: "Tell me about your background", keywords: ["Python"] });
+assert.notStrictEqual(parsedEdu.companyName, "Boston University", "Universities must not be extracted as employer");
+
+// 4. Debrief modal Playbook button deduplication verification
+assert(updatedHtml.includes("const isPlanFinal = isFinal && isGuided;"), "Must calculate isPlanFinal to gate duplicate playbook button");
+assert(updatedHtml.includes("${!isPlanFinal ? `\n              <button type=\"button\" onclick=\"window.downloadStarPracticePdf()\""), "Must conditionally suppress lower playbook button when 4-step completion banner is shown");
+
+console.log(`✓ PASSED: Test 86 - Ambiguous employer name resolution and debrief Playbook button deduplication verified`);
+
 console.log("==================================================================");
-console.log("ALL 85 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 86 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
