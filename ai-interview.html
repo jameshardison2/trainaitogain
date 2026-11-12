@@ -7482,20 +7482,6 @@ ${(resumeText || '').slice(0, 3500)}`;
         return;
       }
     }
-                  <button type="button" onclick="window.selectSimMode('warmup'); window.retakeMockInterview();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
-                    Redo Warm-Up
-                  </button>
-                  <button type="button" onclick="window.returnToSetupView();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
-                    Back to All Modes
-                  </button>
-                </div>
-              `}
-            </div>
-          </div>
-        `;
-      }
-      return;
-    }
 
     // Item 5: Single source of truth for keyword list; Debrief "X of Y" equals unique keywords hit across all answers
     const canonicalKws = (window.sessionKeywords && window.sessionKeywords.length > 0)
