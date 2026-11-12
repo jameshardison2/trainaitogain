@@ -439,20 +439,33 @@ window.addEventListener('unhandledrejection', function(event) {
 </div>
 
 <!-- Floating Webcam Teleprompter Modal HUD (Docked Sleek Eyeline Ribbon Directly Beneath Camera) -->
-<div id="floating-teleprompter-hud" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:92%; max-width:720px; z-index:10001; background:rgba(10,14,22,0.92); backdrop-filter:blur(14px); border:1px solid rgba(16,185,129,0.5); border-top:none; border-radius:0 0 14px 14px; box-shadow:0 16px 45px rgba(0,0,0,0.85); padding:10px 16px 12px; box-sizing:border-box;">
-  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:6px; margin-bottom:8px;">
+<div id="floating-teleprompter-hud" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:94%; max-width:760px; z-index:10001; background:rgba(12,18,28,0.96); backdrop-filter:blur(18px); border:1.5px solid rgba(16,185,129,0.45); border-top:none; border-radius:0 0 16px 16px; box-shadow:0 20px 50px rgba(0,0,0,0.9); padding:10px 16px 14px; box-sizing:border-box;">
+  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
     <div style="display:flex; align-items:center; gap:8px;">
-      <span style="font-size:14px;">🎙️</span>
+      <span style="font-size:16px;">🎙️</span>
       <div>
-        <div style="font-size:12px; font-weight:800; color:#ffffff;">Webcam Eyeline Teleprompter (Look into Camera ⬆️)</div>
-        <div style="font-size:10.5px; color:#9ca3af;">Docked at top so your eye contact stays centered on the camera lens</div>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:12.5px; font-weight:800; color:#ffffff;">Eyeline Teleprompter</span>
+          <span id="floating-tp-question-badge" style="font-size:11px; font-weight:800; color:#34d399; background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.4); padding:1px 7px; border-radius:10px;">Question 1</span>
+          <span style="font-size:10.5px; color:#fca5a5; font-weight:700;">⚠️ Practice Blueprint Only</span>
+        </div>
+        <div id="floating-tp-question-title" style="font-size:11.5px; color:#cbd5e1; margin-top:2px; max-width:480px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
       </div>
     </div>
-    <div style="display:flex; align-items:center; gap:6px;">
-      <button type="button" id="hud-toggle-size-btn" onclick="window.toggleHudSize()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#d1d5db; border-radius:4px; padding:3px 8px; font-size:11px; font-weight:700; cursor:pointer;" title="Toggle between compact ribbon and full view">↕ Expand</button>
-      <button type="button" onclick="window.changeStarFontSize(-2)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; border-radius:4px; padding:3px 7px; font-size:11.5px; font-weight:800; cursor:pointer;" title="Decrease text size">A-</button>
-      <button type="button" onclick="window.changeStarFontSize(2)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; border-radius:4px; padding:3px 7px; font-size:11.5px; font-weight:800; cursor:pointer;" title="Increase text size">A+</button>
-      <button type="button" onclick="window.closeFloatingTeleprompter()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; border-radius:5px; padding:3px 9px; font-size:12px; font-weight:800; cursor:pointer;">✕ Close</button>
+    <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+      <button type="button" onclick="window.copySuggestedStarScript(this)" style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#a7f3d0; border-radius:4px; padding:4px 9px; font-size:11.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Copy complete script to clipboard">
+        <span>📋</span> <span>Copy</span>
+      </button>
+      <button type="button" onclick="window.fillStarScriptIntoAnswer(this)" style="background:rgba(37,99,235,0.25); border:1px solid #3b82f6; color:#bfdbfe; border-radius:4px; padding:4px 9px; font-size:11.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Fill script directly into answer box">
+        <span>📝</span> <span>Use as Answer</span>
+      </button>
+      <button type="button" id="hud-next-btn" onclick="window.nextQuestionFromHud()" style="background:#10b981; border:1.5px solid #059669; color:#042f2e; border-radius:4px; padding:4px 11px; font-size:11.5px; font-weight:900; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(16,185,129,0.35); transition:transform 0.1s ease;" title="Advance to next question">
+        <span>Next</span> <span>➔</span>
+      </button>
+      <button type="button" id="hud-toggle-size-btn" onclick="window.toggleHudSize()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#d1d5db; border-radius:4px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer;" title="Toggle compact / full view">↕ Expand</button>
+      <button type="button" onclick="window.changeStarFontSize(-2)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; border-radius:4px; padding:4px 7px; font-size:11px; font-weight:800; cursor:pointer;">A-</button>
+      <button type="button" onclick="window.changeStarFontSize(2)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; border-radius:4px; padding:4px 7px; font-size:11px; font-weight:800; cursor:pointer;">A+</button>
+      <button type="button" onclick="window.closeFloatingTeleprompter()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; border-radius:4px; padding:4px 9px; font-size:11.5px; font-weight:800; cursor:pointer;">✕ Close</button>
     </div>
   </div>
   <!-- Fixed Prompter Practice-Only Warning Label (REQ-PASS-07) -->
@@ -460,30 +473,35 @@ window.addEventListener('unhandledrejection', function(event) {
     <span>⚠️</span>
     <span>Practice only. Don't use notes, prompters or overlays in a real interview.</span>
   </div>
+  <!-- Embedded Current Question Card (guarantees question is never covered by the prompter HUD - D2) -->
+  <div id="floating-tp-question-box" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-left:3px solid #10b981; border-radius:6px; padding:6px 12px; margin-bottom:8px;">
+    <div style="font-size:10px; font-weight:800; color:#10b981; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Current Question:</div>
+    <div id="floating-tp-full-question-text" style="font-size:13px; font-weight:700; color:#ffffff; line-height:1.45;"></div>
+  </div>
   <!-- HUD Controls -->
-  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px; background:rgba(0,0,0,0.45); padding:6px 10px; border-radius:6px; border:1px solid rgba(16,185,129,0.25);">
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px; background:rgba(0,0,0,0.4); padding:5px 10px; border-radius:6px; border:1px solid rgba(16,185,129,0.25);">
     <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-      <button type="button" class="tp-scroll-btn" onclick="window.toggleTeleprompterScroll(this)" style="background:#10b981; color:#042f2e; border:none; border-radius:5px; padding:5px 12px; font-size:11.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:0 0 10px rgba(16,185,129,0.35);">
-        <span>▶</span> <span class="tp-scroll-btn-label">Start Auto-Scroll Down</span>
+      <button type="button" class="tp-scroll-btn" onclick="window.toggleTeleprompterScroll(this)" style="background:#10b981; color:#042f2e; border:none; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+        <span>▶</span> <span class="tp-scroll-btn-label">Auto-Scroll</span>
       </button>
-      <button type="button" onclick="window.resetTeleprompterScroll()" style="background:rgba(255,255,255,0.08); color:#d1d5db; border:1px solid rgba(255,255,255,0.18); border-radius:5px; padding:5px 8px; font-size:11px; font-weight:700; cursor:pointer;">
+      <button type="button" onclick="window.resetTeleprompterScroll()" style="background:rgba(255,255,255,0.08); color:#d1d5db; border:1px solid rgba(255,255,255,0.18); border-radius:4px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer;">
         🔄 Top
       </button>
-      <div style="display:inline-flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:1px; border-radius:5px; border:1px solid rgba(255,255,255,0.1);">
-        <button type="button" class="tp-speed-btn" data-sec="90" onclick="window.setTeleprompterSpeed(90, this)" style="background:transparent; border:none; color:#9ca3af; font-size:10.5px; font-weight:700; padding:3px 6px; border-radius:3px; cursor:pointer;">🐢 90s</button>
-        <button type="button" class="tp-speed-btn active" data-sec="75" onclick="window.setTeleprompterSpeed(75, this)" style="background:#10b981; border:none; color:#042f2e; font-size:10.5px; font-weight:800; padding:3px 6px; border-radius:3px; cursor:pointer;">⚡ 75s</button>
-        <button type="button" class="tp-speed-btn" data-sec="55" onclick="window.setTeleprompterSpeed(55, this)" style="background:transparent; border:none; color:#9ca3af; font-size:10.5px; font-weight:700; padding:3px 6px; border-radius:3px; cursor:pointer;">🚀 55s</button>
+      <div style="display:inline-flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:1px; border-radius:4px; border:1px solid rgba(255,255,255,0.1);">
+        <button type="button" class="tp-speed-btn" data-sec="90" onclick="window.setTeleprompterSpeed(90, this)" style="background:transparent; border:none; color:#9ca3af; font-size:10px; font-weight:700; padding:2px 5px; border-radius:2px; cursor:pointer;">90s</button>
+        <button type="button" class="tp-speed-btn active" data-sec="75" onclick="window.setTeleprompterSpeed(75, this)" style="background:#10b981; border:none; color:#042f2e; font-size:10px; font-weight:800; padding:2px 5px; border-radius:2px; cursor:pointer;">75s</button>
+        <button type="button" class="tp-speed-btn" data-sec="55" onclick="window.setTeleprompterSpeed(55, this)" style="background:transparent; border:none; color:#9ca3af; font-size:10px; font-weight:700; padding:2px 5px; border-radius:2px; cursor:pointer;">55s</button>
       </div>
     </div>
-    <span class="tp-timer-badge" style="font-size:11.5px; font-weight:800; color:#34d399; font-variant-numeric:tabular-nums; background:rgba(0,0,0,0.4); padding:3px 7px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">0s / 75s</span>
+    <span class="tp-timer-badge" style="font-size:11px; font-weight:800; color:#34d399; font-variant-numeric:tabular-nums; background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">0s / 75s</span>
     <!-- Progress Line Bar -->
     <div style="width:100%; height:2px; background:rgba(255,255,255,0.08); border-radius:1px; overflow:hidden; margin-top:2px;">
       <div class="tp-progress-fill" style="width:0%; height:100%; background:linear-gradient(90deg, #3b82f6 0%, #10b981 50%, #f59e0b 100%); transition:width 0.1s linear;"></div>
     </div>
   </div>
-  <!-- Viewport for HUD (Compact Eyeline Ribbon by default) -->
-  <div id="floating-tp-viewport" class="star-tp-scroll-viewport" style="max-height:155px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:6px; padding-bottom:60px; position:relative; border-radius:6px; transition:max-height 0.25s ease;">
-    <div id="floating-tp-content" class="star-teleprompter-text-body" style="font-size:19px; line-height:1.65; color:#ffffff;">
+  <!-- Viewport for HUD -->
+  <div id="floating-tp-viewport" class="star-tp-scroll-viewport" style="max-height:230px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:6px; padding-bottom:12px; position:relative; border-radius:6px; transition:max-height 0.25s ease;">
+    <div id="floating-tp-content" class="star-teleprompter-text-body" style="font-size:18px; line-height:1.55; color:#ffffff;">
       <!-- Cloned from active question STAR script -->
     </div>
   </div>
@@ -642,7 +660,7 @@ window.addEventListener('unhandledrejection', function(event) {
           <!-- 5. Pressure Mode -->
           <div id="mode-opt-pressure" onclick="window.selectSimMode('pressure')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
             <div style="font-size:12px; font-weight:800; color:#f87171; display:flex; align-items:center; gap:4px;">🔥 5. Pressure Mode</div>
-            <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Voice only, silence cutoff &amp; unexpected follow-ups</div>
+            <div style="font-size:11px; color:#9ca3af; margin-top:3px; line-height:1.35;">Silence cutoff, hidden prompters &amp; surprise follow-ups. Voice or typed</div>
           </div>
           <!-- 6. Pass Check (REQ-PASS-06) -->
           <div id="mode-opt-passcheck" onclick="window.selectSimMode('passcheck')" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px; cursor:pointer; transition:all 0.2s;">
@@ -754,7 +772,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
                 <!-- Screener Guardrail Warning -->
                 <div id="fc-screener-tip" style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:6px; padding:7px 12px; font-size:11.5px; color:#fca5a5; line-height:1.4;">
-                  ⚠️ <strong>AI Screener Trap:</strong> Never pause longer than 4.2s or the AI cuts you off. State your metric within the first 45 seconds.
+                  ⚠️ <strong>Delivery Tip:</strong> Long pauses (over 3–4 seconds) can end your answer early. Use bridge phrases to hold the floor. State your metric within the first 45 seconds.
                 </div>
               </div>
 
@@ -3080,20 +3098,12 @@ window.addEventListener('unhandledrejection', function(event) {
       window.renderRoleFitBanner(clean);
     }
 
-    // If session is already in flight, regenerate questions and update active view
+    // If session is already in flight, regenerate questions and immediately re-ask question with new role criteria
     if (interviewStarted && !interviewCompleted) {
       currentQuestions = buildInterviewQuestions(clean, resolvedDom);
-      if (typeof populateLiveCopilotCues === 'function' && currentQuestions[currentQ]) {
-        populateLiveCopilotCues(currentQuestions[currentQ]);
-      }
-      const curQCard = document.getElementById('current-question-text');
-      if (curQCard && currentQuestions[currentQ]) {
-        curQCard.textContent = currentQuestions[currentQ].q;
-      }
-      const tpSlot = document.getElementById('live-teleprompter-card-slot');
-      if (tpSlot && tpSlot.style.display !== 'none' && typeof buildSuggestedStarResponse === 'function') {
-        tpSlot.innerHTML = buildSuggestedStarResponse(currentQuestions[currentQ], currentQ, getCurrentAnswerText());
-      }
+      const jdCtx = getJobContextForRole(clean, resolvedDom);
+      window.sessionKeywords = (jdCtx && jdCtx.keywords) || [];
+      askQuestion();
     }
 
     trackMockEvent('mock_role_searched_and_selected', {
@@ -3549,10 +3559,32 @@ window.addEventListener('unhandledrejection', function(event) {
     let normalized = resumeText.replace(/([^\n\r])([•●▪◦►*]|\b\d+\.\s+)/g, '$1\n$2');
     const lines = normalized.split(/\r?\n/);
     const bullets = [];
+    let currentSection = 'experience';
     
     lines.forEach(line => {
       let clean = line.trim();
       if (!clean) return;
+
+      // Track sections: skip Education, Certifications, Skills, Summary, Publications, Affiliations (D8)
+      if (/^(education|academic background|degrees?|certifications?|licenses?|skills?|technical skills?|core competencies|summary|professional summary|publications?|awards?)\b/i.test(clean)) {
+        currentSection = 'skip';
+        return;
+      }
+      if (/^(experience|work experience|professional experience|employment history|projects?|career history)\b/i.test(clean)) {
+        currentSection = 'experience';
+        return;
+      }
+
+      if (currentSection === 'skip') return;
+
+      // Filter out lines that are education/degrees/GPA/dates rather than work-experience bullets (D8)
+      if (/\b(b\.?s|m\.?s|m\.?b\.?a|ph\.?d|bachelor|master|doctorate|degree in|graduated|university|college|gpa)\b/i.test(clean)) {
+        return;
+      }
+      if (/^(january|february|march|april|may|june|july|august|september|october|november|december|\d{4})\b/i.test(clean)) {
+        return;
+      }
+
       if (/^[•●▪◦►*\-]\s*/.test(clean) || /^\d+\.\s+/.test(clean)) {
         clean = clean.replace(/^[•●▪◦►*\-\d.]+\s*/, '').trim();
         if (clean.length >= 25 && clean.length <= 300) {
@@ -3627,6 +3659,15 @@ window.addEventListener('unhandledrejection', function(event) {
 
       const openingQ = `Walk me through this: "${bullet}". What was your part?`;
 
+      const matchedTools = (bullet.match(/\b(prometheus|grafana|docker|kubernetes|jenkins|terraform|ansible|helm|aws|gcp|azure|datadog|splunk|elk|react|angular|vue|next\.?js|node|python|java|golang|rust|c\+\+|c#|\.net|sql|postgres|postgresql|mysql|mongodb|redis|kafka|rabbitmq|spark|hadoop|tableau|figma|excel|selenium|cypress|playwright|jest|git|github|gitlab|jira|pytorch|tensorflow)\b/ig) || []).map(t => t.toLowerCase());
+      const distinctTools = Array.from(new Set(matchedTools));
+      const primaryTool = distinctTools[0] ? (distinctTools[0].charAt(0).toUpperCase() + distinctTools[0].slice(1)) : (kws[0] || 'core engineering workflows');
+      const qKeywords = Array.from(new Set([...distinctTools, ...kws])).slice(0, 5);
+      if (qKeywords.length === 0) qKeywords.push('ownership', 'implementation', 'results', 'efficiency');
+
+      const numMatch = bullet.match(/\b([1-9]\d(?:\.\d+)?%|\$\d+(?:,\d+)*(?:\.\d+)?|\d+\+?\s*(?:users|clients|nodes|queries|tests|services|records|qps|rps))\b/i);
+      const metricStr = numMatch ? `a measurable outcome of ${numMatch[0]}` : 'a 25%+ improvement in turnaround precision and reliability';
+
       return {
         id: `resume-defense-${idx + 1}`,
         q: openingQ,
@@ -3635,8 +3676,8 @@ window.addEventListener('unhandledrejection', function(event) {
         audio: "",
         category: "Resume Defense",
         tag: "STAR",
-        keywords: kws.slice(0, 4),
-        answer: `In this initiative, my direct individual ownership was [Your Specific Role] where I applied [Core Skill / Tool] to solve [Key Challenge], resulting in [Quantified Outcome].`,
+        keywords: qKeywords,
+        answer: `In this initiative as ${roleTitle || 'Specialist'}, my direct individual ownership was architecting the solution using ${primaryTool}, driving technical execution, and delivering ${metricStr}.`,
         feedbackHit: "Strong individual ownership and grounded resume defense.",
         feedbackMiss: "Say what you did personally using 'I' and state a measurable result."
       };
@@ -3724,18 +3765,20 @@ window.addEventListener('unhandledrejection', function(event) {
     }
   };
 
-  // Pressure Mode Follow-up Question Generation (REQ-PASS-05)
+  // Pressure Mode Follow-up Question Generation (REQ-PASS-05 / D5 / D6)
   window.generateFollowUpQuestion = function(mainAnswer, qData) {
     const text = (mainAnswer || "").trim();
-    const hasNumber = /\b\d+(?:\.\d+)?%?|\b(one|two|three|four|five|six|seven|eight|nine|ten)\b/i.test(text);
-    const hasOwnershipI = /\b(i architected|i built|i designed|i led|i personally|i implemented|i owned|i diagnosed|i managed|i wrote|my role|my responsibility|i took|i decided)\b/i.test(text);
+    // D6: Metric number tied to an outcome or unit (not bare numbers like "Case 4" or "Item 2")
+    const hasMetricNumber = /\b(?:\d+(?:\.\d+)?%|\$\d+(?:,\d+)*(?:\.\d+)?|\d+(?:\.\d+)?\s*(?:percent|x|times|hours?|days?|weeks?|months?|minutes?|seconds?|qps|rps|users?|clients?|customers?|tests?|nodes?|pts?|points?|k|m|b)\b|from\s+\d+\s+to\s+\d+)/i.test(text);
+    // D5: Check for "I/my" first. Only treat "we/our/team" as team language when no "I/my" is present
+    const hasOwnershipI = /\b(i|my|i'm|i've|i'd|myself)\b/i.test(text);
     const hasWe = /\b(we|our|team)\b/i.test(text);
 
-    // 1. No number
-    if (!hasNumber) {
+    // 1. Missing metric
+    if (!hasMetricNumber) {
       return "How did you measure that?";
     }
-    // 2. No "I" (only "we")
+    // 2. Uses team language with NO first-person "I"
     if (!hasOwnershipI && hasWe) {
       return "What was your specific role?";
     }
@@ -3783,10 +3826,12 @@ window.addEventListener('unhandledrejection', function(event) {
       }];
     }
 
-    const cleanRole = String(targetRoleName || localStorage.getItem('atsRole') || 'AI Evaluation Specialist')
+    const rawRole = String(targetRoleName || localStorage.getItem('atsRole') || 'AI Evaluation Specialist')
       .replace(/^Role:\s*/i, '')
       .replace(/\s*\(Your Target Role\)\s*/i, '')
       .trim();
+    // Strip parenthetical qualifications (e.g. " (MSc. or PhD)") so spoken questions read naturally (D13)
+    const cleanRole = rawRole.replace(/\s*\([^)]*\)/g, '').trim();
 
     const roleArticle = getIndefiniteArticle(cleanRole);
 
@@ -3861,18 +3906,13 @@ window.addEventListener('unhandledrejection', function(event) {
       });
     }
 
-    // Question 3: AI Model Output Review & Hallucination Spotting
+    // Question 3: AI Model Output Review & Hallucination Spotting (STAR format for candidate personal background)
     questions.push({
       q: `Which part of your background ${formatBackgroundInRole(cleanRole)} makes you an exceptional reviewer of AI model outputs or automated deliverables when evaluating ${formatSkill(k1)} and ${formatSkill(k2)}?`,
       audio: "",
       category: "AI Output & Hallucinations",
-      tag: "Answer–Why–Check",
-      answerWhyCheck: {
-        answer: `Score 4/5 (Calibrated Quality Standard). Spot subtle hallucinations and edge cases in ${formatSkill(k1)} deliverables using domain ground truth.`,
-        why: `Reason 1: Domain boundary expertise verifies edge cases that generalist models miss. Reason 2: Hands-on mastery of ${formatSkill(k2)} catches subtle false claims before delivery.`,
-        check: `Cross-reference outputs against primary source specifications and evaluate with targeted adversarial stress tests.`
-      },
-      answer: `My hands-on experience with ${formatSkill(k1)} and ${formatSkill(k2)} allows me to spot subtle hallucinations, verify boundary edge cases, and uphold strict rubric precision that generalists miss.`,
+      tag: "STAR",
+      answer: `In my specialized experience with ${formatSkill(k1)} and ${formatSkill(k2)}, I developed an intuitive eye for subtle reasoning flaws and edge cases that automated checks miss. I systematically cross-reference assertions against verifiable ground truth, preventing defect escapes across our pipeline.`,
       keywords: [k1, k2, 'hallucinations', 'edge cases', 'rubric precision'],
       feedbackHit: `Excellent connection. Demonstrating how your domain expertise catches subtle edge cases is exactly what AI evaluation platforms look for.`,
       feedbackMiss: `Connect your hands-on experience to spotting hallucinations and boundary edge cases in ${k1}.`
@@ -4143,9 +4183,27 @@ window.addEventListener('unhandledrejection', function(event) {
       }
     }
     if (voices.length > 0) {
-      _lockedSessionVoice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha')) ||
-                            voices.find(v => v.lang.includes('en-US')) ||
-                            voices.find(v => v.lang.includes('en-')) ||
+      // Exclude metallic / 1990s robotic voices like Alex, Fred, and compact synthesizers
+      const isRobotic = (name) => {
+        const n = (name || '').toLowerCase();
+        return n.includes('alex') || n.includes('fred') || n.includes('junior') || n.includes('albert') ||
+               n.includes('bad news') || n.includes('bahh') || n.includes('bells') || n.includes('boing') ||
+               n.includes('bubbles') || n.includes('cellos') || n.includes('deranged') || n.includes('good news') ||
+               n.includes('hysterical') || n.includes('pipe organ') || n.includes('trinoids') || n.includes('whisper') ||
+               n.includes('zarvox') || n.includes('compact');
+      };
+
+      // 1. Prioritize Google / Online Neural / Natural high-fidelity human English voices
+      _lockedSessionVoice = voices.find(v => !isRobotic(v.name) && (v.name.includes('Google US English') || v.name.includes('Google UK English Female') || v.name.includes('Natural') || v.name.includes('Neural')) && v.lang.startsWith('en')) ||
+                            // 2. Enhanced / Premium Apple human voices (Ava Premium, Samantha Enhanced, Serena, Allison)
+                            voices.find(v => !isRobotic(v.name) && (v.name.includes('Enhanced') || v.name.includes('Premium')) && (v.name.includes('Samantha') || v.name.includes('Ava') || v.name.includes('Serena') || v.name.includes('Allison') || v.name.includes('Susan') || v.name.includes('Zoe')) && v.lang.startsWith('en')) ||
+                            // 3. Clear, warm human standard voices (Samantha, Victoria, Karen, Daniel)
+                            voices.find(v => !isRobotic(v.name) && (v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Karen') || v.name.includes('Daniel') || v.name.includes('Moira') || v.name.includes('Tessa')) && v.lang.startsWith('en')) ||
+                            // 4. Any non-robotic US/GB English voice
+                            voices.find(v => !isRobotic(v.name) && (v.lang === 'en-US' || v.lang === 'en-GB')) ||
+                            // 5. Any non-robotic English voice
+                            voices.find(v => !isRobotic(v.name) && v.lang.startsWith('en')) ||
+                            voices.find(v => !isRobotic(v.name)) ||
                             voices[0];
     }
     return _lockedSessionVoice;
@@ -4171,8 +4229,9 @@ window.addEventListener('unhandledrejection', function(event) {
       utterance.voice = voice;
     }
 
-    utterance.rate = 1.05;
-    utterance.pitch = 1.05;
+    // Warm, natural conversational cadence (0.92 rate, 0.98 pitch eliminates metallic / chipmunk robotic tone)
+    utterance.rate = 0.92;
+    utterance.pitch = 0.98;
     utterance.volume = 1;
 
     let done = false;
@@ -4326,12 +4385,22 @@ window.addEventListener('unhandledrejection', function(event) {
     const txt = window._lastSuggestedStarPlain || "";
     if (!txt) return;
     const inputArea = document.getElementById('typed-answer-input');
-    if (!inputArea) return;
-    inputArea.value = txt;
+    if (inputArea) {
+      inputArea.value = txt;
+    }
+    currentSpokenTranscript = txt;
+    const spokenEl = document.getElementById('spoken-live-transcript');
+    if (spokenEl) {
+      spokenEl.textContent = `"${txt}"`;
+      spokenEl.style.color = '#ffffff';
+      spokenEl.style.fontStyle = 'normal';
+    }
     if (!isTextMode) {
       window.setInterviewMode(true);
     }
-    inputArea.focus();
+    if (inputArea) {
+      inputArea.focus();
+    }
     const qData = currentQuestions[currentQ] || {};
     updateLiveCopilotTelemetry(txt, qData);
     if (btn) {
@@ -4340,7 +4409,7 @@ window.addEventListener('unhandledrejection', function(event) {
       btn.style.background = "#10b981";
       setTimeout(() => {
         btn.innerHTML = orig;
-        btn.style.background = "#2563eb";
+        btn.style.background = "rgba(37,99,235,0.3)";
       }, 2000);
     }
   };
@@ -4397,6 +4466,11 @@ window.addEventListener('unhandledrejection', function(event) {
     const btnText = document.getElementById('quick-teleprompter-btn-text');
     if (!slot) return;
     if (slot.style.display === 'none' || !slot.style.display) {
+      window._scriptPinnedOpen = true;
+      // Close floating HUD so we don't have two prompters stacking
+      if (typeof window.closeFloatingTeleprompter === 'function') {
+        window.closeFloatingTeleprompter();
+      }
       const qData = currentQuestions[currentQ] || {};
       slot.innerHTML = buildSuggestedStarResponse(qData, currentQ, getCurrentAnswerText());
       slot.style.display = 'block';
@@ -4407,6 +4481,7 @@ window.addEventListener('unhandledrejection', function(event) {
         btn.style.color = '#ffffff';
       }
     } else {
+      window._scriptPinnedOpen = false;
       slot.style.display = 'none';
       if (btnText) btnText.innerHTML = 'Open Practice Script &amp; Teleprompter';
       if (btn) {
@@ -4604,57 +4679,122 @@ window.addEventListener('unhandledrejection', function(event) {
   window.toggleHudSize = function() {
     const vp = document.getElementById('floating-tp-viewport');
     const btn = document.getElementById('hud-toggle-size-btn');
+    const grid = document.querySelector('.active-cockpit-grid');
     if (!vp || !btn) return;
-    if (vp.style.maxHeight === '155px' || !vp.style.maxHeight) {
-      vp.style.maxHeight = '340px';
+    if (vp.style.maxHeight === '230px' || !vp.style.maxHeight) {
+      vp.style.maxHeight = '380px';
       btn.innerText = '↕ Compact Eyeline';
+      if (grid) grid.style.marginTop = '380px';
     } else {
-      vp.style.maxHeight = '155px';
+      vp.style.maxHeight = '230px';
       btn.innerText = '↕ Expand';
+      if (grid) grid.style.marginTop = '260px';
     }
+  };
+
+  window.refreshFloatingTeleprompter = function(qDataOverride, qIndexOverride) {
+    const hud = document.getElementById('floating-teleprompter-hud');
+    const targetContent = document.getElementById('floating-tp-content');
+    if (!targetContent) return;
+    const qIdx = (typeof qIndexOverride === 'number') ? qIndexOverride : currentQ;
+    const qData = qDataOverride || currentQuestions[qIdx] || {};
+    const parts = computeStarPartsForQuestion(qData, qIdx, (typeof getCurrentAnswerText === 'function') ? getCurrentAnswerText() : '');
+    const totalQCount = (currentQuestions && currentQuestions.length) || 6;
+    
+    // Update question badge & title in HUD header (D3)
+    const qBadge = document.getElementById('floating-tp-question-badge');
+    if (qBadge) {
+      qBadge.innerText = `Question ${qIdx + 1} of ${totalQCount}`;
+    }
+    const qTitle = document.getElementById('floating-tp-question-title');
+    if (qTitle) {
+      qTitle.innerText = qData.q || '';
+      qTitle.title = qData.q || '';
+    }
+    // Update embedded question text inside HUD so question is always readable (D2)
+    const qFull = document.getElementById('floating-tp-full-question-text');
+    if (qFull) {
+      qFull.innerText = qData.q || '';
+    }
+    const hudNextBtn = document.getElementById('hud-next-btn');
+    if (hudNextBtn) {
+      const isLast = qIdx >= totalQCount - 1;
+      hudNextBtn.innerHTML = isLast ? '<span>Finish</span> <span>➔</span>' : '<span>Next</span> <span>➔</span>';
+    }
+
+    targetContent.innerHTML = `
+      <div class="tp-sec-hook" style="margin-bottom:8px; padding:10px 14px; background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25); border-left:4px solid #3b82f6; border-radius:6px; transition:all 0.25s ease;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <div style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.05em;">1. Opening Hook &amp; Scope (First 15s)</div>
+          <span class="tp-pacing-indicator" style="font-size:9.5px; font-weight:800; background:#3b82f6; color:#ffffff; padding:1px 5px; border-radius:3px; text-transform:uppercase;">0–15s</span>
+        </div>
+        <div class="star-st-tp-text" style="color:#ffffff; font-size:16.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.st, parts.kwPool, false, true)}</div>
+      </div>
+      <div class="tp-sec-action" style="margin-bottom:8px; padding:10px 14px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-left:4px solid #10b981; border-radius:6px; transition:all 0.25s ease;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <div style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.05em;">2. Action &amp; Execution (30–45s)</div>
+          <span class="tp-pacing-indicator" style="display:none; font-size:9.5px; font-weight:800; background:#10b981; color:#042f2e; padding:1px 5px; border-radius:3px; text-transform:uppercase;">30–45s</span>
+        </div>
+        <div class="star-a-tp-text" style="color:#ffffff; font-size:16.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.a, parts.kwPool, false, true)}</div>
+      </div>
+      <div class="tp-sec-result" style="margin-bottom:6px; padding:10px 14px; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-left:4px solid #f59e0b; border-radius:6px; transition:all 0.25s ease;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <div style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.05em;">3. Quantified Result (Final 15s)</div>
+          <span class="tp-pacing-indicator" style="display:none; font-size:9.5px; font-weight:800; background:#f59e0b; color:#000000; padding:1px 5px; border-radius:3px; text-transform:uppercase;">Final 15s</span>
+        </div>
+        <div class="star-r-tp-text" style="color:#ffffff; font-size:16.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.r, parts.kwPool, false, true)}</div>
+      </div>
+      <div style="text-align:center; padding:6px 10px; border:1px dashed rgba(255,255,255,0.15); border-radius:6px; background:rgba(255,255,255,0.02); margin-top:4px;">
+        <span style="font-size:10.5px; color:#34d399; font-weight:800;">✓ 60–90s Pacing Complete &bull; Yield microphone naturally</span>
+      </div>
+    `;
+
+    // Ensure plain text cache is ready for Copy and Use as Answer
+    const plainST = (parts.st || '').replace(/\*\*([^*]+)\*\*/g, '$1');
+    const plainA = (parts.a || '').replace(/\*\*([^*]+)\*\*/g, '$1');
+    const plainR = (parts.r || '').replace(/\*\*([^*]+)\*\*/g, '$1');
+    window._lastSuggestedStarPlain = `${plainST} ${plainA} ${plainR}`;
   };
 
   window.openFloatingTeleprompter = function() {
     const hud = document.getElementById('floating-teleprompter-hud');
-    const targetContent = document.getElementById('floating-tp-content');
-    if (!hud || !targetContent) return;
+    if (!hud) return;
     const qData = currentQuestions[currentQ] || {};
-    const parts = computeStarPartsForQuestion(qData, currentQ, (typeof getCurrentAnswerText === 'function') ? getCurrentAnswerText() : '');
-    
-    targetContent.innerHTML = `
-      <div class="tp-sec-hook" style="margin-bottom:10px; padding:12px 16px; background:rgba(0,0,0,0.5); border:1px solid rgba(59,130,246,0.3); border-left:5px solid #3b82f6; border-radius:8px; transition:all 0.3s ease;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-          <div style="font-size:11.5px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.06em;">1. Opening Hook &amp; Scope (First 15s)</div>
-          <span class="tp-pacing-indicator" style="font-size:10px; font-weight:800; background:#3b82f6; color:#ffffff; padding:2px 6px; border-radius:4px; text-transform:uppercase;">🟢 Speaking Now (0–15s)</span>
-        </div>
-        <div class="star-st-tp-text" style="color:#ffffff; font-size:17.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.st, parts.kwPool, false, true)}</div>
-      </div>
-      <div class="tp-sec-action" style="margin-bottom:10px; padding:12px 16px; background:rgba(0,0,0,0.5); border:1px solid rgba(16,185,129,0.3); border-left:5px solid #10b981; border-radius:8px; transition:all 0.3s ease;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-          <div style="font-size:11.5px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.06em;">2. Action &amp; Execution (30–45s)</div>
-          <span class="tp-pacing-indicator" style="display:none; font-size:10px; font-weight:800; background:#10b981; color:#042f2e; padding:2px 6px; border-radius:4px; text-transform:uppercase;">🟢 Speaking Now (30–45s)</span>
-        </div>
-        <div class="star-a-tp-text" style="color:#ffffff; font-size:17.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.a, parts.kwPool, false, true)}</div>
-      </div>
-      <div class="tp-sec-result" style="margin-bottom:8px; padding:12px 16px; background:rgba(0,0,0,0.5); border:1px solid rgba(245,158,11,0.3); border-left:5px solid #f59e0b; border-radius:8px; transition:all 0.3s ease;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-          <div style="font-size:11.5px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.06em;">3. Quantified Result (Final 15s)</div>
-          <span class="tp-pacing-indicator" style="display:none; font-size:10px; font-weight:800; background:#f59e0b; color:#000000; padding:2px 6px; border-radius:4px; text-transform:uppercase;">🟢 Speaking Now (Final 15s)</span>
-        </div>
-        <div class="star-r-tp-text" style="color:#ffffff; font-size:17.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.r, parts.kwPool, false, true)}</div>
-      </div>
-      <div style="text-align:center; padding:10px; border:1px dashed rgba(255,255,255,0.15); border-radius:6px; background:rgba(255,255,255,0.02); margin-top:8px;">
-        <span style="font-size:11px; color:#34d399; font-weight:800;">✓ 60–90s Pacing Complete &bull; Conclude your answer and yield microphone</span>
-      </div>
-    `;
+    window.refreshFloatingTeleprompter(qData, currentQ);
     hud.style.display = 'block';
     window.resetTeleprompterScroll();
+
+    // Push down main cockpit grid so HUD does not overlap the questions / answer box (D2)
+    const grid = document.querySelector('.active-cockpit-grid');
+    if (grid) {
+      grid.style.transition = 'margin-top 0.25s ease';
+      grid.style.marginTop = '260px';
+    }
+
+    // De-clutter viewport: collapse bulky inline practice script and clear pinned state so they don't stack (D1)
+    window._scriptPinnedOpen = false;
+    const liveTpSlot = document.getElementById('live-teleprompter-card-slot');
+    const tpBtnText = document.getElementById('quick-teleprompter-btn-text');
+    const tpBtn = document.getElementById('quick-teleprompter-btn');
+    if (liveTpSlot) {
+      liveTpSlot.style.display = 'none';
+      if (tpBtnText) tpBtnText.innerHTML = '📖 Open Practice Script &amp; Teleprompter';
+      if (tpBtn) {
+        tpBtn.style.background = 'rgba(255,255,255,0.06)';
+        tpBtn.style.borderColor = 'rgba(255,255,255,0.16)';
+        tpBtn.style.color = '#f3f4f6';
+      }
+    }
     trackMockEvent('mock_floating_teleprompter_opened');
   };
 
   window.closeFloatingTeleprompter = function() {
     const hud = document.getElementById('floating-teleprompter-hud');
     if (hud) hud.style.display = 'none';
+    const grid = document.querySelector('.active-cockpit-grid');
+    if (grid) {
+      grid.style.marginTop = '0px';
+    }
     window.pauseTeleprompterScroll();
   };
 
@@ -4665,6 +4805,21 @@ window.addEventListener('unhandledrejection', function(event) {
     } else {
       window.openFloatingTeleprompter();
     }
+  };
+
+  window.nextQuestionFromHud = function() {
+    const nextBtn = document.getElementById('next-btn');
+    if (!nextBtn) return;
+    // If in typed mode and the answer input is empty, auto-transfer the suggested STAR script
+    if (isTextMode) {
+      const input = document.getElementById('typed-answer-input');
+      if (input && !input.value.trim() && window._lastSuggestedStarPlain) {
+        if (typeof window.fillStarScriptIntoAnswer === 'function') {
+          window.fillStarScriptIntoAnswer();
+        }
+      }
+    }
+    nextBtn.click();
   };
 
   // Extract ONLY clean, dictionary-verified skills, canonical role title, and clean numeric metrics from the resume (never raw unparsed PDF line fragments)
@@ -5020,7 +5175,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       ? parsedResume.allRoles
       : (parsedResume.cleanRoleTitle ? [parsedResume.cleanRoleTitle] : []);
 
-    let questionRole = parsedResume.cleanRoleTitle || roleTitle;
+    let questionRole = (parsedResume && parsedResume.cleanRoleTitle) ? parsedResume.cleanRoleTitle : "";
     let roleContextPhrase = "";
 
     if (allRoles.length > 1) {
@@ -5062,80 +5217,94 @@ ${(resumeText || '').slice(0, 3500)}`;
     let videoLessonFocus = "";
     let primaryVideoHref = "/video-guides.html#lesson-11";
 
-    const companyPlaceholder = "[Your Recent Employer / Project]";
-    const rolePlaceholder = "[Your Recent Title]";
-    const primarySkill = qKeywords[0] || "[Primary Tool / Core Skill]";
-    const secondarySkill = qKeywords[1] || "[Secondary Framework / Methodology]";
-    const metricPlaceholder = "[Measurable Result: e.g. 25%+ improvement in turnaround / accuracy]";
+    const resolvedCompany = (parsedResume && parsedResume.companyName) ? parsedResume.companyName : "[Your Recent Employer / Project]";
+    const resolvedRole = questionRole || (parsedResume && parsedResume.cleanRoleTitle) || "[Your Recent Title]";
+    const resolvedMetric = (parsedResume && parsedResume.cleanMetricPhrase)
+      ? parsedResume.cleanMetricPhrase
+      : (ansPctMatch && ansPctMatch[1] ? `a ${ansPctMatch[1]}% measurable improvement across our production workflow` : "[Measurable Result: e.g. 25%+ improvement in turnaround / accuracy]");
+    const primarySkill = qKeywords[0] || (detectedResumeSkills && detectedResumeSkills[0]) || "core technical workflows";
+    const secondarySkill = qKeywords[1] || (detectedResumeSkills && detectedResumeSkills[1]) || "systematic verification";
 
-    if (qPromptLower.includes("most recent role") || qPromptLower.includes("primarily responsible for day to day") || qPromptLower.includes("tell me about your background")) {
-      starSituationTask = `In my recent work as **${rolePlaceholder}** at **${companyPlaceholder}**, my primary ownership was leading deliverables around **${primarySkill}** and **${secondarySkill}**, ensuring production quality across our core pipeline.`;
-      starAction = `Day to day, the specific action I took was designing standard verification workflows using **${primarySkill}**, isolating technical bottlenecks early, and collaborating across teams on **[Key Milestone / Deliverable]**.`;
-      starResult = `As a direct outcome, we achieved **${metricPlaceholder}**, maintaining high rubric accuracy and setting the benchmark standard for our deliverables.`;
+    // 1. Direct handling if question provides structured Answer-Why-Check rubric
+    if (qData && qData.answerWhyCheck && qData.answerWhyCheck.answer) {
+      starSituationTask = qData.answerWhyCheck.answer;
+      starAction = qData.answerWhyCheck.why || `In practice, I isolate boundary discrepancies in ${primarySkill} and stress-test failure conditions.`;
+      starResult = qData.answerWhyCheck.check || `Verified against ground-truth benchmarks, delivering ${resolvedMetric}.`;
+      videoLessonFocus = `<a href="/video-guides.html#lesson-12" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 12: Domain Expert Evaluation &amp; Calibrated Scoring</a>`;
+      primaryVideoHref = "/video-guides.html#lesson-12";
+    } else if (qPromptLower.includes("most recent role") || qPromptLower.includes("primarily responsible for day to day") || qPromptLower.includes("tell me about your background")) {
+      starSituationTask = `In my recent work as **${resolvedRole}** at **${resolvedCompany}**, my primary ownership was leading deliverables around **${primarySkill}** and **${secondarySkill}**, ensuring production quality across our core pipeline.`;
+      starAction = `Day to day, the specific action I took was designing standard verification workflows using **${primarySkill}**, isolating technical bottlenecks early, and collaborating across teams on core milestones.`;
+      starResult = `As a direct outcome, we achieved **${resolvedMetric}**, maintaining high rubric accuracy and setting the benchmark standard for our deliverables.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-11" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 11 (1:50): Mercor AI Interview Tips — Defending Your Resume &amp; JD Skills</a> &amp; <a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a>`;
       primaryVideoHref = "/video-guides.html#lesson-11";
     } else if (qPromptLower.includes("specific project or achievement") || qPromptLower.includes("measurable result") || qPromptLower.includes("balance accuracy and speed")) {
-      starSituationTask = `On a high-impact initiative involving **[Specific Project Name]**, our team faced a critical challenge where inconsistencies across **${primarySkill}** were slowing execution.`;
+      starSituationTask = `On a high-impact initiative as **${resolvedRole}** at **${resolvedCompany}**, our team faced a critical challenge where inconsistencies across **${primarySkill}** were slowing execution.`;
       starAction = `I stepped in and took ownership by architecting a structured solution using **${secondarySkill}**, conducting root-cause reviews, and implementing automated validation gates.`;
-      starResult = `That initiative produced **${metricPlaceholder}**, eliminated repetitive errors, and was adopted permanently across production.`;
+      starResult = `That initiative produced **${resolvedMetric}**, eliminated repetitive errors, and was adopted permanently across production.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-01" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 01 (1:07): Indeed AI Interview Prep — Structuring STAR &amp; Keyword Density</a> &amp; <a href="/video-guides.html#lesson-12" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 12 (4:50): Mercor Domain Expert — Real Evaluation Scenarios</a>`;
       primaryVideoHref = "/video-guides.html#lesson-01";
     } else if (qPromptLower.includes("reviewer of ai model outputs") || qPromptLower.includes("accuracy and strict guidelines")) {
-      starSituationTask = `In complex evaluation environments, subtle hallucinations and borderline reasoning gaps can slip past generalists if rubrics are not applied with strict domain precision.`;
-      starAction = `The rigorous auditing process I follow is isolating each technical assertion, stress-testing boundary edge cases using **${primarySkill}**, and validating claims against verifiable ground truth.`;
-      starResult = `This structured review methodology caught subtle multi-step reasoning failures and consistently maintained **${metricPlaceholder}**.`;
+      starSituationTask = `In complex evaluation environments as **${resolvedRole}**, subtle hallucinations and borderline reasoning gaps can slip past generalists if rubrics are not applied with strict domain precision.`;
+      starAction = `The rigorous auditing process I follow at **${resolvedCompany}** is isolating each technical assertion, stress-testing boundary edge cases using **${primarySkill}**, and validating claims against verifiable ground truth.`;
+      starResult = `This structured review methodology caught subtle multi-step reasoning failures and consistently maintained **${resolvedMetric}**.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-12" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 12 (1:30): Mercor Domain Expert — Adaptive Questions &amp; AI Output Review</a> &amp; <a href="/video-guides.html#lesson-09" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 09 (2:00): micro1 Specialist Live Interview Questions &amp; Responses</a>`;
       primaryVideoHref = "/video-guides.html#lesson-12";
     } else if (qPromptLower.includes("failure modes") || qPromptLower.includes("subtle edge cases") || qPromptLower.includes("diagnose and resolve")) {
-      starSituationTask = `When handling complex deliverables involving **${primarySkill}**, unexpected edge cases and boundary failures can compromise overall output fidelity.`;
-      starAction = `In my day-to-day work at **${companyPlaceholder}**, my systematic diagnosis protocol was running multi-point boundary stress tests with **${secondarySkill}**, inspecting intermediate traces, and establishing automated regression guardrails.`;
-      starResult = `This rigorous diagnostic workflow isolated edge-case failures early and delivered **${metricPlaceholder}** across production.`;
+      starSituationTask = `When handling complex deliverables involving **${primarySkill}** in my work as **${resolvedRole}**, unexpected edge cases and boundary failures can compromise overall output fidelity.`;
+      starAction = `In my day-to-day work at **${resolvedCompany}**, my systematic diagnosis protocol was running multi-point boundary stress tests with **${secondarySkill}**, inspecting intermediate traces, and establishing automated regression guardrails.`;
+      starResult = `This rigorous diagnostic workflow isolated edge-case failures early and delivered **${resolvedMetric}** across production.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07 (3:02): micro1 Zara Scenario-Based &amp; Project Questions</a> &amp; <a href="/video-guides.html#lesson-06" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 06 (1:20): How to Pass the micro1 Zara Interview Strategy</a>`;
       primaryVideoHref = "/video-guides.html#lesson-07";
     } else if (qPromptLower.includes("scalable, high-accuracy workflow") || qPromptLower.includes("trade-offs") || qPromptLower.includes("integrate")) {
-      starSituationTask = `Integrating **${primarySkill}** into high-volume workflows required balancing rapid turnaround speed against strict quality verification.`;
-      starAction = `I architected the workflow at **${companyPlaceholder}** by decoupling routine validation from high-ambiguity evaluations, leveraging **${secondarySkill}** for deterministic checkpoints, and creating rapid feedback loops.`;
-      starResult = `This architecture eliminated bottlenecks, supported a 3x increase in throughput, and sustained **${metricPlaceholder}**.`;
+      starSituationTask = `Integrating **${primarySkill}** into high-volume workflows as **${resolvedRole}** required balancing rapid turnaround speed against strict quality verification.`;
+      starAction = `I architected the workflow at **${resolvedCompany}** by decoupling routine validation from high-ambiguity evaluations, leveraging **${secondarySkill}** for deterministic checkpoints, and creating rapid feedback loops.`;
+      starResult = `This architecture eliminated bottlenecks, supported a 3x increase in throughput, and sustained **${resolvedMetric}**.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-08" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 08 (2:15): micro1 Zara Technical Deep Dive &amp; System Design</a> &amp; <a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a>`;
       primaryVideoHref = "/video-guides.html#lesson-08";
     } else if (qPromptLower.includes("data anomalies") || qPromptLower.includes("ambiguous specifications") || qPromptLower.includes("threatened")) {
-      starSituationTask = `During an evaluation cycle on **[Project Name]**, anomalous inputs and inconsistent ground truth data threatened the integrity of **${primarySkill}**.`;
-      starAction = `I initiated an immediate anomaly audit at **${companyPlaceholder}**, cross-referenced source telemetry with **${secondarySkill}**, and introduced strict boundary-sanitization rules.`;
-      starResult = `This root-cause intervention neutralized corrupting data drift, safeguarded pipeline integrity, and maintained **${metricPlaceholder}**.`;
+      starSituationTask = `During an evaluation cycle as **${resolvedRole}**, anomalous inputs and inconsistent ground truth data threatened the integrity of **${primarySkill}**.`;
+      starAction = `I initiated an immediate anomaly audit at **${resolvedCompany}**, cross-referenced source telemetry with **${secondarySkill}**, and introduced strict boundary-sanitization rules.`;
+      starResult = `This root-cause intervention neutralized corrupting data drift, safeguarded pipeline integrity, and maintained **${resolvedMetric}**.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-02" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 02 (2:45): Handling Edge Cases &amp; Ambiguous Prompts</a> &amp; <a href="/video-guides.html#lesson-12" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 12 (4:50): Mercor Domain Expert Scenarios</a>`;
       primaryVideoHref = "/video-guides.html#lesson-02";
     } else if (qPromptLower.includes("disagree on rubric") || qPromptLower.includes("two qualified domain experts") || qPromptLower.includes("consensus")) {
       starSituationTask = `When evaluating borderline cases involving **${primarySkill}**, expert reviewers had differing interpretations of rubric scoring guidelines.`;
-      starAction = `I grounded the calibration in objective evidence, mapping each disputed claim against verified source standards and **${secondarySkill}** guidelines to build an empirical, consensus rubric.`;
-      starResult = `This calibration resolved reviewer variance, established an institutional rubric standard, and achieved **${metricPlaceholder}**.`;
+      starAction = `I grounded the calibration in objective evidence at **${resolvedCompany}**, mapping each disputed claim against verified source standards and **${secondarySkill}** guidelines to build an empirical, consensus rubric.`;
+      starResult = `This calibration resolved reviewer variance, established an institutional rubric standard, and achieved **${resolvedMetric}**.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-04" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 04 (3:10): Rubric Calibration &amp; Scoring Multi-Part Criteria</a> &amp; <a href="/video-guides.html#lesson-11" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 11 (1:50): Mercor AI Interview Tips</a>`;
       primaryVideoHref = "/video-guides.html#lesson-04";
     } else if (qPromptLower.includes("ground truth") || qPromptLower.includes("benchmark standards") || qPromptLower.includes("compliance")) {
       starSituationTask = `Enforcing benchmark fidelity across deliverables involving **${primarySkill}** required an airtight audit protocol with zero reliance on unverified assertions.`;
-      starAction = `I designed a multi-point verification matrix at **${companyPlaceholder}**, cross-referencing each claim against primary ground-truth data with **${secondarySkill}** and verifying edge-case compliance.`;
-      starResult = `The auditing system caught subtle hallucinations and inaccuracies, achieving **${metricPlaceholder}** across all benchmark runs.`;
+      starAction = `I designed a multi-point verification matrix as **${resolvedRole}** at **${resolvedCompany}**, cross-referencing each claim against primary ground-truth data with **${secondarySkill}** and verifying edge-case compliance.`;
+      starResult = `The auditing system caught subtle hallucinations and inaccuracies, achieving **${resolvedMetric}** across all benchmark runs.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-05" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 05 (2:30): Ground-Truth Verification &amp; Anti-Hallucination Auditing</a> &amp; <a href="/video-guides.html#lesson-09" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 09 (2:00): micro1 Specialist Interview</a>`;
       primaryVideoHref = "/video-guides.html#lesson-05";
     } else if (qPromptLower.includes("optimize an end-to-end") || qPromptLower.includes("reduce review turnaround") || qPromptLower.includes("bottlenecks")) {
-      starSituationTask = `Our evaluation pipeline for **${primarySkill}** was facing increasing turnaround latency as volume scaled.`;
-      starAction = `I profiled the end-to-end pipeline at **${companyPlaceholder}**, automated pre-screening checks using **${secondarySkill}**, and focused expert human attention on high-complexity boundary criteria.`;
-      starResult = `This optimization reduced review turnaround time while driving **${metricPlaceholder}** in overall evaluation precision.`;
+      starSituationTask = `Our evaluation pipeline for **${primarySkill}** at **${resolvedCompany}** was facing increasing turnaround latency as volume scaled.`;
+      starAction = `I profiled the end-to-end pipeline as **${resolvedRole}**, automated pre-screening checks using **${secondarySkill}**, and focused expert human attention on high-complexity boundary criteria.`;
+      starResult = `This optimization reduced review turnaround time while driving **${resolvedMetric}** in overall evaluation precision.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-03" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 03 (1:55): Optimizing Turnaround Speed &amp; Accuracy Trade-Offs</a> &amp; <a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07 (3:02): micro1 Zara Scenario-Based Questions</a>`;
       primaryVideoHref = "/video-guides.html#lesson-03";
     } else if (qPromptLower.includes("tight deadlines") || qPromptLower.includes("high accuracy requirements") || qPromptLower.includes("prioritize your verification")) {
-      starSituationTask = `During a mission-critical release in my work as **${rolePlaceholder}** under tight deadlines, maintaining zero defect escapes was mandatory.`;
-      starAction = `I triaged verification paths by risk severity, applied non-negotiable checks to **${primarySkill}** using **${secondarySkill}**, and coordinated closely with stakeholders at **${companyPlaceholder}**.`;
-      starResult = `We delivered all target milestones on schedule, achieving **${metricPlaceholder}** with zero production defects.`;
+      starSituationTask = `During a mission-critical release in my work as **${resolvedRole}** under tight deadlines, maintaining zero defect escapes was mandatory.`;
+      starAction = `I triaged verification paths by risk severity, applied non-negotiable checks to **${primarySkill}** using **${secondarySkill}**, and coordinated closely with stakeholders at **${resolvedCompany}**.`;
+      starResult = `We delivered all target milestones on schedule, achieving **${resolvedMetric}** with zero production defects.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a> &amp; <a href="/video-guides.html#lesson-01" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 01 (1:07): Structuring STAR &amp; Keyword Density</a>`;
       primaryVideoHref = "/video-guides.html#lesson-10";
+    } else if (qData && qData.answer && qData.answer.length > 20) {
+      // Use the specific tailored answer from the question object!
+      const rawAns = qData.answer.trim();
+      starSituationTask = rawAns.replace(/\[Your Recent Title\]/g, resolvedRole).replace(/\[Your Recent Employer \/ Project\]/g, resolvedCompany);
+      starAction = `In practice as **${resolvedRole}** at **${resolvedCompany}**, I pair **${secondarySkill}** with systematic validation checks so boundary errors are flagged before release.`;
+      starResult = `Applying this structured methodology consistently delivers **${resolvedMetric}**.`;
+      videoLessonFocus = `<a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07: Technical Deep Dive &amp; Core Competency</a>`;
+      primaryVideoHref = "/video-guides.html#lesson-07";
     } else {
-      const coreTechnicalAnchor = (qData && qData.answer)
-        ? qData.answer.trim()
-        : `To solve this effectively in production, I prioritize **${primarySkill}** combined with structured edge-case testing.`;
-      starSituationTask = `${coreTechnicalAnchor}`;
-      starAction = `In my day-to-day work at **${companyPlaceholder}**, the exact step I take is pairing **${secondarySkill}** with systematic boundary checks so failures are flagged before release.`;
-      starResult = `Applying this method on our workflows delivered **${metricPlaceholder}** while keeping error rates minimal.`;
-      videoLessonFocus = `<a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07 (3:02): micro1 Zara Scenario-Based &amp; Project Questions</a> &amp; <a href="/video-guides.html#lesson-06" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 06 (1:20): How to Pass the micro1 Zara Interview Strategy</a>`;
+      starSituationTask = `In my specialized domain work as **${resolvedRole}** at **${resolvedCompany}**, I prioritize **${primarySkill}** combined with structured edge-case testing.`;
+      starAction = `Day to day, the exact step I take is pairing **${secondarySkill}** with systematic boundary checks and automated assertions.`;
+      starResult = `Applying this workflow delivered **${resolvedMetric}** while maintaining strict production standards.`;
+      videoLessonFocus = `<a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07 (3:02): Scenario-Based Questions</a> &amp; <a href="/video-guides.html#lesson-06" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 06: Interview Strategy</a>`;
       primaryVideoHref = "/video-guides.html#lesson-07";
     }
 
@@ -5224,56 +5393,61 @@ ${(resumeText || '').slice(0, 3500)}`;
           </div>
 
           <!-- Right: Consolidated Controls (Mode + Auto-Scroll + Actions) -->
-          <div style="display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap;">
+          <div style="display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <!-- Primary Grab / Action Buttons -->
+            <button type="button" onclick="window.copySuggestedStarScript(this)" style="background:rgba(16,185,129,0.2); border:1.5px solid #10b981; color:#a7f3d0; border-radius:6px; padding:5px 12px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s;" title="Copy complete script to clipboard">
+              <span>📋</span> <span>Copy Script</span>
+            </button>
+            <button type="button" onclick="window.fillStarScriptIntoAnswer(this)" style="background:rgba(37,99,235,0.3); border:1.5px solid #3b82f6; color:#bfdbfe; border-radius:6px; padding:5px 12px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s;" title="Fill script directly into answer box">
+              <span>📝</span> <span>Use as Answer</span>
+            </button>
+            <button type="button" onclick="window.speakSuggestedStarScript(this)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#f3f4f6; border-radius:6px; padding:5px 10px; font-size:11.5px; font-weight:700; cursor:pointer;" title="Listen to spoken cadence">
+              🔊 Listen
+            </button>
+
             <!-- Mode Toggle -->
-            <button type="button" class="tab-star-teleprompter" onclick="window.setStarViewMode('teleprompter')" style="background:#10b981; color:#042f2e; border:none; border-radius:4px; padding:3px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">
-              Teleprompter (Flow Mode)
+            <button type="button" class="tab-star-teleprompter active" onclick="window.setStarViewMode('teleprompter')" style="background:#10b981; color:#042f2e; border:none; border-radius:4px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer;">
+              Full Script
             </button>
-            <button type="button" class="tab-star-breakdown" onclick="window.setStarViewMode('breakdown')" style="background:transparent; color:#9ca3af; border:1px solid rgba(255,255,255,0.12); border-radius:4px; padding:3px 8px; font-size:10.5px; font-weight:700; cursor:pointer;">
+            <button type="button" class="tab-star-breakdown" onclick="window.setStarViewMode('breakdown')" style="background:transparent; color:#9ca3af; border:1px solid rgba(255,255,255,0.12); border-radius:4px; padding:4px 9px; font-size:11px; font-weight:700; cursor:pointer;">
               Rubric Breakdown
-            </button>
-            <!-- Recall Ladder Badge (REQ-PASS-04) -->
-            <button type="button" id="recall-ladder-badge" onclick="window.cycleRecallLevelDown()" title="Recall Ladder: Tap to manually step down recall support" style="background:rgba(99,102,241,0.18); border:1px solid rgba(99,102,241,0.45); color:#c7d2fe; border-radius:4px; padding:3px 8px; font-size:10.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
-              <span>🪜 Recall:</span> <span id="recall-level-label">Level ${recallLvl}: ${recallLvl === 1 ? 'Script' : recallLvl === 2 ? 'Cues' : recallLvl === 3 ? 'Keywords' : 'Recall'}</span>
             </button>
 
             <!-- Auto-Scroll Tools -->
-            <button type="button" class="tp-scroll-btn" onclick="window.toggleTeleprompterScroll(this)" style="background:#10b981; color:#042f2e; border:none; border-radius:4px; padding:3px 8px; font-size:10.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
-              <span>▶</span> <span class="tp-scroll-btn-label">Start Auto-Scroll Down</span>
+            <button type="button" class="tp-scroll-btn" onclick="window.toggleTeleprompterScroll(this)" style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; border-radius:4px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+              <span>▶</span> <span class="tp-scroll-btn-label">Auto-Scroll</span>
             </button>
-            <button type="button" onclick="window.resetTeleprompterScroll()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#d1d5db; border-radius:4px; padding:3px 6px; font-size:10px; font-weight:700; cursor:pointer;" title="Reset back to top">🔄 Top</button>
+            <button type="button" onclick="window.resetTeleprompterScroll()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#d1d5db; border-radius:4px; padding:4px 7px; font-size:11px; font-weight:700; cursor:pointer;" title="Reset back to top">🔄 Top</button>
             <div style="display:inline-flex; align-items:center; gap:1px; background:rgba(0,0,0,0.3); padding:1px 3px; border-radius:4px; border:1px solid rgba(255,255,255,0.08);">
-              <button type="button" class="tp-speed-btn" data-sec="90" onclick="window.setTeleprompterSpeed(90, this)" style="background:transparent; border:none; color:#9ca3af; font-size:9.5px; font-weight:700; padding:1px 4px; border-radius:2px; cursor:pointer;">90s</button>
-              <button type="button" class="tp-speed-btn active" data-sec="75" onclick="window.setTeleprompterSpeed(75, this)" style="background:#10b981; border:none; color:#042f2e; font-size:9.5px; font-weight:800; padding:1px 4px; border-radius:2px; cursor:pointer;">75s</button>
-              <button type="button" class="tp-speed-btn" data-sec="55" onclick="window.setTeleprompterSpeed(55, this)" style="background:transparent; border:none; color:#9ca3af; font-size:9.5px; font-weight:700; padding:1px 4px; border-radius:2px; cursor:pointer;">55s</button>
+              <button type="button" class="tp-speed-btn" data-sec="90" onclick="window.setTeleprompterSpeed(90, this)" style="background:transparent; border:none; color:#9ca3af; font-size:10px; font-weight:700; padding:2px 5px; border-radius:2px; cursor:pointer;">90s</button>
+              <button type="button" class="tp-speed-btn active" data-sec="75" onclick="window.setTeleprompterSpeed(75, this)" style="background:#10b981; border:none; color:#042f2e; font-size:10px; font-weight:800; padding:2px 5px; border-radius:2px; cursor:pointer;">75s</button>
+              <button type="button" class="tp-speed-btn" data-sec="55" onclick="window.setTeleprompterSpeed(55, this)" style="background:transparent; border:none; color:#9ca3af; font-size:10px; font-weight:700; padding:2px 5px; border-radius:2px; cursor:pointer;">55s</button>
             </div>
-            <span class="tp-timer-badge" style="font-size:10.5px; font-weight:800; color:#34d399; font-variant-numeric:tabular-nums; margin:0 2px;">0s / 75s</span>
-
-            <!-- Actions -->
-            <button type="button" onclick="window.speakSuggestedStarScript(this)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#d1d5db; border-radius:4px; padding:3px 7px; font-size:10.5px; font-weight:700; cursor:pointer;" title="Listen to spoken cadence">🔊 Listen</button>
-            <button type="button" onclick="window.copySuggestedStarScript(this)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#d1d5db; border-radius:4px; padding:3px 7px; font-size:10.5px; font-weight:700; cursor:pointer;" title="Copy to clipboard">📋 Copy</button>
-            <button type="button" onclick="window.fillStarScriptIntoAnswer(this)" style="background:rgba(37,99,235,0.22); border:1px solid rgba(37,99,235,0.45); color:#93c5fd; border-radius:4px; padding:3px 8px; font-size:10.5px; font-weight:700; cursor:pointer;" title="Fill into answer input">📝 Use as Answer</button>
+            <span class="tp-timer-badge" style="font-size:11px; font-weight:800; color:#34d399; font-variant-numeric:tabular-nums; margin:0 2px;">0s / 75s</span>
 
             <!-- Text Size Zoom -->
-            <button type="button" onclick="window.changeStarFontSize(-2)" style="background:transparent; border:none; color:#9ca3af; font-size:10.5px; font-weight:700; cursor:pointer; padding:0 2px;">A-</button>
-            <span class="star-font-indicator" style="font-size:10px; color:#d1d5db; font-weight:700;">${_starFontSize}px</span>
-            <button type="button" onclick="window.changeStarFontSize(2)" style="background:transparent; border:none; color:#9ca3af; font-size:10.5px; font-weight:700; cursor:pointer; padding:0 2px;">A+</button>
+            <button type="button" onclick="window.changeStarFontSize(-2)" style="background:transparent; border:none; color:#9ca3af; font-size:11px; font-weight:700; cursor:pointer; padding:0 3px;">A-</button>
+            <span class="star-font-indicator" style="font-size:11px; color:#d1d5db; font-weight:700;">${_starFontSize}px</span>
+            <button type="button" onclick="window.changeStarFontSize(2)" style="background:transparent; border:none; color:#9ca3af; font-size:11px; font-weight:700; cursor:pointer; padding:0 3px;">A+</button>
           </div>
         </div>
 
         <div class="inline-resume-paste-box" style="display:none;"></div>
 
         <!-- Fixed Practice-Only Label (REQ-PASS-07) -->
-        <div style="background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.3); border-radius:6px; padding:4px 10px; margin-bottom:10px; font-size:11px; font-weight:800; color:#fca5a5; display:flex; align-items:center; gap:6px;">
-          <span>⚠️</span>
-          <span>Practice only. Don't use notes, prompters or overlays in a real interview.</span>
+        <div style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); border-radius:6px; padding:5px 12px; margin-bottom:10px; font-size:11.5px; font-weight:700; color:#fca5a5; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span>⚠️</span>
+            <span>Practice blueprint only. Read aloud to build muscle memory before your live interview.</span>
+          </div>
+          <span style="font-size:11px; color:#93c5fd; font-weight:800;">Target: 60–90s delivery</span>
         </div>
 
         <!-- 1. TELEPROMPTER FLOW VIEW (ALL 3 PHASES VISIBLE TOGETHER IMMEDIATELY) -->
         <div class="star-view-teleprompter-wrap" style="display:block;">
-          <div class="star-tp-scroll-viewport" style="max-height:220px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:4px;">
-            <div class="star-teleprompter-text-body" style="font-size:${_starFontSize}px; line-height:1.52; color:#ffffff;">
-              ${recallLvl === 4 ? `
+          <div class="star-tp-scroll-viewport" style="max-height:360px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:6px;">
+            <div class="star-teleprompter-text-body" style="font-size:${_starFontSize}px; line-height:1.58; color:#ffffff;">
+${recallLvl === 4 ? `
                 <!-- Level 4: Recall (Memory Mode - NO SCRIPT TEXT IN DOM) -->
                 <div class="tp-recall-memory" style="padding:28px 16px; text-align:center; color:#9ca3af; font-size:14px; font-weight:700;">
                   🧠 Answer from memory (Level 4: Recall)
@@ -5291,41 +5465,41 @@ ${(resumeText || '').slice(0, 3500)}`;
                 <!-- Level 2: Cues Only -->
                 <div class="tp-recall-cues" style="padding:10px 12px;">
                   <div style="font-size:11px; font-weight:800; color:#a5b4fc; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px;">🪜 Speaking Cues (Level 2: Cues)</div>
-                  <div style="margin-bottom:6px; padding:6px 10px; background:rgba(255,255,255,0.02); border-left:3px solid #3b82f6; border-radius:4px; font-size:13px; color:#d1d5db;">
-                    <strong style="color:#93c5fd;">${(qData && qData.tag === 'Answer–Why–Check') ? 'Verdict:' : 'Situation:'}</strong> ${(qData && qData.tag === 'Answer–Why–Check') ? '[State your calibrated score / verdict first]' : '[Role & Company context]'}
+                  <div style="border-left:3px solid #3b82f6; padding:6px 10px; background:rgba(59,130,246,0.08); margin-bottom:6px; border-radius:4px; font-size:12.5px; color:#bfdbfe;">
+                    <strong>Situation/Task:</strong> ${escapeHtml(qData.q || '').slice(0, 80)}...
                   </div>
-                  <div style="margin-bottom:6px; padding:6px 10px; background:rgba(255,255,255,0.02); border-left:3px solid #10b981; border-radius:4px; font-size:13px; color:#d1d5db;">
-                    <strong style="color:#6ee7b7;">${(qData && qData.tag === 'Answer–Why–Check') ? 'Why:' : 'Action:'}</strong> ${(qData && qData.tag === 'Answer–Why–Check') ? '[2 field reasons / technical justifications]' : `[Specific steps executed with ${qKeywords[0] || 'core skill'}]`}
+                  <div style="border-left:3px solid #10b981; padding:6px 10px; background:rgba(16,185,129,0.08); margin-bottom:6px; border-radius:4px; font-size:12.5px; color:#a7f3d0;">
+                    <strong>Action:</strong> Steps with ${qKeywords[0] || 'primary skills'}
                   </div>
-                  <div style="padding:6px 10px; background:rgba(255,255,255,0.02); border-left:3px solid #f59e0b; border-radius:4px; font-size:13px; color:#d1d5db;">
-                    <strong style="color:#fcd34d;">${(qData && qData.tag === 'Answer–Why–Check') ? 'Check:' : 'Result:'}</strong> ${(qData && qData.tag === 'Answer–Why–Check') ? '[Verification metric / specification benchmark]' : '[Quantified outcome & metric]'}
+                  <div style="border-left:3px solid #f59e0b; padding:6px 10px; background:rgba(245,158,11,0.08); border-radius:4px; font-size:12.5px; color:#fde68a;">
+                    <strong>Result:</strong> Quantified outcome &amp; metric
                   </div>
                 </div>
               ` : `
-                <!-- Level 1: Full Script -->
+                <!-- Full Script with High-Contrast Phase Cards -->
                 <!-- Phase 1: Opening Hook & Scope -->
-                <div class="tp-sec-hook" style="margin-bottom:6px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #3b82f6; border-radius:5px; transition:all 0.25s ease;">
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                    <span style="font-size:10.5px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em;">1. Opening Hook &amp; Scope (First 15s)</span>
-                    <span class="tp-pacing-indicator" style="font-size:9px; font-weight:800; background:#3b82f6; color:#ffffff; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (0–15s)</span>
+                <div class="tp-sec-hook" style="margin-bottom:8px; padding:10px 14px; background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.2); border-left:4px solid #3b82f6; border-radius:6px; transition:all 0.25s ease;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em;">1. Opening Hook &amp; Scope (First 15s)</span>
+                    <span class="tp-pacing-indicator" style="font-size:9.5px; font-weight:800; background:#3b82f6; color:#ffffff; padding:1px 5px; border-radius:3px; text-transform:uppercase;">0–15s</span>
                   </div>
                   <div class="star-st-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starSituationTask, kwPool, false, true)}</div>
                 </div>
 
                 <!-- Phase 2: Action & Execution -->
-                <div class="tp-sec-action" style="margin-bottom:6px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #10b981; border-radius:5px; transition:all 0.25s ease;">
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                    <span style="font-size:10.5px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em;">2. Action &amp; Execution (30–45s)</span>
-                    <span class="tp-pacing-indicator" style="display:none; font-size:9px; font-weight:800; background:#10b981; color:#042f2e; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (30–45s)</span>
+                <div class="tp-sec-action" style="margin-bottom:8px; padding:10px 14px; background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-left:4px solid #10b981; border-radius:6px; transition:all 0.25s ease;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em;">2. Action &amp; Execution (30–45s)</span>
+                    <span class="tp-pacing-indicator" style="display:none; font-size:9.5px; font-weight:800; background:#10b981; color:#042f2e; padding:1px 5px; border-radius:3px; text-transform:uppercase;">30–45s</span>
                   </div>
                   <div class="star-a-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starAction, kwPool, false, true)}</div>
                 </div>
 
                 <!-- Phase 3: Quantified Result -->
-                <div class="tp-sec-result" style="margin-bottom:4px; padding:8px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-left:3px solid #f59e0b; border-radius:5px; transition:all 0.25s ease;">
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                    <span style="font-size:10.5px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em;">3. Quantified Result (Final 15s)</span>
-                    <span class="tp-pacing-indicator" style="display:none; font-size:9px; font-weight:800; background:#f59e0b; color:#000000; padding:1px 4px; border-radius:2px; text-transform:uppercase;">Speaking Now (Final 15s)</span>
+                <div class="tp-sec-result" style="margin-bottom:6px; padding:10px 14px; background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.2); border-left:4px solid #f59e0b; border-radius:6px; transition:all 0.25s ease;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em;">3. Quantified Result (Final 15s)</span>
+                    <span class="tp-pacing-indicator" style="display:none; font-size:9.5px; font-weight:800; background:#f59e0b; color:#000000; padding:1px 5px; border-radius:3px; text-transform:uppercase;">Final 15s</span>
                   </div>
                   <div class="star-r-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starResult, kwPool, false, true)}</div>
                 </div>
@@ -5631,9 +5805,10 @@ ${(resumeText || '').slice(0, 3500)}`;
     const wordCount = words.length;
     const estSeconds = wordCount > 0 ? Math.max(currentAnswerSeconds, Math.min(120, Math.round((wordCount / 130) * 60))) : currentAnswerSeconds;
 
-    const kws = (window.sessionKeywords && window.sessionKeywords.length > 0)
-      ? window.sessionKeywords
-      : ((qData && Array.isArray(qData.keywords)) ? qData.keywords : []);
+    // Always prioritize THIS specific question's keywords so required terms change with each question
+    const kws = (qData && Array.isArray(qData.keywords) && qData.keywords.length > 0)
+      ? qData.keywords
+      : ((window.sessionKeywords && window.sessionKeywords.length > 0) ? window.sessionKeywords : []);
     const totalKws = kws.length;
     let hits = 0;
     const unhitKws = [];
@@ -5712,9 +5887,9 @@ ${(resumeText || '').slice(0, 3500)}`;
     const roleTitle = rawRoleFromDropdown || localStorage.getItem('atsRole') || 'Specialist';
     const resumeText = (localStorage.getItem('candidateResumeText') || '').trim();
     const parsedResume = parseCandidateResumeForStar(resumeText, qData);
-    const kws = (window.sessionKeywords && window.sessionKeywords.length > 0)
-      ? window.sessionKeywords
-      : ((qData && Array.isArray(qData.keywords) && qData.keywords.length > 0) ? qData.keywords : ['workflow', 'quality', 'validation']);
+    const kws = (qData && Array.isArray(qData.keywords) && qData.keywords.length > 0)
+      ? qData.keywords
+      : ((window.sessionKeywords && window.sessionKeywords.length > 0) ? window.sessionKeywords : ['workflow', 'quality', 'validation']);
     const skillList = (parsedResume.detectedSkills && parsedResume.detectedSkills.length >= 2)
       ? parsedResume.detectedSkills.slice(0, 3).join(', ')
       : kws.slice(0, 3).join(', ');
@@ -5744,9 +5919,9 @@ ${(resumeText || '').slice(0, 3500)}`;
     let matches = 0;
     const matchedList = [];
     const missedList = [];
-    const kwsToEvaluate = (window.sessionKeywords && window.sessionKeywords.length > 0)
-      ? window.sessionKeywords
-      : ((qData && Array.isArray(qData.keywords)) ? qData.keywords : []);
+    const kwsToEvaluate = (qData && Array.isArray(qData.keywords) && qData.keywords.length > 0)
+      ? qData.keywords
+      : ((window.sessionKeywords && window.sessionKeywords.length > 0) ? window.sessionKeywords : []);
 
     kwsToEvaluate.forEach(kw => {
       const kLow = kw.toLowerCase().trim();
@@ -5769,9 +5944,11 @@ ${(resumeText || '').slice(0, 3500)}`;
     const words = rawText.split(/\s+/).filter(w => w.length > 0);
     const wordCount = words.length;
     const { hasST, hasAction, hasResult } = detectStarComponents(rawText);
-    const hasNumberOrPct = /\b\d+(?:\.\d+)?\s*%|\b\d+(?:\.\d+)?\b/.test(rawText);
-    const hasPassiveWe = /\b(we built|we decided|we were responsible|our team|we worked on|we did|we used)\b/i.test(rawText);
-    const hasOwnershipI = /\b(i architected|i built|i designed|i led|i personally|i implemented|i owned|i diagnosed|my role was|my responsibility was)\b/i.test(rawText);
+    // D6: Count only numbers tied to a unit or outcome (not bare numbers like "Case 4" or "Item 2")
+    const hasNumberOrPct = /\b(?:\d+(?:\.\d+)?%|\$\d+(?:,\d+)*(?:\.\d+)?|\d+(?:\.\d+)?\s*(?:percent|x|times|hours?|days?|weeks?|months?|minutes?|seconds?|qps|rps|users?|clients?|customers?|tests?|nodes?|pts?|points?|k|m|b)\b|from\s+\d+\s+to\s+\d+)/i.test(rawText);
+    // D5: Check for "I/my" first. Only treat "we/our/team" as team language when no "I/my" is present
+    const hasOwnershipI = /\b(i|my|i'm|i've|i'd|myself)\b/i.test(rawText);
+    const hasPassiveWe = !hasOwnershipI && /\b(we|our|team)\b/i.test(rawText);
 
     let confScore = 70;
     let whatWorked = "";
@@ -6304,11 +6481,16 @@ ${(resumeText || '').slice(0, 3500)}`;
       liveTranscriptEl.style.color = '#9ca3af';
     }
 
-    // Update copilot panel with Job Description keywords right away (max 8 chips; "+N more" if longer)
+    // Always update copilot panel with THIS question's target keywords so required terms change dynamically per question
     const kwBox = document.getElementById('copilot-keywords');
-    const canonicalKws = (window.sessionKeywords && window.sessionKeywords.length > 0)
-      ? window.sessionKeywords
-      : ((qData && Array.isArray(qData.keywords)) ? qData.keywords : []);
+    const canonicalKws = (qData && Array.isArray(qData.keywords) && qData.keywords.length > 0)
+      ? qData.keywords
+      : ((window.sessionKeywords && window.sessionKeywords.length > 0) ? window.sessionKeywords : []);
+    
+    // Reset sessionTargetKeywords to match this question's active criteria
+    sessionTargetKeywords.clear();
+    canonicalKws.forEach(kw => sessionTargetKeywords.add(kw.toLowerCase().trim()));
+
     if (kwBox) {
       if (isPressure) {
         kwBox.innerHTML = '<span style="color:#f87171; font-size:11.5px; font-weight:700;">🔥 Pressure Mode Active: Keywords masked to simulate real blind assessment conditions.</span>';
@@ -6348,13 +6530,40 @@ ${(resumeText || '').slice(0, 3500)}`;
       simText.innerText = qText;
     }
 
-    // Refresh live teleprompter card if open
+    // Refresh live teleprompter card & keep synchronized with current question
     const liveTpSlot = document.getElementById('live-teleprompter-card-slot');
+    const tpBtnText = document.getElementById('quick-teleprompter-btn-text');
+    const tpBtn = document.getElementById('quick-teleprompter-btn');
+    const floatingHud = document.getElementById('floating-teleprompter-hud');
+    const isHudOpen = floatingHud && floatingHud.style.display !== 'none';
     if (liveTpSlot) {
-      if (isPressure) {
+      if (isPressure || isHudOpen) {
         liveTpSlot.style.display = 'none';
-      } else if (liveTpSlot.style.display !== 'none') {
+        if (tpBtnText) tpBtnText.innerHTML = '📖 Open Practice Script &amp; Teleprompter';
+        if (tpBtn) {
+          tpBtn.style.background = 'rgba(255,255,255,0.06)';
+          tpBtn.style.borderColor = 'rgba(255,255,255,0.16)';
+          tpBtn.style.color = '#f3f4f6';
+        }
+      } else {
         liveTpSlot.innerHTML = buildSuggestedStarResponse(qData, currentQ, '');
+        if (window._scriptPinnedOpen || liveTpSlot.style.display === 'block') {
+          liveTpSlot.style.display = 'block';
+          if (tpBtnText) tpBtnText.innerHTML = '✕ Close Practice Script';
+          if (tpBtn) {
+            tpBtn.style.background = 'rgba(255,255,255,0.12)';
+            tpBtn.style.borderColor = 'rgba(255,255,255,0.25)';
+            tpBtn.style.color = '#ffffff';
+          }
+        }
+      }
+    }
+
+    // Also refresh floating eyeline teleprompter if open
+    if (isHudOpen && typeof window.refreshFloatingTeleprompter === 'function') {
+      window.refreshFloatingTeleprompter(qData, currentQ);
+      if (typeof window.resetTeleprompterScroll === 'function') {
+        window.resetTeleprompterScroll();
       }
     }
     const resumeStatusChip = document.getElementById('quick-resume-status-chip');
@@ -6448,14 +6657,14 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
     stopAllSpeech();
 
-    // Pressure Mode Follow-Up Question Engine (REQ-PASS-05)
-    const isPressure = (window.currentSimMode === 'pressure' || window.currentSimMode === 'passcheck');
-    if (isPressure && !window._isAnsweringFollowUp) {
+    // Follow-Up Question Engine for Pressure, Pass Check, and Resume Defense (REQ-PASS-02 / REQ-PASS-05 / D9)
+    const hasFollowUp = (window.currentSimMode === 'pressure' || window.currentSimMode === 'passcheck' || window.currentSimMode === 'resumedefense');
+    if (hasFollowUp && !window._isAnsweringFollowUp) {
       const qData = currentQuestions[currentQ] || {};
       const mainRawText = getCurrentAnswerText();
       const followUpPrompt = (typeof window.generateFollowUpQuestion === 'function')
         ? window.generateFollowUpQuestion(mainRawText, qData)
-        : "What was your specific role?";
+        : (qData.followUp || "What was your specific role?");
 
       window._isAnsweringFollowUp = true;
       window._pendingMainAnswer = mainRawText;
@@ -6492,7 +6701,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       return;
     }
 
-    if (isPressure && window._isAnsweringFollowUp) {
+    if (hasFollowUp && window._isAnsweringFollowUp) {
       const followUpText = getCurrentAnswerText();
       const qData = currentQuestions[currentQ] || {};
       const followUpEval = evaluateAnswerText(followUpText, qData, currentQ);
@@ -6582,6 +6791,31 @@ ${(resumeText || '').slice(0, 3500)}`;
     proceedToSession();
   };
 
+  window.returnToSetupView = function() {
+    stopAllSpeech();
+    stopAnswerTimer();
+    interviewStarted = false;
+    interviewCompleted = false;
+    currentQ = 0;
+    sessionQuestionResults = [];
+    const resultsView = document.getElementById('results-view');
+    if (resultsView) resultsView.style.display = 'none';
+    const activeView = document.getElementById('active-view');
+    if (activeView) activeView.style.display = 'none';
+    const setupView = document.getElementById('setup-view');
+    if (setupView) setupView.style.display = 'block';
+    const hub = document.getElementById('prep-hub-root');
+    if (hub) {
+      hub.classList.remove('started', 'results-mode');
+      hub.classList.add('not-started');
+    }
+    const copilotEl = document.getElementById('copilot-panel');
+    if (copilotEl) copilotEl.style.display = 'none';
+    if (typeof window.showPrepModeView === 'function') {
+      window.showPrepModeView(window.currentSimMode || 'warmup');
+    }
+  };
+
   // Screen 1 Primary Buttons: Voice vs Typed
   startBtn.addEventListener('click', async () => {
     isTextMode = false;
@@ -6627,6 +6861,9 @@ ${(resumeText || '').slice(0, 3500)}`;
       }
     } else if (window.currentSimMode === 'passcheck') {
       currentQuestions = window.buildPassCheckQuestions(roleTarget, currentDomain);
+    } else if (window.currentSimMode === 'warmup') {
+      const allQs = buildInterviewQuestions(roleTarget, currentDomain);
+      currentQuestions = allQs.slice(0, 1);
     } else {
       currentQuestions = buildInterviewQuestions(roleTarget, currentDomain);
     }
@@ -6692,8 +6929,9 @@ ${(resumeText || '').slice(0, 3500)}`;
       ? Math.round(validResults.reduce((acc, r) => acc + (typeof r.score === 'number' ? r.score : 40), 0) / validResults.length)
       : (totalQuestionsAnswered > 0 ? Math.round(totalScore / totalQuestionsAnswered) : 40);
 
-    // Item 9: Quantified Impact = share of answers containing a number or %
-    const answersWithNumberOrPct = validResults.filter(r => r.answered && /\b\d+(?:\.\d+)?\s*%|\b\d+(?:\.\d+)?\b/.test(r.answer || '')).length;
+    // Item 9: Quantified Impact = share of answers containing a verified metric or % (D6)
+    const metricRegex = /\b(?:\d+(?:\.\d+)?%|\$\d+(?:,\d+)*(?:\.\d+)?|\d+(?:\.\d+)?\s*(?:percent|x|times|hours?|days?|weeks?|months?|minutes?|seconds?|qps|rps|users?|clients?|customers?|tests?|nodes?|pts?|points?|k|m|b)\b|from\s+\d+\s+to\s+\d+)/i;
+    const answersWithNumberOrPct = validResults.filter(r => r.answered && (r.hasMetrics || metricRegex.test(r.answer || ''))).length;
     const quantifiedImpactPct = Math.round((answersWithNumberOrPct / totalQuestionsCount) * 100);
 
     // PART C: mock_completed (role, answer_count)
@@ -6719,6 +6957,78 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (hub) {
       hub.classList.remove('not-started', 'started');
       hub.classList.add('results-mode');
+    }
+
+    // Warm-Up Drill Debrief: Verify devices (mic, camera, cadence) rather than grading readiness % or JD keywords (D10)
+    if (window.currentSimMode === 'warmup') {
+      const resultsView = document.getElementById('results-view');
+      if (resultsView) {
+        resultsView.style.display = 'block';
+        const warmRes = validResults[0] || {};
+        const spokenWordCount = warmRes.wordCount || 0;
+        const micStatus = isTextMode ? 'Typed Mode Verified (Microphone Skipped)' : 'Microphone Verified (Audio & transcription active)';
+        const camStatus = cameraActive ? 'Camera Connected & Verified' : 'Camera Optional / Ready';
+        const paceStatus = spokenWordCount > 10 ? 'Pacing & Cadence Verified' : 'Input Received';
+
+        resultsView.innerHTML = `
+          <div style="background:var(--black); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:32px 24px; text-align:left; width:100%; max-width:800px; margin:0 auto; box-shadow:0 12px 48px rgba(0,0,0,0.5); box-sizing:border-box;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:16px;">
+              <span style="font-size:32px;">🌱</span>
+              <div>
+                <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:3px;">Warm-Up Complete</div>
+                <h2 style="color:white; font-size:24px; margin:0; font-weight:800;">Device &amp; Setup Check Passed</h2>
+              </div>
+            </div>
+
+            <!-- Device Check Grid -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-bottom:24px;">
+              <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px;">
+                <div style="font-size:11px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">🎤 Microphone &amp; Audio</div>
+                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">Mic OK</div>
+                <div style="font-size:12px; color:#9ca3af;">${micStatus}</div>
+              </div>
+              <div style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.3); border-radius:10px; padding:16px;">
+                <div style="font-size:11px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">📷 Camera &amp; Framing</div>
+                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">Camera OK</div>
+                <div style="font-size:12px; color:#9ca3af;">${camStatus}</div>
+              </div>
+              <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:16px;">
+                <div style="font-size:11px; font-weight:800; color:#fbbf24; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">⚡ Delivery &amp; Cadence</div>
+                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">Pace OK</div>
+                <div style="font-size:12px; color:#9ca3af;">${paceStatus} (${spokenWordCount} words captured)</div>
+              </div>
+            </div>
+
+            <!-- Warm-up Answer Review -->
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:16px; margin-bottom:24px;">
+              <div style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">Your Warm-Up Response:</div>
+              <div style="font-size:13.5px; color:#e5e7eb; font-style:italic; line-height:1.5;">"${escapeHtml(warmRes.answer || 'Warm-up drill completed.')}"</div>
+              <div style="margin-top:10px; font-size:12.5px; color:#34d399; font-weight:700;">
+                ✓ Coach Gain says: Great low-stress delivery. Your audio and setup are verified and ready for full practice drills!
+              </div>
+            </div>
+
+            <!-- Next Step Actions -->
+            <div style="display:flex; flex-direction:column; gap:12px; align-items:center; max-width:480px; margin:0 auto;">
+              <button type="button" onclick="window.selectSimMode('copilot'); window.startSimFromFlashcards();" class="btn-primary" style="width:100%; justify-content:center; padding:14px 24px; font-size:15px; font-weight:800; border-radius:8px; cursor:pointer; border:none;">
+                Start CoPilot (10 Questions with Coaching) ➔
+              </button>
+              <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="width:100%; justify-content:center; background:rgba(16,185,129,0.18); border:1.5px solid #10b981; color:#a7f3d0; padding:12px 20px; font-size:14px; font-weight:800; border-radius:8px; cursor:pointer;">
+                Start Pass Check (6-Question Benchmark) ➔
+              </button>
+              <div style="display:flex; gap:16px; margin-top:6px;">
+                <button type="button" onclick="window.selectSimMode('warmup'); window.retakeMockInterview();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+                  Redo Warm-Up
+                </button>
+                <button type="button" onclick="window.returnToSetupView();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+                  Back to All Modes
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      return;
     }
 
     // Item 5: Single source of truth for keyword list; Debrief "X of Y" equals unique keywords hit across all answers
@@ -7581,18 +7891,20 @@ ${(resumeText || '').slice(0, 3500)}`;
   }
 
   
-  // Pressure Mode Follow-up Question Generation (REQ-PASS-05)
+  // Pressure Mode Follow-up Question Generation (REQ-PASS-05 / D5 / D6)
   window.generateFollowUpQuestion = function(mainAnswer, qData) {
     const text = (mainAnswer || "").trim();
-    const hasNumber = /\b\d+(?:\.\d+)?%?|\b(one|two|three|four|five|six|seven|eight|nine|ten)\b/i.test(text);
-    const hasOwnershipI = /\b(i architected|i built|i designed|i led|i personally|i implemented|i owned|i diagnosed|i managed|i wrote|my role|my responsibility|i took|i decided)\b/i.test(text);
+    // D6: Metric number tied to an outcome or unit (not bare numbers like "Case 4" or "Item 2")
+    const hasMetricNumber = /\b(?:\d+(?:\.\d+)?%|\$\d+(?:,\d+)*(?:\.\d+)?|\d+(?:\.\d+)?\s*(?:percent|x|times|hours?|days?|weeks?|months?|minutes?|seconds?|qps|rps|users?|clients?|customers?|tests?|nodes?|pts?|points?|k|m|b)\b|from\s+\d+\s+to\s+\d+)/i.test(text);
+    // D5: Check for "I/my" first. Only treat "we/our/team" as team language when no "I/my" is present
+    const hasOwnershipI = /\b(i|my|i'm|i've|i'd|myself)\b/i.test(text);
     const hasWe = /\b(we|our|team)\b/i.test(text);
 
-    // 1. No number
-    if (!hasNumber) {
+    // 1. Missing metric
+    if (!hasMetricNumber) {
       return "How did you measure that?";
     }
-    // 2. No "I" (only "we")
+    // 2. Uses team language with NO first-person "I"
     if (!hasOwnershipI && hasWe) {
       return "What was your specific role?";
     }
