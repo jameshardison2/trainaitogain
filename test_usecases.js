@@ -1217,7 +1217,30 @@ assert(privacyPageHtml.includes('permanent removal on request'), 'privacy.html m
 
 console.log(`✓ PASSED: Test 82 - For Teams Phase 1 spec verified (hero headline & buttons, expert network Jotform iframe, 3 FAQs, softened claims, and privacy policy)`);
 
+// Test 83: Playbook 10-Question Scope, Wording Branding, Degree Isolation, and Guided 4-Step Prep Plan
+const aiHtml = fs.readFileSync(path.join(__dirname, "ai-interview.html"), "utf8");
+// 1. Playbook scope & branding
+assert(aiHtml.includes("buildInterviewQuestions(roleTarget, resolvedDomain)"), "Playbook must always build the full canonical 10-question curriculum");
+assert(aiHtml.includes("TrainAIToGain &bull; Candidate Practice Playbook"), "Playbook must use Candidate Practice Playbook branding");
+assert(!aiHtml.includes("Official AI Interview Prep Playbook"), "Playbook must NOT claim Official AI Interview Prep Playbook");
+assert(aiHtml.includes("Open &amp; Print Playbook (PDF)"), "Screen 1 button must accurately say Open & Print Playbook (PDF)");
+assert(aiHtml.includes("Opens a print-ready study sheet in a new tab you can Save as PDF."), "Must inform user that Playbook opens print-ready study sheet");
+
+// 2. Degree isolation & template phrasing
+assert(aiHtml.includes("textWithoutEducation = resumeText.replace"), "Resume parser must strip education section before scanning for job titles");
+assert(aiHtml.includes("Leading deliverables as **${resolvedRole}** at **${resolvedCompany}**"), "Template phrasing must avoid In practice as");
+assert(aiHtml.includes("rClean = roleName\n      .replace(/^Role:\\s*/i, '')\n      .replace(/\\s*\\(Your Target Role\\)\\s*/i, '')\n      .replace(/\\s*\\([^)]*\\)/g, '')"), "formatBackgroundInRole must strip parenthetical degree qualifications like (MSc. or PhD)");
+
+// 3. Guided 4-Step Prep Plan sequential flow
+assert(aiHtml.includes("id=\"guided-step-banner\""), "Cockpit header must have guided step banner");
+assert(aiHtml.includes("window.continueGuidedPlanToFlashcards"), "Warm-Up debrief must offer Step 2 of 4: Master Flashcards Deck");
+assert(aiHtml.includes("id=\"fc-guided-step-banner\""), "Flashcards container must display Step 2 of 4 guided banner");
+assert(aiHtml.includes("window.continueGuidedPlanToCopilot"), "Flashcards must offer Step 3 of 4: Practice with CoPilot");
+assert(aiHtml.includes("window.continueGuidedPlanToPassCheck"), "Debrief must offer Step 4 of 4: Take Pass Check Benchmark");
+
+console.log(`✓ PASSED: Test 83 - Playbook 10-question scope, candidate branding, degree isolation, and 4-step prep plan flow verified`);
+
 console.log("==================================================================");
-console.log("ALL 82 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 83 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

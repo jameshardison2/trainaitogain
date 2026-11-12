@@ -613,8 +613,9 @@ window.addEventListener('unhandledrejection', function(event) {
         </div>
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
           <input type="email" id="screen1-lead-email" placeholder="Enter your email (optional for study plan &amp; role alerts)..." style="flex:1; min-width:220px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:8px 12px; color:#ffffff; font-size:13px; outline:none;" oninput="localStorage.setItem('candidateEmail', this.value)" />
-          <button type="button" onclick="window.saveScreen1LeadEmail()" style="background:#10b981; color:#042f2e; border:none; border-radius:6px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; white-space:nowrap;">Get Playbook PDF</button>
+          <button type="button" onclick="window.saveScreen1LeadEmail()" style="background:#10b981; color:#042f2e; border:none; border-radius:6px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; white-space:nowrap;">Open &amp; Print Playbook (PDF)</button>
         </div>
+        <div style="font-size:11.5px; color:#a7f3d0; margin-top:4px;">Opens a print-ready study sheet in a new tab you can Save as PDF.</div>
         <div style="display:flex; flex-direction:column; gap:2px; margin-top:8px;">
           <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
             <input type="checkbox" id="screen1-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
@@ -691,6 +692,17 @@ window.addEventListener('unhandledrejection', function(event) {
 
       <!-- Quizlet-Style Interactive Study Deck (Shown when Flashcards Deck is active) -->
       <div id="flashcards-deck-container" style="display:none; max-width:680px; margin:0 auto 24px auto; text-align:left;">
+        <!-- Guided Prep Plan Step 2 Banner -->
+        <div id="fc-guided-step-banner" style="display:none; background:rgba(16,185,129,0.15); border:1.5px solid #10b981; border-radius:10px; padding:12px 16px; margin-bottom:14px; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <div style="font-size:11px; font-weight:900; color:#34d399; text-transform:uppercase; letter-spacing:0.06em;">🚀 Guided Prep Plan &bull; Step 2 of 4</div>
+            <div style="font-size:13.5px; font-weight:800; color:#ffffff;">Review the 10-Question Flashcard Deck</div>
+            <div style="font-size:11.5px; color:#d1fae5;">Internalize winning STAR structures and keywords before jumping into live CoPilot practice.</div>
+          </div>
+          <button type="button" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="padding:10px 18px; font-size:13px; font-weight:900; border-radius:8px; border:none; cursor:pointer; white-space:nowrap; box-shadow:0 4px 12px rgba(16,185,129,0.35);">
+            Step 3 of 4: Practice with CoPilot ➔
+          </button>
+        </div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="font-size:18px;">🃏</span>
@@ -814,7 +826,10 @@ window.addEventListener('unhandledrejection', function(event) {
               Next Card <span>➔</span>
             </button>
           </div>
-          <div style="display:flex; align-items:center; gap:8px;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <button type="button" id="fc-guided-step3-btn" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="display:none; background:#10b981; color:#042f2e; border:none; border-radius:8px; padding:9px 18px; font-size:13px; font-weight:900; cursor:pointer; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+              <span>Step 3 of 4: Practice with CoPilot</span> <span>➔</span>
+            </button>
             <button type="button" onclick="window.startSimFromFlashcards()" style="background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#ffffff; border:none; border-radius:8px; padding:9px 18px; font-size:13px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(37,99,235,0.35);">
               <span>🎙️</span> Test with Live Mic Now
             </button>
@@ -1030,6 +1045,7 @@ window.addEventListener('unhandledrejection', function(event) {
           <!-- Top Bar: Progress, Mode/Fallback Status & Gear Icon -->
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span id="guided-step-banner" style="display:none; font-size:11.5px; font-weight:800; background:rgba(16,185,129,0.18); border:1px solid #10b981; color:#a7f3d0; padding:2px 10px; border-radius:100px;">🚀 Prep Plan: Step 1 of 4</span>
               <div style="font-size:13px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em;" id="progress-indicator">
                 Question 1 of 10
               </div>
@@ -2362,6 +2378,7 @@ window.addEventListener('unhandledrejection', function(event) {
     let rClean = roleName
       .replace(/^Role:\s*/i, '')
       .replace(/\s*\(Your Target Role\)\s*/i, '')
+      .replace(/\s*\([^)]*\)/g, '')
       .replace(/\s*(?:Talent Network|Talent Community|Talent Pool|Network)\b/i, '')
       .trim();
     if (!rClean) return "as a domain specialist";
@@ -2610,7 +2627,7 @@ window.addEventListener('unhandledrejection', function(event) {
   window.formatDualDollarPay = formatDualDollarPay;
 
   function addRoleOptionToDropdown(roleTitle, domainVal, isHighlightedTop, optionalMeta) {
-    const cleanTitle = String(roleTitle || '').replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim();
+    const cleanTitle = String(roleTitle || '').replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').replace(/\s*\([^)]*\)/g, '').trim();
     if (!cleanTitle) return;
     const normKey = cleanTitle.toLowerCase();
 
@@ -3096,7 +3113,7 @@ window.addEventListener('unhandledrejection', function(event) {
   };
 
   window.selectRoleItem = function(cleanTitle, domainVal) {
-    const clean = String(cleanTitle || '').replace(/^Role:\s*/i, '').trim();
+    const clean = String(cleanTitle || '').replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').replace(/\s*\([^)]*\)/g, '').trim();
     if (cdsText) cdsText.innerText = "Role: " + clean;
     if (cdsOptions) cdsOptions.style.display = 'none';
     if (cdsDisplay) cdsDisplay.style.borderColor = 'rgba(255,255,255,0.2)';
@@ -5012,15 +5029,28 @@ window.addEventListener('unhandledrejection', function(event) {
     ];
 
     // Scan resume for all distinct canonical role titles and record their index/order of appearance
+    // Exclude Education section from title scanning so academic degrees (e.g. M.S. in Data Science) are not misidentified as job titles
+    const textWithoutEducation = resumeText.replace(/(?:^|\n)\s*(?:education|academic background|degrees?|educational background|academics)\b[\s\S]*?(?=(?:\n\s*(?:experience|employment|work history|professional background|projects|technical skills|skills)\b)|$)/gi, '\n');
     const matchedRoleItems = [];
     canonicalTitles.forEach(title => {
       const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const re = new RegExp('(?:^|[^a-z0-9])(' + escaped + ')(?:$|[^a-z0-9])', 'gi');
       let m;
-      while ((m = re.exec(resumeText)) !== null) {
+      while ((m = re.exec(textWithoutEducation)) !== null) {
         matchedRoleItems.push({ title, index: m.index });
       }
     });
+    // Fallback to full resume text ONLY if no titles matched in work experience
+    if (matchedRoleItems.length === 0) {
+      canonicalTitles.forEach(title => {
+        const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const re = new RegExp('(?:^|[^a-z0-9])(' + escaped + ')(?:$|[^a-z0-9])', 'gi');
+        let m;
+        while ((m = re.exec(resumeText)) !== null) {
+          matchedRoleItems.push({ title, index: m.index });
+        }
+      });
+    }
 
     matchedRoleItems.sort((a, b) => a.index - b.index);
 
@@ -5418,7 +5448,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       // Use the specific tailored answer from the question object!
       const rawAns = qData.answer.trim();
       starSituationTask = rawAns.replace(/\[Your Recent Title\]/g, resolvedRole).replace(/\[Your Recent Employer \/ Project\]/g, resolvedCompany);
-      starAction = `In practice as **${resolvedRole}** at **${resolvedCompany}**, I pair **${secondarySkill}** with systematic validation checks so boundary errors are flagged before release.`;
+      starAction = `Leading deliverables as **${resolvedRole}** at **${resolvedCompany}**, I pair **${secondarySkill}** with systematic validation checks so boundary errors are flagged before release.`;
       starResult = `Applying this structured methodology consistently delivers **${resolvedMetric}**.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-07" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 07: Technical Deep Dive &amp; Core Competency</a>`;
       primaryVideoHref = "/video-guides.html#lesson-07";
@@ -5660,13 +5690,13 @@ ${recallLvl === 4 ? `
 
   // Branded Before & After STAR Practice Sheet PDF Generator
   window.downloadStarPracticePdf = function() {
-    const rawRoleFromDropdown = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : '';
-    const roleTarget = rawRoleFromDropdown || localStorage.getItem('atsRole') || currentDomain || 'AI Evaluation Specialist';
+    const rawRoleFromDropdown = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').replace(/\s*\([^)]*\)/g, '').trim() : '';
+    const rawRoleTarget = rawRoleFromDropdown || localStorage.getItem('atsRole') || currentDomain || 'AI Evaluation Specialist';
+    const roleTarget = String(rawRoleTarget).replace(/\s*\([^)]*\)/g, '').trim();
     const resumeTxt = (localStorage.getItem('candidateResumeText') || '').trim();
     const resolvedDomain = detectDomain(roleTarget, domainSelector ? domainSelector.value : currentDomain, resumeTxt);
-    const questionsList = (currentQuestions && currentQuestions.length > 0)
-      ? currentQuestions
-      : buildInterviewQuestions(roleTarget, resolvedDomain);
+    // The Playbook is a comprehensive practice study guide and ALWAYS contains the role's canonical 10 questions:
+    const questionsList = buildInterviewQuestions(roleTarget, resolvedDomain);
     const jdCtx = getJobContextForRole(roleTarget, resolvedDomain);
     const parsedProfile = parseCandidateResumeForStar(resumeTxt, questionsList[0] || {});
     const candidateHeadline = parsedProfile.cleanRoleTitle || 'AI Domain Candidate';
@@ -5748,7 +5778,7 @@ ${recallLvl === 4 ? `
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>TrainAIToGain — STAR Interview Study Guide (${roleTarget})</title>
+  <title>TrainAIToGain — STAR Candidate Practice Playbook (${roleTarget})</title>
   <style>
     @page { size: letter; margin: 14mm; }
     body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111827; background: #f3f4f6; margin: 0; padding: 24px; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -5773,7 +5803,7 @@ ${recallLvl === 4 ? `
   <div class="sheet-container">
     <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #10b981; padding-bottom:16px; margin-bottom:18px; gap:16px; flex-wrap:wrap;">
       <div>
-        <div style="font-size:12px; font-weight:900; color:#059669; text-transform:uppercase; letter-spacing:0.08em;">TrainAIToGain &bull; Official AI Interview Prep Playbook</div>
+        <div style="font-size:12px; font-weight:900; color:#059669; text-transform:uppercase; letter-spacing:0.08em;">TrainAIToGain &bull; Candidate Practice Playbook</div>
         <h1 style="font-size:24px; font-weight:900; color:#111827; margin:4px 0;">Before &amp; After STAR Response Study Guide</h1>
         <div style="font-size:13.5px; color:#4b5563;"><strong>Target Role:</strong> ${roleTarget} &nbsp;|&nbsp; <strong>Candidate Profile:</strong> ${candidateHeadline}</div>
       </div>
@@ -6637,6 +6667,28 @@ ${recallLvl === 4 ? `
     const progEl = document.getElementById('progress-indicator');
     if (progEl) progEl.innerText = `Question ${currentQ + 1} of ${currentQuestions.length}`;
 
+    // Update Guided Prep Plan header banner
+    const guidedBanner = document.getElementById('guided-step-banner');
+    if (guidedBanner) {
+      const isGuided = window._isGuidedPlan || (localStorage.getItem('tgt_guided_plan') && localStorage.getItem('tgt_guided_plan') !== '0');
+      if (isGuided) {
+        let stepNum = window._guidedStep || parseInt(localStorage.getItem('tgt_guided_plan') || '1', 10);
+        if (simMode === 'warmup') stepNum = 1;
+        else if (simMode === 'practice') stepNum = 3;
+        else if (simMode === 'passcheck') stepNum = 4;
+        const stepLabels = {
+          1: "Step 1 of 4 (Warm-Up Drill)",
+          2: "Step 2 of 4 (Flashcards Deck)",
+          3: "Step 3 of 4 (CoPilot Outlines)",
+          4: "Step 4 of 4 (Pass Check Benchmark)"
+        };
+        guidedBanner.textContent = `🚀 Prep Plan: ${stepLabels[stepNum] || 'In Progress'}`;
+        guidedBanner.style.display = 'inline-flex';
+      } else {
+        guidedBanner.style.display = 'none';
+      }
+    }
+
     const modeEl = document.getElementById('mode-badge');
     if (modeEl) modeEl.innerText = isTextMode ? '⌨️ Typed Mode' : '🎙️ Spoken Mode';
 
@@ -7139,20 +7191,38 @@ ${recallLvl === 4 ? `
 
             <!-- Next Step Actions -->
             <div style="display:flex; flex-direction:column; gap:12px; align-items:center; max-width:480px; margin:0 auto;">
-              <button type="button" onclick="window.selectSimMode('copilot'); window.startSimFromFlashcards();" class="btn-primary" style="width:100%; justify-content:center; padding:14px 24px; font-size:15px; font-weight:800; border-radius:8px; cursor:pointer; border:none;">
-                Start CoPilot (10 Questions with Coaching) ➔
-              </button>
-              <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="width:100%; justify-content:center; background:rgba(16,185,129,0.18); border:1.5px solid #10b981; color:#a7f3d0; padding:12px 20px; font-size:14px; font-weight:800; border-radius:8px; cursor:pointer;">
-                Start Pass Check (6-Question Benchmark) ➔
-              </button>
-              <div style="display:flex; gap:16px; margin-top:6px;">
-                <button type="button" onclick="window.selectSimMode('warmup'); window.retakeMockInterview();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
-                  Redo Warm-Up
+              ${(window._isGuidedPlan || localStorage.getItem('tgt_guided_plan') === '1') ? `
+                <div style="width:100%; text-align:center; margin-bottom:4px;">
+                  <div style="font-size:11px; font-weight:900; color:#34d399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px;">🚀 Guided Prep Plan &bull; Step 1 Complete</div>
+                  <div style="font-size:14px; font-weight:800; color:#ffffff;">Audio verified! Step 2 internalizes winning answer outlines.</div>
+                </div>
+                <button type="button" onclick="window.continueGuidedPlanToFlashcards()" class="btn-primary" style="width:100%; justify-content:center; padding:15px 24px; font-size:15.5px; font-weight:900; border-radius:8px; cursor:pointer; border:none; box-shadow:0 6px 20px rgba(16,185,129,0.45); display:flex; align-items:center; gap:8px;">
+                  Step 2 of 4: Master Flashcards Deck (10 Cards) ➔
                 </button>
-                <button type="button" onclick="window.returnToSetupView();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
-                  Back to All Modes
+                <div style="display:flex; gap:16px; margin-top:6px;">
+                  <button type="button" onclick="window.selectSimMode('warmup'); window.retakeMockInterview();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+                    Redo Warm-Up
+                  </button>
+                  <button type="button" onclick="window.exitGuidedPlan();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+                    Exit Prep Plan
+                  </button>
+                </div>
+              ` : `
+                <button type="button" onclick="window.selectSimMode('copilot'); window.startSimFromFlashcards();" class="btn-primary" style="width:100%; justify-content:center; padding:14px 24px; font-size:15px; font-weight:800; border-radius:8px; cursor:pointer; border:none;">
+                  Start CoPilot (10 Questions with Coaching) ➔
                 </button>
-              </div>
+                <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="width:100%; justify-content:center; background:rgba(16,185,129,0.18); border:1.5px solid #10b981; color:#a7f3d0; padding:12px 20px; font-size:14px; font-weight:800; border-radius:8px; cursor:pointer;">
+                  Start Pass Check (6-Question Benchmark) ➔
+                </button>
+                <div style="display:flex; gap:16px; margin-top:6px;">
+                  <button type="button" onclick="window.selectSimMode('warmup'); window.retakeMockInterview();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+                    Redo Warm-Up
+                  </button>
+                  <button type="button" onclick="window.returnToSetupView();" style="background:none; border:none; color:#9ca3af; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+                    Back to All Modes
+                  </button>
+                </div>
+              `}
             </div>
           </div>
         `;
@@ -7422,6 +7492,21 @@ ${recallLvl === 4 ? `
 
       resultsView.innerHTML = `
         ${passCheckBannerHtml}
+        ${(window._isGuidedPlan || localStorage.getItem('tgt_guided_plan') === '3') ? `
+          <div style="background:linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(37,99,235,0.18) 100%); border:1.5px solid #10b981; border-radius:12px; padding:18px 20px; margin-bottom:18px; text-align:center;">
+            <div style="font-size:11px; font-weight:900; color:#34d399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">🚀 Guided Prep Plan &bull; Step 3 Complete</div>
+            <div style="font-size:17px; font-weight:800; color:#ffffff; margin-bottom:6px;">You completed CoPilot Practice! Ready for your official Practice Benchmark?</div>
+            <div style="font-size:12.5px; color:#d1fae5; margin-bottom:14px;">Take the 6-question Pass Check under real screener conditions (no outlines) to earn your Pass Check ✓ badge.</div>
+            <button type="button" onclick="window.continueGuidedPlanToPassCheck()" class="btn-primary" style="padding:14px 28px; font-size:15px; font-weight:900; border-radius:8px; border:none; cursor:pointer; box-shadow:0 6px 20px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
+              Step 4 of 4: Take Pass Check Benchmark ➔
+            </button>
+          </div>
+        ` : (window._guidedStep === 4 || localStorage.getItem('tgt_guided_plan') === '4') ? `
+          <div style="background:rgba(16,185,129,0.18); border:1.5px solid #10b981; border-radius:12px; padding:14px 20px; margin-bottom:18px; text-align:center;">
+            <span style="font-size:20px;">🎓</span> <strong style="color:#6ee7b7; font-size:15px;">Guided Prep Plan Completed!</strong>
+            <div style="font-size:12.5px; color:#d1fae5; margin-top:3px;">You finished all 4 steps of your structured preparation plan.</div>
+          </div>
+        ` : ''}
         <div id="post-interview-summary-card" style="background:var(--black); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:32px 24px; text-align:left; width:100%; box-shadow:0 12px 48px rgba(0,0,0,0.5); box-sizing:border-box;">
           <!-- Overall Summary -->
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:18px;">
@@ -7511,7 +7596,7 @@ ${recallLvl === 4 ? `
                 <div style="font-size:15px; font-weight:800; color:#fff;">Email my results</div>
               </div>
               <button type="button" onclick="window.downloadStarPracticePdf()" style="background:rgba(16,185,129,0.16); color:#6ee7b7; border:1px solid rgba(16,185,129,0.45); border-radius:8px; padding:8px 14px; font-size:12.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-                📄 Download Branded Before &amp; After STAR PDF
+                📄 Open &amp; Print STAR Playbook (PDF)
               </button>
             </div>
             <p style="color:#9ca3af; font-size:13px; line-height:1.5; margin:0 0 12px;">
@@ -7811,8 +7896,9 @@ ${recallLvl === 4 ? `
   // Guided Prep Plan Sequential Flow (Warm-Up -> Flashcards -> CoPilot -> Pass Check)
   window.startGuidedPrepPlan = function() {
     window._isGuidedPlan = true;
+    window._guidedStep = 1;
     try {
-      localStorage.setItem('tgt_guided_plan', 'true');
+      localStorage.setItem('tgt_guided_plan', '1');
     } catch(e) {}
     window.selectSimMode('warmup');
     const startBtn = document.getElementById('start-btn');
@@ -7820,12 +7906,56 @@ ${recallLvl === 4 ? `
   };
 
   window.continueGuidedPlanToFlashcards = function() {
+    window._isGuidedPlan = true;
+    window._guidedStep = 2;
+    try {
+      localStorage.setItem('tgt_guided_plan', '2');
+    } catch(e) {}
     window.returnToSetupView();
     setTimeout(() => {
       window.selectSimMode('flashcards');
       const fcSec = document.getElementById('flashcards-deck-container');
-      if (fcSec) fcSec.scrollIntoView({ behavior: 'smooth' });
+      if (fcSec) {
+        fcSec.scrollIntoView({ behavior: 'smooth' });
+        const banner = document.getElementById('fc-guided-step-banner');
+        if (banner) banner.style.display = 'flex';
+        const step3Btn = document.getElementById('fc-guided-step3-btn');
+        if (step3Btn) step3Btn.style.display = 'inline-flex';
+      }
     }, 150);
+  };
+
+  window.continueGuidedPlanToCopilot = function() {
+    window._isGuidedPlan = true;
+    window._guidedStep = 3;
+    try {
+      localStorage.setItem('tgt_guided_plan', '3');
+    } catch(e) {}
+    window.selectSimMode('practice');
+    window.startSimFromFlashcards();
+  };
+
+  window.continueGuidedPlanToPassCheck = function() {
+    window._isGuidedPlan = true;
+    window._guidedStep = 4;
+    try {
+      localStorage.setItem('tgt_guided_plan', '4');
+    } catch(e) {}
+    window.returnToSetupView();
+    setTimeout(() => {
+      window.selectSimMode('passcheck');
+      const startBtn = document.getElementById('start-btn');
+      if (startBtn) startBtn.click();
+    }, 150);
+  };
+
+  window.exitGuidedPlan = function() {
+    window._isGuidedPlan = false;
+    window._guidedStep = 0;
+    try {
+      localStorage.removeItem('tgt_guided_plan');
+    } catch(e) {}
+    window.returnToSetupView();
   };
 
   window.initFlashcardsDeck = function() {
@@ -7863,6 +7993,12 @@ ${recallLvl === 4 ? `
     if (!_fcDeck || _fcDeck.length === 0) return;
     if (_fcCurrentIndex >= _fcDeck.length) _fcCurrentIndex = 0;
     if (_fcCurrentIndex < 0) _fcCurrentIndex = _fcDeck.length - 1;
+
+    const isGuided = window._isGuidedPlan || localStorage.getItem('tgt_guided_plan') === '2';
+    const fcGuidedBanner = document.getElementById('fc-guided-step-banner');
+    if (fcGuidedBanner) fcGuidedBanner.style.display = isGuided ? 'flex' : 'none';
+    const fcGuidedStep3Btn = document.getElementById('fc-guided-step3-btn');
+    if (fcGuidedStep3Btn) fcGuidedStep3Btn.style.display = isGuided ? 'inline-flex' : 'none';
 
     const card = _fcDeck[_fcCurrentIndex];
     const total = _fcDeck.length;
