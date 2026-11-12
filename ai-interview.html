@@ -438,70 +438,61 @@ window.addEventListener('unhandledrejection', function(event) {
   </div>
 </div>
 
-<!-- Floating Webcam Teleprompter Modal HUD (Docked Sleek Eyeline Ribbon Directly Beneath Camera) -->
-<div id="floating-teleprompter-hud" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:94%; max-width:760px; z-index:10001; background:rgba(12,18,28,0.96); backdrop-filter:blur(18px); border:1.5px solid rgba(16,185,129,0.45); border-top:none; border-radius:0 0 16px 16px; box-shadow:0 20px 50px rgba(0,0,0,0.9); padding:10px 16px 14px; box-sizing:border-box;">
-  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:8px; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span style="font-size:16px;">🎙️</span>
-      <div>
-        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-          <span style="font-size:12.5px; font-weight:800; color:#ffffff;">Eyeline Teleprompter</span>
-          <span id="floating-tp-question-badge" style="font-size:11px; font-weight:800; color:#34d399; background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.4); padding:1px 7px; border-radius:10px;">Question 1</span>
-          <span style="font-size:10.5px; color:#fca5a5; font-weight:700;">⚠️ Practice Blueprint Only</span>
-        </div>
-        <div id="floating-tp-question-title" style="font-size:11.5px; color:#cbd5e1; margin-top:2px; max-width:480px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
-      </div>
+<!-- Floating Webcam Teleprompter Modal HUD (Docked Sleek Eyeline Ribbon Directly Beneath Camera - E1) -->
+<div id="floating-teleprompter-hud" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:94%; max-width:760px; z-index:10001; background:rgba(12,18,28,0.96); backdrop-filter:blur(18px); border:1.5px solid rgba(16,185,129,0.45); border-top:none; border-radius:0 0 16px 16px; box-shadow:0 16px 40px rgba(0,0,0,0.85); padding:6px 12px 8px; box-sizing:border-box; max-height:240px; overflow:hidden; transition:max-height 0.25s ease;">
+  <!-- Ultra-Compact Single Header Row -->
+  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:4px; margin-bottom:4px; gap:8px;">
+    <div style="display:inline-flex; align-items:center; gap:6px; overflow:hidden;">
+      <span style="font-size:13px;">🎙️</span>
+      <span id="floating-tp-question-badge" style="font-size:10.5px; font-weight:800; color:#34d399; background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.4); padding:1px 6px; border-radius:6px; white-space:nowrap;">Question 1 of 10</span>
+      <span style="font-size:10px; color:#fca5a5; font-weight:700; white-space:nowrap; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); border-radius:4px; padding:1px 6px;">⚠️ Practice only. Don't use notes, prompters or overlays in a real interview.</span>
+      <span id="floating-tp-question-title" style="display:none;"></span>
     </div>
-    <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
-      <button type="button" onclick="window.copySuggestedStarScript(this)" style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#a7f3d0; border-radius:4px; padding:4px 9px; font-size:11.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Copy complete script to clipboard">
+    <div style="display:inline-flex; align-items:center; gap:4px; flex-shrink:0;">
+      <button type="button" onclick="window.copySuggestedStarScript(this)" style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#a7f3d0; border-radius:4px; padding:3px 7px; font-size:10.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" title="Copy complete script to clipboard">
         <span>📋</span> <span>Copy</span>
       </button>
-      <button type="button" onclick="window.fillStarScriptIntoAnswer(this)" style="background:rgba(37,99,235,0.25); border:1px solid #3b82f6; color:#bfdbfe; border-radius:4px; padding:4px 9px; font-size:11.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Fill script directly into answer box">
+      <button type="button" onclick="window.fillStarScriptIntoAnswer(this)" style="background:rgba(37,99,235,0.25); border:1px solid #3b82f6; color:#bfdbfe; border-radius:4px; padding:3px 7px; font-size:10.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" title="Fill script directly into answer box">
         <span>📝</span> <span>Use as Answer</span>
       </button>
-      <button type="button" id="hud-next-btn" onclick="window.nextQuestionFromHud()" style="background:#10b981; border:1.5px solid #059669; color:#042f2e; border-radius:4px; padding:4px 11px; font-size:11.5px; font-weight:900; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(16,185,129,0.35); transition:transform 0.1s ease;" title="Advance to next question">
+      <button type="button" id="hud-next-btn" onclick="window.nextQuestionFromHud()" style="background:#10b981; border:1px solid #059669; color:#042f2e; border-radius:4px; padding:3px 9px; font-size:10.5px; font-weight:900; cursor:pointer; display:inline-flex; align-items:center; gap:3px; box-shadow:0 1px 6px rgba(16,185,129,0.3);" title="Advance to next question">
         <span>Next</span> <span>➔</span>
       </button>
-      <button type="button" id="hud-toggle-size-btn" onclick="window.toggleHudSize()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#d1d5db; border-radius:4px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer;" title="Toggle compact / full view">↕ Expand</button>
-      <button type="button" onclick="window.changeStarFontSize(-2)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; border-radius:4px; padding:4px 7px; font-size:11px; font-weight:800; cursor:pointer;">A-</button>
-      <button type="button" onclick="window.changeStarFontSize(2)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; border-radius:4px; padding:4px 7px; font-size:11px; font-weight:800; cursor:pointer;">A+</button>
-      <button type="button" onclick="window.closeFloatingTeleprompter()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; border-radius:4px; padding:4px 9px; font-size:11.5px; font-weight:800; cursor:pointer;">✕ Close</button>
+      <button type="button" id="hud-toggle-size-btn" onclick="window.toggleHudSize()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#d1d5db; border-radius:4px; padding:3px 7px; font-size:10.5px; font-weight:700; cursor:pointer;" title="Toggle compact / full view">↕ Expand</button>
+      <button type="button" onclick="window.changeStarFontSize(-2)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; border-radius:4px; padding:3px 6px; font-size:10px; font-weight:800; cursor:pointer;">A-</button>
+      <button type="button" onclick="window.changeStarFontSize(2)" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; border-radius:4px; padding:3px 6px; font-size:10px; font-weight:800; cursor:pointer;">A+</button>
+      <button type="button" onclick="window.closeFloatingTeleprompter()" style="background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; border-radius:4px; padding:3px 7px; font-size:10.5px; font-weight:800; cursor:pointer;">✕ Close</button>
     </div>
   </div>
-  <!-- Fixed Prompter Practice-Only Warning Label (REQ-PASS-07) -->
-  <div style="background:rgba(239,68,68,0.16); border:1px solid rgba(239,68,68,0.35); border-radius:6px; padding:4px 10px; margin-bottom:8px; font-size:11px; font-weight:800; color:#fca5a5; display:flex; align-items:center; gap:6px;">
-    <span>⚠️</span>
-    <span>Practice only. Don't use notes, prompters or overlays in a real interview.</span>
+  <!-- Embedded Current Question Bar (Slim single-line to avoid covering answer box - D2/E1) -->
+  <div id="floating-tp-question-box" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-left:3px solid #10b981; border-radius:4px; padding:3px 8px; margin:4px 0; font-size:11.5px; line-height:1.35; display:flex; align-items:center; gap:6px; overflow:hidden;">
+    <span style="font-size:10px; font-weight:900; color:#10b981; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap;">Q:</span>
+    <span id="floating-tp-full-question-text" style="color:#ffffff; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
   </div>
-  <!-- Embedded Current Question Card (guarantees question is never covered by the prompter HUD - D2) -->
-  <div id="floating-tp-question-box" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-left:3px solid #10b981; border-radius:6px; padding:6px 12px; margin-bottom:8px;">
-    <div style="font-size:10px; font-weight:800; color:#10b981; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Current Question:</div>
-    <div id="floating-tp-full-question-text" style="font-size:13px; font-weight:700; color:#ffffff; line-height:1.45;"></div>
-  </div>
-  <!-- HUD Controls -->
-  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px; background:rgba(0,0,0,0.4); padding:5px 10px; border-radius:6px; border:1px solid rgba(16,185,129,0.25);">
-    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-      <button type="button" class="tp-scroll-btn" onclick="window.toggleTeleprompterScroll(this)" style="background:#10b981; color:#042f2e; border:none; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+  <!-- HUD Controls (Ultra-Compact Single Row) -->
+  <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:4px; background:rgba(0,0,0,0.4); padding:3px 8px; border-radius:4px; border:1px solid rgba(16,185,129,0.2);">
+    <div style="display:inline-flex; align-items:center; gap:5px;">
+      <button type="button" class="tp-scroll-btn" onclick="window.toggleTeleprompterScroll(this)" style="background:#10b981; color:#042f2e; border:none; border-radius:3px; padding:2px 8px; font-size:10px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
         <span>▶</span> <span class="tp-scroll-btn-label">Auto-Scroll</span>
       </button>
-      <button type="button" onclick="window.resetTeleprompterScroll()" style="background:rgba(255,255,255,0.08); color:#d1d5db; border:1px solid rgba(255,255,255,0.18); border-radius:4px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer;">
+      <button type="button" onclick="window.resetTeleprompterScroll()" style="background:rgba(255,255,255,0.08); color:#d1d5db; border:1px solid rgba(255,255,255,0.18); border-radius:3px; padding:2px 6px; font-size:10px; font-weight:700; cursor:pointer;">
         🔄 Top
       </button>
-      <div style="display:inline-flex; align-items:center; gap:2px; background:rgba(255,255,255,0.05); padding:1px; border-radius:4px; border:1px solid rgba(255,255,255,0.1);">
-        <button type="button" class="tp-speed-btn" data-sec="90" onclick="window.setTeleprompterSpeed(90, this)" style="background:transparent; border:none; color:#9ca3af; font-size:10px; font-weight:700; padding:2px 5px; border-radius:2px; cursor:pointer;">90s</button>
-        <button type="button" class="tp-speed-btn active" data-sec="75" onclick="window.setTeleprompterSpeed(75, this)" style="background:#10b981; border:none; color:#042f2e; font-size:10px; font-weight:800; padding:2px 5px; border-radius:2px; cursor:pointer;">75s</button>
-        <button type="button" class="tp-speed-btn" data-sec="55" onclick="window.setTeleprompterSpeed(55, this)" style="background:transparent; border:none; color:#9ca3af; font-size:10px; font-weight:700; padding:2px 5px; border-radius:2px; cursor:pointer;">55s</button>
+      <div style="display:inline-flex; align-items:center; gap:1px; background:rgba(255,255,255,0.05); padding:1px; border-radius:3px; border:1px solid rgba(255,255,255,0.1);">
+        <button type="button" class="tp-speed-btn" data-sec="90" onclick="window.setTeleprompterSpeed(90, this)" style="background:transparent; border:none; color:#9ca3af; font-size:9.5px; font-weight:700; padding:1px 4px; border-radius:2px; cursor:pointer;">90s</button>
+        <button type="button" class="tp-speed-btn active" data-sec="75" onclick="window.setTeleprompterSpeed(75, this)" style="background:#10b981; border:none; color:#042f2e; font-size:9.5px; font-weight:800; padding:1px 4px; border-radius:2px; cursor:pointer;">75s</button>
+        <button type="button" class="tp-speed-btn" data-sec="55" onclick="window.setTeleprompterSpeed(55, this)" style="background:transparent; border:none; color:#9ca3af; font-size:9.5px; font-weight:700; padding:1px 4px; border-radius:2px; cursor:pointer;">55s</button>
       </div>
     </div>
-    <span class="tp-timer-badge" style="font-size:11px; font-weight:800; color:#34d399; font-variant-numeric:tabular-nums; background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">0s / 75s</span>
+    <span class="tp-timer-badge" style="font-size:10px; font-weight:800; color:#34d399; font-variant-numeric:tabular-nums; background:rgba(0,0,0,0.3); padding:1px 5px; border-radius:3px; border:1px solid rgba(16,185,129,0.3);">0s / 75s</span>
     <!-- Progress Line Bar -->
-    <div style="width:100%; height:2px; background:rgba(255,255,255,0.08); border-radius:1px; overflow:hidden; margin-top:2px;">
+    <div style="width:100px; height:2px; background:rgba(255,255,255,0.08); border-radius:1px; overflow:hidden;">
       <div class="tp-progress-fill" style="width:0%; height:100%; background:linear-gradient(90deg, #3b82f6 0%, #10b981 50%, #f59e0b 100%); transition:width 0.1s linear;"></div>
     </div>
   </div>
-  <!-- Viewport for HUD -->
-  <div id="floating-tp-viewport" class="star-tp-scroll-viewport" style="max-height:230px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:6px; padding-bottom:12px; position:relative; border-radius:6px; transition:max-height 0.25s ease;">
-    <div id="floating-tp-content" class="star-teleprompter-text-body" style="font-size:18px; line-height:1.55; color:#ffffff;">
+  <!-- Viewport for HUD (Capped at 115px in compact mode so total HUD height is under 220px - E1) -->
+  <div id="floating-tp-viewport" class="star-tp-scroll-viewport" style="max-height:115px; overflow-y:auto; overflow-x:hidden; scroll-behavior:auto; padding-right:4px; padding-bottom:6px; position:relative; border-radius:4px; transition:max-height 0.25s ease;">
+    <div id="floating-tp-content" class="star-teleprompter-text-body" style="font-size:16px; line-height:1.5; color:#ffffff;">
       <!-- Cloned from active question STAR script -->
     </div>
   </div>
@@ -3765,22 +3756,22 @@ window.addEventListener('unhandledrejection', function(event) {
     }
   };
 
-  // Pressure Mode Follow-up Question Generation (REQ-PASS-05 / D5 / D6)
+  // Pressure Mode & Resume Defense Follow-up Question Generation (REQ-PASS-05 / D5 / D6 / D9)
   window.generateFollowUpQuestion = function(mainAnswer, qData) {
     const text = (mainAnswer || "").trim();
     // D6: Metric number tied to an outcome or unit (not bare numbers like "Case 4" or "Item 2")
     const hasMetricNumber = /\b(?:\d+(?:\.\d+)?%|\$\d+(?:,\d+)*(?:\.\d+)?|\d+(?:\.\d+)?\s*(?:percent|x|times|hours?|days?|weeks?|months?|minutes?|seconds?|qps|rps|users?|clients?|customers?|tests?|nodes?|pts?|points?|k|m|b)\b|from\s+\d+\s+to\s+\d+)/i.test(text);
-    // D5: Check for "I/my" first. Only treat "we/our/team" as team language when no "I/my" is present
+    // D5 / D9: Check for "I/my" first. If team language ("we/our/team") is used with NO "I", probe ownership first (D9)
     const hasOwnershipI = /\b(i|my|i'm|i've|i'd|myself)\b/i.test(text);
     const hasWe = /\b(we|our|team)\b/i.test(text);
 
-    // 1. Missing metric
-    if (!hasMetricNumber) {
-      return "How did you measure that?";
-    }
-    // 2. Uses team language with NO first-person "I"
+    // 1. Uses team language with NO first-person "I" -> Probe individual ownership first (D9)
     if (!hasOwnershipI && hasWe) {
       return "What was your specific role?";
+    }
+    // 2. Missing metric -> Probe quantification
+    if (!hasMetricNumber) {
+      return "How did you measure that?";
     }
     // 3. A JD keyword missing
     const kws = (qData && qData.keywords) ? qData.keywords : [];
@@ -3925,7 +3916,7 @@ window.addEventListener('unhandledrejection', function(event) {
       category: "Technical Deep Dive",
       tag: "Answer–Why–Check",
       answerWhyCheck: {
-        answer: `Score 4/5 (Systematic Root-Cause Diagnosis). Isolate boundary condition mismatches in ${formatSkill(k0)} through deterministic stress tests.`,
+        answer: `Isolate boundary condition mismatches in ${formatSkill(k0)} through deterministic stress tests.`,
         why: `Reason 1: Uncalibrated assumptions distort output reliability under high load. Reason 2: Methodical step-by-step isolation eliminates recurrence.`,
         check: `Implement automated preventative assertions and benchmark against gold standard specifications.`
       },
@@ -3942,7 +3933,7 @@ window.addEventListener('unhandledrejection', function(event) {
       category: "Architecture & Systems",
       tag: "Answer–Why–Check",
       answerWhyCheck: {
-        answer: `Score 4/5 (Scalable Architecture Design). Establish deterministic validation checkpoints for ${formatSkill(k1)} balancing throughput against verification standards.`,
+        answer: `Establish deterministic validation checkpoints for ${formatSkill(k1)} balancing throughput against verification standards.`,
         why: `Reason 1: Automated pre-validation filters routine noise at scale. Reason 2: Expert human review is preserved for high-complexity edge cases.`,
         check: `Measure review turnaround latency against precision benchmarks across weekly cohorts.`
       },
@@ -3959,7 +3950,7 @@ window.addEventListener('unhandledrejection', function(event) {
       category: "Edge Cases & Data Integrity",
       tag: "STAR",
       answerWhyCheck: {
-        answer: `Score 4/5 (Data Integrity & Boundary Safeguards). Detect corrupted inputs in ${formatSkill(k2)} by isolating discrepancies against ground truth benchmarks.`,
+        answer: `Detect corrupted inputs in ${formatSkill(k2)} by isolating discrepancies against ground truth benchmarks.`,
         why: `Reason 1: Inconsistent boundary data compromises downstream pipeline accuracy. Reason 2: Rigorous filtering criteria prevent defect recurrence.`,
         check: `Run automated schema validation queries and audit edge cases against verified ground truth.`
       },
@@ -4035,7 +4026,7 @@ window.addEventListener('unhandledrejection', function(event) {
       category: "Workflow Optimization",
       tag: "Answer–Why–Check",
       answerWhyCheck: {
-        answer: `Score 4/5 (Pipeline Optimization Strategy). Profile review bottlenecks in ${formatSkill(k1)} and automate pre-validation checks.`,
+        answer: `Profile review bottlenecks in ${formatSkill(k1)} and automate pre-validation checks.`,
         why: `Reason 1: Pre-filtering routine criteria reduces turnaround time by 30%+. Reason 2: Clear rubric criteria eliminate subjective disputes.`,
         check: `Track turnaround speed and reviewer calibration metrics against historical baselines.`
       },
@@ -4677,18 +4668,22 @@ window.addEventListener('unhandledrejection', function(event) {
   };
 
   window.toggleHudSize = function() {
+    const hud = document.getElementById('floating-teleprompter-hud');
     const vp = document.getElementById('floating-tp-viewport');
     const btn = document.getElementById('hud-toggle-size-btn');
     const grid = document.querySelector('.active-cockpit-grid');
     if (!vp || !btn) return;
-    if (vp.style.maxHeight === '230px' || !vp.style.maxHeight) {
-      vp.style.maxHeight = '380px';
+    const isCompact = (vp.style.maxHeight === '115px' || !vp.style.maxHeight || vp.style.maxHeight === '230px');
+    if (isCompact) {
+      if (hud) hud.style.maxHeight = '420px';
+      vp.style.maxHeight = '280px';
       btn.innerText = '↕ Compact Eyeline';
-      if (grid) grid.style.marginTop = '380px';
+      if (grid) grid.style.marginTop = '390px';
     } else {
-      vp.style.maxHeight = '230px';
+      if (hud) hud.style.maxHeight = '240px';
+      vp.style.maxHeight = '115px';
       btn.innerText = '↕ Expand';
-      if (grid) grid.style.marginTop = '260px';
+      if (grid) grid.style.marginTop = '230px';
     }
   };
 
@@ -4722,24 +4717,29 @@ window.addEventListener('unhandledrejection', function(event) {
       hudNextBtn.innerHTML = isLast ? '<span>Finish</span> <span>➔</span>' : '<span>Next</span> <span>➔</span>';
     }
 
+    const isAWC = (qData && (qData.tag === 'Answer–Why–Check' || !!qData.answerWhyCheck));
+    const sec1Label = isAWC ? '1. Direct Answer (First 15s)' : '1. Opening Hook &amp; Scope (First 15s)';
+    const sec2Label = isAWC ? '2. Why: Technical Reasoning (30–45s)' : '2. Action &amp; Execution (30–45s)';
+    const sec3Label = isAWC ? '3. Check: Verification Standard (Final 15s)' : '3. Quantified Result (Final 15s)';
+
     targetContent.innerHTML = `
       <div class="tp-sec-hook" style="margin-bottom:8px; padding:10px 14px; background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25); border-left:4px solid #3b82f6; border-radius:6px; transition:all 0.25s ease;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <div style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.05em;">1. Opening Hook &amp; Scope (First 15s)</div>
+          <div style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.05em;">${sec1Label}</div>
           <span class="tp-pacing-indicator" style="font-size:9.5px; font-weight:800; background:#3b82f6; color:#ffffff; padding:1px 5px; border-radius:3px; text-transform:uppercase;">0–15s</span>
         </div>
         <div class="star-st-tp-text" style="color:#ffffff; font-size:16.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.st, parts.kwPool, false, true)}</div>
       </div>
       <div class="tp-sec-action" style="margin-bottom:8px; padding:10px 14px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-left:4px solid #10b981; border-radius:6px; transition:all 0.25s ease;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <div style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.05em;">2. Action &amp; Execution (30–45s)</div>
+          <div style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.05em;">${sec2Label}</div>
           <span class="tp-pacing-indicator" style="display:none; font-size:9.5px; font-weight:800; background:#10b981; color:#042f2e; padding:1px 5px; border-radius:3px; text-transform:uppercase;">30–45s</span>
         </div>
         <div class="star-a-tp-text" style="color:#ffffff; font-size:16.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.a, parts.kwPool, false, true)}</div>
       </div>
       <div class="tp-sec-result" style="margin-bottom:6px; padding:10px 14px; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-left:4px solid #f59e0b; border-radius:6px; transition:all 0.25s ease;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <div style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.05em;">3. Quantified Result (Final 15s)</div>
+          <div style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.05em;">${sec3Label}</div>
           <span class="tp-pacing-indicator" style="display:none; font-size:9.5px; font-weight:800; background:#f59e0b; color:#000000; padding:1px 5px; border-radius:3px; text-transform:uppercase;">Final 15s</span>
         </div>
         <div class="star-r-tp-text" style="color:#ffffff; font-size:16.5px; line-height:1.55;">${highlightJdKeywordsInHtml(parts.r, parts.kwPool, false, true)}</div>
@@ -4764,12 +4764,17 @@ window.addEventListener('unhandledrejection', function(event) {
     hud.style.display = 'block';
     window.resetTeleprompterScroll();
 
-    // Push down main cockpit grid so HUD does not overlap the questions / answer box (D2)
+    // Push down main cockpit grid so HUD does not overlap the questions / answer box (D2 / E1)
     const grid = document.querySelector('.active-cockpit-grid');
     if (grid) {
       grid.style.transition = 'margin-top 0.25s ease';
-      grid.style.marginTop = '260px';
+      grid.style.marginTop = '230px';
     }
+    if (hud) hud.style.maxHeight = '240px';
+    const vp = document.getElementById('floating-tp-viewport');
+    if (vp) vp.style.maxHeight = '115px';
+    const toggleBtn = document.getElementById('hud-toggle-size-btn');
+    if (toggleBtn) toggleBtn.innerText = '↕ Expand';
 
     // De-clutter viewport: collapse bulky inline practice script and clear pinned state so they don't stack (D1)
     window._scriptPinnedOpen = false;
@@ -5477,28 +5482,28 @@ ${recallLvl === 4 ? `
                 </div>
               ` : `
                 <!-- Full Script with High-Contrast Phase Cards -->
-                <!-- Phase 1: Opening Hook & Scope -->
+                <!-- Phase 1: Opening Hook & Scope or Direct Answer -->
                 <div class="tp-sec-hook" style="margin-bottom:8px; padding:10px 14px; background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.2); border-left:4px solid #3b82f6; border-radius:6px; transition:all 0.25s ease;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                    <span style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em;">1. Opening Hook &amp; Scope (First 15s)</span>
+                    <span style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.04em;">${(qData && (qData.tag === 'Answer–Why–Check' || !!qData.answerWhyCheck)) ? '1. Direct Answer (First 15s)' : '1. Opening Hook &amp; Scope (First 15s)'}</span>
                     <span class="tp-pacing-indicator" style="font-size:9.5px; font-weight:800; background:#3b82f6; color:#ffffff; padding:1px 5px; border-radius:3px; text-transform:uppercase;">0–15s</span>
                   </div>
                   <div class="star-st-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starSituationTask, kwPool, false, true)}</div>
                 </div>
 
-                <!-- Phase 2: Action & Execution -->
+                <!-- Phase 2: Action & Execution or Technical Reasoning -->
                 <div class="tp-sec-action" style="margin-bottom:8px; padding:10px 14px; background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-left:4px solid #10b981; border-radius:6px; transition:all 0.25s ease;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                    <span style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em;">2. Action &amp; Execution (30–45s)</span>
+                    <span style="font-size:11px; font-weight:800; color:#6ee7b7; text-transform:uppercase; letter-spacing:0.04em;">${(qData && (qData.tag === 'Answer–Why–Check' || !!qData.answerWhyCheck)) ? '2. Why: Technical Reasoning (30–45s)' : '2. Action &amp; Execution (30–45s)'}</span>
                     <span class="tp-pacing-indicator" style="display:none; font-size:9.5px; font-weight:800; background:#10b981; color:#042f2e; padding:1px 5px; border-radius:3px; text-transform:uppercase;">30–45s</span>
                   </div>
                   <div class="star-a-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starAction, kwPool, false, true)}</div>
                 </div>
 
-                <!-- Phase 3: Quantified Result -->
+                <!-- Phase 3: Quantified Result or Verification Standard -->
                 <div class="tp-sec-result" style="margin-bottom:6px; padding:10px 14px; background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.2); border-left:4px solid #f59e0b; border-radius:6px; transition:all 0.25s ease;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                    <span style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em;">3. Quantified Result (Final 15s)</span>
+                    <span style="font-size:11px; font-weight:800; color:#fcd34d; text-transform:uppercase; letter-spacing:0.04em;">${(qData && (qData.tag === 'Answer–Why–Check' || !!qData.answerWhyCheck)) ? '3. Check: Verification Standard (Final 15s)' : '3. Quantified Result (Final 15s)'}</span>
                     <span class="tp-pacing-indicator" style="display:none; font-size:9.5px; font-weight:800; background:#f59e0b; color:#000000; padding:1px 5px; border-radius:3px; text-transform:uppercase;">Final 15s</span>
                   </div>
                   <div class="star-r-tp-text" style="color:#ffffff;">${highlightJdKeywordsInHtml(starResult, kwPool, false, true)}</div>
@@ -6966,9 +6971,16 @@ ${recallLvl === 4 ? `
         resultsView.style.display = 'block';
         const warmRes = validResults[0] || {};
         const spokenWordCount = warmRes.wordCount || 0;
-        const micStatus = isTextMode ? 'Typed Mode Verified (Microphone Skipped)' : 'Microphone Verified (Audio & transcription active)';
-        const camStatus = cameraActive ? 'Camera Connected & Verified' : 'Camera Optional / Ready';
-        const paceStatus = spokenWordCount > 10 ? 'Pacing & Cadence Verified' : 'Input Received';
+        const micTitle = isTextMode ? 'Not tested (typed mode)' : 'Mic OK';
+        const micStatus = isTextMode ? 'Microphone was skipped for typed simulation.' : 'Microphone verified (audio &amp; transcription active)';
+        const camTitle = isTextMode ? 'Not tested (typed mode)' : (cameraActive ? 'Camera OK' : 'Camera Optional');
+        const camStatus = isTextMode ? 'Camera was not requested for typed simulation.' : (cameraActive ? 'Camera connected &amp; verified' : 'Camera optional / ready');
+        const paceTitle = 'Pace OK';
+        const paceStatus = isTextMode ? `Typed input captured (${spokenWordCount} words)` : (spokenWordCount > 10 ? 'Pacing &amp; cadence verified' : 'Input received');
+        const coachPraise = isTextMode
+          ? 'Great low-stress delivery. Your typed input and simulator controls are working smoothly. You are ready for full practice drills!'
+          : 'Great low-stress delivery. Your audio and setup are verified and ready for full practice drills!';
+        const headerTitle = isTextMode ? 'Typed Input &amp; Setup Check Passed' : 'Device &amp; Setup Check Passed';
 
         resultsView.innerHTML = `
           <div style="background:var(--black); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:32px 24px; text-align:left; width:100%; max-width:800px; margin:0 auto; box-shadow:0 12px 48px rgba(0,0,0,0.5); box-sizing:border-box;">
@@ -6976,7 +6988,7 @@ ${recallLvl === 4 ? `
               <span style="font-size:32px;">🌱</span>
               <div>
                 <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:3px;">Warm-Up Complete</div>
-                <h2 style="color:white; font-size:24px; margin:0; font-weight:800;">Device &amp; Setup Check Passed</h2>
+                <h2 style="color:white; font-size:24px; margin:0; font-weight:800;">${headerTitle}</h2>
               </div>
             </div>
 
@@ -6984,18 +6996,18 @@ ${recallLvl === 4 ? `
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-bottom:24px;">
               <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px;">
                 <div style="font-size:11px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">🎤 Microphone &amp; Audio</div>
-                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">Mic OK</div>
+                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">${micTitle}</div>
                 <div style="font-size:12px; color:#9ca3af;">${micStatus}</div>
               </div>
               <div style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.3); border-radius:10px; padding:16px;">
                 <div style="font-size:11px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">📷 Camera &amp; Framing</div>
-                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">Camera OK</div>
+                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">${camTitle}</div>
                 <div style="font-size:12px; color:#9ca3af;">${camStatus}</div>
               </div>
               <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:16px;">
                 <div style="font-size:11px; font-weight:800; color:#fbbf24; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">⚡ Delivery &amp; Cadence</div>
-                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">Pace OK</div>
-                <div style="font-size:12px; color:#9ca3af;">${paceStatus} (${spokenWordCount} words captured)</div>
+                <div style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">${paceTitle}</div>
+                <div style="font-size:12px; color:#9ca3af;">${paceStatus}</div>
               </div>
             </div>
 
@@ -7004,7 +7016,7 @@ ${recallLvl === 4 ? `
               <div style="font-size:11px; font-weight:800; color:#93c5fd; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">Your Warm-Up Response:</div>
               <div style="font-size:13.5px; color:#e5e7eb; font-style:italic; line-height:1.5;">"${escapeHtml(warmRes.answer || 'Warm-up drill completed.')}"</div>
               <div style="margin-top:10px; font-size:12.5px; color:#34d399; font-weight:700;">
-                ✓ Coach Gain says: Great low-stress delivery. Your audio and setup are verified and ready for full practice drills!
+                ✓ Coach Gain says: ${coachPraise}
               </div>
             </div>
 
@@ -7891,22 +7903,22 @@ ${recallLvl === 4 ? `
   }
 
   
-  // Pressure Mode Follow-up Question Generation (REQ-PASS-05 / D5 / D6)
+  // Pressure Mode & Resume Defense Follow-up Question Generation (REQ-PASS-05 / D5 / D6 / D9)
   window.generateFollowUpQuestion = function(mainAnswer, qData) {
     const text = (mainAnswer || "").trim();
     // D6: Metric number tied to an outcome or unit (not bare numbers like "Case 4" or "Item 2")
     const hasMetricNumber = /\b(?:\d+(?:\.\d+)?%|\$\d+(?:,\d+)*(?:\.\d+)?|\d+(?:\.\d+)?\s*(?:percent|x|times|hours?|days?|weeks?|months?|minutes?|seconds?|qps|rps|users?|clients?|customers?|tests?|nodes?|pts?|points?|k|m|b)\b|from\s+\d+\s+to\s+\d+)/i.test(text);
-    // D5: Check for "I/my" first. Only treat "we/our/team" as team language when no "I/my" is present
+    // D5 / D9: Check for "I/my" first. If team language ("we/our/team") is used with NO "I", probe ownership first (D9)
     const hasOwnershipI = /\b(i|my|i'm|i've|i'd|myself)\b/i.test(text);
     const hasWe = /\b(we|our|team)\b/i.test(text);
 
-    // 1. Missing metric
-    if (!hasMetricNumber) {
-      return "How did you measure that?";
-    }
-    // 2. Uses team language with NO first-person "I"
+    // 1. Uses team language with NO first-person "I" -> Probe individual ownership first (D9)
     if (!hasOwnershipI && hasWe) {
       return "What was your specific role?";
+    }
+    // 2. Missing metric -> Probe quantification
+    if (!hasMetricNumber) {
+      return "How did you measure that?";
     }
     // 3. A JD keyword missing
     const kws = (qData && qData.keywords) ? qData.keywords : [];
