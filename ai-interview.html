@@ -4153,7 +4153,7 @@ window.addEventListener('unhandledrejection', function(event) {
       tag: "Answer–Why–Check",
       answerWhyCheck: {
         answer: `Profile review bottlenecks in ${formatSkill(k1)} and automate pre-validation checks.`,
-        why: `Reason 1: Pre-filtering routine criteria reduces turnaround time by 30%+. Reason 2: Clear rubric criteria eliminate subjective disputes.`,
+        why: `Reason 1: Pre-filtering routine criteria [Measurable Result: e.g. reduces turnaround time by 30%+]. Reason 2: Clear rubric criteria eliminate subjective disputes.`,
         check: `Track turnaround speed and reviewer calibration metrics against historical baselines.`
       },
       answer: `I would profile the existing pipeline to identify review bottlenecks, automate pre-validation checks for routine criteria involving ${formatSkill(k1)}, and focus expert human review on high-complexity boundary cases.`,
@@ -5032,23 +5032,31 @@ window.addEventListener('unhandledrejection', function(event) {
     // Exclude Education section from title scanning so academic degrees (e.g. M.S. in Data Science) are not misidentified as job titles
     const textWithoutEducation = resumeText.replace(/(?:^|\n)\s*(?:education|academic background|degrees?|educational background|academics)\b[\s\S]*?(?=(?:\n\s*(?:experience|employment|work history|professional background|projects|technical skills|skills)\b)|$)/gi, '\n');
     const matchedRoleItems = [];
-    canonicalTitles.forEach(title => {
-      const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const re = new RegExp('(?:^|[^a-z0-9])(' + escaped + ')(?:$|[^a-z0-9])', 'gi');
-      let m;
-      while ((m = re.exec(textWithoutEducation)) !== null) {
-        matchedRoleItems.push({ title, index: m.index });
-      }
-    });
-    // Fallback to full resume text ONLY if no titles matched in work experience
-    if (matchedRoleItems.length === 0) {
+    // Scan line-by-line: skip action bullet lines so action verbs (e.g. "Architected") are not misidentified as job titles like "Systems Architect"
+    const lines = textWithoutEducation.split('\n');
+    lines.forEach((line, lineIdx) => {
+      const trimmed = line.trim();
+      if (!trimmed || /^[•●▪*·\-\d.)]/.test(trimmed)) return;
       canonicalTitles.forEach(title => {
         const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const re = new RegExp('(?:^|[^a-z0-9])(' + escaped + ')(?:$|[^a-z0-9])', 'gi');
-        let m;
-        while ((m = re.exec(resumeText)) !== null) {
-          matchedRoleItems.push({ title, index: m.index });
+        const re = new RegExp('(?:^|[^a-z0-9])(' + escaped + ')(?:$|[^a-z0-9])', 'i');
+        if (re.test(trimmed)) {
+          matchedRoleItems.push({ title, index: lineIdx });
         }
+      });
+    });
+    // Fallback to non-bullet lines across full resume text ONLY if no titles matched in work experience
+    if (matchedRoleItems.length === 0) {
+      resumeText.split('\n').forEach((line, lineIdx) => {
+        const trimmed = line.trim();
+        if (!trimmed || /^[•●▪*·\-\d.)]/.test(trimmed)) return;
+        canonicalTitles.forEach(title => {
+          const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const re = new RegExp('(?:^|[^a-z0-9])(' + escaped + ')(?:$|[^a-z0-9])', 'i');
+          if (re.test(trimmed)) {
+            matchedRoleItems.push({ title, index: lineIdx });
+          }
+        });
       });
     }
 
@@ -5387,7 +5395,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     } else if (qPromptLower.includes("most recent role") || qPromptLower.includes("primarily responsible for day to day") || qPromptLower.includes("tell me about your background")) {
       starSituationTask = `In my recent work as **${resolvedRole}** at **${resolvedCompany}**, my primary ownership was leading deliverables around **${primarySkill}** and **${secondarySkill}**, ensuring production quality across our core pipeline.`;
       starAction = `Day to day, the specific action I took was designing standard verification workflows using **${primarySkill}**, isolating technical bottlenecks early, and collaborating across teams on core milestones.`;
-      starResult = `As a direct outcome, we achieved **${resolvedMetric}**, maintaining high rubric accuracy and setting the benchmark standard for our deliverables.`;
+      starResult = `As a direct outcome, I achieved **${resolvedMetric}**, maintaining high rubric accuracy and setting the benchmark standard across deliverables.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-11" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 11 (1:50): Mercor AI Interview Tips — Defending Your Resume &amp; JD Skills</a> &amp; <a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a>`;
       primaryVideoHref = "/video-guides.html#lesson-11";
     } else if (qPromptLower.includes("specific project or achievement") || qPromptLower.includes("measurable result") || qPromptLower.includes("balance accuracy and speed")) {
@@ -5441,7 +5449,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     } else if (qPromptLower.includes("tight deadlines") || qPromptLower.includes("high accuracy requirements") || qPromptLower.includes("prioritize your verification")) {
       starSituationTask = `During a mission-critical release in my work as **${resolvedRole}** under tight deadlines, maintaining zero defect escapes was mandatory.`;
       starAction = `I triaged verification paths by risk severity, applied non-negotiable checks to **${primarySkill}** using **${secondarySkill}**, and coordinated closely with stakeholders at **${resolvedCompany}**.`;
-      starResult = `We delivered all target milestones on schedule, achieving **${resolvedMetric}** with zero production defects.`;
+      starResult = `I delivered all target milestones on schedule, achieving **${resolvedMetric}** [Measurable Result: e.g. with zero production defects].`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a> &amp; <a href="/video-guides.html#lesson-01" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 01 (1:07): Structuring STAR &amp; Keyword Density</a>`;
       primaryVideoHref = "/video-guides.html#lesson-10";
     } else if (qData && qData.answer && qData.answer.length > 20) {
@@ -5744,26 +5752,38 @@ ${recallLvl === 4 ? `
 
           ${beforeBlockHtml}
 
-          <div style="background:#f0fdf4; border:1px solid #86efac; border-left:5px solid #10b981; border-radius:8px; padding:14px 16px;">
-            <div style="font-size:11.5px; font-weight:900; color:#065f46; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">
-              🚀 AFTER — High-Scoring STAR + Job Description Script (Practice Aloud)
-            </div>
+          ${(() => {
+            const isAwc = (qItem.tag === 'Answer–Why–Check' || qItem.category === 'AI Evaluator' || parts.isAwc);
+            const afterHeading = isAwc ? '🚀 AFTER — High-Scoring Answer–Why–Check Script (Practice Aloud)' : '🚀 AFTER — High-Scoring STAR + Job Description Script (Practice Aloud)';
+            const l1 = isAwc ? 'A &bull; ANSWER (YOUR VERDICT FIRST)' : 'S / T &bull; FIRST-SENTENCE HOOK';
+            const l2 = isAwc ? 'W &bull; WHY (2 REASONS FROM YOUR FIELD)' : 'A &bull; ACTION &amp; SIGNAL VERBS';
+            const l3 = isAwc ? 'C &bull; CHECK (HOW TO VERIFY &amp; MEASURE)' : 'R &bull; MEASURABLE IMPACT';
+            const bg1 = isAwc ? 'background:#e0f2fe; color:#0369a1;' : 'background:#dbeafe; color:#1e40af;';
+            const bg2 = isAwc ? 'background:#ede9fe; color:#6d28d9;' : 'background:#d1fae5; color:#065f46;';
+            const bg3 = isAwc ? 'background:#d1fae5; color:#065f46;' : 'background:#fef3c7; color:#92400e;';
+            return `
+              <div style="background:#f0fdf4; border:1px solid #86efac; border-left:5px solid #10b981; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:11.5px; font-weight:900; color:#065f46; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">
+                  ${afterHeading}
+                </div>
 
-            <div style="margin-bottom:10px; font-size:13.5px; color:#111827; line-height:1.65;">
-              <span style="display:inline-block; background:#dbeafe; color:#1e40af; font-size:10.5px; font-weight:900; padding:2px 8px; border-radius:4px; margin-right:6px; letter-spacing:0.04em;">S / T &bull; FIRST-SENTENCE HOOK</span>
-              ${stHtml}
-            </div>
+                <div style="margin-bottom:10px; font-size:13.5px; color:#111827; line-height:1.65;">
+                  <span style="display:inline-block; ${bg1} font-size:10.5px; font-weight:900; padding:2px 8px; border-radius:4px; margin-right:6px; letter-spacing:0.04em;">${l1}</span>
+                  ${stHtml}
+                </div>
 
-            <div style="margin-bottom:10px; font-size:13.5px; color:#111827; line-height:1.65;">
-              <span style="display:inline-block; background:#d1fae5; color:#065f46; font-size:10.5px; font-weight:900; padding:2px 8px; border-radius:4px; margin-right:6px; letter-spacing:0.04em;">A &bull; ACTION &amp; SIGNAL VERBS</span>
-              ${aHtml}
-            </div>
+                <div style="margin-bottom:10px; font-size:13.5px; color:#111827; line-height:1.65;">
+                  <span style="display:inline-block; ${bg2} font-size:10.5px; font-weight:900; padding:2px 8px; border-radius:4px; margin-right:6px; letter-spacing:0.04em;">${l2}</span>
+                  ${aHtml}
+                </div>
 
-            <div style="font-size:13.5px; color:#111827; line-height:1.65;">
-              <span style="display:inline-block; background:#fef3c7; color:#92400e; font-size:10.5px; font-weight:900; padding:2px 8px; border-radius:4px; margin-right:6px; letter-spacing:0.04em;">R &bull; QUANTIFIED RESULT</span>
-              ${rHtml}
-            </div>
-          </div>
+                <div style="font-size:13.5px; color:#111827; line-height:1.65;">
+                  <span style="display:inline-block; ${bg3} font-size:10.5px; font-weight:900; padding:2px 8px; border-radius:4px; margin-right:6px; letter-spacing:0.04em;">${l3}</span>
+                  ${rHtml}
+                </div>
+              </div>
+            `;
+          })()}
         </div>
       `;
     }).join('');
@@ -6673,9 +6693,10 @@ ${recallLvl === 4 ? `
       const isGuided = window._isGuidedPlan || (localStorage.getItem('tgt_guided_plan') && localStorage.getItem('tgt_guided_plan') !== '0');
       if (isGuided) {
         let stepNum = window._guidedStep || parseInt(localStorage.getItem('tgt_guided_plan') || '1', 10);
-        if (simMode === 'warmup') stepNum = 1;
-        else if (simMode === 'practice') stepNum = 3;
-        else if (simMode === 'passcheck') stepNum = 4;
+        const activeMode = window.currentSimMode || localStorage.getItem('tgt_sim_mode') || 'practice';
+        if (activeMode === 'warmup') stepNum = 1;
+        else if (activeMode === 'practice') stepNum = 3;
+        else if (activeMode === 'passcheck') stepNum = 4;
         const stepLabels = {
           1: "Step 1 of 4 (Warm-Up Drill)",
           2: "Step 2 of 4 (Flashcards Deck)",
