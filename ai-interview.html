@@ -345,22 +345,27 @@ window.addEventListener('unhandledrejection', function(event) {
       </div>
     </div>
 
-    <!-- Interviewer Voice (Default shown immediately, no 'Loading voices...') -->
+    <!-- Interviewer Voice (Default shown immediately, voice preview & reload persistence) -->
     <div style="margin-bottom:16px;">
       <label for="voice-select" style="display:block; font-size:11.5px; color:#9ca3af; margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Interviewer Voice</label>
-      <div style="position:relative;">
-        <select id="voice-select" style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:#0b0f17; color:white; font-size:14px; appearance:none; cursor:pointer;">
-          <option value="default" selected>Coach Gain — Natural English (Default)</option>
-        </select>
-        <span style="position:absolute; right:14px; top:11px; color:#aaa; pointer-events:none; font-size:11px;">▼</span>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <div style="position:relative; flex:1;">
+          <select id="voice-select" onchange="window.onVoiceSelected(this)" style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:#0b0f17; color:white; font-size:13.5px; appearance:none; cursor:pointer;">
+            <option value="default" selected>Coach Gain — Natural English (Default)</option>
+          </select>
+          <span style="position:absolute; right:14px; top:11px; color:#aaa; pointer-events:none; font-size:11px;">▼</span>
+        </div>
+        <button type="button" id="preview-voice-btn" onclick="window.previewInterviewerVoice()" style="background:rgba(16,185,129,0.18); border:1px solid #10b981; color:#6ee7b7; border-radius:8px; padding:10px 14px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;" title="Preview this voice aloud">
+          <span>▶</span> <span>Preview</span>
+        </button>
       </div>
     </div>
 
-    <!-- Teleprompter Toggle -->
+    <!-- Teleprompter Toggle (Saves state and auto-opens CoPilot practice script) -->
     <div style="margin-bottom:16px;">
       <label style="display:flex; align-items:center; gap:12px; cursor:pointer; padding:10px 12px; background:rgba(255,255,255,0.03); border-radius:8px; border:1px solid rgba(255,255,255,0.08);">
-        <input type="checkbox" id="toggle-teleprompter" style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;">
-        <span style="font-size:13.5px; color:white; font-weight:600;">Enable Teleprompter (Show ideal answer outline)</span>
+        <input type="checkbox" id="toggle-teleprompter" onchange="window.onTeleprompterCheckboxChange(this)" style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;">
+        <span style="font-size:13.5px; color:white; font-weight:600;">Enable Practice Script by default (CoPilot outlines open automatically)</span>
       </label>
     </div>
 
@@ -377,7 +382,10 @@ window.addEventListener('unhandledrejection', function(event) {
         <div id="interview-jd-drawer">
           <div style="font-size:11.5px; color:#9ca3af; margin-bottom:6px;">Active Job Description for this role (or paste a custom Job Description to extract its keywords):</div>
           <textarea id="interview-jd-textarea" placeholder="Paste the full Job Description here to extract role-specific keywords..." style="width:100%; min-height:75px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:8px; font-size:12px; font-family:inherit; box-sizing:border-box; resize:vertical; margin-bottom:8px;"></textarea>
-          <button type="button" onclick="window.saveCustomJobDescription()" style="background:#2563eb; color:#fff; border:none; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:700; cursor:pointer;">✓ Update Job Description Keywords</button>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" onclick="window.saveCustomJobDescription()" style="background:#2563eb; color:#fff; border:none; border-radius:6px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer;">✓ Update Job Description Keywords</button>
+            <button type="button" onclick="window.resetCustomJobDescription()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#d1d5db; border-radius:6px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer;">↺ Reset to Role Defaults</button>
+          </div>
         </div>
       </div>
     </details>
@@ -595,7 +603,7 @@ window.addEventListener('unhandledrejection', function(event) {
         </p>
       </div>
 
-      <!-- Lead Magnet Callout: Customized STAR PDF Study Guide Included -->
+      <!-- Lead Magnet Callout: Customized STAR PDF Study Guide Included (Direct Download & Explicit Consent) -->
       <div style="max-width:560px; margin:0 auto 14px auto; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:10px; padding:14px; font-size:12.5px; color:#d1fae5; text-align:left;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
           <span style="font-size:20px; flex-shrink:0;">📄</span>
@@ -604,14 +612,20 @@ window.addEventListener('unhandledrejection', function(event) {
           </div>
         </div>
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
-          <input type="email" id="screen1-lead-email" placeholder="Enter your email to receive playbook &amp; roles..." style="flex:1; min-width:220px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:8px 12px; color:#ffffff; font-size:13px; outline:none;" oninput="localStorage.setItem('candidateEmail', this.value)" />
+          <input type="email" id="screen1-lead-email" placeholder="Enter your email (optional for study plan &amp; role alerts)..." style="flex:1; min-width:220px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:8px 12px; color:#ffffff; font-size:13px; outline:none;" oninput="localStorage.setItem('candidateEmail', this.value)" />
           <button type="button" onclick="window.saveScreen1LeadEmail()" style="background:#10b981; color:#042f2e; border:none; border-radius:6px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; white-space:nowrap;">Get Playbook PDF</button>
         </div>
-        <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; margin-top:8px; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
-          <input type="checkbox" id="screen1-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
-          <span>Email me a 7-day practice plan.</span>
-        </label>
-        <div id="screen1-lead-success" style="display:none; color:#34d399; font-size:12px; font-weight:700; margin-top:8px;">✓ Email saved! Your tailored debrief, STAR playbook, and referral links will be delivered here.</div>
+        <div style="display:flex; flex-direction:column; gap:2px; margin-top:8px;">
+          <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+            <input type="checkbox" id="screen1-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
+            <span>Email me a 7-day practice plan.</span>
+          </label>
+          <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+            <input type="checkbox" id="screen1-friday-alerts-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
+            <span>Email me new matching roles each Friday.</span>
+          </label>
+        </div>
+        <div id="screen1-lead-success" style="display:none; color:#34d399; font-size:12px; font-weight:700; margin-top:8px;"></div>
       </div>
 
       <!-- Resume Defense Bullet Error Banner (REQ-PASS-02 / Bug 1) -->
@@ -621,6 +635,20 @@ window.addEventListener('unhandledrejection', function(event) {
         </div>
         <div style="font-size:12.5px; color:#fecaca; line-height:1.45;">
           We couldn't detect distinct bullet points in your saved resume. PDF formatting may have flattened the text. Please <a href="/resume-ats-guide" style="color:#ffffff; font-weight:800; text-decoration:underline;">paste your resume bullets in the ATS Scanner</a> to run Resume Defense.
+        </div>
+      </div>
+
+      <!-- Guided 4-Step Prep Plan Flow CTA -->
+      <div style="max-width:560px; margin:0 auto 14px auto; background:linear-gradient(135deg, rgba(16,185,129,0.18) 0%, rgba(37,99,235,0.14) 100%); border:1.5px solid #10b981; border-radius:12px; padding:16px 18px; text-align:left; box-shadow:0 8px 24px rgba(0,0,0,0.35);">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <div style="font-size:11px; font-weight:900; color:#34d399; text-transform:uppercase; letter-spacing:0.06em;">Recommended Guided Flow</div>
+            <h3 style="margin:2px 0 4px; font-size:16.5px; font-weight:800; color:#ffffff;">Start My Prep Plan (4-Step Guided Sequence)</h3>
+            <div style="font-size:12px; color:#d1fae5;">Runs in order: <strong>🌱 Warm-Up</strong> &rarr; <strong>🃏 Flashcards</strong> &rarr; <strong>💡 CoPilot</strong> &rarr; <strong>🎯 Pass Check</strong></div>
+          </div>
+          <button type="button" onclick="window.startGuidedPrepPlan()" style="background:#10b981; color:#042f2e; border:none; border-radius:8px; padding:10px 20px; font-size:13.5px; font-weight:900; cursor:pointer; box-shadow:0 4px 12px rgba(16,185,129,0.35); display:inline-flex; align-items:center; gap:6px; white-space:nowrap;">
+            <span>🚀</span> <span>Start Prep Plan</span> <span>➔</span>
+          </button>
         </div>
       </div>
 
@@ -796,6 +824,14 @@ window.addEventListener('unhandledrejection', function(event) {
 
       <!-- 3. Primary CTA: [Start Interview] + Single Inline Microcopy + Secondary Link -->
       <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin: 18px 0 20px;">
+        <!-- Platform Retake Stakes Callout (Mercor official rule) -->
+        <div style="max-width:540px; margin:0 auto 10px; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; padding:10px 14px; font-size:12px; color:#fde68a; line-height:1.45; text-align:left; display:flex; align-items:flex-start; gap:8px;">
+          <span style="font-size:15px; flex-shrink:0;">💡</span>
+          <div>
+            <strong>Why practice here?</strong> Mercor gives you only 3 retakes, and hiring managers see how many times you retook the interview (<a href="https://talent.docs.mercor.com/how-to/prepare-for-ai-interview" target="_blank" rel="noopener noreferrer" style="color:#6ee7b7; font-weight:700; text-decoration:underline;">verified in Mercor's official guide</a>). Practice your reps here before your one real shot.
+          </div>
+        </div>
+
         <button class="btn-sim" id="start-btn" style="padding:15px 44px; font-size:16.5px; min-width:260px; font-weight:800; box-shadow:0 0 24px rgba(16,185,129,0.35);">
           Start Interview
         </button>
@@ -2113,6 +2149,9 @@ window.addEventListener('unhandledrejection', function(event) {
 
   window.setInterviewMode = function(typed) {
     isTextMode = Boolean(typed);
+    try {
+      localStorage.setItem('interviewTextMode', isTextMode ? 'true' : 'false');
+    } catch(e) {}
     if (isTextMode) {
       trackMockEvent('mock_text_mode', { role: localStorage.getItem('atsRole') || currentDomain });
     }
@@ -2136,6 +2175,13 @@ window.addEventListener('unhandledrejection', function(event) {
       }
     }
   };
+
+  // Restore saved Answer Mode from localStorage on initial load
+  try {
+    if (localStorage.getItem('interviewTextMode') === 'true') {
+      isTextMode = true;
+    }
+  } catch(e) {}
 
   window.openInterviewSettings = function(screenName) {
     const modal = document.getElementById('settings-modal');
@@ -3485,15 +3531,47 @@ window.addEventListener('unhandledrejection', function(event) {
     window.refreshJobDescriptionUI(activeRole, currentDomain);
   };
 
+  window.resetCustomJobDescription = function() {
+    const activeRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : (localStorage.getItem('atsRole') || 'Senior Python / ML Evaluator');
+    try {
+      localStorage.removeItem('customJD_' + activeRole.toLowerCase());
+      localStorage.removeItem('customJD_active');
+    } catch(e) {}
+    const ta = document.getElementById('interview-jd-textarea');
+    if (ta) ta.value = '';
+    window.refreshJobDescriptionUI(activeRole, currentDomain);
+  };
+
   setTimeout(() => {
     const initRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : (atsRole || 'Senior Python / ML Evaluator');
     window.refreshJobDescriptionUI(initRole, currentDomain);
   }, 60);
 
-  let teleprompterEnabled = false;
-  document.getElementById('toggle-teleprompter').addEventListener('change', (e) => {
-    teleprompterEnabled = e.target.checked;
-  });
+  let teleprompterEnabled = (localStorage.getItem('teleprompterEnabled') === 'true');
+  const tpCheckboxEl = document.getElementById('toggle-teleprompter');
+  if (tpCheckboxEl) {
+    tpCheckboxEl.checked = teleprompterEnabled;
+  }
+
+  window.onTeleprompterCheckboxChange = function(cb) {
+    teleprompterEnabled = Boolean(cb && cb.checked);
+    try {
+      localStorage.setItem('teleprompterEnabled', teleprompterEnabled ? 'true' : 'false');
+    } catch(e) {}
+    if (teleprompterEnabled) {
+      window._scriptPinnedOpen = true;
+      if (interviewStarted && !interviewCompleted) {
+        const liveTpSlot = document.getElementById('live-teleprompter-card-slot');
+        if (liveTpSlot) liveTpSlot.style.display = 'block';
+      }
+    }
+  };
+
+  if (tpCheckboxEl) {
+    tpCheckboxEl.addEventListener('change', (e) => {
+      window.onTeleprompterCheckboxChange(e.target);
+    });
+  }
 
   // Filter voices: always keep default voice option visible immediately (no "Loading voices...")
   let availableVoices = [];
@@ -3520,14 +3598,45 @@ window.addEventListener('unhandledrejection', function(event) {
     if (availableVoices.length === filtered.length) return;
     availableVoices = filtered;
 
-    voiceSelect.innerHTML = '<option value="default" selected>Coach Gain — Natural English (Default)</option>';
+    const savedVoiceName = localStorage.getItem('selectedInterviewerVoiceName') || '';
+    voiceSelect.innerHTML = '<option value="default">Coach Gain — Natural English (Default)</option>';
+    let selectedSet = false;
     availableVoices.forEach((v, i) => {
       const option = document.createElement('option');
       option.textContent = v.name + " (" + v.lang + ")";
       option.value = String(i);
+      if (savedVoiceName && v.name === savedVoiceName) {
+        option.selected = true;
+        selectedSet = true;
+      }
       voiceSelect.appendChild(option);
     });
+    if (!selectedSet) {
+      voiceSelect.options[0].selected = true;
+    }
   }
+
+  window.onVoiceSelected = function(sel) {
+    _lockedSessionVoice = null;
+    const idx = parseInt(sel.value, 10);
+    if (!isNaN(idx) && availableVoices[idx]) {
+      _lockedSessionVoice = availableVoices[idx];
+      localStorage.setItem('selectedInterviewerVoiceName', availableVoices[idx].name);
+    } else {
+      localStorage.removeItem('selectedInterviewerVoiceName');
+    }
+  };
+
+  window.previewInterviewerVoice = function() {
+    if (typeof synth === 'undefined') return;
+    synth.cancel();
+    const voice = window.getLockedSessionVoice();
+    const u = new SpeechSynthesisUtterance("Hi, I'm Coach Gain. Let's begin your interview practice.");
+    if (voice) u.voice = voice;
+    u.rate = 0.92;
+    u.pitch = 0.98;
+    synth.speak(u);
+  };
 
   document.addEventListener('click', populateVoiceList);
   document.addEventListener('touchstart', populateVoiceList);
@@ -4170,6 +4279,14 @@ window.addEventListener('unhandledrejection', function(event) {
       const selectedIndex = parseInt(voiceSelect.value, 10);
       if (!isNaN(selectedIndex) && availableVoices[selectedIndex]) {
         _lockedSessionVoice = availableVoices[selectedIndex];
+        return _lockedSessionVoice;
+      }
+    }
+    const savedName = localStorage.getItem('selectedInterviewerVoiceName');
+    if (savedName && voices.length > 0) {
+      const match = voices.find(v => v.name === savedName);
+      if (match) {
+        _lockedSessionVoice = match;
         return _lockedSessionVoice;
       }
     }
@@ -6552,7 +6669,7 @@ ${recallLvl === 4 ? `
         }
       } else {
         liveTpSlot.innerHTML = buildSuggestedStarResponse(qData, currentQ, '');
-        if (window._scriptPinnedOpen || liveTpSlot.style.display === 'block') {
+        if (window._scriptPinnedOpen || teleprompterEnabled || liveTpSlot.style.display === 'block') {
           liveTpSlot.style.display = 'block';
           if (tpBtnText) tpBtnText.innerHTML = '✕ Close Practice Script';
           if (tpBtn) {
@@ -7265,8 +7382,18 @@ ${recallLvl === 4 ? `
                   <div style="font-size:11px; color:#9ca3af; margin-top:4px; font-style:italic;">Practice benchmark, not a prediction from Mercor or micro1.</div>
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftrainaitogain.com%2Fai-interview" target="_blank" rel="noopener noreferrer" style="background:#0a66c2; color:#ffffff; font-size:12px; font-weight:800; padding:8px 14px; border-radius:6px; text-decoration:none; display:inline-flex; align-items:center; gap:5px;" title="Share practice benchmark on LinkedIn"><span>💼</span> Share on LinkedIn</a>
                   <a href="/readiness-checklist#day-of-checklist" class="btn btn-secondary" style="font-size:12px; padding:8px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">📋 Day-Of Checklist</a>
                   <a href="/apply" class="btn btn-primary" style="font-size:12px; padding:8px 16px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#10b981; color:#042f2e; font-weight:800;">Apply with Pass Check ✓ ➔</a>
+                </div>
+              </div>
+              <div style="margin-top:12px; padding:10px 14px; background:rgba(0,0,0,0.3); border-radius:8px; border:1px solid rgba(16,185,129,0.35); font-size:12px; color:#d1fae5; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                <div>
+                  <strong>🎯 Final Step Before Real Screenings:</strong> Do the official free practice dress rehearsal.
+                </div>
+                <div style="display:inline-flex; gap:8px; flex-wrap:wrap;">
+                  <a href="https://t.mercor.com/wbPMF" target="_blank" rel="noopener noreferrer" style="background:#10b981; color:#042f2e; font-size:11.5px; font-weight:800; padding:4px 10px; border-radius:4px; text-decoration:none;">Mercor Practice Interview ➔</a>
+                  <a href="https://www.micro1.ai/ai-interview-guide" target="_blank" rel="noopener noreferrer" style="background:rgba(255,255,255,0.08); color:#ffffff; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:4px; text-decoration:none;">micro1 Prep Guide ➔</a>
                 </div>
               </div>
             </div>
@@ -7340,10 +7467,16 @@ ${recallLvl === 4 ? `
                   <span>Send My Playbook ➔</span>
                 </button>
               </div>
-              <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
-                <input type="checkbox" id="lead-magnet-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
-                <span>Email me a 7-day practice plan.</span>
-              </label>
+              <div style="display:flex; flex-direction:column; gap:2px;">
+                <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+                  <input type="checkbox" id="lead-magnet-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
+                  <span>Email me a 7-day practice plan.</span>
+                </label>
+                <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:#d1fae5; cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+                  <input type="checkbox" id="lead-magnet-friday-alerts-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
+                  <span>Email me new matching roles each Friday.</span>
+                </label>
+              </div>
             </form>
             <div id="lead-magnet-success" style="display:none; color:#34d399; font-weight:700; font-size:13px; margin-top:10px;">
               ✓ Success! Your STAR Playbook and partner referral links have been queued. You can also <a href="/apply" style="color:#ffffff; text-decoration:underline;">browse your matched roles now &rarr;</a>
@@ -7675,6 +7808,26 @@ ${recallLvl === 4 ? `
     window.selectSimMode(window.currentSimMode);
   }, 100);
 
+  // Guided Prep Plan Sequential Flow (Warm-Up -> Flashcards -> CoPilot -> Pass Check)
+  window.startGuidedPrepPlan = function() {
+    window._isGuidedPlan = true;
+    try {
+      localStorage.setItem('tgt_guided_plan', 'true');
+    } catch(e) {}
+    window.selectSimMode('warmup');
+    const startBtn = document.getElementById('start-btn');
+    if (startBtn) startBtn.click();
+  };
+
+  window.continueGuidedPlanToFlashcards = function() {
+    window.returnToSetupView();
+    setTimeout(() => {
+      window.selectSimMode('flashcards');
+      const fcSec = document.getElementById('flashcards-deck-container');
+      if (fcSec) fcSec.scrollIntoView({ behavior: 'smooth' });
+    }, 150);
+  };
+
   window.initFlashcardsDeck = function() {
     const rawRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').trim() : '';
     const roleTarget = rawRole || localStorage.getItem('atsRole') || 'AI Evaluation Specialist';
@@ -7886,7 +8039,7 @@ ${recallLvl === 4 ? `
       const cutoff = window._pauseCutoffSec || parseInt(localStorage.getItem('tgt_pause_cutoff_sec') || '3', 10);
       if (wordsSpoken >= 3 && elapsedSilence >= cutoff) {
         pauseWarn.style.display = 'block';
-        pauseWarn.innerHTML = `⚠️ <strong>Silence Cutoff Triggered (${cutoff}s):</strong> Some AI interviewers treat a short silence as the end of your answer.<br><span style="color:#fef08a;">💡 Bridge phrases: "Let me walk you through that," or "There are two parts to this."</span>`;
+        pauseWarn.innerHTML = `⚠️ <strong>Silence Cutoff Triggered (${cutoff}s):</strong> Some AI interviewers treat a short silence as the end of your answer.<br><span style="color:#fef08a;">💡 Bridge phrases: "Let me walk you through that," or "There are two parts to this."</span><br><span style="color:#6ee7b7; font-size:11.5px;">💡 Mercor Tip: "If the AI interrupts, say you weren't finished."</span> <span style="color:#fca5a5; font-size:11px;">⚠️ Practice only: Third-party AI prompters are forbidden in live screenings.</span>`;
       } else {
         pauseWarn.style.display = 'none';
       }
@@ -7946,38 +8099,60 @@ ${recallLvl === 4 ? `
     return fillers ? fillers.length : 0;
   }
 
-  // Screen 1 Lead Magnet Email Capture Handler
+  // Screen 1 Lead Magnet Email Capture Handler (Direct PDF Download & Explicit Consent)
   window.saveScreen1LeadEmail = function() {
+    // 1. Instantly trigger personalized STAR Playbook PDF generator & download
+    if (typeof window.downloadStarPracticePdf === 'function') {
+      window.downloadStarPracticePdf();
+    }
+
     const emailInput = document.getElementById('screen1-lead-email');
     const email = (emailInput ? emailInput.value : '').trim();
-    if (!email) return;
-
-    localStorage.setItem('candidateEmail', email);
+    if (email) {
+      localStorage.setItem('candidateEmail', email);
+    }
 
     const planOptInEl = document.getElementById('screen1-practice-plan-optin');
+    const fridayOptInEl = document.getElementById('screen1-friday-alerts-optin');
     const practicePlanOptin = !!(planOptInEl && planOptInEl.checked);
-    localStorage.setItem('practice_plan_optin', practicePlanOptin ? 'true' : 'false');
+    const fridayAlertsOptin = !!(fridayOptInEl && fridayOptInEl.checked);
 
-    fetch('/api/subscribeRoleAlerts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        domain: currentDomain || 'software',
-        role: localStorage.getItem('atsRole') || 'AI Evaluator',
-        source: 'screen1_lead_playbook',
-        practice_plan_optin: practicePlanOptin
-      })
-    }).catch(() => {});
+    localStorage.setItem('practice_plan_optin', practicePlanOptin ? 'true' : 'false');
+    localStorage.setItem('friday_alerts_optin', fridayAlertsOptin ? 'true' : 'false');
+
+    // Section 20 Consent Integrity: ONLY subscribe to role alerts if user explicitly checked the Friday alerts box
+    if (email && fridayAlertsOptin) {
+      fetch('/api/subscribeRoleAlerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          domain: currentDomain || 'software',
+          role: localStorage.getItem('atsRole') || 'AI Evaluator',
+          source: 'screen1_lead_playbook',
+          practice_plan_optin: practicePlanOptin
+        })
+      }).catch(() => {});
+    }
 
     const successEl = document.getElementById('screen1-lead-success');
-    if (successEl) successEl.style.display = 'block';
+    if (successEl) {
+      successEl.style.display = 'block';
+      let msg = '✓ Your personalized STAR Playbook PDF has opened/downloaded!';
+      if (email && fridayAlertsOptin) {
+        msg += ' Subscribed to weekly Friday matching role alerts.';
+      } else if (email && practicePlanOptin) {
+        msg += ' 7-day practice plan queued.';
+      }
+      successEl.innerHTML = msg;
+    }
 
     if (typeof gtag === 'function') {
       gtag('event', 'lead_magnet_screen1_submit', {
-        email_provided: true,
+        email_provided: !!email,
         domain: currentDomain,
-        practice_plan_optin: practicePlanOptin
+        practice_plan_optin: practicePlanOptin,
+        friday_alerts_optin: fridayAlertsOptin
       });
     }
   };
@@ -7991,31 +8166,41 @@ ${recallLvl === 4 ? `
     }
   });
 
-  // Lead Magnet Submission Handler
+  // Lead Magnet Submission Handler (Direct PDF Download & Explicit Consent)
   window.handleLeadMagnetSubmit = function(e) {
     if (e) e.preventDefault();
+    if (typeof window.downloadStarPracticePdf === 'function') {
+      window.downloadStarPracticePdf();
+    }
+
     const emailInput = document.getElementById('lead-magnet-email');
     const email = (emailInput ? emailInput.value : '').trim();
-    if (!email) return;
-
-    localStorage.setItem('candidateEmail', email);
+    if (email) {
+      localStorage.setItem('candidateEmail', email);
+    }
 
     const planOptInEl = document.getElementById('lead-magnet-practice-plan-optin');
+    const fridayOptInEl = document.getElementById('lead-magnet-friday-alerts-optin');
     const practicePlanOptin = !!(planOptInEl && planOptInEl.checked);
-    localStorage.setItem('practice_plan_optin', practicePlanOptin ? 'true' : 'false');
+    const fridayAlertsOptin = !!(fridayOptInEl && fridayOptInEl.checked);
 
-    // Call subscribeRoleAlerts
-    fetch('/api/subscribeRoleAlerts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        domain: currentDomain || 'software',
-        role: localStorage.getItem('atsRole') || 'AI Evaluator',
-        source: 'mock_interview_playbook',
-        practice_plan_optin: practicePlanOptin
-      })
-    }).catch(() => {});
+    localStorage.setItem('practice_plan_optin', practicePlanOptin ? 'true' : 'false');
+    localStorage.setItem('friday_alerts_optin', fridayAlertsOptin ? 'true' : 'false');
+
+    // Section 20 Consent Integrity: ONLY subscribe to role alerts if user explicitly checked the Friday alerts box
+    if (email && fridayAlertsOptin) {
+      fetch('/api/subscribeRoleAlerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          domain: currentDomain || 'software',
+          role: localStorage.getItem('atsRole') || 'AI Evaluator',
+          source: 'mock_interview_playbook',
+          practice_plan_optin: practicePlanOptin
+        })
+      }).catch(() => {});
+    }
 
     const successEl = document.getElementById('lead-magnet-success');
     const formEl = document.getElementById('lead-magnet-form');
