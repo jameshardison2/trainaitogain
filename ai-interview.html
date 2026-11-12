@@ -5032,33 +5032,23 @@ window.addEventListener('unhandledrejection', function(event) {
     // Exclude Education section from title scanning so academic degrees (e.g. M.S. in Data Science) are not misidentified as job titles
     const textWithoutEducation = resumeText.replace(/(?:^|\n)\s*(?:education|academic background|degrees?|educational background|academics)\b[\s\S]*?(?=(?:\n\s*(?:experience|employment|work history|professional background|projects|technical skills|skills)\b)|$)/gi, '\n');
     const matchedRoleItems = [];
-    // Scan line-by-line: skip action bullet lines so action verbs (e.g. "Architected") are not misidentified as job titles like "Systems Architect"
+    // Scan line-by-line: match ONLY unambiguous title header lines (e.g. "Senior QA Engineer", "Software Engineer | Google")
+    // Disallow bullet lines, sentence prose, and collaboration clauses so verbs like "Architected" never invent "Systems Architect"
     const lines = textWithoutEducation.split('\n');
     lines.forEach((line, lineIdx) => {
       const trimmed = line.trim();
-      if (!trimmed || /^[•●▪*·\-\d.)]/.test(trimmed)) return;
+      if (!trimmed || trimmed.length > 55 || /^[•●▪*·\-\d.)]/.test(trimmed)) return;
+      // Skip lines containing common action verbs or prose descriptors
+      if (/\b(architected|developed|engineered|designed|built|managed|led|maintained|automated|collaborated|responsible|working|experience in|knowledge of|proficient)\b/i.test(trimmed)) return;
       canonicalTitles.forEach(title => {
         const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const re = new RegExp('(?:^|[^a-z0-9])(' + escaped + ')(?:$|[^a-z0-9])', 'i');
+        // Must start line (or follow standard title prefix) and end line or meet delimiter (| , - at 2024)
+        const re = new RegExp('^(?:[•●▪*·\\-\\d.]\\s*)?(?:Senior\\s+|Lead\\s+|Principal\\s+|Staff\\s+|Chief\\s+)?(' + escaped + ')(?:\\s*[-–|•,@(]|\\s+at\\s+|\\s+\\d{4}|$)', 'i');
         if (re.test(trimmed)) {
           matchedRoleItems.push({ title, index: lineIdx });
         }
       });
     });
-    // Fallback to non-bullet lines across full resume text ONLY if no titles matched in work experience
-    if (matchedRoleItems.length === 0) {
-      resumeText.split('\n').forEach((line, lineIdx) => {
-        const trimmed = line.trim();
-        if (!trimmed || /^[•●▪*·\-\d.)]/.test(trimmed)) return;
-        canonicalTitles.forEach(title => {
-          const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const re = new RegExp('(?:^|[^a-z0-9])(' + escaped + ')(?:$|[^a-z0-9])', 'i');
-          if (re.test(trimmed)) {
-            matchedRoleItems.push({ title, index: lineIdx });
-          }
-        });
-      });
-    }
 
     matchedRoleItems.sort((a, b) => a.index - b.index);
 
@@ -5338,36 +5328,16 @@ ${(resumeText || '').slice(0, 3500)}`;
     let questionRole = (parsedResume && parsedResume.cleanRoleTitle) ? parsedResume.cleanRoleTitle : "";
     let roleContextPhrase = "";
 
-    if (allRoles.length > 1) {
-      const qLower = ((qData && qData.q) || '').toLowerCase();
-      // Select appropriate role based on question context and question index
-      if (qIndex === 0 || qLower.includes("most recent role") || qLower.includes("day to day") || qLower.includes("tell me about your background")) {
-        questionRole = allRoles[0];
-        const secondary = allRoles.slice(1, 3).join(' and ');
-        roleContextPhrase = `as ${getIndefiniteArticle(questionRole)} ${questionRole}${parsedResume.companyName ? ` at ${parsedResume.companyName}` : ''} (and across my career spanning ${secondary}${parsedResume.yearsExp ? `, with ${parsedResume.yearsExp} experience` : ''})`;
-      } else if (qLower.includes("specific project") || qLower.includes("achievement") || qIndex === 1) {
-        questionRole = allRoles[1] || allRoles[0];
-        roleContextPhrase = `in my work as ${getIndefiniteArticle(questionRole)} ${questionRole}`;
-      } else if (qLower.includes("reviewer") || qLower.includes("model output") || qLower.includes("accuracy") || qIndex === 2) {
-        const evalOrDataRole = allRoles.find(r => /data|ml|machine|ai|qa|evaluat|analyst|quality/i.test(r)) || allRoles[2 % allRoles.length];
-        questionRole = evalOrDataRole;
-        roleContextPhrase = `as ${getIndefiniteArticle(questionRole)} ${questionRole}`;
-      } else if (qLower.includes("cold start") || qLower.includes("architecture") || qLower.includes("design") || qIndex === 3) {
-        const archRole = allRoles.find(r => /architect|infrastructure|cloud|system|platform|backend/i.test(r)) || allRoles[1 % allRoles.length];
-        questionRole = archRole;
-        roleContextPhrase = `in my architecture and systems work as ${getIndefiniteArticle(questionRole)} ${questionRole}`;
-      } else {
-        const pipelineOrScaleRole = allRoles.find(r => /pipeline|data|stream|backend|infra|systems|engineer/i.test(r)) || allRoles[allRoles.length - 1];
-        questionRole = pipelineOrScaleRole;
-        roleContextPhrase = `engineering high-throughput systems as ${getIndefiniteArticle(questionRole)} ${questionRole}`;
-      }
-    } else {
+    // Maintain consistent candidate role: use verified primary job title if confirmed from work history, else keep honest [Your Recent Title]
+    const verifiedPrimaryRole = (parsedResume && parsedResume.cleanRoleTitle) ? parsedResume.cleanRoleTitle : "";
+    questionRole = verifiedPrimaryRole;
+    if (verifiedPrimaryRole) {
       const roleWithCompany = parsedResume.companyName
-        ? `${parsedResume.cleanRoleTitle} at ${parsedResume.companyName}`
-        : parsedResume.cleanRoleTitle;
-      roleContextPhrase = parsedResume.cleanRoleTitle
-        ? `as ${getIndefiniteArticle(roleWithCompany)} ${roleWithCompany}${parsedResume.yearsExp ? ` (${parsedResume.yearsExp} experience)` : ''}`
-        : formatBackgroundInRole(roleTitle);
+        ? `${verifiedPrimaryRole} at ${parsedResume.companyName}`
+        : verifiedPrimaryRole;
+      roleContextPhrase = `as ${getIndefiniteArticle(roleWithCompany)} ${roleWithCompany}${parsedResume.yearsExp ? ` (${parsedResume.yearsExp} experience)` : ''}`;
+    } else {
+      roleContextPhrase = `in my work as [Your Recent Title] at [Your Recent Employer / Project]`;
     }
 
     const qPromptLower = ((qData && qData.q) || '').toLowerCase();
@@ -7013,6 +6983,13 @@ ${recallLvl === 4 ? `
 
   // Screen 1 Primary Buttons: Voice vs Typed
   startBtn.addEventListener('click', async () => {
+    const savedTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+    if (savedTyped) {
+      isTextMode = true;
+      window.setInterviewMode(true);
+      proceedToSession();
+      return;
+    }
     isTextMode = false;
     window.setInterviewMode(false);
     try {
@@ -7513,21 +7490,49 @@ ${recallLvl === 4 ? `
 
       resultsView.innerHTML = `
         ${passCheckBannerHtml}
-        ${(window._isGuidedPlan || localStorage.getItem('tgt_guided_plan') === '3') ? `
-          <div style="background:linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(37,99,235,0.18) 100%); border:1.5px solid #10b981; border-radius:12px; padding:18px 20px; margin-bottom:18px; text-align:center;">
-            <div style="font-size:11px; font-weight:900; color:#34d399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">🚀 Guided Prep Plan &bull; Step 3 Complete</div>
-            <div style="font-size:17px; font-weight:800; color:#ffffff; margin-bottom:6px;">You completed CoPilot Practice! Ready for your official Practice Benchmark?</div>
-            <div style="font-size:12.5px; color:#d1fae5; margin-bottom:14px;">Take the 6-question Pass Check under real screener conditions (no outlines) to earn your Pass Check ✓ badge.</div>
-            <button type="button" onclick="window.continueGuidedPlanToPassCheck()" class="btn-primary" style="padding:14px 28px; font-size:15px; font-weight:900; border-radius:8px; border:none; cursor:pointer; box-shadow:0 6px 20px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
-              Step 4 of 4: Take Pass Check Benchmark ➔
-            </button>
-          </div>
-        ` : (window._guidedStep === 4 || localStorage.getItem('tgt_guided_plan') === '4') ? `
-          <div style="background:rgba(16,185,129,0.18); border:1.5px solid #10b981; border-radius:12px; padding:14px 20px; margin-bottom:18px; text-align:center;">
-            <span style="font-size:20px;">🎓</span> <strong style="color:#6ee7b7; font-size:15px;">Guided Prep Plan Completed!</strong>
-            <div style="font-size:12.5px; color:#d1fae5; margin-top:3px;">You finished all 4 steps of your structured preparation plan.</div>
-          </div>
-        ` : ''}
+        ${(() => {
+          const isGuided = (window._isGuidedPlan || (localStorage.getItem('tgt_guided_plan') && localStorage.getItem('tgt_guided_plan') !== '0'));
+          const currentPlanStep = window._guidedStep || parseInt(localStorage.getItem('tgt_guided_plan') || '0', 10);
+          const isFinal = isPassCheck || currentPlanStep === 4;
+
+          if (isFinal && isGuided) {
+            try {
+              window._isGuidedPlan = false;
+              window._guidedStep = 0;
+              localStorage.removeItem('tgt_guided_plan');
+            } catch(e) {}
+            return `
+              <div style="background:linear-gradient(135deg, rgba(16,185,129,0.22) 0%, rgba(59,130,246,0.18) 100%); border:2px solid #10b981; border-radius:14px; padding:22px 24px; margin-bottom:20px; text-align:center; box-shadow:0 8px 32px rgba(16,185,129,0.25);">
+                <div style="font-size:30px; margin-bottom:6px;">🎓</div>
+                <div style="font-size:12px; font-weight:900; color:#34d399; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">🚀 Guided Prep Plan &bull; All 4 Steps Completed!</div>
+                <h2 style="font-size:21px; font-weight:900; color:#ffffff; margin:0 0 8px;">Congratulations! You finished the entire interview preparation sequence.</h2>
+                <div style="font-size:13.5px; color:#d1fae5; line-height:1.55; max-width:640px; margin:0 auto 14px auto;">
+                  You completed <strong>Warm-Up</strong>, mastered the <strong>Flashcards Deck</strong>, practiced with <strong>CoPilot Outlines</strong>, and tested your memory in <strong>Pass Check</strong>.
+                </div>
+                <div style="display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                  <button type="button" onclick="window.downloadStarPracticePdf()" class="btn-primary" style="padding:10px 20px; font-size:13px; font-weight:800; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                    📄 Open &amp; Print Completed Playbook (PDF)
+                  </button>
+                  <button type="button" onclick="window.exitGuidedPlan()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:10px 18px; font-size:13px; font-weight:700; border-radius:8px; cursor:pointer;">
+                    Back to Setup
+                  </button>
+                </div>
+              </div>
+            `;
+          } else if (isGuided && (currentPlanStep === 3 || (!isPassCheck && window.currentSimMode === 'practice'))) {
+            return `
+              <div style="background:linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(37,99,235,0.18) 100%); border:1.5px solid #10b981; border-radius:12px; padding:18px 20px; margin-bottom:18px; text-align:center;">
+                <div style="font-size:11px; font-weight:900; color:#34d399; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">🚀 Guided Prep Plan &bull; Step 3 Complete</div>
+                <div style="font-size:17px; font-weight:800; color:#ffffff; margin-bottom:6px;">You completed CoPilot Practice! Ready for your official Practice Benchmark?</div>
+                <div style="font-size:12.5px; color:#d1fae5; margin-bottom:14px;">Take the 6-question Pass Check under real screener conditions (no outlines) to earn your Pass Check ✓ badge.</div>
+                <button type="button" onclick="window.continueGuidedPlanToPassCheck()" class="btn-primary" style="padding:14px 28px; font-size:15px; font-weight:900; border-radius:8px; border:none; cursor:pointer; box-shadow:0 6px 20px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
+                  Step 4 of 4: Take Pass Check Benchmark ➔
+                </button>
+              </div>
+            `;
+          }
+          return '';
+        })()}
         <div id="post-interview-summary-card" style="background:var(--black); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:32px 24px; text-align:left; width:100%; box-shadow:0 12px 48px rgba(0,0,0,0.5); box-sizing:border-box;">
           <!-- Overall Summary -->
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:18px;">
@@ -7922,8 +7927,15 @@ ${recallLvl === 4 ? `
       localStorage.setItem('tgt_guided_plan', '1');
     } catch(e) {}
     window.selectSimMode('warmup');
-    const startBtn = document.getElementById('start-btn');
-    if (startBtn) startBtn.click();
+    const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+    if (isTyped) {
+      isTextMode = true;
+      window.setInterviewMode(true);
+      proceedToSession();
+    } else {
+      const startBtn = document.getElementById('start-btn');
+      if (startBtn) startBtn.click();
+    }
   };
 
   window.continueGuidedPlanToFlashcards = function() {
@@ -7953,7 +7965,14 @@ ${recallLvl === 4 ? `
       localStorage.setItem('tgt_guided_plan', '3');
     } catch(e) {}
     window.selectSimMode('practice');
-    window.startSimFromFlashcards();
+    const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+    if (isTyped) {
+      isTextMode = true;
+      window.setInterviewMode(true);
+      proceedToSession();
+    } else {
+      window.startSimFromFlashcards();
+    }
   };
 
   window.continueGuidedPlanToPassCheck = function() {
@@ -7965,8 +7984,15 @@ ${recallLvl === 4 ? `
     window.returnToSetupView();
     setTimeout(() => {
       window.selectSimMode('passcheck');
-      const startBtn = document.getElementById('start-btn');
-      if (startBtn) startBtn.click();
+      const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+      if (isTyped) {
+        isTextMode = true;
+        window.setInterviewMode(true);
+        proceedToSession();
+      } else {
+        const startBtn = document.getElementById('start-btn');
+        if (startBtn) startBtn.click();
+      }
     }, 150);
   };
 
@@ -8155,8 +8181,15 @@ ${recallLvl === 4 ? `
   };
 
   window.startSimFromFlashcards = function() {
-    const startBtn = document.getElementById('start-btn');
-    if (startBtn) startBtn.click();
+    const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+    if (isTyped) {
+      isTextMode = true;
+      window.setInterviewMode(true);
+      proceedToSession();
+    } else {
+      const startBtn = document.getElementById('start-btn');
+      if (startBtn) startBtn.click();
+    }
   };
 
   // Keyboard shortcut listener for Flashcards: Space to flip, Left/Right arrow to navigate

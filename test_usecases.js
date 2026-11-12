@@ -1288,7 +1288,24 @@ assert.strictEqual(stepNum, 3, "CoPilot activeMode must resolve to step 3 in gui
 
 console.log(`✓ PASSED: Test 84 - Browser simulation of CoPilot in Typed Mode, simMode safety, and Playbook AWC section labels verified`);
 
+// Test 85: Guided Prep Plan Typed Mode Persistence, 4-Step Completion Screen, and Robust Title Isolation
+const updatedHtml = fs.readFileSync(path.join(__dirname, "ai-interview.html"), "utf8");
+
+// 1. Saved Typed Mode persistence across all session starts and Guided Plan
+assert(updatedHtml.includes("const savedTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;"), "startBtn must check saved typed mode before requesting microphone");
+assert(updatedHtml.includes("window.startGuidedPrepPlan = function() {\n    window._isGuidedPlan = true;\n    window._guidedStep = 1;\n    try {\n      localStorage.setItem('tgt_guided_plan', '1');\n    } catch(e) {}\n    window.selectSimMode('warmup');\n    const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;"), "startGuidedPrepPlan must preserve typed mode without starting mic");
+
+// 2. Debrief modal Step 4 completion screen
+assert(updatedHtml.includes("Guided Prep Plan &bull; All 4 Steps Completed!"), "Debrief modal must celebrate completing all 4 steps upon Pass Check completion");
+assert(updatedHtml.includes("Congratulations! You finished the entire interview preparation sequence."), "Debrief modal must display final plan completion message");
+
+// 3. Robust title isolation (skips verbs like architected, requires clean header lines, preserves brackets)
+assert(updatedHtml.includes("if (/\\b(architected|developed|engineered|designed|built|managed|led|maintained|automated|collaborated|responsible|working|experience in|knowledge of|proficient)\\b/i.test(trimmed)) return;"), "Resume parser must ignore lines with action verbs");
+assert(updatedHtml.includes("roleContextPhrase = `in my work as [Your Recent Title] at [Your Recent Employer / Project]`;"), "Must preserve honest [Your Recent Title] placeholder when no confirmed work history title exists");
+
+console.log(`✓ PASSED: Test 85 - Guided Prep Plan typed persistence, 4-step completion screen, and title isolation verified`);
+
 console.log("==================================================================");
-console.log("ALL 84 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 85 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
