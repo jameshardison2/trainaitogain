@@ -627,6 +627,7 @@ window.addEventListener('unhandledrejection', function(event) {
     
     <!-- SCREEN 1: SETUP -->
     <div id="setup-view">
+      <div id="setup-initial-form">
       <div style="display:flex; justify-content:space-between; align-items:center; max-width:560px; margin:0 auto 12px;">
         <span id="setup-role-subtitle" style="font-size:14px; font-weight:700; color:var(--gray-900);">AI Interview Simulator</span>
         <button type="button" class="gear-btn" id="setup-settings-btn" onclick="window.openInterviewSettings('setup')" aria-label="Settings">
@@ -775,19 +776,30 @@ window.addEventListener('unhandledrejection', function(event) {
           </div>
         </div>
       </details>
+      </div> <!-- /#setup-initial-form -->
 
-      <!-- Quizlet-Style Interactive Study Deck (Shown when Flashcards Deck is active) -->
       <!-- Quizlet-Style Interactive Study Deck (Shown when Flashcards Deck is active) -->
       <div id="flashcards-deck-container" style="display:none; max-width:680px; margin:0 auto 24px auto; text-align:left;">
         <!-- Guided Prep Plan Step 2 Banner -->
-        <div id="fc-guided-step-banner" style="display:none; background:rgba(16,185,129,0.15); border:1.5px solid #10b981; border-radius:10px; padding:12px 16px; margin-bottom:14px; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div id="fc-guided-step-banner" style="display:none; background:#ecfdf5; border:1.5px solid #059669; border-radius:12px; padding:16px 20px; margin-bottom:18px; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
           <div>
-            <div style="font-size:14px; font-weight:900; color:#34d399; text-transform:uppercase; letter-spacing:0.06em;">🚀 Guided Prep Plan &bull; Step 2 of 4</div>
-            <div style="font-size:16px; font-weight:800; color:#065f46;">Review the 10-Question Flashcard Deck</div>
-            <div style="font-size:14px; color:#047857; margin-top:2px;">Internalize winning STAR structures and keywords before jumping into live CoPilot practice.</div>
+            <div style="font-size:12px; font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.06em;">🚀 Guided Prep Plan &bull; Step 2 of 4</div>
+            <div style="font-size:18px; font-weight:800; color:#065f46; margin:2px 0;">Review the 10-Question Flashcard Deck</div>
+            <div style="font-size:14px; color:#047857;">Internalize winning STAR structures and keywords before jumping into live CoPilot practice.</div>
           </div>
-          <button type="button" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="padding:10px 18px; font-size:14px; font-weight:900; border-radius:8px; border:none; cursor:pointer; white-space:nowrap; box-shadow:0 4px 12px rgba(16,185,129,0.35);">
+          <button type="button" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="padding:11px 22px; font-size:14.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; white-space:nowrap; box-shadow:0 4px 14px rgba(5,150,105,0.3);">
             Step 3 of 4: Practice with CoPilot ➔
+          </button>
+        </div>
+
+        <!-- Standalone Mode Header -->
+        <div id="fc-standalone-header" style="display:none; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--gray-200); padding-bottom:12px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <div style="font-size:12px; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:0.06em;">Flashcard Practice Mode</div>
+            <div style="font-size:18px; font-weight:800; color:#0f172a; margin:2px 0;">🃏 10-Question STAR Mastery Deck</div>
+          </div>
+          <button type="button" onclick="window.returnToSetupView()" style="background:#f1f5f9; border:1px solid var(--gray-300); color:#334155; border-radius:8px; padding:8px 14px; font-size:13px; font-weight:700; cursor:pointer;">
+            ⤺ Back to Setup
           </button>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
@@ -914,13 +926,28 @@ window.addEventListener('unhandledrejection', function(event) {
             </button>
           </div>
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <button type="button" id="fc-guided-step3-btn" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="display:none; background:#10b981; color:#042f2e; border:none; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:900; cursor:pointer; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+            <button type="button" id="fc-guided-step3-btn" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="display:none; background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:10px 22px; font-size:14.5px; font-weight:800; cursor:pointer; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(5,150,105,0.35);">
               <span>Step 3 of 4: Practice with CoPilot</span> <span>➔</span>
             </button>
-            <button type="button" onclick="window.startSimFromFlashcards()" style="background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#ffffff; border:none; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(37,99,235,0.35);">
-              <span>🎙️</span> Test with Live Mic Now
+            <button type="button" id="fc-standalone-start-btn" onclick="window.startSimFromFlashcards()" style="background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#ffffff; border:none; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(37,99,235,0.35);">
+              <span>🎙️</span> Practice with CoPilot ➔
             </button>
           </div>
+        </div>
+
+        <!-- Flashcard Navigation Subtext / Escape Hatches -->
+        <div id="fc-guided-footer-links" style="display:none; justify-content:center; gap:20px; margin-top:16px;">
+          <button type="button" onclick="window.selectSimMode('warmup'); window.retakeMockInterview();" style="background:none; border:none; color:#475569; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+            ⤺ Redo Step 1 Warm-Up
+          </button>
+          <button type="button" onclick="window.exitGuidedPlan();" style="background:none; border:none; color:#475569; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+            Exit Prep Plan
+          </button>
+        </div>
+        <div id="fc-standalone-footer-links" style="display:none; justify-content:center; margin-top:16px;">
+          <button type="button" onclick="window.returnToSetupView();" style="background:none; border:none; color:#475569; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
+            ⤺ Back to Setup &amp; All Modes
+          </button>
         </div>
       </div>
 
@@ -7135,8 +7162,19 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (resultsView) resultsView.style.display = 'none';
     const activeView = document.getElementById('active-view');
     if (activeView) activeView.style.display = 'none';
+
+    // Restore Setup View & initial controls
     const setupView = document.getElementById('setup-view');
     if (setupView) setupView.style.display = 'block';
+    const initForm = document.getElementById('setup-initial-form');
+    if (initForm) initForm.style.display = 'block';
+    const fcSec = document.getElementById('flashcards-deck-container');
+    if (fcSec) fcSec.style.display = 'none';
+    const resumeDetails = document.getElementById('resume-personalization-details');
+    if (resumeDetails) resumeDetails.style.display = 'block';
+    const beforeDetails = document.getElementById('before-start-details');
+    if (beforeDetails) beforeDetails.style.display = 'block';
+
     const hub = document.getElementById('prep-hub-root');
     if (hub) {
       hub.classList.remove('started', 'results-mode');
@@ -7144,9 +7182,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
     const copilotEl = document.getElementById('copilot-panel');
     if (copilotEl) copilotEl.style.display = 'none';
-    if (typeof window.showPrepModeView === 'function') {
-      window.showPrepModeView(window.currentSimMode || 'warmup');
-    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   // Screen 1 Primary Action
@@ -7208,14 +7244,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       localStorage.removeItem('tgt_guided_plan');
     } catch(e) {}
     if (window.currentSimMode === 'flashcards') {
-      const fcContainer = document.getElementById('flashcards-deck-container');
-      if (fcContainer) {
-        fcContainer.style.display = 'block';
-        if (typeof window.initFlashcardsDeck === 'function') {
-          window.initFlashcardsDeck();
-        }
-        fcContainer.scrollIntoView({ behavior: 'smooth' });
-      }
+      window.openFlashcardsScreen(false);
       return;
     }
     await window.proceedWithAudioOrTyped();
@@ -8139,31 +8168,79 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
   };
 
-  window.continueGuidedPlanToFlashcards = function() {
-    window._isGuidedPlan = true;
-    window._guidedStep = 2;
-    try {
-      localStorage.setItem('tgt_guided_plan', '2');
-      localStorage.setItem('tgt_sim_mode', 'flashcards');
-    } catch(e) {}
-    window.returnToSetupView();
-    setTimeout(() => {
-      window._isGuidedPlan = true;
+  window.openFlashcardsScreen = function(isGuided) {
+    stopAllSpeech();
+    stopAnswerTimer();
+    window.currentSimMode = 'flashcards';
+    window._isGuidedPlan = Boolean(isGuided);
+    if (isGuided) {
       window._guidedStep = 2;
-      window.currentSimMode = 'flashcards';
-      const fcSec = document.getElementById('flashcards-deck-container');
-      if (fcSec) {
-        fcSec.style.display = 'block';
-        if (typeof window.initFlashcardsDeck === 'function') {
-          window.initFlashcardsDeck();
-        }
-        fcSec.scrollIntoView({ behavior: 'smooth' });
-        const banner = document.getElementById('fc-guided-step-banner');
-        if (banner) banner.style.display = 'flex';
-        const step3Btn = document.getElementById('fc-guided-step3-btn');
-        if (step3Btn) step3Btn.style.display = 'inline-flex';
-      }
-    }, 150);
+      try {
+        localStorage.setItem('tgt_guided_plan', '2');
+        localStorage.setItem('tgt_sim_mode', 'flashcards');
+      } catch(e) {}
+    } else {
+      window._guidedStep = 0;
+      try {
+        localStorage.removeItem('tgt_guided_plan');
+        localStorage.setItem('tgt_sim_mode', 'flashcards');
+      } catch(e) {}
+    }
+
+    // Hide active and results views
+    const activeView = document.getElementById('active-view');
+    if (activeView) activeView.style.display = 'none';
+    const resultsView = document.getElementById('results-view');
+    if (resultsView) resultsView.style.display = 'none';
+
+    // Show setup view container but HIDE initial setup form and accordions
+    const setupView = document.getElementById('setup-view');
+    if (setupView) setupView.style.display = 'block';
+
+    const initForm = document.getElementById('setup-initial-form');
+    if (initForm) initForm.style.display = 'none';
+    const resumeDetails = document.getElementById('resume-personalization-details');
+    if (resumeDetails) resumeDetails.style.display = 'none';
+    const beforeDetails = document.getElementById('before-start-details');
+    if (beforeDetails) beforeDetails.style.display = 'none';
+
+    // Show Flashcards Container
+    const fcSec = document.getElementById('flashcards-deck-container');
+    if (fcSec) {
+      fcSec.style.display = 'block';
+    }
+
+    const guidedBanner = document.getElementById('fc-guided-step-banner');
+    const standaloneHeader = document.getElementById('fc-standalone-header');
+    const guidedBtn = document.getElementById('fc-guided-step3-btn');
+    const standaloneBtn = document.getElementById('fc-standalone-start-btn');
+    const guidedFooterLinks = document.getElementById('fc-guided-footer-links');
+    const standaloneFooterLinks = document.getElementById('fc-standalone-footer-links');
+
+    if (isGuided) {
+      if (guidedBanner) guidedBanner.style.display = 'flex';
+      if (standaloneHeader) standaloneHeader.style.display = 'none';
+      if (guidedBtn) guidedBtn.style.display = 'inline-flex';
+      if (standaloneBtn) standaloneBtn.style.display = 'none';
+      if (guidedFooterLinks) guidedFooterLinks.style.display = 'flex';
+      if (standaloneFooterLinks) standaloneFooterLinks.style.display = 'none';
+    } else {
+      if (guidedBanner) guidedBanner.style.display = 'none';
+      if (standaloneHeader) standaloneHeader.style.display = 'flex';
+      if (guidedBtn) guidedBtn.style.display = 'none';
+      if (standaloneBtn) standaloneBtn.style.display = 'inline-flex';
+      if (guidedFooterLinks) guidedFooterLinks.style.display = 'none';
+      if (standaloneFooterLinks) standaloneFooterLinks.style.display = 'flex';
+    }
+
+    if (typeof window.initFlashcardsDeck === 'function') {
+      window.initFlashcardsDeck();
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  window.continueGuidedPlanToFlashcards = function() {
+    window.openFlashcardsScreen(true);
   };
 
   window.continueGuidedPlanToCopilot = function() {
@@ -8255,6 +8332,8 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (fcGuidedBanner) fcGuidedBanner.style.display = isGuided ? 'flex' : 'none';
     const fcGuidedStep3Btn = document.getElementById('fc-guided-step3-btn');
     if (fcGuidedStep3Btn) fcGuidedStep3Btn.style.display = isGuided ? 'inline-flex' : 'none';
+    const fcStandaloneBtn = document.getElementById('fc-standalone-start-btn');
+    if (fcStandaloneBtn) fcStandaloneBtn.style.display = isGuided ? 'none' : 'inline-flex';
 
     const card = _fcDeck[_fcCurrentIndex];
     const total = _fcDeck.length;
