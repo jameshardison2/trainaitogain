@@ -1507,7 +1507,82 @@ assert(stageCHtml.includes("reqScreen === 'copilot' || reqScreen === 'practice'"
 
 console.log(`✓ PASSED: Test 89 - Stage (c) Practice with CoPilot, plain language tooltip, example toggle, question progression & review reveal order verified`);
 
+// Test 90: Stage (c) Regression Items 1–20 Full Verification
+// Item 1 (P0): Global mode resolver
+assert(stageCHtml.includes('window.getResolvedInterviewTextMode ='), "window.getResolvedInterviewTextMode must be defined globally");
+
+// Item 2 (P0): Silent errors & friendly fallback
+assert(stageCHtml.includes('tgt-friendly-error-fallback'), "Friendly error fallback banner must exist in code");
+assert(!stageCHtml.includes("border:3px solid #ef4444; color:#ef4444;"), "Red critical debug banner must not be active");
+
+// Item 3 (P0): Example drawer DOM element
+assert(stageCHtml.includes('<div id="practice-script-side-panel"'), "practice-script-side-panel drawer must be rendered in DOM body");
+
+// Item 4 (P1): Session save & resume
+assert(stageCHtml.includes('window.saveActiveInterviewSession ='), "Session save function must exist");
+assert(stageCHtml.includes('window.resumeActiveInterview ='), "Session resume function must exist");
+assert(stageCHtml.includes('window.checkActiveInterviewOnLoad ='), "Session check function must exist");
+assert(stageCHtml.includes('id="tgt-resume-session-slot"'), "Session resume slot container must exist");
+
+// Item 5 (P1): Flashcards hidden on start screen reload
+assert(stageCHtml.includes("const fcBox = document.getElementById('flashcards-deck-container');"), "Flashcards box check on load must exist");
+
+// Item 6 (P1): synth.cancel() on stop AI audio
+assert(stageCHtml.includes('synth.cancel()'), "synth.cancel() must be called to immediately halt audio");
+
+// Item 7 (P1): Custom JD keywords isolated without foreign defaults
+assert(stageCHtml.includes("extractKeywordsFromJDText(customJD, cleanRole, dom)"), "getJobContextForRole must extract strictly from customJD when active");
+assert(stageCHtml.includes("IEC 62304") || stageCHtml.includes("iec 62304"), "IEC 62304 keyword dictionary support must exist");
+
+// Item 8 (P1): Fit badge consistency (Registered Nurse is weak fit for software resume)
+const rnMatch = testSandbox.getPassLikelihoodFit("Registered Nurse", "Senior Software Verification Engineer | J&J MedTech Python SQL Testing");
+assert.strictEqual(rnMatch.fit, "weak", "Registered Nurse must be evaluated as weak fit for software resume");
+
+// Item 9 (P1): Weak fit STAR prompt uses neutral blanks
+testSandbox.localStorage.setItem('atsRole', 'Registered Nurse');
+testSandbox.localStorage.setItem('candidateResumeText', 'Senior Software Verification Engineer | J&J MedTech Python SQL Testing');
+const weakStar = testSandbox.computeStarPartsForQuestion({ q: "Describe a clinical emergency", keywords: ["patient triage"] }, 0, "");
+assert(weakStar.st.includes("[your job title]") || weakStar.a.includes("[your job title]") || weakStar.r.includes("[your measurable result]"), "Weak fit STAR prompts must use neutral blanks [your job title]");
+
+// Item 10 (P1): Use as Answer switches to typed mode and scrolls into view
+assert(stageCHtml.includes("window.fillStarScriptIntoAnswer = function"), "fillStarScriptIntoAnswer must exist");
+assert(stageCHtml.includes("inPageBox.style.display = 'none';"), "fillStarScriptIntoAnswer must dismiss review box");
+
+// Item 11 (P1): Teleprompter smooth auto-scroll
+assert(stageCHtml.includes("scrollIntoView({ behavior: 'smooth', block: 'center' })"), "Teleprompter active section must scroll into view smoothly");
+
+// Item 12 (P1): Shuffled flashcard queue counter
+assert(stageCHtml.includes("cardDisplayNum") && stageCHtml.includes("_fcQueueIndex + 1"), "Shuffled flashcard queue must show position in queue");
+
+// Item 13 (P1): Repeat round stats preserved
+assert(stageCHtml.includes("window._fcIsRepeatRound = true;"), "Repeat queue must track repeat round");
+assert(stageCHtml.includes("Repeat Round"), "Flashcard counter in repeat round must show Repeat Round");
+
+// Item 14 (P1): Flashcard rating queue deduplication
+assert(stageCHtml.includes("_fcQueue.splice(i, 1);"), "Re-rating a card must deduplicate repeat queue");
+
+// Item 15 (P1): Length penalty for short answers (<50 words)
+assert(stageCHtml.includes("wordCount < 50") && stageCHtml.includes("Answer too brief"), "Short answer penalty must flag responses under 50 words");
+
+// Item 16 (P2): Exit button in cockpit and warmup banner
+assert(stageCHtml.includes('id="screen2-exit-btn"'), "Screen 2 exit button must exist");
+
+// Item 17 (P2): CoPilot tips open by default and teleprompter checkbox checked
+assert(stageCHtml.includes("allTipsBody.style.display = isStep3Practice ? 'block' : 'none';"), "CoPilot tips body must be opened by default in Step 3");
+assert(stageCHtml.includes('id="toggle-teleprompter" checked'), "Teleprompter checkbox must be checked by default");
+
+// Item 18 (P2): domain-selector role title synchronization
+assert(stageCHtml.includes("syncDomainSelectorValue"), "syncDomainSelectorValue must synchronize selector value and option text");
+
+// Item 19 (P2): Pause warning wording cleaned
+assert(stageCHtml.includes("The AI screener may assume you are finished speaking."), "Pause warning must use clear, professional phrasing");
+
+// Item 20 (P2): Delivery tips wrapping on narrow screens
+assert(!stageCHtml.includes('<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">"I built / I diagnosed"</strong></span>'), "white-space:nowrap must be removed from delivery tips");
+
+console.log(`✓ PASSED: Test 90 - Stage (c) Regression Items 1–20 Full Verification passed!`);
+
 console.log("==================================================================");
-console.log("ALL 89 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 90 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

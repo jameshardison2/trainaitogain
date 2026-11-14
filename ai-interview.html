@@ -4,17 +4,18 @@
 <head>
 <script>
 window.onerror = function(msg, url, line, col, error) {
-    var errorBox = document.createElement('div');
-    errorBox.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; background:red; color:white; z-index:999999; padding:20px; font-family:monospace; font-size:14px;';
-    errorBox.innerText = 'CRITICAL JS ERROR: ' + msg + '\nLine: ' + line;
-    document.body.appendChild(errorBox);
-    return false;
+    console.error("Client Error:", msg, url, line, col, error);
+    if (!document.getElementById('tgt-friendly-error-fallback') && document.body) {
+        var box = document.createElement('div');
+        box.id = 'tgt-friendly-error-fallback';
+        box.style.cssText = 'position:fixed; bottom:16px; right:16px; background:#0f172a; color:#fff; border:1px solid #334155; border-radius:10px; box-shadow:0 10px 25px rgba(0,0,0,0.3); z-index:999999; padding:14px 18px; font-family:system-ui,-apple-system,sans-serif; font-size:13.5px; display:flex; align-items:center; gap:12px; max-width:90vw;';
+        box.innerHTML = '<span>Something went wrong. Reload to continue.</span><button onclick="window.location.reload()" style="background:#2563eb; color:white; border:none; border-radius:6px; padding:6px 12px; font-weight:700; cursor:pointer;">Reload</button>';
+        document.body.appendChild(box);
+    }
+    return true;
 };
 window.addEventListener('unhandledrejection', function(event) {
-    var errorBox = document.createElement('div');
-    errorBox.style.cssText = 'position:fixed; bottom:0; left:0; width:100%; background:darkred; color:white; z-index:999999; padding:20px; font-family:monospace; font-size:14px;';
-    errorBox.innerText = 'PROMISE ERROR: ' + event.reason;
-    document.body.appendChild(errorBox);
+    console.error("Unhandled Promise Rejection:", event.reason);
 });
 </script>
 
@@ -553,7 +554,7 @@ window.addEventListener('unhandledrejection', function(event) {
     <!-- Teleprompter Toggle (Saves state and auto-opens CoPilot practice script) -->
     <div style="margin-bottom:16px;">
       <label style="display:flex; align-items:center; gap:12px; cursor:pointer; padding:12px; background:#f8fafc; border-radius:8px; border:1px solid var(--gray-300);">
-        <input type="checkbox" id="toggle-teleprompter" onchange="window.onTeleprompterCheckboxChange(this)" style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;">
+        <input type="checkbox" id="toggle-teleprompter" checked onchange="window.onTeleprompterCheckboxChange(this)" style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;">
         <span style="font-size:14px; color:#0f172a; font-weight:600;">Enable Practice Script by default (CoPilot outlines open automatically)</span>
       </label>
     </div>
@@ -569,11 +570,11 @@ window.addEventListener('unhandledrejection', function(event) {
       <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08);">
         <div id="setup-jd-keywords-preview" style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px;"></div>
         <div id="interview-jd-drawer">
-          <div style="font-size:11.5px; color:#9ca3af; margin-bottom:6px;">Active Job Description for this role (or paste a custom Job Description to extract its keywords):</div>
-          <textarea id="interview-jd-textarea" placeholder="Paste the full Job Description here to extract role-specific keywords..." style="width:100%; min-height:75px; background:rgba(0,0,0,0.5); color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:8px; font-size:12px; font-family:inherit; box-sizing:border-box; resize:vertical; margin-bottom:8px;"></textarea>
+          <div style="font-size:12px; color:#475569; font-weight:600; margin-bottom:6px;">Active Job Description for this role (or paste a custom Job Description to extract its keywords):</div>
+          <textarea id="interview-jd-textarea" placeholder="Paste the full Job Description here to extract role-specific keywords..." style="width:100%; min-height:85px; background:#f8fafc; color:#0f172a; border:1.5px solid var(--gray-300); border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; box-sizing:border-box; resize:vertical; margin-bottom:8px; line-height:1.45;"></textarea>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" onclick="window.saveCustomJobDescription()" style="background:#2563eb; color:#fff; border:none; border-radius:6px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer;">✓ Update Job Description Keywords</button>
-            <button type="button" onclick="window.resetCustomJobDescription()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#d1d5db; border-radius:6px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer;">↺ Reset to Role Defaults</button>
+            <button type="button" onclick="window.saveCustomJobDescription()" style="background:#2563eb; color:#fff; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;">✓ Update Job Description Keywords</button>
+            <button type="button" onclick="window.resetCustomJobDescription()" style="background:#ffffff; border:1px solid var(--gray-300); color:#334155; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;">↺ Reset to Role Defaults</button>
           </div>
         </div>
       </div>
@@ -795,6 +796,9 @@ window.addEventListener('unhandledrejection', function(event) {
       <div id="setup-status-line" style="max-width:560px; margin:4px auto 14px auto; font-size:14px; color:var(--gray-700); font-weight:500; text-align:center;">
         Guided 4-step prep sequence: Warm-Up &bull; Flashcards &bull; CoPilot &bull; Pass Check
       </div>
+
+      <!-- Active Session Resume Slot -->
+      <div id="tgt-resume-session-slot"></div>
 
       <!-- 3. Primary CTA: Start My Prep Plan at the Top -->
       <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin:0 auto 18px; max-width:560px;">
@@ -1382,6 +1386,9 @@ window.addEventListener('unhandledrejection', function(event) {
               <button type="button" class="gear-btn" id="active-settings-btn" onclick="window.openInterviewSettings('interview')" aria-label="Settings">
                 <span>⚙️</span> Settings
               </button>
+              <button type="button" id="screen2-exit-btn" onclick="window.exitGuidedPlan()" style="background:#ffffff; border:1px solid var(--gray-300); color:#64748b; font-size:13px; font-weight:700; padding:6px 12px; border-radius:8px; cursor:pointer;" title="Exit simulation and return to setup">
+                ✕ Exit
+              </button>
             </div>
           </div>
 
@@ -1419,8 +1426,13 @@ window.addEventListener('unhandledrejection', function(event) {
                   Low-pressure practice. Get comfortable answering out loud and verify your microphone, pacing, and camera setup.
                 </div>
               </div>
-              <div style="font-size:12px; font-weight:800; background:#ffffff; border:1px solid #bbf7d0; color:#15803d; padding:4px 12px; border-radius:100px; white-space:nowrap;">
-                1 Question &bull; Setup Check
+              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+                <div style="font-size:12px; font-weight:800; background:#ffffff; border:1px solid #bbf7d0; color:#15803d; padding:4px 12px; border-radius:100px; white-space:nowrap;">
+                  1 Question &bull; Setup Check
+                </div>
+                <button type="button" onclick="window.exitGuidedPlan();" style="background:none; border:none; color:#15803d; font-size:12.5px; font-weight:700; cursor:pointer; text-decoration:underline;">
+                  Exit Prep Plan
+                </button>
               </div>
             </div>
           </div>
@@ -1487,16 +1499,16 @@ window.addEventListener('unhandledrejection', function(event) {
               <div style="font-weight:800; color:#b91c1c; text-transform:uppercase; font-size:13px; letter-spacing:0.04em; margin-bottom:3px; display:flex; align-items:center; gap:5px;">
                 <span>⚠️ AI Pause Detected (Silence > 4s)</span>
               </div>
-              The screener bot thinks you are finished! <strong>Hold the floor:</strong> say <em style="color:#7f1d1d; font-weight:700;">"Good question, let me structure my thoughts for a moment..."</em> to prevent being cut off.
+              The AI screener may assume you are finished speaking. <strong>Hold the floor:</strong> say <em style="color:#7f1d1d; font-weight:700;">"Let me structure my thoughts for a moment..."</em> to keep your answer session active.
             </div>
-            <div id="spoken-live-transcript" style="min-height:72px; background:#ffffff; border:1.5px solid var(--gray-300); border-radius:8px; padding:12px 14px; font-size:15px; color:#0f172a; font-style:italic; line-height:1.5;">
+            <div id="spoken-live-transcript" style="min-height:72px; background:#ffffff; border:1.5px solid var(--gray-300); border-radius:8px; padding:12px 14px; font-size:15px; color:#0f172a; font-style:italic; line-height:1.5; word-break:break-word; overflow-wrap:break-word;">
               Your spoken words will appear here as you answer...
             </div>
-            <div style="margin-top:8px; font-size:14px; color:#334155; display:flex; align-items:flex-start; gap:6px; line-height:1.5;">
+            <div style="margin-top:8px; font-size:14px; color:#334155; display:flex; align-items:flex-start; gap:6px; line-height:1.5; word-break:break-word; overflow-wrap:break-word;">
               <span style="color:#059669; font-weight:800; flex-shrink:0;">💡 Delivery Tip:</span>
-              <span>Speak with first-person ownership (<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">"I architected"</strong>, not "We"</span>) and close with a measurable outcome (<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">% or number</strong></span>).</span>
+              <span>Speak with first-person ownership (<strong style="color:#0f172a; font-weight:800;">"I architected"</strong>, not "We") and close with a measurable outcome (<strong style="color:#0f172a; font-weight:800;">% or number</strong>).</span>
             </div>
-            <div style="margin-top:4px; font-size:12.5px; color:#64748b;">
+            <div style="margin-top:4px; font-size:12.5px; color:#64748b; word-break:break-word; overflow-wrap:break-word;">
               💡 <strong>Quiet Room Tip:</strong> Speak in a quiet spot so background room audio isn't transcribed.
             </div>
             <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
@@ -1515,9 +1527,9 @@ window.addEventListener('unhandledrejection', function(event) {
             </div>
             <textarea id="typed-answer-input" placeholder="Describe the Situation/Task, the exact Action you took, and the measurable Result..." style="width:100%; min-height:130px; background:#ffffff; color:var(--gray-900); border:1.5px solid var(--gray-300); border-radius:8px; padding:12px 14px; font-family:inherit; font-size:15px; box-sizing:border-box; resize:vertical; line-height:1.5; outline:none;"></textarea>
             <div id="typed-answer-error" style="display:none; color:#f87171; font-size:12px; font-weight:700; margin-top:6px;">Please type an answer before submitting</div>
-            <div style="margin-top:8px; font-size:14px; color:#334155; display:flex; align-items:flex-start; gap:6px; line-height:1.5;">
+            <div style="margin-top:8px; font-size:14px; color:#334155; display:flex; align-items:flex-start; gap:6px; line-height:1.5; word-break:break-word; overflow-wrap:break-word;">
               <span style="color:#059669; font-weight:800; flex-shrink:0;">💡 Delivery Tip:</span>
-              <span>Autonomous screeners penalize passive "we". Frame decisions in the first person (<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">"I built / I diagnosed"</strong></span>) and include a concrete <span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">number or %</strong></span>.</span>
+              <span>Autonomous screeners penalize passive "we". Frame decisions in the first person (<strong style="color:#0f172a; font-weight:800;">"I built / I diagnosed"</strong>) and include a concrete <strong style="color:#0f172a; font-weight:800;">number or %</strong>.</span>
             </div>
             <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
               <button type="button" id="done-typing-btn" onclick="window.finishAndEvaluateCurrentAnswer()" class="btn-primary" style="padding:11px 22px; font-size:14.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; display:inline-flex; align-items:center; gap:8px;">
@@ -2476,6 +2488,9 @@ window.addEventListener('unhandledrejection', function(event) {
   let currentQ = 0;
   // Only an actual mobile phone user-agent counts as isMobile. Window width alone NEVER forces typed mode.
   const isMobile = /iPhone|iPad|iPod|Android|Mobi/i.test(navigator.userAgent);
+  window.getResolvedInterviewTextMode = function() {
+    return (localStorage.getItem('interviewTextMode') === 'true') || (typeof isMobile !== 'undefined' && Boolean(isMobile));
+  };
   // Default the input mode to speaking, not typing (REQ Warm-Up 1).
   // Clear any stale legacy 'interviewTextMode' from older builds where typed was default.
   let isTextMode = false;
@@ -2701,16 +2716,25 @@ window.addEventListener('unhandledrejection', function(event) {
     return domainBankLabels[domain] || domainBankLabels.general;
   }
 
-  function syncDomainSelectorValue(domain) {
+  function syncDomainSelectorValue(domain, roleTitle) {
     if (!domainSelector) return;
     const dom = domain || 'software';
-    let hasOpt = Array.from(domainSelector.options).some(o => o.value === dom);
-    if (!hasOpt) {
-      const opt = document.createElement('option');
-      opt.value = dom;
-      opt.textContent = 'Role: ' + dom.toUpperCase();
-      domainSelector.appendChild(opt);
+    const rawCdsText = (document.getElementById('cds-text') && (document.getElementById('cds-text').textContent || document.getElementById('cds-text').innerText)) || '';
+    const roleName = roleTitle || localStorage.getItem('atsRole') || (rawCdsText ? rawCdsText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : '') || dom;
+    
+    // Ensure domainSelector has an option matching the active role and selected
+    let matchingOpt = Array.from(domainSelector.options).find(o => o.value === dom && (o.textContent || o.text || o.value || '').toLowerCase().includes(roleName.toLowerCase()));
+    if (!matchingOpt) {
+      matchingOpt = document.createElement('option');
+      matchingOpt.value = dom;
+      matchingOpt.textContent = 'Role: ' + roleName;
+      if (typeof domainSelector.insertBefore === 'function' && domainSelector.firstChild) {
+        domainSelector.insertBefore(matchingOpt, domainSelector.firstChild);
+      } else if (typeof domainSelector.appendChild === 'function') {
+        domainSelector.appendChild(matchingOpt);
+      }
     }
+    matchingOpt.selected = true;
     domainSelector.value = dom;
     currentDomain = dom;
     const setupNote = document.getElementById('setup-question-bank-note');
@@ -3123,14 +3147,8 @@ window.addEventListener('unhandledrejection', function(event) {
         return;
       }
 
-      let hits = 0;
-      if (item.atsKeywords && Array.isArray(item.atsKeywords)) {
-        item.atsKeywords.forEach(kw => {
-          if (kw && resTxt.includes(kw.toLowerCase())) hits++;
-        });
-      }
-      if (resTxt.includes(item.cleanTitle.toLowerCase())) hits += 2;
-      item.isResumeMatch = hits >= 2;
+      const fit = getPassLikelihoodFit(item, resTxt);
+      item.isResumeMatch = (fit && fit.fit === 'good');
     });
   }
 
@@ -3349,20 +3367,21 @@ window.addEventListener('unhandledrejection', function(event) {
       const altBtnsHtml = goodAlternatives.length > 0 ? `
         <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
           ${goodAlternatives.map(alt => `
-            <button type="button" onclick="window.selectRoleItem('${escapeHtml(alt.role.cleanTitle || alt.role.title)}', '${alt.role.domain || 'GENERAL'}')" style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); color:#6ee7b7; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:700; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:all 0.15s ease;" onmouseover="this.style.background='rgba(16,185,129,0.15)'" onmouseout="this.style.background='rgba(16,185,129,0.08)'">
+            <button type="button" onclick="window.selectRoleItem('${escapeHtml(alt.role.cleanTitle || alt.role.title)}', '${alt.role.domain || 'GENERAL'}')" style="background:#ffffff; border:1px solid #10b981; color:#065f46; border-radius:6px; padding:7px 12px; font-size:12.5px; font-weight:700; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:all 0.15s ease;" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='#ffffff'">
               <span>➔ Switch to: <strong>${escapeHtml(alt.role.cleanTitle || alt.role.title)}</strong></span>
-              <span style="font-size:10.5px; color:#34d399; font-weight:800;">● Good fit to pass</span>
+              <span style="font-size:11px; color:#059669; font-weight:800;">● Good fit</span>
             </button>
           `).join('')}
         </div>
       ` : '';
 
       banner.innerHTML = `
-        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.12); border-left:3px solid #9ca3af; border-radius:8px; padding:12px 14px; text-align:left;">
+        <div style="background:#fef2f2; border:1.5px solid #fecaca; border-left:4px solid #ef4444; border-radius:8px; padding:12px 14px; text-align:left;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <span style="background:rgba(156,163,175,0.18); color:#d1d5db; border:1px solid rgba(156,163,175,0.35); padding:2px 7px; border-radius:4px; font-size:11px; font-weight:800;">Weak fit</span>
-            <span style="font-size:12px; color:#d1d5db;">This role is a weak fit for your resume. 3 better-fitting roles to pass:</span>
+            <span style="background:#ef4444; color:#ffffff; padding:2px 7px; border-radius:4px; font-size:11px; font-weight:800;">Weak fit</span>
+            <span style="font-size:13px; color:#991b1b; font-weight:700;">This role is a weak fit for your resume.</span>
           </div>
+          <div style="font-size:12px; color:#7f1d1d; margin-top:6px;">Better-fitting roles to pass based on your background:</div>
           ${altBtnsHtml}
         </div>
       `;
@@ -3812,7 +3831,8 @@ window.addEventListener('unhandledrejection', function(event) {
     'hiring', 'role', 'candidates', 'interview', 'proceed', 'top-tier', 'pass', 'now', 'this',
     'for', 'the', 'and', 'with', 'from', 'that', 'will', 'your', 'work', 'experience', 'team',
     'project', 'projects', 'skills', 'ability', 'strong', 'high', 'quality', 'using', 'based',
-    'required', 'description', 'required job', 'description skills', 'job description', 'key skills'
+    'required', 'description', 'required job', 'description skills', 'job description', 'key skills',
+    'we', 'need', 'an', 'our', 'must', 'have', 'years', 'background'
   ]);
 
   function extractKeywordsFromJDText(jdText, roleTitle, fallbackDom) {
@@ -3841,15 +3861,39 @@ window.addEventListener('unhandledrejection', function(event) {
       'Risk Management', 'Sharpe Ratio', 'Derivatives Pricing', 'Portfolio Optimization', 'GAAP Compliance', 'Audit Controls', 'Quantitative Analysis',
       'Contract Review', 'Statutory Interpretation', 'Case Law', 'Indemnification', 'Regulatory Compliance', 'Legal Research', 'Issue Spotting', 'Fiduciary Duty',
       'Localization', 'Cultural Nuance', 'Idiomatic Accuracy', 'Syntax & Tone', 'Bilingual Translation', 'Speech-to-Text', 'Sentiment Analysis',
-      'PRD Authoring', 'Roadmapping', 'A/B Testing', 'Root-Cause Analysis', 'Rubric Calibration', 'Fact-Checking', 'Quality Assurance'
+      'PRD Authoring', 'Roadmapping', 'A/B Testing', 'Root-Cause Analysis', 'Rubric Calibration', 'Rubric Design', 'Fact-Checking', 'Quality Assurance',
+      'IEC 62304', 'ISO 13485', 'ISO 9001', 'Evaluation Engineer', 'AI Evaluation Engineer', 'Regulated Software'
     ];
 
+    // 1. Scan known terms case-insensitively
     knownJDTerms.forEach(term => {
       const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const re = new RegExp('(?:^|[^a-z0-9])' + escaped + '(?:$|[^a-z0-9])', 'i');
+      const re = new RegExp('(?:^|[^a-zA-Z0-9])' + escaped + '(?:$|[^a-zA-Z0-9])', 'i');
       if (re.test(fullText)) addKw(term);
     });
 
+    // 2. Scan standard phrase structures like 'with X, Y, Z'
+    if (jdText && jdText.length > 10) {
+      const listMatches = jdText.match(/(?:with|including|involving|experience in|knowledge of|proficient in)\s+([^.]+)/i);
+      if (listMatches && listMatches[1]) {
+        const items = listMatches[1].split(/,|(?:\band\b)/i);
+        items.forEach(rawItem => {
+          const it = rawItem.replace(/experience|skills|background|regulated|software/gi, '').trim();
+          if (it && it.length >= 3 && it.length <= 30) {
+            const titleCased = it.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+            addKw(titleCased);
+          }
+        });
+      }
+    }
+
+    // 3. Scan alphanumeric patterns like IEC 62304, ISO 13485
+    if (jdText) {
+      const stdMatches = jdText.match(/\b([A-Z]{2,6}\s+\d{3,6}(?:-\d+)?)\b/g) || [];
+      stdMatches.forEach(m => addKw(m));
+    }
+
+    // 4. Fallback capitalized term extraction
     if (jdText && jdText.length > 20) {
       const capMatches = jdText.match(/\b([A-Z][A-Za-z0-9+/.-]{2,18}(?:\s+[A-Z][A-Za-z0-9+/.-]{2,18})?)\b/g) || [];
       capMatches.forEach(m => {
@@ -3873,6 +3917,32 @@ window.addEventListener('unhandledrejection', function(event) {
     const customJD = (localStorage.getItem('customJD_' + tLow) || localStorage.getItem('customJD_active') || '').trim();
     const waveRole = (window.wavesRoleMap && (window.wavesRoleMap[tLow] || Object.values(window.wavesRoleMap).find(r => r.title && r.title.toLowerCase().includes(tLow)))) || null;
 
+    const kws = [];
+    const seen = new Set();
+    const pushKw = (k) => {
+      const clean = String(k || '').trim();
+      const low = clean.toLowerCase();
+      if (!clean || clean.length < 2 || clean.length > 35) return;
+      if (genericFillerSet.has(low) || seen.has(low)) return;
+      seen.add(low);
+      kws.push(clean);
+    };
+
+    // When a custom JD is active, extract strictly from the pasted text alone (never mix default role keywords)
+    if (customJD) {
+      extractKeywordsFromJDText(customJD, cleanRole, dom).forEach(pushKw);
+      const canonicalKeywords = kws.slice(0, 8);
+      window.sessionKeywords = canonicalKeywords;
+      return {
+        roleTitle: cleanRole,
+        domain: dom,
+        jobDescription: customJD,
+        isCustomJD: true,
+        keywords: canonicalKeywords,
+        jdKeywords: canonicalKeywords
+      };
+    }
+
     let cachedKws = [];
     try {
       const rawCache = localStorage.getItem('cached_kws_' + cleanRole);
@@ -3882,8 +3952,8 @@ window.addEventListener('unhandledrejection', function(event) {
       }
     } catch (e) {}
 
-    let jdText = customJD;
-    if (!jdText && waveRole && waveRole.description && !/Micro1 is now hiring for this role/i.test(waveRole.description) && waveRole.description.length > 35) {
+    let jdText = '';
+    if (waveRole && waveRole.description && !/Micro1 is now hiring for this role/i.test(waveRole.description) && waveRole.description.length > 35) {
       jdText = waveRole.description;
     }
 
@@ -3908,21 +3978,7 @@ window.addEventListener('unhandledrejection', function(event) {
       }
     }
 
-    const kws = [];
-    const seen = new Set();
-    const pushKw = (k) => {
-      const clean = String(k || '').trim();
-      const low = clean.toLowerCase();
-      if (!clean || clean.length < 2 || clean.length > 35) return;
-      if (genericFillerSet.has(low) || seen.has(low)) return;
-      seen.add(low);
-      kws.push(clean);
-    };
-
-    if (customJD) {
-      extractKeywordsFromJDText(customJD, cleanRole, dom).forEach(pushKw);
-    }
-    if (waveRole && Array.isArray(waveRole.atsKeywords)) {
+    if (waveRole && Array.isArray(waveRole.atsKeywords) && waveRole.atsKeywords.length > 0) {
       waveRole.atsKeywords.forEach(pushKw);
     }
     cachedKws.forEach(pushKw);
@@ -3939,7 +3995,7 @@ window.addEventListener('unhandledrejection', function(event) {
       roleTitle: cleanRole,
       domain: dom,
       jobDescription: jdText,
-      isCustomJD: Boolean(customJD),
+      isCustomJD: false,
       keywords: canonicalKeywords,
       jdKeywords: canonicalKeywords
     };
@@ -3947,7 +4003,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
   window.refreshJobDescriptionUI = function(roleName, domain) {
     const ctx = getJobContextForRole(roleName, domain);
-    syncDomainSelectorValue(ctx.domain);
+    syncDomainSelectorValue(ctx.domain, ctx.roleTitle);
     const previewEl = document.getElementById('setup-jd-keywords-preview');
     const titleEl = document.getElementById('jd-context-title');
     const taEl = document.getElementById('interview-jd-textarea');
@@ -3958,7 +4014,7 @@ window.addEventListener('unhandledrejection', function(event) {
     }
     if (previewEl) {
       previewEl.innerHTML = ctx.keywords.map(k =>
-        `<span style="display:inline-block; background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#bfdbfe; font-size:11px; font-weight:700; padding:2px 8px; border-radius:100px;">${k}</span>`
+        `<span style="display:inline-block; background:#eff6ff; border:1px solid #93c5fd; color:#1d4ed8; font-size:12px; font-weight:700; padding:3px 10px; border-radius:100px;">${k}</span>`
       ).join('');
     }
     if (taEl) {
@@ -3997,7 +4053,7 @@ window.addEventListener('unhandledrejection', function(event) {
     window.refreshJobDescriptionUI(initRole, currentDomain);
   }, 60);
 
-  let teleprompterEnabled = (localStorage.getItem('teleprompterEnabled') === 'true');
+  let teleprompterEnabled = (localStorage.getItem('teleprompterEnabled') !== 'false');
   const tpCheckboxEl = document.getElementById('toggle-teleprompter');
   if (tpCheckboxEl) {
     tpCheckboxEl.checked = teleprompterEnabled;
@@ -5061,6 +5117,19 @@ window.addEventListener('unhandledrejection', function(event) {
     if (!isTextMode) {
       window.setInterviewMode(true);
     }
+    const inPageBox = document.getElementById('in-page-feedback');
+    if (inPageBox && inPageBox.style.display !== 'none') {
+      inPageBox.style.display = 'none';
+      const actionRow = document.getElementById('screen2-action-row');
+      if (actionRow) actionRow.style.display = 'flex';
+      const typedContainer = document.getElementById('typed-answer-container');
+      if (typedContainer) {
+        typedContainer.style.display = 'block';
+        setTimeout(() => {
+          typedContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 50);
+      }
+    }
     if (inputArea) {
       inputArea.focus();
     }
@@ -5278,10 +5347,12 @@ window.addEventListener('unhandledrejection', function(event) {
     });
   };
 
+  let _lastScrollPhase = -1;
   window.resetTeleprompterScroll = function() {
     window.pauseTeleprompterScroll();
     _tpScrollPausedTime = 0;
     _tpScrollStartTime = null;
+    _lastScrollPhase = -1;
     const viewports = document.querySelectorAll('.star-tp-scroll-viewport, #floating-tp-viewport, #teleprompter-box');
     viewports.forEach(vp => {
       vp.style.scrollBehavior = 'auto';
@@ -5309,6 +5380,10 @@ window.addEventListener('unhandledrejection', function(event) {
     const actionCards = document.querySelectorAll('.tp-sec-action');
     const resultCards = document.querySelectorAll('.tp-sec-result');
 
+    const currentPhase = elapsedSec < 18 ? 0 : (elapsedSec < 58 ? 1 : 2);
+    const phaseChanged = (_lastScrollPhase !== currentPhase);
+    _lastScrollPhase = currentPhase;
+
     hookCards.forEach(c => {
       const tag = c.querySelector('.tp-pacing-indicator');
       if (elapsedSec < 18) {
@@ -5316,6 +5391,9 @@ window.addEventListener('unhandledrejection', function(event) {
         c.style.boxShadow = '0 0 16px rgba(59,130,246,0.35)';
         c.style.opacity = '1';
         if (tag) tag.style.display = 'inline-block';
+        if (phaseChanged && _tpIsScrolling && typeof c.scrollIntoView === 'function') {
+          c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       } else {
         c.style.boxShadow = 'none';
         c.style.opacity = '0.7';
@@ -5330,6 +5408,9 @@ window.addEventListener('unhandledrejection', function(event) {
         c.style.boxShadow = '0 0 18px rgba(16,185,129,0.4)';
         c.style.opacity = '1';
         if (tag) tag.style.display = 'inline-block';
+        if (phaseChanged && _tpIsScrolling && typeof c.scrollIntoView === 'function') {
+          c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       } else {
         c.style.boxShadow = 'none';
         c.style.opacity = elapsedSec < 18 ? '0.75' : '0.7';
@@ -5344,6 +5425,9 @@ window.addEventListener('unhandledrejection', function(event) {
         c.style.boxShadow = '0 0 18px rgba(245,158,11,0.45)';
         c.style.opacity = '1';
         if (tag) tag.style.display = 'inline-block';
+        if (phaseChanged && _tpIsScrolling && typeof c.scrollIntoView === 'function') {
+          c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       } else {
         c.style.boxShadow = 'none';
         c.style.opacity = '0.75';
@@ -5991,11 +6075,23 @@ ${(resumeText || '').slice(0, 3500)}`;
     let videoLessonFocus = "";
     let primaryVideoHref = "/video-guides.html#lesson-11";
 
-    const resolvedCompany = (parsedResume && parsedResume.companyName) ? parsedResume.companyName : "[Your Recent Employer]";
-    const resolvedRole = questionRole || (parsedResume && parsedResume.cleanRoleTitle) || "[Your Recent Title]";
-    const resolvedMetric = (parsedResume && parsedResume.cleanMetricPhrase)
-      ? parsedResume.cleanMetricPhrase
-      : (ansPctMatch && ansPctMatch[1] ? `a ${ansPctMatch[1]}% measurable improvement across our production workflow` : "[a result with a number]");
+    // Non-negotiable fit guard: if role is weak fit for candidate's resume, never put unrelated claims in their mouth
+    const fitCheck = (typeof getPassLikelihoodFit === 'function')
+      ? getPassLikelihoodFit(roleTitle, (localStorage.getItem('candidateResumeText') || '').trim())
+      : { fit: 'good' };
+    const isWeakFit = (fitCheck && fitCheck.fit === 'weak');
+
+    let resolvedCompany = "[your company]";
+    let resolvedRole = "[your job title]";
+    let resolvedMetric = "[your measurable result]";
+
+    if (!isWeakFit) {
+      resolvedCompany = (parsedResume && parsedResume.companyName) ? parsedResume.companyName : "[Your Recent Employer]";
+      resolvedRole = questionRole || (parsedResume && parsedResume.cleanRoleTitle) || "[Your Recent Title]";
+      resolvedMetric = (parsedResume && parsedResume.cleanMetricPhrase)
+        ? parsedResume.cleanMetricPhrase
+        : (ansPctMatch && ansPctMatch[1] ? `a ${ansPctMatch[1]}% measurable improvement across our production workflow` : "[a result with a number]");
+    }
     const primarySkill = qKeywords[0] || (detectedResumeSkills && detectedResumeSkills[0]) || "core technical workflows";
     const secondarySkill = qKeywords[1] || (detectedResumeSkills && detectedResumeSkills[1]) || "systematic verification";
 
@@ -6364,21 +6460,6 @@ ${(resumeText || '').slice(0, 3500)}`;
       <span>Confidential Candidate Study Sheet &bull; Practice in Chrome or Edge</span>
     </div>
   </div>
-
-<!-- Practice Script Slide-Out Right Drawer -->
-<div id="practice-script-side-panel" style="display:none; position:fixed; top:0; right:0; width:340px; max-width:90vw; height:100vh; background:#ffffff; box-shadow:-8px 0 32px rgba(0,0,0,0.18); z-index:10000; overflow-y:auto; padding:24px; box-sizing:border-box;">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--gray-200);">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span style="font-size:20px;">📖</span>
-      <h3 style="margin:0; font-size:18px; font-weight:800; color:#0f172a;">Practice Script</h3>
-    </div>
-    <button type="button" id="close-practice-script-btn" onclick="window.toggleLiveTeleprompterCard()" style="background:#f1f5f9; border:1px solid var(--gray-300); border-radius:8px; padding:8px 14px; font-size:14px; font-weight:700; color:#0f172a; cursor:pointer;">
-      ✕ Close Practice Script
-    </button>
-  </div>
-  <div id="side-panel-script-content"></div>
-</div>
-
 </body>
 </html>`;
 
@@ -6628,20 +6709,31 @@ ${(resumeText || '').slice(0, 3500)}`;
       ? parsedResume.allRoles
       : (parsedResume.cleanRoleTitle ? [parsedResume.cleanRoleTitle] : [roleTitle]);
     const activeCueRole = allRoles[currentQ % allRoles.length] || allRoles[0];
-    const roleHook = activeCueRole ? `your work as ${getIndefiniteArticle(activeCueRole)} <strong>${activeCueRole}</strong>` : `your background ${formatBackgroundInRole(roleTitle)}`;
-    const metricHint = parsedResume.cleanMetricPhrase || 'a concrete % or number (e.g., 35% faster turnaround or 99% accuracy)';
 
-    // Show ONLY the ONE next tip by default; "Show all tips" expands the rest
+    const fitCheck = (typeof getPassLikelihoodFit === 'function')
+      ? getPassLikelihoodFit(roleTitle, resumeText)
+      : { fit: 'good' };
+    const isWeakFit = (fitCheck && fitCheck.fit === 'weak');
+
+    const roleHook = isWeakFit
+      ? `your domain background in ${formatBackgroundInRole(roleTitle)}`
+      : (activeCueRole ? `your work as ${getIndefiniteArticle(activeCueRole)} <strong>${activeCueRole}</strong>` : `your background ${formatBackgroundInRole(roleTitle)}`);
+    const metricHint = isWeakFit
+      ? '[a concrete % or number]'
+      : (parsedResume.cleanMetricPhrase || 'a concrete % or number (e.g., 35% faster turnaround or 99% accuracy)');
+
+    // In Step 3 (practice mode), open CoPilot tips by default (P2 #17)
+    const isStep3Practice = (window.currentSimMode === 'practice');
     cuesBody.innerHTML = `<span style="color:#065f46; font-weight:800;">Coach Gain says:</span> Start with ${roleHook} and address <strong>${kws[0] || 'core scope'}</strong> in sentence 1.`;
     if (allTipsBody) {
-      allTipsBody.style.display = 'none';
+      allTipsBody.style.display = isStep3Practice ? 'block' : 'none';
       allTipsBody.innerHTML = `
         <div style="margin-bottom:4px;"><span style="color:#1d4ed8; font-weight:800;">[S/T Hook]</span> Anchor in ${roleHook} and address <strong>${kws[0] || 'core scope'}</strong>.</div>
         <div style="margin-bottom:4px;"><span style="color:#065f46; font-weight:800;">[Action]</span> Explain how you applied <strong>${skillList}</strong> to verify edge cases.</div>
         <div><span style="color:#92400e; font-weight:800;">[Result]</span> Close with ${metricHint} (aim for 60–90 seconds).</div>
       `;
     }
-    if (toggleBtn) toggleBtn.textContent = 'Show all tips';
+    if (toggleBtn) toggleBtn.textContent = isStep3Practice ? 'Hide tips' : 'Show all tips';
   }
 
   function evaluateAnswerText(transcript, qData, qIndex) {
@@ -6845,6 +6937,16 @@ ${(resumeText || '').slice(0, 3500)}`;
       toTighten = "🎯 <strong>Coach Gain says:</strong> Autonomous AI evaluators score domain competence by checking for role-specific methods, frameworks, and tools. Ground your STAR example in the role's core technical scope rather than general workplace activities.\n" + toTighten;
     }
 
+    // P1 #15: Enforce length penalty for practice mode answers well under the 60-90s (~100-160 words) target
+    const isTooBrief = (!isWarmup && !isDuplicateAnswer && wordCount >= 15 && wordCount < 50);
+    if (isTooBrief) {
+      if (wordCount < 35) {
+        toTighten += `\n⚠️ <strong>Answer too brief:</strong> Your answer was only ${wordCount} words (target: 100–160 words / 60–90s). AI screening systems penalize short answers for lack of technical depth.`;
+      } else {
+        toTighten += `\n💡 <strong>Length Warning:</strong> At ${wordCount} words, your response is below target (~100–160 words / 60–90s). Expand on your exact actions and verification tools.`;
+      }
+    }
+
     let cappedScore;
     if (isWarmup) {
       cappedScore = wordCount < 3 ? 0 : confScore;
@@ -6854,6 +6956,10 @@ ${(resumeText || '').slice(0, 3500)}`;
       cappedScore = Math.min(40, Math.max(0, confScore));
     } else if (isOffTopicNoKeywords) {
       cappedScore = Math.min(38, Math.max(20, confScore - 35)); // Strict 38% cap for off-topic / zero-keyword answers
+    } else if (wordCount < 35) {
+      cappedScore = Math.min(50, Math.max(25, confScore)); // Cap short answers under 35 words at 50%
+    } else if (wordCount < 50) {
+      cappedScore = Math.min(68, Math.max(35, confScore)); // Cap answers under 50 words at 68%
     } else {
       cappedScore = Math.min(100, Math.max(35, confScore));
     }
@@ -7136,6 +7242,10 @@ ${(resumeText || '').slice(0, 3500)}`;
       mode: isTextMode ? 'typed' : 'spoken',
       score: evalRes.cappedScore
     });
+
+    if (typeof window.saveActiveInterviewSession === 'function') {
+      window.saveActiveInterviewSession();
+    }
   }
 
     // Live Hardware Microphone Visualizer & Permission Engine
@@ -7451,6 +7561,10 @@ ${(resumeText || '').slice(0, 3500)}`;
     startAnswerTimer(qData);
     startPauseDetection();
     updateLiveCopilotTelemetry('', qData);
+
+    if (typeof window.saveActiveInterviewSession === 'function') {
+      window.saveActiveInterviewSession();
+    }
 
     const copilotContent = document.getElementById('copilot-content');
     const copilotStatus = document.getElementById('copilot-status');
@@ -7813,9 +7927,147 @@ ${(resumeText || '').slice(0, 3500)}`;
     proceedToSession();
   };
 
+  window.saveActiveInterviewSession = function() {
+    if (!interviewStarted || interviewCompleted || !currentQuestions || currentQuestions.length === 0) {
+      return;
+    }
+    try {
+      const sessionData = {
+        simMode: window.currentSimMode || 'practice',
+        currentQ: currentQ,
+        currentDomain: currentDomain || 'software',
+        currentQuestions: currentQuestions,
+        sessionQuestionResults: sessionQuestionResults,
+        totalScore: totalScore,
+        totalFillers: totalFillers,
+        totalQuestionsAnswered: totalQuestionsAnswered,
+        totalMetricsAnswered: totalMetricsAnswered,
+        isGuided: Boolean(window._isGuidedPlan) || Boolean(localStorage.getItem('tgt_guided_plan')),
+        guidedStep: window._guidedStep || (window.currentSimMode === 'warmup' ? 1 : 3),
+        isTextMode: Boolean(isTextMode),
+        timestamp: Date.now()
+      };
+      localStorage.setItem('tgt_active_interview_session', JSON.stringify(sessionData));
+    } catch(e) {
+      console.warn("Session save error:", e);
+    }
+  };
+
+  window.clearActiveInterviewSession = function() {
+    try {
+      localStorage.removeItem('tgt_active_interview_session');
+      const card = document.getElementById('tgt-resume-interview-card');
+      if (card) card.remove();
+    } catch(e) {}
+  };
+
+  window.checkActiveInterviewOnLoad = function() {
+    try {
+      const raw = localStorage.getItem('tgt_active_interview_session');
+      if (!raw) return;
+      const sess = JSON.parse(raw);
+      if (!sess || !sess.currentQuestions || !sess.currentQuestions.length || (Date.now() - (sess.timestamp || 0) > 24 * 3600 * 1000)) {
+        localStorage.removeItem('tgt_active_interview_session');
+        return;
+      }
+      const slot = document.getElementById('tgt-resume-session-slot');
+      if (!slot) return;
+      const qNum = (sess.currentQ || 0) + 1;
+      const totalQ = sess.currentQuestions.length;
+      const modeLabels = {
+        warmup: 'Warm-Up Drill',
+        practice: 'Practice with CoPilot',
+        pressure: 'Pressure Mode',
+        passcheck: 'Pass Check Benchmark',
+        resumedefense: 'Resume Defense'
+      };
+      const modeName = sess.isGuided ? 'Guided Prep Plan' : (modeLabels[sess.simMode] || 'Practice');
+      slot.innerHTML = `
+        <div id="tgt-resume-interview-card" style="margin-bottom:1.25rem; padding:1.1rem 1.3rem; background:#f0fdf4; border:2px solid #86efac; border-radius:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); text-align:left;">
+          <div>
+            <div style="font-weight:800; color:#15803d; font-size:14.5px; margin-bottom:3px; display:flex; align-items:center; gap:6px;">
+              <span>🔄</span> In-Progress Interview Saved
+            </div>
+            <div style="font-size:13.5px; color:#166534; line-height:1.45;">
+              You have an active session on <strong>Question ${qNum} of ${totalQ}</strong> (${modeName}). Continue where you left off, or start fresh.
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button type="button" id="resume-interview-btn" onclick="window.resumeActiveInterview()" class="btn-primary" style="padding:9px 18px; font-size:13.5px; font-weight:800; background:#16a34a; border-color:#15803d; color:#ffffff; border-radius:8px; cursor:pointer;">
+              ▶ Resume Interview
+            </button>
+            <button type="button" id="discard-interview-btn" onclick="window.discardActiveInterview()" style="padding:9px 14px; font-size:13px; font-weight:600; background:#ffffff; border:1px solid #cbd5e1; color:#64748b; border-radius:8px; cursor:pointer;">
+              Discard
+            </button>
+          </div>
+        </div>
+      `;
+    } catch(e) {
+      console.warn("Failed checking active session:", e);
+    }
+  };
+
+  window.resumeActiveInterview = function() {
+    try {
+      const raw = localStorage.getItem('tgt_active_interview_session');
+      if (!raw) return;
+      const sess = JSON.parse(raw);
+      if (!sess || !sess.currentQuestions || !sess.currentQuestions.length) return;
+
+      window.currentSimMode = sess.simMode || 'practice';
+      currentQ = sess.currentQ || 0;
+      currentDomain = sess.currentDomain || 'software';
+      currentQuestions = sess.currentQuestions;
+      sessionQuestionResults = sess.sessionQuestionResults || [];
+      totalScore = sess.totalScore || 0;
+      totalFillers = sess.totalFillers || 0;
+      totalQuestionsAnswered = sess.totalQuestionsAnswered || 0;
+      totalMetricsAnswered = sess.totalMetricsAnswered || 0;
+
+      if (sess.isGuided) {
+        window._isGuidedPlan = true;
+        window._guidedStep = sess.guidedStep || 3;
+        try { localStorage.setItem('tgt_guided_plan', String(window._guidedStep)); } catch(e) {}
+      }
+
+      if (typeof sess.isTextMode === 'boolean') {
+        isTextMode = sess.isTextMode;
+        if (typeof window.setInterviewMode === 'function') {
+          window.setInterviewMode(isTextMode);
+        }
+      }
+
+      if (setupView) setupView.style.display = 'none';
+      if (resultsView) resultsView.style.display = 'none';
+      const hub = document.getElementById('prep-hub-root');
+      if (hub) {
+        hub.classList.remove('not-started', 'results-mode');
+        hub.classList.add('started');
+      }
+      const copilotEl = document.getElementById('copilot-panel');
+      if (copilotEl) copilotEl.style.display = (window.currentSimMode === 'warmup') ? 'none' : 'flex';
+      if (activeView) activeView.style.display = 'block';
+
+      interviewStarted = true;
+      interviewCompleted = false;
+
+      const card = document.getElementById('tgt-resume-interview-card');
+      if (card) card.remove();
+
+      askQuestion();
+    } catch(e) {
+      console.error("Failed to resume active session:", e);
+    }
+  };
+
+  window.discardActiveInterview = function() {
+    window.clearActiveInterviewSession();
+  };
+
   window.returnToSetupView = function() {
     stopAllSpeech();
     stopAnswerTimer();
+    window.clearActiveInterviewSession();
     interviewStarted = false;
     interviewCompleted = false;
     currentQ = 0;
@@ -7997,6 +8249,9 @@ ${(resumeText || '').slice(0, 3500)}`;
     interviewCompleted = true;
     stopAllSpeech();
     stopAnswerTimer();
+    if (typeof window.clearActiveInterviewSession === 'function') {
+      window.clearActiveInterviewSession();
+    }
 
     const displayedRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : '';
     const roleTarget = displayedRole || localStorage.getItem('atsRole') || currentDomain;
@@ -8821,32 +9076,32 @@ ${(resumeText || '').slice(0, 3500)}`;
     } catch(e) {}
   })();
 
+  let _isAiSpeechPaused = false;
   document.getElementById('stop-ai-btn').addEventListener('click', (e) => {
     const btn = e.currentTarget;
-    if (activeAudio) {
-      if (activeAudio.paused) {
-        activeAudio.play().catch(() => {});
-        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
-      } else {
-        activeAudio.pause();
-        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume AI';
-      }
+    if (_isAiSpeechPaused) {
+      _isAiSpeechPaused = false;
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
+      window.replayCurrentQuestionAudio();
       return;
     }
-    if (synth.paused) {
-      synth.resume();
-      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg> Pause AI';
-    } else if (synth.speaking) {
-      synth.pause();
+    if (activeAudio) {
+      activeAudio.pause();
+      _isAiSpeechPaused = true;
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume AI';
+      return;
+    }
+    if (synth.speaking || synth.pending) {
+      synth.cancel();
+      _isAiSpeechPaused = true;
       btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Resume AI';
     } else {
-      // Replay question audio if clicked while idle
       window.replayCurrentQuestionAudio();
     }
   });
   // Simulation Mode State (Tier 2: Item 6) + Quizlet-Style Flashcards Deck
+  // On fresh setup screen reload, always default cleanly to practice mode without flashcard deck rendered below
   const savedSimMode = localStorage.getItem('tgt_sim_mode');
-  // Avoid persisting transient warmup drill across page reload on the setup screen
   window.currentSimMode = (savedSimMode && savedSimMode !== 'warmup') ? savedSimMode : 'practice';
 
   let _fcCurrentIndex = 0;
@@ -8915,7 +9170,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         if (typeof window.initFlashcardsDeck === 'function') {
           window.initFlashcardsDeck();
         }
-        if (typeof fcContainer.scrollIntoView === 'function') {
+        if (preserveGuided && typeof fcContainer.scrollIntoView === 'function') {
           fcContainer.scrollIntoView({ behavior: 'smooth' });
         }
       } else {
@@ -8930,9 +9185,15 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
   };
 
-  // Initialize selected simulation mode on page load
+  // Initialize selected simulation mode on page load (setup view displays alone)
   setTimeout(() => {
-    window.selectSimMode(window.currentSimMode);
+    const urlParam = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search).get('screen') : null;
+    const initialMode = (urlParam === 'flashcards') ? 'flashcards' : (window.currentSimMode === 'flashcards' ? 'practice' : window.currentSimMode);
+    window.selectSimMode(initialMode, false);
+    const fcBox = document.getElementById('flashcards-deck-container');
+    if (fcBox && urlParam !== 'flashcards') {
+      fcBox.style.display = 'none';
+    }
   }, 100);
 
   window.openFlashcardsScreen = function(isGuided) {
@@ -9152,6 +9413,8 @@ ${(resumeText || '').slice(0, 3500)}`;
     _fcMasteredIndices = new Set();
     _fcRepeatedIndices = new Set();
     _fcIsFlipped = false;
+    window._fcIsRepeatRound = false;
+    window._fcFirstTryStats = null;
     window.renderFlashcardAtCurrentIndex();
   };
 
@@ -9202,15 +9465,22 @@ ${(resumeText || '').slice(0, 3500)}`;
       nextBtn.style.display = 'none';
     }
 
-    // Update progress badge & mastery bar
+    // Update progress badge & mastery bar (P1 #12 & #13: Counter displays position in queue or repeat deck)
     const badge = document.getElementById('fc-progress-badge');
     if (badge) {
-      badge.innerText = `Card ${currentItem.origIdx + 1} of ${total}${currentItem.attempts > 0 ? ` (Repeat #${currentItem.attempts})` : ''}`;
+      if (window._fcIsRepeatRound) {
+        badge.innerText = `Card ${_fcQueueIndex + 1} of ${_fcQueue.length} (Repeat Round)`;
+      } else {
+        const repeatSuffix = currentItem.attempts > 0 ? ` (Repeat #${currentItem.attempts})` : '';
+        const cardDisplayNum = currentItem.attempts > 0 ? (currentItem.origIdx + 1) : (_fcQueueIndex + 1);
+        badge.innerText = `Card ${cardDisplayNum} of ${total}${repeatSuffix}`;
+      }
     }
     const progressBar = document.getElementById('fc-progress-fill');
     if (progressBar) {
-      const completedCount = Math.min(total, _fcQueueIndex);
-      const pct = Math.min(100, Math.round((completedCount / Math.max(1, total)) * 100));
+      const activeTotal = window._fcIsRepeatRound ? _fcQueue.length : total;
+      const completedCount = Math.min(activeTotal, _fcQueueIndex);
+      const pct = Math.min(100, Math.round((completedCount / Math.max(1, activeTotal)) * 100));
       progressBar.style.width = pct + '%';
     }
 
@@ -9336,11 +9606,22 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (!_fcQueue || _fcQueueIndex >= _fcQueue.length) return;
     const currentItem = _fcQueue[_fcQueueIndex];
 
+    // Deduplicate: if an entry for this origIdx was already queued ahead, remove it (P1 #14)
+    for (let i = _fcQueue.length - 1; i > _fcQueueIndex; i--) {
+      if (_fcQueue[i].origIdx === currentItem.origIdx) {
+        _fcQueue.splice(i, 1);
+      }
+    }
+
     if (rating === 'got-it') {
       _fcMasteredIndices.add(currentItem.origIdx);
+      if (currentItem.attempts === 0) {
+        _fcRepeatedIndices.delete(currentItem.origIdx);
+      }
     } else {
       // 'almost' or 'missed-it': push to the end of the queue for spaced repetition
       _fcRepeatedIndices.add(currentItem.origIdx);
+      _fcMasteredIndices.delete(currentItem.origIdx);
       _fcQueue.push({
         card: currentItem.card,
         origIdx: currentItem.origIdx,
@@ -9371,15 +9652,44 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     const total = (_fcDeck && _fcDeck.length) ? _fcDeck.length : 10;
     const repeatedList = Array.from(_fcRepeatedIndices);
-    const firstTryCount = Math.max(0, total - repeatedList.length);
     const planStepVal = parseInt(localStorage.getItem('tgt_guided_plan') || '0', 10);
     const isGuided = Boolean(window._isGuidedPlan || planStepVal >= 1);
 
     const progressBar = document.getElementById('fc-progress-fill');
     if (progressBar) progressBar.style.width = '100%';
 
+    const isRepeatRound = Boolean(window._fcIsRepeatRound);
+    let summaryHeadingHtml = '';
     let repeatedHtml = '';
-    if (repeatedList.length > 0) {
+
+    if (isRepeatRound) {
+      const repTotal = _fcQueue.length;
+      summaryHeadingHtml = `
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px 18px; margin-bottom:14px; text-align:center;">
+          <div style="font-size:16px; font-weight:800; color:#166534;">
+            ✓ ${repTotal} of ${repTotal} Repeated Cards Mastered
+          </div>
+          ${window._fcFirstTryStats ? `
+            <div style="font-size:13px; color:#15803d; margin-top:4px;">
+              First-Try Record: ${window._fcFirstTryStats.firstTryCount} of ${window._fcFirstTryStats.total} mastered on first try.
+            </div>
+          ` : ''}
+        </div>
+      `;
+    } else {
+      const firstTryCount = Math.max(0, total - repeatedList.length);
+      window._fcFirstTryStats = { firstTryCount, total, repeatedList: [...repeatedList] };
+      summaryHeadingHtml = `
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px 18px; margin-bottom:14px; text-align:center;">
+          <div style="font-size:16px; font-weight:800; color:#166534;">
+            ✓ ${firstTryCount} of ${total} Mastered on First Try
+          </div>
+          ${repeatedList.length > 0 ? `<div style="font-size:13px; color:#15803d; margin-top:2px;">${repeatedList.length} card${repeatedList.length > 1 ? 's' : ''} repeated until mastered.</div>` : `<div style="font-size:13px; color:#15803d; margin-top:2px;">100% first-pass mastery on all scenarios.</div>`}
+        </div>
+      `;
+    }
+
+    if (repeatedList.length > 0 && !isRepeatRound) {
       repeatedHtml = `
         <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:14px 16px; margin-bottom:16px; text-align:left;">
           <div style="font-size:13px; font-weight:800; color:#b45309; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px;">
@@ -9407,13 +9717,7 @@ ${(resumeText || '').slice(0, 3500)}`;
           You have practiced each scenario out loud and internalized the winning STAR and Answer–Why–Check formulas.
         </p>
 
-        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px 18px; margin-bottom:14px; text-align:center;">
-          <div style="font-size:15px; font-weight:800; color:#166534;">
-            ✓ ${firstTryCount} of ${total} Mastered on First Try
-          </div>
-          ${repeatedList.length > 0 ? `<div style="font-size:13px; color:#15803d; margin-top:2px;">${repeatedList.length} card${repeatedList.length > 1 ? 's' : ''} repeated until mastered.</div>` : `<div style="font-size:13px; color:#15803d; margin-top:2px;">100% first-pass mastery on all scenarios.</div>`}
-        </div>
-
+        ${summaryHeadingHtml}
         ${repeatedHtml}
 
         <div style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; margin-top:16px;">
@@ -9432,6 +9736,7 @@ ${(resumeText || '').slice(0, 3500)}`;
   window.practiceRepeatedFlashcardsOnly = function() {
     const repeatedList = Array.from(_fcRepeatedIndices);
     if (repeatedList.length === 0) return;
+    window._fcIsRepeatRound = true;
     _fcQueue = repeatedList.map(idx => ({
       card: _fcDeck[idx],
       origIdx: idx,
@@ -9690,14 +9995,22 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
   };
 
-  // Pre-fill email on page load if already known
+  // Pre-fill email on page load if already known and check for active interview session
   document.addEventListener('DOMContentLoaded', function() {
     const storedEmail = localStorage.getItem('candidateEmail');
     if (storedEmail) {
       const s1Email = document.getElementById('screen1-lead-email');
       if (s1Email) s1Email.value = storedEmail;
     }
+    if (typeof window.checkActiveInterviewOnLoad === 'function') {
+      window.checkActiveInterviewOnLoad();
+    }
   });
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    if (typeof window.checkActiveInterviewOnLoad === 'function') {
+      window.checkActiveInterviewOnLoad();
+    }
+  }
 
   // Lead Magnet Submission Handler (Direct PDF Download & Explicit Consent)
   window.handleLeadMagnetSubmit = function(e) {
@@ -9825,6 +10138,20 @@ ${(resumeText || '').slice(0, 3500)}`;
 
 
 
+
+<!-- Practice Script Slide-Out Right Drawer -->
+<div id="practice-script-side-panel" style="display:none; position:fixed; top:0; right:0; width:340px; max-width:90vw; height:100vh; background:#ffffff; box-shadow:-8px 0 32px rgba(0,0,0,0.18); z-index:10000; overflow-y:auto; padding:24px; box-sizing:border-box;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--gray-200);">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-size:20px;">📖</span>
+      <h3 style="margin:0; font-size:18px; font-weight:800; color:#0f172a;">Practice Script</h3>
+    </div>
+    <button type="button" id="close-practice-script-btn" onclick="window.toggleLiveTeleprompterCard()" style="background:#f1f5f9; border:1px solid var(--gray-300); border-radius:8px; padding:8px 14px; font-size:14px; font-weight:700; color:#0f172a; cursor:pointer;">
+      ✕ Close Practice Script
+    </button>
+  </div>
+  <div id="side-panel-script-content"></div>
+</div>
 
 </body>
 
