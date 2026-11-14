@@ -8690,6 +8690,18 @@ ${(resumeText || '').slice(0, 3500)}`;
           });
           finishInterview();
         }, 150);
+      } else if (reqScreen === 'flashcards' || reqScreen === 'flashcard') {
+        setTimeout(() => {
+          window.openFlashcardsScreen(sp.get('guided') === 'true');
+          if (sp.get('flip') === 'true') {
+            setTimeout(() => {
+              if (sp.get('prefill') === 'true') {
+                window.prefillFlashcardFromResume();
+              }
+              window.flipCurrentFlashcard();
+            }, 300);
+          }
+        }, 200);
       }
     } catch(e) {}
   })();
