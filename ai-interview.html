@@ -827,9 +827,9 @@ window.addEventListener('unhandledrejection', function(event) {
               <div style="font-size:14px; color:var(--gray-500); margin-top:3px; line-height:1.35;">Interactive STAR &amp; Answer–Why–Check 10-card deck</div>
             </div>
             <!-- 3. CoPilot Guided -->
-            <div id="mode-opt-practice" onclick="window.selectSimMode('practice')" style="background:#f8fafc; border:1.5px solid var(--gray-200); border-radius:8px; padding:12px; cursor:pointer; transition:all 0.2s;">
-              <div style="font-size:14px; font-weight:700; color:var(--gray-900);">3. CoPilot</div>
-              <div style="font-size:14px; color:var(--gray-500); margin-top:3px; line-height:1.35;">Recall Ladder fading prompter &amp; live JD cues</div>
+            <div id="mode-opt-practice" onclick="window.selectSimMode('practice')" style="background:#f8fafc; border:1.5px solid var(--gray-200); border-radius:8px; padding:12px; cursor:pointer; transition:all 0.2s;" title="CoPilot gives you live tips while you answer.">
+              <div style="font-size:14px; font-weight:700; color:var(--gray-900);">3. Practice with CoPilot</div>
+              <div style="font-size:14px; color:var(--gray-500); margin-top:3px; line-height:1.35;">CoPilot gives you live tips while you answer.</div>
             </div>
             <!-- 4. Resume Defense -->
             <div id="mode-opt-resumedefense" onclick="window.selectSimMode('resumedefense')" style="background:#f8fafc; border:1.5px solid var(--gray-200); border-radius:8px; padding:12px; cursor:pointer; transition:all 0.2s;">
@@ -1024,6 +1024,11 @@ window.addEventListener('unhandledrejection', function(event) {
                       <div style="font-size:13px; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Check — How to Verify &amp; Measure</div>
                       <div id="fc-awc-check" style="font-size:14.5px; color:#0f172a; line-height:1.6; font-weight:500;"></div>
                     </div>
+                  </div>
+
+                  <!-- Flashcard Tool Customization Reminder (Stage c Polish) -->
+                  <div style="background:#f1f5f9; border:1px solid var(--gray-200); border-radius:6px; padding:7px 12px; margin-top:10px; text-align:center; font-size:12.5px; color:#475569; font-style:italic;">
+                    💡 Swap the bold terms for tools you actually used.
                   </div>
 
                   <!-- Self-Rating Buttons on Card Back (Got it / Almost / Missed it) -->
@@ -1296,13 +1301,16 @@ window.addEventListener('unhandledrejection', function(event) {
             <div id="camera-placeholder" style="display:none;"></div>
           </div>
           <!-- CoPilot Panel (3 Meters: Keywords, 90s Timer, S-T-A-R lights, JD Chips, 1 Next Cue) -->
-          <div class="cheat-sheet" id="copilot-panel" style="display:flex; flex-direction:column; position:relative; overflow:hidden;">
-            <div id="copilot-header-toggle" onclick="window.toggleMobileCopilotDrawer()" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; cursor:pointer;">
+          <div class="cheat-sheet" id="copilot-panel" style="display:flex; flex-direction:column; position:relative; overflow:hidden;" title="CoPilot gives you live tips while you answer.">
+            <div id="copilot-header-toggle" onclick="window.toggleMobileCopilotDrawer()" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; cursor:pointer;" title="CoPilot gives you live tips while you answer.">
               <h3 style="margin:0; display:flex; align-items:center; font-size:16px; font-weight:800; color:#0f172a;">
                 <span style="display:inline-block; width:8px; height:8px; background:var(--primary); border-radius:50%; margin-right:8px; box-shadow:0 0 8px var(--primary); animation:pulse 2s infinite;"></span>
                 CoPilot
               </h3>
               <span id="copilot-mobile-toggle-hint" style="display:none; font-size:11px; color:#9ca3af; font-weight:700;">▼</span>
+            </div>
+            <div style="font-size:12px; color:#475569; margin:0 0 10px 0; line-height:1.4;">
+              CoPilot gives you live tips while you answer.
             </div>
 
             <div id="copilot-body-wrap">
@@ -1354,7 +1362,7 @@ window.addEventListener('unhandledrejection', function(event) {
         <!-- RIGHT COLUMN (65%): Question Card at top, Answer Area, Feedback, Primary CTA at bottom right -->
         <div class="cockpit-right-col">
           <!-- Top Bar: Progress, Mode/Fallback Status & Gear Icon -->
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <span id="guided-step-banner" style="display:none; font-size:14px; font-weight:800; background:#ecfdf5; border:1px solid #059669; color:#065f46; padding:4px 12px; border-radius:100px;">🚀 Prep Plan: Step 1 of 4</span>
               <div style="font-size:14px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em;" id="progress-indicator">
@@ -1377,6 +1385,46 @@ window.addEventListener('unhandledrejection', function(event) {
             </div>
           </div>
 
+          <!-- Guided Prep Plan Step 3 Banner -->
+          <div id="screen2-guided-banner" style="display:none; background:#ecfdf5; border:1.5px solid #a7f3d0; border-radius:12px; padding:14px 18px; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <div style="font-size:12px; font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px;">
+                  🚀 Guided Prep Plan &bull; Step 3 of 4
+                </div>
+                <h2 style="font-size:19px; font-weight:800; color:#065f46; margin:0 0 3px 0;">
+                  Practice with CoPilot
+                </h2>
+                <div style="font-size:13.5px; color:#047857; line-height:1.45;">
+                  A full practice interview with live CoPilot coaching. Answer as you would with a real interviewer, then get feedback.
+                </div>
+              </div>
+              <div style="font-size:12px; font-weight:800; background:#ffffff; border:1px solid #a7f3d0; color:#065f46; padding:4px 12px; border-radius:100px; white-space:nowrap;">
+                10 Questions &bull; Live Telemetry
+              </div>
+            </div>
+          </div>
+
+          <!-- Guided Prep Plan Step 1 Warm-Up Banner -->
+          <div id="screen2-warmup-banner" style="display:none; background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:12px; padding:14px 18px; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <div style="font-size:12px; font-weight:800; color:#15803d; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px;">
+                  🌱 Guided Prep Plan &bull; Step 1 of 4
+                </div>
+                <h2 style="font-size:19px; font-weight:800; color:#166534; margin:0 0 3px 0;">
+                  Warm-Up Drill
+                </h2>
+                <div style="font-size:13.5px; color:#15803d; line-height:1.45;">
+                  Low-pressure practice. Get comfortable answering out loud and verify your microphone, pacing, and camera setup.
+                </div>
+              </div>
+              <div style="font-size:12px; font-weight:800; background:#ffffff; border:1px solid #bbf7d0; color:#15803d; padding:4px 12px; border-radius:100px; white-space:nowrap;">
+                1 Question &bull; Setup Check
+              </div>
+            </div>
+          </div>
+
           <!-- Question Card at the Top -->
           <div id="current-question-card" style="background:#ffffff; border:1px solid var(--gray-200); border-radius:12px; padding:18px 20px; text-align:left; box-shadow:var(--shadow-sm);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
@@ -1389,15 +1437,15 @@ window.addEventListener('unhandledrejection', function(event) {
             <div id="sim-text" style="display:none;"></div>
           </div>
 
-          <!-- Practice Script Toggle Bar -->
+          <!-- Practice Script / Beginner Example Toggle Bar -->
           <div id="quick-teleprompter-bar" style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 10px; flex-wrap:wrap; gap:8px;">
             <div id="teleprompter-buttons-group" style="display:flex; align-items:center; gap:8px;">
-              <button type="button" id="quick-teleprompter-btn" onclick="window.toggleLiveTeleprompterCard()" class="tp-control-btn" style="background:#ffffff; border:1px solid var(--gray-300); color:var(--gray-800); border-radius:8px; padding:8px 16px; font-size:14px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-                <span id="quick-teleprompter-btn-text">Practice Script</span>
+              <button type="button" id="quick-teleprompter-btn" onclick="window.toggleLiveTeleprompterCard()" class="tp-control-btn" style="background:#ffffff; border:1px solid var(--gray-300); color:var(--gray-800); border-radius:8px; padding:7px 14px; font-size:13.5px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                <span id="quick-teleprompter-btn-text">👁️ See an example first</span>
               </button>
             </div>
             <div style="font-size:13px; color:var(--gray-500); display:flex; align-items:center; gap:6px;">
-              <span>Pacing: 60–90s</span>
+              <span>Target pace: 60–90s (110–150 WPM)</span>
             </div>
           </div>
           <!-- Hidden slot for backwards compatibility -->
@@ -5099,7 +5147,7 @@ window.addEventListener('unhandledrejection', function(event) {
           hub.style.marginRight = '350px';
         }
       }
-      if (btnText) btnText.innerHTML = '✕ Close Practice Script';
+      if (btnText) btnText.innerHTML = '✕ Close example';
       if (btn) {
         btn.style.background = 'var(--primary)';
         btn.style.color = '#ffffff';
@@ -5112,7 +5160,7 @@ window.addEventListener('unhandledrejection', function(event) {
         hub.classList.remove('script-drawer-open');
         hub.style.marginRight = 'auto';
       }
-      if (btnText) btnText.innerHTML = 'Practice Script';
+      if (btnText) btnText.innerHTML = '👁️ See an example first';
       if (btn) {
         btn.style.background = '#ffffff';
         btn.style.color = 'var(--gray-700)';
@@ -6935,6 +6983,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     const modelAnswerHtml = buildSuggestedStarResponse(qData, currentQ, rawText);
     const isWarmup = (window.currentSimMode === 'warmup');
     const isLastQ = (currentQ + 1 >= currentQuestions.length);
+    const isGuided = Boolean(window._isGuidedPlan) || Boolean(localStorage.getItem('tgt_guided_plan'));
 
     let matchedPills, missedPills;
     if (isWarmup) {
@@ -7010,7 +7059,7 @@ ${(resumeText || '').slice(0, 3500)}`;
             🔄 Practice This Answer Again
           </button>
           <button type="button" onclick="window.confirmAndAdvanceFromEvaluation()" class="btn-primary" style="padding:13px 32px; font-size:15.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; margin-left:auto;">
-            ${isWarmup ? 'Finish Warm-Up • View Report ➔' : (isLastQ ? 'Complete Simulation &bull; View Scorecard ➔' : `Next Question (${currentQ + 2} of ${currentQuestions.length}) ➔`)}
+            ${isWarmup ? 'Finish Warm-Up • View Report ➔' : (isLastQ ? (isGuided ? 'Complete Practice &bull; Advance to Step 4 ➔' : 'Complete Simulation &bull; View Scorecard ➔') : `Next Question (Question ${currentQ + 2} of ${currentQuestions.length}) ➔`)}
           </button>
         </div>
       </div>
@@ -7420,11 +7469,21 @@ ${(resumeText || '').slice(0, 3500)}`;
     const progEl = document.getElementById('progress-indicator');
     if (progEl) progEl.innerText = `Question ${currentQ + 1} of ${currentQuestions.length}`;
 
-    // Update Guided Prep Plan header banner
+    // Update Guided Prep Plan header banner & Screen 2 banners
     const guidedBanner = document.getElementById('guided-step-banner');
+    const s2WarmupBanner = document.getElementById('screen2-warmup-banner');
+    const s2GuidedBanner = document.getElementById('screen2-guided-banner');
+    const activeMode = window.currentSimMode || localStorage.getItem('tgt_sim_mode') || 'practice';
+    const isGuided = Boolean(window._isGuidedPlan) || Boolean(localStorage.getItem('tgt_guided_plan'));
+
+    if (s2WarmupBanner) {
+      s2WarmupBanner.style.display = (activeMode === 'warmup') ? 'block' : 'none';
+    }
+    if (s2GuidedBanner) {
+      s2GuidedBanner.style.display = (isGuided && activeMode === 'practice') ? 'block' : 'none';
+    }
+
     if (guidedBanner) {
-      const activeMode = window.currentSimMode || localStorage.getItem('tgt_sim_mode') || 'practice';
-      const isGuided = Boolean(window._isGuidedPlan) || Boolean(localStorage.getItem('tgt_guided_plan'));
       if (activeMode === 'warmup') {
         guidedBanner.textContent = 'Step 1 of 4: Warm-Up Drill';
         guidedBanner.style.display = 'inline-flex';
@@ -7475,21 +7534,28 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (liveTpSlot) {
       if (isPressure || isHudOpen) {
         liveTpSlot.style.display = 'none';
-        if (tpBtnText) tpBtnText.innerHTML = '📖 Open Practice Script &amp; Teleprompter';
+        if (tpBtnText) tpBtnText.innerHTML = '👁️ See an example first';
         if (tpBtn) {
-          tpBtn.style.background = 'rgba(255,255,255,0.06)';
-          tpBtn.style.borderColor = 'rgba(255,255,255,0.16)';
-          tpBtn.style.color = '#f3f4f6';
+          tpBtn.style.background = '#ffffff';
+          tpBtn.style.borderColor = 'var(--gray-300)';
+          tpBtn.style.color = 'var(--gray-800)';
         }
       } else {
         liveTpSlot.innerHTML = buildSuggestedStarResponse(qData, currentQ, '');
         if (window._scriptPinnedOpen || teleprompterEnabled || liveTpSlot.style.display === 'block') {
           liveTpSlot.style.display = 'block';
-          if (tpBtnText) tpBtnText.innerHTML = '✕ Close Practice Script';
+          if (tpBtnText) tpBtnText.innerHTML = '✕ Close example';
           if (tpBtn) {
-            tpBtn.style.background = 'rgba(255,255,255,0.12)';
-            tpBtn.style.borderColor = 'rgba(255,255,255,0.25)';
+            tpBtn.style.background = 'var(--primary)';
+            tpBtn.style.borderColor = 'var(--primary)';
             tpBtn.style.color = '#ffffff';
+          }
+        } else {
+          if (tpBtnText) tpBtnText.innerHTML = '👁️ See an example first';
+          if (tpBtn) {
+            tpBtn.style.background = '#ffffff';
+            tpBtn.style.borderColor = 'var(--gray-300)';
+            tpBtn.style.color = 'var(--gray-800)';
           }
         }
       }
@@ -7529,9 +7595,9 @@ ${(resumeText || '').slice(0, 3500)}`;
       if (window.currentSimMode === 'warmup') {
         nextBtn.innerHTML = 'Finish Warm-Up &bull; View Report ➔';
       } else if (currentQ + 1 >= currentQuestions.length) {
-        nextBtn.innerHTML = 'Complete Simulation &bull; View Scorecard ➔';
+        nextBtn.innerHTML = isGuided ? 'Complete Practice &bull; Advance to Step 4 ➔' : 'Complete Simulation &bull; View Scorecard ➔';
       } else {
-        nextBtn.innerHTML = `Next Question (${currentQ + 2} of ${currentQuestions.length}) ➔`;
+        nextBtn.innerHTML = `Next Question (Question ${currentQ + 2} of ${currentQuestions.length}) ➔`;
       }
     }
 
@@ -8394,8 +8460,28 @@ ${(resumeText || '').slice(0, 3500)}`;
       const currentPlanStep = window._guidedStep || parseInt(localStorage.getItem('tgt_guided_plan') || '0', 10);
       const isFinal = isPassCheck || currentPlanStep === 4;
       const isPlanFinal = isFinal && isGuided;
+      const isPlanStep3 = isGuided && !isPlanFinal && (currentPlanStep === 3 || window.currentSimMode === 'practice');
 
       resultsView.innerHTML = `
+        ${isPlanStep3 ? `
+          <div id="step3-completion-banner" style="background:linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(59,130,246,0.1) 100%); border:2px solid #10b981; border-radius:14px; padding:22px 24px; margin-bottom:20px; text-align:center;">
+            <div style="font-size:30px; margin-bottom:6px;">🚀</div>
+            <div style="font-size:12px; font-weight:900; color:#059669; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">🚀 Guided Prep Plan &bull; Step 3 of 4 Completed</div>
+            <h2 style="font-size:22px; font-weight:900; color:var(--gray-900); margin:0 0 8px;">Practice with CoPilot Complete!</h2>
+            <div style="font-size:14.5px; color:var(--gray-700); line-height:1.55; max-width:640px; margin:0 auto 16px auto;">
+              You finished all 10 practice scenarios with live CoPilot coaching. Now test yourself under real interview conditions without live hints in <strong>Step 4: Take Pass Check</strong>.
+            </div>
+            <div style="display:inline-flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center;">
+              <button type="button" onclick="window.continueGuidedPlanToPassCheck()" class="btn-primary" style="padding:13px 32px; font-size:15.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(5,150,105,0.35);">
+                <span>Step 4 of 4: Take Pass Check</span> ➔
+              </button>
+              <button type="button" onclick="window.retakeMockInterview()" style="background:#ffffff; border:1px solid var(--gray-300); color:var(--gray-700); padding:12px 20px; font-size:14px; font-weight:700; border-radius:8px; cursor:pointer;">
+                🔄 Re-Practice Step 3
+              </button>
+            </div>
+          </div>
+        ` : ''}
+
         ${(isFinal && isGuided) ? `
           <div style="background:linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(59,130,246,0.1) 100%); border:2px solid #10b981; border-radius:14px; padding:22px 24px; margin-bottom:20px; text-align:center;">
             <div style="font-size:30px; margin-bottom:6px;">🎓</div>
@@ -8700,6 +8786,33 @@ ${(resumeText || '').slice(0, 3500)}`;
               }
               window.flipCurrentFlashcard();
             }, 300);
+          }
+        }, 200);
+      } else if (reqScreen === 'copilot' || reqScreen === 'practice') {
+        setTimeout(() => {
+          window._isGuidedPlan = (sp.get('guided') !== 'false');
+          window._guidedStep = 3;
+          try {
+            if (window._isGuidedPlan) localStorage.setItem('tgt_guided_plan', '3');
+          } catch(e) {}
+          window.selectSimMode('practice');
+          const isTyped = (sp.get('mode') === 'typed');
+          window.setInterviewMode(isTyped);
+          proceedToSession();
+          if (sp.get('example') === 'true') {
+            setTimeout(() => {
+              window.toggleLiveTeleprompterCard();
+            }, 350);
+          }
+          if (sp.get('eval') === 'true') {
+            setTimeout(() => {
+              const ta = document.getElementById('typed-answer-input');
+              if (ta) {
+                ta.value = "In my recent work as Senior Software Verification Engineer at J&J MedTech, I was responsible for designing and executing verification protocols for surgical robotics systems. I developed automated test suites using Python to validate real-time safety critical firmware. The result: 30+ verification protocols successfully executed, supporting regulatory submission and zero critical escapes.";
+                ta.dispatchEvent(new Event('input'));
+              }
+              window.finishAndEvaluateCurrentAnswer();
+            }, 450);
           }
         }, 200);
       }

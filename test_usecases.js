@@ -1464,7 +1464,50 @@ assert(updatedHtml.includes("window.currentSimMode = (savedSimMode && savedSimMo
 
 console.log(`✓ PASSED: Test 88 - Stage (b) Flashcard Mastery Deck, leftover fixes, camera redesign, and warm-up scoring polish verified`);
 
+// Test 89: Stage (c) Practice with CoPilot (Live AI Mock Interview) Specifications
+const stageCHtml = fs.readFileSync(path.join(__dirname, 'ai-interview.html'), 'utf8');
+
+// 1. Flashcard back footer reminder
+assert(stageCHtml.includes('Swap the bold terms for tools you actually used.'), "Flashcard back must include reminder to swap bold terms for actually used tools");
+
+// 2. CoPilot plain-language label and tooltip with zero technical jargon
+assert(stageCHtml.includes('title="CoPilot gives you live tips while you answer."'), "CoPilot panel and setup card must feature plain-language tooltip without jargon");
+assert(stageCHtml.includes('CoPilot gives you live tips while you answer.'), "CoPilot description must state 'CoPilot gives you live tips while you answer.'");
+assert(!stageCHtml.includes('Recall Ladder fading prompter &amp; live JD cues'), "Old jargon 'Recall Ladder fading prompter' must be removed from setup card");
+
+// 3. Step 3 Banner & Header Visual Differentiation
+assert(stageCHtml.includes('id="screen2-guided-banner"'), "Screen 2 Guided Banner container must exist");
+assert(stageCHtml.includes('Step 3 of 4: Practice with CoPilot') || stageCHtml.includes('Step 3 of 4'), "Step 3 banner must identify Step 3 of 4");
+assert(stageCHtml.includes('A full practice interview with live CoPilot coaching. Answer as you would with a real interviewer, then get feedback.'), "Step 3 description must explain live CoPilot coaching and feedback");
+assert(stageCHtml.includes('id="screen2-warmup-banner"'), "Screen 2 Warmup Banner must exist to visually differentiate Step 1 from Step 3");
+
+// 4. 'See an example first' beginner toggle (off by default)
+assert(stageCHtml.includes('👁️ See an example first'), "Beginner toggle button must read '👁️ See an example first'");
+assert(stageCHtml.includes('✕ Close example'), "Toggle button when open must read '✕ Close example'");
+
+// 5. Question Progression & Next Question Button
+assert(stageCHtml.includes('Next Question (Question ${currentQ + 2} of ${currentQuestions.length}) ➔'), "Next question button must use explicit 'Next Question (Question X of 10) ➔'");
+assert(stageCHtml.includes('Complete Practice &bull; Advance to Step 4 ➔') || stageCHtml.includes('Complete Practice • Advance to Step 4 ➔'), "Final question in Guided mode must offer Advance to Step 4");
+
+// 6. Review Reveal Order Per Question
+const reviewSnippet = stageCHtml.slice(stageCHtml.indexOf('inPageBox.innerHTML = `'), stageCHtml.indexOf('inPageBox.style.display = \'block\';'));
+assert(reviewSnippet.includes('1. Your Response'), "Review order #1 must be User Response");
+assert(reviewSnippet.includes('2. Model Answer'), "Review order #2 must be Model Answer");
+assert(reviewSnippet.includes('3. Comparison &amp; Feedback'), "Review order #3 must be Comparison & Feedback");
+assert(reviewSnippet.indexOf('1. Your Response') < reviewSnippet.indexOf('2. Model Answer'), "User Response must precede Model Answer");
+assert(reviewSnippet.indexOf('2. Model Answer') < reviewSnippet.indexOf('3. Comparison &amp; Feedback'), "Model Answer must precede Comparison");
+
+// 7. End of Step 3 / Results Transition
+assert(stageCHtml.includes('id="step3-completion-banner"'), "Results debrief must render Step 3 completion banner");
+assert(stageCHtml.includes('Step 4 of 4: Take Pass Check'), "Step 3 completion banner must provide button to advance to Step 4 of 4: Take Pass Check");
+assert(stageCHtml.includes('window.continueGuidedPlanToPassCheck()'), "Step 4 button must call window.continueGuidedPlanToPassCheck()");
+
+// 8. QA Screen Deep-Linking
+assert(stageCHtml.includes("reqScreen === 'copilot' || reqScreen === 'practice'"), "Deep linking for ?screen=copilot must be supported");
+
+console.log(`✓ PASSED: Test 89 - Stage (c) Practice with CoPilot, plain language tooltip, example toggle, question progression & review reveal order verified`);
+
 console.log("==================================================================");
-console.log("ALL 88 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 89 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
