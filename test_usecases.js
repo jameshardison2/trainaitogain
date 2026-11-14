@@ -1122,8 +1122,8 @@ console.log(`✓ PASSED: Test 73 - Hardened Domain Guard blocks Blasting, Civil,
 // Test 74 (QA Retest Item 2): Pass Check requires keyword coverage (min 4 of 8 keywords) for Ready ✓
 assert(aiInterviewCode.includes('minRequiredKwHits = Math.min(4, Math.ceil(kwTotal * 0.5))'), 'Pass Check must calculate minRequiredKwHits');
 assert(aiInterviewCode.includes('hasRequiredKeywords'), 'Pass Check must check hasRequiredKeywords for Ready status');
-assert(aiInterviewCode.includes('avgScore >= 70 && minQScore >= 50 && !hasDup && hasRequiredKeywords'), 'pcStatus ready must require hasRequiredKeywords');
-console.log(`✓ PASSED: Test 74 - Pass Check enforces minimum 4 of 8 JD keywords (or >=50%) to achieve Ready ✓`);
+assert(aiInterviewCode.includes('avgScore >= 80 && minQScore >= 50 && !hasDup && hasRequiredKeywords'), 'pcStatus ready must require hasRequiredKeywords and 80% passing threshold');
+console.log(`✓ PASSED: Test 74 - Pass Check enforces minimum 4 of 8 JD keywords (or >=50%) and 80% passing threshold to achieve Ready ✓`);
 
 // Test 75 (QA Retest Item 3): Mobile Nav Menu Button & 7-Day Opt-In Tap Targets >= 44px
 assert(sharedCssText.includes('.nav-toggle-label') && sharedCssText.includes('min-width: 44px !important;') && sharedCssText.includes('min-height: 44px !important;'), 'shared.css must enforce 44px on .nav-toggle-label');
@@ -1595,7 +1595,46 @@ assert(stageCHtml.includes('your domain background ${formatBackgroundInRole(role
 
 console.log(`✓ PASSED: Test 90 - Stage (c) Regression Items 1–20 & Approval Polish Full Verification passed!`);
 
+// ==================================================================
+// Phase 2 (Stage d) Tests: Step 4 of 4: Pass Check & Playbook Finalization
+// ==================================================================
+// 1. 80% passing threshold and "Pass Check practice badge" naming (never certification or credential)
+assert(stageCHtml.includes('avgScore >= 80 && minQScore >= 50 && !hasDup && hasRequiredKeywords'), 'Stage d Pass Check requires 80% passing threshold');
+assert(stageCHtml.includes('Practice Badge Earned') || stageCHtml.includes('Pass Check practice badge'), 'Stage d must explicitly label it a practice badge');
+assert(!stageCHtml.includes('official certification') || stageCHtml.includes('not an official certification, credential'), 'Stage d must disclaim certification/credential');
+
+// 2. Verified Outcome Tracking & Attempts Progress Chart
+assert(stageCHtml.includes('renderPassCheckAttemptsChart'), 'ai-interview.html must define renderPassCheckAttemptsChart');
+assert(stageCHtml.includes('tgt_passcheck_attempts'), 'ai-interview.html must persist Pass Check attempts to tgt_passcheck_attempts');
+assert(stageCHtml.includes('renderVerifiedOutcomeCheckinCard'), 'ai-interview.html must define renderVerifiedOutcomeCheckinCard');
+assert(stageCHtml.includes('Did you take a real AI interview?'), 'Checkin card must ask about real AI interview');
+assert(stageCHtml.includes('Did you get an offer?'), 'Checkin card must ask about offer');
+assert(stageCHtml.includes('tgt-outcome-optin-check'), 'Checkin card must have explicit opt-in check');
+
+// 3. Social Sharing Card & Pre-written post
+assert(stageCHtml.includes('share-card-container'), 'Congratulations banner must include share-card-container');
+assert(stageCHtml.includes('shareToLinkedIn') && stageCHtml.includes('shareToX') && stageCHtml.includes('shareToFacebook'), 'Social share handlers must be defined');
+assert(stageCHtml.includes('share-include-score-check'), 'Score must be optional via checkbox in share post');
+
+// 4. Failed Pass Check (< 80%) Non-lockout, 2 Weakest questions drill & Friend invite
+assert(stageCHtml.includes("You're close. Most people pass on attempt 2 or 3."), 'Failed banner must show encouraging message');
+assert(stageCHtml.includes('window.practiceWeakestQuestions'), 'ai-interview.html must define practiceWeakestQuestions');
+assert(stageCHtml.includes('window.retakePassCheckNow'), 'ai-interview.html must define retakePassCheckNow');
+assert(stageCHtml.includes('Invite a friend to practice with you'), 'Failed banner must include friend invite card');
+assert(stageCHtml.includes('copyFriendInviteLink'), 'ai-interview.html must define copyFriendInviteLink');
+
+// 5. Playbook PDF generation (6 questions, cover, summary, footer link, privacy rule)
+assert(stageCHtml.includes('window.downloadStarPracticePdf'), 'downloadStarPracticePdf must be defined');
+assert(stageCHtml.includes('Candidate resume details and contact information are strictly omitted for privacy'), 'Playbook PDF must disclaim resume/contact omission');
+assert(stageCHtml.includes('Top 3 Strengths') && stageCHtml.includes('Top 3 Fixes'), 'Playbook PDF must include Top 3 Strengths & Fixes');
+assert(stageCHtml.includes('https://trainaitogain.com/ai-interview'), 'Playbook PDF footer must link back to site');
+
+// 6. Blind screener conditions & Q6 completion button
+assert(stageCHtml.includes("Complete Pass Check • View Results ➔"), 'Pass Check Q6 next button must read Complete Pass Check • View Results ➔');
+
+console.log(`✓ PASSED: Test 91 - Stage (d) Pass Check 80% Threshold, Social Share, Outcome Tracking, Chart & Playbook PDF passed!`);
+
 console.log("==================================================================");
-console.log("ALL 90 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 91 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
