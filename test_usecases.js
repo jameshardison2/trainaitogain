@@ -1687,6 +1687,11 @@ const sampleResumeWithPipe = `JAMES N. HARDISON, JR. | Lead Robotics QA | San Jo
 • Developed automated test frameworks in Python`;
 assert.strictEqual(extractCandidateNameFromResume(sampleResumeWithPipe), "James N. Hardison Jr.", "Must detect name before pipe with Jr. suffix");
 
+// User exact line: text pasted from PDF with name and headline on the same first line separated by 2+ spaces
+const userExactResumeLine = `JAMES N. HARDISON II  Robotics Test Engineer & AI Evaluation Leader | Data Scientist | Medical Devices
+• Authored and executed 30+ verification protocols aligned to IEC 62304 and FDA guidance for robotic surgery platforms.`;
+assert.strictEqual(extractCandidateNameFromResume(userExactResumeLine), "James N. Hardison II", "Must detect name when headline is pasted on same line separated by 2+ spaces or pipe");
+
 console.log(`✓ PASSED: Test 93 - All-Caps Name Detection ("James N. Hardison II") & Suffix Capitalization verified!`);
 
 console.log("==================================================================");

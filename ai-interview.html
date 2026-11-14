@@ -6771,38 +6771,69 @@ ${(resumeText || '').slice(0, 3500)}`;
       const lines = rawResumeText.split('\n').map(l => l.trim()).filter(Boolean);
       if (!lines.length) return '';
 
+      const isNameToken = (t) => {
+        const clean = t.replace(/[,;:]+$/, "");
+        if (/^(ii|iii|iv|v|vi|vii|viii|ix|x|jr\.?|sr\.?|esq\.?)$/i.test(clean)) return "suffix";
+        if (/^[a-z]\.?$/i.test(clean)) return "initial";
+        if (/^(robotics|software|test|qa|engineer|developer|leader|scientist|architect|manager|lead|senior|principal|staff|analyst|director|consultant|specialist|head|founder|student|intern|candidate|curriculum|resume|summary|profile|experience|education|skills|certifications|projects|work|phone|email|address|linkedin|github)$/i.test(clean)) return false;
+        if (/^(and|&|at|in|for|with|of|the|to|\|\/|•|·|-|—|–)$/i.test(clean)) return false;
+        if (/^[A-Z][a-zA-Z'.-]*$/.test(clean)) return "word";
+        return false;
+      };
+
+      const getLeadingNameRun = (str) => {
+        const rawTokens = str.trim().split(/\s+/).filter(Boolean);
+        const nameTokens = [];
+        for (let i = 0; i < rawTokens.length && nameTokens.length < 5; i++) {
+          const type = isNameToken(rawTokens[i]);
+          if (!type) break;
+          nameTokens.push(rawTokens[i]);
+          if (type === "suffix") break;
+        }
+        if (nameTokens.length >= 2 && nameTokens.length <= 5) {
+          return nameTokens.join(" ");
+        }
+        return "";
+      };
+
       for (let i = 0; i < Math.min(5, lines.length); i++) {
         let rawLine = lines[i];
         if (/^(resume|curriculum\s+vitae|cv|profile|summary|contact\s+information)$/i.test(rawLine.trim())) {
           continue;
         }
 
+        // Strip email, URLs, and phone numbers
         let line = rawLine.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, ' ');
         line = line.replace(/https?:\/\/[^\s]+|linkedin\.com[^\s]*|github\.com[^\s]*/gi, ' ');
         line = line.replace(/(\+?\d[\d\s().-]{7,}\d)/g, ' ');
 
-        line = line.split(/\s*[|•·]\s*/)[0].trim();
-        line = line.split(/\s+[-–—]\s+/)[0].trim();
+        // Split on 2+ consecutive spaces, tabs, or pipe/bullet
+        const segments = line.split(/\s{2,}|\t|\s+[|•·]\s*/).map(s => s.trim()).filter(Boolean);
+        let candidateSegment = segments[0] || line;
 
-        line = line.replace(/,\s*(jr\.?|sr\.?|ii|iii|iv|v|vi|vii|viii|ix|x|esq\.?)\b/gi, ' $1');
-        if (line.includes(',')) {
-          const parts = line.split(',');
+        candidateSegment = candidateSegment.replace(/,\s*(jr\.?|sr\.?|ii|iii|iv|v|vi|vii|viii|ix|x|esq\.?)\b/gi, ' $1');
+        if (candidateSegment.includes(',')) {
+          const parts = candidateSegment.split(',');
           if (parts[0].trim().split(/\s+/).length >= 2) {
-            line = parts[0].trim();
+            candidateSegment = parts[0].trim();
+          }
+        }
+        candidateSegment = candidateSegment.trim();
+
+        // Validate first segment
+        const segTokens = candidateSegment.split(/\s+/).filter(Boolean);
+        if (candidateSegment.length >= 2 && candidateSegment.length <= 45 && segTokens.length >= 2 && segTokens.length <= 5) {
+          if (!/^(senior|lead|principal|staff|junior)?\s*(software|robotics|qa|test|engineer|developer|specialist|manager|analyst|architect)/i.test(candidateSegment)) {
+            if (!/^(experience|education|skills|projects|certifications|work\s+history)/i.test(candidateSegment)) {
+              return formatCandidateName(candidateSegment);
+            }
           }
         }
 
-        line = line.trim();
-
-        if (line.length >= 2 && line.length <= 45) {
-          if (!/^(senior|lead|principal|staff|junior)?\s*(software|robotics|qa|test|engineer|developer|specialist|manager|analyst|architect)/i.test(line)) {
-            if (!/^(experience|education|skills|projects|certifications|work\s+history)/i.test(line)) {
-              const tokens = line.split(/\s+/).filter(Boolean);
-              if (tokens.length >= 1 && tokens.length <= 5) {
-                return formatCandidateName(line);
-              }
-            }
-          }
+        // Fallback: leading run of 2–5 name-like tokens stopping at first non-name word
+        const leadingRun = getLeadingNameRun(rawLine);
+        if (leadingRun) {
+          return formatCandidateName(leadingRun);
         }
       }
       return '';
