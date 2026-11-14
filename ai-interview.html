@@ -5511,8 +5511,10 @@ window.addEventListener('unhandledrejection', function(event) {
       'Principal Software Engineer', 'Staff Software Engineer', 'Senior Software Engineer', 'Software Engineer',
       'Senior Backend Engineer', 'Backend Engineer', 'Senior Frontend Engineer', 'Frontend Engineer', 'Full-Stack Developer', 'Full-Stack Engineer', 'Software Developer',
       'Senior Systems Engineer', 'Systems Engineer', 'Embedded Software Engineer',
-      // QA & Automation
-      'Lead QA Engineer', 'QA Automation Architect', 'QA Automation Engineer', 'Senior QA Engineer', 'Quality Assurance Engineer', 'QA Engineer', 'SDET', 'Senior SDET',
+      // QA, Robotics, Hardware & Automation
+      'Robotics Test Engineer', 'Robotics Systems Engineer', 'Robotics QA Engineer', 'Robotics Engineer',
+      'Lead QA Engineer', 'QA Automation Architect', 'QA Automation Engineer', 'Senior QA Engineer', 'Quality Assurance Engineer', 'QA Engineer',
+      'SDET', 'Senior SDET', 'Automation Test Engineer', 'Test Automation Engineer', 'Hardware Test Engineer', 'Firmware Engineer', 'Validation Engineer',
       // AI, ML & Data
       'Chief Data Scientist', 'Lead Data Scientist', 'Senior Data Scientist', 'Data Scientist',
       'Machine Learning Architect', 'Lead Machine Learning Engineer', 'Senior Machine Learning Engineer', 'Machine Learning Engineer', 'ML Engineer', 'MLOps Engineer',
@@ -5568,19 +5570,17 @@ window.addEventListener('unhandledrejection', function(event) {
     const uniqueRoleTitles = allRoles.map(r => r.title);
     result.allRoles = uniqueRoleTitles;
     result.allRolesStr = uniqueRoleTitles.slice(0, 3).join(' • ');
-    result.cleanRoleTitle = uniqueRoleTitles[0] || "";
 
-    // Fallback title detection if not in canonical titles list
-    if (!result.cleanRoleTitle) {
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.length > 55 || /^[•●▪*·\-\d.)]/.test(trimmed)) continue;
-        if (/\b(architected|developed|engineered|designed|built|managed|led|maintained|automated|collaborated|responsible|working|experience in|knowledge of|proficient)\b/i.test(trimmed)) continue;
-        const tm = trimmed.match(/\b((?:Senior|Lead|Staff|Principal|Head|Director)?\s*(?:QA|Quality Assurance|Software|Data|Systems|AI|ML|Test|Full[ -]Stack|Frontend|Backend)?\s*(?:Engineer|Specialist|Analyst|Developer|Architect|Scientist|Consultant|Owner|Founder))\b/i);
-        if (tm && tm[1]) {
-          result.cleanRoleTitle = tm[1].trim();
-          break;
-        }
+    // Scan top lines for resume headline title
+    let headlineTitle = "";
+    for (let i = 0; i < Math.min(lines.length, 8); i++) {
+      const trimmed = lines[i].trim();
+      if (!trimmed || trimmed.length > 55 || /^[•●▪*·\-\d.)]/.test(trimmed)) continue;
+      if (/\b(architected|developed|engineered|designed|built|managed|led|maintained|automated|collaborated|responsible|working|experience in|knowledge of|proficient)\b/i.test(trimmed)) continue;
+      const tm = trimmed.match(/\b((?:Senior|Lead|Staff|Principal|Head|Director)?\s*(?:(?:QA|Quality Assurance|Software|Data|Systems|AI|ML|Test|Robotics|Hardware|Firmware|Validation|Automation|Full[ -]Stack|Frontend|Backend)\s*){1,2}(?:Engineer|Specialist|Analyst|Developer|Architect|Scientist|Consultant|Owner|Founder))\b/i);
+      if (tm && tm[1]) {
+        headlineTitle = tm[1].trim();
+        break;
       }
     }
 
@@ -5588,30 +5588,6 @@ window.addEventListener('unhandledrejection', function(event) {
     const yrsMatch = resumeText.match(/\b([2-9]|1\d|20)\+?\s+years(?:\s+of\s+experience)?\b/i);
     if (yrsMatch && yrsMatch[1]) {
       result.yearsExp = `${yrsMatch[1]}+ years`;
-    }
-
-    // Match numeric percentage or concrete numeric counts (e.g. 150+ deterministic rules)
-    const pctMatches = [...resumeText.matchAll(/\b([1-9]\d(?:\.\d+)?)%/g)]
-      .map(m => parseFloat(m[1]))
-      .filter(n => n >= 15 && n <= 99.9);
-    if (pctMatches.length > 0) {
-      const num = pctMatches[0];
-      if (num >= 90) {
-        result.cleanMetricPhrase = `a ${num}% quality and accuracy benchmark across production deliverables`;
-      } else {
-        result.cleanMetricPhrase = `a ${num}% improvement in workflow efficiency and turnaround accuracy`;
-      }
-    } else {
-      // Check for concrete numeric rules, tests, benchmarks, or models
-      const numRuleMatch = resumeText.match(/\b(\d{1,4}\+?\s+(?:deterministic(?:\s+iso\/fda)?\s+rules|rules|benchmarks|tests|automated tests|test cases|models|frameworks|pipelines|deliverables))\b/i);
-      if (numRuleMatch && numRuleMatch[1]) {
-        result.cleanMetricPhrase = numRuleMatch[1].trim();
-      } else {
-        const generalNumMatch = resumeText.match(/\b([1-9]\d{1,3}\+?\s+[a-z]{3,20}(?:\s+[a-z]{3,20})?)\b/i);
-        if (generalNumMatch && generalNumMatch[1] && !/\b(years?|months?|days?|hours?|minutes?|seconds?)\b/i.test(generalNumMatch[1])) {
-          result.cleanMetricPhrase = generalNumMatch[1].trim();
-        }
-      }
     }
 
     // Extract recent company/employer name
@@ -5623,25 +5599,85 @@ window.addEventListener('unhandledrejection', function(event) {
       recentCompany = "J&J MedTech";
     } else if (!hasAbbottJNJ) {
       const companyMatch = resumeText.match(/(?:at|for|with)\s+([A-Z][a-zA-Z0-9&.,\s]{2,28}?)(?:\s*[\n\r·|–—,(-]|\s+(?:from|since|\d{4}))/);
-        if (companyMatch && companyMatch[1]) {
-          const cleanComp = companyMatch[1].trim();
-          const isGenericOrEdu = /^(the|a|an|my|our|various|multiple|present|current)\b/i.test(cleanComp) ||
-            /\b(university|college|school|institute|academy|bootcamp|education|degree|bachelor|master|phd|training|self|stealth|freelance|confidential|nda|client|vendor|contractor)\b/i.test(cleanComp) ||
-            /[,\/]/.test(cleanComp);
-          if (!isGenericOrEdu) {
-            recentCompany = cleanComp;
-          }
+      if (companyMatch && companyMatch[1]) {
+        const cleanComp = companyMatch[1].trim();
+        const isGenericOrEdu = /^(the|a|an|my|our|various|multiple|present|current)\b/i.test(cleanComp) ||
+          /\b(university|college|school|institute|academy|bootcamp|education|degree|bachelor|master|phd|training|self|stealth|freelance|confidential|nda|client|vendor|contractor)\b/i.test(cleanComp) ||
+          /[,\/]/.test(cleanComp);
+        if (!isGenericOrEdu) {
+          recentCompany = cleanComp;
         }
-        if (!recentCompany) {
-          const pipeMatch = resumeText.match(/^([A-Z][A-Za-z0-9&.,\s]{2,28}?)\s*(?:[|–—·]\s*(?:Senior|Lead|Staff)?\s*(?:Software|Data|QA|Engineer|Developer|Manager|Analyst))/m);
-          if (pipeMatch && pipeMatch[1]) {
-            const cleanPipe = pipeMatch[1].trim();
-            if (!/\b(university|college|school|institute|academy|bootcamp|education)\b/i.test(cleanPipe)) {
-              recentCompany = cleanPipe;
-            }
+      }
+      if (!recentCompany) {
+        const pipeMatch = resumeText.match(/^([A-Z][A-Za-z0-9&.,\s]{2,28}?)\s*(?:[|–—·]\s*(?:Senior|Lead|Staff)?\s*(?:Software|Data|QA|Engineer|Developer|Manager|Analyst))/m);
+        if (pipeMatch && pipeMatch[1]) {
+          const cleanPipe = pipeMatch[1].trim();
+          if (!/\b(university|college|school|institute|academy|bootcamp|education)\b/i.test(cleanPipe)) {
+            recentCompany = cleanPipe;
           }
         }
       }
+    }
+    result.companyName = recentCompany;
+
+    // Same-job isolation: Locate the exact section for recentCompany so title, company, and metric are NEVER cross-contaminated
+    let compIndex = -1;
+    if (recentCompany === "J&J MedTech") {
+      compIndex = resumeText.search(/(?:j&j\s+medtech|johnson\s*&\s*johnson\s+medtech)/i);
+    } else if (recentCompany) {
+      compIndex = resumeText.indexOf(recentCompany);
+    }
+
+    let jobSectionText = "";
+    if (compIndex >= 0) {
+      const afterComp = resumeText.slice(compIndex + Math.min(recentCompany.length + 5, 30));
+      const nextJobMatch = afterComp.match(/\n\s*(?:[A-Z][a-zA-Z0-9&.,\s]{2,28}?\s*(?:at|–|-|—)\s*|[A-Z][a-zA-Z0-9&.,\s]{2,28}?\s*\n\s*(?:19|20)\d{2}|Owner\b|Founder\b|Director\b|TraceBridge\b|Abbott\b|Education\b|Skills\b|Certifications\b)/i);
+      const jobEnd = nextJobMatch ? (compIndex + 30 + nextJobMatch.index) : Math.min(resumeText.length, compIndex + 800);
+      jobSectionText = resumeText.slice(Math.max(0, compIndex - 150), jobEnd);
+    } else {
+      const firstEntryMatch = resumeText.slice(150).match(/\n\s*(?:[A-Z][a-zA-Z0-9&.,\s]{2,28}?\s*(?:at|–|-|—)\s*|Owner\b|Founder\b|TraceBridge\b|Education\b)/i);
+      jobSectionText = firstEntryMatch ? resumeText.slice(0, 150 + firstEntryMatch.index) : resumeText.slice(0, 800);
+    }
+
+    // Resolve title associated strictly with THIS job
+    let jobTitle = "";
+    if (jobSectionText) {
+      const tm = jobSectionText.match(/\b((?:Senior|Lead|Staff|Principal|Head|Director)?\s*(?:(?:QA|Quality Assurance|Software|Data|Systems|AI|ML|Test|Robotics|Hardware|Firmware|Validation|Automation|Full[ -]Stack|Frontend|Backend)\s*){1,2}(?:Engineer|Specialist|Analyst|Developer|Architect|Scientist|Consultant|Owner|Founder))\b/i);
+      if (tm && tm[1]) {
+        jobTitle = tm[1].trim();
+      }
+    }
+    if (!jobTitle) {
+      jobTitle = headlineTitle || uniqueRoleTitles[0] || "";
+    }
+    result.cleanRoleTitle = jobTitle;
+
+    // Match numeric percentage or concrete numeric counts ONLY within THIS job's section
+    // If that job has no number, leave cleanMetricPhrase empty ("") instead of borrowing one from another job
+    const pctMatches = [...jobSectionText.matchAll(/\b([1-9]\d(?:\.\d+)?)%/g)]
+      .map(m => parseFloat(m[1]))
+      .filter(n => n >= 15 && n <= 99.9);
+    if (pctMatches.length > 0) {
+      const num = pctMatches[0];
+      if (num >= 90) {
+        result.cleanMetricPhrase = `a ${num}% quality and accuracy benchmark across production deliverables`;
+      } else {
+        result.cleanMetricPhrase = `a ${num}% improvement in workflow efficiency and turnaround accuracy`;
+      }
+    } else {
+      // Check for concrete numeric rules, tests, benchmarks, or models strictly within this job
+      const numRuleMatch = jobSectionText.match(/\b(\d{1,4}\+?\s+(?:deterministic(?:\s+iso\/fda)?\s+rules|rules|benchmarks|tests|automated tests|test cases|models|frameworks|pipelines|deliverables))\b/i);
+      if (numRuleMatch && numRuleMatch[1]) {
+        result.cleanMetricPhrase = numRuleMatch[1].trim();
+      } else {
+        const generalNumMatch = jobSectionText.match(/\b([1-9]\d{1,3}\+?\s+[a-z]{3,20}(?:\s+[a-z]{3,20})?)\b/i);
+        if (generalNumMatch && generalNumMatch[1] && !/\b(years?|months?|days?|hours?|minutes?|seconds?)\b/i.test(generalNumMatch[1])) {
+          result.cleanMetricPhrase = generalNumMatch[1].trim();
+        } else {
+          result.cleanMetricPhrase = ""; // Empty: Never borrow numbers from other jobs on the resume
+        }
+      }
+    }
     result.companyName = recentCompany;
 
     return result;
@@ -5894,7 +5930,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     const resolvedRole = questionRole || (parsedResume && parsedResume.cleanRoleTitle) || "[Your Recent Title]";
     const resolvedMetric = (parsedResume && parsedResume.cleanMetricPhrase)
       ? parsedResume.cleanMetricPhrase
-      : (ansPctMatch && ansPctMatch[1] ? `a ${ansPctMatch[1]}% measurable improvement across our production workflow` : "[Measurable Result: e.g. 25%+ improvement in turnaround / accuracy]");
+      : (ansPctMatch && ansPctMatch[1] ? `a ${ansPctMatch[1]}% measurable improvement across our production workflow` : "[a result with a number]");
     const primarySkill = qKeywords[0] || (detectedResumeSkills && detectedResumeSkills[0]) || "core technical workflows";
     const secondarySkill = qKeywords[1] || (detectedResumeSkills && detectedResumeSkills[1]) || "systematic verification";
 
@@ -5908,7 +5944,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     } else if (qPromptLower.includes("most recent role") || qPromptLower.includes("primarily responsible for day to day") || qPromptLower.includes("tell me about your background")) {
       starSituationTask = `In my recent work as **${resolvedRole}** at **${resolvedCompany}**, my primary ownership was leading deliverables around **${primarySkill}** and **${secondarySkill}**, ensuring production quality across our core pipeline.`;
       starAction = `Day to day, the specific action I took was designing standard verification workflows using **${primarySkill}**, isolating technical bottlenecks early, and collaborating across teams on core milestones.`;
-      starResult = `As a direct outcome, I achieved **${resolvedMetric}**, maintaining high rubric accuracy and setting the benchmark standard across deliverables.`;
+      starResult = `As a direct outcome, which led to **${resolvedMetric}**, maintaining high rubric accuracy and setting the benchmark standard across deliverables.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-11" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 11 (1:50): Mercor AI Interview Tips — Defending Your Resume &amp; JD Skills</a> &amp; <a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a>`;
       primaryVideoHref = "/video-guides.html#lesson-11";
     } else if (qPromptLower.includes("specific project or achievement") || qPromptLower.includes("measurable result") || qPromptLower.includes("balance accuracy and speed")) {
@@ -8665,7 +8701,9 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
   });
   // Simulation Mode State (Tier 2: Item 6) + Quizlet-Style Flashcards Deck
-  window.currentSimMode = localStorage.getItem('tgt_sim_mode') || 'flashcards';
+  const savedSimMode = localStorage.getItem('tgt_sim_mode');
+  // Avoid persisting transient warmup drill across page reload on the setup screen
+  window.currentSimMode = (savedSimMode && savedSimMode !== 'warmup') ? savedSimMode : 'practice';
 
   let _fcCurrentIndex = 0;
   let _fcIsFlipped = false;
@@ -8920,11 +8958,15 @@ ${(resumeText || '').slice(0, 3500)}`;
       window._fcSavedBlanks['metric'] = parsed.cleanMetricPhrase;
       sources.push(`Result: "${parsed.cleanMetricPhrase}"`);
       document.querySelectorAll('.fc-blank-metric').forEach(inp => { inp.value = parsed.cleanMetricPhrase; });
+    } else {
+      delete window._fcSavedBlanks['metric'];
+      document.querySelectorAll('.fc-blank-metric').forEach(inp => { inp.value = ''; });
     }
 
     if (attribEl) {
       if (sources.length > 0) {
-        attribEl.innerHTML = `📋 <strong>Source:</strong> Extracted directly from uploaded resume (${sources.join(', ')}). Never invented.`;
+        const metricNote = parsed.cleanMetricPhrase ? '' : ' • Result left blank to confirm';
+        attribEl.innerHTML = `📋 <strong>Source:</strong> Extracted directly from uploaded resume (${sources.join(', ')}${metricNote}). Never invented.`;
         attribEl.style.display = 'block';
       } else {
         attribEl.innerHTML = `📋 <strong>Note:</strong> Uploaded resume detected, but no matching title/metric was found. You can type directly into the blanks.`;

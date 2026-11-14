@@ -1249,7 +1249,7 @@ assert(aiHtml.includes("W &bull; WHY (2 REASONS FROM YOUR FIELD)"), "Playbook mu
 assert(aiHtml.includes("C &bull; CHECK (HOW TO VERIFY &amp; MEASURE)"), "Playbook must use Check label for AWC questions");
 assert(!aiHtml.includes("reduces turnaround time by 30%+.") || aiHtml.includes("[Measurable Result: e.g. reduces turnaround time by 30%+]"), "Turnaround metric must be inside brackets");
 assert(!aiHtml.includes("with zero production defects.") || aiHtml.includes("[Measurable Result: e.g. with zero production defects]"), "Zero production defects metric must be inside brackets");
-assert(aiHtml.includes("As a direct outcome, I achieved"), "Must use first-person I achieved instead of we achieved");
+assert(aiHtml.includes("As a direct outcome, which led to") || aiHtml.includes("As a direct outcome, I achieved"), "Must use active outcome phrasing instead of passive or collective");
 
 // 3. Execution test: start CoPilot in typed mode in VM sandbox
 const domElements = {
@@ -1435,6 +1435,32 @@ assert(updatedHtml.includes('id="fc-completion-summary"'), "Flashcard completion
 assert(updatedHtml.includes('window.practiceRepeatedFlashcardsOnly'), "Practice repeated flashcards only function must exist");
 assert(!updatedHtml.includes('window.innerWidth <= 768'), "Viewport width <= 768 must not define isMobile");
 assert(updatedHtml.includes("1. Your Response (${evalRes.wordCount} words${(!isTextMode && unifiedWpm) ? ` &bull; ${unifiedWpm} WPM` : ''})"), "Typed mode must hide WPM from response review");
+
+// 5. Same-job grouping: Title, company, and metrics isolated to single job; never cross-contaminate
+const multiJobCandidateResume = `
+James Hardison
+Robotics Test Engineer
+Boston, MA
+
+Experience:
+Robotics Test Engineer at Johnson & Johnson MedTech
+2022 - Present
+- Led automated verification and validation for surgical robotics platforms
+- Maintained safety-critical test protocols and hardware-in-the-loop simulation
+
+Owner at TraceBridge AI
+2020 - 2022
+- Architected AI evaluation framework for robotics software and LLMs, encoding 150+ deterministic rules as ground-truth references
+- Reduced model evaluation latency by 40%
+`;
+
+const parsedMultiJob = testSandbox.parseCandidateResumeForStar(multiJobCandidateResume, { q: "Walk me through your most recent role", keywords: ["robotics", "verification"] });
+assert.strictEqual(parsedMultiJob.companyName, "J&J MedTech", "Selected company must be J&J MedTech");
+assert.strictEqual(parsedMultiJob.cleanRoleTitle, "Robotics Test Engineer", "Title must match Robotics Test Engineer from the same job");
+assert.strictEqual(parsedMultiJob.cleanMetricPhrase, "", "Must NOT borrow 150+ deterministic rules from TraceBridge AI when J&J job has no numeric metric");
+
+// 6. Setup screen hero subtitle reset from transient warmup mode
+assert(updatedHtml.includes("window.currentSimMode = (savedSimMode && savedSimMode !== 'warmup') ? savedSimMode : 'practice';"), "Page reload must not persist transient warmup mode on setup screen");
 
 console.log(`✓ PASSED: Test 88 - Stage (b) Flashcard Mastery Deck, leftover fixes, camera redesign, and warm-up scoring polish verified`);
 
