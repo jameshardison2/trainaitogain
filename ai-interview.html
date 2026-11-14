@@ -1463,12 +1463,13 @@ window.addEventListener('unhandledrejection', function(event) {
           <!-- Hidden slot for backwards compatibility -->
           <!-- live-teleprompter-card-slot rendered inside dedicated right slide-over drawer -->
 
+          <!-- Unsupported Speech Recognition Message (REQ Fix 9) -->
+          <div id="spoken-unsupported-msg" style="display:none; background:#fffbeb; border:1px solid #f59e0b; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13.5px; color:#92400e; line-height:1.45; text-align:left;">
+            <strong>Voice recognition not supported:</strong> Your browser does not support voice recognition. Please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> on a computer to speak your answers, or continue practicing in Typed Mode below.
+          </div>
+
           <!-- Spoken Answer Area -->
           <div id="spoken-answer-container" style="display:none; text-align:left; background:#ffffff; border:1px solid var(--gray-200); border-radius:12px; padding:18px 20px; box-shadow:var(--shadow-sm); color:var(--gray-900);">
-            <!-- Unsupported Speech Recognition Message (REQ Fix 9) -->
-            <div id="spoken-unsupported-msg" style="display:none; background:#fffbeb; border:1px solid #f59e0b; border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:13.5px; color:#92400e; line-height:1.45;">
-              <strong>Voice recognition not supported:</strong> Your browser does not support voice recognition. Please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> on a computer to speak your answers, or continue practicing in Typed Mode below.
-            </div>
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
               <span style="font-size:13px; font-weight:800; color:#2563eb; text-transform:uppercase; letter-spacing:0.05em;" id="spoken-mic-status">🎙️ Microphone Active — Speak your answer (60–90s)</span>
               <div style="display:inline-flex; align-items:center; gap:8px;">
@@ -8690,10 +8691,14 @@ ${(resumeText || '').slice(0, 3500)}`;
   // Screen 1 Primary Action
   window.proceedWithAudioOrTyped = async function() {
     const savedTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
-    if (savedTyped) {
+    if (savedTyped || !SpeechRecognition) {
       isTextMode = true;
       window.setInterviewMode(true);
       proceedToSession();
+      if (!SpeechRecognition) {
+        const unsupportedEl = document.getElementById('spoken-unsupported-msg');
+        if (unsupportedEl) unsupportedEl.style.display = 'block';
+      }
       return;
     }
     isTextMode = false;
@@ -8715,10 +8720,14 @@ ${(resumeText || '').slice(0, 3500)}`;
     } catch(e) {}
     window.selectSimMode('warmup');
     const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
-    if (isTyped) {
+    if (isTyped || !SpeechRecognition) {
       isTextMode = true;
       window.setInterviewMode(true);
       proceedToSession();
+      if (!SpeechRecognition) {
+        const unsupportedEl = document.getElementById('spoken-unsupported-msg');
+        if (unsupportedEl) unsupportedEl.style.display = 'block';
+      }
     } else {
       isTextMode = false;
       window.setInterviewMode(false);
@@ -8823,6 +8832,12 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
 
     activeView.style.display = 'block';
+    if (!SpeechRecognition) {
+      const unsupportedEl = document.getElementById('spoken-unsupported-msg');
+      if (unsupportedEl) unsupportedEl.style.display = 'block';
+      isTextMode = true;
+      window.setInterviewMode(true);
+    }
     interviewStarted = true;
     interviewCompleted = false;
     currentQ = 0;
