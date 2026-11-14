@@ -7415,8 +7415,8 @@ ${(resumeText || '').slice(0, 3500)}`;
       cappedScore = Math.min(48, Math.max(25, confScore)); // Cap off-topic answers with keywords at 48%
     } else if (wordCount < 35) {
       cappedScore = Math.min(50, Math.max(25, confScore)); // Cap short answers under 35 words at 50%
-    } else if (wordCount < 50) {
-      cappedScore = Math.min(68, Math.max(35, confScore)); // Cap answers under 50 words at 68%
+    } else if (wordCount < 50 && !(hasST && hasAction && hasResult && hasNumberOrPct)) {
+      cappedScore = Math.min(68, Math.max(35, confScore)); // Cap answers under 50 words lacking full STAR metrics at 68%
     } else {
       cappedScore = Math.min(100, Math.max(35, confScore));
     }
@@ -7478,6 +7478,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       rawText,
       wordCount,
       cappedScore,
+      score: cappedScore,
       fillerCount,
       matchedList,
       missedList,
