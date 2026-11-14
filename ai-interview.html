@@ -8877,6 +8877,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     const kwHits = uniqueMatchedCanonical.size;
 
     const hasDuplicates = validResults.some(r => r.isDuplicate);
+    const hasDup = hasDuplicates;
     const duplicateCount = validResults.filter(r => r.isDuplicate).length;
     const isPassCheck = (window.currentSimMode === 'passcheck');
     const minRequiredKwHits = Math.min(4, Math.ceil(kwTotal * 0.5));
