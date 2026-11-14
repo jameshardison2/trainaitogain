@@ -6847,6 +6847,7 @@ ${(resumeText || '').slice(0, 3500)}`;
 
   // Final Round AI CoPilot Helper: Live Telemetry & Talking Point Cues
   let sessionQuestionResults = [];
+  window.setSessionResults = function(arr) { sessionQuestionResults = arr; };
   let isSingleQuestionRedrill = false;
   let currentAnswerSeconds = 0;
 
