@@ -1249,7 +1249,7 @@ assert(aiHtml.includes("W &bull; WHY (2 REASONS FROM YOUR FIELD)"), "Playbook mu
 assert(aiHtml.includes("C &bull; CHECK (HOW TO VERIFY &amp; MEASURE)"), "Playbook must use Check label for AWC questions");
 assert(!aiHtml.includes("reduces turnaround time by 30%+.") || aiHtml.includes("[Measurable Result: e.g. reduces turnaround time by 30%+]"), "Turnaround metric must be inside brackets");
 assert(!aiHtml.includes("with zero production defects.") || aiHtml.includes("[Measurable Result: e.g. with zero production defects]"), "Zero production defects metric must be inside brackets");
-assert(aiHtml.includes("As a direct outcome, which led to") || aiHtml.includes("As a direct outcome, I achieved"), "Must use active outcome phrasing instead of passive or collective");
+assert(aiHtml.includes("The result: **${resolvedMetric}**.") || aiHtml.includes("The result:"), "Must use clean result phrasing without template filler");
 
 // 3. Execution test: start CoPilot in typed mode in VM sandbox
 const domElements = {
@@ -1443,9 +1443,9 @@ Robotics Test Engineer
 Boston, MA
 
 Experience:
-Robotics Test Engineer at Johnson & Johnson MedTech
+Senior Software Verification Engineer | Johnson & Johnson MedTech
 2022 - Present
-- Led automated verification and validation for surgical robotics platforms
+- Authored and executed 30+ verification protocols aligned to IEC 62304 for robotic surgical systems
 - Maintained safety-critical test protocols and hardware-in-the-loop simulation
 
 Owner at TraceBridge AI
@@ -1456,8 +1456,8 @@ Owner at TraceBridge AI
 
 const parsedMultiJob = testSandbox.parseCandidateResumeForStar(multiJobCandidateResume, { q: "Walk me through your most recent role", keywords: ["robotics", "verification"] });
 assert.strictEqual(parsedMultiJob.companyName, "J&J MedTech", "Selected company must be J&J MedTech");
-assert.strictEqual(parsedMultiJob.cleanRoleTitle, "Robotics Test Engineer", "Title must match Robotics Test Engineer from the same job");
-assert.strictEqual(parsedMultiJob.cleanMetricPhrase, "", "Must NOT borrow 150+ deterministic rules from TraceBridge AI when J&J job has no numeric metric");
+assert.strictEqual(parsedMultiJob.cleanRoleTitle, "Senior Software Verification Engineer", "Title must match Senior Software Verification Engineer from the job line itself");
+assert.strictEqual(parsedMultiJob.cleanMetricPhrase, "30+ verification protocols", "Metric must come from the J&J section (30+ verification protocols) rather than TraceBridge AI");
 
 // 6. Setup screen hero subtitle reset from transient warmup mode
 assert(updatedHtml.includes("window.currentSimMode = (savedSimMode && savedSimMode !== 'warmup') ? savedSimMode : 'practice';"), "Page reload must not persist transient warmup mode on setup screen");

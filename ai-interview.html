@@ -5513,6 +5513,7 @@ window.addEventListener('unhandledrejection', function(event) {
       'Senior Systems Engineer', 'Systems Engineer', 'Embedded Software Engineer',
       // QA, Robotics, Hardware & Automation
       'Robotics Test Engineer', 'Robotics Systems Engineer', 'Robotics QA Engineer', 'Robotics Engineer',
+      'Senior Software Verification Engineer', 'Software Verification Engineer',
       'Lead QA Engineer', 'QA Automation Architect', 'QA Automation Engineer', 'Senior QA Engineer', 'Quality Assurance Engineer', 'QA Engineer',
       'SDET', 'Senior SDET', 'Automation Test Engineer', 'Test Automation Engineer', 'Hardware Test Engineer', 'Firmware Engineer', 'Validation Engineer',
       // AI, ML & Data
@@ -5628,27 +5629,43 @@ window.addEventListener('unhandledrejection', function(event) {
       compIndex = resumeText.indexOf(recentCompany);
     }
 
+    // Resolve title associated strictly with THIS job line (e.g. the text right before '| Johnson & Johnson MedTech', etc.)
+    let jobTitle = "";
+    let immediatePrev = "";
+    if (compIndex >= 0) {
+      const textBeforeComp = resumeText.slice(Math.max(0, compIndex - 150), compIndex);
+      const linesBefore = textBeforeComp.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      immediatePrev = linesBefore[linesBefore.length - 1] || "";
+      const sameLineMatch = immediatePrev.match(/(?:^|[•●▪*·\-\d.)]\s*)([A-Z][a-zA-Z0-9\/\s\-]{3,50}?)\s*(?:[|\-–—·]\s*|\s+at\s+|\s+for\s+)$/);
+      if (sameLineMatch && sameLineMatch[1]) {
+        jobTitle = sameLineMatch[1].trim();
+      } else if (immediatePrev.length <= 50 && !/^(?:experience|employment|history|skills|education)/i.test(immediatePrev)) {
+        const prevLineMatch = immediatePrev.match(/(?:^|[•●▪*·\-\d.)]\s*)([A-Z][a-zA-Z0-9\/\s\-]{3,50}?(?:Engineer|Specialist|Analyst|Developer|Architect|Scientist|Consultant|Owner|Founder|Lead|Director|Manager))\b/i);
+        if (prevLineMatch && prevLineMatch[1]) {
+          jobTitle = prevLineMatch[1].trim();
+        }
+      }
+    }
+
     let jobSectionText = "";
     if (compIndex >= 0) {
       const afterComp = resumeText.slice(compIndex + Math.min(recentCompany.length + 5, 30));
       const nextJobMatch = afterComp.match(/\n\s*(?:[A-Z][a-zA-Z0-9&.,\s]{2,28}?\s*(?:at|–|-|—)\s*|[A-Z][a-zA-Z0-9&.,\s]{2,28}?\s*\n\s*(?:19|20)\d{2}|Owner\b|Founder\b|Director\b|TraceBridge\b|Abbott\b|Education\b|Skills\b|Certifications\b)/i);
       const jobEnd = nextJobMatch ? (compIndex + 30 + nextJobMatch.index) : Math.min(resumeText.length, compIndex + 800);
-      jobSectionText = resumeText.slice(Math.max(0, compIndex - 150), jobEnd);
+      jobSectionText = resumeText.slice(Math.max(0, compIndex - (immediatePrev.length || 100)), jobEnd);
     } else {
       const firstEntryMatch = resumeText.slice(150).match(/\n\s*(?:[A-Z][a-zA-Z0-9&.,\s]{2,28}?\s*(?:at|–|-|—)\s*|Owner\b|Founder\b|TraceBridge\b|Education\b)/i);
       jobSectionText = firstEntryMatch ? resumeText.slice(0, 150 + firstEntryMatch.index) : resumeText.slice(0, 800);
     }
 
-    // Resolve title associated strictly with THIS job
-    let jobTitle = "";
-    if (jobSectionText) {
+    if (!jobTitle && jobSectionText) {
       const tm = jobSectionText.match(/\b((?:Senior|Lead|Staff|Principal|Head|Director)?\s*(?:(?:QA|Quality Assurance|Software|Data|Systems|AI|ML|Test|Robotics|Hardware|Firmware|Validation|Automation|Full[ -]Stack|Frontend|Backend)\s*){1,2}(?:Engineer|Specialist|Analyst|Developer|Architect|Scientist|Consultant|Owner|Founder))\b/i);
       if (tm && tm[1]) {
         jobTitle = tm[1].trim();
       }
     }
     if (!jobTitle) {
-      jobTitle = headlineTitle || uniqueRoleTitles[0] || "";
+      jobTitle = uniqueRoleTitles[0] || headlineTitle || "";
     }
     result.cleanRoleTitle = jobTitle;
 
@@ -5665,8 +5682,8 @@ window.addEventListener('unhandledrejection', function(event) {
         result.cleanMetricPhrase = `a ${num}% improvement in workflow efficiency and turnaround accuracy`;
       }
     } else {
-      // Check for concrete numeric rules, tests, benchmarks, or models strictly within this job
-      const numRuleMatch = jobSectionText.match(/\b(\d{1,4}\+?\s+(?:deterministic(?:\s+iso\/fda)?\s+rules|rules|benchmarks|tests|automated tests|test cases|models|frameworks|pipelines|deliverables))\b/i);
+      // Check for concrete numeric rules, tests, benchmarks, protocols, or models strictly within this job
+      const numRuleMatch = jobSectionText.match(/\b(\d{1,4}\+?\s+(?:deterministic(?:\s+iso\/fda)?\s+rules|rules|benchmarks|tests|automated tests|test cases|verification protocols|protocols|models|frameworks|pipelines|deliverables))\b/i);
       if (numRuleMatch && numRuleMatch[1]) {
         result.cleanMetricPhrase = numRuleMatch[1].trim();
       } else {
@@ -5944,7 +5961,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     } else if (qPromptLower.includes("most recent role") || qPromptLower.includes("primarily responsible for day to day") || qPromptLower.includes("tell me about your background")) {
       starSituationTask = `In my recent work as **${resolvedRole}** at **${resolvedCompany}**, my primary ownership was leading deliverables around **${primarySkill}** and **${secondarySkill}**, ensuring production quality across our core pipeline.`;
       starAction = `Day to day, the specific action I took was designing standard verification workflows using **${primarySkill}**, isolating technical bottlenecks early, and collaborating across teams on core milestones.`;
-      starResult = `As a direct outcome, which led to **${resolvedMetric}**, maintaining high rubric accuracy and setting the benchmark standard across deliverables.`;
+      starResult = `The result: **${resolvedMetric}**.`;
       videoLessonFocus = `<a href="/video-guides.html#lesson-11" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 11 (1:50): Mercor AI Interview Tips — Defending Your Resume &amp; JD Skills</a> &amp; <a href="/video-guides.html#lesson-10" target="_blank" style="color:#93c5fd; text-decoration:underline;">Lesson 10 (4:00): Mercor Live Interview Questions Explained</a>`;
       primaryVideoHref = "/video-guides.html#lesson-11";
     } else if (qPromptLower.includes("specific project or achievement") || qPromptLower.includes("measurable result") || qPromptLower.includes("balance accuracy and speed")) {
