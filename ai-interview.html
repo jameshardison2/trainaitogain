@@ -8878,6 +8878,9 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     const hasDuplicates = validResults.some(r => r.isDuplicate);
     const duplicateCount = validResults.filter(r => r.isDuplicate).length;
+    const isPassCheck = (window.currentSimMode === 'passcheck');
+    const minRequiredKwHits = Math.min(4, Math.ceil(kwTotal * 0.5));
+    const hasRequiredKeywords = kwHits >= minRequiredKwHits;
 
     // Build Overall Summary
     let overallSummary = "";
@@ -8949,8 +8952,6 @@ ${(resumeText || '').slice(0, 3500)}`;
     const growthSummary = weakPoints.map((w, i) => `${i + 1}. ${w.issue}: ${w.fix.replace(/<[^>]+>/g, '')}`).join('\n');
 
     const isPassCheckCompleted = (window.currentSimMode === 'passcheck');
-    const minRequiredKwHits = Math.min(4, Math.ceil(kwTotal * 0.5));
-    const hasRequiredKeywords = kwHits >= minRequiredKwHits;
     const isPassCheckEarned = isPassCheckCompleted && avgScore >= 80 && hasRequiredKeywords && !hasDuplicates;
     const benchmarkLabel = avgScore >= 80 ? `High Readiness (${avgScore}%)` : (avgScore >= 60 ? `Solid Readiness (${avgScore}%)` : `Practice Benchmark (${avgScore}%)`);
     const benchmarkColor = avgScore >= 80 ? '#34d399' : (avgScore >= 60 ? '#fbbf24' : '#60a5fa');
