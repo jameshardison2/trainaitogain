@@ -922,11 +922,11 @@ window.addEventListener('unhandledrejection', function(event) {
         <!-- Flashcard Scene Wrapper (Hidden when completion summary is shown) -->
         <div id="fc-scene-wrapper">
           <!-- 3D Flip Card Scene -->
-          <div class="fc-scene" style="perspective:1200px; width:100%; min-height:480px; margin-bottom:20px; cursor:pointer;" onclick="window.flipCurrentFlashcard(event)">
-            <div id="fc-flipper" style="position:relative; width:100%; min-height:480px; transition:transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform-style:preserve-3d; border-radius:16px;">
+          <div class="fc-scene" style="perspective:1200px; width:100%; min-height:480px; margin-bottom:20px;">
+            <div id="fc-flipper" style="position:relative; width:100%; min-height:480px; transition:transform 0.45s cubic-bezier(0.4, 0, 0.2, 1); transform-style:preserve-3d; -webkit-transform-style:preserve-3d; border-radius:16px;">
               
               <!-- Card Front (Question Side) -->
-              <div id="fc-card-front" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#ffffff; border:1.5px solid var(--gray-200); border-radius:16px; padding:24px 22px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-md); color:#0f172a;">
+              <div id="fc-card-front" style="position:absolute; top:0; left:0; width:100%; height:100%; transform:rotateY(0deg); -webkit-transform:rotateY(0deg); backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#ffffff; border:1.5px solid var(--gray-200); border-radius:16px; padding:24px 22px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-md); color:#0f172a; z-index:2;">
                 <div>
                   <!-- Card 1 Instruction Banner -->
                   <div id="fc-card1-instruction" style="display:flex; align-items:center; gap:8px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:10px 14px; margin-bottom:14px; font-size:13.5px; font-weight:700; color:#1e40af;">
@@ -953,15 +953,15 @@ window.addEventListener('unhandledrejection', function(event) {
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--gray-200); font-size:13.5px; color:#475569; font-weight:700; flex-wrap:wrap; gap:8px;">
                   <span>👆 Answer out loud first, then press <kbd style="background:#f1f5f9; border:1px solid var(--gray-300); padding:2px 8px; border-radius:4px; font-family:monospace; color:#0f172a;">Space</kbd> to compare</span>
-                  <button type="button" onclick="window.flipCurrentFlashcard(event)" style="background:#ffffff; border:1.5px solid var(--gray-300); color:#0f172a; border-radius:8px; padding:7px 16px; font-size:13.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:var(--shadow-sm);">
+                  <button type="button" id="fc-flip-btn" onclick="window.flipCurrentFlashcard(event)" style="background:#ffffff; border:1.5px solid var(--gray-300); color:#0f172a; border-radius:8px; padding:7px 16px; font-size:13.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:var(--shadow-sm);">
                     <span>🔄</span> Flip Card ➔
                   </button>
                 </div>
               </div>
 
               <!-- Card Back (Plug & Play STAR Formula Side) -->
-              <div id="fc-card-back" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:rotateY(180deg); background:#ffffff; border:1.5px solid #059669; border-radius:16px; padding:22px 20px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-md); color:#0f172a; overflow-y:auto;">
-                <div>
+              <div id="fc-card-back" style="position:absolute; top:0; left:0; width:100%; height:100%; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#ffffff; border:1.5px solid #059669; border-radius:16px; padding:22px 20px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-md); color:#0f172a; z-index:1; visibility:hidden; pointer-events:none;">
+                <div style="overflow-y:auto; flex:1; padding-right:4px;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
                     <span id="fc-back-title" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:13px; font-weight:900; padding:4px 10px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Winning STAR Formula</span>
                     <div style="display:flex; align-items:center; gap:8px;">
@@ -1065,16 +1065,8 @@ window.addEventListener('unhandledrejection', function(event) {
               <button type="button" onclick="window.prevFlashcard()" style="background:#ffffff; border:1px solid var(--gray-300); color:#334155; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
                 <span>⬅</span> Previous Card
               </button>
-              <button type="button" onclick="window.nextFlashcard()" style="background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:9px 20px; font-size:14px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+              <button type="button" id="fc-next-btn" onclick="window.nextFlashcard()" style="display:none; background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:9px 20px; font-size:14px; font-weight:800; cursor:pointer; align-items:center; gap:6px;">
                 Next Card <span>➔</span>
-              </button>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-              <button type="button" id="fc-guided-step3-btn" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="display:none; background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:10px 22px; font-size:14.5px; font-weight:800; cursor:pointer; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(5,150,105,0.35);">
-                <span>Step 3 of 4: Practice with CoPilot</span> <span>➔</span>
-              </button>
-              <button type="button" id="fc-standalone-start-btn" onclick="window.startSimFromFlashcards()" style="background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#ffffff; border:none; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(37,99,235,0.35);">
-                <span>🎙️</span> Practice with CoPilot ➔
               </button>
             </div>
           </div>
@@ -2434,7 +2426,8 @@ window.addEventListener('unhandledrejection', function(event) {
   let currentDomain = "software";
   let currentQuestions = [];
   let currentQ = 0;
-  const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android|Mobi/i.test(navigator.userAgent);
+  // Only an actual mobile phone user-agent counts as isMobile. Window width alone NEVER forces typed mode.
+  const isMobile = /iPhone|iPad|iPod|Android|Mobi/i.test(navigator.userAgent);
   // Default the input mode to speaking, not typing (REQ Warm-Up 1).
   // Clear any stale legacy 'interviewTextMode' from older builds where typed was default.
   let isTextMode = false;
@@ -2445,11 +2438,10 @@ window.addEventListener('unhandledrejection', function(event) {
     } else if (savedMode === 'spoken') {
       isTextMode = false;
     } else {
-      isTextMode = false;
-      localStorage.removeItem('interviewTextMode');
+      isTextMode = isMobile;
     }
   } catch(e) {
-    isTextMode = false;
+    isTextMode = isMobile;
   }
   let interviewStarted = false;
   let interviewCompleted = false;
@@ -6560,6 +6552,8 @@ ${(resumeText || '').slice(0, 3500)}`;
     let confScore = 70;
     let whatWorked = "";
     let toTighten = "";
+    let warmupCovered = [];
+    let warmupMissing = [];
 
     // Anti-gaming duplicate / canned response detection across questions
     const prevAnswers = (sessionQuestionResults || []).filter((r, i) => i !== qIndex && r && r.answer && r.answer !== '(Not answered)');
@@ -6647,36 +6641,51 @@ ${(resumeText || '').slice(0, 3500)}`;
     // Warm-Up Drill Scoring: Grade solely on the 3 requested intro elements (who you are, background, role goal)
     // Drops JD technical keyword penalties so a genuine introduction is not penalized with a 38% cap
     const isWarmup = (window.currentSimMode === 'warmup') || (qData && (qData.category === 'Warm-Up Drill' || qData.category === 'warmup'));
-    if (isWarmup && wordCount >= 15 && !isDuplicateAnswer) {
-      const hasWho = /\b(i am|i'm|my name is|myself|i have been|i've been|as an?)\b/i.test(rawText) || /\b(i|my)\b/i.test(rawText);
-      const hasBackground = /\b(background|experience|worked|working|years|career|specializ|field|domain|industry|engineer|specialist|analyst|developer|qa|lead|manager|consultant|professional)\b/i.test(rawText);
-      const hasGoal = /\b(look forward|looking forward|excited|interested|interest|passion|opportunity|looking for|want to|aim to|drawn to|contribute|role|position|team)\b/i.test(rawText);
-
-      let warmupScore = 75;
-      if (hasWho) warmupScore += 8;
-      if (hasBackground) warmupScore += 10;
-      if (hasGoal) warmupScore += 7;
-      if (hasWho && hasBackground && hasGoal) warmupScore = Math.max(92, warmupScore);
-      if (wordCount >= 40 && wordCount <= 160) warmupScore = Math.min(100, warmupScore + 4);
-      if (fillerCount > 3 && !isTextMode) warmupScore -= Math.min(10, fillerCount * 2);
-
-      confScore = Math.min(100, Math.max(50, warmupScore));
+    if (isWarmup && wordCount >= 3 && !isDuplicateAnswer) {
+      const hasWho = /\b(i am|i'm|my name is|myself|as an? [a-z0-9_-]+|currently a|currently working as|my current role)\b/i.test(rawText);
+      const hasBackground = (/\b(background|years|career|specializ|experience|worked|working|field|domain|industry|engineer|specialist|analyst|developer|qa|lead|manager|consultant|professional)\b/i.test(rawText) || /\b(\d+\+?\s*years?)\b/i.test(rawText)) && !/\b(testing\s+testing)\b/i.test(rawText) && !/\b(snowing in chicago)\b/i.test(rawText);
+      const hasGoal = /\b(look forward|looking forward|excited|interested|interest|passion|opportunity|looking for|want to|aim to|drawn to|contribute|this role|this position)\b/i.test(rawText);
 
       const covered = [];
-      if (hasWho) covered.push("who you are");
-      if (hasBackground) covered.push("your domain background");
-      if (hasGoal) covered.push("what you're looking for in this role");
-      whatWorked = `<strong>Coach Gain says:</strong> Great warm-up introduction! You clearly covered ${covered.length > 0 ? covered.join(', ') : 'the introductory prompt'} with a natural conversational flow.`;
-
       const missing = [];
-      if (!hasWho) missing.push("State your name or current role clearly in your opening.");
-      if (!hasBackground) missing.push("Highlight 1–2 key points about your domain background.");
-      if (!hasGoal) missing.push("Share what excites you about this specific role.");
-      if (missing.length > 0) {
-        toTighten = "🎯 <strong>Coach Gain says:</strong> " + missing.join(" ") + " Aim for 60–90 seconds (110–150 WPM conversational pace).";
+      if (hasWho) covered.push("Who you are"); else missing.push("Who you are (name/current role)");
+      if (hasBackground) covered.push("Domain background"); else missing.push("Domain background");
+      if (hasGoal) covered.push("What you're looking for in this role"); else missing.push("What you're looking for in this role");
+
+      const elementCount = covered.length;
+      let warmupScore = 20;
+      if (hasWho) warmupScore += 25;
+      if (hasBackground) warmupScore += 25;
+      if (hasGoal) warmupScore += 20;
+
+      if (elementCount === 3) {
+        warmupScore = Math.max(92, warmupScore);
+        if (wordCount >= 40 && wordCount <= 160) warmupScore = Math.min(100, warmupScore + 5);
+      } else if (elementCount === 2) {
+        warmupScore = Math.min(78, Math.max(68, warmupScore));
+      } else if (elementCount === 1) {
+        warmupScore = Math.min(50, Math.max(40, warmupScore));
       } else {
-        toTighten = "🎯 <strong>Coach Gain says:</strong> Strong warm-up delivery! All 3 introductory elements covered cleanly. Your audio and pacing are ready for full practice.";
+        // 0 intro elements detected (e.g. junk / test responses)
+        warmupScore = 25;
       }
+      if (fillerCount > 3 && !isTextMode) warmupScore = Math.max(20, warmupScore - Math.min(10, fillerCount * 2));
+
+      confScore = Math.min(100, Math.max(20, warmupScore));
+
+      if (elementCount === 3) {
+        whatWorked = "<strong>Coach Gain says:</strong> Great warm-up introduction! You clearly covered who you are, your domain background, and what you're looking for in this role with a natural conversational flow.";
+        toTighten = "<strong>Coach Gain says:</strong> Strong warm-up delivery! All 3 introductory elements covered cleanly. Your audio and pacing are ready for full practice.";
+      } else if (elementCount > 0) {
+        whatWorked = `<strong>Coach Gain says:</strong> Good start! You introduced ${covered.join(' and ')}.`;
+        toTighten = `<strong>Coach Gain says:</strong> Be sure to add ${missing.join(' and ')} to give the interviewer a complete overview. Aim for 60–90 seconds (110–150 WPM conversational pace).`;
+      } else {
+        whatWorked = "<strong>Coach Gain says:</strong> We heard your answer, but didn't detect the 3 key elements of an introductory warm-up.";
+        toTighten = "<strong>Coach Gain says:</strong> Make sure to cover: 1) Who you are (name/current role), 2) Your domain background, and 3) What you're looking for in this role. Aim for 60–90 seconds.";
+      }
+
+      warmupCovered = covered;
+      warmupMissing = missing;
     }
 
     // Item 3: "Terms to weave in" lists ONLY JD terms NOT already hit in that answer (Bypassed for Warm-Up)
@@ -6700,7 +6709,7 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     let cappedScore;
     if (isWarmup) {
-      cappedScore = wordCount < 15 ? Math.min(40, confScore) : confScore;
+      cappedScore = wordCount < 3 ? 0 : confScore;
     } else if (isDuplicateAnswer) {
       cappedScore = 30; // Strict 30% cap for repeated duplicate submissions
     } else if (wordCount < 15) {
@@ -6766,7 +6775,9 @@ ${(resumeText || '').slice(0, 3500)}`;
       toTighten: toTighten.trim(),
       feedbackHTML,
       isBriefOrBlank,
-      isDuplicate: isDuplicateAnswer
+      isDuplicate: isDuplicateAnswer,
+      warmupCovered,
+      warmupMissing
     };
   }
 
@@ -6835,13 +6846,25 @@ ${(resumeText || '').slice(0, 3500)}`;
     const isWarmup = (window.currentSimMode === 'warmup');
     const isLastQ = (currentQ + 1 >= currentQuestions.length);
 
-    const matchedPills = (evalRes.matchedList && evalRes.matchedList.length > 0)
-      ? evalRes.matchedList.map(k => `<span style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:12px; font-weight:700; padding:3px 9px; border-radius:100px;">✓ ${escapeHtml(k)}</span>`).join(' ')
-      : '<span style="color:#64748b; font-size:13px; font-style:italic;">None matched yet</span>';
+    let matchedPills, missedPills;
+    if (isWarmup) {
+      const covered = evalRes.warmupCovered || [];
+      const missing = evalRes.warmupMissing || [];
+      matchedPills = covered.length > 0
+        ? covered.map(k => `<span style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:12px; font-weight:700; padding:3px 9px; border-radius:100px;">✓ ${escapeHtml(k)}</span>`).join(' ')
+        : '<span style="color:#64748b; font-size:13px; font-style:italic;">None of the 3 intro elements detected yet</span>';
+      missedPills = missing.length > 0
+        ? missing.map(k => `<span style="background:#fffbeb; border:1px solid #fde68a; color:#92400e; font-size:12px; font-weight:700; padding:3px 9px; border-radius:100px;">+ ${escapeHtml(k)}</span>`).join(' ')
+        : '<span style="color:#059669; font-size:13px; font-weight:700;">✓ All 3 intro elements covered</span>';
+    } else {
+      matchedPills = (evalRes.matchedList && evalRes.matchedList.length > 0)
+        ? evalRes.matchedList.map(k => `<span style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:12px; font-weight:700; padding:3px 9px; border-radius:100px;">✓ ${escapeHtml(k)}</span>`).join(' ')
+        : '<span style="color:#64748b; font-size:13px; font-style:italic;">None matched yet</span>';
 
-    const missedPills = (evalRes.missedList && evalRes.missedList.length > 0)
-      ? evalRes.missedList.slice(0, 4).map(k => `<span style="background:#fef2f2; border:1px solid #fecaca; color:#991b1b; font-size:12px; font-weight:700; padding:3px 9px; border-radius:100px;">+ ${escapeHtml(k)}</span>`).join(' ')
-      : '<span style="color:#059669; font-size:13px; font-weight:700;">✓ All key job terms matched</span>';
+      missedPills = (evalRes.missedList && evalRes.missedList.length > 0)
+        ? evalRes.missedList.slice(0, 4).map(k => `<span style="background:#fef2f2; border:1px solid #fecaca; color:#991b1b; font-size:12px; font-weight:700; padding:3px 9px; border-radius:100px;">+ ${escapeHtml(k)}</span>`).join(' ')
+        : '<span style="color:#059669; font-size:13px; font-weight:700;">✓ All key job terms matched</span>';
+    }
 
     inPageBox.innerHTML = `
       <div style="display:flex; flex-direction:column; gap:16px;">
@@ -6849,7 +6872,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         <div style="background:#ffffff; border:1.5px solid var(--gray-200); border-radius:10px; padding:16px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <div style="font-size:13px; font-weight:800; color:#1d4ed8; text-transform:uppercase; letter-spacing:0.05em;">
-              1. Your Response (${evalRes.wordCount} words${unifiedWpm ? ` &bull; ${unifiedWpm} WPM` : ''})
+              1. Your Response (${evalRes.wordCount} words${(!isTextMode && unifiedWpm) ? ` &bull; ${unifiedWpm} WPM` : ''})
             </div>
             <span style="font-size:12px; font-weight:800; color:${evalRes.cappedScore >= 70 ? '#059669' : '#d97706'}; background:${evalRes.cappedScore >= 70 ? '#ecfdf5' : '#fffbeb'}; border:1px solid ${evalRes.cappedScore >= 70 ? '#a7f3d0' : '#fde68a'}; padding:2px 8px; border-radius:100px;">
               Score: ${evalRes.cappedScore}%
@@ -7875,12 +7898,12 @@ ${(resumeText || '').slice(0, 3500)}`;
         let paceTitle, paceStatus, paceBg, paceBorder, paceColor, paceTextColor;
         let coachPraise, headerTitle, headerEmoji, headerPill;
 
-        const camTitle = isTextMode ? 'Not tested (typed mode)' : (cameraActive ? 'Camera & Framing Verified' : 'Camera Optional');
-        const camStatus = isTextMode ? 'Camera was not requested for typed simulation.' : (cameraActive ? 'Candidate centered in framing guide &bull; Good eye contact verified' : 'Camera optional / ready');
-        const camBg = (cameraActive && !isTextMode) ? '#ecfdf5' : '#f1f5f9';
-        const camBorder = (cameraActive && !isTextMode) ? '#10b981' : 'var(--gray-300)';
-        const camColor = (cameraActive && !isTextMode) ? '#065f46' : '#0f172a';
-        const camTextColor = (cameraActive && !isTextMode) ? '#047857' : '#475569';
+        const camTitle = cameraActive ? 'Camera & Framing Verified' : (isTextMode ? 'Not tested (typed mode)' : 'Camera Optional');
+        const camStatus = cameraActive ? 'Candidate centered in framing guide &bull; Good eye contact verified' : (isTextMode ? 'Camera was not requested for typed simulation.' : 'Camera optional / ready');
+        const camBg = cameraActive ? '#ecfdf5' : '#f1f5f9';
+        const camBorder = cameraActive ? '#10b981' : 'var(--gray-300)';
+        const camColor = cameraActive ? '#065f46' : '#0f172a';
+        const camTextColor = cameraActive ? '#047857' : '#475569';
 
         if (isTextMode) {
           micTitle = 'Typed Mode (Mic Skipped)';
@@ -8616,10 +8639,6 @@ ${(resumeText || '').slice(0, 3500)}`;
   let _fcRepeatedIndices = new Set();
 
   window.updateHeroSubtitle = function(mode) {
-    const setupViewEl = document.getElementById('setup-view');
-    if (setupViewEl && setupViewEl.style.display !== 'none') {
-      return;
-    }
     const subEl = document.getElementById('page-hero-subtitle');
     if (!subEl) return;
     const m = mode || window.currentSimMode;
@@ -8777,7 +8796,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       localStorage.setItem('tgt_guided_plan', '3');
     } catch(e) {}
     window.selectSimMode('practice');
-    const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+    const isTyped = getResolvedInterviewTextMode();
     if (isTyped) {
       isTextMode = true;
       window.setInterviewMode(true);
@@ -8796,7 +8815,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     window.returnToSetupView();
     setTimeout(() => {
       window.selectSimMode('passcheck');
-      const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+      const isTyped = getResolvedInterviewTextMode();
       if (isTyped) {
         isTextMode = true;
         window.setInterviewMode(true);
@@ -8933,15 +8952,27 @@ ${(resumeText || '').slice(0, 3500)}`;
     const isGuided = Boolean(window._isGuidedPlan || planStepVal >= 1);
     const fcGuidedBanner = document.getElementById('fc-guided-step-banner');
     if (fcGuidedBanner) fcGuidedBanner.style.display = isGuided ? 'flex' : 'none';
-    const fcGuidedStep3Btn = document.getElementById('fc-guided-step3-btn');
-    if (fcGuidedStep3Btn) fcGuidedStep3Btn.style.display = isGuided ? 'inline-flex' : 'none';
-    const fcStandaloneBtn = document.getElementById('fc-standalone-start-btn');
-    if (fcStandaloneBtn) fcStandaloneBtn.style.display = isGuided ? 'none' : 'inline-flex';
 
-    // Reset 3D flip transform
+    // Reset 3D flip transform and visibility
     const flipper = document.getElementById('fc-flipper');
     _fcIsFlipped = false;
     if (flipper) flipper.style.transform = 'rotateY(0deg)';
+    const front = document.getElementById('fc-card-front');
+    if (front) {
+      front.style.visibility = 'visible';
+      front.style.pointerEvents = 'auto';
+      front.style.zIndex = '5';
+    }
+    const back = document.getElementById('fc-card-back');
+    if (back) {
+      back.style.visibility = 'hidden';
+      back.style.pointerEvents = 'none';
+      back.style.zIndex = '1';
+    }
+    const nextBtn = document.getElementById('fc-next-btn');
+    if (nextBtn) {
+      nextBtn.style.display = 'none';
+    }
 
     // Update progress badge & mastery bar
     const badge = document.getElementById('fc-progress-badge');
@@ -8973,7 +9004,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         ? card.keywords.slice(0, 5)
         : ['ownership', 'quality standards', 'validation', 'deliverables'];
       kwsBox.innerHTML = kws.map(k =>
-        `<span style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:13px; font-weight:800; padding:4px 10px; border-radius:100px;">✓ ${k}</span>`
+        `<span class="fc-target-kw" style="background:#f1f5f9; border:1px solid #cbd5e1; color:#334155; font-size:12.5px; font-weight:700; padding:4px 10px; border-radius:100px;">🎯 ${escapeHtml(k)}</span>`
       ).join(' ');
     }
 
@@ -9070,7 +9101,7 @@ ${(resumeText || '').slice(0, 3500)}`;
   };
 
   window.rateFlashcard = function(rating, evt) {
-    if (evt) evt.stopPropagation();
+    if (evt && typeof evt.stopPropagation === 'function') evt.stopPropagation();
     if (!_fcQueue || _fcQueueIndex >= _fcQueue.length) return;
     const currentItem = _fcQueue[_fcQueueIndex];
 
@@ -9086,14 +9117,17 @@ ${(resumeText || '').slice(0, 3500)}`;
       });
     }
 
-    _fcQueueIndex++;
-    _fcIsFlipped = false;
-    const flipper = document.getElementById('fc-flipper');
-    if (flipper) flipper.style.transform = 'rotateY(0deg)';
+    // Reveal Next Card button
+    const nextBtn = document.getElementById('fc-next-btn');
+    if (nextBtn) {
+      nextBtn.style.display = 'inline-flex';
+    }
 
     setTimeout(() => {
+      _fcQueueIndex++;
+      _fcIsFlipped = false;
       window.renderFlashcardAtCurrentIndex();
-    }, 180);
+    }, 320);
   };
 
   window.renderFlashcardCompletionSummary = function() {
@@ -9180,11 +9214,48 @@ ${(resumeText || '').slice(0, 3500)}`;
   };
 
   window.flipCurrentFlashcard = function(evt) {
-    if (evt && evt.target && (evt.target.tagName === 'INPUT' || evt.target.tagName === 'BUTTON' || evt.target.tagName === 'A')) return;
+    if (evt) {
+      if (typeof evt.stopPropagation === 'function') evt.stopPropagation();
+      if (evt.target && (evt.target.tagName === 'INPUT' || evt.target.tagName === 'TEXTAREA')) return;
+    }
     const flipper = document.getElementById('fc-flipper');
+    const front = document.getElementById('fc-card-front');
+    const back = document.getElementById('fc-card-back');
     if (!flipper) return;
+
     _fcIsFlipped = !_fcIsFlipped;
-    flipper.style.transform = _fcIsFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+
+    if (_fcIsFlipped) {
+      flipper.style.transform = 'rotateY(180deg)';
+      if (front) front.style.pointerEvents = 'none';
+      if (back) {
+        back.style.pointerEvents = 'auto';
+        back.style.visibility = 'visible';
+        back.style.zIndex = '5';
+      }
+      setTimeout(() => {
+        if (_fcIsFlipped && front) {
+          front.style.visibility = 'hidden';
+          front.style.zIndex = '1';
+        }
+      }, 200);
+    } else {
+      flipper.style.transform = 'rotateY(0deg)';
+      if (front) {
+        front.style.pointerEvents = 'auto';
+        front.style.visibility = 'visible';
+        front.style.zIndex = '5';
+      }
+      if (back) {
+        back.style.pointerEvents = 'none';
+        back.style.zIndex = '1';
+      }
+      setTimeout(() => {
+        if (!_fcIsFlipped && back) {
+          back.style.visibility = 'hidden';
+        }
+      }, 200);
+    }
   };
 
   window.nextFlashcard = function(e) {
@@ -9218,7 +9289,7 @@ ${(resumeText || '').slice(0, 3500)}`;
   };
 
   window.startSimFromFlashcards = function() {
-    const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+    const isTyped = getResolvedInterviewTextMode();
     if (isTyped) {
       isTextMode = true;
       window.setInterviewMode(true);

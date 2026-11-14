@@ -1394,11 +1394,15 @@ assert(updatedHtml.includes("const unifiedWpm = (durationRecorded > 0 && evalRes
 assert(updatedHtml.includes("110–150 WPM"), "Must declare conversational 110–150 WPM target");
 assert(updatedHtml.includes("Aim for 60–90 seconds (110–150 WPM • ~100–160 words)"), "Typed answer container must state harmonized pace and word count target");
 
-// 3. Warm-Up Scoring without JD keyword penalty
+// 3. Warm-Up Scoring without JD keyword penalty, and junk answer penalty (<=30%)
 const warmupIntroText = "Hello! My name is Jordan, and for the past 6 years my career background and experience has been working as a quality assurance specialist. I am really excited and looking forward to this role because I love improving workflows and solving complex technical challenges.";
 const warmupScoreResult = testSandbox.evaluateAnswerText(warmupIntroText, { category: "Warm-Up Drill", keywords: ["Python", "SQL", "Docker", "PyTorch"] }, 0);
 assert(warmupScoreResult.cappedScore >= 90, `Warm-up intro with who/background/goal must score >= 90% without JD keyword penalty (got ${warmupScoreResult.cappedScore}%)`);
 assert(!warmupScoreResult.whatWorked.includes("No Core Job Description Terms Detected"), "Warm-up drill must never trigger off-topic JD keyword penalty");
+
+const junkWarmupResult = testSandbox.evaluateAnswerText("testing testing... snowing in Chicago, you need a jacket", { category: "Warm-Up Drill", keywords: ["Python", "SQL"] }, 0);
+assert(junkWarmupResult.cappedScore <= 30, `Junk warm-up answer must score <= 30% (got ${junkWarmupResult.cappedScore}%)`);
+assert(junkWarmupResult.whatWorked.includes("didn't detect the 3 key elements"), "Junk warm-up must flag missing intro elements");
 
 // 4. Camera Redesign: Side-by-side desktop, mobile camera top, framing guide, lens cue & minimize
 assert(updatedHtml.includes('id="video-stage-container" class="video-stage-grid"'), "Video stage container must use video-stage-grid");
@@ -1409,13 +1413,16 @@ assert(updatedHtml.includes('id="camera-look-here"'), "Look here lens marker mus
 assert(updatedHtml.includes('id="camera-minimize-btn"'), "Minimize camera feed button must exist");
 assert(updatedHtml.includes('id="camera-minimized-view"'), "Minimized camera feed container must exist");
 assert(updatedHtml.includes("Camera & Framing Verified"), "Debrief must confirm camera and framing verified");
+assert(updatedHtml.includes("const camTitle = cameraActive ? 'Camera & Framing Verified' :"), "Camera verified check must prioritize cameraActive over typed mode");
 
 // 5. Stage (b) Flashcard Mastery Deck: queue, progress, Card 1 instruction, interactive blanks, pre-fill & self-ratings
 assert(updatedHtml.includes('id="fc-progress-fill"'), "Flashcard progress fill bar must exist");
 assert(updatedHtml.includes('id="fc-card1-instruction"'), "Card 1 instruction banner must exist");
 assert(updatedHtml.includes("Read the question, answer out loud, then flip to check"), "Card 1 instruction text verified");
 assert(updatedHtml.includes("Flip Card ➔"), "Large Flip Card button must exist on front");
+assert(updatedHtml.includes('id="fc-flip-btn"'), "Explicit Flip Card button must exist");
 assert(updatedHtml.includes('class="fc-blank-input'), "Flashcard blanks must be editable inputs");
+assert(updatedHtml.includes('class="fc-target-kw"'), "Flashcard target keywords must have neutral styling");
 assert(updatedHtml.includes('window.prefillFlashcardFromResume'), "Pre-fill from resume function must exist");
 assert(updatedHtml.includes('id="fc-no-resume-alert"'), "Alert when no resume is loaded must exist");
 assert(updatedHtml.includes('id="fc-resume-attribution"'), "Resume source attribution banner must exist");
@@ -1423,8 +1430,11 @@ assert(updatedHtml.includes('window.rateFlashcard'), "rateFlashcard function mus
 assert(updatedHtml.includes("✓ Got it"), "Got it rating button must exist");
 assert(updatedHtml.includes("⚠️ Almost"), "Almost rating button must exist");
 assert(updatedHtml.includes("✕ Missed it"), "Missed it rating button must exist");
+assert(updatedHtml.includes('id="fc-next-btn" onclick="window.nextFlashcard()" style="display:none;'), "Next card button must be hidden until card is rated");
 assert(updatedHtml.includes('id="fc-completion-summary"'), "Flashcard completion summary container must exist");
 assert(updatedHtml.includes('window.practiceRepeatedFlashcardsOnly'), "Practice repeated flashcards only function must exist");
+assert(!updatedHtml.includes('window.innerWidth <= 768'), "Viewport width <= 768 must not define isMobile");
+assert(updatedHtml.includes("1. Your Response (${evalRes.wordCount} words${(!isTextMode && unifiedWpm) ? ` &bull; ${unifiedWpm} WPM` : ''})"), "Typed mode must hide WPM from response review");
 
 console.log(`✓ PASSED: Test 88 - Stage (b) Flashcard Mastery Deck, leftover fixes, camera redesign, and warm-up scoring polish verified`);
 
