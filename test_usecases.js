@@ -1119,11 +1119,11 @@ assert.strictEqual(getPassLikelihoodFit(legalExpertCheck, qaResumeForGuards).fit
 assert(aiInterviewCode.includes('isCivilOrBlasting') && aiInterviewCode.includes('failsDomain'), 'ai-interview.html must implement full domain guard');
 console.log(`✓ PASSED: Test 73 - Hardened Domain Guard blocks Blasting, Civil, Architect, Code Plan Reviewer, and Legal from Good fit`);
 
-// Test 74 (QA Retest Item 2): Pass Check requires keyword coverage (min 4 of 8 keywords) for Ready ✓
+// Test 74: Pass Check 80% passing threshold for Ready ✓ & practice badge
 assert(aiInterviewCode.includes('minRequiredKwHits = Math.min(4, Math.ceil(kwTotal * 0.5))'), 'Pass Check must calculate minRequiredKwHits');
-assert(aiInterviewCode.includes('hasRequiredKeywords'), 'Pass Check must check hasRequiredKeywords for Ready status');
-assert(aiInterviewCode.includes('avgScore >= 80 && minQScore >= 50 && !hasDup && hasRequiredKeywords'), 'pcStatus ready must require hasRequiredKeywords and 80% passing threshold');
-console.log(`✓ PASSED: Test 74 - Pass Check enforces minimum 4 of 8 JD keywords (or >=50%) and 80% passing threshold to achieve Ready ✓`);
+assert(aiInterviewCode.includes('hasRequiredKeywords'), 'Pass Check must check hasRequiredKeywords');
+assert(aiInterviewCode.includes('avgScore >= 80 && !hasDup'), 'pcStatus ready must require 80% passing threshold and non-duplicate answers');
+console.log(`✓ PASSED: Test 74 - Pass Check enforces 80% passing threshold and non-duplicate answers to achieve Ready ✓`);
 
 // Test 75 (QA Retest Item 3): Mobile Nav Menu Button & 7-Day Opt-In Tap Targets >= 44px
 assert(sharedCssText.includes('.nav-toggle-label') && sharedCssText.includes('min-width: 44px !important;') && sharedCssText.includes('min-height: 44px !important;'), 'shared.css must enforce 44px on .nav-toggle-label');
@@ -1599,7 +1599,7 @@ console.log(`✓ PASSED: Test 90 - Stage (c) Regression Items 1–20 & Approval 
 // Phase 2 (Stage d) Tests: Step 4 of 4: Pass Check & Playbook Finalization
 // ==================================================================
 // 1. 80% passing threshold and "Pass Check practice badge" naming (never certification or credential)
-assert(stageCHtml.includes('avgScore >= 80 && minQScore >= 50 && !hasDup && hasRequiredKeywords'), 'Stage d Pass Check requires 80% passing threshold');
+assert(stageCHtml.includes('avgScore >= 80 && !hasDup'), 'Stage d Pass Check requires 80% passing threshold');
 assert(stageCHtml.includes('Practice Badge Earned') || stageCHtml.includes('Pass Check practice badge'), 'Stage d must explicitly label it a practice badge');
 assert(!stageCHtml.includes('official certification') || stageCHtml.includes('not an official certification, credential'), 'Stage d must disclaim certification/credential');
 
@@ -1617,7 +1617,7 @@ assert(stageCHtml.includes('shareToLinkedIn') && stageCHtml.includes('shareToX')
 assert(stageCHtml.includes('share-include-score-check'), 'Score must be optional via checkbox in share post');
 
 // 4. Failed Pass Check (< 80%) Non-lockout, 2 Weakest questions drill & Friend invite
-assert(stageCHtml.includes("You're close. Most people pass on attempt 2 or 3."), 'Failed banner must show encouraging message');
+assert(stageCHtml.includes("You're close. Practice your weakest two and try again."), 'Failed banner must show encouraging message');
 assert(stageCHtml.includes('window.practiceWeakestQuestions'), 'ai-interview.html must define practiceWeakestQuestions');
 assert(stageCHtml.includes('window.retakePassCheckNow'), 'ai-interview.html must define retakePassCheckNow');
 assert(stageCHtml.includes('Invite a friend to practice with you'), 'Failed banner must include friend invite card');

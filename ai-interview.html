@@ -4292,30 +4292,44 @@ window.addEventListener('unhandledrejection', function(event) {
     });
   };
 
-  // Pass Check Questions Builder (REQ-PASS-06)
+  // Pass Check Questions Builder (REQ-PASS-06 & Stage d)
+  function shuffleArray(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
   window.buildPassCheckQuestions = function(targetRoleName, targetDomain) {
     const fullDeck = (typeof buildInterviewQuestions === 'function')
       ? buildInterviewQuestions(targetRoleName, targetDomain)
       : [];
-    const resumeText = (localStorage.getItem('candidateResumeText') || '').trim();
-    const resumeDefQs = window.buildResumeDefenseQuestions(targetRoleName, resumeText);
+    const resumeText = (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '').trim();
+    const resumeDefQs = (typeof window.buildResumeDefenseQuestions === 'function')
+      ? window.buildResumeDefenseQuestions(targetRoleName, resumeText)
+      : [];
 
-    // 1. Pick 3 STAR questions
+    // 1. Pick 3 STAR questions using Fisher-Yates shuffle
     const starPool = fullDeck.filter(q => q.tag === 'STAR');
-    const shuffledStar = [...starPool].sort(() => 0.5 - Math.random());
+    const shuffledStar = shuffleArray(starPool);
     const selectedStar = shuffledStar.slice(0, 3);
 
-    // 2. Pick 2 Answer–Why–Check questions (guaranteed 1 AI Evaluator)
+    // 2. Pick 2 Answer–Why–Check questions (guaranteed 1 AI Evaluator) using Fisher-Yates shuffle
     const evalPool = fullDeck.filter(q => q.category === 'AI Evaluator');
     const otherAwcPool = fullDeck.filter(q => q.tag === 'Answer–Why–Check' && q.category !== 'AI Evaluator');
-    const selectedEval = evalPool.length > 0 ? [evalPool[Math.floor(Math.random() * evalPool.length)]] : [];
-    const selectedOtherAwc = [...otherAwcPool].sort(() => 0.5 - Math.random()).slice(0, 2 - selectedEval.length);
+    const shuffledEval = shuffleArray(evalPool);
+    const shuffledOtherAwc = shuffleArray(otherAwcPool);
+    const selectedEval = shuffledEval.slice(0, 1);
+    const selectedOtherAwc = shuffledOtherAwc.slice(0, 2 - selectedEval.length);
     const selectedAwc = [...selectedEval, ...selectedOtherAwc];
 
     // 3. Pick 1 Resume Defense question
     let selectedResumeDef = null;
     if (resumeDefQs.length > 0) {
-      selectedResumeDef = resumeDefQs[Math.floor(Math.random() * resumeDefQs.length)];
+      const shuffledResumeDef = shuffleArray(resumeDefQs);
+      selectedResumeDef = shuffledResumeDef[0];
     } else {
       selectedResumeDef = {
         id: "passcheck-resume-fallback",
@@ -4323,13 +4337,14 @@ window.addEventListener('unhandledrejection', function(event) {
         category: "Resume Defense",
         tag: "STAR",
         keywords: ["ownership", "complexity", "architecture", "impact"],
-        answer: `In my recent role, I led direct execution on [Key Technical Milestone], coordinating delivery and ensuring production quality.`,
+        answer: `In my recent role, I held direct execution ownership on key deliverables, coordinating delivery and ensuring production quality.`,
         feedbackHit: "Clear ownership stated.",
         feedbackMiss: "Detail your specific individual contribution."
       };
     }
 
-    const passCheckDeck = [...selectedStar, ...selectedAwc, selectedResumeDef];
+    // Combine and shuffle the 6 questions so order is randomized across retakes
+    const passCheckDeck = shuffleArray([...selectedStar, ...selectedAwc, selectedResumeDef]);
     return passCheckDeck.slice(0, 6);
   };
 
@@ -6521,6 +6536,7 @@ ${(resumeText || '').slice(0, 3500)}`;
 
   // Stage (d) Practice 2 Weakest Questions Drill
   window.practiceWeakestQuestions = function() {
+    window._isWeakestDrill = true;
     const validResults = (sessionQuestionResults || []).filter(Boolean);
     if (!validResults.length || !currentQuestions.length) {
       window.retakePassCheckNow();
@@ -6582,6 +6598,7 @@ ${(resumeText || '').slice(0, 3500)}`;
 
   // Stage (d) Retake Pass Check Now (draws NEW random set of questions)
   window.retakePassCheckNow = function() {
+    window._isWeakestDrill = false;
     window.selectSimMode('passcheck', true);
     if (typeof window.clearActiveInterviewSession === 'function') {
       window.clearActiveInterviewSession();
@@ -6600,8 +6617,8 @@ ${(resumeText || '').slice(0, 3500)}`;
   window.downloadStarPracticePdf = function() {
     const rawRoleFromDropdown = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').replace(/\s*\([^)]*\)/g, '').trim() : '';
     const rawRoleTarget = rawRoleFromDropdown || localStorage.getItem('atsRole') || currentDomain || 'AI Evaluation Specialist';
-    const roleTarget = String(rawRoleTarget).replace(/\s*\([^)]*\)/g, '').trim();
-    const resumeTxt = (localStorage.getItem('candidateResumeText') || '').trim();
+    const roleTarget = String(rawRoleTarget).replace(/\s*\([^)]*\)/g, '').trim() || 'AI Evaluation Specialist';
+    const resumeTxt = (typeof window.resolveStoredResume === 'function' ? window.resolveStoredResume() : (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '')).trim();
     const resolvedDomain = detectDomain(roleTarget, domainSelector ? domainSelector.value : currentDomain, resumeTxt);
 
     const isPassCheckActive = (window.currentSimMode === 'passcheck' && currentQuestions && currentQuestions.length === 6);
@@ -6627,25 +6644,38 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     // Determine Candidate Name (No full resume or contact details per privacy rule)
     const candidateName = (function() {
-      const stored = (localStorage.getItem('candidateName') || '').trim();
-      if (stored) return stored;
+      const stored = (localStorage.getItem('candidateName') || sessionStorage.getItem('candidateName') || '').trim();
+      if (stored && stored !== 'Candidate') return stored;
       if (resumeTxt) {
-        const firstLine = resumeTxt.split('\n')[0].replace(/[|•,].*$/, '').trim();
-        if (firstLine.length > 2 && firstLine.length < 35 && !/\d/.test(firstLine) && !/(engineer|developer|specialist|nurse|resume|curriculum|vitae)/i.test(firstLine)) {
-          return firstLine;
+        const lines = resumeTxt.split('\n').map(l => l.trim()).filter(Boolean);
+        for (let i = 0; i < Math.min(8, lines.length); i++) {
+          let line = lines[i];
+          line = line.replace(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, '');
+          line = line.replace(/(\+?\d[\d\s().-]{7,}\d)/g, '');
+          line = line.replace(/(https?:\/\/[^\s]+|linkedin\.com[^\s]*|github\.com[^\s]*)/gi, '');
+          line = line.replace(/[|•,·–-].*$/, '').trim();
+          if (line.length >= 2 && line.length <= 40 && !/\d/.test(line) && !/^(resume|curriculum|vitae|summary|experience|profile|contact|education|skills|objective|about|work)/i.test(line)) {
+            if (!/^(senior|lead|principal|staff|junior)?\s*(software|robotics|qa|test|engineer|developer|specialist|manager|analyst|architect)/i.test(line)) {
+              try { localStorage.setItem('candidateName', line); } catch(e) {}
+              return line;
+            }
+          }
         }
       }
       return 'Candidate';
     })();
 
-    // Determine Pass Check Score
+    // Determine Pass Check Score & Agreement with Screen
+    const recordedHasDup = (sessionQuestionResults || []).some(r => r && r.isDuplicate);
     const recordedScores = (sessionQuestionResults || []).filter(r => r && typeof r.score === 'number').map(r => r.score);
     const avgScoreCalc = recordedScores.length 
       ? Math.round(recordedScores.reduce((a, b) => a + b, 0) / recordedScores.length) 
       : (passCheckData ? passCheckData.score : null);
 
+    const isPassedCheck = (avgScoreCalc !== null && avgScoreCalc >= 80 && !recordedHasDup);
+
     const passCheckScoreDisplay = (avgScoreCalc !== null)
-      ? `${avgScoreCalc}% — ${avgScoreCalc >= 80 ? 'Pass Check ✓ Practice Badge Earned' : 'Practice Benchmark'}`
+      ? `${avgScoreCalc}% — ${isPassedCheck ? 'Pass Check ✓ Practice Badge Earned' : 'Practice Benchmark'}`
       : 'Practice Benchmark Evaluation';
 
     const formattedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -7150,7 +7180,45 @@ ${(resumeText || '').slice(0, 3500)}`;
     const hasOwnershipI = /\b(i|my|i'm|i've|i'd|myself)\b/i.test(rawText);
     const hasPassiveWe = !hasOwnershipI && /\b(we|our|team)\b/i.test(rawText);
 
-    let confScore = 70;
+    // Prompt relevance analysis (Score fit to question first)
+    const qText = (qData && qData.q ? qData.q : "").toLowerCase();
+    const qCategory = (qData && qData.category ? qData.category : "").toLowerCase();
+    
+    // Extract key content tokens from prompt (len >= 4, ignoring question stopwords)
+    const qStopWords = new Set([
+      'what', 'how', 'tell', 'time', 'when', 'describe', 'walk', 'your', 'you', 'the',
+      'and', 'for', 'with', 'from', 'most', 'recent', 'specifically', 'involving', 'types',
+      'about', 'into', 'part', 'makes', 'were', 'which', 'where', 'that', 'this',
+      'have', 'had', 'been', 'would', 'could', 'should', 'will', 'are', 'was', 'role',
+      'give', 'such', 'more', 'some', 'does', 'also', 'than'
+    ]);
+    const qTokens = qText.replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length >= 4 && !qStopWords.has(w));
+    let qTokenMatches = 0;
+    qTokens.forEach(t => {
+      if (text.includes(' ' + t + ' ') || text.includes(' ' + t)) qTokenMatches++;
+    });
+
+    const isDeadlinePrompt = /deadline|pressure|tight|prioritize|timeline|urgent|speed|turnaround/i.test(qText);
+    const isConflictPrompt = /conflict|disagree|challenge|difficult|stakeholder|differ/i.test(qText);
+    const isFailurePrompt = /mistake|fail|anomaly|corrupt|error|bottleneck|risk|trade-off|problem/i.test(qText);
+    const isEvaluatorPrompt = /flaw|hallucination|model output|score it|wrong with this|localhost|skip/i.test(qText) || qCategory.includes('evaluator');
+
+    let isPromptRelevant = (qTokenMatches >= 1);
+    if (!isPromptRelevant) {
+      if (isDeadlinePrompt && /\b(deadline|timeframe|timeline|schedule|urgent|priorit|compressed|delay|deliver|shipped|launch|milestone)\b/i.test(rawText)) {
+        isPromptRelevant = true;
+      } else if (isConflictPrompt && /\b(conflict|disagree|alignment|consensus|stakeholder|perspective|collaborat|negotiat)\b/i.test(rawText)) {
+        isPromptRelevant = true;
+      } else if (isFailurePrompt && /\b(error|bug|issue|defect|anomal|fail|bottleneck|investigat|root-cause|diagnos|resolv)\b/i.test(rawText)) {
+        isPromptRelevant = true;
+      } else if (isEvaluatorPrompt && /\b(flaw|error|score|violat|risk|inaccurat|hallucinat|audit|complian|check|ground truth)\b/i.test(rawText)) {
+        isPromptRelevant = true;
+      } else if (hasST && hasAction && hasResult && hasOwnershipI) {
+        isPromptRelevant = true;
+      }
+    }
+
+    let confScore = 72;
     let whatWorked = "";
     let toTighten = "";
     let warmupCovered = [];
@@ -7177,6 +7245,8 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
 
     const isBriefOrBlank = (wordCount < 15 || rawText === "No response provided" || rawText === "I don't know" || rawText === "");
+    const isTrulyOffTopic = (!isPromptRelevant && !isDuplicateAnswer && !isBriefOrBlank);
+
     if (isDuplicateAnswer) {
       confScore = 30;
       whatWorked = "⚠️ Repeated Response Detected: This answer appears identical or nearly identical to a response submitted for an earlier question.";
@@ -7186,51 +7256,57 @@ ${(resumeText || '').slice(0, 3500)}`;
       confScore = wordCount === 0 ? 25 : Math.min(40, 20 + wordCount);
       whatWorked = "⚠️ Needs More Detail: Your response is under 15 words (capped at 40%). AI screeners require concrete technical detail, tools, and outcomes to verify your experience.";
       toTighten = "Coach Gain says: Aim for 60–90 seconds (around 80–130 words). Structure your response using STAR: describe the specific Situation, the exact Action you took, and the quantifiable Result.";
+    } else if (isTrulyOffTopic) {
+      // Off-topic answers penalized even if keywords are recited
+      confScore = Math.min(45, 25 + Math.min(15, matches * 4));
+      whatWorked = "⚠️ Off-Topic Response: Your response did not address the specific scenario or question asked.";
+      toTighten = "🎯 <strong>Coach Gain says:</strong> Autonomous AI evaluators score prompt relevance first. Address the core scenario in the question directly rather than reciting generic technical concepts.";
     } else {
       if (wordCount > 175) {
-        confScore -= 12;
+        confScore -= 8;
         toTighten += "⏱️ <strong>Coach Gain says:</strong> Keep it concise—your response was over 2 minutes. Aim for 60–90 seconds per answer to stay sharp. ";
       }
 
       if (hasNumberOrPct) {
-        confScore += 10;
+        confScore += 8;
       }
 
       if (hasPassiveWe && !hasOwnershipI) {
-        confScore -= 8;
+        confScore -= 6;
         toTighten += "\n💡 <strong>Coach Gain says:</strong> Say what you did. Autonomous screeners score your individual contributions, not your team's.";
       } else if (hasOwnershipI) {
         confScore += 6;
       }
 
       if (hasAction && hasResult) {
-        confScore += 15;
+        confScore += 12;
       } else if (!hasResult) {
+        confScore += 6;
         toTighten += "💡 <strong>Coach Gain says:</strong> Close with a measurable Result using a number or % (e.g., \"which led to a 35% drop in errors\"). ";
       } else {
+        confScore += 6;
         toTighten += "💡 <strong>Coach Gain says:</strong> Clearly state the specific engineering or analytical Action you personally executed. ";
       }
 
-      confScore += Math.min(20, matches * 7);
+      if (qTokenMatches >= 1) {
+        confScore += Math.min(8, qTokenMatches * 3);
+      }
 
-      if (!isTextMode) {
-        confScore -= Math.min(20, fillerCount * 6);
+      // Keyword alignment adds polish credit (+10 max), not gating
+      confScore += Math.min(10, matches * 4);
+
+      if (!isTextMode && fillerCount > 0) {
+        confScore -= Math.min(15, fillerCount * 4);
       }
 
       if (matches >= 2) {
         whatWorked = "<strong>Coach Gain says:</strong> " + (qData.feedbackHit || "Clear delivery. You shared relevant domain skills and concrete context.");
         if (hasNumberOrPct) whatWorked += " Concrete numbers reinforced your credibility.";
       } else {
-        whatWorked = "<strong>Coach Gain says:</strong> You addressed the prompt directly and engaged with the core question.";
+        whatWorked = "<strong>Coach Gain says:</strong> You addressed the prompt directly and delivered a structured STAR response.";
         if (hasNumberOrPct) whatWorked += " Strong inclusion of specific numbers and quantifiable results.";
-        let missTip = (qData && qData.feedbackMiss) ? qData.feedbackMiss : "";
-        if (hasNumberOrPct) {
-          missTip = missTip.replace(/, metric,/gi, '').replace(/\bmetric\b/gi, 'system').replace(/\bmetrics\b/gi, 'technical details');
-        }
-        // Item 2: Never tell the user to mention a tool or term they already used in rawText
-        missTip = sanitizeFeedbackMissTip(missTip, rawText, kwsToEvaluate);
-        if (missTip) {
-          toTighten += (toTighten ? "\n" : "") + "🎯 <strong>Coach Gain says:</strong> " + missTip;
+        if (matches === 0 && kwsToEvaluate.length > 0) {
+          toTighten += (toTighten ? "\n" : "") + "🎯 <strong>Coach Gain says:</strong> Solid scenario delivery. To raise your score to 95%+, also weave in a technical skill or method from the job description.";
         }
       }
 
@@ -7309,9 +7385,11 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
 
     const isOffTopicNoKeywords = (matches === 0 && kwsToEvaluate.length > 0 && wordCount >= 15 && !isDuplicateAnswer && !isBriefOrBlank);
-    if (isOffTopicNoKeywords && !isWarmup) {
-      whatWorked = "⚠️ No Core Job Description Terms Detected: Your response did not include any of the core technical keywords required for this position.";
-      toTighten = "🎯 <strong>Coach Gain says:</strong> Autonomous AI evaluators score domain competence by checking for role-specific methods, frameworks, and tools. Ground your STAR example in the role's core technical scope rather than general workplace activities.\n" + toTighten;
+    const isOffTopicZeroKeywords = (isTrulyOffTopic && isOffTopicNoKeywords);
+
+    if (isTrulyOffTopic && !isWarmup) {
+      whatWorked = "⚠️ Off-Topic Response: Your response did not address the specific scenario or question asked.";
+      toTighten = "🎯 <strong>Coach Gain says:</strong> Autonomous AI evaluators score prompt relevance first. Address the core scenario in the question directly rather than reciting generic technical concepts.\n" + toTighten;
     }
 
     // P1 #15: Enforce length penalty for practice mode answers well under the 60-90s (~100-160 words) target
@@ -7331,8 +7409,10 @@ ${(resumeText || '').slice(0, 3500)}`;
       cappedScore = 30; // Strict 30% cap for repeated duplicate submissions
     } else if (wordCount < 15) {
       cappedScore = Math.min(40, Math.max(0, confScore));
-    } else if (isOffTopicNoKeywords) {
+    } else if (isOffTopicZeroKeywords) {
       cappedScore = Math.min(38, Math.max(20, confScore - 35)); // Strict 38% cap for off-topic / zero-keyword answers
+    } else if (isTrulyOffTopic) {
+      cappedScore = Math.min(48, Math.max(25, confScore)); // Cap off-topic answers with keywords at 48%
     } else if (wordCount < 35) {
       cappedScore = Math.min(50, Math.max(25, confScore)); // Cap short answers under 35 words at 50%
     } else if (wordCount < 50) {
@@ -7362,9 +7442,19 @@ ${(resumeText || '').slice(0, 3500)}`;
         <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
       </div>
       ${suggestedStarHTML}
-    ` : (isOffTopicNoKeywords ? `
+    ` : (isOffTopicZeroKeywords ? `
       <div style="background:rgba(239,68,68,0.12); border-left:3px solid #ef4444; padding:14px 18px; border-radius:8px; margin-bottom:12px;">
         <div style="font-size:12px; font-weight:800; color:#f87171; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">⚠️ Off-Topic / Zero Job Description Terms (Capped at 38%):</div>
+        <div style="color:#ffffff; font-size:14px; line-height:1.5;">${whatWorked}</div>
+      </div>
+      <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3b82f6; padding:14px 18px; border-radius:8px;">
+        <div style="font-size:12px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">💡 Coach Gain says — To Tighten for the Real Interview:</div>
+        <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
+      </div>
+      ${suggestedStarHTML}
+    ` : (isTrulyOffTopic ? `
+      <div style="background:rgba(239,68,68,0.12); border-left:3px solid #ef4444; padding:14px 18px; border-radius:8px; margin-bottom:12px;">
+        <div style="font-size:12px; font-weight:800; color:#f87171; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">⚠️ Off-Topic Response (Capped at 48%):</div>
         <div style="color:#ffffff; font-size:14px; line-height:1.5;">${whatWorked}</div>
       </div>
       <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3b82f6; padding:14px 18px; border-radius:8px;">
@@ -7382,7 +7472,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         <div style="color:#ffffff; font-size:14px; line-height:1.5; white-space:pre-line;">${toTighten.trim()}</div>
       </div>
       ${suggestedStarHTML}
-    `));
+    `)));
 
     return {
       rawText,
@@ -7489,6 +7579,37 @@ ${(resumeText || '').slice(0, 3500)}`;
         : '<span style="color:#059669; font-size:13px; font-weight:700;">✓ All key job terms matched</span>';
     }
 
+    // PASS CHECK BLIND SCREENER: Hide all intermediate feedback, model answers, and "What to Improve"
+    if (isPassCheck) {
+      const passCheckBlindHtml = `
+        <div style="background:#ffffff; border:1.5px solid #cbd5e1; border-radius:12px; padding:22px 24px; text-align:left; box-shadow:0 4px 14px rgba(0,0,0,0.05);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+            <div style="font-size:14px; font-weight:800; color:#059669; display:flex; align-items:center; gap:6px;">
+              <span>✓ Response Recorded</span>
+              <span style="font-size:12px; color:#64748b; font-weight:600;">(${evalRes.wordCount} words)</span>
+            </div>
+            <div style="font-size:11.5px; font-weight:800; color:#475569; background:#f1f5f9; padding:3px 10px; border-radius:100px;">
+              Question ${currentQ + 1} of ${currentQuestions.length}
+            </div>
+          </div>
+          <div style="font-size:13.5px; color:#475569; line-height:1.5; margin-bottom:18px;">
+            Blind Pass Check in progress. Coaching, scoring metrics, and model answers are strictly concealed until the final results screen.
+          </div>
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="button" onclick="window.confirmAndAdvanceFromEvaluation()" class="btn-primary" style="padding:12px 28px; font-size:15px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 12px rgba(5,150,105,0.3);">
+              ${isLastQ ? 'Complete Pass Check • View Results ➔' : `Next Question (Question ${currentQ + 2} of ${currentQuestions.length}) ➔`}
+            </button>
+          </div>
+        </div>
+      `;
+      inPageBox.innerHTML = passCheckBlindHtml;
+      inPageBox.style.display = "block";
+      if (typeof inPageBox.scrollIntoView === 'function') {
+        inPageBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      return;
+    }
+
     inPageBox.innerHTML = `
       <div style="display:flex; flex-direction:column; gap:16px;">
         <!-- 1. User Response -->
@@ -7543,7 +7664,7 @@ ${(resumeText || '').slice(0, 3500)}`;
             🔄 Practice This Answer Again
           </button>
           <button type="button" onclick="window.confirmAndAdvanceFromEvaluation()" class="btn-primary" style="padding:13px 32px; font-size:15.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; margin-left:auto;">
-            ${isWarmup ? 'Finish Warm-Up • View Report ➔' : (isPassCheck && isLastQ ? 'Complete Pass Check • View Results ➔' : (isLastQ ? (isGuided ? 'Complete Practice &bull; Advance to Step 4 ➔' : 'Complete Simulation &bull; View Scorecard ➔') : `Next Question (Question ${currentQ + 2} of ${currentQuestions.length}) ➔`))}
+            ${isWarmup ? 'Finish Warm-Up • View Report ➔' : (window._isWeakestDrill && isLastQ ? 'Complete Targeted Drill • Return to Pass Check ➔' : (isPassCheck && isLastQ ? 'Complete Pass Check • View Results ➔' : (isLastQ ? (isGuided ? 'Complete Practice &bull; Advance to Step 4 ➔' : 'Complete Simulation &bull; View Scorecard ➔') : `Next Question (Question ${currentQ + 2} of ${currentQuestions.length}) ➔`)))}
           </button>
         </div>
       </div>
@@ -8568,7 +8689,7 @@ ${(resumeText || '').slice(0, 3500)}`;
 
   function proceedToSession() {
     const displayedRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : '';
-    const roleTarget = displayedRole || localStorage.getItem('atsRole') || currentDomain;
+    const roleTarget = displayedRole || localStorage.getItem('atsRole') || (typeof currentDomain === 'string' && currentDomain) || 'Specialist';
     const resumeTxt = localStorage.getItem('candidateResumeText') || '';
     const resolvedDomain = detectDomain(roleTarget, domainSelector.value || currentDomain, resumeTxt);
     currentDomain = resolvedDomain;
@@ -8660,7 +8781,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
 
     const displayedRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : '';
-    const roleTarget = displayedRole || localStorage.getItem('atsRole') || currentDomain;
+    const roleTarget = displayedRole || localStorage.getItem('atsRole') || (typeof currentDomain === 'string' && currentDomain) || 'Specialist';
     const validResults = sessionQuestionResults.filter(Boolean);
     const totalQuestionsCount = currentQuestions.length || 5;
     const answeredCount = validResults.filter(r => r.answered && r.wordCount > 0).length;
@@ -9046,7 +9167,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         const minQScore = Math.min(...validResults.map(r => r.score || 0));
         const hasDup = validResults.some(r => r.isDuplicate);
         let pcStatus = 'not_yet';
-        if (avgScore >= 80 && minQScore >= 50 && !hasDup && hasRequiredKeywords) {
+        if (avgScore >= 80 && !hasDup) {
           pcStatus = 'ready';
         } else if (avgScore >= 60 && !hasDup) {
           pcStatus = 'almost';
@@ -9153,7 +9274,7 @@ ${(resumeText || '').slice(0, 3500)}`;
               <!-- Official Free Practice Dress Rehearsals -->
               <div style="margin-bottom:18px; padding:12px 16px; background:#f8fafc; border-radius:8px; border:1px solid #cbd5e1; font-size:12.5px; color:#334155; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                 <div>
-                  <strong>🎯 Free Practice Dress Rehearsals:</strong> Test with official partner tools.
+                  <strong>🎯 Free practice tools from Mercor and micro1:</strong> Test under real AI screening conditions.
                 </div>
                 <div style="display:inline-flex; gap:8px; flex-wrap:wrap;">
                   <a href="https://t.mercor.com/wbPMF" target="_blank" rel="noopener noreferrer" style="background:#10b981; color:#042f2e; font-size:11.5px; font-weight:800; padding:6px 12px; border-radius:4px; text-decoration:none;">Mercor Practice Interview ➔</a>
@@ -9178,9 +9299,9 @@ ${(resumeText || '').slice(0, 3500)}`;
                     <span>📈 Pass Check Progress</span>
                     <span style="background:#fffbeb; border:1px solid #f59e0b; color:#92400e; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:800;">Target: 80%</span>
                   </div>
-                  <h2 style="font-size:24px; font-weight:900; color:#0f172a; margin:0 0 6px;">You're close. Most people pass on attempt 2 or 3.</h2>
+                  <h2 style="font-size:24px; font-weight:900; color:#0f172a; margin:0 0 6px;">You're close. Practice your weakest two and try again.</h2>
                   <div style="font-size:14.5px; color:#334155; line-height:1.5;">
-                    ${hasDup ? "A run containing duplicate or repeated answers cannot return Ready. Give a distinct scenario for every prompt." : `You achieved <strong>${avgScore}% Readiness</strong> on this blind screener. Practice your two lowest-scoring questions below with live coaching to bridge the gap to 80%. There is no lockout—you can retake anytime.`}
+                    ${hasDup ? "A run containing duplicate or repeated answers cannot return Ready or earn the Pass Check practice badge. Please provide a unique, distinct STAR scenario for each question." : `You achieved <strong>${avgScore}% Readiness</strong> on this blind screener. Practice your two lowest-scoring questions below with live coaching to bridge the gap to 80%. There is no lockout—you can retake anytime.`}
                   </div>
                   <div style="font-size:12px; color:#64748b; margin-top:6px; font-style:italic;">
                     * Pass Check is a practice benchmark designed to build confidence and polish delivery before real AI screenings.
@@ -9213,7 +9334,7 @@ ${(resumeText || '').slice(0, 3500)}`;
               <div id="friend-invite-card" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:16px 18px; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                 <div>
                   <div style="font-size:13.5px; font-weight:800; color:#0f172a; margin-bottom:2px;">🤝 Invite a friend to practice with you</div>
-                  <div style="font-size:12.5px; color:#475569;">Practicing with a peer boosts mock interview retention and accountability.</div>
+                  <div style="font-size:12.5px; color:#475569;">Share this practice link with a friend or peer preparing for AI interviews.</div>
                 </div>
                 <button type="button" onclick="window.copyFriendInviteLink(this)" style="background:#ffffff; border:1.5px solid #94a3b8; color:#0f172a; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
                   <span>📋 Copy Invite Link</span>
@@ -9223,7 +9344,7 @@ ${(resumeText || '').slice(0, 3500)}`;
               <!-- Official Free Practice Dress Rehearsals -->
               <div style="margin-bottom:18px; padding:12px 16px; background:#f8fafc; border-radius:8px; border:1px solid #cbd5e1; font-size:12.5px; color:#334155; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                 <div>
-                  <strong>🎯 Free Practice Dress Rehearsals:</strong> Test with official partner tools.
+                  <strong>🎯 Free practice tools from Mercor and micro1:</strong> Test under real AI screening conditions.
                 </div>
                 <div style="display:inline-flex; gap:8px; flex-wrap:wrap;">
                   <a href="https://t.mercor.com/wbPMF" target="_blank" rel="noopener noreferrer" style="background:#10b981; color:#042f2e; font-size:11.5px; font-weight:800; padding:6px 12px; border-radius:4px; text-decoration:none;">Mercor Practice Interview ➔</a>
@@ -9247,8 +9368,30 @@ ${(resumeText || '').slice(0, 3500)}`;
       const isPlanFinal = isFinal && isGuided;
       const isPlanStep3 = isGuided && !isPlanFinal && (currentPlanStep === 3 || window.currentSimMode === 'practice');
 
-      resultsView.innerHTML = `
-        ${isPassCheck ? passCheckBannerHtml : `
+      if (isPassCheck) {
+        resultsView.innerHTML = passCheckBannerHtml;
+      } else if (window._isWeakestDrill) {
+        window._isWeakestDrill = false;
+        resultsView.innerHTML = `
+          <div id="weakest-drill-completion-banner" style="background:#ffffff; border:2px solid #10b981; border-radius:14px; padding:28px 24px; margin-bottom:24px; text-align:center; box-shadow:0 4px 16px rgba(16,185,129,0.12);">
+            <div style="font-size:32px; margin-bottom:8px;">🎯</div>
+            <div style="font-size:12px; font-weight:900; color:#059669; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">Targeted Drill Complete</div>
+            <h2 style="font-size:22px; font-weight:900; color:#0f172a; margin:0 0 8px;">Targeted Drill Complete! Ready for Pass Check</h2>
+            <div style="font-size:14.5px; color:#475569; line-height:1.55; max-width:620px; margin:0 auto 20px auto;">
+              You strengthened your 2 weakest questions with live CoPilot coaching. Now put your preparation to the test under real screener conditions in <strong>Pass Check</strong>.
+            </div>
+            <div style="display:inline-flex; gap:12px; flex-wrap:wrap; justify-content:center; align-items:center;">
+              <button type="button" onclick="window.retakePassCheckNow()" class="btn-primary" style="padding:13px 28px; font-size:15px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(5,150,105,0.35);">
+                <span>🔄 Retake Pass Check Now</span> ➔
+              </button>
+              <button type="button" onclick="window.downloadStarPracticePdf()" style="background:#ffffff; border:1px solid var(--gray-300); color:#334155; padding:12px 20px; font-size:14px; font-weight:700; border-radius:8px; cursor:pointer;">
+                📄 Download STAR Playbook (PDF)
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        resultsView.innerHTML = `
           ${isPlanStep3 ? `
             <div id="step3-completion-banner" style="background:linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(59,130,246,0.1) 100%); border:2px solid #10b981; border-radius:14px; padding:22px 24px; margin-bottom:20px; text-align:center;">
               <div style="font-size:30px; margin-bottom:6px;">🚀</div>
@@ -9310,28 +9453,6 @@ ${(resumeText || '').slice(0, 3500)}`;
               </div>
             </div>
           </div>
-        `}
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-            <div>
-              <div style="font-size:18px; font-weight:800; color:${avgScore >= 70 && !hasDup ? '#065f46' : (avgScore >= 60 ? '#92400e' : '#991b1b')};">
-                ${avgScore >= 70 && !hasDup ? 'Ready ✓' : (avgScore >= 60 ? 'Almost Ready' : 'Not Yet')} (${avgScore}%)
-              </div>
-              <div style="font-size:14px; color:${avgScore >= 70 && !hasDup ? '#047857' : (avgScore >= 60 ? '#b45309' : '#b91c1c')}; margin-top:4px;">
-                ${avgScore >= 70 && !hasDup ? 'Practice benchmark passed. Structured STAR delivery and strong Job Description alignment.' : (avgScore >= 60 ? 'Close to the 70% threshold. Re-drill your 2 lowest scoring questions below to reach Ready.' : 'Needs more practice. Focus on providing specific Situation, Action, and measurable Result examples.')}
-              </div>
-            </div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-              <button type="button" onclick="window.retakeMockInterview()" class="btn-primary" style="padding:10px 20px; font-size:14px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff;">
-                Retake Interview
-              </button>
-              ${avgScore >= 70 && !hasDup ? `
-                <a href="/apply" class="btn btn-secondary" style="padding:10px 18px; font-size:14px; font-weight:700; border-radius:8px; text-decoration:none; border:1px solid var(--gray-300); background:#ffffff; color:var(--gray-900);">
-                  Apply to Roles ➔
-                </a>
-              ` : ''}
-            </div>
-          </div>
-        </div>
 
         <div id="post-interview-summary-card" style="background:#ffffff; border:1px solid var(--gray-200); border-radius:16px; padding:28px 24px; text-align:left; width:100%; box-shadow:var(--shadow-sm); box-sizing:border-box; color:var(--gray-900);">
           <!-- Overall Summary Header & 3 Score Boxes (Kept) -->
@@ -9456,7 +9577,8 @@ ${(resumeText || '').slice(0, 3500)}`;
             </button>
           </div>
         </div>
-`;
+      `;
+    }
 
       const sharedChecklist = document.getElementById('shared-readiness-checklist-content');
       const nextStepsSlot = document.getElementById('results-next-steps-slot');
