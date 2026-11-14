@@ -1348,7 +1348,42 @@ assert(updatedHtml.includes("${!isPlanFinal ? `\n              <button type=\"bu
 
 console.log(`✓ PASSED: Test 86 - Ambiguous employer name resolution and debrief Playbook button deduplication verified`);
 
+// ==================================================================
+// Test 87: Stage (a) Warm-Up Drill and Report Polish Verification
+// ==================================================================
+// 1. Screen 1 mode badge & default to spoken mode
+assert(updatedHtml.includes('id="setup-mode-badge"'), "Screen 1 must render setup-mode-badge");
+assert(updatedHtml.includes("interviewAnswerMode_v2"), "Must use v2 storage key to clear stale legacy typed preference");
+
+// 2. Button deduplication: preview-coaching-btn hidden and only one Check Answer button
+assert(updatedHtml.includes('id="preview-coaching-btn" onclick="window.previewCurrentAnswerCoaching()" style="display:none !important;"'), "Old Evaluate button must be hidden");
+assert(updatedHtml.includes('id="done-speaking-btn"'), "Done Speaking Check Answer button must exist");
+assert(updatedHtml.includes('id="done-typing-btn"'), "Done Answering Check Answer button must exist");
+
+// 3. Step pill in Warm-Up Drill
+assert(updatedHtml.includes("if (activeMode === 'warmup') {\n        guidedBanner.textContent = 'Step 1 of 4: Warm-Up Drill';\n        guidedBanner.style.display = 'inline-flex';"), "Warm-Up Drill must display Step 1 of 4: Warm-Up Drill banner");
+
+// 4. Double dot removed from listening status
+assert(!updatedHtml.includes("● ● Listening"), "Must not contain duplicate dots in listening status");
+assert(updatedHtml.includes("Listening... Speak your answer now (60–90s)"), "Listening status text must be clean and single-dot");
+
+// 5. CoPilot hidden in Warm-Up
+assert(updatedHtml.includes("copilotEl.style.display = (window.currentSimMode === 'warmup') ? 'none' : 'flex';"), "CoPilot must remain hidden during Warm-Up Drill");
+
+// 6. Audio meter time domain data for realistic sensitivity
+assert(updatedHtml.includes("micAnalyser.getByteTimeDomainData(timeData);"), "Audio level meter must use time domain data for responsive VU visualization");
+
+// 7. Honest pace check in Warm-Up debrief
+assert(updatedHtml.includes("Cadence: Slower than target"), "Warm-Up debrief must honestly flag speaking slower than target WPM");
+assert(updatedHtml.includes("target is 75–130 WPM"), "Warm-Up debrief must state honest WPM target");
+
+// 8. Live timer badge and auto-stop safety
+assert(updatedHtml.includes('id="spoken-live-timer-badge"'), "Live spoken answer timer badge must exist");
+assert(updatedHtml.includes("currentAnswerSeconds >= 95 && !isTextMode && isRecognizing"), "Safety auto-stop at 95s must be enforced to prevent runaway mic recording");
+
+console.log(`✓ PASSED: Test 87 - Stage (a) Warm-Up Drill & Report polish verified (mode badge, deduplicated buttons, honest pace, timer cutoff, CoPilot isolation)`);
+
 console.log("==================================================================");
-console.log("ALL 86 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 87 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

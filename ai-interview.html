@@ -630,9 +630,12 @@ window.addEventListener('unhandledrejection', function(event) {
       <div id="setup-initial-form">
       <div style="display:flex; justify-content:space-between; align-items:center; max-width:560px; margin:0 auto 12px;">
         <span id="setup-role-subtitle" style="font-size:14px; font-weight:700; color:var(--gray-900);">AI Interview Simulator</span>
-        <button type="button" class="gear-btn" id="setup-settings-btn" onclick="window.openInterviewSettings('setup')" aria-label="Settings">
-          Settings
-        </button>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span id="setup-mode-badge" style="font-size:13px; font-weight:700; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; padding:4px 10px; border-radius:100px;">🎙️ Spoken Mode</span>
+          <button type="button" class="gear-btn" id="setup-settings-btn" onclick="window.openInterviewSettings('setup')" aria-label="Settings">
+            ⚙️ Settings
+          </button>
+        </div>
       </div>
 
       <!-- 1. Role Selector at the Top -->
@@ -1245,6 +1248,7 @@ window.addEventListener('unhandledrejection', function(event) {
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
               <span style="font-size:13px; font-weight:800; color:#2563eb; text-transform:uppercase; letter-spacing:0.05em;" id="spoken-mic-status">🎙️ Microphone Active — Speak your answer (60–90s)</span>
               <div style="display:inline-flex; align-items:center; gap:8px;">
+                <span id="spoken-live-timer-badge" style="font-size:12.5px; font-weight:700; color:#475569; background:#f1f5f9; border:1px solid var(--gray-300); padding:3px 10px; border-radius:100px;">⏱️ 0s / 90s</span>
                 <!-- Silence Cutoff Selector (REQ-PASS-05) -->
                 <div id="pause-cutoff-control" style="display:inline-flex; align-items:center; gap:6px; background:#f8fafc; border:1px solid var(--gray-300); padding:3px 8px; border-radius:6px;">
                   <span style="font-size:12px; color:#334155; font-weight:700;">⏱️ Cutoff:</span>
@@ -1280,6 +1284,9 @@ window.addEventListener('unhandledrejection', function(event) {
               <span style="color:#059669; font-weight:800; flex-shrink:0;">💡 Delivery Tip:</span>
               <span>Speak with first-person ownership (<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">"I architected"</strong>, not "We"</span>) and close with a measurable outcome (<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">% or number</strong></span>).</span>
             </div>
+            <div style="margin-top:4px; font-size:12.5px; color:#64748b;">
+              💡 <strong>Quiet Room Tip:</strong> Speak in a quiet spot so background room audio isn't transcribed.
+            </div>
             <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
               <button type="button" id="done-speaking-btn" onclick="window.finishAndEvaluateCurrentAnswer()" class="btn-primary" style="padding:11px 22px; font-size:14.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; display:inline-flex; align-items:center; gap:8px;">
                 Done Speaking — Check Answer ➔
@@ -1305,7 +1312,7 @@ window.addEventListener('unhandledrejection', function(event) {
                 Done Answering — Check Answer ➔
               </button>
             </div>
-            <button id="submit-typed-btn" style="display:none;" aria-hidden="true">Submit Answer</button>
+            <button id="submit-typed-btn" style="display:none !important;" aria-hidden="true">Submit Answer</button>
           </div>
 
           <!-- In-Page Coaching Feedback Box (Post-Answer Reveal Order: User Response -> Model Answer -> Comparison -> Next Button) -->
@@ -1314,9 +1321,9 @@ window.addEventListener('unhandledrejection', function(event) {
             <div id="feedback-coaching-text" style="display:none;"></div>
           </div>
           
-          <!-- Screen 2 Action Row: Primary Next Button + Redo -->
-          <div id="screen2-action-row" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:12px;">
-            <button type="button" id="preview-coaching-btn" onclick="window.previewCurrentAnswerCoaching()" style="background:#ffffff; border:1.5px solid #059669; color:#065f46; border-radius:8px; padding:10px 16px; font-size:14px; font-weight:800; cursor:pointer; transition:all 0.2s;" title="Scores your spoken or typed answer and shows detailed rubric coaching">
+          <!-- Screen 2 Action Row: Kept hidden during single-button flow -->
+          <div id="screen2-action-row" style="display:none; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:12px;">
+            <button type="button" id="preview-coaching-btn" onclick="window.previewCurrentAnswerCoaching()" style="display:none !important;" aria-hidden="true">
               🔍 Evaluate My Spoken / Typed Answer
             </button>
             <button class="btn-sim" id="next-btn" style="padding:13px 34px; font-size:15.5px; min-width:180px; margin-left:auto;">
@@ -2256,7 +2263,22 @@ window.addEventListener('unhandledrejection', function(event) {
   let currentQuestions = [];
   let currentQ = 0;
   const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android|Mobi/i.test(navigator.userAgent);
-  let isTextMode = (localStorage.getItem('interviewTextMode') === 'true'); // Default to spoken mode; respect saved choice if explicitly set
+  // Default the input mode to speaking, not typing (REQ Warm-Up 1).
+  // Clear any stale legacy 'interviewTextMode' from older builds where typed was default.
+  let isTextMode = false;
+  try {
+    const savedMode = localStorage.getItem('interviewAnswerMode_v2');
+    if (savedMode === 'typed') {
+      isTextMode = true;
+    } else if (savedMode === 'spoken') {
+      isTextMode = false;
+    } else {
+      isTextMode = false;
+      localStorage.removeItem('interviewTextMode');
+    }
+  } catch(e) {
+    isTextMode = false;
+  }
   let interviewStarted = false;
   let interviewCompleted = false;
   let sessionTargetKeywords = new Set();
@@ -2297,6 +2319,7 @@ window.addEventListener('unhandledrejection', function(event) {
     const spokenBtn = document.getElementById('mode-btn-spoken');
     const typedBtn = document.getElementById('mode-btn-typed');
     const modeEl = document.getElementById('mode-badge');
+    const setupModeEl = document.getElementById('setup-mode-badge');
     if (spokenBtn && typedBtn) {
       if (isTextMode) {
         typedBtn.style.borderColor = 'var(--primary)';
@@ -2321,12 +2344,19 @@ window.addEventListener('unhandledrejection', function(event) {
     if (modeEl) {
       modeEl.innerText = isTextMode ? '⌨️ Typed Mode' : '🎙️ Spoken Mode';
     }
+    if (setupModeEl) {
+      setupModeEl.innerText = isTextMode ? '⌨️ Typed Mode' : '🎙️ Spoken Mode';
+      setupModeEl.style.color = isTextMode ? '#334155' : '#065f46';
+      setupModeEl.style.background = isTextMode ? '#f1f5f9' : '#ecfdf5';
+      setupModeEl.style.borderColor = isTextMode ? 'var(--gray-300)' : '#a7f3d0';
+    }
   }
   syncModeButtonsUI();
 
   window.setInterviewMode = function(typed) {
     isTextMode = Boolean(typed);
     try {
+      localStorage.setItem('interviewAnswerMode_v2', isTextMode ? 'typed' : 'spoken');
       localStorage.setItem('interviewTextMode', isTextMode ? 'true' : 'false');
     } catch(e) {}
     if (isTextMode) {
@@ -2352,13 +2382,6 @@ window.addEventListener('unhandledrejection', function(event) {
       }
     }
   };
-
-  // Restore saved Answer Mode from localStorage on initial load
-  try {
-    if (localStorage.getItem('interviewTextMode') === 'true') {
-      isTextMode = true;
-    }
-  } catch(e) {}
 
   window.openInterviewSettings = function(screenName) {
     const modal = document.getElementById('settings-modal');
@@ -4121,8 +4144,8 @@ window.addEventListener('unhandledrejection', function(event) {
         category: "Warm-Up Drill",
         answer: "Hi! My background is in " + targetDomain + ", where I have specialized in core deliverables and technical evaluation. I'm excited about this opportunity because...",
         keywords: [...canonicalKws.slice(0, 4)],
-        feedbackHit: "Great warm-up delivery! Your microphone, pacing, and enunciation are working smoothly. You are ready for the scored simulation.",
-        feedbackMiss: "Speak naturally and practice holding a steady pace. Keep eye contact with your camera."
+        feedbackHit: "Great warm-up delivery! You clearly outlined your domain background and enthusiasm for the position.",
+        feedbackMiss: "Speak or write naturally, holding a steady pace and highlighting concrete background deliverables."
       }];
     }
 
@@ -6060,11 +6083,39 @@ ${(resumeText || '').slice(0, 3500)}`;
       durEl.textContent = '0s / 90s';
       durEl.style.color = '#334155';
     }
+    const liveTimerBadge = document.getElementById('spoken-live-timer-badge');
+    if (liveTimerBadge) {
+      liveTimerBadge.textContent = '⏱️ 0s / 90s';
+      liveTimerBadge.style.color = '#475569';
+      liveTimerBadge.style.background = '#f1f5f9';
+      liveTimerBadge.style.borderColor = 'var(--gray-300)';
+    }
     answerTimerInterval = setInterval(() => {
       currentAnswerSeconds = Math.min(180, currentAnswerSeconds + 1);
       if (durEl) {
         durEl.textContent = `${currentAnswerSeconds}s / 90s`;
         durEl.style.color = (currentAnswerSeconds >= 60 && currentAnswerSeconds <= 95) ? '#059669' : (currentAnswerSeconds > 95 ? '#d97706' : '#334155');
+      }
+      const timerBadge = document.getElementById('spoken-live-timer-badge');
+      if (timerBadge) {
+        timerBadge.textContent = `⏱️ ${currentAnswerSeconds}s / 90s`;
+        if (currentAnswerSeconds >= 90) {
+          timerBadge.style.color = '#dc2626';
+          timerBadge.style.background = '#fef2f2';
+          timerBadge.style.borderColor = '#fca5a5';
+        } else if (currentAnswerSeconds >= 75) {
+          timerBadge.style.color = '#d97706';
+          timerBadge.style.background = '#fffbeb';
+          timerBadge.style.borderColor = '#fde68a';
+        }
+      }
+      // Auto-finish safety at 95s to protect from runaway mic recording
+      if (currentAnswerSeconds >= 95 && !isTextMode && isRecognizing) {
+        const micStatus = document.getElementById('spoken-mic-status');
+        if (micStatus) {
+          micStatus.innerHTML = '⏱️ <span style="color:#d97706; font-weight:800;">Target time (90s) reached. Evaluating your answer...</span>';
+        }
+        window.finishAndEvaluateCurrentAnswer();
       }
     }, 1000);
   }
@@ -6498,8 +6549,21 @@ ${(resumeText || '').slice(0, 3500)}`;
 
   // Post-Answer Evaluation (Fix 3 & Adjustment 7: Reveal order: User Response -> Model Answer -> Comparison -> Next Button)
   window.finishAndEvaluateCurrentAnswer = function() {
+    if (recognition) {
+      try {
+        recognition.onstart = null;
+        recognition.onresult = null;
+        recognition.onerror = null;
+        recognition.onend = null;
+        recognition.stop();
+      } catch(e) {}
+      isRecognizing = false;
+    }
     stopAllSpeech();
     stopAnswerTimer();
+    const actionRow = document.getElementById('screen2-action-row');
+    if (actionRow) actionRow.style.display = 'none';
+
     const qData = currentQuestions[currentQ] || {};
     const rawText = getCurrentAnswerText();
     const inPageBox = document.getElementById('in-page-feedback');
@@ -6522,6 +6586,9 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
 
     const evalRes = evaluateAnswerText(rawText, qData, currentQ);
+    const durationRecorded = currentAnswerSeconds || 1;
+    window._frozenEvalResult = evalRes;
+    window._frozenDuration = durationRecorded;
     const modelAnswerHtml = buildSuggestedStarResponse(qData, currentQ, rawText);
     const isWarmup = (window.currentSimMode === 'warmup');
     const isLastQ = (currentQ + 1 >= currentQuestions.length);
@@ -6619,7 +6686,10 @@ ${(resumeText || '').slice(0, 3500)}`;
     stopAnswerTimer();
     const qData = currentQuestions[currentQ] || {};
     const rawText = getCurrentAnswerText();
-    const evalRes = evaluateAnswerText(rawText, qData, currentQ);
+    const evalRes = window._frozenEvalResult || evaluateAnswerText(rawText, qData, currentQ);
+    const durationRecorded = window._frozenDuration || currentAnswerSeconds || 1;
+    window._frozenEvalResult = null;
+    window._frozenDuration = null;
 
     currentQScore = evalRes.cappedScore;
     totalScore += evalRes.cappedScore;
@@ -6647,6 +6717,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       score: evalRes.cappedScore,
       isDuplicate: Boolean(evalRes.isDuplicate),
       wordCount: evalRes.wordCount,
+      durationSeconds: durationRecorded,
       matchedKeywords: evalRes.matchedList,
       missedKeywords: evalRes.missedList,
       hasMetrics: evalRes.hasMetrics,
@@ -6699,30 +6770,32 @@ ${(resumeText || '').slice(0, 3500)}`;
       micAnalyser.fftSize = 256;
       source.connect(micAnalyser);
 
-      const dataArray = new Uint8Array(micAnalyser.frequencyBinCount);
+      const timeData = new Uint8Array(micAnalyser.fftSize);
       const meterFill = document.getElementById('mic-live-meter-fill');
       const meterLabel = document.getElementById('mic-live-meter-label');
 
       function updateMeter() {
         if (!micAnalyser) return;
-        micAnalyser.getByteFrequencyData(dataArray);
-        let sum = 0;
-        for (let i = 0; i < dataArray.length; i++) {
-          sum += dataArray[i];
+        micAnalyser.getByteTimeDomainData(timeData);
+        let peak = 0;
+        for (let i = 0; i < timeData.length; i++) {
+          const val = Math.abs(timeData[i] - 128);
+          if (val > peak) peak = val;
         }
-        const avg = sum / dataArray.length;
-        const pct = Math.min(100, Math.round((avg / 60) * 100));
+        // peak is 0..128. Normal conversational voice produces peaks around 12..40.
+        // Scale so speaking voice smoothly fills 35%..90% of the VU bar.
+        const pct = Math.min(100, Math.round((peak / 35) * 100));
 
         if (meterFill) {
           meterFill.style.width = pct + '%';
-          meterFill.style.background = pct > 10 ? '#059669' : '#94a3b8';
+          meterFill.style.background = pct > 15 ? '#059669' : '#94a3b8';
         }
         if (meterLabel) {
-          if (pct > 12) {
+          if (pct > 20) {
             meterLabel.textContent = '🟢 Voice detected';
             meterLabel.style.color = '#059669';
             meterLabel.style.fontWeight = '800';
-          } else if (pct > 3) {
+          } else if (pct > 5) {
             meterLabel.textContent = '🎙️ Listening...';
             meterLabel.style.color = '#2563eb';
             meterLabel.style.fontWeight = '700';
@@ -6801,7 +6874,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       isRecognizing = true;
       const micStatus = document.getElementById('spoken-mic-status');
       if (micStatus) {
-        micStatus.innerHTML = '<span style="color:#059669; font-weight:800; display:inline-flex; align-items:center; gap:6px;"><span style="display:inline-block; width:10px; height:10px; background:#10b981; border-radius:50%; box-shadow:0 0 6px #10b981;"></span> ● Listening... Speak your answer now (60–90s)</span>';
+        micStatus.innerHTML = '<span style="color:#059669; font-weight:800; display:inline-flex; align-items:center; gap:6px;"><span style="display:inline-block; width:10px; height:10px; background:#10b981; border-radius:50%; box-shadow:0 0 6px #10b981;"></span> Listening... Speak your answer now (60–90s)</span>';
       }
       const liveTranscriptEl = document.getElementById('spoken-live-transcript');
       if (liveTranscriptEl && !currentSpokenTranscript) {
@@ -6976,6 +7049,14 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     const copilotContent = document.getElementById('copilot-content');
     const copilotStatus = document.getElementById('copilot-status');
+    const copilotEl = document.getElementById('copilot-panel');
+    if (copilotEl) {
+      if (window.currentSimMode === 'warmup') {
+        copilotEl.style.display = 'none';
+      } else {
+        copilotEl.style.display = 'flex';
+      }
+    }
     if (copilotContent) copilotContent.style.display = 'block';
     if (copilotStatus) copilotStatus.style.display = 'none';
 
@@ -6983,24 +7064,26 @@ ${(resumeText || '').slice(0, 3500)}`;
     const progEl = document.getElementById('progress-indicator');
     if (progEl) progEl.innerText = `Question ${currentQ + 1} of ${currentQuestions.length}`;
 
-    // Update Guided Prep Plan header banner (Only when actively running a Prep Plan)
+    // Update Guided Prep Plan header banner
     const guidedBanner = document.getElementById('guided-step-banner');
     if (guidedBanner) {
       const activeMode = window.currentSimMode || localStorage.getItem('tgt_sim_mode') || 'practice';
-      const isGuided = Boolean(window._isGuidedPlan) && ['warmup', 'flashcards', 'practice', 'passcheck'].includes(activeMode);
-      if (isGuided) {
+      const isGuided = Boolean(window._isGuidedPlan) || Boolean(localStorage.getItem('tgt_guided_plan'));
+      if (activeMode === 'warmup') {
+        guidedBanner.textContent = 'Step 1 of 4: Warm-Up Drill';
+        guidedBanner.style.display = 'inline-flex';
+      } else if (isGuided || (window._guidedStep && window._guidedStep > 0)) {
         let stepNum = window._guidedStep || 1;
-        if (activeMode === 'warmup') stepNum = 1;
-        else if (activeMode === 'flashcards') stepNum = 2;
+        if (activeMode === 'flashcards') stepNum = 2;
         else if (activeMode === 'practice') stepNum = 3;
         else if (activeMode === 'passcheck') stepNum = 4;
         const stepLabels = {
-          1: "Step 1 of 4 (Warm-Up)",
-          2: "Step 2 of 4 (Flashcards)",
-          3: "Step 3 of 4 (CoPilot)",
-          4: "Step 4 of 4 (Pass Check)"
+          1: 'Step 1 of 4: Warm-Up Drill',
+          2: 'Step 2 of 4: 10-Question Flashcard Mastery Deck',
+          3: 'Step 3 of 4: Practice with CoPilot',
+          4: 'Step 4 of 4: Take Pass Check'
         };
-        guidedBanner.textContent = `Prep Plan: ${stepLabels[stepNum] || 'In Progress'}`;
+        guidedBanner.textContent = stepLabels[stepNum] || `Step ${stepNum} of 4`;
         guidedBanner.style.display = 'inline-flex';
       } else {
         guidedBanner.style.display = 'none';
@@ -7080,11 +7163,15 @@ ${(resumeText || '').slice(0, 3500)}`;
       }
     }
 
-    // Dynamic Context-Aware Primary Button Label (REQ-FLOW-01)
+    // Screen 2 Action Row is kept hidden while answering; only the single Check Answer button is shown
+    const actionRow = document.getElementById('screen2-action-row');
+    if (actionRow) actionRow.style.display = 'none';
+    const previewBtn = document.getElementById('preview-coaching-btn');
+    if (previewBtn) previewBtn.style.display = 'none';
     if (nextBtn) {
-      nextBtn.style.display = 'inline-flex';
+      nextBtn.style.display = 'none';
       if (window.currentSimMode === 'warmup') {
-        nextBtn.innerHTML = 'Finish Warm-Up &bull; View Setup Check ➔';
+        nextBtn.innerHTML = 'Finish Warm-Up &bull; View Report ➔';
       } else if (currentQ + 1 >= currentQuestions.length) {
         nextBtn.innerHTML = 'Complete Simulation &bull; View Scorecard ➔';
       } else {
@@ -7281,7 +7368,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       hub.classList.add('started');
     }
     const copilotEl = document.getElementById('copilot-panel');
-    if (copilotEl) copilotEl.style.display = 'flex';
+    if (copilotEl) copilotEl.style.display = (window.currentSimMode === 'warmup') ? 'none' : 'flex';
 
     askQuestion();
   };
@@ -7388,11 +7475,6 @@ ${(resumeText || '').slice(0, 3500)}`;
       localStorage.setItem('tgt_guided_plan', '1');
     } catch(e) {}
     window.selectSimMode('warmup');
-    window._isGuidedPlan = true;
-    window._guidedStep = 1;
-    try {
-      localStorage.setItem('tgt_guided_plan', '1');
-    } catch(e) {}
     isTextMode = true;
     window.setInterviewMode(true);
     proceedToSession();
@@ -7469,7 +7551,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       hub.classList.add('started');
     }
     const copilotEl = document.getElementById('copilot-panel');
-    if (copilotEl) copilotEl.style.display = 'flex';
+    if (copilotEl) copilotEl.style.display = (window.currentSimMode === 'warmup') ? 'none' : 'flex';
 
     activeView.style.display = 'block';
     interviewStarted = true;
@@ -7540,10 +7622,12 @@ ${(resumeText || '').slice(0, 3500)}`;
         resultsView.style.display = 'block';
         const warmRes = validResults[0] || {};
         const spokenWordCount = warmRes.wordCount || 0;
+        const durationSec = warmRes.durationSeconds || answerElapsedSeconds || 0;
         const hasSpokenInput = spokenWordCount >= 3;
+        const calculatedWpm = (durationSec > 5 && spokenWordCount > 0) ? Math.round((spokenWordCount / durationSec) * 60) : 0;
 
         let micTitle, micStatus, micBg, micBorder, micColor, micTextColor;
-        let paceTitle, paceStatus;
+        let paceTitle, paceStatus, paceBg, paceBorder, paceColor, paceTextColor;
         let coachPraise, headerTitle, headerEmoji, headerPill;
 
         const camTitle = isTextMode ? 'Not tested (typed mode)' : (cameraActive ? 'Camera OK' : 'Camera Optional');
@@ -7555,6 +7639,7 @@ ${(resumeText || '').slice(0, 3500)}`;
           micBg = '#f1f5f9'; micBorder = 'var(--gray-300)'; micColor = '#0f172a'; micTextColor = '#475569';
           paceTitle = 'Pace OK';
           paceStatus = `Typed input captured (${spokenWordCount} words)`;
+          paceBg = '#f1f5f9'; paceBorder = 'var(--gray-300)'; paceColor = '#0f172a'; paceTextColor = '#475569';
           coachPraise = 'Great low-stress delivery. Your typed input and simulator controls are working smoothly. You are ready for full practice drills!';
           headerTitle = 'Typed Input &amp; Setup Check Passed';
           headerEmoji = '🌱';
@@ -7563,9 +7648,25 @@ ${(resumeText || '').slice(0, 3500)}`;
           micTitle = 'Microphone Verified';
           micStatus = `Captured ${spokenWordCount} words cleanly with active live transcription.`;
           micBg = '#ecfdf5'; micBorder = '#10b981'; micColor = '#065f46'; micTextColor = '#047857';
-          paceTitle = 'Pace OK';
-          paceStatus = spokenWordCount > 10 ? 'Pacing &amp; cadence verified' : 'Audio input verified';
-          coachPraise = 'Great warm-up delivery! Your microphone, pacing, and speech transcription are verified and ready for full practice drills.';
+
+          // Honest pacing check based on actual WPM and duration
+          if (calculatedWpm > 0 && calculatedWpm < 75) {
+            paceTitle = `Cadence: Slower than target (${calculatedWpm} WPM)`;
+            paceStatus = `Spoke at ${calculatedWpm} WPM (target is 75–130 WPM)${durationSec > 90 ? ` &bull; Duration: ${durationSec}s (exceeded 90s)` : ` &bull; Duration: ${durationSec}s`}`;
+            paceBg = '#fffbeb'; paceBorder = '#f59e0b'; paceColor = '#92400e'; paceTextColor = '#78350f';
+            coachPraise = `Microphone and speech transcription are verified! Your cadence was ${calculatedWpm} WPM (slower than the 75–130 WPM target). In Step 2 and beyond, practice answering a bit more briskly so you cover all key points within 90 seconds.`;
+          } else if (calculatedWpm > 175) {
+            paceTitle = `Cadence: Faster than target (${calculatedWpm} WPM)`;
+            paceStatus = `Spoke at ${calculatedWpm} WPM (aim for 75–130 WPM for clear transcription)${durationSec > 90 ? ` &bull; Duration: ${durationSec}s` : ` &bull; Duration: ${durationSec}s`}`;
+            paceBg = '#fffbeb'; paceBorder = '#f59e0b'; paceColor = '#92400e'; paceTextColor = '#78350f';
+            coachPraise = `Microphone and speech transcription are verified! Your cadence was ${calculatedWpm} WPM (faster than the 75–130 WPM target). Slow down slightly so the AI interviewer transcribes your technical keywords with 100% precision.`;
+          } else {
+            paceTitle = 'Pace OK';
+            paceStatus = calculatedWpm > 0 ? `Natural cadence (${calculatedWpm} WPM &bull; ${durationSec}s)` : 'Cadence verified';
+            paceBg = '#ecfdf5'; paceBorder = '#10b981'; paceColor = '#065f46'; paceTextColor = '#047857';
+            coachPraise = 'Great warm-up delivery! Your microphone is connected, live speech transcription is working, and your cadence is right in the target zone (75–130 WPM). You are ready for Step 2!';
+          }
+
           headerTitle = 'Device &amp; Setup Check Passed';
           headerEmoji = '🌱';
           headerPill = 'Warm-Up Complete';
@@ -7574,7 +7675,8 @@ ${(resumeText || '').slice(0, 3500)}`;
           micStatus = '0 words captured. Your microphone may be muted or needs browser permission.';
           micBg = '#fef3c7'; micBorder = '#f59e0b'; micColor = '#92400e'; micTextColor = '#78350f';
           paceTitle = 'Needs Audio Check';
-          paceStatus = 'No voice input recorded during 60s drill';
+          paceStatus = 'No voice input recorded during drill';
+          paceBg = '#fef3c7'; paceBorder = '#f59e0b'; paceColor = '#92400e'; paceTextColor = '#78350f';
           coachPraise = "We didn't detect your voice. Make sure microphone access is allowed in your browser address bar, or switch to Typed Mode if you prefer to type your answers.";
           headerTitle = 'Setup Check: Microphone Incomplete';
           headerEmoji = '⚠️';
@@ -7610,10 +7712,10 @@ ${(resumeText || '').slice(0, 3500)}`;
                 <div style="font-size:16px; font-weight:800; color:#1e40af; margin-bottom:4px;">${camTitle}</div>
                 <div style="font-size:14px; color:#1d4ed8; font-weight:600;">${camStatus}</div>
               </div>
-              <div style="background:#fef3c7; border:1.5px solid #fcd34d; border-radius:10px; padding:16px;">
-                <div style="font-size:12px; font-weight:800; color:#92400e; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">⚡ Delivery &amp; Cadence</div>
-                <div style="font-size:16px; font-weight:800; color:#92400e; margin-bottom:4px;">${paceTitle}</div>
-                <div style="font-size:14px; color:#78350f; font-weight:600;">${paceStatus}</div>
+              <div style="background:${paceBg}; border:1.5px solid ${paceBorder}; border-radius:10px; padding:16px;">
+                <div style="font-size:12px; font-weight:800; color:${paceColor}; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">⚡ Delivery &amp; Cadence</div>
+                <div style="font-size:16px; font-weight:800; color:${paceColor}; margin-bottom:4px;">${paceTitle}</div>
+                <div style="font-size:14px; color:${paceTextColor}; font-weight:600;">${paceStatus}</div>
               </div>
             </div>
 
