@@ -1311,7 +1311,7 @@ window.addEventListener('unhandledrejection', function(event) {
                 <span style="display:inline-block; width:8px; height:8px; background:var(--primary); border-radius:50%; margin-right:8px; box-shadow:0 0 8px var(--primary); animation:pulse 2s infinite;"></span>
                 CoPilot
               </h3>
-              <span id="copilot-mobile-toggle-hint" style="display:none; font-size:11px; color:#9ca3af; font-weight:700;">▼</span>
+              <span id="copilot-mobile-toggle-hint" style="display:none; font-size:11px; color:#9ca3af; font-weight:700;">▲</span>
             </div>
             <div style="font-size:12px; color:#475569; margin:0 0 10px 0; line-height:1.4;">
               CoPilot gives you live tips while you answer.
@@ -2531,11 +2531,13 @@ window.addEventListener('unhandledrejection', function(event) {
   const domainSelector = document.getElementById('domain-selector');
   const simText = document.getElementById('sim-text');
 
-  // Initialize mobile CoPilot drawer state
-  if (window.innerWidth <= 900) {
+  // Initialize mobile CoPilot drawer state (expanded by default on Step 3 screen, both guided and standalone)
+  window.expandMobileCopilotDrawer = function() {
     const cp = document.getElementById('copilot-panel');
-    if (cp) cp.classList.add('mobile-collapsed');
-  }
+    const hint = document.getElementById('copilot-mobile-toggle-hint');
+    if (cp) cp.classList.remove('mobile-collapsed');
+    if (hint) hint.textContent = '▲';
+  };
   window.toggleMobileCopilotDrawer = function() {
     if (window.innerWidth > 900) return;
     const cp = document.getElementById('copilot-panel');
@@ -6272,13 +6274,6 @@ ${(resumeText || '').slice(0, 3500)}`;
         <!-- Script Viewport -->
         <div class="star-tp-scroll-viewport" style="max-height:380px; overflow-y:auto; overflow-x:hidden; padding-right:6px;">
           <div class="star-teleprompter-text-body" style="font-size:15px; line-height:1.6; color:var(--gray-900);">
-            ${recallLvl === 4 ? `
-              <!-- Level 4: Recall (Memory Mode - NO SCRIPT TEXT IN DOM) -->
-              <div class="tp-recall-memory" style="padding:28px 16px; text-align:center; color:#475569; font-size:15px; font-weight:700; background:#f8fafc; border:1px dashed var(--gray-300); border-radius:8px;">
-                🧠 Answer from memory (Level 4: Recall)
-                <div style="font-size:13px; color:#64748b; margin-top:4px;">No script shown. Deliver your answer from recall.</div>
-              </div>
-            ` : `
             <!-- Phase 1: Situation & Scope -->
             <div class="tp-sec-hook" style="margin-bottom:12px; padding:12px 14px; background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #3b82f6; border-radius:6px;">
               <div style="font-size:13px; font-weight:800; color:#1e40af; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">
@@ -6302,7 +6297,6 @@ ${(resumeText || '').slice(0, 3500)}`;
               </div>
               <div class="star-r-tp-text" style="color:#713f12; font-size:15px;">${highlightJdKeywordsInHtml(starResult, kwPool, false, true)}</div>
             </div>
-            `}
           </div>
         </div>
       </div>`;
@@ -6716,7 +6710,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     const isWeakFit = (fitCheck && fitCheck.fit === 'weak');
 
     const roleHook = isWeakFit
-      ? `your domain background in ${formatBackgroundInRole(roleTitle)}`
+      ? `your domain background ${formatBackgroundInRole(roleTitle)}`
       : (activeCueRole ? `your work as ${getIndefiniteArticle(activeCueRole)} <strong>${activeCueRole}</strong>` : `your background ${formatBackgroundInRole(roleTitle)}`);
     const metricHint = isWeakFit
       ? '[a concrete % or number]'
@@ -7574,6 +7568,9 @@ ${(resumeText || '').slice(0, 3500)}`;
         copilotEl.style.display = 'none';
       } else {
         copilotEl.style.display = 'flex';
+        copilotEl.classList.remove('mobile-collapsed');
+        const hint = document.getElementById('copilot-mobile-toggle-hint');
+        if (hint) hint.textContent = '▲';
       }
     }
     if (copilotContent) copilotContent.style.display = 'block';
@@ -7904,7 +7901,14 @@ ${(resumeText || '').slice(0, 3500)}`;
       hub.classList.add('started');
     }
     const copilotEl = document.getElementById('copilot-panel');
-    if (copilotEl) copilotEl.style.display = (window.currentSimMode === 'warmup') ? 'none' : 'flex';
+    if (copilotEl) {
+      copilotEl.style.display = (window.currentSimMode === 'warmup') ? 'none' : 'flex';
+      if (window.currentSimMode !== 'warmup') {
+        copilotEl.classList.remove('mobile-collapsed');
+        const hint = document.getElementById('copilot-mobile-toggle-hint');
+        if (hint) hint.textContent = '▲';
+      }
+    }
 
     askQuestion();
   };
@@ -8225,7 +8229,14 @@ ${(resumeText || '').slice(0, 3500)}`;
       hub.classList.add('started');
     }
     const copilotEl = document.getElementById('copilot-panel');
-    if (copilotEl) copilotEl.style.display = (window.currentSimMode === 'warmup') ? 'none' : 'flex';
+    if (copilotEl) {
+      copilotEl.style.display = (window.currentSimMode === 'warmup') ? 'none' : 'flex';
+      if (window.currentSimMode !== 'warmup') {
+        copilotEl.classList.remove('mobile-collapsed');
+        const hint = document.getElementById('copilot-mobile-toggle-hint');
+        if (hint) hint.textContent = '▲';
+      }
+    }
 
     activeView.style.display = 'block';
     interviewStarted = true;
@@ -9278,6 +9289,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       localStorage.setItem('tgt_guided_plan', '3');
     } catch(e) {}
     window.selectSimMode('practice', true);
+    if (typeof window.expandMobileCopilotDrawer === 'function') window.expandMobileCopilotDrawer();
     const isTyped = getResolvedInterviewTextMode();
     if (isTyped) {
       isTextMode = true;
@@ -9829,6 +9841,7 @@ ${(resumeText || '').slice(0, 3500)}`;
   };
 
   window.startSimFromFlashcards = function() {
+    if (typeof window.expandMobileCopilotDrawer === 'function') window.expandMobileCopilotDrawer();
     const isTyped = getResolvedInterviewTextMode();
     if (isTyped) {
       isTextMode = true;

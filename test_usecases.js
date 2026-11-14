@@ -837,11 +837,11 @@ testSandbox.window.setQuestionRecallLevel('qa_test', 0, curLvl);
 assert.strictEqual(testSandbox.window.getQuestionRecallLevel('qa_test', 0), 2, 'Score < 50 must drop recall level back to 2');
 console.log(`✓ PASSED: Test 45 (PASS-04) - Recall Ladder level advances on >=70%, drops on <50%, persists in localStorage`);
 
-// Test 46 (REQ-PASS-04): Level 4 hides script from DOM ("Answer from memory")
-assert(aiInterviewHtml.includes('tp-recall-memory'), 'Teleprompter must include tp-recall-memory container for Level 4');
-assert(aiInterviewHtml.includes('Answer from memory (Level 4: Recall)'), 'Level 4 prompt must display Answer from memory');
-assert(aiInterviewHtml.includes('recallLvl === 4 ? `'), 'Teleprompter script view must conditionally omit script text at Level 4');
-console.log(`✓ PASSED: Test 46 (PASS-04) - Level 4 completely omits script text from DOM for memory recall`);
+// Test 46 (REQ-PASS-04): Example and Model Answer ALWAYS show full script; 'Level 4: Recall' wording removed from candidate UI
+assert(!aiInterviewHtml.includes('tp-recall-memory'), 'Teleprompter must not include tp-recall-memory container replacing script text');
+assert(!aiInterviewHtml.includes('Answer from memory (Level 4: Recall)'), 'Level 4 wording must be removed from candidate UI');
+assert(!aiInterviewHtml.includes('recallLvl === 4 ? `'), 'Teleprompter script view must unconditionally render full script text');
+console.log(`✓ PASSED: Test 46 (PASS-04) - Example and Model Answer ALWAYS show full script; candidate UI is clean of Level 4 wording`);
 
 // Test 47 (REQ-PASS-05): Pressure Mode Pause Cutoff Setting (2s, 3s, 4s)
 assert(aiInterviewHtml.includes('id="pressure-pause-cutoff-select"'), 'ai-interview.html must include silence cutoff selector');
@@ -1580,7 +1580,20 @@ assert(stageCHtml.includes("The AI screener may assume you are finished speaking
 // Item 20 (P2): Delivery tips wrapping on narrow screens
 assert(!stageCHtml.includes('<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">"I built / I diagnosed"</strong></span>'), "white-space:nowrap must be removed from delivery tips");
 
-console.log(`✓ PASSED: Test 90 - Stage (c) Regression Items 1–20 Full Verification passed!`);
+// Stage (c) Approval Additions:
+// 1. "See an example first" & Model Answer ALWAYS show; "Level 4: Recall" wording removed from candidate UI
+assert(!stageCHtml.includes('Level 4: Recall'), "Candidate UI must not contain 'Level 4: Recall' wording");
+assert(!stageCHtml.includes('tp-recall-memory'), "Candidate UI must not contain 'tp-recall-memory' placeholder replacing scripts");
+
+// 2. CoPilot expanded by default on Step 3 screen (both guided and standalone)
+assert(stageCHtml.includes('id="copilot-mobile-toggle-hint" style="display:none; font-size:11px; color:#9ca3af; font-weight:700;">▲</span>'), "CoPilot toggle hint must default to ▲ (expanded)");
+assert(stageCHtml.includes('window.expandMobileCopilotDrawer'), "window.expandMobileCopilotDrawer must be defined to expand CoPilot by default");
+
+// 3. Weak-fit tip typo fixed ("in as a" removed)
+assert(!stageCHtml.includes('your domain background in ${formatBackgroundInRole(roleTitle)}'), "Weak-fit tip must not duplicate preposition 'in'");
+assert(stageCHtml.includes('your domain background ${formatBackgroundInRole(roleTitle)}'), "Weak-fit tip must cleanly say 'your domain background as a ...'");
+
+console.log(`✓ PASSED: Test 90 - Stage (c) Regression Items 1–20 & Approval Polish Full Verification passed!`);
 
 console.log("==================================================================");
 console.log("ALL 90 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
