@@ -2435,10 +2435,14 @@ window.addEventListener('unhandledrejection', function(event) {
     const savedMode = localStorage.getItem('interviewAnswerMode_v2');
     if (savedMode === 'typed') {
       isTextMode = true;
+      localStorage.setItem('interviewTextMode', 'true');
     } else if (savedMode === 'spoken') {
       isTextMode = false;
+      localStorage.setItem('interviewTextMode', 'false');
     } else {
       isTextMode = isMobile;
+      localStorage.setItem('interviewAnswerMode_v2', isMobile ? 'typed' : 'spoken');
+      localStorage.setItem('interviewTextMode', isMobile ? 'true' : 'false');
     }
   } catch(e) {
     isTextMode = isMobile;
@@ -5566,13 +5570,27 @@ window.addEventListener('unhandledrejection', function(event) {
     result.allRolesStr = uniqueRoleTitles.slice(0, 3).join(' • ');
     result.cleanRoleTitle = uniqueRoleTitles[0] || "";
 
+    // Fallback title detection if not in canonical titles list
+    if (!result.cleanRoleTitle) {
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.length > 55 || /^[•●▪*·\-\d.)]/.test(trimmed)) continue;
+        if (/\b(architected|developed|engineered|designed|built|managed|led|maintained|automated|collaborated|responsible|working|experience in|knowledge of|proficient)\b/i.test(trimmed)) continue;
+        const tm = trimmed.match(/\b((?:Senior|Lead|Staff|Principal|Head|Director)?\s*(?:QA|Quality Assurance|Software|Data|Systems|AI|ML|Test|Full[ -]Stack|Frontend|Backend)?\s*(?:Engineer|Specialist|Analyst|Developer|Architect|Scientist|Consultant|Owner|Founder))\b/i);
+        if (tm && tm[1]) {
+          result.cleanRoleTitle = tm[1].trim();
+          break;
+        }
+      }
+    }
+
     // Match clean years of experience (e.g. "5+ years")
     const yrsMatch = resumeText.match(/\b([2-9]|1\d|20)\+?\s+years(?:\s+of\s+experience)?\b/i);
     if (yrsMatch && yrsMatch[1]) {
       result.yearsExp = `${yrsMatch[1]}+ years`;
     }
 
-    // Match ONLY a clean numeric percentage (between 15% and 99.9%) and build a grammatically complete phrase
+    // Match numeric percentage or concrete numeric counts (e.g. 150+ deterministic rules)
     const pctMatches = [...resumeText.matchAll(/\b([1-9]\d(?:\.\d+)?)%/g)]
       .map(m => parseFloat(m[1]))
       .filter(n => n >= 15 && n <= 99.9);
@@ -5583,34 +5601,47 @@ window.addEventListener('unhandledrejection', function(event) {
       } else {
         result.cleanMetricPhrase = `a ${num}% improvement in workflow efficiency and turnaround accuracy`;
       }
+    } else {
+      // Check for concrete numeric rules, tests, benchmarks, or models
+      const numRuleMatch = resumeText.match(/\b(\d{1,4}\+?\s+(?:deterministic(?:\s+iso\/fda)?\s+rules|rules|benchmarks|tests|automated tests|test cases|models|frameworks|pipelines|deliverables))\b/i);
+      if (numRuleMatch && numRuleMatch[1]) {
+        result.cleanMetricPhrase = numRuleMatch[1].trim();
+      } else {
+        const generalNumMatch = resumeText.match(/\b([1-9]\d{1,3}\+?\s+[a-z]{3,20}(?:\s+[a-z]{3,20})?)\b/i);
+        if (generalNumMatch && generalNumMatch[1] && !/\b(years?|months?|days?|hours?|minutes?|seconds?)\b/i.test(generalNumMatch[1])) {
+          result.cleanMetricPhrase = generalNumMatch[1].trim();
+        }
+      }
     }
 
     // Extract recent company/employer name
     let recentCompany = "";
-    // If the resume has ambiguous adjacent company names (e.g. Abbott and Johnson & Johnson / client-vendor contracts)
-    // or multiple company entities in close proximity, never make an ungrounded guess: fallback to honest [Your Recent Employer]
     const hasAbbottJNJ = /(?:abbott).{0,120}(?:johnson|j&j)|(?:johnson|j&j).{0,120}(?:abbott)/i.test(resumeText);
-    if (!hasAbbottJNJ) {
+    const hasMedTech = /(?:j&j\s+medtech|johnson\s*&\s*johnson\s+medtech)/i.test(resumeText);
+
+    if (hasMedTech) {
+      recentCompany = "J&J MedTech";
+    } else if (!hasAbbottJNJ) {
       const companyMatch = resumeText.match(/(?:at|for|with)\s+([A-Z][a-zA-Z0-9&.,\s]{2,28}?)(?:\s*[\n\r·|–—,(-]|\s+(?:from|since|\d{4}))/);
-      if (companyMatch && companyMatch[1]) {
-        const cleanComp = companyMatch[1].trim();
-        const isGenericOrEdu = /^(the|a|an|my|our|various|multiple|present|current)\b/i.test(cleanComp) ||
-          /\b(university|college|school|institute|academy|bootcamp|education|degree|bachelor|master|phd|training|self|stealth|freelance|confidential|nda|client|vendor|contractor)\b/i.test(cleanComp) ||
-          /[,\/]/.test(cleanComp);
-        if (!isGenericOrEdu) {
-          recentCompany = cleanComp;
+        if (companyMatch && companyMatch[1]) {
+          const cleanComp = companyMatch[1].trim();
+          const isGenericOrEdu = /^(the|a|an|my|our|various|multiple|present|current)\b/i.test(cleanComp) ||
+            /\b(university|college|school|institute|academy|bootcamp|education|degree|bachelor|master|phd|training|self|stealth|freelance|confidential|nda|client|vendor|contractor)\b/i.test(cleanComp) ||
+            /[,\/]/.test(cleanComp);
+          if (!isGenericOrEdu) {
+            recentCompany = cleanComp;
+          }
         }
-      }
-      if (!recentCompany) {
-        const pipeMatch = resumeText.match(/^([A-Z][A-Za-z0-9&.,\s]{2,28}?)\s*(?:[|–—·]\s*(?:Senior|Lead|Staff)?\s*(?:Software|Data|QA|Engineer|Developer|Manager|Analyst))/m);
-        if (pipeMatch && pipeMatch[1]) {
-          const cleanPipe = pipeMatch[1].trim();
-          if (!/\b(university|college|school|institute|academy|bootcamp|education)\b/i.test(cleanPipe)) {
-            recentCompany = cleanPipe;
+        if (!recentCompany) {
+          const pipeMatch = resumeText.match(/^([A-Z][A-Za-z0-9&.,\s]{2,28}?)\s*(?:[|–—·]\s*(?:Senior|Lead|Staff)?\s*(?:Software|Data|QA|Engineer|Developer|Manager|Analyst))/m);
+          if (pipeMatch && pipeMatch[1]) {
+            const cleanPipe = pipeMatch[1].trim();
+            if (!/\b(university|college|school|institute|academy|bootcamp|education)\b/i.test(cleanPipe)) {
+              recentCompany = cleanPipe;
+            }
           }
         }
       }
-    }
     result.companyName = recentCompany;
 
     return result;
@@ -6675,13 +6706,19 @@ ${(resumeText || '').slice(0, 3500)}`;
 
       if (elementCount === 3) {
         whatWorked = "<strong>Coach Gain says:</strong> Great warm-up introduction! You clearly covered who you are, your domain background, and what you're looking for in this role with a natural conversational flow.";
-        toTighten = "<strong>Coach Gain says:</strong> Strong warm-up delivery! All 3 introductory elements covered cleanly. Your audio and pacing are ready for full practice.";
+        toTighten = isTextMode
+          ? "<strong>Coach Gain says:</strong> Strong warm-up delivery! All 3 introductory elements covered cleanly. Your setup is ready for full practice."
+          : "<strong>Coach Gain says:</strong> Strong warm-up delivery! All 3 introductory elements covered cleanly. Your audio and pacing are ready for full practice.";
       } else if (elementCount > 0) {
         whatWorked = `<strong>Coach Gain says:</strong> Good start! You introduced ${covered.join(' and ')}.`;
-        toTighten = `<strong>Coach Gain says:</strong> Be sure to add ${missing.join(' and ')} to give the interviewer a complete overview. Aim for 60–90 seconds (110–150 WPM conversational pace).`;
+        toTighten = isTextMode
+          ? `<strong>Coach Gain says:</strong> Be sure to add ${missing.join(' and ')} to give the interviewer a complete overview.`
+          : `<strong>Coach Gain says:</strong> Be sure to add ${missing.join(' and ')} to give the interviewer a complete overview. Aim for 60–90 seconds (110–150 WPM conversational pace).`;
       } else {
         whatWorked = "<strong>Coach Gain says:</strong> We heard your answer, but didn't detect the 3 key elements of an introductory warm-up.";
-        toTighten = "<strong>Coach Gain says:</strong> Make sure to cover: 1) Who you are (name/current role), 2) Your domain background, and 3) What you're looking for in this role. Aim for 60–90 seconds.";
+        toTighten = isTextMode
+          ? "<strong>Coach Gain says:</strong> Make sure to cover: 1) Who you are (name/current role), 2) Your domain background, and 3) What you're looking for in this role."
+          : "<strong>Coach Gain says:</strong> Make sure to cover: 1) Who you are (name/current role), 2) Your domain background, and 3) What you're looking for in this role. Aim for 60–90 seconds.";
       }
 
       warmupCovered = covered;
@@ -7899,7 +7936,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         let coachPraise, headerTitle, headerEmoji, headerPill;
 
         const camTitle = cameraActive ? 'Camera & Framing Verified' : (isTextMode ? 'Not tested (typed mode)' : 'Camera Optional');
-        const camStatus = cameraActive ? 'Candidate centered in framing guide &bull; Good eye contact verified' : (isTextMode ? 'Camera was not requested for typed simulation.' : 'Camera optional / ready');
+        const camStatus = cameraActive ? 'Camera on and streaming &bull; Framing guide active' : (isTextMode ? 'Camera was not requested for typed simulation.' : 'Camera optional / ready');
         const camBg = cameraActive ? '#ecfdf5' : '#f1f5f9';
         const camBorder = cameraActive ? '#10b981' : 'var(--gray-300)';
         const camColor = cameraActive ? '#065f46' : '#0f172a';
@@ -8845,7 +8882,10 @@ ${(resumeText || '').slice(0, 3500)}`;
 
   window.prefillFlashcardFromResume = function(evt) {
     if (evt) evt.stopPropagation();
-    const resumeText = (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '').trim();
+    const resumeText = (typeof window.resolveStoredResume === 'function'
+      ? window.resolveStoredResume()
+      : (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '')
+    ).trim();
     const alertEl = document.getElementById('fc-no-resume-alert');
     const attribEl = document.getElementById('fc-resume-attribution');
 
@@ -8981,7 +9021,8 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
     const progressBar = document.getElementById('fc-progress-fill');
     if (progressBar) {
-      const pct = Math.round((_fcMasteredIndices.size / Math.max(1, total)) * 100);
+      const completedCount = Math.min(total, _fcQueueIndex);
+      const pct = Math.min(100, Math.round((completedCount / Math.max(1, total)) * 100));
       progressBar.style.width = pct + '%';
     }
 
@@ -9032,23 +9073,25 @@ ${(resumeText || '').slice(0, 3500)}`;
     const formatBlanks = (txt) => {
       if (!txt) return '';
       let processed = txt.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#0f172a; font-weight:800;">$1</strong>');
-      // Format generic placeholders as editable inputs for typing or pasting
-      processed = processed.replace(/\[(?:your job title|Your Recent Title)\]/gi, () => {
-        const val = window._fcSavedBlanks['title'] || '';
-        return `<input type="text" class="fc-blank-input fc-blank-title" placeholder="[your job title]" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('title', this.value)" onclick="event.stopPropagation()">`;
-      });
-      processed = processed.replace(/\[(?:your company|Your Recent Employer)\]/gi, () => {
-        const val = window._fcSavedBlanks['company'] || '';
-        return `<input type="text" class="fc-blank-input fc-blank-company" placeholder="[your company]" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('company', this.value)" onclick="event.stopPropagation()">`;
-      });
-      processed = processed.replace(/\[(?:a result with a number|insert verified outcome[^\]]*|Measurable Result[^\]]*)\]/gi, () => {
-        const val = window._fcSavedBlanks['metric'] || '';
-        return `<input type="text" class="fc-blank-input fc-blank-metric" placeholder="[a result with a number]" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('metric', this.value)" onclick="event.stopPropagation()">`;
-      });
-      processed = processed.replace(/\[([^\]]+)\]/g, (m, p1) => {
-        const key = p1.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      // Single-pass replacement: Never scan inside newly inserted input elements
+      processed = processed.replace(/\[([^\]]+)\]/g, (match, p1) => {
+        const raw = p1.trim();
+        const low = raw.toLowerCase();
+        if (/^(?:your job title|your recent title)$/i.test(low)) {
+          const val = window._fcSavedBlanks['title'] || '';
+          return `<input type="text" class="fc-blank-input fc-blank-title" placeholder="your job title" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('title', this.value)" onclick="event.stopPropagation()">`;
+        }
+        if (/^(?:your company|your recent employer)$/i.test(low)) {
+          const val = window._fcSavedBlanks['company'] || '';
+          return `<input type="text" class="fc-blank-input fc-blank-company" placeholder="your company" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('company', this.value)" onclick="event.stopPropagation()">`;
+        }
+        if (/^(?:a result with a number|insert verified outcome.*|measurable result.*)$/i.test(low)) {
+          const val = window._fcSavedBlanks['metric'] || '';
+          return `<input type="text" class="fc-blank-input fc-blank-metric" placeholder="a result with a number" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('metric', this.value)" onclick="event.stopPropagation()">`;
+        }
+        const key = low.replace(/[^a-z0-9]/g, '_');
         const val = window._fcSavedBlanks[key] || '';
-        return `<input type="text" class="fc-blank-input" placeholder="[${escapeHtml(p1)}]" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('${key}', this.value)" onclick="event.stopPropagation()">`;
+        return `<input type="text" class="fc-blank-input" placeholder="${escapeHtml(raw)}" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('${key}', this.value)" onclick="event.stopPropagation()">`;
       });
       return processed;
     };
@@ -9140,8 +9183,12 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     const total = (_fcDeck && _fcDeck.length) ? _fcDeck.length : 10;
     const repeatedList = Array.from(_fcRepeatedIndices);
+    const firstTryCount = Math.max(0, total - repeatedList.length);
     const planStepVal = parseInt(localStorage.getItem('tgt_guided_plan') || '0', 10);
     const isGuided = Boolean(window._isGuidedPlan || planStepVal >= 1);
+
+    const progressBar = document.getElementById('fc-progress-fill');
+    if (progressBar) progressBar.style.width = '100%';
 
     let repeatedHtml = '';
     if (repeatedList.length > 0) {
@@ -9161,13 +9208,6 @@ ${(resumeText || '').slice(0, 3500)}`;
           </button>
         </div>
       `;
-    } else {
-      repeatedHtml = `
-        <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:10px; padding:14px 16px; margin-bottom:16px; text-align:center;">
-          <div style="font-size:15px; font-weight:800; color:#065f46;">🎉 100% First-Pass Mastery!</div>
-          <div style="font-size:13.5px; color:#047857; margin-top:2px;">You nailed all 10 questions on the first attempt without needing repeats.</div>
-        </div>
-      `;
     }
 
     summaryBox.innerHTML = `
@@ -9178,6 +9218,13 @@ ${(resumeText || '').slice(0, 3500)}`;
         <p style="font-size:14.5px; color:#475569; margin:0 0 18px 0; line-height:1.5;">
           You have practiced each scenario out loud and internalized the winning STAR and Answer–Why–Check formulas.
         </p>
+
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px 18px; margin-bottom:14px; text-align:center;">
+          <div style="font-size:15px; font-weight:800; color:#166534;">
+            ✓ ${firstTryCount} of ${total} Mastered on First Try
+          </div>
+          ${repeatedList.length > 0 ? `<div style="font-size:13px; color:#15803d; margin-top:2px;">${repeatedList.length} card${repeatedList.length > 1 ? 's' : ''} repeated until mastered.</div>` : `<div style="font-size:13px; color:#15803d; margin-top:2px;">100% first-pass mastery on all scenarios.</div>`}
+        </div>
 
         ${repeatedHtml}
 
