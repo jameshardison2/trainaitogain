@@ -241,6 +241,81 @@ window.addEventListener('unhandledrejection', function(event) {
   }
 }
 
+  /* Dual Video Stage Grid & Camera Redesign (Desktop side-by-side, mobile stacked) */
+  .video-stage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .stage-tile {
+    background: #f8fafc;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: 148px;
+    box-sizing: border-box;
+  }
+  .stage-tile.camera-tile {
+    background: #0f172a;
+    color: #ffffff;
+    overflow: hidden;
+    padding: 0;
+  }
+  @media (max-width: 640px) {
+    .video-stage-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .stage-tile.camera-tile {
+      order: -1; /* Mobile: camera on top */
+    }
+  }
+
+  /* Flashcard Interactive Blanks & Controls */
+  .fc-blank-input {
+    background: #fffbeb;
+    border: 1.5px solid #d97706;
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #0f172a;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.2s;
+    min-width: 140px;
+    max-width: 100%;
+    margin: 2px 2px;
+    display: inline-block;
+  }
+  .fc-blank-input:focus {
+    background: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  .fc-rate-btn {
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.1s, box-shadow 0.1s;
+    border: 1.5px solid transparent;
+  }
+  .fc-rate-btn:active {
+    transform: scale(0.97);
+  }
+
 </style>
 
   <style>
@@ -831,7 +906,7 @@ window.addEventListener('unhandledrejection', function(event) {
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="font-size:18px;">🃏</span>
-            <span style="font-size:16px; font-weight:800; color:#0f172a; letter-spacing:-0.01em;">Quizlet-Style Flashcards: Plug &amp; Play STAR Mastery</span>
+            <span style="font-size:16px; font-weight:800; color:#0f172a; letter-spacing:-0.01em;">10-Question Flashcard Mastery Deck</span>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
             <span id="fc-progress-badge" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:14px; font-weight:800; padding:4px 12px; border-radius:100px;">Card 1 of 10</span>
@@ -839,127 +914,174 @@ window.addEventListener('unhandledrejection', function(event) {
           </div>
         </div>
 
-        <!-- 3D Flip Card Scene -->
-        <div class="fc-scene" style="perspective:1200px; width:100%; min-height:480px; margin-bottom:24px; cursor:pointer;" onclick="window.flipCurrentFlashcard()">
-          <div id="fc-flipper" style="position:relative; width:100%; min-height:480px; transition:transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform-style:preserve-3d; border-radius:16px;">
-            
-            <!-- Card Front (Question Side) -->
-            <div id="fc-card-front" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#ffffff; border:1.5px solid var(--gray-200); border-radius:16px; padding:28px 24px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-md); color:#0f172a;">
-              <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:6px;">
-                  <div style="display:flex; align-items:center; gap:6px;">
-                    <span id="fc-card-category" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; font-size:14px; font-weight:800; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Category: Core Evaluation</span>
-                    <span id="fc-card-tag" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:14px; font-weight:900; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">STAR</span>
+        <!-- Mastery Progress Bar -->
+        <div id="fc-progress-bar-container" style="width:100%; height:6px; background:#e2e8f0; border-radius:100px; overflow:hidden; margin-bottom:14px;">
+          <div id="fc-progress-fill" style="width:0%; height:100%; background:linear-gradient(90deg, #10b981 0%, #059669 100%); transition:width 0.3s ease;"></div>
+        </div>
+
+        <!-- Flashcard Scene Wrapper (Hidden when completion summary is shown) -->
+        <div id="fc-scene-wrapper">
+          <!-- 3D Flip Card Scene -->
+          <div class="fc-scene" style="perspective:1200px; width:100%; min-height:480px; margin-bottom:20px; cursor:pointer;" onclick="window.flipCurrentFlashcard(event)">
+            <div id="fc-flipper" style="position:relative; width:100%; min-height:480px; transition:transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform-style:preserve-3d; border-radius:16px;">
+              
+              <!-- Card Front (Question Side) -->
+              <div id="fc-card-front" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#ffffff; border:1.5px solid var(--gray-200); border-radius:16px; padding:24px 22px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-md); color:#0f172a;">
+                <div>
+                  <!-- Card 1 Instruction Banner -->
+                  <div id="fc-card1-instruction" style="display:flex; align-items:center; gap:8px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:10px 14px; margin-bottom:14px; font-size:13.5px; font-weight:700; color:#1e40af;">
+                    <span>💡</span> <span>Read the question, answer out loud, then flip to check.</span>
                   </div>
-                  <span style="font-size:14px; color:#475569; font-weight:600;">⏱️ Target: 60–90s</span>
-                </div>
-                <div style="font-size:14px; font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Interview Question</div>
-                <div id="fc-question-text" style="font-size:20px; font-weight:800; color:#0f172a; line-height:1.45; margin-bottom:18px;">
-                  Walk me through your most recent role and what you were primarily responsible for day to day.
-                </div>
-                <div style="background:#f8fafc; border:1px solid var(--gray-200); border-radius:8px; padding:12px 14px; margin-top:8px;">
-                  <div style="font-size:14px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px;">Target Scoring Keywords to Hit</div>
-                  <div id="fc-question-keywords" style="display:flex; flex-wrap:wrap; gap:6px;">
-                    <!-- Keyword chips rendered dynamically -->
+
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:6px;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span id="fc-card-category" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; font-size:13px; font-weight:800; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Category: Core Evaluation</span>
+                      <span id="fc-card-tag" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:13px; font-weight:900; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">STAR</span>
+                    </div>
+                    <span style="font-size:13px; color:#475569; font-weight:600;">⏱️ Target: 60–90s</span>
                   </div>
+                  <div style="font-size:13px; font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Interview Question</div>
+                  <div id="fc-question-text" style="font-size:19px; font-weight:800; color:#0f172a; line-height:1.45; margin-bottom:16px;">
+                    Walk me through your most recent role and what you were primarily responsible for day to day.
+                  </div>
+                  <div style="background:#f8fafc; border:1px solid var(--gray-200); border-radius:8px; padding:12px 14px; margin-top:8px;">
+                    <div style="font-size:13px; font-weight:800; color:#334155; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px;">Target Scoring Keywords to Hit</div>
+                    <div id="fc-question-keywords" style="display:flex; flex-wrap:wrap; gap:6px;">
+                      <!-- Keyword chips rendered dynamically -->
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid var(--gray-200); font-size:13.5px; color:#475569; font-weight:700; flex-wrap:wrap; gap:8px;">
+                  <span>👆 Answer out loud first, then press <kbd style="background:#f1f5f9; border:1px solid var(--gray-300); padding:2px 8px; border-radius:4px; font-family:monospace; color:#0f172a;">Space</kbd> to compare</span>
+                  <button type="button" onclick="window.flipCurrentFlashcard(event)" style="background:#ffffff; border:1.5px solid var(--gray-300); color:#0f172a; border-radius:8px; padding:7px 16px; font-size:13.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:var(--shadow-sm);">
+                    <span>🔄</span> Flip Card ➔
+                  </button>
                 </div>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:12px; border-top:1px solid var(--gray-200); font-size:14px; color:#475569; font-weight:700;">
-                <span>👆 Answer out loud first, then press <kbd style="background:#f1f5f9; border:1px solid var(--gray-300); padding:2px 8px; border-radius:4px; font-family:monospace; color:#0f172a;">Space</kbd> to compare</span>
-                <span>🔄 Flip ➔</span>
+
+              <!-- Card Back (Plug & Play STAR Formula Side) -->
+              <div id="fc-card-back" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:rotateY(180deg); background:#ffffff; border:1.5px solid #059669; border-radius:16px; padding:22px 20px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-md); color:#0f172a; overflow-y:auto;">
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                    <span id="fc-back-title" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:13px; font-weight:900; padding:4px 10px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Winning STAR Formula</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <button type="button" onclick="window.prefillFlashcardFromResume(event)" style="background:#ffffff; border:1.5px solid #059669; color:#065f46; border-radius:6px; padding:5px 12px; font-size:12.5px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; box-shadow:var(--shadow-sm);" title="Auto-fill blanks with confirmed work history from uploaded resume">
+                        <span>📋</span> Pre-fill from Resume
+                      </button>
+                      <button type="button" onclick="window.flipCurrentFlashcard(event)" style="background:none; border:none; color:#475569; font-size:12.5px; font-weight:700; cursor:pointer; text-decoration:underline;">
+                        Flip Back ⤿
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Resume alerts & attribution -->
+                  <div id="fc-no-resume-alert" style="display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:6px; padding:8px 12px; margin-bottom:10px; font-size:12.5px; color:#92400e; line-height:1.4;"></div>
+                  <div id="fc-resume-attribution" style="display:none; background:#ecfdf5; border:1px solid #a7f3d0; border-radius:6px; padding:6px 12px; margin-bottom:10px; font-size:12px; color:#065f46; font-weight:700;"></div>
+                  
+                  <!-- STAR Container -->
+                  <div id="fc-back-star" style="display:block;">
+                    <!-- S: Situation & Task -->
+                    <div style="margin-bottom:10px; background:#f8fafc; border-left:4px solid #2563eb; border-radius:0 6px 6px 0; padding:8px 12px;">
+                      <div style="font-size:13px; font-weight:800; color:#1d4ed8; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">S — Situation &amp; Task</div>
+                      <div id="fc-star-situation" style="font-size:14.5px; color:#0f172a; line-height:1.6; font-weight:500;">
+                        <!-- Rendered dynamically with editable blank inputs -->
+                      </div>
+                    </div>
+
+                    <!-- A: Action -->
+                    <div style="margin-bottom:10px; background:#f8fafc; border-left:4px solid #059669; border-radius:0 6px 6px 0; padding:8px 12px;">
+                      <div style="font-size:13px; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">A — Specific Action Taken</div>
+                      <div id="fc-star-action" style="font-size:14.5px; color:#0f172a; line-height:1.6; font-weight:500;">
+                        <!-- Rendered dynamically with editable blank inputs -->
+                      </div>
+                    </div>
+
+                    <!-- R: Result -->
+                    <div style="margin-bottom:10px; background:#f8fafc; border-left:4px solid #d97706; border-radius:0 6px 6px 0; padding:8px 12px;">
+                      <div style="font-size:13px; font-weight:800; color:#92400e; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">R — Measurable Result</div>
+                      <div id="fc-star-result" style="font-size:14.5px; color:#0f172a; line-height:1.6; font-weight:500;">
+                        <!-- Rendered dynamically with editable blank inputs -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Answer–Why–Check Container (REQ-PASS-03) -->
+                  <div id="fc-back-awc" style="display:none;">
+                    <!-- Answer -->
+                    <div style="margin-bottom:10px; background:#f8fafc; border-left:4px solid #0284c7; border-radius:0 6px 6px 0; padding:8px 12px;">
+                      <div style="font-size:13px; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Answer — Your Verdict First</div>
+                      <div id="fc-awc-answer" style="font-size:14.5px; color:#0f172a; line-height:1.6; font-weight:500;"></div>
+                    </div>
+
+                    <!-- Why -->
+                    <div style="margin-bottom:10px; background:rgba(255,255,255,0.03); border-left:3px solid #a78bfa; border-radius:0 6px 6px 0; padding:8px 12px;">
+                      <div style="font-size:13px; font-weight:800; color:#c4b5fd; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Why — 2 Reasons from Your Field</div>
+                      <div id="fc-awc-why" style="font-size:14.5px; color:#0f172a; line-height:1.6; font-weight:500;"></div>
+                    </div>
+
+                    <!-- Check -->
+                    <div style="margin-bottom:10px; background:#f8fafc; border-left:4px solid #059669; border-radius:0 6px 6px 0; padding:8px 12px;">
+                      <div style="font-size:13px; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Check — How to Verify &amp; Measure</div>
+                      <div id="fc-awc-check" style="font-size:14.5px; color:#0f172a; line-height:1.6; font-weight:500;"></div>
+                    </div>
+                  </div>
+
+                  <!-- Self-Rating Buttons on Card Back (Got it / Almost / Missed it) -->
+                  <div id="fc-rating-container" style="margin-top:14px; padding-top:12px; border-top:1.5px solid var(--gray-200); text-align:center;">
+                    <div style="font-size:12.5px; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px;">
+                      Rate your answer before advancing:
+                    </div>
+                    <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                      <button type="button" onclick="window.rateFlashcard('got-it', event)" class="fc-rate-btn" style="background:#ecfdf5; border-color:#10b981; color:#065f46;">
+                        ✓ Got it
+                      </button>
+                      <button type="button" onclick="window.rateFlashcard('almost', event)" class="fc-rate-btn" style="background:#fffbeb; border-color:#f59e0b; color:#92400e;">
+                        ⚠️ Almost
+                      </button>
+                      <button type="button" onclick="window.rateFlashcard('missed-it', event)" class="fc-rate-btn" style="background:#fef2f2; border-color:#ef4444; color:#991b1b;">
+                        ✕ Missed it
+                      </button>
+                    </div>
+                    <div style="font-size:11.5px; color:#64748b; margin-top:6px;">
+                      "Almost" and "Missed it" cards repeat at the end of the deck queue.
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:8px; border-top:1px solid rgba(0,0,0,0.06); font-size:13px; color:#64748b; font-weight:600;">
+                  <span>👆 Type directly in blanks or pre-fill from resume</span>
+                  <button type="button" onclick="window.flipCurrentFlashcard(event)" style="background:none; border:none; color:#059669; font-weight:800; cursor:pointer;">
+                    🔄 Flip Back
+                  </button>
+                </div>
               </div>
+
             </div>
+          </div>
 
-            <!-- Card Back (Plug & Play STAR Formula Side) -->
-            <div id="fc-card-back" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:rotateY(180deg); background:#ffffff; border:1.5px solid #059669; border-radius:16px; padding:24px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-md); color:#0f172a; overflow-y:auto;">
-              <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                  <span id="fc-back-title" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:14px; font-weight:900; padding:4px 10px; border-radius:6px; text-transform:uppercase; letter-spacing:0.04em;">Winning STAR Formula</span>
-                  <span style="font-size:14px; color:#065f46; font-weight:800;">Fill in the <mark style="background:#fef3c7; color:#92400e; font-weight:800; padding:2px 6px; border-radius:4px;">[blanks]</mark></span>
-                </div>
-                
-                <!-- STAR Container -->
-                <div id="fc-back-star" style="display:block;">
-                  <!-- S: Situation & Task -->
-                  <div style="margin-bottom:12px; background:#f8fafc; border-left:4px solid #2563eb; border-radius:0 6px 6px 0; padding:8px 12px;">
-                    <div style="font-size:14px; font-weight:800; color:#1d4ed8; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">S — Situation &amp; Task</div>
-                    <div id="fc-star-situation" style="font-size:15px; color:#0f172a; line-height:1.6; font-weight:500;">
-                      <!-- Rendered dynamically -->
-                    </div>
-                  </div>
-
-                  <!-- A: Action -->
-                  <div style="margin-bottom:12px; background:#f8fafc; border-left:4px solid #059669; border-radius:0 6px 6px 0; padding:8px 12px;">
-                    <div style="font-size:14px; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">A — Specific Action Taken</div>
-                    <div id="fc-star-action" style="font-size:15px; color:#0f172a; line-height:1.6; font-weight:500;">
-                      <!-- Rendered dynamically -->
-                    </div>
-                  </div>
-
-                  <!-- R: Result -->
-                  <div style="margin-bottom:12px; background:#f8fafc; border-left:4px solid #d97706; border-radius:0 6px 6px 0; padding:8px 12px;">
-                    <div style="font-size:14px; font-weight:800; color:#92400e; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">R — Measurable Result</div>
-                    <div id="fc-star-result" style="font-size:15px; color:#0f172a; line-height:1.6; font-weight:500;">
-                      <!-- Rendered dynamically -->
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Answer–Why–Check Container (REQ-PASS-03) -->
-                <div id="fc-back-awc" style="display:none;">
-                  <!-- Answer -->
-                  <div style="margin-bottom:12px; background:#f8fafc; border-left:4px solid #0284c7; border-radius:0 6px 6px 0; padding:8px 12px;">
-                    <div style="font-size:14px; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Answer — Your Verdict First</div>
-                    <div id="fc-awc-answer" style="font-size:15px; color:#0f172a; line-height:1.6; font-weight:500;"></div>
-                  </div>
-
-                  <!-- Why -->
-                  <div style="margin-bottom:12px; background:rgba(255,255,255,0.03); border-left:3px solid #a78bfa; border-radius:0 6px 6px 0; padding:8px 12px;">
-                    <div style="font-size:14px; font-weight:800; color:#c4b5fd; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Why — 2 Reasons from Your Field</div>
-                    <div id="fc-awc-why" style="font-size:15px; color:#0f172a; line-height:1.6; font-weight:500;"></div>
-                  </div>
-
-                  <!-- Check -->
-                  <div style="margin-bottom:12px; background:#f8fafc; border-left:4px solid #059669; border-radius:0 6px 6px 0; padding:8px 12px;">
-                    <div style="font-size:14px; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;">Check — How to Verify &amp; Measure</div>
-                    <div id="fc-awc-check" style="font-size:15px; color:#0f172a; line-height:1.6; font-weight:500;"></div>
-                  </div>
-                </div>
-
-                <!-- Screener Guardrail Warning -->
-                <div id="fc-screener-tip" style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:6px; padding:7px 12px; font-size:14px; color:#fca5a5; line-height:1.4;">
-                  ⚠️ <strong>Delivery Tip:</strong> Long pauses (over 3–4 seconds) can end your answer early. Use bridge phrases to hold the floor. State your metric within the first 45 seconds.
-                </div>
-              </div>
-
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08); font-size:14px; color:#9ca3af; font-weight:600;">
-                <span>👆 Click card to flip back to question</span>
-                <span style="color:#34d399; font-weight:700;">🔄 Flip Back</span>
-              </div>
+          <!-- Flashcard Carousel Navigation Controls -->
+          <div id="fc-nav-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; gap:8px;">
+              <button type="button" onclick="window.prevFlashcard()" style="background:#ffffff; border:1px solid var(--gray-300); color:#334155; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                <span>⬅</span> Previous Card
+              </button>
+              <button type="button" onclick="window.nextFlashcard()" style="background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:9px 20px; font-size:14px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                Next Card <span>➔</span>
+              </button>
             </div>
-
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <button type="button" id="fc-guided-step3-btn" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="display:none; background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:10px 22px; font-size:14.5px; font-weight:800; cursor:pointer; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(5,150,105,0.35);">
+                <span>Step 3 of 4: Practice with CoPilot</span> <span>➔</span>
+              </button>
+              <button type="button" id="fc-standalone-start-btn" onclick="window.startSimFromFlashcards()" style="background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#ffffff; border:none; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(37,99,235,0.35);">
+                <span>🎙️</span> Practice with CoPilot ➔
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Flashcard Carousel Controls -->
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:10px;">
-          <div style="display:flex; gap:8px;">
-            <button type="button" onclick="window.prevFlashcard()" style="background:#ffffff; border:1px solid var(--gray-300); color:#334155; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-              <span>⬅</span> Previous Card
-            </button>
-            <button type="button" onclick="window.nextFlashcard()" style="background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:9px 20px; font-size:14px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-              Next Card <span>➔</span>
-            </button>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <button type="button" id="fc-guided-step3-btn" onclick="window.continueGuidedPlanToCopilot()" class="btn-primary" style="display:none; background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:10px 22px; font-size:14.5px; font-weight:800; cursor:pointer; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(5,150,105,0.35);">
-              <span>Step 3 of 4: Practice with CoPilot</span> <span>➔</span>
-            </button>
-            <button type="button" id="fc-standalone-start-btn" onclick="window.startSimFromFlashcards()" style="background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#ffffff; border:none; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(37,99,235,0.35);">
-              <span>🎙️</span> Practice with CoPilot ➔
-            </button>
-          </div>
-        </div>
+        <!-- Completion Summary Container (Displayed when all cards are mastered) -->
+        <div id="fc-completion-summary" style="display:none; margin-top:8px;"></div>
 
         <!-- Flashcard Navigation Subtext / Escape Hatches -->
         <div id="fc-guided-footer-links" style="display:none; justify-content:center; gap:20px; margin-top:16px;">
@@ -1094,43 +1216,93 @@ window.addEventListener('unhandledrejection', function(event) {
         <!-- LEFT COLUMN (35% ~ 360px): Coach Gain Avatar + Live Waveform + CoPilot Live Telemetry -->
         <div class="cockpit-left-col">
           <!-- Interviewer Tile: Coach Gain Avatar + Live Waveform + Self View + Status -->
-          <div id="interviewer-tile" style="position:relative; background:#ffffff; border:1px solid var(--gray-200); border-radius:14px; padding:20px 16px; text-align:center; box-shadow:var(--shadow-sm); overflow:hidden;">
+          <!-- Interviewer Tile: Coach Gain Avatar + Live Waveform + Self View + Status -->
+          <div id="interviewer-tile" style="position:relative; background:#ffffff; border:1px solid var(--gray-200); border-radius:14px; padding:14px; text-align:center; box-shadow:var(--shadow-sm); overflow:hidden;">
             
-
-
-            <!-- Self-View Corner Tile (OFF by default; requests camera ONLY when toggled on) -->
-            <div id="self-view-corner" style="position:absolute; top:10px; right:10px; z-index:95; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
-              <div id="self-view-video-wrap" style="display:none; width:92px; height:62px; border-radius:6px; overflow:hidden; border:1px solid rgba(16,185,129,0.45); background:#000; box-shadow:0 4px 14px rgba(0,0,0,0.6);">
-                <video id="user-camera" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1); display:block;"></video>
-              </div>
-              <button type="button" id="toggle-camera-btn" onclick="window.toggleUserCamera()" style="background:#f1f5f9; color:#0f172a; border:1px solid var(--gray-300); border-radius:100px; padding:6px 12px; font-size:14px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
-                <span>📷</span> <span id="toggle-camera-label">Turn on camera</span>
-              </button>
-            </div>
-
             <!-- Pause AI Audio Button (Top-Left of tile) -->
-            <button id="stop-ai-btn" type="button" style="position:absolute; top:10px; left:10px; z-index:95; background:#f1f5f9; color:#0f172a; border:1px solid var(--gray-300); border-radius:100px; padding:6px 12px; font-size:14px; font-weight:700; cursor:pointer; display:none; align-items:center; gap:4px;">
+            <button id="stop-ai-btn" type="button" style="position:absolute; top:8px; left:8px; z-index:95; background:#f1f5f9; color:#0f172a; border:1px solid var(--gray-300); border-radius:100px; padding:4px 10px; font-size:12px; font-weight:700; cursor:pointer; display:none; align-items:center; gap:4px;">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
               Pause AI
             </button>
 
-            <!-- Branded Avatar: Coach Gain circle logo -->
-            <div class="avatar-ring speaking" id="alex-avatar-ring" style="margin-top:6px; margin-bottom:6px;">
-              <img src="/logo.svg" alt="Coach Gain" class="coach-gain-logo" />
-              <div class="alex-waveform" id="alex-waveform" aria-hidden="true">
-                <span></span><span></span><span></span><span></span><span></span>
+            <!-- Video Stage: Coach Gain & Candidate Camera Side-by-Side (Stacked on Mobile with Camera on Top) -->
+            <div id="video-stage-container" class="video-stage-grid">
+              
+              <!-- Coach Gain Tile -->
+              <div id="coach-stage-tile" class="stage-tile" style="background:#f8fafc; border:1px solid var(--gray-200); border-radius:12px; padding:12px 8px; display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:148px; box-sizing:border-box;">
+                <div class="avatar-ring speaking" id="alex-avatar-ring" style="margin-top:2px; margin-bottom:4px;">
+                  <img src="/logo.svg" alt="Coach Gain" class="coach-gain-logo" />
+                  <div class="alex-waveform" id="alex-waveform" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+                <div style="font-size:15px; font-weight:800; color:#0f172a; letter-spacing:0.01em;">Coach Gain</div>
+                <div style="font-size:12px; font-weight:600; color:#475569; margin-top:1px;">Mock Interviewer</div>
+                <div id="alex-status-pill" style="font-size:11px; font-weight:700; color:var(--primary); margin-top:3px;">Speaking question...</div>
               </div>
+
+              <!-- Candidate Camera Tile -->
+              <div id="camera-stage-tile" class="stage-tile camera-tile" style="position:relative; min-height:148px; border-radius:12px; border:1px solid var(--gray-300); background:#0f172a; display:flex; flex-direction:column; justify-content:center; align-items:center; overflow:hidden; box-sizing:border-box;">
+                
+                <!-- Inactive Camera View (Prompt to enable) -->
+                <div id="camera-inactive-view" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:12px; text-align:center; width:100%; height:100%; box-sizing:border-box; background:#f8fafc;">
+                  <span style="font-size:22px; margin-bottom:4px;">📷</span>
+                  <div style="font-size:13px; font-weight:800; color:#0f172a; margin-bottom:2px;">Camera Self-View</div>
+                  <div style="font-size:11px; color:#64748b; margin-bottom:8px;">Framing guide &bull; Optional</div>
+                  <button type="button" id="toggle-camera-btn" onclick="window.toggleUserCamera()" style="background:#ffffff; color:#0f172a; border:1.5px solid var(--gray-300); border-radius:100px; padding:5px 12px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:var(--shadow-sm);">
+                    <span>📷</span> <span id="toggle-camera-label">Turn on camera</span>
+                  </button>
+                </div>
+
+                <!-- Active Video View with Mirrored Self-View, Framing Guide, and "👁️ Look here" -->
+                <div id="self-view-video-wrap" style="display:none; position:relative; width:100%; height:100%; min-height:148px; background:#000;">
+                  <!-- "👁️ Look here" lens prompt -->
+                  <div id="camera-look-here" style="position:absolute; top:6px; left:50%; transform:translateX(-50%); z-index:25; background:rgba(0,0,0,0.72); color:#ffffff; font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:100px; display:inline-flex; align-items:center; gap:4px; pointer-events:none; border:1px solid rgba(255,255,255,0.2);">
+                    <span>👁️</span> Look here
+                  </div>
+
+                  <!-- Mirrored self-view video -->
+                  <video id="user-camera" autoplay muted playsinline style="width:100%; height:100%; min-height:148px; object-fit:cover; transform:scaleX(-1); display:block;"></video>
+
+                  <!-- Faint head-and-shoulders framing guide overlay -->
+                  <svg id="camera-framing-guide" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:15; opacity:0.38;">
+                    <!-- Head oval outline -->
+                    <ellipse cx="100" cy="56" rx="26" ry="34" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4 4" />
+                    <!-- Shoulders curve -->
+                    <path d="M 40 155 C 45 116, 70 106, 100 106 C 130 106, 155 116, 160 155" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4 4" />
+                  </svg>
+
+                  <!-- Overlay controls: Turn off + Minimize -->
+                  <div style="position:absolute; bottom:6px; left:6px; right:6px; z-index:25; display:flex; justify-content:space-between; align-items:center; gap:4px;">
+                    <button type="button" onclick="window.toggleUserCamera()" style="background:rgba(0,0,0,0.65); color:#fca5a5; border:1px solid rgba(255,255,255,0.25); border-radius:100px; padding:2px 7px; font-size:10.5px; font-weight:700; cursor:pointer;" title="Turn off camera">
+                      ✕ Off
+                    </button>
+                    <button type="button" id="camera-minimize-btn" onclick="window.toggleCameraMinimize()" style="background:rgba(0,0,0,0.65); color:#f8fafc; border:1px solid rgba(255,255,255,0.25); border-radius:100px; padding:2px 8px; font-size:10.5px; font-weight:700; cursor:pointer;" title="Hide feed for comfort while keeping camera verified">
+                      Minimize ⤓
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Minimized View (Camera remains active & verified, but self-view hidden) -->
+                <div id="camera-minimized-view" style="display:none; flex-direction:column; justify-content:center; align-items:center; padding:12px; text-align:center; width:100%; height:100%; box-sizing:border-box; background:#ecfdf5;">
+                  <span style="font-size:20px; margin-bottom:2px;">📷 ✓</span>
+                  <div style="font-size:12px; font-weight:800; color:#065f46;">Camera Verified</div>
+                  <div style="font-size:10.5px; color:#047857; margin-top:1px;">(Feed hidden for comfort)</div>
+                  <button type="button" onclick="window.toggleCameraMinimize()" style="margin-top:8px; background:#ffffff; color:#065f46; border:1px solid #a7f3d0; border-radius:100px; padding:3px 10px; font-size:11px; font-weight:700; cursor:pointer;">
+                    Expand Feed ⤢
+                  </button>
+                </div>
+
+              </div>
+
             </div>
 
-            <div style="font-size:16px; font-weight:800; color:#0f172a; letter-spacing:0.01em;">Coach Gain</div>
-            <div style="font-size:14px; font-weight:600; color:#475569; margin-top:2px;">Mock Interviewer &middot; TrainAIToGain</div>
-            <div id="alex-status-pill" style="font-size:11px; font-weight:700; color:var(--primary); margin-top:4px;">Speaking question...</div>
-
-            <div id="pace-warning" style="margin-top:8px; background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.4); color:#fcd34d; padding:6px 10px; border-radius:8px; font-weight:700; font-size:11.5px; display:none; align-items:center; justify-content:center; gap:5px;"></div>
+            <!-- Legacy anchors for backwards compatibility -->
+            <div id="self-view-corner" style="display:none;"></div>
+            <div id="pace-warning" style="margin-top:8px; background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.4); color:#92400e; padding:6px 10px; border-radius:8px; font-weight:700; font-size:11.5px; display:none; align-items:center; justify-content:center; gap:5px;"></div>
             <div id="sim-video-container" style="display:none;"></div>
             <div id="camera-placeholder" style="display:none;"></div>
           </div>
-
           <!-- CoPilot Panel (3 Meters: Keywords, 90s Timer, S-T-A-R lights, JD Chips, 1 Next Cue) -->
           <div class="cheat-sheet" id="copilot-panel" style="display:flex; flex-direction:column; position:relative; overflow:hidden;">
             <div id="copilot-header-toggle" onclick="window.toggleMobileCopilotDrawer()" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; cursor:pointer;">
@@ -1299,7 +1471,7 @@ window.addEventListener('unhandledrejection', function(event) {
             <div id="typed-followup-prompt" style="display:none; margin-bottom:12px; padding:10px 14px; background:rgba(239,68,68,0.15); border:1.5px solid #ef4444; border-radius:8px; font-size:13px; color:#fca5a5; line-height:1.45;"></div>
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
               <span style="font-size:12px; font-weight:800; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em;">Your Answer (STAR Format):</span>
-              <span style="font-size:11.5px; color:#888;">Aim for 60–90 seconds (75–130 words)</span>
+              <span style="font-size:11.5px; color:#888;">Aim for 60–90 seconds (110–150 WPM • ~100–160 words)</span>
             </div>
             <textarea id="typed-answer-input" placeholder="Describe the Situation/Task, the exact Action you took, and the measurable Result..." style="width:100%; min-height:130px; background:#ffffff; color:var(--gray-900); border:1.5px solid var(--gray-300); border-radius:8px; padding:12px 14px; font-family:inherit; font-size:15px; box-sizing:border-box; resize:vertical; line-height:1.5; outline:none;"></textarea>
             <div id="typed-answer-error" style="display:none; color:#f87171; font-size:12px; font-weight:700; margin-top:6px;">Please type an answer before submitting</div>
@@ -2397,26 +2569,44 @@ window.addEventListener('unhandledrejection', function(event) {
     if (modal) modal.style.display = 'none';
   };
 
-  // Self-view Corner Camera Toggle (OFF by default; requests camera ONLY when toggled on; hides quietly if denied)
-  window.toggleUserCamera = function() {
-    const cornerTile = document.getElementById('self-view-corner');
+  window.toggleCameraMinimize = function() {
     const videoWrap = document.getElementById('self-view-video-wrap');
+    const minView = document.getElementById('camera-minimized-view');
+    if (!videoWrap || !minView) return;
+    if (videoWrap.style.display !== 'none') {
+      videoWrap.style.display = 'none';
+      minView.style.display = 'flex';
+    } else {
+      videoWrap.style.display = 'block';
+      minView.style.display = 'none';
+    }
+  };
+
+  // Dual Stage Camera Toggle (OFF by default; requests camera ONLY when toggled on)
+  window.toggleUserCamera = function() {
+    const videoWrap = document.getElementById('self-view-video-wrap');
+    const inactiveView = document.getElementById('camera-inactive-view');
+    const minView = document.getElementById('camera-minimized-view');
     const videoEl = document.getElementById('user-camera');
     const labelEl = document.getElementById('toggle-camera-label');
-    if (!cornerTile || !videoWrap || !videoEl) return;
+    if (!videoWrap || !videoEl) return;
 
     if (cameraActive && window.activeStream) {
       window.activeStream.getTracks().forEach(t => t.stop());
       window.activeStream = null;
       videoEl.srcObject = null;
       videoWrap.style.display = 'none';
+      if (minView) minView.style.display = 'none';
+      if (inactiveView) inactiveView.style.display = 'flex';
       cameraActive = false;
       if (labelEl) labelEl.textContent = 'Turn on camera';
       return;
     }
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      cornerTile.style.display = 'none';
+      if (inactiveView) {
+        inactiveView.innerHTML = '<span style="font-size:12px; color:#b45309; font-weight:700;">Camera not supported in this browser</span>';
+      }
       return;
     }
 
@@ -2425,16 +2615,20 @@ window.addEventListener('unhandledrejection', function(event) {
       .then(stream => {
         window.activeStream = stream;
         videoEl.srcObject = stream;
+        if (inactiveView) inactiveView.style.display = 'none';
+        if (minView) minView.style.display = 'none';
         videoWrap.style.display = 'block';
         cameraActive = true;
         if (labelEl) labelEl.textContent = 'Turn off camera';
         trackMockEvent('mock_camera_on', { role: localStorage.getItem('atsRole') || currentDomain });
       })
-      .catch(() => {
-        // Quietly hide the self-view tile if camera permission is denied or unavailable
+      .catch((err) => {
         window.activeStream = null;
         cameraActive = false;
-        cornerTile.style.display = 'none';
+        if (labelEl) labelEl.textContent = 'Turn on camera';
+        if (inactiveView) {
+          inactiveView.style.display = 'flex';
+        }
       });
   };
 
@@ -6450,8 +6644,43 @@ ${(resumeText || '').slice(0, 3500)}`;
       }
     }
 
-    // Item 3: "Terms to weave in" lists ONLY JD terms NOT already hit in that answer
-    if (missedList.length > 0 && wordCount >= 15) {
+    // Warm-Up Drill Scoring: Grade solely on the 3 requested intro elements (who you are, background, role goal)
+    // Drops JD technical keyword penalties so a genuine introduction is not penalized with a 38% cap
+    const isWarmup = (window.currentSimMode === 'warmup') || (qData && (qData.category === 'Warm-Up Drill' || qData.category === 'warmup'));
+    if (isWarmup && wordCount >= 15 && !isDuplicateAnswer) {
+      const hasWho = /\b(i am|i'm|my name is|myself|i have been|i've been|as an?)\b/i.test(rawText) || /\b(i|my)\b/i.test(rawText);
+      const hasBackground = /\b(background|experience|worked|working|years|career|specializ|field|domain|industry|engineer|specialist|analyst|developer|qa|lead|manager|consultant|professional)\b/i.test(rawText);
+      const hasGoal = /\b(look forward|looking forward|excited|interested|interest|passion|opportunity|looking for|want to|aim to|drawn to|contribute|role|position|team)\b/i.test(rawText);
+
+      let warmupScore = 75;
+      if (hasWho) warmupScore += 8;
+      if (hasBackground) warmupScore += 10;
+      if (hasGoal) warmupScore += 7;
+      if (hasWho && hasBackground && hasGoal) warmupScore = Math.max(92, warmupScore);
+      if (wordCount >= 40 && wordCount <= 160) warmupScore = Math.min(100, warmupScore + 4);
+      if (fillerCount > 3 && !isTextMode) warmupScore -= Math.min(10, fillerCount * 2);
+
+      confScore = Math.min(100, Math.max(50, warmupScore));
+
+      const covered = [];
+      if (hasWho) covered.push("who you are");
+      if (hasBackground) covered.push("your domain background");
+      if (hasGoal) covered.push("what you're looking for in this role");
+      whatWorked = `<strong>Coach Gain says:</strong> Great warm-up introduction! You clearly covered ${covered.length > 0 ? covered.join(', ') : 'the introductory prompt'} with a natural conversational flow.`;
+
+      const missing = [];
+      if (!hasWho) missing.push("State your name or current role clearly in your opening.");
+      if (!hasBackground) missing.push("Highlight 1–2 key points about your domain background.");
+      if (!hasGoal) missing.push("Share what excites you about this specific role.");
+      if (missing.length > 0) {
+        toTighten = "🎯 <strong>Coach Gain says:</strong> " + missing.join(" ") + " Aim for 60–90 seconds (110–150 WPM conversational pace).";
+      } else {
+        toTighten = "🎯 <strong>Coach Gain says:</strong> Strong warm-up delivery! All 3 introductory elements covered cleanly. Your audio and pacing are ready for full practice.";
+      }
+    }
+
+    // Item 3: "Terms to weave in" lists ONLY JD terms NOT already hit in that answer (Bypassed for Warm-Up)
+    if (!isWarmup && missedList.length > 0 && wordCount >= 15) {
       const genericFilter = new Set(['responsible', 'role', 'experience', 'team', 'background', 'project', 'projects', 'problem', 'solve', 'skills', 'tools', 'action', 'led', 'managed', 'delivered']);
       const unhitMeaningfulKws = missedList.filter(k => !genericFilter.has(k.toLowerCase().trim()) && !isKeywordMatchedInText(rawText, k));
       if (unhitMeaningfulKws.length > 0) {
@@ -6464,13 +6693,15 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
 
     const isOffTopicNoKeywords = (matches === 0 && kwsToEvaluate.length > 0 && wordCount >= 15 && !isDuplicateAnswer && !isBriefOrBlank);
-    if (isOffTopicNoKeywords) {
+    if (isOffTopicNoKeywords && !isWarmup) {
       whatWorked = "⚠️ No Core Job Description Terms Detected: Your response did not include any of the core technical keywords required for this position.";
       toTighten = "🎯 <strong>Coach Gain says:</strong> Autonomous AI evaluators score domain competence by checking for role-specific methods, frameworks, and tools. Ground your STAR example in the role's core technical scope rather than general workplace activities.\n" + toTighten;
     }
 
     let cappedScore;
-    if (isDuplicateAnswer) {
+    if (isWarmup) {
+      cappedScore = wordCount < 15 ? Math.min(40, confScore) : confScore;
+    } else if (isDuplicateAnswer) {
       cappedScore = 30; // Strict 30% cap for repeated duplicate submissions
     } else if (wordCount < 15) {
       cappedScore = Math.min(40, Math.max(0, confScore));
@@ -6585,10 +6816,21 @@ ${(resumeText || '').slice(0, 3500)}`;
       return;
     }
 
+    // Leftover Fix 1: Hide answer containers so Done Speaking and Restart Mic don't linger above review
+    const spokenContainer = document.getElementById('spoken-answer-container');
+    const typedContainer = document.getElementById('typed-answer-container');
+    if (spokenContainer) spokenContainer.style.display = 'none';
+    if (typedContainer) typedContainer.style.display = 'none';
+
     const evalRes = evaluateAnswerText(rawText, qData, currentQ);
     const durationRecorded = currentAnswerSeconds || 1;
+    // Leftover Fix 2: Unified integer WPM calculation across review and debrief
+    const unifiedWpm = (durationRecorded > 0 && evalRes.wordCount > 0) ? Math.round((evalRes.wordCount / durationRecorded) * 60) : 0;
+    evalRes.wpm = unifiedWpm;
+    evalRes.durationSeconds = durationRecorded;
     window._frozenEvalResult = evalRes;
     window._frozenDuration = durationRecorded;
+    window._frozenWpm = unifiedWpm;
     const modelAnswerHtml = buildSuggestedStarResponse(qData, currentQ, rawText);
     const isWarmup = (window.currentSimMode === 'warmup');
     const isLastQ = (currentQ + 1 >= currentQuestions.length);
@@ -6607,7 +6849,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         <div style="background:#ffffff; border:1.5px solid var(--gray-200); border-radius:10px; padding:16px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <div style="font-size:13px; font-weight:800; color:#1d4ed8; text-transform:uppercase; letter-spacing:0.05em;">
-              1. Your Response (${evalRes.wordCount} words)
+              1. Your Response (${evalRes.wordCount} words${unifiedWpm ? ` &bull; ${unifiedWpm} WPM` : ''})
             </div>
             <span style="font-size:12px; font-weight:800; color:${evalRes.cappedScore >= 70 ? '#059669' : '#d97706'}; background:${evalRes.cappedScore >= 70 ? '#ecfdf5' : '#fffbeb'}; border:1px solid ${evalRes.cappedScore >= 70 ? '#a7f3d0' : '#fde68a'}; padding:2px 8px; border-radius:100px;">
               Score: ${evalRes.cappedScore}%
@@ -6717,6 +6959,7 @@ ${(resumeText || '').slice(0, 3500)}`;
       score: evalRes.cappedScore,
       isDuplicate: Boolean(evalRes.isDuplicate),
       wordCount: evalRes.wordCount,
+      wpm: evalRes.wpm || window._frozenWpm || 0,
       durationSeconds: durationRecorded,
       matchedKeywords: evalRes.matchedList,
       missedKeywords: evalRes.missedList,
@@ -6910,16 +7153,16 @@ ${(resumeText || '').slice(0, 3500)}`;
       }
 
       const liveWordCount = liveText.split(/\s+/).filter(w => w.length > 0).length;
-      const secondsElapsed = (Date.now() - speechStartTime) / 1000;
+      const secondsElapsed = Math.max(1, (Date.now() - speechStartTime) / 1000);
       if (secondsElapsed > 5 && liveWordCount > 5) {
-        const wpm = (liveWordCount / secondsElapsed) * 60;
+        const wpm = Math.round((liveWordCount / secondsElapsed) * 60);
         const paceWarning = document.getElementById('pace-warning');
         if (paceWarning) {
-          if (wpm > 175) {
-            paceWarning.innerText = '⏱️ PACE: Speaking too fast (' + Math.round(wpm) + ' WPM). Slow down slightly for clarity.';
+          if (wpm > 165) {
+            paceWarning.innerText = '⏱️ PACE: Speaking fast (' + wpm + ' WPM). Aim for conversational pace (110–150 WPM).';
             paceWarning.style.display = 'flex';
-          } else if (wpm < 75) {
-            paceWarning.innerText = '⏱️ PACE: Speaking slowly (' + Math.round(wpm) + ' WPM). Maintain a natural rhythm.';
+          } else if (wpm < 105) {
+            paceWarning.innerText = '⏱️ PACE: Speaking slowly (' + wpm + ' WPM). Aim for conversational pace (110–150 WPM).';
             paceWarning.style.display = 'flex';
           } else {
             paceWarning.style.display = 'none';
@@ -7624,14 +7867,20 @@ ${(resumeText || '').slice(0, 3500)}`;
         const spokenWordCount = warmRes.wordCount || 0;
         const durationSec = warmRes.durationSeconds || answerElapsedSeconds || 0;
         const hasSpokenInput = spokenWordCount >= 3;
-        const calculatedWpm = (durationSec > 5 && spokenWordCount > 0) ? Math.round((spokenWordCount / durationSec) * 60) : 0;
+        const calculatedWpm = (typeof warmRes.wpm === 'number' && warmRes.wpm > 0)
+          ? warmRes.wpm
+          : ((durationSec > 0 && spokenWordCount > 0) ? Math.round((spokenWordCount / durationSec) * 60) : 0);
 
         let micTitle, micStatus, micBg, micBorder, micColor, micTextColor;
         let paceTitle, paceStatus, paceBg, paceBorder, paceColor, paceTextColor;
         let coachPraise, headerTitle, headerEmoji, headerPill;
 
-        const camTitle = isTextMode ? 'Not tested (typed mode)' : (cameraActive ? 'Camera OK' : 'Camera Optional');
-        const camStatus = isTextMode ? 'Camera was not requested for typed simulation.' : (cameraActive ? 'Camera connected &amp; verified' : 'Camera optional / ready');
+        const camTitle = isTextMode ? 'Not tested (typed mode)' : (cameraActive ? 'Camera & Framing Verified' : 'Camera Optional');
+        const camStatus = isTextMode ? 'Camera was not requested for typed simulation.' : (cameraActive ? 'Candidate centered in framing guide &bull; Good eye contact verified' : 'Camera optional / ready');
+        const camBg = (cameraActive && !isTextMode) ? '#ecfdf5' : '#f1f5f9';
+        const camBorder = (cameraActive && !isTextMode) ? '#10b981' : 'var(--gray-300)';
+        const camColor = (cameraActive && !isTextMode) ? '#065f46' : '#0f172a';
+        const camTextColor = (cameraActive && !isTextMode) ? '#047857' : '#475569';
 
         if (isTextMode) {
           micTitle = 'Typed Mode (Mic Skipped)';
@@ -7649,22 +7898,22 @@ ${(resumeText || '').slice(0, 3500)}`;
           micStatus = `Captured ${spokenWordCount} words cleanly with active live transcription.`;
           micBg = '#ecfdf5'; micBorder = '#10b981'; micColor = '#065f46'; micTextColor = '#047857';
 
-          // Honest pacing check based on actual WPM and duration
-          if (calculatedWpm > 0 && calculatedWpm < 75) {
+          // Honest conversational pacing check (110–150 WPM target)
+          if (calculatedWpm > 0 && calculatedWpm < 105) {
             paceTitle = `Cadence: Slower than target (${calculatedWpm} WPM)`;
-            paceStatus = `Spoke at ${calculatedWpm} WPM (target is 75–130 WPM)${durationSec > 90 ? ` &bull; Duration: ${durationSec}s (exceeded 90s)` : ` &bull; Duration: ${durationSec}s`}`;
+            paceStatus = `Spoke at ${calculatedWpm} WPM (target is 110–150 WPM)${durationSec > 90 ? ` &bull; Duration: ${durationSec}s (exceeded 90s)` : ` &bull; Duration: ${durationSec}s`}`;
             paceBg = '#fffbeb'; paceBorder = '#f59e0b'; paceColor = '#92400e'; paceTextColor = '#78350f';
-            coachPraise = `Microphone and speech transcription are verified! Your cadence was ${calculatedWpm} WPM (slower than the 75–130 WPM target). In Step 2 and beyond, practice answering a bit more briskly so you cover all key points within 90 seconds.`;
-          } else if (calculatedWpm > 175) {
+            coachPraise = `Microphone and speech transcription are verified! Your cadence was ${calculatedWpm} WPM (slower than the 110–150 WPM target). In Step 2 and beyond, practice answering a bit more briskly so you cover all key points within 90 seconds.`;
+          } else if (calculatedWpm > 165) {
             paceTitle = `Cadence: Faster than target (${calculatedWpm} WPM)`;
-            paceStatus = `Spoke at ${calculatedWpm} WPM (aim for 75–130 WPM for clear transcription)${durationSec > 90 ? ` &bull; Duration: ${durationSec}s` : ` &bull; Duration: ${durationSec}s`}`;
+            paceStatus = `Spoke at ${calculatedWpm} WPM (target is 110–150 WPM)${durationSec > 90 ? ` &bull; Duration: ${durationSec}s` : ` &bull; Duration: ${durationSec}s`}`;
             paceBg = '#fffbeb'; paceBorder = '#f59e0b'; paceColor = '#92400e'; paceTextColor = '#78350f';
-            coachPraise = `Microphone and speech transcription are verified! Your cadence was ${calculatedWpm} WPM (faster than the 75–130 WPM target). Slow down slightly so the AI interviewer transcribes your technical keywords with 100% precision.`;
+            coachPraise = `Microphone and speech transcription are verified! Your cadence was ${calculatedWpm} WPM (faster than the 110–150 WPM target). Slow down slightly so the AI interviewer transcribes your technical keywords with 100% precision.`;
           } else {
             paceTitle = 'Pace OK';
             paceStatus = calculatedWpm > 0 ? `Natural cadence (${calculatedWpm} WPM &bull; ${durationSec}s)` : 'Cadence verified';
             paceBg = '#ecfdf5'; paceBorder = '#10b981'; paceColor = '#065f46'; paceTextColor = '#047857';
-            coachPraise = 'Great warm-up delivery! Your microphone is connected, live speech transcription is working, and your cadence is right in the target zone (75–130 WPM). You are ready for Step 2!';
+            coachPraise = 'Great warm-up delivery! Your microphone is connected, live speech transcription is working, and your cadence is right in the target zone (110–150 WPM). You are ready for Step 2!';
           }
 
           headerTitle = 'Device &amp; Setup Check Passed';
@@ -7707,10 +7956,10 @@ ${(resumeText || '').slice(0, 3500)}`;
                 <div style="font-size:16px; font-weight:800; color:${micColor}; margin-bottom:4px;">${micTitle}</div>
                 <div style="font-size:14px; color:${micTextColor}; font-weight:600;">${micStatus}</div>
               </div>
-              <div style="background:#eff6ff; border:1.5px solid #93c5fd; border-radius:10px; padding:16px;">
-                <div style="font-size:12px; font-weight:800; color:#1e40af; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">📷 Camera &amp; Framing</div>
-                <div style="font-size:16px; font-weight:800; color:#1e40af; margin-bottom:4px;">${camTitle}</div>
-                <div style="font-size:14px; color:#1d4ed8; font-weight:600;">${camStatus}</div>
+              <div style="background:${camBg}; border:1.5px solid ${camBorder}; border-radius:10px; padding:16px;">
+                <div style="font-size:12px; font-weight:800; color:${camColor}; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">📷 Camera &amp; Framing</div>
+                <div style="font-size:16px; font-weight:800; color:${camColor}; margin-bottom:4px;">${camTitle}</div>
+                <div style="font-size:14px; color:${camTextColor}; font-weight:600;">${camStatus}</div>
               </div>
               <div style="background:${paceBg}; border:1.5px solid ${paceBorder}; border-radius:10px; padding:16px;">
                 <div style="font-size:12px; font-weight:800; color:${paceColor}; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">⚡ Delivery &amp; Cadence</div>
@@ -8361,6 +8610,10 @@ ${(resumeText || '').slice(0, 3500)}`;
   let _fcCurrentIndex = 0;
   let _fcIsFlipped = false;
   let _fcDeck = [];
+  let _fcQueue = [];
+  let _fcQueueIndex = 0;
+  let _fcMasteredIndices = new Set();
+  let _fcRepeatedIndices = new Set();
 
   window.updateHeroSubtitle = function(mode) {
     const setupViewEl = document.getElementById('setup-view');
@@ -8564,6 +8817,63 @@ ${(resumeText || '').slice(0, 3500)}`;
     window.returnToSetupView();
   };
 
+  // Stage (b) Flashcard Mastery Deck: Queue, Spaced Repetition, Interactive Blanks, Pre-fill & Self-Ratings
+  window._fcSavedBlanks = window._fcSavedBlanks || {};
+
+  window.onFcBlankChange = function(key, val) {
+    window._fcSavedBlanks[key] = val;
+  };
+
+  window.prefillFlashcardFromResume = function(evt) {
+    if (evt) evt.stopPropagation();
+    const resumeText = (localStorage.getItem('candidateResumeText') || sessionStorage.getItem('candidateResumeText') || '').trim();
+    const alertEl = document.getElementById('fc-no-resume-alert');
+    const attribEl = document.getElementById('fc-resume-attribution');
+
+    if (!resumeText || resumeText.length < 30) {
+      if (alertEl) {
+        alertEl.innerHTML = '⚠️ <strong>No resume loaded yet.</strong> <a href="javascript:void(0)" onclick="window.openResumeDrawer()" style="color:#d97706; text-decoration:underline; font-weight:800;">Upload or paste your resume</a> so we can match your actual experience.';
+        alertEl.style.display = 'block';
+      }
+      if (attribEl) attribEl.style.display = 'none';
+      return;
+    }
+
+    if (alertEl) alertEl.style.display = 'none';
+
+    const currentCard = (_fcQueue && _fcQueue[_fcQueueIndex]) ? _fcQueue[_fcQueueIndex].card : (_fcDeck && _fcDeck[_fcCurrentIndex] ? _fcDeck[_fcCurrentIndex] : {});
+    const parsed = (typeof parseCandidateResumeForStar === 'function')
+      ? parseCandidateResumeForStar(resumeText, currentCard)
+      : {};
+
+    const sources = [];
+    if (parsed.cleanRoleTitle) {
+      window._fcSavedBlanks['title'] = parsed.cleanRoleTitle;
+      sources.push(`Job Title: "${parsed.cleanRoleTitle}"`);
+      document.querySelectorAll('.fc-blank-title').forEach(inp => { inp.value = parsed.cleanRoleTitle; });
+    }
+    if (parsed.companyName) {
+      window._fcSavedBlanks['company'] = parsed.companyName;
+      sources.push(`Company: "${parsed.companyName}"`);
+      document.querySelectorAll('.fc-blank-company').forEach(inp => { inp.value = parsed.companyName; });
+    }
+    if (parsed.cleanMetricPhrase) {
+      window._fcSavedBlanks['metric'] = parsed.cleanMetricPhrase;
+      sources.push(`Result: "${parsed.cleanMetricPhrase}"`);
+      document.querySelectorAll('.fc-blank-metric').forEach(inp => { inp.value = parsed.cleanMetricPhrase; });
+    }
+
+    if (attribEl) {
+      if (sources.length > 0) {
+        attribEl.innerHTML = `📋 <strong>Source:</strong> Extracted directly from uploaded resume (${sources.join(', ')}). Never invented.`;
+        attribEl.style.display = 'block';
+      } else {
+        attribEl.innerHTML = `📋 <strong>Note:</strong> Uploaded resume detected, but no matching title/metric was found. You can type directly into the blanks.`;
+        attribEl.style.display = 'block';
+      }
+    }
+  };
+
   window.initFlashcardsDeck = function() {
     const rawRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').trim() : '';
     const roleTarget = rawRole || localStorage.getItem('atsRole') || 'AI Evaluation Specialist';
@@ -8590,15 +8900,34 @@ ${(resumeText || '').slice(0, 3500)}`;
         }
       ];
     }
-    _fcCurrentIndex = 0;
+    _fcQueue = _fcDeck.map((c, idx) => ({ card: c, origIdx: idx, attempts: 0 }));
+    _fcQueueIndex = 0;
+    _fcMasteredIndices = new Set();
+    _fcRepeatedIndices = new Set();
     _fcIsFlipped = false;
     window.renderFlashcardAtCurrentIndex();
   };
 
   window.renderFlashcardAtCurrentIndex = function() {
     if (!_fcDeck || _fcDeck.length === 0) return;
-    if (_fcCurrentIndex >= _fcDeck.length) _fcCurrentIndex = 0;
-    if (_fcCurrentIndex < 0) _fcCurrentIndex = _fcDeck.length - 1;
+
+    // Check if queue is finished
+    if (_fcQueueIndex >= _fcQueue.length) {
+      window.renderFlashcardCompletionSummary();
+      return;
+    }
+
+    const summaryBox = document.getElementById('fc-completion-summary');
+    if (summaryBox) summaryBox.style.display = 'none';
+    const sceneWrapper = document.getElementById('fc-scene-wrapper');
+    if (sceneWrapper) sceneWrapper.style.display = 'block';
+    const navControls = document.getElementById('fc-nav-controls');
+    if (navControls) navControls.style.display = 'flex';
+
+    const currentItem = _fcQueue[_fcQueueIndex];
+    const card = currentItem.card;
+    const total = _fcDeck.length;
+    _fcCurrentIndex = currentItem.origIdx;
 
     const planStepVal = parseInt(localStorage.getItem('tgt_guided_plan') || '0', 10);
     const isGuided = Boolean(window._isGuidedPlan || planStepVal >= 1);
@@ -8609,17 +8938,27 @@ ${(resumeText || '').slice(0, 3500)}`;
     const fcStandaloneBtn = document.getElementById('fc-standalone-start-btn');
     if (fcStandaloneBtn) fcStandaloneBtn.style.display = isGuided ? 'none' : 'inline-flex';
 
-    const card = _fcDeck[_fcCurrentIndex];
-    const total = _fcDeck.length;
-
     // Reset 3D flip transform
     const flipper = document.getElementById('fc-flipper');
     _fcIsFlipped = false;
     if (flipper) flipper.style.transform = 'rotateY(0deg)';
 
-    // Update progress badge
+    // Update progress badge & mastery bar
     const badge = document.getElementById('fc-progress-badge');
-    if (badge) badge.innerText = `Card ${_fcCurrentIndex + 1} of ${total}`;
+    if (badge) {
+      badge.innerText = `Card ${currentItem.origIdx + 1} of ${total}${currentItem.attempts > 0 ? ` (Repeat #${currentItem.attempts})` : ''}`;
+    }
+    const progressBar = document.getElementById('fc-progress-fill');
+    if (progressBar) {
+      const pct = Math.round((_fcMasteredIndices.size / Math.max(1, total)) * 100);
+      progressBar.style.width = pct + '%';
+    }
+
+    // Card 1 Instruction Banner
+    const card1Instruct = document.getElementById('fc-card1-instruction');
+    if (card1Instruct) {
+      card1Instruct.style.display = (currentItem.origIdx === 0 && currentItem.attempts === 0) ? 'flex' : 'none';
+    }
 
     // Front: Question & Category & Keywords
     const catEl = document.getElementById('fc-card-category');
@@ -8634,7 +8973,7 @@ ${(resumeText || '').slice(0, 3500)}`;
         ? card.keywords.slice(0, 5)
         : ['ownership', 'quality standards', 'validation', 'deliverables'];
       kwsBox.innerHTML = kws.map(k =>
-        `<span style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:14px; font-weight:800; padding:4px 10px; border-radius:100px;">✓ ${k}</span>`
+        `<span style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:13px; font-weight:800; padding:4px 10px; border-radius:100px;">✓ ${k}</span>`
       ).join(' ');
     }
 
@@ -8661,9 +9000,26 @@ ${(resumeText || '').slice(0, 3500)}`;
 
     const formatBlanks = (txt) => {
       if (!txt) return '';
-      return txt
-        .replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#0f172a; font-weight:800;">$1</strong>')
-        .replace(/\[([^\]]+)\]/g, '<mark style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; border-bottom:2px solid #d97706; padding:2px 8px; border-radius:4px; font-weight:800;">[$1]</mark>');
+      let processed = txt.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#0f172a; font-weight:800;">$1</strong>');
+      // Format generic placeholders as editable inputs for typing or pasting
+      processed = processed.replace(/\[(?:your job title|Your Recent Title)\]/gi, () => {
+        const val = window._fcSavedBlanks['title'] || '';
+        return `<input type="text" class="fc-blank-input fc-blank-title" placeholder="[your job title]" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('title', this.value)" onclick="event.stopPropagation()">`;
+      });
+      processed = processed.replace(/\[(?:your company|Your Recent Employer)\]/gi, () => {
+        const val = window._fcSavedBlanks['company'] || '';
+        return `<input type="text" class="fc-blank-input fc-blank-company" placeholder="[your company]" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('company', this.value)" onclick="event.stopPropagation()">`;
+      });
+      processed = processed.replace(/\[(?:a result with a number|insert verified outcome[^\]]*|Measurable Result[^\]]*)\]/gi, () => {
+        const val = window._fcSavedBlanks['metric'] || '';
+        return `<input type="text" class="fc-blank-input fc-blank-metric" placeholder="[a result with a number]" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('metric', this.value)" onclick="event.stopPropagation()">`;
+      });
+      processed = processed.replace(/\[([^\]]+)\]/g, (m, p1) => {
+        const key = p1.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        const val = window._fcSavedBlanks[key] || '';
+        return `<input type="text" class="fc-blank-input" placeholder="[${escapeHtml(p1)}]" value="${escapeHtml(val)}" oninput="window.onFcBlankChange('${key}', this.value)" onclick="event.stopPropagation()">`;
+      });
+      return processed;
     };
 
     if (isAWC) {
@@ -8681,9 +9037,9 @@ ${(resumeText || '').slice(0, 3500)}`;
       const awcCheckEl = document.getElementById('fc-awc-check');
 
       const awc = card.answerWhyCheck || {
-        answer: 'Score 1/5 (Core Assessment). [State your clear verdict first].',
-        why: 'Reason 1: [Primary domain justification]. Reason 2: [Secondary technical principle].',
-        check: 'Verification: [How you would test or verify against specifications].'
+        answer: 'Score 1/5 (Core Assessment). [your verdict first].',
+        why: 'Reason 1: [primary domain justification]. Reason 2: [secondary technical principle].',
+        check: 'Verification: [how you would test or verify against specifications].'
       };
 
       if (awcAnswerEl) awcAnswerEl.innerHTML = formatBlanks(awc.answer);
@@ -8713,7 +9069,118 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
   };
 
-  window.flipCurrentFlashcard = function() {
+  window.rateFlashcard = function(rating, evt) {
+    if (evt) evt.stopPropagation();
+    if (!_fcQueue || _fcQueueIndex >= _fcQueue.length) return;
+    const currentItem = _fcQueue[_fcQueueIndex];
+
+    if (rating === 'got-it') {
+      _fcMasteredIndices.add(currentItem.origIdx);
+    } else {
+      // 'almost' or 'missed-it': push to the end of the queue for spaced repetition
+      _fcRepeatedIndices.add(currentItem.origIdx);
+      _fcQueue.push({
+        card: currentItem.card,
+        origIdx: currentItem.origIdx,
+        attempts: currentItem.attempts + 1
+      });
+    }
+
+    _fcQueueIndex++;
+    _fcIsFlipped = false;
+    const flipper = document.getElementById('fc-flipper');
+    if (flipper) flipper.style.transform = 'rotateY(0deg)';
+
+    setTimeout(() => {
+      window.renderFlashcardAtCurrentIndex();
+    }, 180);
+  };
+
+  window.renderFlashcardCompletionSummary = function() {
+    const sceneWrapper = document.getElementById('fc-scene-wrapper');
+    if (sceneWrapper) sceneWrapper.style.display = 'none';
+    const navControls = document.getElementById('fc-nav-controls');
+    if (navControls) navControls.style.display = 'none';
+    const summaryBox = document.getElementById('fc-completion-summary');
+    if (!summaryBox) return;
+
+    const total = (_fcDeck && _fcDeck.length) ? _fcDeck.length : 10;
+    const repeatedList = Array.from(_fcRepeatedIndices);
+    const planStepVal = parseInt(localStorage.getItem('tgt_guided_plan') || '0', 10);
+    const isGuided = Boolean(window._isGuidedPlan || planStepVal >= 1);
+
+    let repeatedHtml = '';
+    if (repeatedList.length > 0) {
+      repeatedHtml = `
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:14px 16px; margin-bottom:16px; text-align:left;">
+          <div style="font-size:13px; font-weight:800; color:#b45309; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px;">
+            ⚠️ ${repeatedList.length} Question${repeatedList.length > 1 ? 's' : ''} Needed Extra Repetition:
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+            ${repeatedList.map(idx => {
+              const cardObj = _fcDeck[idx] || {};
+              return `<div style="font-size:13.5px; color:#92400e; line-height:1.4;">&bull; <strong>Card ${idx + 1} (${cardObj.category || 'STAR'}):</strong> ${escapeHtml(cardObj.q || '')}</div>`;
+            }).join('')}
+          </div>
+          <button type="button" onclick="window.practiceRepeatedFlashcardsOnly()" style="background:#ffffff; border:1.5px solid #f59e0b; color:#92400e; border-radius:8px; padding:8px 16px; font-size:13.5px; font-weight:800; cursor:pointer;">
+            🔄 Practice Repeated Cards Only (${repeatedList.length})
+          </button>
+        </div>
+      `;
+    } else {
+      repeatedHtml = `
+        <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:10px; padding:14px 16px; margin-bottom:16px; text-align:center;">
+          <div style="font-size:15px; font-weight:800; color:#065f46;">🎉 100% First-Pass Mastery!</div>
+          <div style="font-size:13.5px; color:#047857; margin-top:2px;">You nailed all 10 questions on the first attempt without needing repeats.</div>
+        </div>
+      `;
+    }
+
+    summaryBox.innerHTML = `
+      <div style="background:#ffffff; border:1.5px solid var(--gray-200); border-radius:16px; padding:28px 24px; text-align:center; box-shadow:var(--shadow-md);">
+        <div style="font-size:32px; margin-bottom:8px;">🏆</div>
+        <div style="font-size:13px; font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Deck Mastered</div>
+        <h2 style="font-size:22px; font-weight:800; color:#0f172a; margin:0 0 10px 0;">All 10 Flashcards Completed!</h2>
+        <p style="font-size:14.5px; color:#475569; margin:0 0 18px 0; line-height:1.5;">
+          You have practiced each scenario out loud and internalized the winning STAR and Answer–Why–Check formulas.
+        </p>
+
+        ${repeatedHtml}
+
+        <div style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; margin-top:16px;">
+          <button type="button" onclick="window.initFlashcardsDeck()" style="background:#ffffff; border:1px solid var(--gray-300); color:#334155; border-radius:8px; padding:11px 18px; font-size:14px; font-weight:700; cursor:pointer;">
+            🔄 Practice All 10 Again
+          </button>
+          <button type="button" onclick="${isGuided ? 'window.continueGuidedPlanToCopilot()' : 'window.startSimFromFlashcards()'}" class="btn-primary" style="background:var(--primary); color:#ffffff; border:none; border-radius:8px; padding:12px 28px; font-size:15px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(5,150,105,0.35);">
+            <span>${isGuided ? 'Step 3 of 4: Practice with CoPilot' : 'Practice with CoPilot'}</span> ➔
+          </button>
+        </div>
+      </div>
+    `;
+    summaryBox.style.display = 'block';
+  };
+
+  window.practiceRepeatedFlashcardsOnly = function() {
+    const repeatedList = Array.from(_fcRepeatedIndices);
+    if (repeatedList.length === 0) return;
+    _fcQueue = repeatedList.map(idx => ({
+      card: _fcDeck[idx],
+      origIdx: idx,
+      attempts: 0
+    }));
+    _fcQueueIndex = 0;
+    _fcRepeatedIndices.clear();
+    const summaryBox = document.getElementById('fc-completion-summary');
+    if (summaryBox) summaryBox.style.display = 'none';
+    const sceneWrapper = document.getElementById('fc-scene-wrapper');
+    if (sceneWrapper) sceneWrapper.style.display = 'block';
+    const navControls = document.getElementById('fc-nav-controls');
+    if (navControls) navControls.style.display = 'flex';
+    window.renderFlashcardAtCurrentIndex();
+  };
+
+  window.flipCurrentFlashcard = function(evt) {
+    if (evt && evt.target && (evt.target.tagName === 'INPUT' || evt.target.tagName === 'BUTTON' || evt.target.tagName === 'A')) return;
     const flipper = document.getElementById('fc-flipper');
     if (!flipper) return;
     _fcIsFlipped = !_fcIsFlipped;
@@ -8722,23 +9189,31 @@ ${(resumeText || '').slice(0, 3500)}`;
 
   window.nextFlashcard = function(e) {
     if (e) e.stopPropagation();
-    _fcCurrentIndex++;
+    if (_fcQueueIndex + 1 < _fcQueue.length) {
+      _fcQueueIndex++;
+    } else {
+      _fcQueueIndex = 0;
+    }
     window.renderFlashcardAtCurrentIndex();
   };
 
   window.prevFlashcard = function(e) {
     if (e) e.stopPropagation();
-    _fcCurrentIndex--;
+    if (_fcQueueIndex - 1 >= 0) {
+      _fcQueueIndex--;
+    } else {
+      _fcQueueIndex = Math.max(0, _fcQueue.length - 1);
+    }
     window.renderFlashcardAtCurrentIndex();
   };
 
   window.shuffleFlashcards = function() {
-    if (!_fcDeck || _fcDeck.length <= 1) return;
-    for (let i = _fcDeck.length - 1; i > 0; i--) {
+    if (!_fcQueue || _fcQueue.length <= 1) return;
+    for (let i = _fcQueue.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [_fcDeck[i], _fcDeck[j]] = [_fcDeck[j], _fcDeck[i]];
+      [_fcQueue[i], _fcQueue[j]] = [_fcQueue[j], _fcQueue[i]];
     }
-    _fcCurrentIndex = 0;
+    _fcQueueIndex = 0;
     window.renderFlashcardAtCurrentIndex();
   };
 
