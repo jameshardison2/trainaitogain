@@ -8790,12 +8790,14 @@ ${(resumeText || '').slice(0, 3500)}`;
         }, 200);
       } else if (reqScreen === 'copilot' || reqScreen === 'practice') {
         setTimeout(() => {
-          window._isGuidedPlan = (sp.get('guided') !== 'false');
-          window._guidedStep = 3;
+          const isGuided = (sp.get('guided') !== 'false');
+          window._isGuidedPlan = isGuided;
+          window._guidedStep = isGuided ? 3 : 0;
           try {
-            if (window._isGuidedPlan) localStorage.setItem('tgt_guided_plan', '3');
+            if (isGuided) localStorage.setItem('tgt_guided_plan', '3');
+            else localStorage.removeItem('tgt_guided_plan');
           } catch(e) {}
-          window.selectSimMode('practice');
+          window.selectSimMode('practice', true);
           const isTyped = (sp.get('mode') === 'typed');
           window.setInterviewMode(isTyped);
           proceedToSession();
@@ -8870,11 +8872,13 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
   };
 
-  window.selectSimMode = function(mode) {
-    // Selecting an individual mode turns off Guided Prep Plan
-    window._isGuidedPlan = false;
-    window._guidedStep = 0;
-    try { localStorage.removeItem('tgt_guided_plan'); } catch(e) {}
+  window.selectSimMode = function(mode, preserveGuided) {
+    // Selecting an individual mode manually turns off Guided Prep Plan unless preserved
+    if (!preserveGuided && !window._isGuidedPlan) {
+      window._isGuidedPlan = false;
+      window._guidedStep = 0;
+      try { localStorage.removeItem('tgt_guided_plan'); } catch(e) {}
+    }
     window.currentSimMode = mode;
     localStorage.setItem('tgt_sim_mode', mode);
     window.updateHeroSubtitle(mode);
@@ -9012,7 +9016,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     try {
       localStorage.setItem('tgt_guided_plan', '3');
     } catch(e) {}
-    window.selectSimMode('practice');
+    window.selectSimMode('practice', true);
     const isTyped = getResolvedInterviewTextMode();
     if (isTyped) {
       isTextMode = true;
@@ -9031,7 +9035,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     } catch(e) {}
     window.returnToSetupView();
     setTimeout(() => {
-      window.selectSimMode('passcheck');
+      window.selectSimMode('passcheck', true);
       const isTyped = getResolvedInterviewTextMode();
       if (isTyped) {
         isTextMode = true;
