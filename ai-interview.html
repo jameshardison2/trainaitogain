@@ -6479,7 +6479,71 @@ ${(resumeText || '').slice(0, 3500)}`;
     }
   };
 
-  window.shareToLinkedIn = function() {
+  // Centralized editable list of external practice partner tools and prep platforms
+  const EXTERNAL_PRACTICE_PLATFORMS = [
+    {
+      name: 'Mercor',
+      label: 'Mercor Practice Interview ➔',
+      url: 'https://t.mercor.com/wbPMF',
+      linkHtml: '<a href="https://t.mercor.com/wbPMF" target="_blank" rel="noopener noreferrer" style="background:#10b981; color:#042f2e; font-size:11.5px; font-weight:800; padding:6px 12px; border-radius:4px; text-decoration:none;">Mercor Practice Interview ➔</a>',
+      btnStyle: 'background:#10b981; color:#042f2e; font-size:11.5px; font-weight:800; padding:6px 12px; border-radius:4px; text-decoration:none;'
+    },
+    {
+      name: 'micro1',
+      label: 'micro1 Prep Guide ➔',
+      url: 'https://www.micro1.ai/ai-interview-guide',
+      linkHtml: '<a href="https://www.micro1.ai/ai-interview-guide" target="_blank" rel="noopener noreferrer" style="background:#ffffff; color:#334155; border:1px solid #cbd5e1; font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:4px; text-decoration:none;">micro1 Prep Guide ➔</a>',
+      btnStyle: 'background:#ffffff; color:#334155; border:1px solid #cbd5e1; font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:4px; text-decoration:none;'
+    }
+  ];
+
+  function getPlatformNamesSentence() {
+    if (!EXTERNAL_PRACTICE_PLATFORMS.length) return '';
+    if (EXTERNAL_PRACTICE_PLATFORMS.length === 1) return EXTERNAL_PRACTICE_PLATFORMS[0].name;
+    if (EXTERNAL_PRACTICE_PLATFORMS.length === 2) return `${EXTERNAL_PRACTICE_PLATFORMS[0].name} and ${EXTERNAL_PRACTICE_PLATFORMS[1].name}`;
+    return EXTERNAL_PRACTICE_PLATFORMS.slice(0, -1).map(p => p.name).join(', ') + ', and ' + EXTERNAL_PRACTICE_PLATFORMS[EXTERNAL_PRACTICE_PLATFORMS.length - 1].name;
+  }
+
+  function getPlatformDisclaimerNames() {
+    return EXTERNAL_PRACTICE_PLATFORMS.map(p => p.name).join(', ');
+  }
+
+  function renderPracticeToolsCard() {
+    const platformSentence = getPlatformNamesSentence();
+    const buttonsHtml = EXTERNAL_PRACTICE_PLATFORMS.map(p => p.linkHtml || `
+      <a href="${p.url}" target="_blank" rel="noopener noreferrer" style="${p.btnStyle}">${escapeHtml(p.label)}</a>
+    `).join(' ');
+
+    return `
+      <div id="practice-partner-tools-card" style="margin-bottom:18px; padding:12px 16px; background:#f8fafc; border-radius:8px; border:1px solid #cbd5e1; font-size:12.5px; color:#334155; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <div>
+          <strong>🎯 Free practice tools from ${escapeHtml(platformSentence)}:</strong> Test under real AI screening conditions.
+        </div>
+        <div style="display:inline-flex; gap:8px; flex-wrap:wrap;">
+          ${buttonsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  window.shareToLinkedIn = function(btn) {
+    const postBox = document.getElementById('share-post-text');
+    const postText = postBox ? postBox.value : 'I passed the TrainAIToGain AI Interview Pass Check!';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(postText).catch(() => {});
+    } else if (typeof copyToClipboardFallback === 'function') {
+      copyToClipboardFallback(postText);
+    }
+    const noticeEl = document.getElementById('linkedin-share-copied-notice');
+    if (noticeEl) {
+      noticeEl.style.display = 'block';
+      setTimeout(() => { if (noticeEl) noticeEl.style.display = 'none'; }, 4000);
+    }
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<span>✓ Post Copied!</span>';
+      setTimeout(() => { if (btn) btn.innerHTML = orig; }, 2500);
+    }
     const url = encodeURIComponent('https://trainaitogain.com/ai-interview');
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=500');
   };
@@ -6527,10 +6591,11 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (!postBox) return;
     const rawRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : '';
     const roleTarget = rawRole || localStorage.getItem('atsRole') || 'Specialist';
+    const art = (/^(8\d|18)$/.test(String(score).trim())) ? 'an' : 'a';
     if (check && check.checked) {
-      postBox.value = `I just passed the TrainAIToGain AI Interview Pass Check for ${roleTarget} with an ${score}% readiness score! Ready for real AI screening rounds at Mercor, micro1, and enterprise hiring teams.`;
+      postBox.value = `I just passed the TrainAIToGain AI Interview Pass Check for ${roleTarget} with ${art} ${score}% readiness score! Ready for real AI screening rounds.`;
     } else {
-      postBox.value = `I just passed the TrainAIToGain AI Interview Pass Check for ${roleTarget}! Ready for real AI screening rounds at Mercor, micro1, and enterprise hiring teams.`;
+      postBox.value = `I just passed the TrainAIToGain AI Interview Pass Check for ${roleTarget}! Ready for real AI screening rounds.`;
     }
   };
 
@@ -6645,7 +6710,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     // Determine Candidate Name (No full resume or contact details per privacy rule)
     const candidateName = (function() {
       const stored = (localStorage.getItem('candidateName') || sessionStorage.getItem('candidateName') || '').trim();
-      if (stored && stored !== 'Candidate') return stored;
+      if (stored && stored.toLowerCase() !== 'candidate') return stored;
       if (resumeTxt) {
         const lines = resumeTxt.split('\n').map(l => l.trim()).filter(Boolean);
         for (let i = 0; i < Math.min(8, lines.length); i++) {
@@ -6654,7 +6719,7 @@ ${(resumeText || '').slice(0, 3500)}`;
           line = line.replace(/(\+?\d[\d\s().-]{7,}\d)/g, '');
           line = line.replace(/(https?:\/\/[^\s]+|linkedin\.com[^\s]*|github\.com[^\s]*)/gi, '');
           line = line.replace(/[|•,·–-].*$/, '').trim();
-          if (line.length >= 2 && line.length <= 40 && !/\d/.test(line) && !/^(resume|curriculum|vitae|summary|experience|profile|contact|education|skills|objective|about|work)/i.test(line)) {
+          if (line.length >= 2 && line.length <= 40 && !/\d/.test(line) && !/^(resume|curriculum|vitae|summary|experience|profile|contact|education|skills|objective|about|work|candidate)/i.test(line)) {
             if (!/^(senior|lead|principal|staff|junior)?\s*(software|robotics|qa|test|engineer|developer|specialist|manager|analyst|architect)/i.test(line)) {
               try { localStorage.setItem('candidateName', line); } catch(e) {}
               return line;
@@ -6662,7 +6727,7 @@ ${(resumeText || '').slice(0, 3500)}`;
           }
         }
       }
-      return 'Candidate';
+      return '';
     })();
 
     // Determine Pass Check Score & Agreement with Screen
@@ -6796,10 +6861,12 @@ ${(resumeText || '').slice(0, 3500)}`;
       
       <!-- Metadata Grid -->
       <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:18px 20px; display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-bottom:12px;">
+        ${candidateName ? `
         <div>
           <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.04em;">Candidate Name</div>
-          <div style="font-size:15px; font-weight:800; color:#0f172a; margin-top:2px;">${candidateName}</div>
+          <div style="font-size:15px; font-weight:800; color:#0f172a; margin-top:2px;">${escapeHtml(candidateName)}</div>
         </div>
+        ` : ''}
         <div>
           <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.04em;">Target Role</div>
           <div style="font-size:15px; font-weight:800; color:#0f172a; margin-top:2px;">${roleTarget}</div>
@@ -9205,6 +9272,8 @@ ${(resumeText || '').slice(0, 3500)}`;
           localStorage.setItem('tgt_passcheck_attempts', JSON.stringify(attempts));
         } catch(e) {}
 
+        const scoreArticle = (/^(8\d|18)$/.test(String(avgScore).trim())) ? 'an' : 'a';
+
         if (pcStatus === 'ready') {
           passCheckBannerHtml = `
             <div id="passcheck-result-banner" style="background:#ffffff; border:2px solid #10b981; border-radius:14px; padding:24px 24px; margin-bottom:24px; text-align:left; box-shadow:0 4px 16px rgba(16,185,129,0.12);">
@@ -9217,10 +9286,10 @@ ${(resumeText || '').slice(0, 3500)}`;
                   </div>
                   <h2 style="font-size:24px; font-weight:900; color:#0f172a; margin:0 0 6px;">Congratulations! You passed the Pass Check!</h2>
                   <div style="font-size:14.5px; color:#334155; line-height:1.5;">
-                    You achieved an <strong>${avgScore}% Readiness Score</strong> across 6 blind interview prompts with <strong>${kwHits} of ${kwTotal}</strong> core Job Description signals matched. Your green <strong>Pass Check practice badge</strong> is now active.
+                    You achieved ${scoreArticle} <strong>${avgScore}% Readiness Score</strong> across 6 blind interview prompts with <strong>${kwHits} of ${kwTotal}</strong> core Job Description signals matched. Your green <strong>Pass Check practice badge</strong> is now active.
                   </div>
                   <div style="font-size:12px; color:#64748b; margin-top:6px; font-style:italic;">
-                    * Practice benchmark only. This is an objective readiness practice badge, not an official certification, credential, or hiring guarantee from Mercor, micro1, or third-party employers.
+                    * Practice benchmark only. This is an objective readiness practice badge, not an official certification, credential, or hiring guarantee from ${getPlatformDisclaimerNames()}, or third-party employers.
                   </div>
                 </div>
                 <div style="background:#ecfdf5; border:1.5px solid #10b981; border-radius:12px; padding:12px 20px; text-align:center; min-width:110px;">
@@ -9255,9 +9324,9 @@ ${(resumeText || '').slice(0, 3500)}`;
                 <div style="font-size:12.5px; color:#64748b; margin-bottom:10px;">
                   Share card: <em>&ldquo;I passed the TrainAIToGain AI Interview Pass Check for ${escapeHtml(roleTarget)}.&rdquo;</em>
                 </div>
-                <textarea id="share-post-text" rows="2" style="width:100%; box-sizing:border-box; padding:10px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:13.5px; color:#0f172a; line-height:1.45; margin-bottom:12px; resize:vertical; font-family:inherit;">I just passed the TrainAIToGain AI Interview Pass Check for ${escapeHtml(roleTarget)}! Ready for real AI screening rounds at Mercor, micro1, and enterprise hiring teams.</textarea>
+                <textarea id="share-post-text" rows="2" style="width:100%; box-sizing:border-box; padding:10px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:13.5px; color:#0f172a; line-height:1.45; margin-bottom:12px; resize:vertical; font-family:inherit;">I just passed the TrainAIToGain AI Interview Pass Check for ${escapeHtml(roleTarget)}! Ready for real AI screening rounds.</textarea>
                 <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                  <button type="button" onclick="window.shareToLinkedIn()" style="background:#0a66c2; color:#ffffff; border:none; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                  <button type="button" onclick="window.shareToLinkedIn(this)" style="background:#0a66c2; color:#ffffff; border:none; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
                     <span>💼 Share to LinkedIn</span>
                   </button>
                   <button type="button" onclick="window.shareToX()" style="background:#000000; color:#ffffff; border:none; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
@@ -9270,18 +9339,11 @@ ${(resumeText || '').slice(0, 3500)}`;
                     <span>🔗 Copy Link</span>
                   </button>
                 </div>
+                <div id="linkedin-share-copied-notice" style="display:none; margin-top:8px; font-size:12.5px; font-weight:700; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; padding:6px 12px; border-radius:6px;">Post copied. Paste it into LinkedIn.</div>
               </div>
 
               <!-- Official Free Practice Dress Rehearsals -->
-              <div style="margin-bottom:18px; padding:12px 16px; background:#f8fafc; border-radius:8px; border:1px solid #cbd5e1; font-size:12.5px; color:#334155; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-                <div>
-                  <strong>🎯 Free practice tools from Mercor and micro1:</strong> Test under real AI screening conditions.
-                </div>
-                <div style="display:inline-flex; gap:8px; flex-wrap:wrap;">
-                  <a href="https://t.mercor.com/wbPMF" target="_blank" rel="noopener noreferrer" style="background:#10b981; color:#042f2e; font-size:11.5px; font-weight:800; padding:6px 12px; border-radius:4px; text-decoration:none;">Mercor Practice Interview ➔</a>
-                  <a href="https://www.micro1.ai/ai-interview-guide" target="_blank" rel="noopener noreferrer" style="background:#ffffff; color:#334155; border:1px solid #cbd5e1; font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:4px; text-decoration:none;">micro1 Prep Guide ➔</a>
-                </div>
-              </div>
+              ${renderPracticeToolsCard()}
 
               <!-- Progress Chart -->
               ${renderPassCheckAttemptsChart(avgScore)}
@@ -9343,15 +9405,7 @@ ${(resumeText || '').slice(0, 3500)}`;
               </div>
 
               <!-- Official Free Practice Dress Rehearsals -->
-              <div style="margin-bottom:18px; padding:12px 16px; background:#f8fafc; border-radius:8px; border:1px solid #cbd5e1; font-size:12.5px; color:#334155; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-                <div>
-                  <strong>🎯 Free practice tools from Mercor and micro1:</strong> Test under real AI screening conditions.
-                </div>
-                <div style="display:inline-flex; gap:8px; flex-wrap:wrap;">
-                  <a href="https://t.mercor.com/wbPMF" target="_blank" rel="noopener noreferrer" style="background:#10b981; color:#042f2e; font-size:11.5px; font-weight:800; padding:6px 12px; border-radius:4px; text-decoration:none;">Mercor Practice Interview ➔</a>
-                  <a href="https://www.micro1.ai/ai-interview-guide" target="_blank" rel="noopener noreferrer" style="background:#ffffff; color:#334155; border:1px solid #cbd5e1; font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:4px; text-decoration:none;">micro1 Prep Guide ➔</a>
-                </div>
-              </div>
+              ${renderPracticeToolsCard()}
 
               <!-- Progress Chart -->
               ${renderPassCheckAttemptsChart(avgScore)}

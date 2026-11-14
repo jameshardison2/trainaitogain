@@ -1634,7 +1634,31 @@ assert(stageCHtml.includes("Complete Pass Check • View Results ➔"), 'Pass Ch
 
 console.log(`✓ PASSED: Test 91 - Stage (d) Pass Check 80% Threshold, Social Share, Outcome Tracking, Chart & Playbook PDF passed!`);
 
+// ==================================================================
+// Phase 3 Tests: PDF Name Omission, LinkedIn Clipboard, Grammar, Share Neutrality & Centralized Platforms
+// ==================================================================
+// 1. PDF Candidate Name: omitted if no name is found
+assert(stageCHtml.includes('${candidateName ?'), 'PDF cover must conditionally omit Candidate Name if not found');
+
+// 2. LinkedIn Share copies text to clipboard & shows notice
+assert(stageCHtml.includes('Post copied. Paste it into LinkedIn.'), 'LinkedIn share must display "Post copied. Paste it into LinkedIn." notice');
+assert(stageCHtml.includes('linkedin-share-copied-notice'), 'linkedin-share-copied-notice element must exist');
+
+// 3. Grammar: "a 100%" (article "an" only for 8x% / 18%)
+assert(stageCHtml.includes('scoreArticle = (/^(8\\d|18)$/.test(String(avgScore).trim())) ? \'an\' : \'a\''), 'Grammar: scoreArticle must evaluate "an" only for 8x% and 18%');
+
+// 4. Platform-neutral share post: no Mercor / micro1 names in default share post
+assert(!stageCHtml.includes('Ready for real AI screening rounds at Mercor, micro1'), 'Share post must be platform-neutral and not contain hardcoded platform names');
+assert(stageCHtml.includes('Ready for real AI screening rounds.'), 'Share post must say "Ready for real AI screening rounds."');
+
+// 5. Centralized editable EXTERNAL_PRACTICE_PLATFORMS list
+assert(stageCHtml.includes('const EXTERNAL_PRACTICE_PLATFORMS ='), 'EXTERNAL_PRACTICE_PLATFORMS centralized list must exist');
+assert(stageCHtml.includes('renderPracticeToolsCard'), 'renderPracticeToolsCard helper must exist');
+assert(stageCHtml.includes('getPlatformDisclaimerNames'), 'getPlatformDisclaimerNames helper must exist');
+
+console.log(`✓ PASSED: Test 92 - Phase 3 PDF Name Omission, LinkedIn Clipboard, Grammar, Share Neutrality & Centralized Platforms passed!`);
+
 console.log("==================================================================");
-console.log("ALL 91 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 92 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 
