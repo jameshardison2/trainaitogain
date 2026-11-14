@@ -740,8 +740,8 @@ window.addEventListener('unhandledrejection', function(event) {
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
             <!-- 1. Warm-Up -->
             <div id="mode-opt-warmup" onclick="window.selectSimMode('warmup')" style="background:#f8fafc; border:1.5px solid var(--gray-200); border-radius:8px; padding:12px; cursor:pointer; transition:all 0.2s;">
-              <div style="font-size:14px; font-weight:700; color:var(--gray-900);">1. Warm-Up</div>
-              <div style="font-size:14px; color:var(--gray-500); margin-top:3px; line-height:1.35;">1 low-stress question to test audio and pacing</div>
+              <div style="font-size:14px; font-weight:700; color:var(--gray-900);">🌱 1. Warm-Up Drill</div>
+              <div style="font-size:14px; color:var(--gray-500); margin-top:3px; line-height:1.35;">Low-pressure practice. Get comfortable answering out loud before the real thing.</div>
             </div>
             <!-- 2. Flashcards -->
             <div id="mode-opt-flashcards" onclick="window.selectSimMode('flashcards')" style="background:#f8fafc; border:1.5px solid var(--gray-200); border-radius:8px; padding:12px; cursor:pointer; transition:all 0.2s;">
@@ -776,6 +776,34 @@ window.addEventListener('unhandledrejection', function(event) {
           </div>
         </div>
       </details>
+
+      <!-- Playbook & Email Capture Card (PASS-08) -->
+      <div id="screen1-playbook-card" style="max-width:560px; margin:14px auto; background:#f8fafc; border:1px solid var(--gray-200); border-radius:12px; padding:16px 18px; text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+          <div>
+            <div style="font-size:14px; font-weight:800; color:var(--gray-900);">Personalized STAR Practice Playbook (PDF)</div>
+            <div style="font-size:13px; color:var(--gray-600); margin-top:2px;">Opens a print-ready study sheet in a new tab you can Save as PDF.</div>
+          </div>
+          <button type="button" onclick="window.downloadStarPracticePdf()" style="background:#ffffff; color:var(--primary); border:1px solid var(--primary); border-radius:6px; padding:6px 12px; font-size:13px; font-weight:700; cursor:pointer;">
+            Open &amp; Print Playbook (PDF)
+          </button>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+          <input type="email" id="screen1-lead-email" placeholder="Enter your email to receive PDF &amp; role alerts..." style="flex:1; min-width:200px; background:#ffffff; border:1px solid var(--gray-300); border-radius:6px; padding:8px 12px; color:var(--gray-900); font-size:13px; outline:none;" oninput="localStorage.setItem('candidateEmail', this.value)" />
+          <button type="button" onclick="window.saveScreen1LeadEmail()" class="btn-primary" style="padding:8px 16px; font-size:13px; font-weight:800; border-radius:6px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; white-space:nowrap;">Get Playbook PDF</button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:2px; margin-top:6px;">
+          <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:var(--gray-700); cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+            <input type="checkbox" id="screen1-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
+            <span>Email me a 7-day practice plan.</span>
+          </label>
+          <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:var(--gray-700); cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+            <input type="checkbox" id="screen1-friday-alerts-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
+            <span>Email me new matching roles each Friday.</span>
+          </label>
+        </div>
+        <div id="screen1-lead-success" style="display:none; color:var(--primary); font-size:13px; font-weight:700; margin-top:6px;"></div>
+      </div>
       </div> <!-- /#setup-initial-form -->
 
       <!-- Quizlet-Style Interactive Study Deck (Shown when Flashcards Deck is active) -->
@@ -1210,6 +1238,10 @@ window.addEventListener('unhandledrejection', function(event) {
 
           <!-- Spoken Answer Area -->
           <div id="spoken-answer-container" style="display:none; text-align:left; background:#ffffff; border:1px solid var(--gray-200); border-radius:12px; padding:18px 20px; box-shadow:var(--shadow-sm); color:var(--gray-900);">
+            <!-- Unsupported Speech Recognition Message (REQ Fix 9) -->
+            <div id="spoken-unsupported-msg" style="display:none; background:#fffbeb; border:1px solid #f59e0b; border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:13.5px; color:#92400e; line-height:1.45;">
+              <strong>Voice recognition not supported:</strong> Your browser does not support voice recognition. Please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> on a computer to speak your answers, or continue practicing in Typed Mode below.
+            </div>
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
               <span style="font-size:13px; font-weight:800; color:#2563eb; text-transform:uppercase; letter-spacing:0.05em;" id="spoken-mic-status">🎙️ Microphone Active — Speak your answer (60–90s)</span>
               <div style="display:inline-flex; align-items:center; gap:8px;">
@@ -1248,6 +1280,11 @@ window.addEventListener('unhandledrejection', function(event) {
               <span style="color:#059669; font-weight:800; flex-shrink:0;">💡 Delivery Tip:</span>
               <span>Speak with first-person ownership (<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">"I architected"</strong>, not "We"</span>) and close with a measurable outcome (<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">% or number</strong></span>).</span>
             </div>
+            <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button type="button" id="done-speaking-btn" onclick="window.finishAndEvaluateCurrentAnswer()" class="btn-primary" style="padding:11px 22px; font-size:14.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; display:inline-flex; align-items:center; gap:8px;">
+                Done Speaking — Check Answer ➔
+              </button>
+            </div>
           </div>
 
           <!-- Typed Answer Area -->
@@ -1263,19 +1300,22 @@ window.addEventListener('unhandledrejection', function(event) {
               <span style="color:#059669; font-weight:800; flex-shrink:0;">💡 Delivery Tip:</span>
               <span>Autonomous screeners penalize passive "we". Frame decisions in the first person (<span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">"I built / I diagnosed"</strong></span>) and include a concrete <span style="white-space:nowrap;"><strong style="color:#0f172a; font-weight:800;">number or %</strong></span>.</span>
             </div>
+            <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button type="button" id="done-typing-btn" onclick="window.finishAndEvaluateCurrentAnswer()" class="btn-primary" style="padding:11px 22px; font-size:14.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; display:inline-flex; align-items:center; gap:8px;">
+                Done Answering — Check Answer ➔
+              </button>
+            </div>
             <button id="submit-typed-btn" style="display:none;" aria-hidden="true">Submit Answer</button>
           </div>
 
-          <!-- In-Page Coaching Feedback Box (Main panel ONLY — shown once on Check Coaching) -->
-          <div id="in-page-feedback" style="display:none; text-align:left; background:#f8fafc; border:1px solid var(--gray-200); border-radius:12px; padding:18px;">
-            <div style="font-size:13px; font-weight:800; color:#1d4ed8; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">Your Answer:</div>
-            <div id="feedback-transcript-text" style="font-size:14px; color:#334155; font-style:italic; margin-bottom:14px; background:#ffffff; border:1px solid var(--gray-200); padding:10px 14px; border-radius:6px; line-height:1.5;"></div>
-            <div style="font-size:13px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">Coaching Feedback:</div>
-            <div id="feedback-coaching-text" style="font-size:14px; color:#0f172a; line-height:1.6; white-space:normal;"></div>
+          <!-- In-Page Coaching Feedback Box (Post-Answer Reveal Order: User Response -> Model Answer -> Comparison -> Next Button) -->
+          <div id="in-page-feedback" style="display:none; text-align:left; background:#f8fafc; border:1px solid var(--gray-200); border-radius:12px; padding:20px; box-shadow:var(--shadow-sm); margin-top:16px;">
+            <div id="feedback-transcript-text" style="display:none;"></div>
+            <div id="feedback-coaching-text" style="display:none;"></div>
           </div>
           
-          <!-- Screen 2 Primary Action Row: Primary Next Question CTA at bottom right + Check Coaching -->
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:8px;">
+          <!-- Screen 2 Action Row: Primary Next Button + Redo -->
+          <div id="screen2-action-row" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:12px;">
             <button type="button" id="preview-coaching-btn" onclick="window.previewCurrentAnswerCoaching()" style="background:#ffffff; border:1.5px solid #059669; color:#065f46; border-radius:8px; padding:10px 16px; font-size:14px; font-weight:800; cursor:pointer; transition:all 0.2s;" title="Scores your spoken or typed answer and shows detailed rubric coaching">
               🔍 Evaluate My Spoken / Typed Answer
             </button>
@@ -2216,7 +2256,7 @@ window.addEventListener('unhandledrejection', function(event) {
   let currentQuestions = [];
   let currentQ = 0;
   const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android|Mobi/i.test(navigator.userAgent);
-  let isTextMode = isMobile; // Best on a computer in Chrome or Edge. On a phone, use typed mode.
+  let isTextMode = (localStorage.getItem('interviewTextMode') === 'true'); // Default to spoken mode; respect saved choice if explicitly set
   let interviewStarted = false;
   let interviewCompleted = false;
   let sessionTargetKeywords = new Set();
@@ -2799,7 +2839,7 @@ window.addEventListener('unhandledrejection', function(event) {
 
     const totalBadge = document.getElementById('cds-roles-total-badge');
     if (totalBadge && window.allRoleItems.length > 50) {
-      totalBadge.textContent = "600+ Roles";
+      totalBadge.textContent = "604 Roles";
     }
   }
 
@@ -3484,9 +3524,9 @@ window.addEventListener('unhandledrejection', function(event) {
         addRoleOptionToDropdown(role.title, detectDomain(role.title, role.domain, ''), false, role);
       });
       const totalBadge = document.getElementById('cds-roles-total-badge');
-      if (totalBadge) totalBadge.textContent = "600+ Roles";
+      if (totalBadge) totalBadge.textContent = "604 Roles";
       const modalCountLabel = document.getElementById('modal-role-search-count-label');
-      if (modalCountLabel) modalCountLabel.textContent = "600+ Roles";
+      if (modalCountLabel) modalCountLabel.textContent = "604 Roles";
       window.renderFilteredRoleList(_currentRoleSearchQuery, _activeRoleCategory);
       if (typeof window.refreshJobDescriptionUI === 'function') {
         const activeRole = (cdsText && cdsText.innerText) ? cdsText.innerText.replace(/^Role:\s*/i, '').replace(/\s*\(Your Target Role\)\s*/i, '').trim() : (atsRole || 'Senior Python / ML Evaluator');
@@ -3748,7 +3788,7 @@ window.addEventListener('unhandledrejection', function(event) {
     availableVoices = filtered;
 
     const savedVoiceName = localStorage.getItem('selectedInterviewerVoiceName') || '';
-    voiceSelect.innerHTML = '<option value="default">Coach Gain — Natural English (Default)</option>';
+    voiceSelect.innerHTML = '<option value="default">Coach Gain — Google UK English Female / Natural English (Default)</option>';
     let selectedSet = false;
     availableVoices.forEach((v, i) => {
       const option = document.createElement('option');
@@ -4453,12 +4493,12 @@ window.addEventListener('unhandledrejection', function(event) {
                n.includes('zarvox') || n.includes('compact');
       };
 
-      // 1. Clear, local natural human voices that speak instantly without network latency (Samantha, Ava, Serena, Daniel, Karen, Victoria)
-      _lockedSessionVoice = voices.find(v => !isRobotic(v.name) && (v.name.includes('Samantha') || v.name.includes('Ava') || v.name.includes('Serena') || v.name.includes('Daniel') || v.name.includes('Karen') || v.name.includes('Victoria') || v.name.includes('Allison') || v.name.includes('Susan')) && v.lang.startsWith('en')) ||
-                            // 2. Google / Online Neural / Natural English voices
-                            voices.find(v => !isRobotic(v.name) && (v.name.includes('Google US English') || v.name.includes('Google UK English Female') || v.name.includes('Natural') || v.name.includes('Neural')) && v.lang.startsWith('en')) ||
+      // 1. Prioritize Google UK English Female (Fix 2)
+      _lockedSessionVoice = voices.find(v => !isRobotic(v.name) && v.name.includes('Google UK English Female')) ||
+                            // 2. Clear natural human voices (Google US English, Samantha, Ava, Serena, Daniel, Karen, Victoria, Natural, Neural)
+                            voices.find(v => !isRobotic(v.name) && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Ava') || v.name.includes('Serena') || v.name.includes('Daniel') || v.name.includes('Karen') || v.name.includes('Victoria') || v.name.includes('Natural') || v.name.includes('Neural')) && v.lang.startsWith('en')) ||
                             // 3. Any non-robotic US/GB English voice
-                            voices.find(v => !isRobotic(v.name) && (v.lang === 'en-US' || v.lang === 'en-GB')) ||
+                            voices.find(v => !isRobotic(v.name) && (v.lang === 'en-GB' || v.lang === 'en-US')) ||
                             // 4. Any non-robotic English voice
                             voices.find(v => !isRobotic(v.name) && v.lang.startsWith('en')) ||
                             voices.find(v => !isRobotic(v.name)) ||
@@ -4550,10 +4590,20 @@ window.addEventListener('unhandledrejection', function(event) {
 
         // Safety fallback: allow reading time based on question word count (at least 6s)
         const wordCount = text.split(/\s+/).length;
-        const expectedDurationMs = Math.max(6000, (wordCount / 2.2) * 1000 + 4000);
+        const expectedDurationMs = Math.max(5000, (wordCount / 2.2) * 1000 + 3500);
         setTimeout(() => {
-          if (!done && !synth.speaking) {
-            finishCb();
+          if (!done) {
+            if (!synth.speaking) {
+              finishCb();
+            } else {
+              // Guaranteed safety release if SpeechSynthesis stalls or onend is dropped
+              setTimeout(() => {
+                if (!done) {
+                  try { synth.cancel(); } catch(e) {}
+                  finishCb();
+                }
+              }, 3000);
+            }
           }
         }, expectedDurationMs);
       } catch(err) {
@@ -5785,6 +5835,13 @@ ${(resumeText || '').slice(0, 3500)}`;
         <!-- Script Viewport -->
         <div class="star-tp-scroll-viewport" style="max-height:380px; overflow-y:auto; overflow-x:hidden; padding-right:6px;">
           <div class="star-teleprompter-text-body" style="font-size:15px; line-height:1.6; color:var(--gray-900);">
+            ${recallLvl === 4 ? `
+              <!-- Level 4: Recall (Memory Mode - NO SCRIPT TEXT IN DOM) -->
+              <div class="tp-recall-memory" style="padding:28px 16px; text-align:center; color:#475569; font-size:15px; font-weight:700; background:#f8fafc; border:1px dashed var(--gray-300); border-radius:8px;">
+                🧠 Answer from memory (Level 4: Recall)
+                <div style="font-size:13px; color:#64748b; margin-top:4px;">No script shown. Deliver your answer from recall.</div>
+              </div>
+            ` : `
             <!-- Phase 1: Situation & Scope -->
             <div class="tp-sec-hook" style="margin-bottom:12px; padding:12px 14px; background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #3b82f6; border-radius:6px;">
               <div style="font-size:13px; font-weight:800; color:#1e40af; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">
@@ -5808,6 +5865,7 @@ ${(resumeText || '').slice(0, 3500)}`;
               </div>
               <div class="star-r-tp-text" style="color:#713f12; font-size:15px;">${highlightJdKeywordsInHtml(starResult, kwPool, false, true)}</div>
             </div>
+            `}
           </div>
         </div>
       </div>`;
@@ -6438,36 +6496,123 @@ ${(resumeText || '').slice(0, 3500)}`;
     return (currentSpokenTranscript || '').trim();
   }
 
-  // Item 7 & BUG-02: Show coaching once — main panel (#in-page-feedback) ONLY. The sidebar keeps the live meters.
-  window.previewCurrentAnswerCoaching = function() {
+  // Post-Answer Evaluation (Fix 3 & Adjustment 7: Reveal order: User Response -> Model Answer -> Comparison -> Next Button)
+  window.finishAndEvaluateCurrentAnswer = function() {
+    stopAllSpeech();
     stopAnswerTimer();
     const qData = currentQuestions[currentQ] || {};
     const rawText = getCurrentAnswerText();
     const inPageBox = document.getElementById('in-page-feedback');
-    const transcriptBox = document.getElementById('feedback-transcript-text');
-    const coachingBox = document.getElementById('feedback-coaching-text');
-    if (!inPageBox || !transcriptBox || !coachingBox) return;
+    if (!inPageBox) return;
 
     if (!rawText || rawText.trim().length === 0) {
-      transcriptBox.innerText = "(Drafting answer — review suggested STAR structure and JD keywords below)";
-      const suggestedStarHTML = buildSuggestedStarResponse(qData || {}, currentQ, "");
-      coachingBox.innerHTML = `
-        <div style="background:rgba(59,130,246,0.08); border-left:3px solid #3b82f6; padding:14px 18px; border-radius:8px; margin-bottom:12px;">
-          <div style="font-size:12px; font-weight:800; color:#60a5fa; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">💡 Drafting Tip:</div>
-          <div style="color:#ffffff; font-size:14px; line-height:1.5;">
-            Structure your response using STAR: open with your target role and core domain in sentence 1, describe the exact tools/actions you took, and close with a quantified outcome. Aim for 60–90 seconds.
-          </div>
-        </div>
-        ${suggestedStarHTML}
-      `;
-      inPageBox.style.display = 'block';
+      if (isTextMode) {
+        const errEl = document.getElementById('typed-answer-error');
+        if (errEl) {
+          errEl.innerText = 'Please type your answer before submitting';
+          errEl.style.display = 'block';
+        }
+      } else {
+        const micStatus = document.getElementById('spoken-mic-status');
+        if (micStatus) {
+          micStatus.innerHTML = '⚠️ <span style="color:#b45309; font-weight:700;">No speech captured yet. Speak your answer into your microphone or click "Switch to typed mode".</span>';
+        }
+      }
       return;
     }
 
     const evalRes = evaluateAnswerText(rawText, qData, currentQ);
-    transcriptBox.innerText = `"${rawText}"`;
-    coachingBox.innerHTML = evalRes.feedbackHTML;
+    const modelAnswerHtml = buildSuggestedStarResponse(qData, currentQ, rawText);
+    const isWarmup = (window.currentSimMode === 'warmup');
+    const isLastQ = (currentQ + 1 >= currentQuestions.length);
+
+    const matchedPills = (evalRes.matchedList && evalRes.matchedList.length > 0)
+      ? evalRes.matchedList.map(k => `<span style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:12px; font-weight:700; padding:3px 9px; border-radius:100px;">✓ ${escapeHtml(k)}</span>`).join(' ')
+      : '<span style="color:#64748b; font-size:13px; font-style:italic;">None matched yet</span>';
+
+    const missedPills = (evalRes.missedList && evalRes.missedList.length > 0)
+      ? evalRes.missedList.slice(0, 4).map(k => `<span style="background:#fef2f2; border:1px solid #fecaca; color:#991b1b; font-size:12px; font-weight:700; padding:3px 9px; border-radius:100px;">+ ${escapeHtml(k)}</span>`).join(' ')
+      : '<span style="color:#059669; font-size:13px; font-weight:700;">✓ All key job terms matched</span>';
+
+    inPageBox.innerHTML = `
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <!-- 1. User Response -->
+        <div style="background:#ffffff; border:1.5px solid var(--gray-200); border-radius:10px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div style="font-size:13px; font-weight:800; color:#1d4ed8; text-transform:uppercase; letter-spacing:0.05em;">
+              1. Your Response (${evalRes.wordCount} words)
+            </div>
+            <span style="font-size:12px; font-weight:800; color:${evalRes.cappedScore >= 70 ? '#059669' : '#d97706'}; background:${evalRes.cappedScore >= 70 ? '#ecfdf5' : '#fffbeb'}; border:1px solid ${evalRes.cappedScore >= 70 ? '#a7f3d0' : '#fde68a'}; padding:2px 8px; border-radius:100px;">
+              Score: ${evalRes.cappedScore}%
+            </span>
+          </div>
+          <div style="font-size:15px; color:#0f172a; line-height:1.55; font-style:italic; background:#f8fafc; border:1px solid var(--gray-200); border-radius:6px; padding:12px 14px;">
+            "${escapeHtml(rawText)}"
+          </div>
+        </div>
+
+        <!-- 2. Model Answer Directly Below User Response -->
+        <div>
+          <div style="font-size:13px; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">
+            2. Model Answer (${(qData && (qData.tag === 'Answer–Why–Check' || !!qData.answerWhyCheck)) ? 'Answer–Why–Check Formula' : 'Winning STAR Formula'})
+          </div>
+          ${modelAnswerHtml}
+        </div>
+
+        <!-- 3. Short Comparison (What was covered vs missed) -->
+        <div style="background:#ffffff; border:1.5px solid var(--gray-200); border-radius:10px; padding:16px;">
+          <div style="font-size:13px; font-weight:800; color:var(--gray-900); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">
+            3. Comparison &amp; Feedback
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
+            <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:12px 14px;">
+              <div style="font-size:12.5px; font-weight:800; color:#15803d; margin-bottom:6px; text-transform:uppercase;">✓ What You Covered:</div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+                ${matchedPills}
+              </div>
+              <div style="font-size:13.5px; color:#166534; line-height:1.45;">${evalRes.whatWorked}</div>
+            </div>
+            <div style="background:#fffbeb; border:1px solid #fef3c7; border-radius:8px; padding:12px 14px;">
+              <div style="font-size:12.5px; font-weight:800; color:#b45309; margin-bottom:6px; text-transform:uppercase;">💡 What to Improve:</div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+                ${missedPills}
+              </div>
+              <div style="font-size:13.5px; color:#92400e; line-height:1.45;">${evalRes.toTighten}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Clear Next Question Button -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:6px;">
+          <button type="button" onclick="window.redrillSingleQuestion(currentQ)" style="background:#ffffff; border:1.5px solid var(--gray-300); color:#334155; border-radius:8px; padding:11px 18px; font-size:14px; font-weight:700; cursor:pointer;">
+            🔄 Practice This Answer Again
+          </button>
+          <button type="button" onclick="window.confirmAndAdvanceFromEvaluation()" class="btn-primary" style="padding:13px 32px; font-size:15.5px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff; margin-left:auto;">
+            ${isWarmup ? 'Finish Warm-Up • View Report ➔' : (isLastQ ? 'Complete Simulation &bull; View Scorecard ➔' : `Next Question (${currentQ + 2} of ${currentQuestions.length}) ➔`)}
+          </button>
+        </div>
+      </div>
+    `;
+
     inPageBox.style.display = 'block';
+    if (typeof inPageBox.scrollIntoView === 'function') {
+      inPageBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
+
+  window.previewCurrentAnswerCoaching = window.finishAndEvaluateCurrentAnswer;
+
+  window.confirmAndAdvanceFromEvaluation = function() {
+    recordCurrentQuestionAnswer();
+    const inPageBox = document.getElementById('in-page-feedback');
+    if (inPageBox) inPageBox.style.display = 'none';
+    if (isSingleQuestionRedrill || currentQ + 1 >= currentQuestions.length) {
+      isSingleQuestionRedrill = false;
+      finishInterview();
+    } else {
+      currentQ++;
+      askQuestion();
+    }
   };
 
   function recordCurrentQuestionAnswer() {
@@ -6610,22 +6755,35 @@ ${(resumeText || '').slice(0, 3500)}`;
     if (isTextMode) return;
 
     if (!SpeechRecognition) {
+      const unsupportedEl = document.getElementById('spoken-unsupported-msg');
+      if (unsupportedEl) unsupportedEl.style.display = 'block';
+      const micStatus = document.getElementById('spoken-mic-status');
+      if (micStatus) {
+        micStatus.innerHTML = '⚠️ <span style="color:#b45309; font-weight:700;">Voice recognition not supported in this browser. Switched to Typed Mode. Use Google Chrome or Edge on desktop for speech.</span>';
+      }
       isTextMode = true;
       trackMockEvent('mock_text_mode', { role: localStorage.getItem('atsRole') || currentDomain });
-      window.setInterviewMode('typed');
+      window.setInterviewMode(true);
       return;
     }
 
-    if (!recognition) {
+    // Cleanly abort and re-instantiate recognition to avoid InvalidStateError or stale event listeners
+    if (recognition) {
       try {
-        recognition = new SpeechRecognition();
-      } catch(e) {
-        console.warn("Could not create SpeechRecognition instance:", e);
-      }
+        recognition.onstart = null;
+        recognition.onresult = null;
+        recognition.onerror = null;
+        recognition.onend = null;
+        recognition.abort();
+      } catch(e) {}
+      recognition = null;
     }
 
-    if (!recognition) {
-      window.setInterviewMode('typed');
+    try {
+      recognition = new SpeechRecognition();
+    } catch(e) {
+      console.warn("Could not create SpeechRecognition instance:", e);
+      window.setInterviewMode(true);
       return;
     }
 
@@ -6643,11 +6801,11 @@ ${(resumeText || '').slice(0, 3500)}`;
       isRecognizing = true;
       const micStatus = document.getElementById('spoken-mic-status');
       if (micStatus) {
-        micStatus.innerHTML = '🎙️ <span style="color:#059669; font-weight:800;">Microphone Active — Speak your answer now (60–90s)</span>';
+        micStatus.innerHTML = '<span style="color:#059669; font-weight:800; display:inline-flex; align-items:center; gap:6px;"><span style="display:inline-block; width:10px; height:10px; background:#10b981; border-radius:50%; box-shadow:0 0 6px #10b981;"></span> ● Listening... Speak your answer now (60–90s)</span>';
       }
       const liveTranscriptEl = document.getElementById('spoken-live-transcript');
       if (liveTranscriptEl && !currentSpokenTranscript) {
-        liveTranscriptEl.textContent = 'Listening for your voice response... speak your answer into your microphone.';
+        liveTranscriptEl.textContent = 'Listening... Speak your answer out loud into your microphone.';
         liveTranscriptEl.style.fontStyle = 'italic';
         liveTranscriptEl.style.color = '#475569';
         liveTranscriptEl.style.fontWeight = 'normal';
@@ -6828,7 +6986,7 @@ ${(resumeText || '').slice(0, 3500)}`;
     // Update Guided Prep Plan header banner (Only when actively running a Prep Plan)
     const guidedBanner = document.getElementById('guided-step-banner');
     if (guidedBanner) {
-      const activeMode = window.currentSimMode || 'practice';
+      const activeMode = window.currentSimMode || localStorage.getItem('tgt_sim_mode') || 'practice';
       const isGuided = Boolean(window._isGuidedPlan) && ['warmup', 'flashcards', 'practice', 'passcheck'].includes(activeMode);
       if (isGuided) {
         let stepNum = window._guidedStep || 1;
@@ -7200,19 +7358,27 @@ ${(resumeText || '').slice(0, 3500)}`;
     proceedToSession();
   };
 
-  window.startGuidedPrepPlan = async function() {
+  window.startGuidedPrepPlan = function() {
     window._isGuidedPlan = true;
     window._guidedStep = 1;
     try {
       localStorage.setItem('tgt_guided_plan', '1');
     } catch(e) {}
     window.selectSimMode('warmup');
-    window._isGuidedPlan = true;
-    window._guidedStep = 1;
-    try {
-      localStorage.setItem('tgt_guided_plan', '1');
-    } catch(e) {}
-    await window.proceedWithAudioOrTyped();
+    const isTyped = (localStorage.getItem('interviewTextMode') === 'true') || isMobile;
+    if (isTyped) {
+      isTextMode = true;
+      window.setInterviewMode(true);
+      proceedToSession();
+    } else {
+      isTextMode = false;
+      window.setInterviewMode(false);
+      if (typeof window.proceedWithAudioOrTyped === 'function') {
+        window.proceedWithAudioOrTyped();
+      } else {
+        proceedToSession();
+      }
+    }
   };
 
   window.startGuidedPrepPlanTyped = function() {
@@ -7427,6 +7593,11 @@ ${(resumeText || '').slice(0, 3500)}`;
               </div>
             </div>
 
+            <!-- Warm-Up Explainer Banner (Fix 5: Honest statement of what Warm-Up measures) -->
+            <div style="background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #3b82f6; border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:14.5px; color:#1e40af; line-height:1.5;">
+              <strong>ℹ️ What this measures:</strong> This Warm-Up report verifies that your microphone is working, your voice is being captured, and your speaking pace is ready before you begin.
+            </div>
+
             <!-- Device Check Grid -->
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-bottom:24px;">
               <div style="background:${micBg}; border:1.5px solid ${micBorder}; border-radius:10px; padding:16px;">
@@ -7455,7 +7626,7 @@ ${(resumeText || '').slice(0, 3500)}`;
               </div>
             </div>
 
-            <!-- Next Step Actions -->
+            <!-- Next Step Actions (Fix 6: Clear next step button) -->
             <div style="display:flex; flex-direction:column; gap:12px; align-items:center; max-width:480px; margin:0 auto;">
               ${!isPassed ? `
                 <div style="width:100%; text-align:center; margin-bottom:4px;">
@@ -7469,15 +7640,15 @@ ${(resumeText || '').slice(0, 3500)}`;
                   ⌨️ Switch to Typed Mode &amp; Retry
                 </button>
                 <button type="button" onclick="window.continueGuidedPlanToFlashcards()" style="background:none; border:none; color:#475569; font-size:14px; font-weight:700; cursor:pointer; text-decoration:underline; margin-top:4px;">
-                  Skip to Step 2: Flashcards Deck ➔
+                  Skip to Step 2: 10-Question Flashcard Mastery Deck ➔
                 </button>
-              ` : (window._isGuidedPlan || localStorage.getItem('tgt_guided_plan') === '1') ? `
+              ` : `
                 <div style="width:100%; text-align:center; margin-bottom:4px;">
                   <div style="font-size:12px; font-weight:900; color:#059669; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px;">🚀 Guided Prep Plan &bull; Step 1 Complete</div>
                   <div style="font-size:14px; font-weight:800; color:#065f46;">${isTextMode ? 'Input verified! Step 2 internalizes winning answer outlines.' : 'Audio verified! Step 2 internalizes winning answer outlines.'}</div>
                 </div>
                 <button type="button" onclick="window.continueGuidedPlanToFlashcards()" class="btn-primary" style="width:100%; justify-content:center; padding:15px 24px; font-size:15.5px; font-weight:900; border-radius:8px; cursor:pointer; border:none; box-shadow:0 6px 20px rgba(16,185,129,0.45); display:flex; align-items:center; gap:8px;">
-                  Step 2 of 4: Master Flashcards Deck (10 Cards) ➔
+                  Continue to Step 2: 10-Question Flashcard Mastery Deck ➔
                 </button>
                 <div style="display:flex; gap:16px; margin-top:6px;">
                   <button type="button" onclick="window.selectSimMode('warmup'); window.retakeMockInterview();" style="background:none; border:none; color:#475569; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
@@ -7485,18 +7656,6 @@ ${(resumeText || '').slice(0, 3500)}`;
                   </button>
                   <button type="button" onclick="window.exitGuidedPlan();" style="background:none; border:none; color:#475569; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
                     Exit Prep Plan
-                  </button>
-                </div>
-              ` : `
-                <button type="button" onclick="window.selectSimMode('copilot'); window.startSimFromFlashcards();" class="btn-primary" style="width:100%; justify-content:center; padding:14px 24px; font-size:15px; font-weight:800; border-radius:8px; cursor:pointer; border:none;">
-                  Start CoPilot (10 Questions with Coaching) ➔
-                </button>
-                <button type="button" onclick="window.selectSimMode('passcheck'); window.startSimFromFlashcards();" style="width:100%; justify-content:center; background:#ecfdf5; border:1.5px solid #059669; color:#065f46; padding:12px 20px; font-size:14px; font-weight:800; border-radius:8px; cursor:pointer;">
-                  Start Pass Check (6-Question Benchmark) ➔
-                </button>
-                <div style="display:flex; gap:16px; margin-top:6px;">
-                  <button type="button" onclick="window.selectSimMode('warmup'); window.retakeMockInterview();" style="background:none; border:none; color:#475569; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline;">
-                    Redo Warm-Up
                   </button>
                 </div>
               `}
@@ -7773,6 +7932,25 @@ ${(resumeText || '').slice(0, 3500)}`;
       const isPlanFinal = isFinal && isGuided;
 
       resultsView.innerHTML = `
+        ${(isFinal && isGuided) ? `
+          <div style="background:linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(59,130,246,0.1) 100%); border:2px solid #10b981; border-radius:14px; padding:22px 24px; margin-bottom:20px; text-align:center;">
+            <div style="font-size:30px; margin-bottom:6px;">🎓</div>
+            <div style="font-size:12px; font-weight:900; color:#059669; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">🚀 Guided Prep Plan &bull; All 4 Steps Completed!</div>
+            <h2 style="font-size:21px; font-weight:900; color:var(--gray-900); margin:0 0 8px;">Congratulations! You finished the entire interview preparation sequence.</h2>
+            <div style="font-size:14px; color:var(--gray-700); line-height:1.55; max-width:640px; margin:0 auto 14px auto;">
+              You completed <strong>Step 1: Warm-Up</strong>, mastered the <strong>Step 2: Flashcards Deck</strong>, practiced in <strong>Step 3: Live Practice (CoPilot)</strong>, and tested your memory in <strong>Step 4: Pass Check Benchmark</strong>.
+            </div>
+            <div style="display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+              <button type="button" onclick="window.downloadStarPracticePdf()" class="btn-primary" style="padding:10px 20px; font-size:13px; font-weight:800; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                📄 Open &amp; Print Completed Playbook (PDF)
+              </button>
+              <button type="button" onclick="window.exitGuidedPlan()" style="background:#ffffff; border:1px solid var(--gray-300); color:var(--gray-700); padding:10px 18px; font-size:13px; font-weight:700; border-radius:8px; cursor:pointer;">
+                Back to Setup
+              </button>
+            </div>
+          </div>
+        ` : ''}
+
         <!-- Single Clear Verdict Card (No Contradictions) -->
         <div id="verdict-banner" style="background:${avgScore >= 70 && !hasDup ? '#ecfdf5' : (avgScore >= 60 ? '#fffbeb' : '#fef2f2')}; border:1.5px solid ${avgScore >= 70 && !hasDup ? '#10b981' : (avgScore >= 60 ? '#f59e0b' : '#ef4444')}; border-radius:12px; padding:20px 24px; margin-bottom:20px; text-align:left;">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
@@ -7879,24 +8057,37 @@ ${(resumeText || '').slice(0, 3500)}`;
             </div>
           </div>
 
-          <!-- SINGLE CONSOLIDATED EMAIL FORM (Deduplicated) -->
+          <!-- SINGLE CONSOLIDATED EMAIL FORM (PASS-08 Consent & Direct PDF Download) -->
           <div style="background:#f8fafc; border:1px solid var(--gray-200); border-radius:12px; padding:20px 22px; margin-bottom:20px;">
             <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;">
               <div style="font-size:15px; font-weight:800; color:var(--gray-900);">Email My Results &amp; STAR Playbook PDF</div>
+              ${!isPlanFinal ? `
               <button type="button" onclick="window.downloadStarPracticePdf()" style="background:#ffffff; color:var(--primary); border:1px solid var(--primary); border-radius:6px; padding:8px 14px; font-size:13px; font-weight:700; cursor:pointer;">
                 Download STAR Playbook (PDF)
-              </button>
+              </button>` : ''}
             </div>
             <p style="color:var(--gray-600); font-size:14px; line-height:1.5; margin:0 0 12px;">
               Send your interview report, coaching points, and tailored STAR scripts directly to your inbox.
             </p>
-            <form id="mock-report-form" onsubmit="handleMockReportSubmit(event)" style="display:flex; gap:10px; flex-wrap:wrap;">
-              <input type="email" id="mock-report-email" required placeholder="Enter your email address" style="flex:1; min-width:220px; padding:11px 14px; border-radius:8px; border:1px solid var(--gray-300); background:#ffffff; color:var(--gray-900); font-size:14px; outline:none;" />
-              <button type="submit" id="mock-report-btn" class="btn-primary" style="padding:11px 20px; font-size:14px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff;">
-                Email My Results ➔
-              </button>
+            <form id="lead-magnet-form" onsubmit="window.handleLeadMagnetSubmit(event)" style="display:flex; flex-direction:column; gap:10px;">
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <input type="email" id="lead-magnet-email" placeholder="Enter your email address" required style="flex:1; min-width:220px; padding:11px 14px; border-radius:8px; border:1px solid var(--gray-300); background:#ffffff; color:var(--gray-900); font-size:14px; outline:none;" />
+                <button type="submit" id="lead-magnet-submit-btn" class="btn-primary" style="padding:11px 20px; font-size:14px; font-weight:800; border-radius:8px; border:none; cursor:pointer; background:var(--primary); color:#ffffff;">
+                  Email My Results ➔
+                </button>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:2px; margin-top:4px;">
+                <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:var(--gray-700); cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+                  <input type="checkbox" id="lead-magnet-practice-plan-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
+                  <span>Email me a 7-day practice plan.</span>
+                </label>
+                <label style="display:inline-flex; align-items:center; gap:10px; font-size:13px; color:var(--gray-700); cursor:pointer; min-height:44px; min-width:44px; padding:4px 0;">
+                  <input type="checkbox" id="lead-magnet-friday-alerts-optin" style="width:20px; height:20px; min-width:20px; min-height:20px; cursor:pointer; accent-color:#10b981;" />
+                  <span>Email me new matching roles each Friday.</span>
+                </label>
+              </div>
             </form>
-            <div id="mock-report-success" style="display:none; color:var(--primary); font-size:14px; font-weight:700; margin-top:10px;">
+            <div id="lead-magnet-success" style="display:none; color:var(--primary); font-size:14px; font-weight:700; margin-top:10px;">
               ✓ Your results are on the way! Check your inbox shortly.
             </div>
           </div>
@@ -8129,7 +8320,9 @@ ${(resumeText || '').slice(0, 3500)}`;
         if (typeof window.initFlashcardsDeck === 'function') {
           window.initFlashcardsDeck();
         }
-        fcContainer.scrollIntoView({ behavior: 'smooth' });
+        if (typeof fcContainer.scrollIntoView === 'function') {
+          fcContainer.scrollIntoView({ behavior: 'smooth' });
+        }
       } else {
         fcContainer.style.display = 'none';
       }
@@ -8146,22 +8339,6 @@ ${(resumeText || '').slice(0, 3500)}`;
   setTimeout(() => {
     window.selectSimMode(window.currentSimMode);
   }, 100);
-
-  // Guided Prep Plan Sequential Flow (Warm-Up -> Flashcards -> CoPilot -> Pass Check)
-  window.startGuidedPrepPlan = async function() {
-    window._isGuidedPlan = true;
-    window._guidedStep = 1;
-    try { localStorage.setItem('tgt_guided_plan', '1'); } catch(e) {}
-    window.selectSimMode('warmup');
-    window._isGuidedPlan = true;
-    window._guidedStep = 1;
-    try { localStorage.setItem('tgt_guided_plan', '1'); } catch(e) {}
-    if (typeof window.proceedWithAudioOrTyped === 'function') {
-      await window.proceedWithAudioOrTyped();
-    } else {
-      proceedToSession();
-    }
-  };
 
   window.openFlashcardsScreen = function(isGuided) {
     stopAllSpeech();
