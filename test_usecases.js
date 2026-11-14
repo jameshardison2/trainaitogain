@@ -1658,7 +1658,38 @@ assert(stageCHtml.includes('getPlatformDisclaimerNames'), 'getPlatformDisclaimer
 
 console.log(`✓ PASSED: Test 92 - Phase 3 PDF Name Omission, LinkedIn Clipboard, Grammar, Share Neutrality & Centralized Platforms passed!`);
 
+// ==================================================================
+// Test 93: All-Caps Candidate Name Detection from First Line & Suffix Capitalization
+// ==================================================================
+assert(stageCHtml.includes('function formatCandidateName(raw)'), 'formatCandidateName helper function must exist');
+assert(stageCHtml.includes('function extractCandidateNameFromResume(rawResumeText)'), 'extractCandidateNameFromResume helper function must exist');
+
+// Evaluate formatCandidateName and extractCandidateNameFromResume directly in Node context
+const fnCode = stageCHtml.match(/function formatCandidateName\(raw\) \{[\s\S]*?window\.extractCandidateNameFromResume = extractCandidateNameFromResume;/);
+assert(fnCode, 'Must be able to extract name parsing functions from ai-interview.html');
+
+const evalEnv = { window: {} };
+const runner = new Function('window', fnCode[0] + '\nreturn { formatCandidateName: window.formatCandidateName, extractCandidateNameFromResume: window.extractCandidateNameFromResume };');
+const { formatCandidateName, extractCandidateNameFromResume } = runner(evalEnv.window);
+
+assert.strictEqual(formatCandidateName("JAMES N. HARDISON II"), "James N. Hardison II", "Must convert all-caps name with Roman numeral II to normal capitalization");
+assert.strictEqual(formatCandidateName("JAMES N. HARDISON, II"), "James N. Hardison II", "Must handle comma before Roman numeral suffix");
+assert.strictEqual(formatCandidateName("JAMES N. HARDISON JR."), "James N. Hardison Jr.", "Must format Jr. suffix cleanly");
+assert.strictEqual(formatCandidateName("JAMES N. HARDISON, JR."), "James N. Hardison Jr.", "Must handle comma before Jr. suffix");
+assert.strictEqual(formatCandidateName("JAMES HARDISON"), "James Hardison", "Must format standard all-caps name");
+
+const sampleResumeAllCaps = `JAMES N. HARDISON II
+Senior Software Verification Engineer | Johnson & Johnson MedTech
+• Authored and executed 30+ verification protocols aligned to IEC 62304.`;
+assert.strictEqual(extractCandidateNameFromResume(sampleResumeAllCaps), "James N. Hardison II", "Must detect all-caps name from first line of resume and format properly");
+
+const sampleResumeWithPipe = `JAMES N. HARDISON, JR. | Lead Robotics QA | San Jose, CA
+• Developed automated test frameworks in Python`;
+assert.strictEqual(extractCandidateNameFromResume(sampleResumeWithPipe), "James N. Hardison Jr.", "Must detect name before pipe with Jr. suffix");
+
+console.log(`✓ PASSED: Test 93 - All-Caps Name Detection ("James N. Hardison II") & Suffix Capitalization verified!`);
+
 console.log("==================================================================");
-console.log("ALL 92 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
+console.log("ALL 93 AUDIT SUITE TESTS (ALL BUGS RESOLVED) PASSED WITH 100% SUCCESS! 🚀");
 console.log("==================================================================");
 

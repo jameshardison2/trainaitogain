@@ -6708,24 +6708,118 @@ ${(resumeText || '').slice(0, 3500)}`;
         : buildInterviewQuestions(roleTarget, resolvedDomain).slice(0, 6);
     }
 
+    // Candidate Name Extraction & Normalization
+    function formatCandidateName(raw) {
+      if (!raw || typeof raw !== "string") return "";
+      let cleaned = raw.trim()
+        .replace(/^candidate\s*name\s*[:\-]\s*/i, "")
+        .replace(/^name\s*[:\-]\s*/i, "")
+        .replace(/,\s*(jr\.?|sr\.?|ii|iii|iv|v|vi|vii|viii|ix|x|esq\.?)\b/gi, " $1")
+        .trim();
+
+      if (cleaned.includes(",")) {
+        const commaParts = cleaned.split(",");
+        if (commaParts[0].trim().split(/\s+/).length >= 2) {
+          cleaned = commaParts[0].trim();
+        }
+      }
+
+      const tokens = cleaned.split(/\s+/).filter(Boolean);
+      if (!tokens.length) return "";
+
+      const romanNumerals = /^(ii|iii|iv|v|vi|vii|viii|ix|x)$/i;
+
+      const formattedTokens = tokens.map((t) => {
+        let word = t.replace(/[,;:]+$/, "");
+        if (!word) return "";
+
+        if (romanNumerals.test(word)) {
+          return word.toUpperCase();
+        }
+        if (/^jr\.?$/i.test(word)) return "Jr.";
+        if (/^sr\.?$/i.test(word)) return "Sr.";
+        if (/^esq\.?$/i.test(word)) return "Esq.";
+
+        if (/^[a-z]\.?$/i.test(word)) {
+          return word.toUpperCase() + (word.endsWith(".") ? "" : ".");
+        }
+
+        if (word.includes("-")) {
+          return word.split("-").map(part => {
+            if (!part) return "";
+            return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+          }).join("-");
+        }
+
+        if (/^[a-z]'[a-z]+/i.test(word)) {
+          return word.charAt(0).toUpperCase() + "'" + word.charAt(2).toUpperCase() + word.slice(3).toLowerCase();
+        }
+
+        if (/^mc[a-z]{2,}/i.test(word)) {
+          return "Mc" + word.charAt(2).toUpperCase() + word.slice(3).toLowerCase();
+        }
+
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      }).filter(Boolean);
+
+      return formattedTokens.join(" ");
+    }
+    window.formatCandidateName = formatCandidateName;
+
+    function extractCandidateNameFromResume(rawResumeText) {
+      if (!rawResumeText || typeof rawResumeText !== 'string') return '';
+      const lines = rawResumeText.split('\n').map(l => l.trim()).filter(Boolean);
+      if (!lines.length) return '';
+
+      for (let i = 0; i < Math.min(5, lines.length); i++) {
+        let rawLine = lines[i];
+        if (/^(resume|curriculum\s+vitae|cv|profile|summary|contact\s+information)$/i.test(rawLine.trim())) {
+          continue;
+        }
+
+        let line = rawLine.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, ' ');
+        line = line.replace(/https?:\/\/[^\s]+|linkedin\.com[^\s]*|github\.com[^\s]*/gi, ' ');
+        line = line.replace(/(\+?\d[\d\s().-]{7,}\d)/g, ' ');
+
+        line = line.split(/\s*[|•·]\s*/)[0].trim();
+        line = line.split(/\s+[-–—]\s+/)[0].trim();
+
+        line = line.replace(/,\s*(jr\.?|sr\.?|ii|iii|iv|v|vi|vii|viii|ix|x|esq\.?)\b/gi, ' $1');
+        if (line.includes(',')) {
+          const parts = line.split(',');
+          if (parts[0].trim().split(/\s+/).length >= 2) {
+            line = parts[0].trim();
+          }
+        }
+
+        line = line.trim();
+
+        if (line.length >= 2 && line.length <= 45) {
+          if (!/^(senior|lead|principal|staff|junior)?\s*(software|robotics|qa|test|engineer|developer|specialist|manager|analyst|architect)/i.test(line)) {
+            if (!/^(experience|education|skills|projects|certifications|work\s+history)/i.test(line)) {
+              const tokens = line.split(/\s+/).filter(Boolean);
+              if (tokens.length >= 1 && tokens.length <= 5) {
+                return formatCandidateName(line);
+              }
+            }
+          }
+        }
+      }
+      return '';
+    }
+    window.extractCandidateNameFromResume = extractCandidateNameFromResume;
+
     // Determine Candidate Name (No full resume or contact details per privacy rule)
     const candidateName = (function() {
       const stored = (localStorage.getItem('candidateName') || sessionStorage.getItem('candidateName') || '').trim();
-      if (stored && stored.toLowerCase() !== 'candidate') return stored;
+      if (stored && stored.toLowerCase() !== 'candidate') {
+        return formatCandidateName(stored);
+      }
       if (resumeTxt) {
-        const lines = resumeTxt.split('\n').map(l => l.trim()).filter(Boolean);
-        for (let i = 0; i < Math.min(8, lines.length); i++) {
-          let line = lines[i];
-          line = line.replace(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, '');
-          line = line.replace(/(\+?\d[\d\s().-]{7,}\d)/g, '');
-          line = line.replace(/(https?:\/\/[^\s]+|linkedin\.com[^\s]*|github\.com[^\s]*)/gi, '');
-          line = line.replace(/[|•,·–-].*$/, '').trim();
-          if (line.length >= 2 && line.length <= 40 && !/\d/.test(line) && !/^(resume|curriculum|vitae|summary|experience|profile|contact|education|skills|objective|about|work|candidate)/i.test(line)) {
-            if (!/^(senior|lead|principal|staff|junior)?\s*(software|robotics|qa|test|engineer|developer|specialist|manager|analyst|architect)/i.test(line)) {
-              try { localStorage.setItem('candidateName', line); } catch(e) {}
-              return line;
-            }
-          }
+        const detected = extractCandidateNameFromResume(resumeTxt);
+        if (detected) {
+          try { localStorage.setItem('candidateName', detected); } catch(e) {}
+          return detected;
         }
       }
       return '';
